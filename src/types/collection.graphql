@@ -1,0 +1,43 @@
+type Collection {
+  archive_center: String
+  browse_flag: Boolean
+  coordinate_system: String
+  data_center: String
+  dataset_id: String
+  has_formats: Boolean 
+  has_spatial_subsetting: Boolean
+  has_temporal_subsetting: Boolean
+  has_transforms: Boolean
+  has_variables: Boolean
+  id: String!
+  online_access_flag: Boolean
+  organizations: [String]
+  original_format: String
+  short_name: String
+  summary: String
+  time_start: String
+  title: String
+  version_id: String
+  
+  granules(
+    pageSize: Int
+  ): [Granule]!
+
+  services(
+    pageSize: Int
+  ): [Service]!
+
+  variables(
+    pageSize: Int
+  ): [Variable]!
+}
+
+type Query {
+  collections(
+    id: [String],
+    pageSize: Int,
+  ): [Collection]
+  collection(
+    id: String!
+  ): Collection!
+}

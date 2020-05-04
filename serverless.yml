@@ -1,0 +1,50 @@
+service: cmr-graphql
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: us-east-1
+  endpointType: PRIVATE
+  environment:
+    cmrRootUrl: ${env:CMR_ROOT_URL}
+
+    # Timeout for lambda. Request will timeout 10s faster than this value 
+    lambdaTimeout: ${env:LAMBDA_TIMEOUT}
+
+# Package each lambda into individual zip files. This reduces the size of
+# each lambda but increases the complexity of the compilation process slightly
+package:
+  individually: false
+
+plugins:
+  - serverless-webpack
+  - serverless-offline
+
+functions:
+  graphql:
+    handler: src/graphql/handler.default
+    timeout: ${env:LAMBDA_TIMEOUT}
+    events:
+    - http:
+        path: graphql
+        method: post
+        cors: true
+    - http:
+        path: graphql
+        method: get
+        cors: true
+
+custom:
+  siteName: cmr-graphql-${self:provider.stage}
+
+  # Default is 3000 so to avoid conflicts with other applications we'll define a new port
+  serverless-offline:
+    port: 3001
+    includeModules:
+      forceExclude:
+        - aws-sdk
+
+  # Serverless Webpack configurations
+  webpack:
+    includeModules: true
+    packager: 'npm'
+    excludeFiles: src/**/*.test.js

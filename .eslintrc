@@ -1,0 +1,91 @@
+{
+  "env": {
+    "browser": false,
+    "node": true,
+    "jest": true
+  },
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaVersion": 6
+  },
+  "rules": {
+    // Setting a max line-length
+    "max-len": [
+      1,
+      100,
+      2,
+      {
+        "ignoreComments": true,
+        "ignoreStrings": true,
+        "ignoreTemplateLiterals": true
+      }
+    ],
+
+    // Disallow all semicolons on line endings
+    "semi": [
+      "error",
+      "never"
+    ],
+
+    // Allow shadow declarations
+    "no-shadow": "off",
+
+    // Disallow dangling commas
+    "comma-dangle": [
+      "error",
+      "never"
+    ],
+
+    // Require spacing in object literals
+    "object-curly-spacing": [
+      "error",
+      "always"
+    ],
+
+    // Allow class methods that dont use 'this'
+    "class-methods-use-this": "off",
+
+    // Allow console log messages
+    "no-console": "off",
+
+    // Allow extranious dependencies
+    "import/no-extraneous-dependencies": [
+      "error",
+      { 
+        "devDependencies": true
+      }
+    ],
+
+    // Allow named default exports
+    "import/no-named-as-default": "off",
+
+    // Allow files with no default export
+    "import/prefer-default-export": "off",
+
+    // Allowing cyclic dependancies
+    "import/no-cycle": "off"
+  },
+  "overrides": [
+    {
+      "files": [
+        "*.test.js"
+      ],
+      "rules": {
+        "import/first": 0
+      }
+    },
+    {
+      "files": [
+        "src/**/*"
+      ],
+      "rules": {
+        "import/prefer-default-export": 0
+      }
+    }
+  ],
+
+  // Use AirBnb settings as a base
+  "extends": [
+    "airbnb-base"
+  ]
+}

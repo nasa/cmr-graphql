@@ -1,0 +1,18 @@
+type Variable {
+  id: String!
+  long_name: String
+  name: String
+  native_id: String
+  providerid: String
+  revision_id: Int
+}
+
+type Query {
+  variables(
+    id: [String]!,
+    pageSize: Int!
+  ): [Variable]
+  variable(
+    id: String!
+  ): Variable!
+}
