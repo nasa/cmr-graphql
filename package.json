@@ -1,8 +1,8 @@
 {
-  "name": "browse-scaler",
+  "name": "cmr-graphql",
   "root": true,
   "version": "1.0.0",
-  "description": "Serverless Framework Implementation of Browse Scaler",
+  "description": "Serverless Framework Implementation of CMR GraphQL",
   "maintainers": [
     {
       "name": "Ryan Abbott",

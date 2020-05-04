@@ -1,5 +1,4 @@
 type Service {
-  browse_flag: Boolean
   id: String!
   long_name: String
   name: String
