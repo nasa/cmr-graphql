@@ -1,0 +1,12 @@
+# OS Files
+.DS_Store
+
+# Project Build Files
+.serverless
+coverage
+dist
+node_modules
+tmp
+
+# VSCode Settings
+.vscode
