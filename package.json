@@ -1,0 +1,58 @@
+{
+  "name": "browse-scaler",
+  "root": true,
+  "version": "1.0.0",
+  "description": "Serverless Framework Implementation of Browse Scaler",
+  "maintainers": [
+    {
+      "name": "Ryan Abbott",
+      "email": "ryan@element84.com"
+    },
+    {
+      "name": "Matthew Crouch",
+      "email": "matthew@element84.com"
+    },
+    {
+      "name": "Trevor Lang",
+      "email": "trevor@element84.com"
+    },
+    {
+      "name": "Mark Schmele",
+      "email": "mark.h.schmele@nasa.gov"
+    }
+  ],
+  "scripts": {
+    "start": "serverless offline start",
+    "test": "jest",
+    "test:watch": "jest --watchAll",
+    "lint": "eslint src"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.5",
+    "babel-eslint": "^10.1.0",
+    "babel-loader": "^8.1.0",
+    "clean-webpack-plugin": "^3.0.0",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-loader": "^4.0.0",
+    "eslint-plugin-import": "^2.20.2",
+    "graphql": "^14.2.0",
+    "graphql-tag": "^2.10.3",
+    "jest": "^25.3.0",
+    "jsdoc": "^3.6.4",
+    "nock": "^12.0.3",
+    "redis-mock": "^0.49.0",
+    "serverless": "^1.67.3",
+    "serverless-offline": "^5.12.1",
+    "serverless-webpack": "^5.3.1",
+    "webpack": "^4.42.1",
+    "webpack-node-externals": "^1.7.2"
+  },
+  "dependencies": {
+    "apollo-server-lambda": "^2.12.0",
+    "axios": "^0.19.2",
+    "lodash": "^4.17.15",
+    "merge-graphql-schemas": "^1.7.8"
+  }
+}

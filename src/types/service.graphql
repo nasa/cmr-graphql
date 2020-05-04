@@ -1,0 +1,19 @@
+type Service {
+  browse_flag: Boolean
+  id: String!
+  long_name: String
+  name: String
+  native_id: String
+  providerid: String
+  revision_id: Int
+}
+
+type Query {
+  services(
+    id: [String]!,
+    pageSize: Int!
+  ): [Service]
+  service(
+    id: String!
+  ): Service!
+}

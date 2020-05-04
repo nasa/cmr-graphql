@@ -19,14 +19,6 @@ GraphQL is an api developed by [NASA](http://nasa.gov) [EOSDIS](https://earthdat
 
 ## Application Installation and Usage
 
-GraphQL uses [Redis](https://redis.io/) to cache query responses. In order for this application to function properly you'll need to install and start Redis.
-
-If you're using homebrew you can install it with the following:
-
-    brew install redis
-    
-Otherwise check the [download page](https://redis.io/download) for the most recent stable version available for download.
-
 Before running the application you'll want to ensure that all necessary packages are installed by running:
 
     npm install
@@ -35,17 +27,12 @@ GraphQL uses a few environment variables for configuring runtime options:
 Variable Name|Default|Description
 |-|-|-
 |CMR_ROOT_URL||URL to ping when retrieving metadata e.g. https://cmr.earthdata.nasa.gov
-|REDIS_HOST|localhost|
-|REDIS_PORT|6379|
-|REDIS_MAX_AGE|0|Default max age for cache entries.
 |LAMBDA_TIMEOUT|30|Number of seconds to set the Lambda timeout to.
 
 ### Serverless Framework
-
-The [serverless framework](https://serverless.com/framework/docs/providers/aws/) offers many plugins which allow for local development utilizing many of the services AWS offers. GraphQL only utilizes API Gateway, Lambda and ElastiCache
 
 The local development environment for the static assets can be started by executing the command below in the project root directory:
 
     serverless offline
 
-This will run the application at [http://localhost:3002/graphql](http://localhost:3002/graphql)
+This will run the application at [http://localhost:3001/graphql](http://localhost:3001/graphql)

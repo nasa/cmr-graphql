@@ -1,0 +1,27 @@
+type Granule {
+  browse_flag: Boolean
+  collection_concept_id: String
+  coordinate_system: String
+  data_center: String
+  dataset_id: String
+  day_night_flag: String
+  id: String!
+  links: [String]
+  online_access_flag: Boolean
+  original_format: String
+  points: [String]
+  time_end: String
+  time_start: String
+  title: String
+  updated: String
+}
+
+type Query {
+  granules(
+    id: String!,
+    pageSize: Int!
+  ): [Granule]
+  granule(
+    id: String!
+  ): Granule!
+}
