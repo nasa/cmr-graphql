@@ -1,6 +1,6 @@
 import serviceDatasource from '../service'
 
-import * as serviceParser from '../../parsers/service'
+import * as serviceParser from '../../utils/parseCmrServices'
 import * as queryCmrServices from '../../utils/queryCmrServices'
 
 describe('service', () => {
@@ -21,7 +21,7 @@ describe('service', () => {
         }
       }))
 
-      const serviceParserMock = jest.spyOn(serviceParser, 'default')
+      const serviceParserMock = jest.spyOn(serviceParser, 'parseCmrServices')
 
       const response = await serviceDatasource({}, {})
 
@@ -53,7 +53,7 @@ describe('service', () => {
         }
       }))
 
-      const serviceParserMock = jest.spyOn(serviceParser, 'default')
+      const serviceParserMock = jest.spyOn(serviceParser, 'parseCmrServices')
 
       const response = await serviceDatasource({ concept_id: 'S100000-EDSC' }, {})
 
@@ -80,7 +80,7 @@ describe('service', () => {
       throw new Error('HTTP Error')
     })
 
-    const serviceParserMock = jest.spyOn(serviceParser, 'default')
+    const serviceParserMock = jest.spyOn(serviceParser, 'parseCmrServices')
 
     const response = await serviceDatasource({ concept_id: 'S100000-EDSC' }, {})
 

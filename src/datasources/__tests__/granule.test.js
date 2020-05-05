@@ -1,6 +1,6 @@
 import granuleDatasource from '../granule'
 
-import * as granuleParser from '../../parsers/granule'
+import * as granuleParser from '../../utils/parseCmrGranules'
 import * as queryCmrGranules from '../../utils/queryCmrGranules'
 
 describe('granule', () => {
@@ -23,7 +23,7 @@ describe('granule', () => {
         }
       }))
 
-      const granuleParserMock = jest.spyOn(granuleParser, 'default')
+      const granuleParserMock = jest.spyOn(granuleParser, 'parseCmrGranules')
 
       const response = await granuleDatasource({}, {})
 
@@ -59,7 +59,7 @@ describe('granule', () => {
         }
       }))
 
-      const granuleParserMock = jest.spyOn(granuleParser, 'default')
+      const granuleParserMock = jest.spyOn(granuleParser, 'parseCmrGranules')
 
       const response = await granuleDatasource({ concept_id: 'G100000-EDSC' }, {})
 
@@ -88,7 +88,7 @@ describe('granule', () => {
       throw new Error('HTTP Error')
     })
 
-    const granuleParserMock = jest.spyOn(granuleParser, 'default')
+    const granuleParserMock = jest.spyOn(granuleParser, 'parseCmrGranules')
 
     const response = await granuleDatasource({ concept_id: 'G100000-EDSC' }, {})
 

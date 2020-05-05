@@ -1,6 +1,6 @@
 import variableDatasource from '../variable'
 
-import * as variableParser from '../../parsers/variable'
+import * as variableParser from '../../utils/parseCmrVariable'
 import * as queryCmrVariables from '../../utils/queryCmrVariables'
 
 describe('variable', () => {
@@ -21,7 +21,7 @@ describe('variable', () => {
         }
       }))
 
-      const variableParserMock = jest.spyOn(variableParser, 'default')
+      const variableParserMock = jest.spyOn(variableParser, 'parseCmrVariables')
 
       const response = await variableDatasource({}, {})
 
@@ -53,7 +53,7 @@ describe('variable', () => {
         }
       }))
 
-      const variableParserMock = jest.spyOn(variableParser, 'default')
+      const variableParserMock = jest.spyOn(variableParser, 'parseCmrVariables')
 
       const response = await variableDatasource({ concept_id: 'V100000-EDSC' }, {})
 
@@ -80,7 +80,7 @@ describe('variable', () => {
       throw new Error('HTTP Error')
     })
 
-    const variableParserMock = jest.spyOn(variableParser, 'default')
+    const variableParserMock = jest.spyOn(variableParser, 'parseCmrVariables')
 
     const response = await variableDatasource({ concept_id: 'V100000-EDSC' }, {})
 

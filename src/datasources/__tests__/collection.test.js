@@ -1,6 +1,6 @@
 import collectionDatasource from '../collection'
 
-import * as collectionParser from '../../parsers/collection'
+import * as collectionParser from '../../utils/parseCmrCollections'
 import * as queryCmrCollections from '../../utils/queryCmrCollections'
 
 describe('collection', () => {
@@ -23,7 +23,7 @@ describe('collection', () => {
         }
       }))
 
-      const collectionParserMock = jest.spyOn(collectionParser, 'default')
+      const collectionParserMock = jest.spyOn(collectionParser, 'parseCmrCollections')
 
       const response = await collectionDatasource({}, {})
 
@@ -59,7 +59,7 @@ describe('collection', () => {
         }
       }))
 
-      const collectionParserMock = jest.spyOn(collectionParser, 'default')
+      const collectionParserMock = jest.spyOn(collectionParser, 'parseCmrCollections')
 
       const response = await collectionDatasource({ concept_id: 'C100000-EDSC' }, {})
 
@@ -88,7 +88,7 @@ describe('collection', () => {
       throw new Error('HTTP Error')
     })
 
-    const collectionParserMock = jest.spyOn(collectionParser, 'default')
+    const collectionParserMock = jest.spyOn(collectionParser, 'parseCmrCollections')
 
     const response = await collectionDatasource({ concept_id: 'C100000-EDSC' }, {})
 

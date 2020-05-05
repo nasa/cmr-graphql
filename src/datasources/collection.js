@@ -1,12 +1,11 @@
+import { parseCmrCollections } from '../utils/parseCmrCollections'
 import { queryCmrCollections } from '../utils/queryCmrCollections'
-
-import collectionParser from '../parsers/collection'
 
 export default async (params, headers) => {
   try {
     const cmrResponse = await queryCmrCollections(params, headers)
 
-    return collectionParser(cmrResponse)
+    return parseCmrCollections(cmrResponse)
   } catch (e) {
     console.log(e.toString())
 
