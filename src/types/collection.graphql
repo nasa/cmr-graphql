@@ -20,22 +20,22 @@ type Collection {
   version_id: String
   
   granules(
-    pageSize: Int
+    page_size: Int
   ): [Granule]!
 
   services(
-    pageSize: Int
+    page_size: Int
   ): [Service]!
 
   variables(
-    pageSize: Int
+    page_size: Int
   ): [Variable]!
 }
 
 type Query {
   collections(
     id: [String],
-    pageSize: Int,
+    page_size: Int,
   ): [Collection]
   collection(
     id: String!

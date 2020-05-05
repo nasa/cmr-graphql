@@ -1,18 +1,18 @@
 type Variable {
-  id: String!
+  concept_id: String!
   long_name: String
   name: String
   native_id: String
-  providerid: String
+  provider_id: String
   revision_id: Int
 }
 
 type Query {
   variables(
-    id: [String]!,
-    pageSize: Int!
+    concept_id: [String]!,
+    page_size: Int!
   ): [Variable]
   variable(
-    id: String!
+    concept_id: String!
   ): Variable!
 }

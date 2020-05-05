@@ -19,7 +19,7 @@ type Granule {
 type Query {
   granules(
     id: String!,
-    pageSize: Int!
+    page_size: Int!
   ): [Granule]
   granule(
     id: String!

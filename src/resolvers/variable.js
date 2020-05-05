@@ -1,17 +1,17 @@
 export default {
   Query: {
     variables: async (source, args, { dataSources, token }) => {
-      const { id, pageSize } = args
+      const { conceptId, pageSize } = args
 
       return dataSources.variableSource({
-        id,
+        conceptId,
         pageSize
       }, token)
     },
     variable: async (source, args, { dataSources, token }) => {
-      const { id } = args
+      const { conceptId } = args
 
-      const result = await dataSources.variableSource(id, token)
+      const result = await dataSources.variableSource(conceptId, token)
 
       const [firstResult] = result
 

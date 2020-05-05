@@ -1,19 +1,19 @@
 export default {
   Query: {
-    collections: async (source, args, { dataSources, token }) => {
-      const { id, pageSize } = args
+    collections: async (source, args, { dataSources, headers }) => {
+      const { id, page_size: pageSize } = args
 
       return dataSources.collectionSource({
-        id,
+        concept_id: id,
         pageSize
-      }, token)
+      }, headers)
     },
-    collection: async (source, args, { dataSources, token }) => {
+    collection: async (source, args, { dataSources, headers }) => {
       const { id } = args
 
       const result = await dataSources.collectionSource({
-        id
-      }, token)
+        concept_id: id
+      }, headers)
 
       const [firstResult] = result
 
@@ -22,43 +22,47 @@ export default {
   },
 
   Collection: {
-    granules: async (source, args, { dataSources, token }) => {
+    granules: async (source, args, { dataSources, headers }) => {
       const { id: collectionId } = source
 
-      const { pageSize } = args
+      const { page_size: pageSize } = args
 
       return dataSources.granuleSource({
-        id: collectionId,
+        collection_concept_id: collectionId,
         pageSize
-      }, token)
+      }, headers)
     },
-    services: async (source, args, { dataSources, token }) => {
+    services: async (source, args, { dataSources, headers }) => {
       const {
         associations = {}
       } = source
 
       const { services = [] } = associations
 
-      const { pageSize } = args
+      if (!services.length) return []
+
+      const { page_size: pageSize } = args
 
       return dataSources.serviceSource({
-        id: services,
+        concept_id: services,
         pageSize
-      }, token)
+      }, headers)
     },
-    variables: async (source, args, { dataSources, token }) => {
+    variables: async (source, args, { dataSources, headers }) => {
       const {
         associations = {}
       } = source
 
       const { variables = [] } = associations
 
-      const { pageSize } = args
+      if (!variables.length) return []
+
+      const { page_size: pageSize } = args
 
       return dataSources.variableSource({
-        id: variables,
+        concept_id: variables,
         pageSize
-      }, token)
+      }, headers)
     }
   }
 }

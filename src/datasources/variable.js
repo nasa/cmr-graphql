@@ -1,40 +1,12 @@
-import axios from 'axios'
+import { queryCmrVariables } from '../utils/queryCmrVariables'
 
-export default async (params, token) => {
-  const result = []
+import variableParser from '../parsers/variable'
 
+export default async (params, headers) => {
   try {
-    const {
-      id,
-      pageSize
-    } = params
+    const cmrResponse = await queryCmrVariables(params, headers)
 
-    const headers = {}
-    if (token) headers['Echo-Token'] = token
-
-    const response = await axios.get(`${process.env.cmrRootUrl}/search/variables.json`, {
-      params: {
-        concept_id: id,
-        page_size: pageSize
-      },
-      headers
-    })
-
-    const { data } = response
-    const { items } = data
-
-    items.forEach((item) => {
-      // Alias concept_id for consistency in responses
-      const { concept_id: id } = item
-
-      // TODO: Pull out and return only supported keys
-      result.push({
-        id,
-        ...item
-      })
-    })
-
-    return result
+    return variableParser(cmrResponse)
   } catch (e) {
     console.log(e.toString())
 
