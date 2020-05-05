@@ -1,35 +1,11 @@
-import axios from 'axios'
+import { parseCmrCollections } from '../utils/parseCmrCollections'
+import { queryCmrCollections } from '../utils/queryCmrCollections'
 
-export default async (params, token) => {
-  const result = []
-
+export default async (params, headers) => {
   try {
-    const {
-      id,
-      pageSize
-    } = params
+    const cmrResponse = await queryCmrCollections(params, headers)
 
-    const headers = {}
-    if (token) headers['Echo-Token'] = token
-
-    const response = await axios.get(`${process.env.cmrRootUrl}/search/collections.json`, {
-      params: {
-        concept_id: id,
-        page_size: pageSize
-      },
-      headers
-    })
-
-    const { data } = response
-    const { feed } = data
-    const { entry } = feed
-
-    entry.forEach((entry) => {
-      // TODO: Pull out and return only supported keys
-      result.push(entry)
-    })
-
-    return result
+    return parseCmrCollections(cmrResponse)
   } catch (e) {
     console.log(e.toString())
 

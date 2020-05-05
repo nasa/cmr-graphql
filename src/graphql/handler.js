@@ -1,4 +1,5 @@
 import { ApolloServer } from 'apollo-server-lambda'
+import { v4 as uuidv4 } from 'uuid'
 
 import resolvers from '../resolvers'
 import typeDefs from '../types'
@@ -21,8 +22,16 @@ const server = new ApolloServer({
     // Look for and EDL generated auth token
     const { 'Echo-Token': token } = headers
 
+    const requestHeaders = {
+      'CMR-Request-ID': uuidv4()
+    }
+
+    if (token) requestHeaders['Echo-Token'] = token
+
     // add the user to the context
-    return { token }
+    return {
+      headers: requestHeaders
+    }
   },
 
   // An object that goes to the 'context' argument when executing resolvers
