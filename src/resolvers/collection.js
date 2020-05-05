@@ -5,7 +5,7 @@ export default {
 
       return dataSources.collectionSource({
         concept_id: id,
-        pageSize
+        page_size: pageSize
       }, headers)
     },
     collection: async (source, args, { dataSources, headers }) => {
@@ -29,7 +29,7 @@ export default {
 
       return dataSources.granuleSource({
         collection_concept_id: collectionId,
-        pageSize
+        page_size: pageSize
       }, headers)
     },
     services: async (source, args, { dataSources, headers }) => {
@@ -45,7 +45,7 @@ export default {
 
       return dataSources.serviceSource({
         concept_id: services,
-        pageSize
+        page_size: pageSize
       }, headers)
     },
     variables: async (source, args, { dataSources, headers }) => {
@@ -61,7 +61,7 @@ export default {
 
       return dataSources.variableSource({
         concept_id: variables,
-        pageSize
+        page_size: pageSize
       }, headers)
     }
   }
