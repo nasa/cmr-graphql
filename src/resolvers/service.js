@@ -1,17 +1,21 @@
+import { parseResolveInfo } from 'graphql-parse-resolve-info'
+
 export default {
   Query: {
-    services: async (source, args, { dataSources, token }) => {
-      const { conceptId, pageSize } = args
+    services: async (source, args, { dataSources, token }, info) => {
+      const { concept_id: conceptId, page_size: pageSize } = args
 
       return dataSources.serviceSource({
-        conceptId,
-        pageSize
-      }, token)
+        concept_id: conceptId,
+        page_size: pageSize
+      }, token, parseResolveInfo(info))
     },
-    service: async (source, args, { dataSources }) => {
-      const { conceptId } = args
+    service: async (source, args, { dataSources, token }, info) => {
+      const { concept_id: conceptId } = args
 
-      const result = await dataSources.serviceSource(conceptId)
+      const result = await dataSources.serviceSource({
+        concept_id: conceptId
+      }, token, parseResolveInfo(info))
 
       const [firstResult] = result
 
