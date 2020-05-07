@@ -1,3 +1,5 @@
+scalar JSON
+
 type Granule {
   browse_flag: Boolean
   collection_concept_id: String
@@ -5,11 +7,14 @@ type Granule {
   data_center: String
   dataset_id: String
   day_night_flag: String
+  granule_ur: String
   id: String!
   links: [String]
   online_access_flag: Boolean
   original_format: String
   points: [String]
+  spatial_extent: JSON
+  temporal_extent: JSON
   time_end: String
   time_start: String
   title: String
@@ -18,10 +23,11 @@ type Granule {
 
 type Query {
   granules(
-    id: String!,
-    page_size: Int!
+    concept_id: [String],
+    collection_concept_id: String!,
+    page_size: Int
   ): [Granule]
   granule(
-    id: String!
+    concept_id: String!
   ): Granule!
 }
