@@ -1,7 +1,9 @@
 import variableDatasource from '../variable'
 
-import * as variableParser from '../../utils/parseCmrVariable'
+import * as parseCmrVariables from '../../utils/parseCmrVariables'
 import * as queryCmrVariables from '../../utils/queryCmrVariables'
+
+let requestInfo
 
 describe('variable', () => {
   beforeEach(() => {
@@ -9,85 +11,267 @@ describe('variable', () => {
 
     // Resets the parser mock
     jest.restoreAllMocks()
+
+    // Default requestInfo an empty
+    requestInfo = {
+      name: 'variables',
+      alias: 'variables',
+      args: {},
+      fieldsByTypeName: {
+        Variable: {
+          concept_id: {
+            name: 'concept_id',
+            alias: 'concept_id',
+            args: {},
+            fieldsByTypeName: {}
+          }
+        }
+      }
+    }
   })
 
   describe('without params', () => {
     test('returns the parsed variable results', async () => {
-      const queryCmrVariablesMock = jest.spyOn(queryCmrVariables, 'queryCmrVariables').mockImplementationOnce(() => Promise.resolve({
+      const queryCmrVariablesMock = jest.spyOn(queryCmrVariables, 'queryCmrVariables').mockImplementationOnce(() => [{
         data: {
           items: [{
-            id: 'V100000-EDSC'
+            concept_id: 'V100000-EDSC'
           }]
         }
-      }))
+      }])
 
-      const variableParserMock = jest.spyOn(variableParser, 'parseCmrVariables')
 
-      const response = await variableDatasource({}, {})
+      const parseCmrVariablesMock = jest.spyOn(parseCmrVariables, 'parseCmrVariables')
+
+      const response = await variableDatasource({}, {}, requestInfo)
 
       expect(queryCmrVariablesMock).toBeCalledTimes(1)
-      expect(queryCmrVariablesMock).toBeCalledWith({}, {})
+      expect(queryCmrVariablesMock).toBeCalledWith(
+        {},
+        {},
+        expect.objectContaining({ jsonKeys: ['concept_id'] })
+      )
 
-      expect(variableParserMock).toBeCalledTimes(1)
-      expect(variableParserMock).toBeCalledWith({
+      expect(parseCmrVariablesMock).toBeCalledTimes(1)
+      expect(parseCmrVariablesMock).toBeCalledWith({
         data: {
           items: [{
-            id: 'V100000-EDSC'
+            concept_id: 'V100000-EDSC'
           }]
         }
       })
 
       expect(response).toEqual([{
-        id: 'V100000-EDSC'
+        concept_id: 'V100000-EDSC'
       }])
     })
   })
 
   describe('with params', () => {
     test('returns the parsed variable results', async () => {
-      const queryCmrVariablesMock = jest.spyOn(queryCmrVariables, 'queryCmrVariables').mockImplementationOnce(() => Promise.resolve({
+      const queryCmrVariablesMock = jest.spyOn(queryCmrVariables, 'queryCmrVariables').mockImplementationOnce(() => [{
         data: {
           items: [{
-            id: 'V100000-EDSC'
+            concept_id: 'V100000-EDSC'
           }]
         }
-      }))
+      }])
 
-      const variableParserMock = jest.spyOn(variableParser, 'parseCmrVariables')
+      const parseCmrVariablesMock = jest.spyOn(parseCmrVariables, 'parseCmrVariables')
 
-      const response = await variableDatasource({ concept_id: 'V100000-EDSC' }, {})
+      const response = await variableDatasource({ concept_id: 'V100000-EDSC' }, {}, requestInfo)
 
       expect(queryCmrVariablesMock).toBeCalledTimes(1)
-      expect(queryCmrVariablesMock).toBeCalledWith({ concept_id: 'V100000-EDSC' }, {})
+      expect(queryCmrVariablesMock).toBeCalledWith(
+        { concept_id: 'V100000-EDSC' },
+        {},
+        expect.objectContaining({ jsonKeys: ['concept_id'] })
+      )
 
-      expect(variableParserMock).toBeCalledTimes(1)
-      expect(variableParserMock).toBeCalledWith({
+      expect(parseCmrVariablesMock).toBeCalledTimes(1)
+      expect(parseCmrVariablesMock).toBeCalledWith({
         data: {
           items: [{
-            id: 'V100000-EDSC'
+            concept_id: 'V100000-EDSC'
           }]
         }
       })
 
       expect(response).toEqual([{
-        id: 'V100000-EDSC'
+        concept_id: 'V100000-EDSC'
+      }])
+    })
+  })
+
+  describe('with json and umm keys', () => {
+    beforeEach(() => {
+      // Overwrite default requestInfo
+      requestInfo = {
+        name: 'variables',
+        alias: 'variables',
+        args: {},
+        fieldsByTypeName: {
+          Variable: {
+            concept_id: {
+              name: 'concept_id',
+              alias: 'concept_id',
+              args: {},
+              fieldsByTypeName: {}
+            },
+            variable_type: {
+              name: 'variable_type',
+              alias: 'variable_type',
+              args: {},
+              fieldsByTypeName: {}
+            }
+          }
+        }
+      }
+    })
+
+    test('returns the parsed variable results', async () => {
+      const queryCmrVariablesMock = jest.spyOn(queryCmrVariables, 'queryCmrVariables').mockImplementationOnce(() => [{
+        data: {
+          items: [{
+            concept_id: 'V100000-EDSC'
+          }]
+        }
+      }, {
+        data: {
+          items: [{
+            meta: {
+              'concept-id': 'V100000-EDSC'
+            },
+            umm: {
+              VariableType: 'SCIENCE_VARIABLE'
+            }
+          }]
+        }
+      }])
+
+      const parseCmrVariablesMock = jest.spyOn(parseCmrVariables, 'parseCmrVariables')
+
+      const response = await variableDatasource({ concept_id: 'V100000-EDSC' }, {}, requestInfo)
+
+      expect(queryCmrVariablesMock).toBeCalledTimes(1)
+      expect(queryCmrVariablesMock).toBeCalledWith(
+        { concept_id: 'V100000-EDSC' },
+        {},
+        expect.objectContaining({ jsonKeys: ['concept_id'], ummKeys: ['variable_type'] })
+      )
+
+      expect(parseCmrVariablesMock).toBeCalledTimes(2)
+      const [jsonCall, ummCall] = parseCmrVariablesMock.mock.calls
+      expect(jsonCall[0]).toEqual({
+        data: {
+          items: [{
+            concept_id: 'V100000-EDSC'
+          }]
+        }
+      })
+      expect(ummCall[0]).toEqual({
+        data: {
+          items: [{
+            meta: {
+              'concept-id': 'V100000-EDSC'
+            },
+            umm: {
+              VariableType: 'SCIENCE_VARIABLE'
+            }
+          }]
+        }
+      })
+
+      expect(response).toEqual([{
+        concept_id: 'V100000-EDSC',
+        variable_type: 'SCIENCE_VARIABLE'
+      }])
+    })
+  })
+
+  describe('with only umm keys', () => {
+    beforeEach(() => {
+      // Overwrite default requestInfo
+      requestInfo = {
+        name: 'variables',
+        alias: 'variables',
+        args: {},
+        fieldsByTypeName: {
+          Variable: {
+            variable_type: {
+              name: 'variable_type',
+              alias: 'variable_type',
+              args: {},
+              fieldsByTypeName: {}
+            }
+          }
+        }
+      }
+    })
+
+    test('returns the parsed variable results', async () => {
+      const queryCmrVariablesMock = jest.spyOn(queryCmrVariables, 'queryCmrVariables').mockImplementationOnce(() => [
+        null,
+        {
+          data: {
+            items: [{
+              meta: {
+                'concept-id': 'V100000-EDSC'
+              },
+              umm: {
+                VariableType: 'SCIENCE_VARIABLE'
+              }
+            }]
+          }
+        }])
+
+      const parseCmrVariablesMock = jest.spyOn(parseCmrVariables, 'parseCmrVariables')
+
+      const response = await variableDatasource({ concept_id: 'V100000-EDSC' }, {}, requestInfo)
+
+      expect(queryCmrVariablesMock).toBeCalledTimes(1)
+      expect(queryCmrVariablesMock).toBeCalledWith(
+        { concept_id: 'V100000-EDSC' },
+        {},
+        expect.objectContaining({ jsonKeys: [], ummKeys: ['variable_type'] })
+      )
+
+      expect(parseCmrVariablesMock).toBeCalledTimes(1)
+      expect(parseCmrVariablesMock).toBeCalledWith({
+        data: {
+          items: [{
+            meta: {
+              'concept-id': 'V100000-EDSC'
+            },
+            umm: {
+              VariableType: 'SCIENCE_VARIABLE'
+            }
+          }]
+        }
+      })
+
+      expect(response).toEqual([{
+        variable_type: 'SCIENCE_VARIABLE'
       }])
     })
   })
 
   test('catches errors received from queryCmrVariables', async () => {
-    const queryCmrVariablesMock = jest.spyOn(queryCmrVariables, 'queryCmrVariables').mockImplementationOnce(() => {
-      throw new Error('HTTP Error')
-    })
+    const queryCmrVariablesMock = jest.spyOn(queryCmrVariables, 'queryCmrVariables')
+      .mockImplementationOnce(() => new Promise((resolve, reject) => reject(new Error('HTTP Error'))))
 
-    const variableParserMock = jest.spyOn(variableParser, 'parseCmrVariables')
+    const parseCmrVariablesMock = jest.spyOn(parseCmrVariables, 'parseCmrVariables')
 
-    const response = await variableDatasource({ concept_id: 'V100000-EDSC' }, {})
+    const response = await variableDatasource({ concept_id: 'V100000-EDSC' }, {}, requestInfo)
 
     expect(queryCmrVariablesMock).toBeCalledTimes(1)
-    expect(queryCmrVariablesMock).toBeCalledWith({ concept_id: 'V100000-EDSC' }, {})
+    expect(queryCmrVariablesMock).toBeCalledWith(
+      { concept_id: 'V100000-EDSC' },
+      {},
+      expect.objectContaining({ jsonKeys: ['concept_id'] })
+    )
 
-    expect(variableParserMock).toBeCalledTimes(0)
+    expect(parseCmrVariablesMock).toBeCalledTimes(0)
 
     expect(response).toEqual([])
   })

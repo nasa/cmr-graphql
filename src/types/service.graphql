@@ -1,16 +1,24 @@
+scalar JSON
+
 type Service {
   concept_id: String!
+  description: String
   long_name: String
   name: String
   native_id: String
   provider_id: String
   revision_id: Int
+  related_urls: JSON
+  service_options: JSON
+  supported_output_formats: JSON
+  type: String
+  user_id: String
 }
 
 type Query {
   services(
-    concept_id: [String]!,
-    page_size: Int!
+    concept_id: [String],
+    page_size: Int
   ): [Service]
   service(
     concept_id: String!

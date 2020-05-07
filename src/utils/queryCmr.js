@@ -8,7 +8,7 @@ import { stringify } from 'qs'
  * @param {Object} params Parameters to send to CMR
  * @param {Object} headers Headers to send to CMR
  */
-export const queryCmr = async (conceptType, params, headers, options = {}) => {
+export const queryCmr = (conceptType, params, headers, options = {}) => {
   const {
     format = 'json'
   } = options
@@ -21,6 +21,7 @@ export const queryCmr = async (conceptType, params, headers, options = {}) => {
     ...defaultHeaders,
     ...headers
   }, [
+    'Accept',
     'Client-Id',
     'CMR-Request-ID',
     'Echo-Token'

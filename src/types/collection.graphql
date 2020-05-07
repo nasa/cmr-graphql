@@ -1,4 +1,7 @@
+scalar JSON
+
 type Collection {
+  abstract: String
   archive_center: String
   browse_flag: Boolean
   coordinate_system: String
@@ -14,7 +17,9 @@ type Collection {
   organizations: [String]
   original_format: String
   short_name: String
+  spatial_extent: JSON
   summary: String
+  temporal_extent: JSON
   time_start: String
   title: String
   version_id: String
@@ -34,10 +39,10 @@ type Collection {
 
 type Query {
   collections(
-    id: [String],
+    concept_id: [String],
     page_size: Int,
   ): [Collection]
   collection(
-    id: String!
+    concept_id: String!
   ): Collection!
 }

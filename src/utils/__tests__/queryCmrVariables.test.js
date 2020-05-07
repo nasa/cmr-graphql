@@ -1,8 +1,10 @@
 import { queryCmrVariables } from '../queryCmrVariables'
 
-import * as queryCmr from '../queryCmr'
+import * as queryCmrUmmConcept from '../queryCmrUmmConcept'
 
-describe('queryCmr', () => {
+let requestInfo
+
+describe('queryCmrVariables', () => {
   const OLD_ENV = process.env
 
   beforeEach(() => {
@@ -13,6 +15,14 @@ describe('queryCmr', () => {
     delete process.env.NODE_ENV
 
     process.env.cmrRootUrl = 'http://example.com'
+    process.env.ummVariableVersion = '0.5'
+
+    // Default requestInfo an empty
+    requestInfo = {
+      jsonKeys: ['concept_id'],
+      ummKeys: [],
+      ummKeyMappings: {}
+    }
   })
 
   afterEach(() => {
@@ -20,121 +30,140 @@ describe('queryCmr', () => {
   })
 
   test('queries cmr for variables', async () => {
-    const queryCmrMock = jest.spyOn(queryCmr, 'queryCmr').mockImplementationOnce(() => Promise.resolve({
-      data: {
-        feed: {
-          entry: [{
-            id: 'V100000-EDSC'
+    const queryCmrUmmConceptMock = jest.spyOn(queryCmrUmmConcept, 'queryCmrUmmConcept').mockImplementationOnce(() => [
+      Promise.resolve({
+        data: {
+          items: [{
+            concept_id: 'V100000-EDSC'
           }]
         }
-      }
-    }))
+      })
+    ])
 
     const response = await queryCmrVariables(
       {},
-      { 'CMR-Request-ID': 'abcd-1234-efgh-5678' }
+      { 'CMR-Request-ID': 'abcd-1234-efgh-5678' },
+      requestInfo
     )
 
-    expect(queryCmrMock).toBeCalledTimes(1)
-    expect(queryCmrMock).toBeCalledWith(
+    expect(queryCmrUmmConceptMock).toBeCalledTimes(1)
+    expect(queryCmrUmmConceptMock).toBeCalledWith(
       'variables',
       {},
-      { 'CMR-Request-ID': 'abcd-1234-efgh-5678' }
+      {
+        Accept: 'application/vnd.nasa.cmr.umm_results+json; version=0.5',
+        'CMR-Request-ID': 'abcd-1234-efgh-5678'
+      },
+      requestInfo
     )
 
-    const { data } = response
+    const [jsonResponse] = response
+    const { data } = await jsonResponse
+
     expect(data).toEqual({
-      feed: {
-        entry: [{
-          id: 'V100000-EDSC'
-        }]
-      }
+      items: [{
+        concept_id: 'V100000-EDSC'
+      }]
     })
   })
 
   describe('with params', () => {
     test('allows permitted params', async () => {
-      const queryCmrMock = jest.spyOn(queryCmr, 'queryCmr').mockImplementationOnce(() => Promise.resolve({
-        data: {
-          feed: {
-            entry: [{
-              id: 'V100000-EDSC'
+      const queryCmrUmmConceptMock = jest.spyOn(queryCmrUmmConcept, 'queryCmrUmmConcept').mockImplementationOnce(() => [
+        Promise.resolve({
+          data: {
+            items: [{
+              concept_id: 'V100000-EDSC'
             }]
           }
-        }
-      }))
+        })
+      ])
 
       const response = await queryCmrVariables(
         { concept_id: 'V100000-EDSC' },
-        { 'CMR-Request-ID': 'abcd-1234-efgh-5678' }
+        { 'CMR-Request-ID': 'abcd-1234-efgh-5678' },
+        requestInfo
       )
 
-      expect(queryCmrMock).toBeCalledTimes(1)
-      expect(queryCmrMock).toBeCalledWith(
+      expect(queryCmrUmmConceptMock).toBeCalledTimes(1)
+      expect(queryCmrUmmConceptMock).toBeCalledWith(
         'variables',
         { concept_id: 'V100000-EDSC' },
-        { 'CMR-Request-ID': 'abcd-1234-efgh-5678' }
+        {
+          Accept: 'application/vnd.nasa.cmr.umm_results+json; version=0.5',
+          'CMR-Request-ID': 'abcd-1234-efgh-5678'
+        },
+        requestInfo
       )
 
-      const { data } = response
+      const [jsonResponse] = response
+      const { data } = await jsonResponse
+
       expect(data).toEqual({
-        feed: {
-          entry: [{
-            id: 'V100000-EDSC'
-          }]
-        }
+        items: [{
+          concept_id: 'V100000-EDSC'
+        }]
       })
     })
 
     test('removes unpermitted params', async () => {
-      const queryCmrMock = jest.spyOn(queryCmr, 'queryCmr').mockImplementationOnce(() => Promise.resolve({
-        data: {
-          feed: {
-            entry: [{
-              id: 'V100000-EDSC'
+      const queryCmrUmmConceptMock = jest.spyOn(queryCmrUmmConcept, 'queryCmrUmmConcept').mockImplementationOnce(() => [
+        Promise.resolve({
+          data: {
+            items: [{
+              concept_id: 'V100000-EDSC'
             }]
           }
-        }
-      }))
+        })
+      ])
 
       const response = await queryCmrVariables(
         { random_param: 'value' },
-        { 'CMR-Request-ID': 'abcd-1234-efgh-5678' }
+        { 'CMR-Request-ID': 'abcd-1234-efgh-5678' },
+        requestInfo
       )
 
-      expect(queryCmrMock).toBeCalledTimes(1)
-      expect(queryCmrMock).toBeCalledWith(
+      expect(queryCmrUmmConceptMock).toBeCalledTimes(1)
+      expect(queryCmrUmmConceptMock).toBeCalledWith(
         'variables',
         {},
-        { 'CMR-Request-ID': 'abcd-1234-efgh-5678' }
+        {
+          Accept: 'application/vnd.nasa.cmr.umm_results+json; version=0.5',
+          'CMR-Request-ID': 'abcd-1234-efgh-5678'
+        },
+        requestInfo
       )
 
-      const { data } = response
+      const [jsonResponse] = response
+      const { data } = await jsonResponse
+
       expect(data).toEqual({
-        feed: {
-          entry: [{
-            id: 'V100000-EDSC'
-          }]
-        }
+        items: [{
+          concept_id: 'V100000-EDSC'
+        }]
       })
     })
   })
 
-  test('throws errors received from queryCmr', async () => {
-    const queryCmrMock = jest.spyOn(queryCmr, 'queryCmr').mockImplementationOnce(() => {
-      throw new Error('HTTP Error')
-    })
+  test('throws errors received from queryCmrUmmConcept', async () => {
+    const queryCmrUmmConceptMock = jest.spyOn(queryCmrUmmConcept, 'queryCmrUmmConcept')
+      .mockImplementationOnce(() => new Promise((resolve, reject) => reject(new Error('HTTP Error'))))
 
     const response = queryCmrVariables(
       {},
-      { 'CMR-Request-ID': 'abcd-1234-efgh-5678' }
+      { 'CMR-Request-ID': 'abcd-1234-efgh-5678' },
+      requestInfo
     )
 
-    expect(queryCmrMock).toBeCalledTimes(1)
-    expect(queryCmrMock).toBeCalledWith(
+    expect(queryCmrUmmConceptMock).toBeCalledTimes(1)
+    expect(queryCmrUmmConceptMock).toBeCalledWith(
       'variables',
       {},
-      { 'CMR-Request-ID': 'abcd-1234-efgh-5678' }
+      {
+        Accept: 'application/vnd.nasa.cmr.umm_results+json; version=0.5',
+        'CMR-Request-ID': 'abcd-1234-efgh-5678'
+      },
+      requestInfo
     )
 
     await expect(response).rejects.toThrow()

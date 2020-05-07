@@ -10,6 +10,12 @@ provider:
     # Timeout for lambda. Request will timeout 10s faster than this value 
     lambdaTimeout: ${env:LAMBDA_TIMEOUT}
 
+    # Pinned UMM versions
+    ummCollectionVersion: '1.13'
+    ummGranuleVersion: '1.5'
+    ummServiceVersion: '1.2'
+    ummVariableVersion: '1.5'
+
 # Package each lambda into individual zip files. This reduces the size of
 # each lambda but increases the complexity of the compilation process slightly
 package:

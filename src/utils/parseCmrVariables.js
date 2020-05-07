@@ -4,7 +4,7 @@
  */
 export const parseCmrVariables = (response) => {
   const { data } = response
-  const { items } = data
+  const { items = [] } = data
 
   return items
 }
