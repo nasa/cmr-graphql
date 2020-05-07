@@ -1,19 +1,21 @@
+import { parseResolveInfo } from 'graphql-parse-resolve-info'
+
 export default {
   Query: {
-    collections: async (source, args, { dataSources, headers }) => {
-      const { id, page_size: pageSize } = args
+    collections: async (source, args, { dataSources, headers }, info) => {
+      const { concept_id: conceptId, page_size: pageSize } = args
 
       return dataSources.collectionSource({
-        concept_id: id,
+        concept_id: conceptId,
         page_size: pageSize
-      }, headers)
+      }, headers, parseResolveInfo(info))
     },
-    collection: async (source, args, { dataSources, headers }) => {
-      const { id } = args
+    collection: async (source, args, { dataSources, headers }, info) => {
+      const { concept_id: conceptId } = args
 
       const result = await dataSources.collectionSource({
-        concept_id: id
-      }, headers)
+        concept_id: conceptId
+      }, headers, parseResolveInfo(info))
 
       const [firstResult] = result
 
@@ -22,7 +24,7 @@ export default {
   },
 
   Collection: {
-    granules: async (source, args, { dataSources, headers }) => {
+    granules: async (source, args, { dataSources, headers }, info) => {
       const { id: collectionId } = source
 
       const { page_size: pageSize } = args
@@ -30,9 +32,9 @@ export default {
       return dataSources.granuleSource({
         collection_concept_id: collectionId,
         page_size: pageSize
-      }, headers)
+      }, headers, parseResolveInfo(info))
     },
-    services: async (source, args, { dataSources, headers }) => {
+    services: async (source, args, { dataSources, headers }, info) => {
       const {
         associations = {}
       } = source
@@ -46,9 +48,9 @@ export default {
       return dataSources.serviceSource({
         concept_id: services,
         page_size: pageSize
-      }, headers)
+      }, headers, parseResolveInfo(info))
     },
-    variables: async (source, args, { dataSources, headers }) => {
+    variables: async (source, args, { dataSources, headers }, info) => {
       const {
         associations = {}
       } = source
@@ -62,7 +64,7 @@ export default {
       return dataSources.variableSource({
         concept_id: variables,
         page_size: pageSize
-      }, headers)
+      }, headers, parseResolveInfo(info))
     }
   }
 }

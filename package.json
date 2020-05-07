@@ -52,6 +52,8 @@
   "dependencies": {
     "apollo-server-lambda": "^2.12.0",
     "axios": "^0.19.2",
+    "graphql-parse-resolve-info": "^4.7.0",
+    "graphql-tools": "^5.0.0",
     "lodash": "^4.17.15",
     "merge-graphql-schemas": "^1.7.8",
     "qs": "^6.9.4",
