@@ -1,3 +1,5 @@
+scalar JSON
+
 type Variable {
   concept_id: String!
   long_name: String
@@ -5,12 +7,14 @@ type Variable {
   native_id: String
   provider_id: String
   revision_id: Int
+  science_keywords: JSON
+  variable_type: String
 }
 
 type Query {
   variables(
-    concept_id: [String]!,
-    page_size: Int!
+    concept_id: [String],
+    page_size: Int
   ): [Variable]
   variable(
     concept_id: String!
