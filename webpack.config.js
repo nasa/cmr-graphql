@@ -3,7 +3,7 @@ const slsw = require('serverless-webpack')
 const nodeExternals = require('webpack-node-externals')
 
 const WebpackConfig = {
-  name: 'cmr-graphql',
+  name: 'edsc-graphql',
   mode: slsw.lib.webpack.isLocal ? 'development' : 'production',
   entry: slsw.lib.entries,
   target: 'node',
