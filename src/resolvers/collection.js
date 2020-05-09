@@ -25,7 +25,7 @@ export default {
 
   Collection: {
     granules: async (source, args, { dataSources, headers }, info) => {
-      const { id: collectionId } = source
+      const { concept_id: collectionId } = source
 
       const { page_size: pageSize } = args
 

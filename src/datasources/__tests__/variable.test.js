@@ -40,7 +40,6 @@ describe('variable', () => {
         }
       }])
 
-
       const parseCmrVariablesMock = jest.spyOn(parseCmrVariables, 'parseCmrVariables')
 
       const response = await variableDatasource({}, {}, requestInfo)

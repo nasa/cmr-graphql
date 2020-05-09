@@ -1,3 +1,5 @@
+import snakeCaseKeys from 'snakecase-keys'
+
 import { get } from 'lodash'
 
 import { parseCmrServices } from '../utils/parseCmrServices'
@@ -59,7 +61,7 @@ export default async (params, headers, parsedInfo) => {
       })
     }
 
-    return Object.values(result)
+    return snakeCaseKeys(Object.values(result))
   } catch (e) {
     console.log(e.toString())
 

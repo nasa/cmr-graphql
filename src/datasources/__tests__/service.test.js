@@ -40,7 +40,6 @@ describe('service', () => {
         }
       }])
 
-
       const parseCmrServicesMock = jest.spyOn(parseCmrServices, 'parseCmrServices')
 
       const response = await serviceDatasource({}, {}, requestInfo)

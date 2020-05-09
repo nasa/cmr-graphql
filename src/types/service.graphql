@@ -7,8 +7,8 @@ type Service {
   name: String
   native_id: String
   provider_id: String
-  revision_id: Int
   related_urls: JSON
+  revision_id: Int
   service_options: JSON
   supported_output_formats: JSON
   type: String
