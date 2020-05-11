@@ -8,17 +8,21 @@ export const queryCmrUmmConcept = (
 ) => {
   // Default an array to hold the promises we need to make depending on the requested fields
   const promises = []
-
   const {
     jsonKeys,
     ummKeys
   } = requestInfo
 
+  const { 'CMR-Request-ID': requestId } = headers
   if (jsonKeys.length > 0) {
     // Construct the promise that will request data from the json endpoint
     promises.push(
       queryCmr(conceptType, permittedSearchParams, headers)
     )
+
+    jsonKeys.forEach((param) => {
+      console.log(`Request ${requestId} requested [format: json, key: ${param}]`)
+    })
   } else {
     // Push a null promise to the array so that the umm promise always exists as
     // the second element of the promise array
@@ -35,6 +39,10 @@ export const queryCmrUmmConcept = (
         format: 'umm_json'
       })
     )
+
+    ummKeys.forEach((param) => {
+      console.log(`Request ${requestId} requested [format: umm, key: ${param}]`)
+    })
   } else {
     promises.push(
       new Promise((resolve) => resolve(null))
