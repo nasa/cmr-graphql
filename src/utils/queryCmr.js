@@ -39,16 +39,21 @@ export const queryCmr = (conceptType, params, headers, options = {}) => {
   }
 
   const instance = axios.create()
+  const { interceptors } = instance
+  const {
+    request: requestInterceptor,
+    response: responseInterceptor
+  } = interceptors
 
   // Using interceptors allow us to time axios requests and should be
   // broken out if a more complicated use-case arises
-  instance.interceptors.request.use((config) => {
+  requestInterceptor.use((config) => {
     // eslint-disable-next-line no-param-reassign
     config.headers['request-startTime'] = process.hrtime()
     return config
   })
 
-  instance.interceptors.response.use((response) => {
+  responseInterceptor.use((response) => {
     const start = response.config.headers['request-startTime']
     const end = process.hrtime(start)
     const milliseconds = Math.round((end[0] * 1000) + (end[1] / 1000000))
