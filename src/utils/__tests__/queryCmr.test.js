@@ -18,11 +18,15 @@ describe('queryCmr', () => {
   })
 
   test('queries cmr', async () => {
+    const consoleMock = jest.spyOn(console, 'log').mockImplementation(() => jest.fn())
     nock(/example/, {
       reqheaders: {
         'CMR-Request-ID': 'abcd-1234-efgh-5678'
       }
     })
+      .defaultReplyHeaders({
+        'CMR-Took': 7
+      })
       .post(/collections\.json/)
       .reply(200, {
         feed: {
@@ -38,7 +42,13 @@ describe('queryCmr', () => {
       { 'CMR-Request-ID': 'abcd-1234-efgh-5678' }
     )
 
-    const { data } = response
+    const { data, headers } = response
+
+    const {
+      'request-duration': requestDuration,
+      'cmr-took': cmrTook
+    } = headers
+
     expect(data).toEqual({
       feed: {
         entry: [{
@@ -46,6 +56,9 @@ describe('queryCmr', () => {
         }]
       }
     })
+
+    const timingLog = `Request abcd-1234-efgh-5678 completed external request in [reported: ${cmrTook} ms, observed: ${requestDuration} ms]`
+    expect(consoleMock).toBeCalledWith(timingLog)
   })
 
   describe('when provided a format', () => {
