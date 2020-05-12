@@ -20,10 +20,12 @@ const server = new ApolloServer({
     const { headers } = event
 
     // Look for and EDL generated auth token
-    const { 'Echo-Token': token } = headers
-
+    const {
+      'Echo-Token': token,
+      'X-Request-ID': requestId
+    } = headers
     const requestHeaders = {
-      'CMR-Request-ID': uuidv4()
+      'CMR-Request-ID': requestId || uuidv4()
     }
 
     if (token) requestHeaders['Echo-Token'] = token

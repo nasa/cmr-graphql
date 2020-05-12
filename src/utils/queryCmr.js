@@ -31,9 +31,6 @@ export const queryCmr = (conceptType, params, headers, options = {}) => {
 
   const { 'CMR-Request-ID': requestId } = permittedHeaders
 
-  console.log(`[${requestId}] Request to ${conceptType}.${format}`)
-
-  // Construct the configuration object we'll provide to axios
   const requestConfiguration = {
     data: cmrParameters,
     headers: permittedHeaders,
@@ -41,5 +38,32 @@ export const queryCmr = (conceptType, params, headers, options = {}) => {
     url: `${process.env.cmrRootUrl}/search/${conceptType}.${format}`
   }
 
-  return axios(requestConfiguration)
+  const instance = axios.create()
+  const { interceptors } = instance
+  const {
+    request: requestInterceptor,
+    response: responseInterceptor
+  } = interceptors
+
+  // Using interceptors allow us to time axios requests and should be
+  // broken out if a more complicated use-case arises
+  requestInterceptor.use((config) => {
+    // eslint-disable-next-line no-param-reassign
+    config.headers['request-startTime'] = process.hrtime()
+    return config
+  })
+
+  responseInterceptor.use((response) => {
+    const start = response.config.headers['request-startTime']
+    const end = process.hrtime(start)
+    const milliseconds = Math.round((end[0] * 1000) + (end[1] / 1000000))
+    const { headers } = response
+    const { 'cmr-took': cmrTook } = headers
+    response.headers['request-duration'] = milliseconds
+
+    console.log(`Request ${requestId} completed external request in [reported: ${cmrTook} ms, observed: ${milliseconds} ms]`)
+    return response
+  })
+
+  return instance.request(requestConfiguration)
 }
