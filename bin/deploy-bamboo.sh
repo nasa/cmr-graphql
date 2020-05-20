@@ -15,7 +15,7 @@ cat <<EOF > Dockerfile
 FROM node:12.16.3
 COPY . /build
 WORKDIR /build
-RUN npm install && npm install -g serverless@1.55.1 && npm run build
+RUN npm install && npm install -g serverless@1.55.1
 EOF
 
 dockerTag=edsc-$bamboo_STAGE_NAME
