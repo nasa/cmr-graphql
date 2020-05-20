@@ -17,6 +17,13 @@ provider:
     ummServiceVersion: '1.2'
     ummVariableVersion: '1.5'
 
+  vpc:
+    securityGroupIds:
+      - Fn::ImportValue: ${self:provider.stage}-LambdaSecurityGroup
+    subnetIds:
+      - ${env:SUBNET_ID_A}
+      - ${env:SUBNET_ID_B}
+
   role:
     Fn::ImportValue: ${self:provider.stage}-GraphQLApplicationRole
 
