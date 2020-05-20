@@ -10,3 +10,6 @@ tmp
 
 # VSCode Settings
 .vscode
+
+# CI Outputs
+junit.xml
