@@ -1,3 +1,5 @@
+import snakeCaseKeys from 'snakecase-keys'
+
 import { get } from 'lodash'
 
 import { parseCmrCollections } from '../utils/parseCmrCollections'
@@ -28,10 +30,18 @@ export default async (params, headers, parsedInfo) => {
 
       collections.forEach((collection) => {
         // Alias concept_id for consistency in responses
-        const { id } = collection
+        const { id: conceptId } = collection
 
-        const { [id]: existingResult = {} } = result
-        result[id] = {
+        // Rename (delete the id key and set the concept_id key) `id` for consistency
+        // eslint-disable-next-line no-param-reassign
+        delete collection.id
+
+        // eslint-disable-next-line no-param-reassign
+        collection.concept_id = conceptId
+
+        const { [conceptId]: existingResult = {} } = result
+
+        result[conceptId] = {
           ...existingResult,
 
           // TODO: Pull out and return only supported keys?
@@ -59,7 +69,7 @@ export default async (params, headers, parsedInfo) => {
       })
     }
 
-    return Object.values(result)
+    return snakeCaseKeys(Object.values(result))
   } catch (e) {
     console.log(e.toString())
 

@@ -1,4 +1,5 @@
-service: cmr-graphql
+service: graphql
+
 provider:
   name: aws
   runtime: nodejs12.x
@@ -16,6 +17,9 @@ provider:
     ummServiceVersion: '1.2'
     ummVariableVersion: '1.5'
 
+  role:
+    Fn::ImportValue: ${self:provider.stage}-GraphQLApplicationRole
+
 # Package each lambda into individual zip files. This reduces the size of
 # each lambda but increases the complexity of the compilation process slightly
 package:
@@ -24,6 +28,7 @@ package:
 plugins:
   - serverless-webpack
   - serverless-offline
+  - serverless-plugin-log-subscription
 
 functions:
   graphql:
@@ -40,7 +45,7 @@ functions:
         cors: true
 
 custom:
-  siteName: cmr-graphql-${self:provider.stage}
+  siteName: graphql-${self:provider.stage}
 
   # Default is 3000 so to avoid conflicts with other applications we'll define a new port
   serverless-offline:
@@ -51,6 +56,11 @@ custom:
 
   # Serverless Webpack configurations
   webpack:
-    includeModules: true
+    includeModules: false
     packager: 'npm'
     excludeFiles: src/**/*.test.js
+
+  # Forward logs to Splunk
+  logSubscription:
+    enabled: true
+    destinationArn: ${env:LOG_DESTINATION_ARN}

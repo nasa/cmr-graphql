@@ -19,9 +19,9 @@ describe('granule', () => {
       args: {},
       fieldsByTypeName: {
         Granule: {
-          id: {
-            name: 'id',
-            alias: 'id',
+          concept_id: {
+            name: 'concept_id',
+            alias: 'concept_id',
             args: {},
             fieldsByTypeName: {}
           }
@@ -42,7 +42,6 @@ describe('granule', () => {
         }
       }])
 
-
       const parseCmrGranulesMock = jest.spyOn(parseCmrGranules, 'parseCmrGranules')
 
       const response = await granuleDatasource({}, {}, requestInfo)
@@ -51,7 +50,7 @@ describe('granule', () => {
       expect(queryCmrGranulesMock).toBeCalledWith(
         {},
         {},
-        expect.objectContaining({ jsonKeys: ['id'] })
+        expect.objectContaining({ jsonKeys: ['concept_id'] })
       )
 
       expect(parseCmrGranulesMock).toBeCalledTimes(1)
@@ -59,14 +58,14 @@ describe('granule', () => {
         data: {
           feed: {
             entry: [{
-              id: 'G100000-EDSC'
+              concept_id: 'G100000-EDSC'
             }]
           }
         }
       })
 
       expect(response).toEqual([{
-        id: 'G100000-EDSC'
+        concept_id: 'G100000-EDSC'
       }])
     })
   })
@@ -85,13 +84,13 @@ describe('granule', () => {
 
       const parseCmrGranulesMock = jest.spyOn(parseCmrGranules, 'parseCmrGranules')
 
-      const response = await granuleDatasource({ id: 'G100000-EDSC' }, {}, requestInfo)
+      const response = await granuleDatasource({ concept_id: 'G100000-EDSC' }, {}, requestInfo)
 
       expect(queryCmrGranulesMock).toBeCalledTimes(1)
       expect(queryCmrGranulesMock).toBeCalledWith(
-        { id: 'G100000-EDSC' },
+        { concept_id: 'G100000-EDSC' },
         {},
-        expect.objectContaining({ jsonKeys: ['id'] })
+        expect.objectContaining({ jsonKeys: ['concept_id'] })
       )
 
       expect(parseCmrGranulesMock).toBeCalledTimes(1)
@@ -99,14 +98,14 @@ describe('granule', () => {
         data: {
           feed: {
             entry: [{
-              id: 'G100000-EDSC'
+              concept_id: 'G100000-EDSC'
             }]
           }
         }
       })
 
       expect(response).toEqual([{
-        id: 'G100000-EDSC'
+        concept_id: 'G100000-EDSC'
       }])
     })
   })
@@ -120,9 +119,9 @@ describe('granule', () => {
         args: {},
         fieldsByTypeName: {
           Granule: {
-            id: {
-              name: 'id',
-              alias: 'id',
+            concept_id: {
+              name: 'concept_id',
+              alias: 'concept_id',
               args: {},
               fieldsByTypeName: {}
             },
@@ -161,13 +160,13 @@ describe('granule', () => {
 
       const parseCmrGranulesMock = jest.spyOn(parseCmrGranules, 'parseCmrGranules')
 
-      const response = await granuleDatasource({ id: 'G100000-EDSC' }, {}, requestInfo)
+      const response = await granuleDatasource({ concept_id: 'G100000-EDSC' }, {}, requestInfo)
 
       expect(queryCmrGranulesMock).toBeCalledTimes(1)
       expect(queryCmrGranulesMock).toBeCalledWith(
-        { id: 'G100000-EDSC' },
+        { concept_id: 'G100000-EDSC' },
         {},
-        expect.objectContaining({ jsonKeys: ['id'], ummKeys: ['granule_ur'] })
+        expect.objectContaining({ jsonKeys: ['concept_id'], ummKeys: ['granule_ur'] })
       )
 
       expect(parseCmrGranulesMock).toBeCalledTimes(2)
@@ -176,7 +175,7 @@ describe('granule', () => {
         data: {
           feed: {
             entry: [{
-              id: 'G100000-EDSC'
+              concept_id: 'G100000-EDSC'
             }]
           }
         }
@@ -195,7 +194,7 @@ describe('granule', () => {
       })
 
       expect(response).toEqual([{
-        id: 'G100000-EDSC',
+        concept_id: 'G100000-EDSC',
         granule_ur: 'GLDAS_CLSM025_D.2.0:GLDAS_CLSM025_D.A19480101.020.nc4'
       }])
     })
@@ -239,11 +238,11 @@ describe('granule', () => {
 
       const parseCmrGranulesMock = jest.spyOn(parseCmrGranules, 'parseCmrGranules')
 
-      const response = await granuleDatasource({ id: 'G100000-EDSC' }, {}, requestInfo)
+      const response = await granuleDatasource({ concept_id: 'G100000-EDSC' }, {}, requestInfo)
 
       expect(queryCmrGranulesMock).toBeCalledTimes(1)
       expect(queryCmrGranulesMock).toBeCalledWith(
-        { id: 'G100000-EDSC' },
+        { concept_id: 'G100000-EDSC' },
         {},
         expect.objectContaining({ jsonKeys: [], ummKeys: ['granule_ur'] })
       )
@@ -274,13 +273,13 @@ describe('granule', () => {
 
     const parseCmrGranulesMock = jest.spyOn(parseCmrGranules, 'parseCmrGranules')
 
-    const response = await granuleDatasource({ id: 'G100000-EDSC' }, {}, requestInfo)
+    const response = await granuleDatasource({ concept_id: 'G100000-EDSC' }, {}, requestInfo)
 
     expect(queryCmrGranulesMock).toBeCalledTimes(1)
     expect(queryCmrGranulesMock).toBeCalledWith(
-      { id: 'G100000-EDSC' },
+      { concept_id: 'G100000-EDSC' },
       {},
-      expect.objectContaining({ jsonKeys: ['id'] })
+      expect.objectContaining({ jsonKeys: ['concept_id'] })
     )
 
     expect(parseCmrGranulesMock).toBeCalledTimes(0)

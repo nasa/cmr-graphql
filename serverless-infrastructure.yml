@@ -1,0 +1,19 @@
+service: graphql-infrastructure
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: us-east-1
+  vpc:
+    securityGroupIds:
+      - Ref: LambdaSecurityGroup
+    subnetIds:
+      - ${env:SUBNET_ID_A}
+      - ${env:SUBNET_ID_B}
+
+  role: GraphQLApplicationRole
+
+#
+# AWS Infrastructure Resources
+#
+resources: ${file(./serverless-infrastructure-resources.yml)}

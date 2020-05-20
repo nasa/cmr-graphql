@@ -1,3 +1,5 @@
+import snakeCaseKeys from 'snakecase-keys'
+
 import { get } from 'lodash'
 
 import { parseCmrGranules } from '../utils/parseCmrGranules'
@@ -28,10 +30,18 @@ export default async (params, headers, parsedInfo) => {
 
       granules.forEach((granule) => {
         // Alias concept_id for consistency in responses
-        const { id } = granule
+        const { id: conceptId } = granule
 
-        const { [id]: existingResult = {} } = result
-        result[id] = {
+        // Rename (delete the id key and set the concept_id key) `id` for consistency
+        // eslint-disable-next-line no-param-reassign
+        delete granule.id
+
+        // eslint-disable-next-line no-param-reassign
+        granule.concept_id = conceptId
+
+        const { [conceptId]: existingResult = {} } = result
+
+        result[conceptId] = {
           ...existingResult,
 
           // TODO: Pull out and return only supported keys?
@@ -59,7 +69,7 @@ export default async (params, headers, parsedInfo) => {
       })
     }
 
-    return Object.values(result)
+    return snakeCaseKeys(Object.values(result))
   } catch (e) {
     console.log(e.toString())
 

@@ -9,8 +9,11 @@ export const parseRequestedFields = (requestedFields, ummKeyMappings) => {
     Object.keys(ummKeyMappings).includes(x)
   ))
 
+  // Requested keys that are not UMM must be json
   const jsonKeys = requestedFields.filter((x) => !ummKeys.includes(x))
 
+  // TODO: If all requested fields from one endpoint are available
+  // from the other move those keys to the other to prevent unneccesary requests
   return {
     jsonKeys,
     ummKeys,

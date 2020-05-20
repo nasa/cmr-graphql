@@ -19,9 +19,9 @@ describe('collection', () => {
       args: {},
       fieldsByTypeName: {
         Collection: {
-          id: {
-            name: 'id',
-            alias: 'id',
+          concept_id: {
+            name: 'concept_id',
+            alias: 'concept_id',
             args: {},
             fieldsByTypeName: {}
           }
@@ -42,7 +42,6 @@ describe('collection', () => {
         }
       }])
 
-
       const parseCmrCollectionsMock = jest.spyOn(parseCmrCollections, 'parseCmrCollections')
 
       const response = await collectionDatasource({}, {}, requestInfo)
@@ -51,7 +50,7 @@ describe('collection', () => {
       expect(queryCmrCollectionsMock).toBeCalledWith(
         {},
         {},
-        expect.objectContaining({ jsonKeys: ['id'] })
+        expect.objectContaining({ jsonKeys: ['concept_id'] })
       )
 
       expect(parseCmrCollectionsMock).toBeCalledTimes(1)
@@ -59,14 +58,14 @@ describe('collection', () => {
         data: {
           feed: {
             entry: [{
-              id: 'C100000-EDSC'
+              concept_id: 'C100000-EDSC'
             }]
           }
         }
       })
 
       expect(response).toEqual([{
-        id: 'C100000-EDSC'
+        concept_id: 'C100000-EDSC'
       }])
     })
   })
@@ -85,13 +84,13 @@ describe('collection', () => {
 
       const parseCmrCollectionsMock = jest.spyOn(parseCmrCollections, 'parseCmrCollections')
 
-      const response = await collectionDatasource({ id: 'C100000-EDSC' }, {}, requestInfo)
+      const response = await collectionDatasource({ concept_id: 'C100000-EDSC' }, {}, requestInfo)
 
       expect(queryCmrCollectionsMock).toBeCalledTimes(1)
       expect(queryCmrCollectionsMock).toBeCalledWith(
-        { id: 'C100000-EDSC' },
+        { concept_id: 'C100000-EDSC' },
         {},
-        expect.objectContaining({ jsonKeys: ['id'] })
+        expect.objectContaining({ jsonKeys: ['concept_id'] })
       )
 
       expect(parseCmrCollectionsMock).toBeCalledTimes(1)
@@ -99,14 +98,14 @@ describe('collection', () => {
         data: {
           feed: {
             entry: [{
-              id: 'C100000-EDSC'
+              concept_id: 'C100000-EDSC'
             }]
           }
         }
       })
 
       expect(response).toEqual([{
-        id: 'C100000-EDSC'
+        concept_id: 'C100000-EDSC'
       }])
     })
   })
@@ -120,9 +119,9 @@ describe('collection', () => {
         args: {},
         fieldsByTypeName: {
           Collection: {
-            id: {
-              name: 'id',
-              alias: 'id',
+            concept_id: {
+              name: 'concept_id',
+              alias: 'concept_id',
               args: {},
               fieldsByTypeName: {}
             },
@@ -161,13 +160,13 @@ describe('collection', () => {
 
       const parseCmrCollectionsMock = jest.spyOn(parseCmrCollections, 'parseCmrCollections')
 
-      const response = await collectionDatasource({ id: 'C100000-EDSC' }, {}, requestInfo)
+      const response = await collectionDatasource({ concept_id: 'C100000-EDSC' }, {}, requestInfo)
 
       expect(queryCmrCollectionsMock).toBeCalledTimes(1)
       expect(queryCmrCollectionsMock).toBeCalledWith(
-        { id: 'C100000-EDSC' },
+        { concept_id: 'C100000-EDSC' },
         {},
-        expect.objectContaining({ jsonKeys: ['id'], ummKeys: ['abstract'] })
+        expect.objectContaining({ jsonKeys: ['concept_id'], ummKeys: ['abstract'] })
       )
 
       expect(parseCmrCollectionsMock).toBeCalledTimes(2)
@@ -176,7 +175,7 @@ describe('collection', () => {
         data: {
           feed: {
             entry: [{
-              id: 'C100000-EDSC'
+              concept_id: 'C100000-EDSC'
             }]
           }
         }
@@ -195,7 +194,7 @@ describe('collection', () => {
       })
 
       expect(response).toEqual([{
-        id: 'C100000-EDSC',
+        concept_id: 'C100000-EDSC',
         abstract: 'Lorem ipsum dolor sit amet, consectetur adipiscing'
       }])
     })
@@ -239,11 +238,11 @@ describe('collection', () => {
 
       const parseCmrCollectionsMock = jest.spyOn(parseCmrCollections, 'parseCmrCollections')
 
-      const response = await collectionDatasource({ id: 'C100000-EDSC' }, {}, requestInfo)
+      const response = await collectionDatasource({ concept_id: 'C100000-EDSC' }, {}, requestInfo)
 
       expect(queryCmrCollectionsMock).toBeCalledTimes(1)
       expect(queryCmrCollectionsMock).toBeCalledWith(
-        { id: 'C100000-EDSC' },
+        { concept_id: 'C100000-EDSC' },
         {},
         expect.objectContaining({ jsonKeys: [], ummKeys: ['abstract'] })
       )
@@ -274,13 +273,13 @@ describe('collection', () => {
 
     const parseCmrCollectionsMock = jest.spyOn(parseCmrCollections, 'parseCmrCollections')
 
-    const response = await collectionDatasource({ id: 'C100000-EDSC' }, {}, requestInfo)
+    const response = await collectionDatasource({ concept_id: 'C100000-EDSC' }, {}, requestInfo)
 
     expect(queryCmrCollectionsMock).toBeCalledTimes(1)
     expect(queryCmrCollectionsMock).toBeCalledWith(
-      { id: 'C100000-EDSC' },
+      { concept_id: 'C100000-EDSC' },
       {},
-      expect.objectContaining({ jsonKeys: ['id'] })
+      expect.objectContaining({ jsonKeys: ['concept_id'] })
     )
 
     expect(parseCmrCollectionsMock).toBeCalledTimes(0)

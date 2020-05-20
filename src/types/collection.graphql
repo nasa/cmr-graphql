@@ -4,6 +4,7 @@ type Collection {
   abstract: String
   archive_center: String
   browse_flag: Boolean
+  concept_id: String!
   coordinate_system: String
   data_center: String
   dataset_id: String
@@ -12,7 +13,6 @@ type Collection {
   has_temporal_subsetting: Boolean
   has_transforms: Boolean
   has_variables: Boolean
-  id: String!
   online_access_flag: Boolean
   organizations: [String]
   original_format: String
