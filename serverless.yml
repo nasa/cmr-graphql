@@ -8,7 +8,7 @@ provider:
   environment:
     cmrRootUrl: ${env:CMR_ROOT_URL}
 
-    # Timeout for lambda. Request will timeout 10s faster than this value 
+    # Timeout for lambda 
     lambdaTimeout: ${env:LAMBDA_TIMEOUT}
 
     # Pinned UMM versions
@@ -23,7 +23,7 @@ provider:
 # Package each lambda into individual zip files. This reduces the size of
 # each lambda but increases the complexity of the compilation process slightly
 package:
-  individually: false
+  individually: true
 
 plugins:
   - serverless-webpack
@@ -49,14 +49,11 @@ custom:
 
   # Default is 3000 so to avoid conflicts with other applications we'll define a new port
   serverless-offline:
-    port: 3001
-    includeModules:
-      forceExclude:
-        - aws-sdk
+    port: 3003
 
   # Serverless Webpack configurations
   webpack:
-    includeModules: false
+    includeModules: true
     packager: 'npm'
     excludeFiles: src/**/*.test.js
 
