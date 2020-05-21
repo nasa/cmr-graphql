@@ -18,7 +18,7 @@ type Service {
 type Query {
   services(
     concept_id: [String],
-    page_size: Int
+    first: Int
   ): [Service]
   service(
     concept_id: String!

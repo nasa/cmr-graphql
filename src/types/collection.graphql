@@ -25,22 +25,22 @@ type Collection {
   version_id: String
   
   granules(
-    page_size: Int
+    first: Int
   ): [Granule]!
 
   services(
-    page_size: Int
+    first: Int
   ): [Service]!
 
   variables(
-    page_size: Int
+    first: Int
   ): [Variable]!
 }
 
 type Query {
   collections(
     concept_id: [String],
-    page_size: Int,
+    first: Int
   ): [Collection]
   collection(
     concept_id: String!

@@ -3,11 +3,11 @@ import { parseResolveInfo } from 'graphql-parse-resolve-info'
 export default {
   Query: {
     services: async (source, args, { dataSources, token }, info) => {
-      const { concept_id: conceptId, page_size: pageSize } = args
+      const { concept_id: conceptId, first: pageSize } = args
 
       return dataSources.serviceSource({
         concept_id: conceptId,
-        page_size: pageSize
+        first: pageSize
       }, token, parseResolveInfo(info))
     },
     service: async (source, args, { dataSources, token }, info) => {

@@ -7,7 +7,7 @@ export default {
 
       return dataSources.variableSource({
         concept_id: conceptId,
-        page_size: pageSize
+        first: pageSize
       }, token, parseResolveInfo(info))
     },
     variable: async (source, args, { dataSources, token }, info) => {

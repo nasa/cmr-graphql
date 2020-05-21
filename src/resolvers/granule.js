@@ -6,7 +6,7 @@ export default {
       const {
         collection_concept_id: collectionConceptId,
         concept_id: conceptId,
-        page_size: pageSize
+        first: pageSize
       } = args
 
       return dataSources.granuleSource({
