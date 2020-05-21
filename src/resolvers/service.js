@@ -7,7 +7,7 @@ export default {
 
       return dataSources.serviceSource({
         concept_id: conceptId,
-        first: pageSize
+        page_size: pageSize
       }, token, parseResolveInfo(info))
     },
     service: async (source, args, { dataSources, token }, info) => {

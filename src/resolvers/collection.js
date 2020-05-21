@@ -4,7 +4,8 @@ export default {
   Query: {
     collections: async (source, args, { dataSources, headers }, info) => {
       const {
-        concept_id: conceptId, first: pageSize
+        concept_id: conceptId,
+        first: pageSize
       } = args
 
       return dataSources.collectionSource({
@@ -29,11 +30,11 @@ export default {
     granules: async (source, args, { dataSources, headers }, info) => {
       const { concept_id: collectionId } = source
 
-      const { first } = args
+      const { first: pageSize } = args
 
       return dataSources.granuleSource({
         collection_concept_id: collectionId,
-        page_size: first
+        page_size: pageSize
       }, headers, parseResolveInfo(info))
     },
     services: async (source, args, { dataSources, headers }, info) => {
