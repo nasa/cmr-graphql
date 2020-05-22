@@ -12,8 +12,8 @@ export const queryCmrUmmConcept = (
     jsonKeys,
     ummKeys
   } = requestInfo
-
   const { 'CMR-Request-ID': requestId } = headers
+
   if (jsonKeys.length > 0) {
     // Construct the promise that will request data from the json endpoint
     promises.push(

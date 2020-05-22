@@ -4,9 +4,6 @@ type Variable {
   concept_id: String!
   long_name: String
   name: String
-  native_id: String
-  provider_id: String
-  revision_id: Int
   science_keywords: JSON
   variable_type: String
 }
@@ -14,7 +11,7 @@ type Variable {
 type Query {
   variables(
     concept_id: [String],
-    page_size: Int
+    first: Int
   ): [Variable]
   variable(
     concept_id: String!

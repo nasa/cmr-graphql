@@ -25,7 +25,7 @@ type Query {
   granules(
     concept_id: [String],
     collection_concept_id: String,
-    page_size: Int
+    first: Int
   ): [Granule]
   granule(
     concept_id: String!

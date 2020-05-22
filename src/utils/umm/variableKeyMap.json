@@ -1,8 +1,4 @@
 {
-  "deleted": "meta.deleted",
-  "format": "meta.format",
   "science_keywords": "umm.ScienceKeywords",
-  "updated_at": "meta.revision-date",
-  "user_id": "meta.user-id",
   "variable_type": "umm.VariableType"
 }

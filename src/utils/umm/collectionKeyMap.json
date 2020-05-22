@@ -1,10 +1,5 @@
 {
   "abstract": "umm.Abstract",
-  "deleted": "meta.deleted",
-  "format": "meta.format",
-  "granule_ur": "umm.GranuleUR",
   "spatial_extent": "umm.SpatialExtent",
-  "temporal_extent": "umm.TemporalExtent",
-  "updated_at": "meta.revision-date",
-  "user_id": "meta.user-id"
+  "temporal_extents": "umm.TemporalExtents"
 }
