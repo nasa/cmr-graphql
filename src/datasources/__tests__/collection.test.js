@@ -130,6 +130,12 @@ describe('collection', () => {
               alias: 'abstract',
               args: {},
               fieldsByTypeName: {}
+            },
+            title: {
+              name: 'title',
+              alias: 'title',
+              args: {},
+              fieldsByTypeName: {}
             }
           }
         }
@@ -141,7 +147,8 @@ describe('collection', () => {
         data: {
           feed: {
             entry: [{
-              id: 'C100000-EDSC'
+              id: 'C100000-EDSC',
+              title: 'Maecenas sed diam eget risus varius blandit sit amet non magna.'
             }]
           }
         }
@@ -166,7 +173,7 @@ describe('collection', () => {
       expect(queryCmrCollectionsMock).toBeCalledWith(
         { concept_id: 'C100000-EDSC' },
         {},
-        expect.objectContaining({ jsonKeys: ['concept_id'], ummKeys: ['abstract'] })
+        expect.objectContaining({ jsonKeys: ['concept_id', 'title'], ummKeys: ['abstract'] })
       )
 
       expect(parseCmrCollectionsMock).toBeCalledTimes(2)
@@ -175,7 +182,8 @@ describe('collection', () => {
         data: {
           feed: {
             entry: [{
-              concept_id: 'C100000-EDSC'
+              concept_id: 'C100000-EDSC',
+              title: 'Maecenas sed diam eget risus varius blandit sit amet non magna.'
             }]
           }
         }
@@ -195,7 +203,8 @@ describe('collection', () => {
 
       expect(response).toEqual([{
         concept_id: 'C100000-EDSC',
-        abstract: 'Lorem ipsum dolor sit amet, consectetur adipiscing'
+        abstract: 'Lorem ipsum dolor sit amet, consectetur adipiscing',
+        title: 'Maecenas sed diam eget risus varius blandit sit amet non magna.'
       }])
     })
   })
@@ -212,6 +221,12 @@ describe('collection', () => {
             abstract: {
               name: 'abstract',
               alias: 'abstract',
+              args: {},
+              fieldsByTypeName: {}
+            },
+            spatial_extent: {
+              name: 'spatial_extent',
+              alias: 'spatial_extent',
               args: {},
               fieldsByTypeName: {}
             }
@@ -244,7 +259,7 @@ describe('collection', () => {
       expect(queryCmrCollectionsMock).toBeCalledWith(
         { concept_id: 'C100000-EDSC' },
         {},
-        expect.objectContaining({ jsonKeys: [], ummKeys: ['abstract'] })
+        expect.objectContaining({ jsonKeys: [], ummKeys: ['abstract', 'spatial_extent'] })
       )
 
       expect(parseCmrCollectionsMock).toBeCalledTimes(1)

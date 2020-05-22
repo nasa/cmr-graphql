@@ -128,64 +128,66 @@ describe('variable', () => {
       }
     })
 
-    test('returns the parsed variable results', async () => {
-      const queryCmrVariablesMock = jest.spyOn(queryCmrVariables, 'queryCmrVariables').mockImplementationOnce(() => [{
-        data: {
-          items: [{
-            concept_id: 'V100000-EDSC'
-          }]
-        }
-      }, {
-        data: {
-          items: [{
-            meta: {
-              'concept-id': 'V100000-EDSC'
-            },
-            umm: {
-              VariableType: 'SCIENCE_VARIABLE'
-            }
-          }]
-        }
-      }])
+    // There are no keys in the json endpoint that are not available
+    // in the umm endpoint so services should never make two requests
+    // test.skip('returns the parsed variable results', async () => {
+    //   const queryCmrVariablesMock = jest.spyOn(queryCmrVariables, 'queryCmrVariables').mockImplementationOnce(() => [{
+    //     data: {
+    //       items: [{
+    //         concept_id: 'V100000-EDSC'
+    //       }]
+    //     }
+    //   }, {
+    //     data: {
+    //       items: [{
+    //         meta: {
+    //           'concept-id': 'V100000-EDSC'
+    //         },
+    //         umm: {
+    //           VariableType: 'SCIENCE_VARIABLE'
+    //         }
+    //       }]
+    //     }
+    //   }])
 
-      const parseCmrVariablesMock = jest.spyOn(parseCmrVariables, 'parseCmrVariables')
+    //   const parseCmrVariablesMock = jest.spyOn(parseCmrVariables, 'parseCmrVariables')
 
-      const response = await variableDatasource({ concept_id: 'V100000-EDSC' }, {}, requestInfo)
+    //   const response = await variableDatasource({ concept_id: 'V100000-EDSC' }, {}, requestInfo)
 
-      expect(queryCmrVariablesMock).toBeCalledTimes(1)
-      expect(queryCmrVariablesMock).toBeCalledWith(
-        { concept_id: 'V100000-EDSC' },
-        {},
-        expect.objectContaining({ jsonKeys: ['concept_id'], ummKeys: ['variable_type'] })
-      )
+    //   expect(queryCmrVariablesMock).toBeCalledTimes(1)
+    //   expect(queryCmrVariablesMock).toBeCalledWith(
+    //     { concept_id: 'V100000-EDSC' },
+    //     {},
+    //     expect.objectContaining({ jsonKeys: ['concept_id'], ummKeys: ['variable_type'] })
+    //   )
 
-      expect(parseCmrVariablesMock).toBeCalledTimes(2)
-      const [jsonCall, ummCall] = parseCmrVariablesMock.mock.calls
-      expect(jsonCall[0]).toEqual({
-        data: {
-          items: [{
-            concept_id: 'V100000-EDSC'
-          }]
-        }
-      })
-      expect(ummCall[0]).toEqual({
-        data: {
-          items: [{
-            meta: {
-              'concept-id': 'V100000-EDSC'
-            },
-            umm: {
-              VariableType: 'SCIENCE_VARIABLE'
-            }
-          }]
-        }
-      })
+    //   expect(parseCmrVariablesMock).toBeCalledTimes(2)
+    //   const [jsonCall, ummCall] = parseCmrVariablesMock.mock.calls
+    //   expect(jsonCall[0]).toEqual({
+    //     data: {
+    //       items: [{
+    //         concept_id: 'V100000-EDSC'
+    //       }]
+    //     }
+    //   })
+    //   expect(ummCall[0]).toEqual({
+    //     data: {
+    //       items: [{
+    //         meta: {
+    //           'concept-id': 'V100000-EDSC'
+    //         },
+    //         umm: {
+    //           VariableType: 'SCIENCE_VARIABLE'
+    //         }
+    //       }]
+    //     }
+    //   })
 
-      expect(response).toEqual([{
-        concept_id: 'V100000-EDSC',
-        variable_type: 'SCIENCE_VARIABLE'
-      }])
-    })
+    //   expect(response).toEqual([{
+    //     concept_id: 'V100000-EDSC',
+    //     variable_type: 'SCIENCE_VARIABLE'
+    //   }])
+    // })
   })
 
   describe('with only umm keys', () => {
@@ -200,6 +202,12 @@ describe('variable', () => {
             variable_type: {
               name: 'variable_type',
               alias: 'variable_type',
+              args: {},
+              fieldsByTypeName: {}
+            },
+            science_keywords: {
+              name: 'science_keywords',
+              alias: 'science_keywords',
               args: {},
               fieldsByTypeName: {}
             }
@@ -232,7 +240,7 @@ describe('variable', () => {
       expect(queryCmrVariablesMock).toBeCalledWith(
         { concept_id: 'V100000-EDSC' },
         {},
-        expect.objectContaining({ jsonKeys: [], ummKeys: ['variable_type'] })
+        expect.objectContaining({ jsonKeys: [], ummKeys: ['science_keywords', 'variable_type'] })
       )
 
       expect(parseCmrVariablesMock).toBeCalledTimes(1)

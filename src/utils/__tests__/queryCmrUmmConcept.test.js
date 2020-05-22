@@ -54,7 +54,7 @@ describe('queryCmrUmmConcept', () => {
       })
 
       expect(consoleMock).toBeCalledTimes(1)
-      expect(consoleMock).toBeCalledWith('Request abcd-1234-efgh-5678 requested [format: json, key: concept_id]')
+      expect(consoleMock).toBeCalledWith('Request abcd-1234-efgh-5678 to [concept: collections] requested [format: json, key: concept_id]')
     })
   })
 
@@ -111,7 +111,7 @@ describe('queryCmrUmmConcept', () => {
         }]
       })
       expect(consoleMock).toBeCalledTimes(1)
-      expect(consoleMock).toBeCalledWith('Request abcd-1234-efgh-5678 requested [format: umm, key: Type]')
+      expect(consoleMock).toBeCalledWith('Request abcd-1234-efgh-5678 to [concept: collections] requested [format: umm, key: Type]')
     })
   })
 
@@ -199,8 +199,8 @@ describe('queryCmrUmmConcept', () => {
       const [jsonLog, ummLog] = calls
 
       expect(consoleMock).toBeCalledTimes(2)
-      expect(jsonLog).toEqual(['Request abcd-1234-efgh-5678 requested [format: json, key: concept_id]'])
-      expect(ummLog).toEqual(['Request abcd-1234-efgh-5678 requested [format: umm, key: Type]'])
+      expect(jsonLog).toEqual(['Request abcd-1234-efgh-5678 to [concept: collections] requested [format: json, key: concept_id]'])
+      expect(ummLog).toEqual(['Request abcd-1234-efgh-5678 to [concept: collections] requested [format: umm, key: Type]'])
     })
   })
 })

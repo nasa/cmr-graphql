@@ -32,36 +32,43 @@ export default async (params, headers, parsedInfo) => {
         // Alias concept_id for consistency in responses
         const { concept_id: id } = variable
 
-        const { [id]: existingResult = {} } = result
-        result[id] = {
-          ...existingResult,
-
-          // TODO: Pull out and return only supported keys?
-          ...variable
-        }
+        // There are no keys in the json endpoint that are not available
+        // in the umm endpoint so services should never make two requests
+        // meaning that result will never be already set for a particular id
+        result[id] = variable
       })
     }
 
     if (ummResponse) {
+      // Pull out the key mappings so we can retrieve the values below
+      const { ummKeyMappings } = variableKeyMap
+
       const variables = parseCmrVariables(ummResponse)
 
       variables.forEach((variable) => {
         const { meta } = variable
         const { 'concept-id': id } = meta
 
-        // If no record of this concept is found create an empty object at its key
-        if (!Object.keys(result).includes(id)) result[id] = {}
+        // There are no keys in the json endpoint that are not available
+        // in the umm endpoint so services should never make two requests
+        // meaning that result will never be already set for a particular id
+        result[id] = {}
 
         // Loop through the requested umm keys
         ummKeys.forEach((ummKey) => {
           // Use lodash.get to retrieve a value from the umm response given they
           // path we've defined above
-          result[id][ummKey] = get(variable, variableKeyMap[ummKey])
+          const keyValue = get(variable, ummKeyMappings[ummKey])
+
+          if (keyValue) {
+            // Snake case the key requested and any children of that key
+            Object.assign(result[id], snakeCaseKeys({ [ummKey]: keyValue }))
+          }
         })
       })
     }
 
-    return snakeCaseKeys(Object.values(result))
+    return Object.values(result)
   } catch (e) {
     console.log(e.toString())
 

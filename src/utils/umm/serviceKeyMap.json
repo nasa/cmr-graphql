@@ -1,6 +1,16 @@
 {
-  "description": "umm.Description",
-  "related_urls": "umm.RelatedURLs",
-  "service_options": "umm.ServiceOptions",
-  "type": "umm.Type"
+  "sharedKeys": [
+    "concept_id",
+    "long_name",
+    "name"
+  ],
+  "ummKeyMappings": {
+    "concept_id": "meta.concept-id",
+    "description": "umm.Description",
+    "long_name": "umm.LongName",
+    "name": "umm.Name",
+    "related_urls": "umm.RelatedURLs",
+    "service_options": "umm.ServiceOptions",
+    "type": "umm.Type"
+  }
 }

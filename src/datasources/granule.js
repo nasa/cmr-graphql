@@ -51,6 +51,9 @@ export default async (params, headers, parsedInfo) => {
     }
 
     if (ummResponse) {
+      // Pull out the key mappings so we can retrieve the values below
+      const { ummKeyMappings } = granuleKeyMap
+
       const granules = parseCmrGranules(ummResponse, 'umm_json')
 
       granules.forEach((granule) => {
@@ -64,12 +67,17 @@ export default async (params, headers, parsedInfo) => {
         ummKeys.forEach((ummKey) => {
           // Use lodash.get to retrieve a value from the umm response given they
           // path we've defined above
-          result[id][ummKey] = get(granule, granuleKeyMap[ummKey])
+          const keyValue = get(granule, ummKeyMappings[ummKey])
+
+          if (keyValue) {
+            // Snake case the key requested and any children of that key
+            Object.assign(result[id], snakeCaseKeys({ [ummKey]: keyValue }))
+          }
         })
       })
     }
 
-    return snakeCaseKeys(Object.values(result))
+    return Object.values(result)
   } catch (e) {
     console.log(e.toString())
 

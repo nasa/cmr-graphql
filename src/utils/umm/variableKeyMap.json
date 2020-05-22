@@ -1,4 +1,14 @@
 {
-  "science_keywords": "umm.ScienceKeywords",
-  "variable_type": "umm.VariableType"
+  "sharedKeys": [
+    "concept_id",
+    "long_name",
+    "name"
+  ],
+  "ummKeyMappings": {
+    "concept_id": "meta.concept-id",
+    "long_name": "umm.LongName",
+    "name": "umm.Name",
+    "science_keywords": "umm.ScienceKeywords",
+    "variable_type": "umm.VariableType"
+  }
 }

@@ -57,7 +57,7 @@ describe('queryCmr', () => {
       }
     })
 
-    const timingLog = `Request abcd-1234-efgh-5678 completed external request in [reported: ${cmrTook} ms, observed: ${requestDuration} ms]`
+    const timingLog = `Request abcd-1234-efgh-5678 to [concept: collections, format: json] completed external request in [reported: ${cmrTook} ms, observed: ${requestDuration} ms]`
     expect(consoleMock).toBeCalledWith(timingLog)
   })
 
