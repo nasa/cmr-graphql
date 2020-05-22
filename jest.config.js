@@ -2,7 +2,8 @@ module.exports = {
   collectCoverage: true,
   coveragePathIgnorePatterns: [
     'package.json',
-    'package-lock.json'
+    'package-lock.json',
+    'types'
   ],
   setupFiles: [
     '<rootDir>/test-env.js'
@@ -13,5 +14,9 @@ module.exports = {
   // to global scope which in turns causes axios to think it's running
   // in a browser and making requests via XmlHttpRequest instead of
   // node's native library.
-  testEnvironment: 'node'
+  testEnvironment: 'node',
+  transform: {
+    '\\.(gql|graphql)$': 'jest-transform-graphql',
+    '^.+\\.(js)$': 'babel-jest'
+  }
 }

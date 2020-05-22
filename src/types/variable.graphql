@@ -4,9 +4,6 @@ type Variable {
   concept_id: String!
   long_name: String
   name: String
-  native_id: String
-  provider_id: String
-  revision_id: Int
   science_keywords: JSON
   variable_type: String
 }
