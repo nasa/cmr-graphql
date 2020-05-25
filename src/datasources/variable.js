@@ -4,6 +4,7 @@ import { get } from 'lodash'
 
 import { parseCmrVariables } from '../utils/parseCmrVariables'
 import { queryCmrVariables } from '../utils/queryCmrVariables'
+import { parseCmrError } from '../utils/parseCmrError'
 import { parseRequestedFields } from '../utils/parseRequestedFields'
 
 import variableKeyMap from '../utils/umm/variableKeyMap.json'
@@ -69,9 +70,9 @@ export default async (params, headers, parsedInfo) => {
     }
 
     return Object.values(result)
-  } catch (e) {
-    console.log(e.toString())
-
-    return []
+  } catch (error) {
+    parseCmrError(error)
   }
+
+  return []
 }

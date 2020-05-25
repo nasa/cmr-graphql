@@ -10,6 +10,7 @@ import { queryCmrUmmConcept } from './queryCmrUmmConcept'
 export const queryCmrCollections = (params, headers, requestInfo) => {
   // Pick out permitted parameters
   const permittedSearchParams = pick(params, [
+    'bounding_box',
     'concept_id',
     'page_size'
   ])

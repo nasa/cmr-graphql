@@ -4,6 +4,7 @@ import { get } from 'lodash'
 
 import { parseCmrServices } from '../utils/parseCmrServices'
 import { queryCmrServices } from '../utils/queryCmrServices'
+import { parseCmrError } from '../utils/parseCmrError'
 import { parseRequestedFields } from '../utils/parseRequestedFields'
 
 import serviceKeyMap from '../utils/umm/serviceKeyMap.json'
@@ -69,9 +70,9 @@ export default async (params, headers, parsedInfo) => {
     }
 
     return Object.values(result)
-  } catch (e) {
-    console.log(e.toString())
-
-    return []
+  } catch (error) {
+    parseCmrError(error)
   }
+
+  return []
 }

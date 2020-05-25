@@ -4,6 +4,7 @@ import { get } from 'lodash'
 
 import { parseCmrCollections } from '../utils/parseCmrCollections'
 import { queryCmrCollections } from '../utils/queryCmrCollections'
+import { parseCmrError } from '../utils/parseCmrError'
 import { parseRequestedFields } from '../utils/parseRequestedFields'
 
 import collectionKeyMap from '../utils/umm/collectionKeyMap.json'
@@ -78,9 +79,9 @@ export default async (params, headers, parsedInfo) => {
     }
 
     return snakeCaseKeys(Object.values(result))
-  } catch (e) {
-    console.log(e.toString())
-
-    return []
+  } catch (error) {
+    parseCmrError(error)
   }
+
+  return []
 }
