@@ -1,13 +1,16 @@
 {
-  "deleted": "meta.deleted",
-  "description": "umm.Description",
-  "format": "meta.format",
-  "related_urls": "umm.RelatedURLs",
-  "service_options": "umm.ServiceOptions",
-  "subset_types": "umm.ServiceOptions.SubsetTypes",
-  "supported_output_formats": "umm.ServiceOptions.SupportedOutputFormats",
-  "type": "umm.Type",
-  "updated_at": "meta.revision-date",
-  "user_id": "meta.user-id",
-  "version": "umm.Version"
+  "sharedKeys": [
+    "concept_id",
+    "long_name",
+    "name"
+  ],
+  "ummKeyMappings": {
+    "concept_id": "meta.concept-id",
+    "description": "umm.Description",
+    "long_name": "umm.LongName",
+    "name": "umm.Name",
+    "related_urls": "umm.RelatedURLs",
+    "service_options": "umm.ServiceOptions",
+    "type": "umm.Type"
+  }
 }

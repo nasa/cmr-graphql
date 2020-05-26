@@ -1,5 +1,11 @@
 {
-  "granule_ur": "umm.GranuleUR",
-  "spatial_extent": "umm.SpatialExtent",
-  "temporal_extent": "umm.TemporalExtent"
+  "sharedKeys": [
+    "concept_id"
+  ],
+  "ummKeyMappings": {
+    "concept_id": "meta.concept-id",
+    "granule_ur": "umm.GranuleUR",
+    "spatial_extent": "umm.SpatialExtent",
+    "temporal_extent": "umm.TemporalExtent"
+  }
 }

@@ -125,6 +125,12 @@ describe('granule', () => {
               args: {},
               fieldsByTypeName: {}
             },
+            browse_flag: {
+              name: 'browse_flag',
+              alias: 'browse_flag',
+              args: {},
+              fieldsByTypeName: {}
+            },
             granule_ur: {
               name: 'granule_ur',
               alias: 'granule_ur',
@@ -141,7 +147,8 @@ describe('granule', () => {
         data: {
           feed: {
             entry: [{
-              id: 'G100000-EDSC'
+              id: 'G100000-EDSC',
+              browse_flag: true
             }]
           }
         }
@@ -166,7 +173,7 @@ describe('granule', () => {
       expect(queryCmrGranulesMock).toBeCalledWith(
         { concept_id: 'G100000-EDSC' },
         {},
-        expect.objectContaining({ jsonKeys: ['concept_id'], ummKeys: ['granule_ur'] })
+        expect.objectContaining({ jsonKeys: ['browse_flag', 'concept_id'], ummKeys: ['granule_ur'] })
       )
 
       expect(parseCmrGranulesMock).toBeCalledTimes(2)
@@ -175,7 +182,8 @@ describe('granule', () => {
         data: {
           feed: {
             entry: [{
-              concept_id: 'G100000-EDSC'
+              concept_id: 'G100000-EDSC',
+              browse_flag: true
             }]
           }
         }
@@ -195,6 +203,7 @@ describe('granule', () => {
 
       expect(response).toEqual([{
         concept_id: 'G100000-EDSC',
+        browse_flag: true,
         granule_ur: 'GLDAS_CLSM025_D.2.0:GLDAS_CLSM025_D.A19480101.020.nc4'
       }])
     })
@@ -212,6 +221,12 @@ describe('granule', () => {
             granule_ur: {
               name: 'granule_ur',
               alias: 'granule_ur',
+              args: {},
+              fieldsByTypeName: {}
+            },
+            temporal_extent: {
+              name: 'temporal_extent',
+              alias: 'temporal_extent',
               args: {},
               fieldsByTypeName: {}
             }
@@ -244,7 +259,7 @@ describe('granule', () => {
       expect(queryCmrGranulesMock).toBeCalledWith(
         { concept_id: 'G100000-EDSC' },
         {},
-        expect.objectContaining({ jsonKeys: [], ummKeys: ['granule_ur'] })
+        expect.objectContaining({ jsonKeys: [], ummKeys: ['granule_ur', 'temporal_extent'] })
       )
 
       expect(parseCmrGranulesMock).toBeCalledTimes(1)

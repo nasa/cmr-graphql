@@ -21,7 +21,7 @@ export const queryCmrUmmConcept = (
     )
 
     jsonKeys.forEach((param) => {
-      console.log(`Request ${requestId} requested [format: json, key: ${param}]`)
+      console.log(`Request ${requestId} to [concept: ${conceptType}] requested [format: json, key: ${param}]`)
     })
   } else {
     // Push a null promise to the array so that the umm promise always exists as
@@ -41,7 +41,7 @@ export const queryCmrUmmConcept = (
     )
 
     ummKeys.forEach((param) => {
-      console.log(`Request ${requestId} requested [format: umm, key: ${param}]`)
+      console.log(`Request ${requestId} to [concept: ${conceptType}] requested [format: umm, key: ${param}]`)
     })
   } else {
     promises.push(
