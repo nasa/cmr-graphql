@@ -143,7 +143,7 @@ describe('Collection', () => {
           'CMR-Took': 7,
           'CMR-Request-ID': 'abcd-1234-efgh-5678'
         })
-        .post(/granules\.json/, 'collection_concept_id=C100000-EDSC')
+        .post(/granules\.json/, 'collection_concept_id=C100000-EDSC&page_size=20')
         .reply(200, {
           feed: {
             entry: [{
@@ -159,7 +159,7 @@ describe('Collection', () => {
           'CMR-Took': 7,
           'CMR-Request-ID': 'abcd-1234-efgh-5678'
         })
-        .post(/granules\.json/, 'collection_concept_id=C100001-EDSC')
+        .post(/granules\.json/, 'collection_concept_id=C100001-EDSC&page_size=20')
         .reply(200, {
           feed: {
             entry: [{

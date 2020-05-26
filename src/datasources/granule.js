@@ -4,6 +4,7 @@ import { get } from 'lodash'
 
 import { parseCmrGranules } from '../utils/parseCmrGranules'
 import { queryCmrGranules } from '../utils/queryCmrGranules'
+import { parseCmrError } from '../utils/parseCmrError'
 import { parseRequestedFields } from '../utils/parseRequestedFields'
 
 import granuleKeyMap from '../utils/umm/granuleKeyMap.json'
@@ -78,9 +79,9 @@ export default async (params, headers, parsedInfo) => {
     }
 
     return Object.values(result)
-  } catch (e) {
-    console.log(e.toString())
-
-    return []
+  } catch (error) {
+    parseCmrError(error)
   }
+
+  return []
 }

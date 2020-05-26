@@ -1,21 +1,14 @@
 import { parseResolveInfo } from 'graphql-parse-resolve-info'
 
+import { handlePagingParams } from '../utils/handlePagingParams'
+
 export default {
   Query: {
-    variables: async (source, args, { dataSources, headers }, info) => {
-      const { concept_id: conceptId, first: pageSize } = args
-
-      return dataSources.variableSource({
-        concept_id: conceptId,
-        page_size: pageSize
-      }, headers, parseResolveInfo(info))
-    },
+    variables: async (source, args, { dataSources, headers }, info) => (
+      dataSources.variableSource(handlePagingParams(args), headers, parseResolveInfo(info))
+    ),
     variable: async (source, args, { dataSources, headers }, info) => {
-      const { concept_id: conceptId } = args
-
-      const result = await dataSources.variableSource({
-        concept_id: conceptId
-      }, headers, parseResolveInfo(info))
+      const result = await dataSources.variableSource(args, headers, parseResolveInfo(info))
 
       const [firstResult] = result
 
