@@ -8,11 +8,16 @@ type Variable {
   variable_type: String
 }
 
+type VariableList {
+  count: Int
+  items: [Variable]
+}
+
 type Query {
   variables(
     concept_id: [String],
     first: Int
-  ): [Variable]
+  ): VariableList!
   variable(
     concept_id: String!
   ): Variable!

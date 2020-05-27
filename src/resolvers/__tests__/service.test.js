@@ -64,7 +64,9 @@ describe('Collection', () => {
         variables: {},
         query: `{
           services(first:2) {
-            concept_id
+            items {
+              concept_id
+            }
           }
         }`
       })
@@ -72,11 +74,13 @@ describe('Collection', () => {
       const { data } = response
 
       expect(data).toEqual({
-        services: [{
-          concept_id: 'S100000-EDSC'
-        }, {
-          concept_id: 'S100001-EDSC'
-        }]
+        services: {
+          items: [{
+            concept_id: 'S100000-EDSC'
+          }, {
+            concept_id: 'S100001-EDSC'
+          }]
+        }
       })
     })
 

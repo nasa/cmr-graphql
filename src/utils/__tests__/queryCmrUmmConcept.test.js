@@ -7,6 +7,59 @@ beforeEach(() => {
 })
 
 describe('queryCmrUmmConcept', () => {
+  describe('when only a meta key is requested', () => {
+    test('only makes a request to the json endpoint for the concept id field', async () => {
+      const consoleMock = jest.spyOn(console, 'log').mockImplementationOnce(() => jest.fn())
+      const queryCmrMock = jest.spyOn(queryCmr, 'queryCmr').mockImplementationOnce(() => Promise.resolve({
+        data: {
+          feed: {
+            entry: [{
+              id: 'C100000-EDSC'
+            }]
+          }
+        }
+      }))
+
+      const response = await queryCmrUmmConcept(
+        'collections',
+        { concept_id: 'C100000-EDSC' },
+        {
+          'CMR-Request-ID': 'abcd-1234-efgh-5678'
+        },
+        {
+          jsonKeys: ['concept_id'],
+          metaKeys: ['collection_count'],
+          ummKeys: [],
+          keyMappings: {
+            type: 'umm.Type'
+          }
+        }
+      )
+
+      expect(queryCmrMock).toBeCalledTimes(1)
+      expect(queryCmrMock).toBeCalledWith(
+        'collections',
+        { concept_id: 'C100000-EDSC' },
+        { 'CMR-Request-ID': 'abcd-1234-efgh-5678' }
+      )
+
+      const [jsonResponse] = response
+      const { data } = await jsonResponse
+
+      expect(data).toEqual({
+        feed: {
+          entry: [{
+            id: 'C100000-EDSC'
+          }]
+        }
+      })
+
+      expect(consoleMock).toBeCalledTimes(2)
+      expect(consoleMock.mock.calls[0][0]).toEqual('Request abcd-1234-efgh-5678 to [concept: collections] requested [format: meta, key: collection_count]')
+      expect(consoleMock.mock.calls[1][0]).toEqual('Request abcd-1234-efgh-5678 to [concept: collections] requested [format: json, key: concept_id]')
+    })
+  })
+
   describe('when only a json key is requested', () => {
     test('only makes a request to the json endpoint', async () => {
       const consoleMock = jest.spyOn(console, 'log').mockImplementationOnce(() => jest.fn())

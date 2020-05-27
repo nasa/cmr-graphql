@@ -13,13 +13,12 @@ export default async (params, headers, parsedInfo) => {
   try {
     const result = {}
 
-    const { fieldsByTypeName } = parsedInfo
-    const { Collection: collectionKeysRequested } = fieldsByTypeName
-    const requestedFields = Object.keys(collectionKeysRequested)
+    let totalCount = 0
 
-    const requestInfo = parseRequestedFields(requestedFields, collectionKeyMap)
+    const requestInfo = parseRequestedFields(parsedInfo, collectionKeyMap, 'collection')
     const {
-      ummKeys
+      ummKeys,
+      isList
     } = requestInfo
 
     const cmrResponse = await queryCmrCollections(params, headers, requestInfo)
@@ -27,6 +26,10 @@ export default async (params, headers, parsedInfo) => {
     const [jsonResponse, ummResponse] = cmrResponse
 
     if (jsonResponse) {
+      const { headers } = jsonResponse
+      const { 'cmr-hits': cmrHits } = headers
+      totalCount = cmrHits
+
       const collections = parseCmrCollections(jsonResponse)
 
       collections.forEach((collection) => {
@@ -55,6 +58,10 @@ export default async (params, headers, parsedInfo) => {
       // Pull out the key mappings so we can retrieve the values below
       const { ummKeyMappings } = collectionKeyMap
 
+      const { headers } = ummResponse
+      const { 'cmr-hits': cmrHits } = headers
+      totalCount = cmrHits
+
       const collections = parseCmrCollections(ummResponse, 'umm_json')
 
       collections.forEach((collection) => {
@@ -78,7 +85,13 @@ export default async (params, headers, parsedInfo) => {
       })
     }
 
-    return snakeCaseKeys(Object.values(result))
+    if (isList) {
+      return {
+        count: totalCount,
+        items: Object.values(result)
+      }
+    }
+    return Object.values(result)
   } catch (error) {
     parseCmrError(error)
   }

@@ -18,12 +18,21 @@ describe('service', () => {
       alias: 'services',
       args: {},
       fieldsByTypeName: {
-        Service: {
-          concept_id: {
-            name: 'concept_id',
-            alias: 'concept_id',
+        ServiceList: {
+          items: {
+            name: 'items',
+            alias: 'items',
             args: {},
-            fieldsByTypeName: {}
+            fieldsByTypeName: {
+              Service: {
+                concept_id: {
+                  name: 'concept_id',
+                  alias: 'concept_id',
+                  args: {},
+                  fieldsByTypeName: {}
+                }
+              }
+            }
           }
         }
       }
@@ -33,6 +42,9 @@ describe('service', () => {
   describe('without params', () => {
     test('returns the parsed service results', async () => {
       const queryCmrServicesMock = jest.spyOn(queryCmrServices, 'queryCmrServices').mockImplementationOnce(() => [{
+        headers: {
+          'cmr-hits': 84
+        },
         data: {
           items: [{
             concept_id: 'S100000-EDSC'
@@ -42,7 +54,7 @@ describe('service', () => {
 
       const parseCmrServicesMock = jest.spyOn(parseCmrServices, 'parseCmrServices')
 
-      const response = await serviceDatasource({}, {}, requestInfo)
+      const response = await serviceDatasource({}, {}, requestInfo, 'service')
 
       expect(queryCmrServicesMock).toBeCalledTimes(1)
       expect(queryCmrServicesMock).toBeCalledWith(
@@ -53,6 +65,9 @@ describe('service', () => {
 
       expect(parseCmrServicesMock).toBeCalledTimes(1)
       expect(parseCmrServicesMock).toBeCalledWith({
+        headers: {
+          'cmr-hits': 84
+        },
         data: {
           items: [{
             concept_id: 'S100000-EDSC'
@@ -60,15 +75,21 @@ describe('service', () => {
         }
       })
 
-      expect(response).toEqual([{
-        concept_id: 'S100000-EDSC'
-      }])
+      expect(response).toEqual({
+        count: 84,
+        items: [{
+          concept_id: 'S100000-EDSC'
+        }]
+      })
     })
   })
 
   describe('with params', () => {
     test('returns the parsed service results', async () => {
       const queryCmrServicesMock = jest.spyOn(queryCmrServices, 'queryCmrServices').mockImplementationOnce(() => [{
+        headers: {
+          'cmr-hits': 84
+        },
         data: {
           items: [{
             concept_id: 'S100000-EDSC'
@@ -78,7 +99,7 @@ describe('service', () => {
 
       const parseCmrServicesMock = jest.spyOn(parseCmrServices, 'parseCmrServices')
 
-      const response = await serviceDatasource({ concept_id: 'S100000-EDSC' }, {}, requestInfo)
+      const response = await serviceDatasource({ concept_id: 'S100000-EDSC' }, {}, requestInfo, 'service')
 
       expect(queryCmrServicesMock).toBeCalledTimes(1)
       expect(queryCmrServicesMock).toBeCalledWith(
@@ -89,6 +110,9 @@ describe('service', () => {
 
       expect(parseCmrServicesMock).toBeCalledTimes(1)
       expect(parseCmrServicesMock).toBeCalledWith({
+        headers: {
+          'cmr-hits': 84
+        },
         data: {
           items: [{
             concept_id: 'S100000-EDSC'
@@ -96,9 +120,12 @@ describe('service', () => {
         }
       })
 
-      expect(response).toEqual([{
-        concept_id: 'S100000-EDSC'
-      }])
+      expect(response).toEqual({
+        count: 84,
+        items: [{
+          concept_id: 'S100000-EDSC'
+        }]
+      })
     })
   })
 
@@ -110,18 +137,27 @@ describe('service', () => {
         alias: 'services',
         args: {},
         fieldsByTypeName: {
-          Service: {
-            concept_id: {
-              name: 'concept_id',
-              alias: 'concept_id',
+          ServiceList: {
+            items: {
+              name: 'items',
+              alias: 'items',
               args: {},
-              fieldsByTypeName: {}
-            },
-            type: {
-              name: 'type',
-              alias: 'type',
-              args: {},
-              fieldsByTypeName: {}
+              fieldsByTypeName: {
+                Service: {
+                  concept_id: {
+                    name: 'concept_id',
+                    alias: 'concept_id',
+                    args: {},
+                    fieldsByTypeName: {}
+                  },
+                  type: {
+                    name: 'type',
+                    alias: 'type',
+                    args: {},
+                    fieldsByTypeName: {}
+                  }
+                }
+              }
             }
           }
         }
@@ -152,7 +188,7 @@ describe('service', () => {
 
     //   const parseCmrServicesMock = jest.spyOn(parseCmrServices, 'parseCmrServices')
 
-    //   const response = await serviceDatasource({ concept_id: 'S100000-EDSC' }, {}, requestInfo)
+    //   const response = await serviceDatasource({ concept_id: 'S100000-EDSC' }, {}, requestInfo, 'service')
 
     //   expect(queryCmrServicesMock).toBeCalledTimes(1)
     //   expect(queryCmrServicesMock).toBeCalledWith(
@@ -198,18 +234,27 @@ describe('service', () => {
         alias: 'services',
         args: {},
         fieldsByTypeName: {
-          Service: {
-            type: {
-              name: 'type',
-              alias: 'type',
+          ServiceList: {
+            items: {
+              name: 'items',
+              alias: 'items',
               args: {},
-              fieldsByTypeName: {}
-            },
-            service_options: {
-              name: 'service_options',
-              alias: 'service_options',
-              args: {},
-              fieldsByTypeName: {}
+              fieldsByTypeName: {
+                Service: {
+                  type: {
+                    name: 'type',
+                    alias: 'type',
+                    args: {},
+                    fieldsByTypeName: {}
+                  },
+                  service_options: {
+                    name: 'service_options',
+                    alias: 'service_options',
+                    args: {},
+                    fieldsByTypeName: {}
+                  }
+                }
+              }
             }
           }
         }
@@ -220,6 +265,9 @@ describe('service', () => {
       const queryCmrServicesMock = jest.spyOn(queryCmrServices, 'queryCmrServices').mockImplementationOnce(() => [
         null,
         {
+          headers: {
+            'cmr-hits': 84
+          },
           data: {
             items: [{
               meta: {
@@ -234,7 +282,7 @@ describe('service', () => {
 
       const parseCmrServicesMock = jest.spyOn(parseCmrServices, 'parseCmrServices')
 
-      const response = await serviceDatasource({ concept_id: 'S100000-EDSC' }, {}, requestInfo)
+      const response = await serviceDatasource({ concept_id: 'S100000-EDSC' }, {}, requestInfo, 'service')
 
       expect(queryCmrServicesMock).toBeCalledTimes(1)
       expect(queryCmrServicesMock).toBeCalledWith(
@@ -245,6 +293,9 @@ describe('service', () => {
 
       expect(parseCmrServicesMock).toBeCalledTimes(1)
       expect(parseCmrServicesMock).toBeCalledWith({
+        headers: {
+          'cmr-hits': 84
+        },
         data: {
           items: [{
             meta: {
@@ -257,9 +308,12 @@ describe('service', () => {
         }
       })
 
-      expect(response).toEqual([{
-        type: 'OPeNDAP'
-      }])
+      expect(response).toEqual({
+        count: 84,
+        items: [{
+          type: 'OPeNDAP'
+        }]
+      })
     })
   })
 
@@ -269,7 +323,7 @@ describe('service', () => {
 
     const parseCmrServicesMock = jest.spyOn(parseCmrServices, 'parseCmrServices')
 
-    const response = await serviceDatasource({ concept_id: 'S100000-EDSC' }, {}, requestInfo)
+    const response = await serviceDatasource({ concept_id: 'S100000-EDSC' }, {}, requestInfo, 'service')
 
     expect(queryCmrServicesMock).toBeCalledTimes(1)
     expect(queryCmrServicesMock).toBeCalledWith(

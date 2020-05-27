@@ -13,13 +13,12 @@ export default async (params, headers, parsedInfo) => {
   try {
     const result = {}
 
-    const { fieldsByTypeName } = parsedInfo
-    const { Variable: variableKeysRequested } = fieldsByTypeName
-    const requestedFields = Object.keys(variableKeysRequested)
+    let totalCount = 0
 
-    const requestInfo = parseRequestedFields(requestedFields, variableKeyMap)
+    const requestInfo = parseRequestedFields(parsedInfo, variableKeyMap, 'variable')
     const {
-      ummKeys
+      ummKeys,
+      isList
     } = requestInfo
 
     const cmrResponse = await queryCmrVariables(params, headers, requestInfo)
@@ -27,6 +26,10 @@ export default async (params, headers, parsedInfo) => {
     const [jsonResponse, ummResponse] = cmrResponse
 
     if (jsonResponse) {
+      const { headers } = jsonResponse
+      const { 'cmr-hits': cmrHits } = headers
+      totalCount = cmrHits
+
       const variables = parseCmrVariables(jsonResponse)
 
       variables.forEach((variable) => {
@@ -43,6 +46,10 @@ export default async (params, headers, parsedInfo) => {
     if (ummResponse) {
       // Pull out the key mappings so we can retrieve the values below
       const { ummKeyMappings } = variableKeyMap
+
+      const { headers } = ummResponse
+      const { 'cmr-hits': cmrHits } = headers
+      totalCount = cmrHits
 
       const variables = parseCmrVariables(ummResponse)
 
@@ -69,6 +76,12 @@ export default async (params, headers, parsedInfo) => {
       })
     }
 
+    if (isList) {
+      return {
+        count: totalCount,
+        items: Object.values(result)
+      }
+    }
     return Object.values(result)
   } catch (error) {
     parseCmrError(error)

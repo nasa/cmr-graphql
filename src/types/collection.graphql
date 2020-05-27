@@ -25,23 +25,32 @@ type Collection {
   version_id: String
   
   granules(
+    concept_id: [String]
+    collection_concept_id: String
     first: Int
-  ): [Granule]!
+  ): GranuleList!
 
   services(
+    concept_id: [String]
     first: Int
-  ): [Service]!
+  ): ServiceList!
 
   variables(
+    concept_id: [String]
     first: Int
-  ): [Variable]!
+  ): VariableList!
+}
+
+type CollectionList {
+  count: Int
+  items: [Collection]
 }
 
 type Query {
   collections(
-    concept_id: [String],
+    concept_id: [String]
     first: Int
-  ): [Collection]
+  ): CollectionList!
   collection(
     concept_id: String!
   ): Collection!
