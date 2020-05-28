@@ -44,10 +44,10 @@ export default {
       const { selections } = selectionSet
 
       selections.forEach((selection) => {
-        const { arguments: ments } = selection
+        const { arguments: selectionArguments } = selection
 
-        ments.forEach((ment) => {
-          const { name, value } = ment
+        selectionArguments.forEach((selectionArgument) => {
+          const { name, value } = selectionArgument
 
           const { value: argumentName } = name
 

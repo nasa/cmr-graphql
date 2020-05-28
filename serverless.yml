@@ -43,11 +43,11 @@ functions:
     timeout: ${env:LAMBDA_TIMEOUT}
     events:
     - http:
-        path: graphql
+        path: api
         method: post
         cors: true
     - http:
-        path: graphql
+        path: api
         method: get
         cors: true
 
