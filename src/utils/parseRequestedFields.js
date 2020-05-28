@@ -1,11 +1,51 @@
-import { difference } from 'lodash'
+import { difference, isEmpty, upperFirst } from 'lodash'
 
 /**
  * Construct an object defining UMM key information
  * @param {Array} requestedFields Fields requested
  * @param {Object} keyMap Mappings of UMM fields to requestable fields
+ * @param {String} conceptName Name of the concept () to lookup requested fields in the query
  */
-export const parseRequestedFields = (requestedFields, keyMap) => {
+export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
+  let { fieldsByTypeName } = parsedInfo
+  const { name } = parsedInfo
+
+  let isList = false
+  const metaKeys = []
+  let requestedFields = []
+
+  // Name will match the query, if the query is plural we have a slightly different
+  // response and we need to handle it
+  if (name.slice(-1) === 's') {
+    isList = true
+
+    const {
+      [`${upperFirst(conceptName.toLowerCase())}List`]: conceptListKeysRequested
+    } = fieldsByTypeName
+    const { count, items = {} } = conceptListKeysRequested
+
+    fieldsByTypeName = items.fieldsByTypeName
+
+    // If the user requested `count` and no other fields, default the requested fields
+    // to convince graph that it should still make a request
+    if (count && isEmpty(items)) {
+      requestedFields = ['concept_id']
+    }
+
+    // Track meta keys for analytics on how often they are requested
+    if (count) metaKeys.push(`${conceptName.toLowerCase()}_count`)
+  }
+
+  // If a plural query is being performed, and the user has not requested any
+  // fields (e.g. only count) then fieldsByTypeName will be undefined and we can ignore it
+  if (fieldsByTypeName) {
+    const {
+      [upperFirst(conceptName.toLowerCase())]: conceptKeysRequested
+    } = fieldsByTypeName
+
+    requestedFields = Object.keys(conceptKeysRequested)
+  }
+
   const { sharedKeys, ummKeyMappings } = keyMap
 
   // Gather keys that the user requested that only exist in umm
@@ -17,8 +57,10 @@ export const parseRequestedFields = (requestedFields, keyMap) => {
   if (difference(ummKeys, sharedKeys).length === 0) {
     return {
       jsonKeys: requestedFields,
+      metaKeys,
       ummKeys: [],
-      ummKeyMappings
+      ummKeyMappings,
+      isList
     }
   }
 
@@ -41,7 +83,9 @@ export const parseRequestedFields = (requestedFields, keyMap) => {
   // Sort the keys to prevent fragility in testing
   return {
     jsonKeys: jsonKeys.sort(),
+    metaKeys,
     ummKeys: ummKeys.sort(),
-    ummKeyMappings
+    ummKeyMappings,
+    isList
   }
 }

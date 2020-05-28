@@ -10,9 +10,14 @@ export const queryCmrUmmConcept = (
   const promises = []
   const {
     jsonKeys,
+    metaKeys = [],
     ummKeys
   } = requestInfo
   const { 'CMR-Request-ID': requestId } = headers
+
+  metaKeys.forEach((param) => {
+    console.log(`Request ${requestId} to [concept: ${conceptType}] requested [format: meta, key: ${param}]`)
+  })
 
   if (jsonKeys.length > 0) {
     // Construct the promise that will request data from the json endpoint

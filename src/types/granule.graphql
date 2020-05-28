@@ -21,12 +21,22 @@ type Granule {
   updated: String
 }
 
+type GranuleList {
+  count: Int
+  items: [Granule]
+}
+
 type Query {
   granules(
-    concept_id: [String],
-    collection_concept_id: String,
+    bounding_box: String
+    circle: String
+    concept_id: [String]
+    collection_concept_id: String
     first: Int
-  ): [Granule]
+    point: String
+    polygon: String
+    temporal: String
+  ): GranuleList!
   granule(
     concept_id: String!
   ): Granule!

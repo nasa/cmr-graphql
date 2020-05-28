@@ -66,7 +66,9 @@ describe('Collection', () => {
         variables: {},
         query: `{
           granules(first:2) {
-            concept_id
+            items {
+              concept_id
+            }
           }
         }`
       })
@@ -74,11 +76,13 @@ describe('Collection', () => {
       const { data } = response
 
       expect(data).toEqual({
-        granules: [{
-          concept_id: 'G100000-EDSC'
-        }, {
-          concept_id: 'G100001-EDSC'
-        }]
+        granules: {
+          items: [{
+            concept_id: 'G100000-EDSC'
+          }, {
+            concept_id: 'G100001-EDSC'
+          }]
+        }
       })
     })
 

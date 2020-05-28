@@ -10,11 +10,16 @@ type Service {
   type: String
 }
 
+type ServiceList {
+  count: Int
+  items: [Service]
+}
+
 type Query {
   services(
     concept_id: [String],
     first: Int
-  ): [Service]
+  ): ServiceList!
   service(
     concept_id: String!
   ): Service!

@@ -18,12 +18,21 @@ describe('granule', () => {
       alias: 'granules',
       args: {},
       fieldsByTypeName: {
-        Granule: {
-          concept_id: {
-            name: 'concept_id',
-            alias: 'concept_id',
+        GranuleList: {
+          items: {
+            name: 'items',
+            alias: 'items',
             args: {},
-            fieldsByTypeName: {}
+            fieldsByTypeName: {
+              Granule: {
+                concept_id: {
+                  name: 'concept_id',
+                  alias: 'concept_id',
+                  args: {},
+                  fieldsByTypeName: {}
+                }
+              }
+            }
           }
         }
       }
@@ -33,6 +42,9 @@ describe('granule', () => {
   describe('without params', () => {
     test('returns the parsed granule results', async () => {
       const queryCmrGranulesMock = jest.spyOn(queryCmrGranules, 'queryCmrGranules').mockImplementationOnce(() => [{
+        headers: {
+          'cmr-hits': 84
+        },
         data: {
           feed: {
             entry: [{
@@ -44,7 +56,7 @@ describe('granule', () => {
 
       const parseCmrGranulesMock = jest.spyOn(parseCmrGranules, 'parseCmrGranules')
 
-      const response = await granuleDatasource({}, {}, requestInfo)
+      const response = await granuleDatasource({}, {}, requestInfo, 'granule')
 
       expect(queryCmrGranulesMock).toBeCalledTimes(1)
       expect(queryCmrGranulesMock).toBeCalledWith(
@@ -55,6 +67,9 @@ describe('granule', () => {
 
       expect(parseCmrGranulesMock).toBeCalledTimes(1)
       expect(parseCmrGranulesMock).toBeCalledWith({
+        headers: {
+          'cmr-hits': 84
+        },
         data: {
           feed: {
             entry: [{
@@ -64,15 +79,21 @@ describe('granule', () => {
         }
       })
 
-      expect(response).toEqual([{
-        concept_id: 'G100000-EDSC'
-      }])
+      expect(response).toEqual({
+        count: 84,
+        items: [{
+          concept_id: 'G100000-EDSC'
+        }]
+      })
     })
   })
 
   describe('with params', () => {
     test('returns the parsed granule results', async () => {
       const queryCmrGranulesMock = jest.spyOn(queryCmrGranules, 'queryCmrGranules').mockImplementationOnce(() => [{
+        headers: {
+          'cmr-hits': 84
+        },
         data: {
           feed: {
             entry: [{
@@ -84,7 +105,7 @@ describe('granule', () => {
 
       const parseCmrGranulesMock = jest.spyOn(parseCmrGranules, 'parseCmrGranules')
 
-      const response = await granuleDatasource({ concept_id: 'G100000-EDSC' }, {}, requestInfo)
+      const response = await granuleDatasource({ concept_id: 'G100000-EDSC' }, {}, requestInfo, 'granule')
 
       expect(queryCmrGranulesMock).toBeCalledTimes(1)
       expect(queryCmrGranulesMock).toBeCalledWith(
@@ -95,6 +116,9 @@ describe('granule', () => {
 
       expect(parseCmrGranulesMock).toBeCalledTimes(1)
       expect(parseCmrGranulesMock).toBeCalledWith({
+        headers: {
+          'cmr-hits': 84
+        },
         data: {
           feed: {
             entry: [{
@@ -104,9 +128,12 @@ describe('granule', () => {
         }
       })
 
-      expect(response).toEqual([{
-        concept_id: 'G100000-EDSC'
-      }])
+      expect(response).toEqual({
+        count: 84,
+        items: [{
+          concept_id: 'G100000-EDSC'
+        }]
+      })
     })
   })
 
@@ -118,24 +145,33 @@ describe('granule', () => {
         alias: 'granules',
         args: {},
         fieldsByTypeName: {
-          Granule: {
-            concept_id: {
-              name: 'concept_id',
-              alias: 'concept_id',
+          GranuleList: {
+            items: {
+              name: 'items',
+              alias: 'items',
               args: {},
-              fieldsByTypeName: {}
-            },
-            browse_flag: {
-              name: 'browse_flag',
-              alias: 'browse_flag',
-              args: {},
-              fieldsByTypeName: {}
-            },
-            granule_ur: {
-              name: 'granule_ur',
-              alias: 'granule_ur',
-              args: {},
-              fieldsByTypeName: {}
+              fieldsByTypeName: {
+                Granule: {
+                  concept_id: {
+                    name: 'concept_id',
+                    alias: 'concept_id',
+                    args: {},
+                    fieldsByTypeName: {}
+                  },
+                  browse_flag: {
+                    name: 'browse_flag',
+                    alias: 'browse_flag',
+                    args: {},
+                    fieldsByTypeName: {}
+                  },
+                  granule_ur: {
+                    name: 'granule_ur',
+                    alias: 'granule_ur',
+                    args: {},
+                    fieldsByTypeName: {}
+                  }
+                }
+              }
             }
           }
         }
@@ -144,6 +180,9 @@ describe('granule', () => {
 
     test('returns the parsed granule results', async () => {
       const queryCmrGranulesMock = jest.spyOn(queryCmrGranules, 'queryCmrGranules').mockImplementationOnce(() => [{
+        headers: {
+          'cmr-hits': 84
+        },
         data: {
           feed: {
             entry: [{
@@ -153,6 +192,9 @@ describe('granule', () => {
           }
         }
       }, {
+        headers: {
+          'cmr-hits': 84
+        },
         data: {
           items: [{
             meta: {
@@ -167,7 +209,7 @@ describe('granule', () => {
 
       const parseCmrGranulesMock = jest.spyOn(parseCmrGranules, 'parseCmrGranules')
 
-      const response = await granuleDatasource({ concept_id: 'G100000-EDSC' }, {}, requestInfo)
+      const response = await granuleDatasource({ concept_id: 'G100000-EDSC' }, {}, requestInfo, 'granule')
 
       expect(queryCmrGranulesMock).toBeCalledTimes(1)
       expect(queryCmrGranulesMock).toBeCalledWith(
@@ -179,6 +221,9 @@ describe('granule', () => {
       expect(parseCmrGranulesMock).toBeCalledTimes(2)
       const [jsonCall, ummCall] = parseCmrGranulesMock.mock.calls
       expect(jsonCall[0]).toEqual({
+        headers: {
+          'cmr-hits': 84
+        },
         data: {
           feed: {
             entry: [{
@@ -189,6 +234,9 @@ describe('granule', () => {
         }
       })
       expect(ummCall[0]).toEqual({
+        headers: {
+          'cmr-hits': 84
+        },
         data: {
           items: [{
             meta: {
@@ -201,11 +249,14 @@ describe('granule', () => {
         }
       })
 
-      expect(response).toEqual([{
-        concept_id: 'G100000-EDSC',
-        browse_flag: true,
-        granule_ur: 'GLDAS_CLSM025_D.2.0:GLDAS_CLSM025_D.A19480101.020.nc4'
-      }])
+      expect(response).toEqual({
+        count: 84,
+        items: [{
+          concept_id: 'G100000-EDSC',
+          browse_flag: true,
+          granule_ur: 'GLDAS_CLSM025_D.2.0:GLDAS_CLSM025_D.A19480101.020.nc4'
+        }]
+      })
     })
   })
 
@@ -217,18 +268,27 @@ describe('granule', () => {
         alias: 'granules',
         args: {},
         fieldsByTypeName: {
-          Granule: {
-            granule_ur: {
-              name: 'granule_ur',
-              alias: 'granule_ur',
+          GranuleList: {
+            items: {
+              name: 'items',
+              alias: 'items',
               args: {},
-              fieldsByTypeName: {}
-            },
-            temporal_extent: {
-              name: 'temporal_extent',
-              alias: 'temporal_extent',
-              args: {},
-              fieldsByTypeName: {}
+              fieldsByTypeName: {
+                Granule: {
+                  granule_ur: {
+                    name: 'granule_ur',
+                    alias: 'granule_ur',
+                    args: {},
+                    fieldsByTypeName: {}
+                  },
+                  temporal_extent: {
+                    name: 'temporal_extent',
+                    alias: 'temporal_extent',
+                    args: {},
+                    fieldsByTypeName: {}
+                  }
+                }
+              }
             }
           }
         }
@@ -239,6 +299,9 @@ describe('granule', () => {
       const queryCmrGranulesMock = jest.spyOn(queryCmrGranules, 'queryCmrGranules').mockImplementationOnce(() => [
         null,
         {
+          headers: {
+            'cmr-hits': 84
+          },
           data: {
             items: [{
               meta: {
@@ -253,7 +316,7 @@ describe('granule', () => {
 
       const parseCmrGranulesMock = jest.spyOn(parseCmrGranules, 'parseCmrGranules')
 
-      const response = await granuleDatasource({ concept_id: 'G100000-EDSC' }, {}, requestInfo)
+      const response = await granuleDatasource({ concept_id: 'G100000-EDSC' }, {}, requestInfo, 'granule')
 
       expect(queryCmrGranulesMock).toBeCalledTimes(1)
       expect(queryCmrGranulesMock).toBeCalledWith(
@@ -264,6 +327,9 @@ describe('granule', () => {
 
       expect(parseCmrGranulesMock).toBeCalledTimes(1)
       expect(parseCmrGranulesMock).toBeCalledWith({
+        headers: {
+          'cmr-hits': 84
+        },
         data: {
           items: [{
             meta: {
@@ -276,9 +342,12 @@ describe('granule', () => {
         }
       }, 'umm_json')
 
-      expect(response).toEqual([{
-        granule_ur: 'GLDAS_CLSM025_D.2.0:GLDAS_CLSM025_D.A19480101.020.nc4'
-      }])
+      expect(response).toEqual({
+        count: 84,
+        items: [{
+          granule_ur: 'GLDAS_CLSM025_D.2.0:GLDAS_CLSM025_D.A19480101.020.nc4'
+        }]
+      })
     })
   })
 
@@ -288,7 +357,7 @@ describe('granule', () => {
 
     const parseCmrGranulesMock = jest.spyOn(parseCmrGranules, 'parseCmrGranules')
 
-    const response = await granuleDatasource({ concept_id: 'G100000-EDSC' }, {}, requestInfo)
+    const response = await granuleDatasource({ concept_id: 'G100000-EDSC' }, {}, requestInfo, 'granule')
 
     expect(queryCmrGranulesMock).toBeCalledTimes(1)
     expect(queryCmrGranulesMock).toBeCalledWith(

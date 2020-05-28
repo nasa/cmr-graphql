@@ -13,13 +13,12 @@ export default async (params, headers, parsedInfo) => {
   try {
     const result = {}
 
-    const { fieldsByTypeName } = parsedInfo
-    const { Granule: granuleKeysRequested } = fieldsByTypeName
-    const requestedFields = Object.keys(granuleKeysRequested)
+    let totalCount = 0
 
-    const requestInfo = parseRequestedFields(requestedFields, granuleKeyMap)
+    const requestInfo = parseRequestedFields(parsedInfo, granuleKeyMap, 'granule')
     const {
-      ummKeys
+      ummKeys,
+      isList
     } = requestInfo
 
     const cmrResponse = await queryCmrGranules(params, headers, requestInfo)
@@ -27,6 +26,10 @@ export default async (params, headers, parsedInfo) => {
     const [jsonResponse, ummResponse] = cmrResponse
 
     if (jsonResponse) {
+      const { headers } = jsonResponse
+      const { 'cmr-hits': cmrHits } = headers
+      totalCount = cmrHits
+
       const granules = parseCmrGranules(jsonResponse)
 
       granules.forEach((granule) => {
@@ -55,6 +58,10 @@ export default async (params, headers, parsedInfo) => {
       // Pull out the key mappings so we can retrieve the values below
       const { ummKeyMappings } = granuleKeyMap
 
+      const { headers } = ummResponse
+      const { 'cmr-hits': cmrHits } = headers
+      totalCount = cmrHits
+
       const granules = parseCmrGranules(ummResponse, 'umm_json')
 
       granules.forEach((granule) => {
@@ -78,6 +85,12 @@ export default async (params, headers, parsedInfo) => {
       })
     }
 
+    if (isList) {
+      return {
+        count: totalCount,
+        items: Object.values(result)
+      }
+    }
     return Object.values(result)
   } catch (error) {
     parseCmrError(error)

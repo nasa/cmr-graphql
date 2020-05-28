@@ -10,9 +10,14 @@ import { queryCmrUmmConcept } from './queryCmrUmmConcept'
 export const queryCmrGranules = (params, headers, requestInfo) => {
   // Pick out permitted parameters
   const permittedSearchParams = pick(params, [
+    'bounding_box',
+    'circle',
     'collection_concept_id',
     'concept_id',
-    'page_size'
+    'page_size',
+    'point',
+    'polygon',
+    'temporal'
   ])
 
   return queryCmrUmmConcept('granules', permittedSearchParams, {
