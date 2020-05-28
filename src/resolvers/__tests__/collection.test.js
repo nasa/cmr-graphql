@@ -217,6 +217,103 @@ describe('Collection', () => {
       })
     })
 
+    test('granules with arguments passed from the collection', async () => {
+      const { query } = createTestClient(server)
+
+      nock(/example/)
+        .defaultReplyHeaders({
+          'CMR-Took': 7,
+          'CMR-Request-ID': 'abcd-1234-efgh-5678'
+        })
+        .post(/collections\.json/)
+        .reply(200, {
+          feed: {
+            entry: [{
+              id: 'C100000-EDSC'
+            }, {
+              id: 'C100001-EDSC'
+            }]
+          }
+        })
+
+      nock(/example/)
+        .defaultReplyHeaders({
+          'CMR-Took': 7,
+          'CMR-Request-ID': 'abcd-1234-efgh-5678'
+        })
+        .post(/granules\.json/, 'bounding_box=-90.08940124511719%2C41.746426050239336%2C-82.33992004394531%2C47.84755587105307&collection_concept_id=C100000-EDSC&page_size=20')
+        .reply(200, {
+          feed: {
+            entry: [{
+              id: 'G100000-EDSC'
+            }, {
+              id: 'G100001-EDSC'
+            }]
+          }
+        })
+
+      nock(/example/)
+        .defaultReplyHeaders({
+          'CMR-Took': 7,
+          'CMR-Request-ID': 'abcd-1234-efgh-5678'
+        })
+        .post(/granules\.json/, 'bounding_box=-90.08940124511719%2C41.746426050239336%2C-82.33992004394531%2C47.84755587105307&collection_concept_id=C100001-EDSC&page_size=20')
+        .reply(200, {
+          feed: {
+            entry: [{
+              id: 'G100002-EDSC'
+            }, {
+              id: 'G100003-EDSC'
+            }]
+          }
+        })
+
+      const response = await query({
+        variables: {},
+        query: `{
+          collections(
+            first:2
+            bounding_box:"-90.08940124511719,41.746426050239336,-82.33992004394531,47.84755587105307"
+          ) {
+            items {
+              concept_id
+              granules {
+                items {
+                  concept_id
+                }
+              }
+            }
+          }
+        }`
+      })
+
+      const { data } = response
+
+      expect(data).toEqual({
+        collections: {
+          items: [{
+            concept_id: 'C100000-EDSC',
+            granules: {
+              items: [{
+                concept_id: 'G100000-EDSC'
+              }, {
+                concept_id: 'G100001-EDSC'
+              }]
+            }
+          }, {
+            concept_id: 'C100001-EDSC',
+            granules: {
+              items: [{
+                concept_id: 'G100002-EDSC'
+              }, {
+                concept_id: 'G100003-EDSC'
+              }]
+            }
+          }]
+        }
+      })
+    })
+
     describe('services', () => {
       describe('no associations are present in the metadata', () => {
         test('doesn\'t query for or return services', async () => {

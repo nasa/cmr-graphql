@@ -25,9 +25,14 @@ type Collection {
   version_id: String
   
   granules(
-    concept_id: [String]
+    bounding_box: String
+    circle: String
+    concept_id: String
     collection_concept_id: String
     first: Int
+    point: String
+    polygon: String
+    temporal: String
   ): GranuleList!
 
   services(
@@ -48,8 +53,13 @@ type CollectionList {
 
 type Query {
   collections(
+    bounding_box: String
+    circle: String
     concept_id: [String]
     first: Int
+    point: String
+    polygon: String
+    temporal: String
   ): CollectionList!
   collection(
     concept_id: String!

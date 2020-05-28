@@ -20,14 +20,54 @@ export default {
   Collection: {
     granules: async (source, args, { dataSources, headers }, info) => {
       // Pull out parent collection id to provide to the granules endpoint because cmr requires it
-      const { concept_id: collectionId } = source
+      const {
+        concept_id: collectionId
+      } = source
 
-      return dataSources.granuleSource(
-        handlePagingParams({
-          collection_concept_id: collectionId,
-          ...args
-        }), headers, parseResolveInfo(info)
-      )
+      // Empty object that will contain the search parameters sent to CMR
+      const granuleParams = {}
+
+      // If filtering parameters were supplied to the collection query it is expected
+      // that the granules will also be filtered by those same conditions
+      const passthroughParams = [
+        'bounding_box',
+        'circle',
+        'point',
+        'polygon',
+        'temporal'
+      ]
+
+      // Pull out arguments for the top level operation provided in the info so that we can
+      // pass through filtering arguments to granules
+      const { operation } = info
+      const { selectionSet } = operation
+      const { selections } = selectionSet
+
+      selections.forEach((selection) => {
+        const { arguments: ments } = selection
+
+        ments.forEach((ment) => {
+          const { name, value } = ment
+
+          const { value: argumentName } = name
+
+          // TODO: This will only work for string values, it will need to be updated if we need to support arrays
+          const { value: argumentValue } = value
+
+          if (passthroughParams.includes(argumentName)) {
+            granuleParams[argumentName] = argumentValue
+          }
+        })
+      })
+
+      // Splat granuleParams before args to allow for overwriting granuleParams
+      const requestedParams = handlePagingParams({
+        collection_concept_id: collectionId,
+        ...granuleParams,
+        ...args
+      })
+
+      return dataSources.granuleSource(requestedParams, headers, parseResolveInfo(info))
     },
     services: async (source, args, { dataSources, headers }, info) => {
       const {
@@ -36,8 +76,12 @@ export default {
 
       const { services = [] } = associations
 
-      if (!services.length) return []
-
+      if (!services.length) {
+        return {
+          count: 0,
+          items: null
+        }
+      }
       return dataSources.serviceSource({
         concept_id: services,
         ...handlePagingParams(args, services.length)
@@ -50,7 +94,12 @@ export default {
 
       const { variables = [] } = associations
 
-      if (!variables.length) return []
+      if (!variables.length) {
+        return {
+          count: 0,
+          items: null
+        }
+      }
 
       return dataSources.variableSource({
         concept_id: variables,

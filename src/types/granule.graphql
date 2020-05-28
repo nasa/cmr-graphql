@@ -28,9 +28,14 @@ type GranuleList {
 
 type Query {
   granules(
+    bounding_box: String
+    circle: String
     concept_id: [String]
     collection_concept_id: String
     first: Int
+    point: String
+    polygon: String
+    temporal: String
   ): GranuleList!
   granule(
     concept_id: String!
