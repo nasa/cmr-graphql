@@ -19,6 +19,7 @@ type Collection {
   dataset_id: String
   "True if there are multiple supported formats for any services associated with the collection."
   has_formats: Boolean 
+  "True if any of its associated services support spatial subsetting"
   has_spatial_subsetting: Boolean
   "True if any of its associated services support temporal subsetting."
   has_temporal_subsetting: Boolean
@@ -36,19 +37,18 @@ type Collection {
   science_keywords: JSON
   "Find collections matching any of the 'short_name' param values"
   short_name: String
+  "Specifies the geographic and vertical (altitude, depth) coverage of the data."
   spatial_extent: JSON
   "The summary of intentions with which this collection was developed."
   summary: String
   "This class contains attributes which describe the temporal range of a specific collection. Temporal Extent includes a specification of the Temporal Range Type of the collection, which is one of Range Date Time, Single Date Time, or Periodic Date Time"
   temporant_extents: JSON
-  temporal_extent: JSON
   "Start time of the metadata"
   time_start: String
   "End time of the metadata"
   time_end: String
+  "The title of the collection described by the metadata."
   title: String
-  "Provider defined version id of the collection."
-  version: String
   "Provider defined version id of the collection"
   version_id: String
   
