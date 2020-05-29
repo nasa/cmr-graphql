@@ -1,24 +1,34 @@
-scalar JSON
-
 type Variable {
+  "The unique concept id assigned to the variable."
   concept_id: String!
+  "The definition of the variable."
+  definition: String
+  "The expanded or long name related to the variable Name."
   long_name: String
+  "The name of a variable."
   name: String
+  "Controlled Science Keywords describing the collection. The controlled vocabulary for Science Keywords is maintained in the Keyword Management System (KMS)."
   science_keywords: JSON
+  "This element is used to classify the variable as a Science Variable, Quality Variable or Ancillary Variable. If a variable does not contain this field, it will be assumed to be a science variable"
   variable_type: String
 }
 
 type VariableList {
+  "The number of hits for a given search."
   count: Int
+  "The list of variable search results."
   items: [Variable]
 }
 
 type Query {
   variables(
+    "The unique concept id assigned to the variable."
     concept_id: [String],
+    "The number of variables requested by the user"
     first: Int
   ): VariableList!
   variable(
+    "The unique concept id assigned to the variable."
     concept_id: String!
   ): Variable!
 }

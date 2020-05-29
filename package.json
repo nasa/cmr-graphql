@@ -3,6 +3,10 @@
   "root": true,
   "version": "1.0.0",
   "description": "Serverless Framework Implementation of GraphQL",
+  "graphdoc": {
+    "endpoint": "http://localhost:3003/graphql",
+    "output": "./doc/schema"
+  },
   "maintainers": [
     {
       "name": "Ryan Abbott",
@@ -25,7 +29,7 @@
     "start": "serverless offline start",
     "test": "jest",
     "test:watch": "jest --watchAll",
-    "test:ci": "jest --ci --reporters=default --reporters=jest-junit",
+    "test:bamboo": "jest --ci --reporters=default --reporters=jest-junit",
     "lint": "eslint src"
   },
   "devDependencies": {
@@ -58,6 +62,7 @@
     "graphql": "^14.2.0",
     "graphql-parse-resolve-info": "^4.7.0",
     "graphql-tools": "^5.0.0",
+    "graphql-type-json": "^0.3.1",
     "lodash": "^4.17.15",
     "merge-graphql-schemas": "^1.7.8",
     "qs": "^6.9.4",
