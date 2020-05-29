@@ -1,43 +1,76 @@
-scalar JSON
-
 type Granule {
+  "Boolean value displaying whether or not a granule has browse imagery"
   browse_flag: Boolean
+  "The concept id of the parent CMR collection"
   collection_concept_id: String
+  "A percentage value indicating how much of the area of a granule (the EOSDIS data unit) has been obscured by clouds. It is worth noting that there are many different measures of cloud cover within the EOSDIS data holdings and that the cloud cover parameter that is represented in the archive is dataset-specific."
+  cloud_cover: Int
+  "The unique concept id assigned to the granule."
   concept_id: String!
+  "Coordinate system info of the metadata"
   coordinate_system: String
+  "Provider Id"
   data_center: String
+  "Alias for entry_title"
   dataset_id: String
+  "The day/night flag of the granule"
   day_night_flag: String
+  "The Universal Reference ID of the granule referred by the data provider. This ID is unique per data provider."
   granule_ur: String
+  "A list of any URLs in the granule"
   links: [String]
+  "A flag to indicate whether associated data can be downloaded"
   online_access_flag: Boolean
+  "This entity is used to store the characteristics of the orbit calculated spatial domain to include the model name, orbit number, start and stop orbit number, equator crossing date and time, and equator crossing longitude."
+  orbit_calculated_spatial_domains: JSON
+  "Native format of the granule"
   original_format: String
+  "A list of associated lat/lon points"
   points: [String]
+  "This element describes any data/service related URLs that include project home pages, services, related data archives/servers, metadata extensions, direct links to online software packages, web mapping services, links to images, or other data."
+  related_urls: JSON
+  "This class contains attributes which describe the spatial extent of a granule. Spatial Extent includes any or all of Granule Localities, Horizontal Spatial Domain, and Vertical Spatial Domain."
   spatial_extent: JSON
+  "This class contains attributes which describe the temporal extent of a granule. Temporal Extent includes either a Range Date Time, or a Single Date Time"
   temporal_extent: JSON
+  "End time of the metadata"
   time_end: String
+  "Start time of the metadata"
   time_start: String
+  "Atom response: either 'ECHO dataset metadata' or 'ECHO granule metadata'"
   title: String
+  "Atom response: the date/time the search was executed"
   updated: String
 }
 
 type GranuleList {
+  "The number of hits for a given search."
   count: Int
+  "The list of granule search results."
   items: [Granule]
 }
 
 type Query {
   granules(
+    "Bounding boxes define an area on the earth aligned with longitude and latitude. The Bounding box parameters must be 4 comma-separated numbers: lower left longitude, lower left latitude, upper right longitude, upper right latitude."
     bounding_box: String
+    "Circle defines a circle area on the earth with a center point and a radius. The center parameters must be 3 comma-separated numbers: longitude of the center point, latitude of the center point, radius of the circle in meters. The circle center cannot be on North or South pole. The radius of the circle must be between 10 and 6,000,000."
     circle: String
-    concept_id: [String]
-    collection_concept_id: String
+    "The unique concept id assigned to the granule."
+    concept_id: [String],
+    "The unique concept id assigned to the parent collection."
+    collection_concept_id: String,
+    "The number of granules requested by the user."
     first: Int
+    "Search using a point involves using a pair of values representing the point coordinates as parameters. The first value is the longitude and second value is the latitude."
     point: String
+    "Polygon points are provided in counter-clockwise order. The last point should match the first point to close the polygon. The values are listed comma separated in longitude latitude order, i.e. lon1, lat1, lon2, lat2, lon3, lat3, and so on."
     polygon: String
+    "The temporal datetime has to be in yyyy-MM-ddTHH:mm:ssZ format."
     temporal: String
   ): GranuleList!
   granule(
+    "The unique concept id assigned to the granule."
     concept_id: String!
   ): Granule!
 }

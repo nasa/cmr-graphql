@@ -1,67 +1,117 @@
-scalar JSON
-
 type Collection {
+  "A brief description of the collection or service the metadata represents."
   abstract: String
+  "Find collections matching 'archive_center' param value"
   archive_center: String
+  "True if the metadata contains browse imagery"
   browse_flag: Boolean
+  "The unique concept id assigned to the collection."
   concept_id: String!
+  "Coordinate system of the metadata."
   coordinate_system: String
+  "Provider associated with the metadata"
   data_center: String
+  "Information about the data centers responsible for this collection and its metadata."
+  data_centers: JSON
+  "This element stores the DOI (Digital Object Identifier) that identifies the collection. Note: The values should start with the directory indicator which in ESDIS' case is 10.  If the DOI was registered through ESDIS, the beginning of the string should be 10.5067. The DOI URL is not stored here; it should be stored as a RelatedURL. The DOI organization that is responsible for creating the DOI is described in the Authority element. For ESDIS records the value of https://doi.org/ should be used. While this element is not required, NASA metadata providers are strongly encouraged to include DOI and DOI Authority for their collections."
+  doi: JSON
+  "True if any of its associated services support spatial subsetting."
   dataset_id: String
+  "True if there are multiple supported formats for any services associated with the collection."
   has_formats: Boolean 
   has_spatial_subsetting: Boolean
+  "True if any of its associated services support temporal subsetting."
   has_temporal_subsetting: Boolean
+  "True if there are transformations (subset, interpolation or projection) in any of its associated services."
   has_transforms: Boolean
+  "True if there are variables associated with the collection."
   has_variables: Boolean
+  "True if the data is available online."
   online_access_flag: Boolean
+  "Organizations associated with the metadata, including data centers."
   organizations: [String]
+  "Original metadata format."
   original_format: String
+  "Controlled Science Keywords describing the collection.  The controlled vocabulary for Science Keywords is maintained in the Keyword Management System (KMS)."
+  science_keywords: JSON
+  "Find collections matching any of the 'short_name' param values"
   short_name: String
   spatial_extent: JSON
+  "The summary of intentions with which this collection was developed."
   summary: String
+  "This class contains attributes which describe the temporal range of a specific collection. Temporal Extent includes a specification of the Temporal Range Type of the collection, which is one of Range Date Time, Single Date Time, or Periodic Date Time"
+  temporant_extents: JSON
   temporal_extent: JSON
+  "Start time of the metadata"
   time_start: String
+  "End time of the metadata"
+  time_end: String
   title: String
+  "Provider defined version id of the collection."
+  version: String
+  "Provider defined version id of the collection"
   version_id: String
   
   granules(
-    bounding_box: String
-    circle: String
+    "The unique concept id assigned to the granule."
     concept_id: String
+    "The unique concept id assigned to the parent collection."
     collection_concept_id: String
+    "The number of granules requested by the user"
     first: Int
+    "Bounding boxes define an area on the earth aligned with longitude and latitude. The Bounding box parameters must be 4 comma-separated numbers: lower left longitude, lower left latitude, upper right longitude, upper right latitude."
+    bounding_box: String
+    "Circle defines a circle area on the earth with a center point and a radius. The center parameters must be 3 comma-separated numbers: longitude of the center point, latitude of the center point, radius of the circle in meters. The circle center cannot be on North or South pole. The radius of the circle must be between 10 and 6,000,000."
+    circle: String
+    "Search using a point involves using a pair of values representing the point coordinates as parameters. The first value is the longitude and second value is the latitude."
     point: String
+    "Polygon points are provided in counter-clockwise order. The last point should match the first point to close the polygon. The values are listed comma separated in longitude latitude order, i.e. lon1, lat1, lon2, lat2, lon3, lat3, and so on."
     polygon: String
+    "The temporal datetime has to be in yyyy-MM-ddTHH:mm:ssZ format."
     temporal: String
   ): GranuleList!
 
   services(
+    "The unique concept id assigned to the service."
     concept_id: [String]
+    "The number of services requested by the user"
     first: Int
   ): ServiceList!
 
   variables(
+    "The unique concept id assigned to the variable."
     concept_id: [String]
+    "The number of variables requested by the user"
     first: Int
   ): VariableList!
 }
 
 type CollectionList {
+  "The number of hits for a given search."
   count: Int
+  "The list of collection search results."
   items: [Collection]
 }
 
 type Query {
   collections(
-    bounding_box: String
-    circle: String
+    "The unique concept id assigned to the collection."
     concept_id: [String]
+    "Bounding boxes define an area on the earth aligned with longitude and latitude. The Bounding box parameters must be 4 comma-separated numbers: lower left longitude, lower left latitude, upper right longitude, upper right latitude."
+    bounding_box: String
+    "Circle defines a circle area on the earth with a center point and a radius. The center parameters must be 3 comma-separated numbers: longitude of the center point, latitude of the center point, radius of the circle in meters. The circle center cannot be on North or South pole. The radius of the circle must be between 10 and 6,000,000."
+    circle: String
+    "The number of collections requested by the user"
     first: Int
+    "Search using a point involves using a pair of values representing the point coordinates as parameters. The first value is the longitude and second value is the latitude."
     point: String
+    "Polygon points are provided in counter-clockwise order. The last point should match the first point to close the polygon. The values are listed comma separated in longitude latitude order, i.e. lon1, lat1, lon2, lat2, lon3, lat3, and so on."
     polygon: String
+    "The temporal datetime has to be in yyyy-MM-ddTHH:mm:ssZ format."
     temporal: String
   ): CollectionList!
   collection(
+    "The unique concept id assigned to the collection."
     concept_id: String!
   ): Collection!
 }

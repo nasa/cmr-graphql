@@ -1,26 +1,36 @@
-scalar JSON
-
 type Service {
-  concept_id: String!
-  description: String
-  long_name: String
-  name: String
-  related_urls: JSON
-  service_options: JSON
-  type: String
-}
+   "The unique concept id assigned to the service."
+   concept_id: String!
+   "A brief description of the service."
+   description: String
+   "The long name of the service, software, or tool."
+   long_name: String
+   "The name of the service, software, or tool."
+   name: String
+   "This element contains important information about the universal resource locator (URL) for the service."
+   related_urls: JSON
+   "This object describes service options, data transformations and output formats."
+   service_options: JSON
+   "The type of the service, software, or tool."
+   type: String
+ }
 
 type ServiceList {
+  "The number of hits for a given search."
   count: Int
+  "The list of service search results."
   items: [Service]
 }
 
 type Query {
   services(
+    "The unique concept id assigned to the service."
     concept_id: [String],
+    "The number of servies requested by the user"
     first: Int
   ): ServiceList!
   service(
+    "The unique concept id assigned to the service."
     concept_id: String!
   ): Service!
 }
