@@ -22,8 +22,9 @@ GraphQL is an api developed by [NASA](http://nasa.gov) [EOSDIS](https://earthdat
 Before running the application you'll want to ensure that all necessary packages are installed by running:
 
     npm install
-    
+
 GraphQL uses a few environment variables for configuring runtime options:
+
 |Variable Name|Default|Description|
 |-|:-:|-|
 |CMR_ROOT_URL||URL to ping when retrieving metadata e.g. https://cmr.earthdata.nasa.gov|
@@ -39,7 +40,7 @@ This will run the application at [http://localhost:3001/api](http://localhost:30
 
 ## Usage
 
-Currently, this API supports searching and retrieving data for [Collections](#collections), [Granules](#granules), [Services](#services) and [Variables](#variables). 
+Currently, this API supports searching and retrieving data for [Collections](#collections), [Granules](#granules), [Services](#services) and [Variables](#variables).
 
 #### Basics
 
@@ -132,10 +133,10 @@ For all supported arguments and columns, see [the schema](src/types/collection.g
         }
       }
     }
-    
+
 #### Granules
 
-For performance reasons, CMR requires that a collection be provided in order to query granules. While CMR supports multiple aliases for the collection GraphQL requires that it be called `collection_concept_id`; if this is not provided CMR will return an error. We don't enforce this in the schema because you can also use `concept_id` if you're looking for specific granules and schemas don't offer a means of offering conditional validations. 
+For performance reasons, CMR requires that a collection be provided in order to query granules. While CMR supports multiple aliases for the collection GraphQL requires that it be called `collection_concept_id`; if this is not provided CMR will return an error. We don't enforce this in the schema because you can also use `concept_id` if you're looking for specific granules and schemas don't offer a means of offering conditional validations.
 
 ##### Passthrough Arguments
 
@@ -195,7 +196,7 @@ For all supported arguments and columns, see [the schema](src/types/service.grap
         items {
           concept_id
           type
-          description        
+          description
         }
       }
     }
@@ -213,7 +214,7 @@ For all supported arguments and columns, see [the schema](src/types/variable.gra
       variable(concept_id:"V1000000001-EXAMPLE") {
         concept_id
         science_keywords
-        variable_type   
+        variable_type
       }
     }
 
@@ -225,7 +226,7 @@ For all supported arguments and columns, see [the schema](src/types/variable.gra
         items {
           concept_id
           science_keywords
-          variable_type   
+          variable_type
         }
       }
     }
