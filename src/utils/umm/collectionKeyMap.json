@@ -2,13 +2,13 @@
   "sharedKeys": [
     "concept_id",
     "title",
-    "version"
+    "version_id"
   ],
   "ummKeyMappings": {
     "abstract": "umm.Abstract",
     "temporal_extents": "umm.TemporalExtents",
     "spatial_extent": "umm.SpatialExtent",
     "title": "umm.EntryTitle",
-    "version": "umm.Version"
+    "version_id": "umm.Version"
   }
 }
