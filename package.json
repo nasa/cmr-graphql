@@ -29,7 +29,7 @@
     "start": "serverless offline start",
     "test": "jest",
     "test:watch": "jest --watchAll",
-    "test:ci": "jest --ci --reporters=default --reporters=jest-junit",
+    "test:bamboo": "jest --ci --reporters=default --reporters=jest-junit",
     "lint": "eslint src"
   },
   "devDependencies": {
