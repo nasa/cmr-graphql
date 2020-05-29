@@ -24,7 +24,7 @@ Before running the application you'll want to ensure that all necessary packages
     npm install
     
 GraphQL uses a few environment variables for configuring runtime options:
-Variable Name|Default|Description
+|Variable Name|Default|Description
 |-|:-:|-
 |CMR_ROOT_URL||URL to ping when retrieving metadata e.g. https://cmr.earthdata.nasa.gov
 |LAMBDA_TIMEOUT|30|Number of seconds to set the Lambda timeout to.
