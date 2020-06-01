@@ -107,6 +107,8 @@ type Query {
     point: String
     "Polygon points are provided in counter-clockwise order. The last point should match the first point to close the polygon. The values are listed comma separated in longitude latitude order, i.e. lon1, lat1, lon2, lat2, lon3, lat3, and so on."
     polygon: String
+    "The short name associated with the collection."
+    short_name: String
     "The temporal datetime has to be in yyyy-MM-ddTHH:mm:ssZ format."
     temporal: String
   ): CollectionList!

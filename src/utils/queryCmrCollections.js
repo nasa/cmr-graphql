@@ -16,6 +16,7 @@ export const queryCmrCollections = (params, headers, requestInfo) => {
     'page_size',
     'point',
     'polygon',
+    'short_name',
     'temporal'
   ])
 
