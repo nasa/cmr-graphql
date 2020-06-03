@@ -13,10 +13,15 @@ export const queryCmrCollections = (params, headers, requestInfo) => {
     'bounding_box',
     'circle',
     'concept_id',
+    'has_granules_or_cwic',
+    'has_granules',
+    'include_has_granules',
+    'include_tags',
     'page_size',
     'point',
     'polygon',
     'short_name',
+    'sort_key',
     'temporal'
   ])
 

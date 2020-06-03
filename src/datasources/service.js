@@ -84,8 +84,6 @@ export default async (params, headers, parsedInfo) => {
     }
     return Object.values(result)
   } catch (error) {
-    parseCmrError(error)
+    return parseCmrError(error)
   }
-
-  return []
 }

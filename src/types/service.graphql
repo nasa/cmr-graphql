@@ -9,8 +9,14 @@ type Service {
    name: String
    "This element contains important information about the universal resource locator (URL) for the service."
    related_urls: JSON
-   "This object describes service options, data transformations and output formats."
+   "Service options, data transformations and output formats."
    service_options: JSON
+   "List of input format names supported by the service."
+   supported_input_formats: JSON
+   "List of output format names supported by the service."
+   supported_output_formats: JSON
+   "List of format name combinations which explicitly state which re-formatting options are available."
+   supported_reformattings: JSON
    "The type of the service, software, or tool."
    type: String
  }

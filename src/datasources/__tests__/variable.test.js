@@ -1,3 +1,7 @@
+import nock from 'nock'
+
+import { ApolloError } from 'apollo-server-lambda'
+
 import variableDatasource from '../variable'
 
 import * as parseCmrVariables from '../../utils/parseCmrVariables'
@@ -54,12 +58,12 @@ describe('variable', () => {
 
       const parseCmrVariablesMock = jest.spyOn(parseCmrVariables, 'parseCmrVariables')
 
-      const response = await variableDatasource({}, {}, requestInfo, 'variable')
+      const response = await variableDatasource({}, { 'CMR-Request-ID': 'abcd-1234-efgh-5678' }, requestInfo, 'variable')
 
       expect(queryCmrVariablesMock).toBeCalledTimes(1)
       expect(queryCmrVariablesMock).toBeCalledWith(
         {},
-        {},
+        { 'CMR-Request-ID': 'abcd-1234-efgh-5678' },
         expect.objectContaining({ jsonKeys: ['concept_id'] })
       )
 
@@ -99,12 +103,12 @@ describe('variable', () => {
 
       const parseCmrVariablesMock = jest.spyOn(parseCmrVariables, 'parseCmrVariables')
 
-      const response = await variableDatasource({ concept_id: 'V100000-EDSC' }, {}, requestInfo, 'variable')
+      const response = await variableDatasource({ concept_id: 'V100000-EDSC' }, { 'CMR-Request-ID': 'abcd-1234-efgh-5678' }, requestInfo, 'variable')
 
       expect(queryCmrVariablesMock).toBeCalledTimes(1)
       expect(queryCmrVariablesMock).toBeCalledWith(
         { concept_id: 'V100000-EDSC' },
-        {},
+        { 'CMR-Request-ID': 'abcd-1234-efgh-5678' },
         expect.objectContaining({ jsonKeys: ['concept_id'] })
       )
 
@@ -193,7 +197,7 @@ describe('variable', () => {
     //   expect(queryCmrVariablesMock).toBeCalledTimes(1)
     //   expect(queryCmrVariablesMock).toBeCalledWith(
     //     { concept_id: 'V100000-EDSC' },
-    //     {},
+    //     { 'CMR-Request-ID': 'abcd-1234-efgh-5678' },
     //     expect.objectContaining({ jsonKeys: ['concept_id'], ummKeys: ['variable_type'] })
     //   )
 
@@ -282,12 +286,12 @@ describe('variable', () => {
 
       const parseCmrVariablesMock = jest.spyOn(parseCmrVariables, 'parseCmrVariables')
 
-      const response = await variableDatasource({ concept_id: 'V100000-EDSC' }, {}, requestInfo, 'variable')
+      const response = await variableDatasource({ concept_id: 'V100000-EDSC' }, { 'CMR-Request-ID': 'abcd-1234-efgh-5678' }, requestInfo, 'variable')
 
       expect(queryCmrVariablesMock).toBeCalledTimes(1)
       expect(queryCmrVariablesMock).toBeCalledWith(
         { concept_id: 'V100000-EDSC' },
-        {},
+        { 'CMR-Request-ID': 'abcd-1234-efgh-5678' },
         expect.objectContaining({ jsonKeys: [], ummKeys: ['science_keywords', 'variable_type'] })
       )
 
@@ -318,22 +322,29 @@ describe('variable', () => {
   })
 
   test('catches errors received from queryCmrVariables', async () => {
+    nock(/localhost/)
+      .post(/variables/)
+      .reply(500, {
+        errors: ['HTTP Error']
+      }, {
+        'cmr-request-id': 'abcd-1234-efgh-5678'
+      })
+
     const queryCmrVariablesMock = jest.spyOn(queryCmrVariables, 'queryCmrVariables')
-      .mockImplementationOnce(() => new Promise((resolve, reject) => reject(new Error('HTTP Error'))))
 
     const parseCmrVariablesMock = jest.spyOn(parseCmrVariables, 'parseCmrVariables')
 
-    const response = await variableDatasource({ concept_id: 'V100000-EDSC' }, {}, requestInfo, 'variable')
+    await expect(
+      variableDatasource({ concept_id: 'V100000-EDSC' }, { 'CMR-Request-ID': 'abcd-1234-efgh-5678' }, requestInfo, 'variable')
+    ).rejects.toThrow(ApolloError)
 
     expect(queryCmrVariablesMock).toBeCalledTimes(1)
     expect(queryCmrVariablesMock).toBeCalledWith(
       { concept_id: 'V100000-EDSC' },
-      {},
+      { 'CMR-Request-ID': 'abcd-1234-efgh-5678' },
       expect.objectContaining({ jsonKeys: ['concept_id'] })
     )
 
     expect(parseCmrVariablesMock).toBeCalledTimes(0)
-
-    expect(response).toEqual([])
   })
 })

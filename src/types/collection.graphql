@@ -3,6 +3,7 @@ type Collection {
   abstract: String
   "Find collections matching 'archive_center' param value"
   archive_center: String
+  boxes: [String]
   "True if the metadata contains browse imagery"
   browse_flag: Boolean
   "The unique concept id assigned to the collection."
@@ -19,6 +20,8 @@ type Collection {
   dataset_id: String
   "True if there are multiple supported formats for any services associated with the collection."
   has_formats: Boolean 
+  "True if there are granules associated with the collection"
+  has_granules: Boolean 
   "True if any of its associated services support spatial subsetting"
   has_spatial_subsetting: Boolean
   "True if any of its associated services support temporal subsetting."
@@ -33,6 +36,8 @@ type Collection {
   organizations: [String]
   "Original metadata format."
   original_format: String
+  "Describes any data/service related URLs that include project home pages, services, related data archives/servers, metadata extensions, direct links to online software packages, web mapping services, links to images, or other data."
+  related_urls: JSON
   "Controlled Science Keywords describing the collection.  The controlled vocabulary for Science Keywords is maintained in the Keyword Management System (KMS)."
   science_keywords: JSON
   "Find collections matching any of the 'short_name' param values"
@@ -41,8 +46,10 @@ type Collection {
   spatial_extent: JSON
   "The summary of intentions with which this collection was developed."
   summary: String
+  "Tags associated with the collection. It includes sub-elements of tagKey and optional data which is in embedded JSON."
+  tags: JSON
   "This class contains attributes which describe the temporal range of a specific collection. Temporal Extent includes a specification of the Temporal Range Type of the collection, which is one of Range Date Time, Single Date Time, or Periodic Date Time"
-  temporant_extents: JSON
+  temporal_extents: JSON
   "Start time of the metadata"
   time_start: String
   "End time of the metadata"
@@ -103,17 +110,31 @@ type Query {
     circle: String
     "The number of collections requested by the user"
     first: Int
+    "When true, the results will be restricted to collections with granules or with the configured CWIC tag. When false, results will be restricted to collections without granules."
+    has_granules_or_cwic: Boolean,
+    "When has_granules is set to 'true' or 'false', results will be restricted to collections with or without granules, respectively."
+    has_granules: Boolean,
+    "If this parameter is set to 'true' this will include a flag indicating true or false if the collection has any granules at all."
+    include_has_granules: Boolean,
+    "If this parameter is set (e.g. include_tags=gov.nasa.earthdata.search.*,gov.nasa.echo.*), the collection results will contain an additional field 'tags' within each collection. The value of the tags field is a list of tag_keys that are associated with the collection. Only the tags with tag_key matching the values of include_tags parameter (with wildcard support) are included in the results."
+    include_tags: String,
     "Search using a point involves using a pair of values representing the point coordinates as parameters. The first value is the longitude and second value is the latitude."
     point: String
     "Polygon points are provided in counter-clockwise order. The last point should match the first point to close the polygon. The values are listed comma separated in longitude latitude order, i.e. lon1, lat1, lon2, lat2, lon3, lat3, and so on."
     polygon: String
     "The short name associated with the collection."
     short_name: String
+    "One or more sort keys can be specified to impact searching. Fields can be prepended with a '-' to sort in descending order. Ascending order is the default but + can be used to explicitly request ascending."
+    sort_key: String
     "The temporal datetime has to be in yyyy-MM-ddTHH:mm:ssZ format."
     temporal: String
   ): CollectionList!
   collection(
     "The unique concept id assigned to the collection."
     concept_id: String!
+    "If this parameter is set to 'true' this will include a flag indicating true or false if the collection has any granules at all."
+    include_has_granules: Boolean,
+    "If this parameter is set (e.g. include_tags=gov.nasa.earthdata.search.*,gov.nasa.echo.*), the collection results will contain an additional field 'tags' within each collection. The value of the tags field is a list of tag_keys that are associated with the collection. Only the tags with tag_key matching the values of include_tags parameter (with wildcard support) are included in the results."
+    include_tags: String
   ): Collection!
 }

@@ -11,6 +11,9 @@
     "name": "umm.Name",
     "related_urls": "umm.RelatedURLs",
     "service_options": "umm.ServiceOptions",
+    "supported_input_formats": "umm.ServiceOptions.SupportedInputFormats",
+    "supported_output_formats": "umm.ServiceOptions.SupportedOutputFormats",
+    "supported_reformattings": "umm.ServiceOptions.SupportedReformattings",
     "type": "umm.Type"
   }
 }

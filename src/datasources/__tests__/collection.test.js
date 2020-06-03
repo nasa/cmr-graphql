@@ -1,3 +1,7 @@
+import nock from 'nock'
+
+import { ApolloError } from 'apollo-server-lambda'
+
 import collectionDatasource from '../collection'
 
 import * as parseCmrCollections from '../../utils/parseCmrCollections'
@@ -56,12 +60,12 @@ describe('collection', () => {
 
       const parseCmrCollectionsMock = jest.spyOn(parseCmrCollections, 'parseCmrCollections')
 
-      const response = await collectionDatasource({}, {}, requestInfo, 'collection')
+      const response = await collectionDatasource({}, { 'CMR-Request-ID': 'abcd-1234-efgh-5678' }, requestInfo, 'collection')
 
       expect(queryCmrCollectionsMock).toBeCalledTimes(1)
       expect(queryCmrCollectionsMock).toBeCalledWith(
         {},
-        {},
+        { 'CMR-Request-ID': 'abcd-1234-efgh-5678' },
         expect.objectContaining({ jsonKeys: ['concept_id'] })
       )
 
@@ -97,7 +101,17 @@ describe('collection', () => {
         data: {
           feed: {
             entry: [{
-              id: 'C100000-EDSC'
+              id: 'C100000-EDSC',
+              tags: {
+                'edsc.extra.serverless.collection_capabilities': {
+                  data: {
+                    cloud_cover: true,
+                    day_night_flag: true,
+                    granule_online_access_flag: true,
+                    orbit_calculated_spatial_domains: false
+                  }
+                }
+              }
             }]
           }
         }
@@ -105,12 +119,12 @@ describe('collection', () => {
 
       const parseCmrCollectionsMock = jest.spyOn(parseCmrCollections, 'parseCmrCollections')
 
-      const response = await collectionDatasource({ concept_id: 'C100000-EDSC' }, {}, requestInfo, 'collection')
+      const response = await collectionDatasource({ concept_id: 'C100000-EDSC' }, { 'CMR-Request-ID': 'abcd-1234-efgh-5678' }, requestInfo, 'collection')
 
       expect(queryCmrCollectionsMock).toBeCalledTimes(1)
       expect(queryCmrCollectionsMock).toBeCalledWith(
         { concept_id: 'C100000-EDSC' },
-        {},
+        { 'CMR-Request-ID': 'abcd-1234-efgh-5678' },
         expect.objectContaining({ jsonKeys: ['concept_id'] })
       )
 
@@ -122,7 +136,17 @@ describe('collection', () => {
         data: {
           feed: {
             entry: [{
-              concept_id: 'C100000-EDSC'
+              concept_id: 'C100000-EDSC',
+              tags: {
+                'edsc.extra.serverless.collection_capabilities': {
+                  data: {
+                    cloud_cover: true,
+                    day_night_flag: true,
+                    granule_online_access_flag: true,
+                    orbit_calculated_spatial_domains: false
+                  }
+                }
+              }
             }]
           }
         }
@@ -131,7 +155,17 @@ describe('collection', () => {
       expect(response).toEqual({
         count: 84,
         items: [{
-          concept_id: 'C100000-EDSC'
+          concept_id: 'C100000-EDSC',
+          tags: {
+            'edsc.extra.serverless.collection_capabilities': {
+              data: {
+                cloud_cover: true,
+                day_night_flag: true,
+                granule_online_access_flag: true,
+                orbit_calculated_spatial_domains: false
+              }
+            }
+          }
         }]
       })
     })
@@ -209,12 +243,14 @@ describe('collection', () => {
 
       const parseCmrCollectionsMock = jest.spyOn(parseCmrCollections, 'parseCmrCollections')
 
-      const response = await collectionDatasource({ concept_id: 'C100000-EDSC' }, {}, requestInfo, 'collection')
+      const response = await collectionDatasource({ concept_id: 'C100000-EDSC' }, { 'CMR-Request-ID': 'abcd-1234-efgh-5678' }, requestInfo, 'colletion')
 
       expect(queryCmrCollectionsMock).toBeCalledTimes(1)
       expect(queryCmrCollectionsMock).toBeCalledWith(
         { concept_id: 'C100000-EDSC' },
-        {},
+        {
+          'CMR-Request-ID': 'abcd-1234-efgh-5678'
+        },
         expect.objectContaining({ jsonKeys: ['concept_id', 'title'], ummKeys: ['abstract'] })
       )
 
@@ -316,12 +352,12 @@ describe('collection', () => {
 
       const parseCmrCollectionsMock = jest.spyOn(parseCmrCollections, 'parseCmrCollections')
 
-      const response = await collectionDatasource({ concept_id: 'C100000-EDSC' }, {}, requestInfo, 'collection')
+      const response = await collectionDatasource({ concept_id: 'C100000-EDSC' }, { 'CMR-Request-ID': 'abcd-1234-efgh-5678' }, requestInfo, 'collection')
 
       expect(queryCmrCollectionsMock).toBeCalledTimes(1)
       expect(queryCmrCollectionsMock).toBeCalledWith(
         { concept_id: 'C100000-EDSC' },
-        {},
+        { 'CMR-Request-ID': 'abcd-1234-efgh-5678' },
         expect.objectContaining({ jsonKeys: [], ummKeys: ['abstract', 'spatial_extent'] })
       )
 
@@ -352,22 +388,31 @@ describe('collection', () => {
   })
 
   test('catches errors received from queryCmrCollections', async () => {
+    nock(/localhost/)
+      .post(/collections/)
+      .reply(500, {
+        errors: ['HTTP Error']
+      }, {
+        'cmr-request-id': 'abcd-1234-efgh-5678'
+      })
+
     const queryCmrCollectionsMock = jest.spyOn(queryCmrCollections, 'queryCmrCollections')
-      .mockImplementationOnce(() => new Promise((resolve, reject) => reject(new Error('HTTP Error'))))
 
     const parseCmrCollectionsMock = jest.spyOn(parseCmrCollections, 'parseCmrCollections')
 
-    const response = await collectionDatasource({ concept_id: 'C100000-EDSC' }, {}, requestInfo, 'collection')
+    await expect(
+      collectionDatasource({ concept_id: 'C100000-EDSC' }, { 'CMR-Request-ID': 'abcd-1234-efgh-5678' }, requestInfo, 'collection')
+    ).rejects.toThrow(ApolloError)
 
     expect(queryCmrCollectionsMock).toBeCalledTimes(1)
     expect(queryCmrCollectionsMock).toBeCalledWith(
       { concept_id: 'C100000-EDSC' },
-      {},
+      { 'CMR-Request-ID': 'abcd-1234-efgh-5678' },
       expect.objectContaining({ jsonKeys: ['concept_id'] })
     )
 
     expect(parseCmrCollectionsMock).toBeCalledTimes(0)
 
-    expect(response).toEqual([])
+    // expect(response).toThrow({ errors: ['HTTP Error'] })
   })
 })
