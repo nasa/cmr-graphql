@@ -67,7 +67,7 @@ describe('Collection', () => {
         query: `{
           granules(first:2) {
             items {
-              concept_id
+              conceptId
             }
           }
         }`
@@ -78,9 +78,9 @@ describe('Collection', () => {
       expect(data).toEqual({
         granules: {
           items: [{
-            concept_id: 'G100000-EDSC'
+            conceptId: 'G100000-EDSC'
           }, {
-            concept_id: 'G100001-EDSC'
+            conceptId: 'G100001-EDSC'
           }]
         }
       })
@@ -106,8 +106,8 @@ describe('Collection', () => {
       const response = await query({
         variables: {},
         query: `{
-          granule(concept_id: "G100000-EDSC") {
-            concept_id
+          granule(conceptId: "G100000-EDSC") {
+            conceptId
           }
         }`
       })
@@ -116,7 +116,7 @@ describe('Collection', () => {
 
       expect(data).toEqual({
         granule: {
-          concept_id: 'G100000-EDSC'
+          conceptId: 'G100000-EDSC'
         }
       })
     })

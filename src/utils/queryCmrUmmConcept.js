@@ -40,7 +40,7 @@ export const queryCmrUmmConcept = (
 
   // If any requested keys are umm keys, we need to make an additional request to cmr
   if (ummKeys.length > 0) {
-    const ummPermittedKeys = pick(permittedSearchParams, ['concept_id'])
+    const ummPermittedKeys = pick(permittedSearchParams, ['concept_id', 'collection_concept_id'])
 
     // Construct the promise that will request data from the umm endpoint
     promises.push(

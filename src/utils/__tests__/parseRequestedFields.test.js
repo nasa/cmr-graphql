@@ -3,7 +3,7 @@ import { parseRequestedFields } from '../parseRequestedFields'
 const ummKeyMappings = {
   concept_id: 'meta.concept-id',
   key_one: 'umm.KeyOne',
-  key_two: 'umm.KeyTwo'
+  keyTwo: 'umm.KeyTwo'
 }
 
 const keyMap = {
@@ -29,15 +29,15 @@ describe('parseRequestedFields', () => {
   //             args: {},
   //             fieldsByTypeName: {
   //               Test: {
-  //                 concept_id: {
-  //                   name: 'concept_id',
-  //                   alias: 'concept_id',
+  //                 conceptId: {
+  //                   name: 'conceptId',
+  //                   alias: 'conceptId',
   //                   args: {},
   //                   fieldsByTypeName: {}
   //                 },
-  //                 key_three: {
-  //                   name: 'key_three',
-  //                   alias: 'key_three',
+  //                 keyThree: {
+  //                   name: 'keyThree',
+  //                   alias: 'keyThree',
   //                   args: {},
   //                   fieldsByTypeName: {}
   //                 }
@@ -51,7 +51,7 @@ describe('parseRequestedFields', () => {
   //     const requestedFields = parseRequestedFields(requestInfo, keyMap, 'test')
 
   //     expect(requestedFields).toEqual({
-  //       jsonKeys: ['concept_id', 'key_three'],
+  //       jsonKeys: ['conceptId', 'keyThree'],
   //       ummKeys: [],
   //       ummKeyMappings,
   //       isList: true
@@ -73,15 +73,15 @@ describe('parseRequestedFields', () => {
   //             args: {},
   //             fieldsByTypeName: {
   //               Test: {
-  //                 concept_id: {
-  //                   name: 'concept_id',
-  //                   alias: 'concept_id',
+  //                 conceptId: {
+  //                   name: 'conceptId',
+  //                   alias: 'conceptId',
   //                   args: {},
   //                   fieldsByTypeName: {}
   //                 },
-  //                 key_two: {
-  //                   name: 'key_two',
-  //                   alias: 'key_two',
+  //                 keyTwo: {
+  //                   name: 'keyTwo',
+  //                   alias: 'keyTwo',
   //                   args: {},
   //                   fieldsByTypeName: {}
   //                 }
@@ -96,7 +96,7 @@ describe('parseRequestedFields', () => {
 
   //     expect(requestedFields).toEqual({
   //       jsonKeys: [],
-  //       ummKeys: ['concept_id', 'key_two'],
+  //       ummKeys: ['conceptId', 'keyTwo'],
   //       ummKeyMappings,
   //       isList: true
   //     })
@@ -129,15 +129,15 @@ describe('parseRequestedFields', () => {
   //                   args: {},
   //                   fieldsByTypeName: {}
   //                 },
-  //                 key_two: {
-  //                   name: 'key_two',
-  //                   alias: 'key_two',
+  //                 keyTwo: {
+  //                   name: 'keyTwo',
+  //                   alias: 'keyTwo',
   //                   args: {},
   //                   fieldsByTypeName: {}
   //                 },
-  //                 key_three: {
-  //                   name: 'key_three',
-  //                   alias: 'key_three',
+  //                 keyThree: {
+  //                   name: 'keyThree',
+  //                   alias: 'keyThree',
   //                   args: {},
   //                   fieldsByTypeName: {}
   //                 }
@@ -151,8 +151,8 @@ describe('parseRequestedFields', () => {
   //     const requestedFields = parseRequestedFields(requestInfo, keyMap, 'test')
 
   //     expect(requestedFields).toEqual({
-  //       jsonKeys: ['concept_id', 'key_one', 'key_three'],
-  //       ummKeys: ['key_two'],
+  //       jsonKeys: ['conceptId', 'keyOne', 'keyThree'],
+  //       ummKeys: ['keyTwo'],
   //       ummKeyMappings,
   //       isList: true
   //     })
@@ -180,8 +180,8 @@ describe('parseRequestedFields', () => {
       const requestedFields = parseRequestedFields(requestInfo, keyMap, 'test')
 
       expect(requestedFields).toEqual({
-        jsonKeys: ['concept_id'],
-        metaKeys: ['test_count'],
+        jsonKeys: ['conceptId'],
+        metaKeys: ['testCount'],
         ummKeys: [],
         ummKeyMappings,
         isList: true

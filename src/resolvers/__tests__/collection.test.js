@@ -67,7 +67,7 @@ describe('Collection', () => {
         query: `{
           collections(first:2) {
             items {
-              concept_id
+              conceptId
             }
           }
         }`
@@ -78,9 +78,9 @@ describe('Collection', () => {
       expect(data).toEqual({
         collections: {
           items: [{
-            concept_id: 'C100000-EDSC'
+            conceptId: 'C100000-EDSC'
           }, {
-            concept_id: 'C100001-EDSC'
+            conceptId: 'C100001-EDSC'
           }]
         }
       })
@@ -106,8 +106,8 @@ describe('Collection', () => {
       const response = await query({
         variables: {},
         query: `{
-          collection(concept_id: "C100000-EDSC") {
-            concept_id
+          collection(conceptId: "C100000-EDSC") {
+            conceptId
           }
         }`
       })
@@ -116,7 +116,7 @@ describe('Collection', () => {
 
       expect(data).toEqual({
         collection: {
-          concept_id: 'C100000-EDSC'
+          conceptId: 'C100000-EDSC'
         }
       })
     })
@@ -179,10 +179,10 @@ describe('Collection', () => {
         query: `{
           collections {
             items {
-              concept_id
+              conceptId
               granules {
                 items {
-                  concept_id
+                  conceptId
                 }
               }
             }
@@ -195,21 +195,21 @@ describe('Collection', () => {
       expect(data).toEqual({
         collections: {
           items: [{
-            concept_id: 'C100000-EDSC',
+            conceptId: 'C100000-EDSC',
             granules: {
               items: [{
-                concept_id: 'G100000-EDSC'
+                conceptId: 'G100000-EDSC'
               }, {
-                concept_id: 'G100001-EDSC'
+                conceptId: 'G100001-EDSC'
               }]
             }
           }, {
-            concept_id: 'C100001-EDSC',
+            conceptId: 'C100001-EDSC',
             granules: {
               items: [{
-                concept_id: 'G100002-EDSC'
+                conceptId: 'G100002-EDSC'
               }, {
-                concept_id: 'G100003-EDSC'
+                conceptId: 'G100003-EDSC'
               }]
             }
           }]
@@ -273,13 +273,13 @@ describe('Collection', () => {
         query: `{
           collections(
             first:2
-            bounding_box:"-90.08940124511719,41.746426050239336,-82.33992004394531,47.84755587105307"
+            boundingBox:"-90.08940124511719,41.746426050239336,-82.33992004394531,47.84755587105307"
           ) {
             items {
-              concept_id
+              conceptId
               granules {
                 items {
-                  concept_id
+                  conceptId
                 }
               }
             }
@@ -292,21 +292,21 @@ describe('Collection', () => {
       expect(data).toEqual({
         collections: {
           items: [{
-            concept_id: 'C100000-EDSC',
+            conceptId: 'C100000-EDSC',
             granules: {
               items: [{
-                concept_id: 'G100000-EDSC'
+                conceptId: 'G100000-EDSC'
               }, {
-                concept_id: 'G100001-EDSC'
+                conceptId: 'G100001-EDSC'
               }]
             }
           }, {
-            concept_id: 'C100001-EDSC',
+            conceptId: 'C100001-EDSC',
             granules: {
               items: [{
-                concept_id: 'G100002-EDSC'
+                conceptId: 'G100002-EDSC'
               }, {
-                concept_id: 'G100003-EDSC'
+                conceptId: 'G100003-EDSC'
               }]
             }
           }]
@@ -340,10 +340,10 @@ describe('Collection', () => {
             query: `{
               collections {
                 items {
-                  concept_id
+                  conceptId
                   services {
                     items {
-                      concept_id
+                      conceptId
                     }
                   }
                 }
@@ -356,12 +356,12 @@ describe('Collection', () => {
           expect(data).toEqual({
             collections: {
               items: [{
-                concept_id: 'C100000-EDSC',
+                conceptId: 'C100000-EDSC',
                 services: {
                   items: null
                 }
               }, {
-                concept_id: 'C100001-EDSC',
+                conceptId: 'C100001-EDSC',
                 services: {
                   items: null
                 }
@@ -402,10 +402,10 @@ describe('Collection', () => {
             query: `{
               collections {
                 items {
-                  concept_id
+                  conceptId
                   services {
                     items {
-                      concept_id
+                      conceptId
                     }
                   }
                 }
@@ -418,12 +418,12 @@ describe('Collection', () => {
           expect(data).toEqual({
             collections: {
               items: [{
-                concept_id: 'C100000-EDSC',
+                conceptId: 'C100000-EDSC',
                 services: {
                   items: null
                 }
               }, {
-                concept_id: 'C100001-EDSC',
+                conceptId: 'C100001-EDSC',
                 services: {
                   items: null
                 }
@@ -492,10 +492,10 @@ describe('Collection', () => {
             query: `{
               collections {
                 items {
-                  concept_id
+                  conceptId
                   services {
                     items {
-                      concept_id
+                      conceptId
                     }
                   }
                 }
@@ -508,21 +508,21 @@ describe('Collection', () => {
           expect(data).toEqual({
             collections: {
               items: [{
-                concept_id: 'C100000-EDSC',
+                conceptId: 'C100000-EDSC',
                 services: {
                   items: [{
-                    concept_id: 'S100000-EDSC'
+                    conceptId: 'S100000-EDSC'
                   }, {
-                    concept_id: 'S100001-EDSC'
+                    conceptId: 'S100001-EDSC'
                   }]
                 }
               }, {
-                concept_id: 'C100001-EDSC',
+                conceptId: 'C100001-EDSC',
                 services: {
                   items: [{
-                    concept_id: 'S100002-EDSC'
+                    conceptId: 'S100002-EDSC'
                   }, {
-                    concept_id: 'S100003-EDSC'
+                    conceptId: 'S100003-EDSC'
                   }]
                 }
               }]
@@ -558,10 +558,10 @@ describe('Collection', () => {
             query: `{
               collections {
                 items {
-                  concept_id
+                  conceptId
                   variables {
                     items {
-                      concept_id
+                      conceptId
                     }
                   }
                 }
@@ -574,12 +574,12 @@ describe('Collection', () => {
           expect(data).toEqual({
             collections: {
               items: [{
-                concept_id: 'C100000-EDSC',
+                conceptId: 'C100000-EDSC',
                 variables: {
                   items: null
                 }
               }, {
-                concept_id: 'C100001-EDSC',
+                conceptId: 'C100001-EDSC',
                 variables: {
                   items: null
                 }
@@ -620,10 +620,10 @@ describe('Collection', () => {
             query: `{
               collections {
                 items {
-                  concept_id
+                  conceptId
                   variables {
                     items {
-                      concept_id
+                      conceptId
                     }
                   }
                 }
@@ -636,12 +636,12 @@ describe('Collection', () => {
           expect(data).toEqual({
             collections: {
               items: [{
-                concept_id: 'C100000-EDSC',
+                conceptId: 'C100000-EDSC',
                 variables: {
                   items: null
                 }
               }, {
-                concept_id: 'C100001-EDSC',
+                conceptId: 'C100001-EDSC',
                 variables: {
                   items: null
                 }
@@ -710,10 +710,10 @@ describe('Collection', () => {
             query: `{
               collections {
                 items {
-                  concept_id
+                  conceptId
                   variables {
                     items {
-                      concept_id
+                      conceptId
                     }
                   }
                 }
@@ -726,21 +726,21 @@ describe('Collection', () => {
           expect(data).toEqual({
             collections: {
               items: [{
-                concept_id: 'C100000-EDSC',
+                conceptId: 'C100000-EDSC',
                 variables: {
                   items: [{
-                    concept_id: 'V100000-EDSC'
+                    conceptId: 'V100000-EDSC'
                   }, {
-                    concept_id: 'V100001-EDSC'
+                    conceptId: 'V100001-EDSC'
                   }]
                 }
               }, {
-                concept_id: 'C100001-EDSC',
+                conceptId: 'C100001-EDSC',
                 variables: {
                   items: [{
-                    concept_id: 'V100002-EDSC'
+                    conceptId: 'V100002-EDSC'
                   }, {
-                    concept_id: 'V100003-EDSC'
+                    conceptId: 'V100003-EDSC'
                   }]
                 }
               }]

@@ -1,19 +1,19 @@
 {
   "sharedKeys": [
-    "concept_id",
-    "long_name",
+    "conceptId",
+    "longName",
     "name"
   ],
   "ummKeyMappings": {
-    "concept_id": "meta.concept-id",
+    "conceptId": "meta.concept-id",
     "description": "umm.Description",
-    "long_name": "umm.LongName",
+    "longName": "umm.LongName",
     "name": "umm.Name",
-    "related_urls": "umm.RelatedURLs",
-    "service_options": "umm.ServiceOptions",
-    "supported_input_formats": "umm.ServiceOptions.SupportedInputFormats",
-    "supported_output_formats": "umm.ServiceOptions.SupportedOutputFormats",
-    "supported_reformattings": "umm.ServiceOptions.SupportedReformattings",
+    "relatedUrls": "umm.RelatedURLs",
+    "serviceOptions": "umm.ServiceOptions",
+    "supportedInputFormats": "umm.ServiceOptions.SupportedInputFormats",
+    "supportedOutputFormats": "umm.ServiceOptions.SupportedOutputFormats",
+    "supportedReformattings": "umm.ServiceOptions.SupportedReformattings",
     "type": "umm.Type"
   }
 }

@@ -1,4 +1,7 @@
 import axios from 'axios'
+
+import snakeCaseKeys from 'snakecase-keys'
+
 import { pick } from 'lodash'
 import { stringify } from 'qs'
 
@@ -27,7 +30,7 @@ export const queryCmr = (conceptType, params, headers, options = {}) => {
     'Echo-Token'
   ])
 
-  const cmrParameters = stringify(params, { indices: false, arrayFormat: 'brackets' })
+  const cmrParameters = stringify(snakeCaseKeys(params), { indices: false, arrayFormat: 'brackets' })
 
   const { 'CMR-Request-ID': requestId } = permittedHeaders
 

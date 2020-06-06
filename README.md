@@ -50,7 +50,7 @@ When querying for multiple items there are two high level parameters that can be
       concept {
         count
         items {
-          concept_id
+          conceptId
         }
       }
     }
@@ -59,7 +59,7 @@ If you're querying single objects `count` is not available and therefore `items`
 
     {
       concept {
-        concept_id
+        conceptId
       }
     }
 
@@ -77,26 +77,26 @@ For all supported arguments and columns, see [the schema](src/types/collection.g
 ###### Single
 
     {
-      collection(concept_id:"C1000000001-EXAMPLE") {
+      collection(conceptId:"C1000000001-EXAMPLE") {
         title
         granules {
           count
           items {
-            concept_id
+            conceptId
             title
           }
         }
         services {
           count
           items {
-            concept_id
+            conceptId
             type
           }
         }
         variables {
           count
           items {
-            concept_id
+            conceptId
             name
           }
         }
@@ -107,7 +107,7 @@ For all supported arguments and columns, see [the schema](src/types/collection.g
 
     {
       collections(
-        concept_id:["C1000000001-EXAMPLE", "C1000000002-EXAMPLE"]
+        conceptId:["C1000000001-EXAMPLE", "C1000000002-EXAMPLE"]
       ) {
 		count
         items {
@@ -119,14 +119,14 @@ For all supported arguments and columns, see [the schema](src/types/collection.g
           services {
             count
             items {
-              concept_id
+              conceptId
               type
             }
           }
           variables {
             count
             items {
-              concept_id
+              conceptId
               name
             }
           }
@@ -136,13 +136,13 @@ For all supported arguments and columns, see [the schema](src/types/collection.g
 
 #### Granules
 
-For performance reasons, CMR requires that a collection be provided in order to query granules. While CMR supports multiple aliases for the collection GraphQL requires that it be called `collection_concept_id`; if this is not provided CMR will return an error. We don't enforce this in the schema because you can also use `concept_id` if you're looking for specific granules and schemas don't offer a means of offering conditional validations.
+For performance reasons, CMR requires that a collection be provided in order to query granules. While CMR supports multiple aliases for the collection GraphQL requires that it be called `collectionConceptId`; if this is not provided CMR will return an error. We don't enforce this in the schema because you can also use `conceptId` if you're looking for specific granules and schemas don't offer a means of offering conditional validations.
 
 ##### Passthrough Arguments
 
 A subset of the supported arguments for [Collections](#collections) will be passed through to the granule query by default. Those arguments are as follows:
 
-- bounding_box
+- boundingBox
 - circle
 - point
 - polygon
@@ -155,8 +155,8 @@ For all supported arguments and columns, see [the schema](src/types/granules.gra
 ###### Single
 
     {
-      granule(concept_id:"G1000000001-EXAMPLE") {
-        concept_id
+      granule(conceptId:"G1000000001-EXAMPLE") {
+        conceptId
         title
       }
     }
@@ -164,9 +164,9 @@ For all supported arguments and columns, see [the schema](src/types/granules.gra
 ###### Multiple
 
     {
-      granules(collection_concept_id:"G1000000001-EXAMPLE") {
+      granules(collectionConceptId:"G1000000001-EXAMPLE") {
         items {
-          concept_id
+          conceptId
           title
         }
       }
@@ -182,8 +182,8 @@ For all supported arguments and columns, see [the schema](src/types/service.grap
 ###### Single
 
     {
-      service(concept_id:"S1000000001-EXAMPLE") {
-        concept_id
+      service(conceptId:"S1000000001-EXAMPLE") {
+        conceptId
         type
       }
     }
@@ -194,7 +194,7 @@ For all supported arguments and columns, see [the schema](src/types/service.grap
       services {
         count
         items {
-          concept_id
+          conceptId
           type
           description
         }
@@ -211,10 +211,10 @@ For all supported arguments and columns, see [the schema](src/types/variable.gra
 ###### Single
 
     {
-      variable(concept_id:"V1000000001-EXAMPLE") {
-        concept_id
-        science_keywords
-        variable_type
+      variable(conceptId:"V1000000001-EXAMPLE") {
+        conceptId
+        scienceKeywords
+        variableType
       }
     }
 
@@ -224,9 +224,9 @@ For all supported arguments and columns, see [the schema](src/types/variable.gra
       variables {
         count
         items {
-          concept_id
-          science_keywords
-          variable_type
+          conceptId
+          scienceKeywords
+          variableType
         }
       }
     }

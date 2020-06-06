@@ -9,7 +9,7 @@ describe('handlePagingParams', () => {
 
       expect(response).toEqual({
         param: 'value',
-        page_size: 20
+        pageSize: 20
       })
     })
   })
@@ -23,7 +23,7 @@ describe('handlePagingParams', () => {
 
       expect(response).toEqual({
         param: 'value',
-        page_size: 5
+        pageSize: 5
       })
     })
   })

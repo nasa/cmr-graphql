@@ -1,6 +1,6 @@
-import snakeCaseKeys from 'snakecase-keys'
+import camelCaseKeys from 'camelcase-keys'
 
-import { get } from 'lodash'
+import { get, snakeCase } from 'lodash'
 
 import { parseCmrGranules } from '../utils/parseCmrGranules'
 import { queryCmrGranules } from '../utils/queryCmrGranules'
@@ -17,6 +17,7 @@ export default async (params, headers, parsedInfo) => {
 
     const requestInfo = parseRequestedFields(parsedInfo, granuleKeyMap, 'granule')
     const {
+      jsonKeys,
       ummKeys,
       isList
     } = requestInfo
@@ -43,14 +44,21 @@ export default async (params, headers, parsedInfo) => {
         // eslint-disable-next-line no-param-reassign
         granule.concept_id = conceptId
 
+        // If no record of this concept is found create an empty object at its key
         const { [conceptId]: existingResult = {} } = result
 
         result[conceptId] = {
-          ...existingResult,
-
-          // TODO: Pull out and return only supported keys?
-          ...granule
+          ...existingResult
         }
+
+        jsonKeys.forEach((jsonKey) => {
+          const cmrKey = snakeCase(jsonKey)
+
+          const { [cmrKey]: keyValue } = granule
+
+          // Snake case the key requested and any children of that key
+          result[conceptId][jsonKey] = keyValue
+        })
       })
     }
 
@@ -79,7 +87,7 @@ export default async (params, headers, parsedInfo) => {
 
           if (keyValue) {
             // Snake case the key requested and any children of that key
-            Object.assign(result[id], snakeCaseKeys({ [ummKey]: keyValue }))
+            Object.assign(result[id], camelCaseKeys({ [ummKey]: keyValue }, { deep: true }))
           }
         })
       })

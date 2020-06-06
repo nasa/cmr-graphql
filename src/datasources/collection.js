@@ -1,6 +1,6 @@
-import snakeCaseKeys from 'snakecase-keys'
+import camelCaseKeys from 'camelcase-keys'
 
-import { get } from 'lodash'
+import { get, snakeCase } from 'lodash'
 
 import { parseCmrCollections } from '../utils/parseCmrCollections'
 import { queryCmrCollections } from '../utils/queryCmrCollections'
@@ -17,6 +17,7 @@ export default async (params, headers, parsedInfo) => {
 
     const requestInfo = parseRequestedFields(parsedInfo, collectionKeyMap, 'collection')
     const {
+      jsonKeys,
       ummKeys,
       isList
     } = requestInfo
@@ -33,24 +34,38 @@ export default async (params, headers, parsedInfo) => {
       const collections = parseCmrCollections(jsonResponse)
 
       collections.forEach((collection) => {
-        // Alias concept_id for consistency in responses
+        // Alias conceptId for consistency in responses
         const { id: conceptId } = collection
 
-        // Rename (delete the id key and set the concept_id key) `id` for consistency
+        // Rename (delete the id key and set the conceptId key) `id` for consistency
         // eslint-disable-next-line no-param-reassign
         delete collection.id
 
         // eslint-disable-next-line no-param-reassign
         collection.concept_id = conceptId
 
-        const { [conceptId]: existingResult = {} } = result
+        // If no record of this concept is found create an empty object at its key
+        const { [conceptId]: existingResult = { conceptId } } = result
 
         result[conceptId] = {
-          ...existingResult,
-
-          // TODO: Pull out and return only supported keys?
-          ...collection
+          ...existingResult
         }
+
+        // Associations are used by services and variables, its required to correctly
+        // retrieve those objects and shouldn't need to be provided by the client
+        const { associations } = collection
+        if (associations) {
+          result[conceptId].associations = associations
+        }
+
+        jsonKeys.forEach((jsonKey) => {
+          const cmrKey = snakeCase(jsonKey)
+
+          const { [cmrKey]: keyValue } = collection
+
+          // Snake case the key requested and any children of that key
+          result[conceptId][jsonKey] = keyValue
+        })
       })
     }
 
@@ -66,10 +81,16 @@ export default async (params, headers, parsedInfo) => {
 
       collections.forEach((collection) => {
         const { meta } = collection
-        const { 'concept-id': id } = meta
+        const { associations, 'concept-id': id } = meta
 
         // If no record of this concept is found create an empty object at its key
-        if (!Object.keys(result).includes(id)) result[id] = {}
+        if (!Object.keys(result).includes(id)) result[id] = { conceptId: id }
+
+        // Associations are used by services and variables, its required to correctly
+        // retrieve those objects and shouldn't need to be provided by the client
+        if (associations) {
+          result[id].associations = associations
+        }
 
         // Loop through the requested umm keys
         ummKeys.forEach((ummKey) => {
@@ -79,7 +100,7 @@ export default async (params, headers, parsedInfo) => {
 
           if (keyValue) {
             // Snake case the key requested and any children of that key
-            Object.assign(result[id], snakeCaseKeys({ [ummKey]: keyValue }))
+            Object.assign(result[id], camelCaseKeys({ [ummKey]: keyValue }, { deep: true }))
           }
         })
       })

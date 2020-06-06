@@ -29,9 +29,9 @@ describe('service', () => {
             args: {},
             fieldsByTypeName: {
               Service: {
-                concept_id: {
-                  name: 'concept_id',
-                  alias: 'concept_id',
+                conceptId: {
+                  name: 'conceptId',
+                  alias: 'conceptId',
                   args: {},
                   fieldsByTypeName: {}
                 }
@@ -64,7 +64,7 @@ describe('service', () => {
       expect(queryCmrServicesMock).toBeCalledWith(
         {},
         { 'CMR-Request-ID': 'abcd-1234-efgh-5678' },
-        expect.objectContaining({ jsonKeys: ['concept_id'] })
+        expect.objectContaining({ jsonKeys: ['conceptId'] })
       )
 
       expect(parseCmrServicesMock).toBeCalledTimes(1)
@@ -82,7 +82,7 @@ describe('service', () => {
       expect(response).toEqual({
         count: 84,
         items: [{
-          concept_id: 'S100000-EDSC'
+          conceptId: 'S100000-EDSC'
         }]
       })
     })
@@ -109,7 +109,7 @@ describe('service', () => {
       expect(queryCmrServicesMock).toBeCalledWith(
         { concept_id: 'S100000-EDSC' },
         { 'CMR-Request-ID': 'abcd-1234-efgh-5678' },
-        expect.objectContaining({ jsonKeys: ['concept_id'] })
+        expect.objectContaining({ jsonKeys: ['conceptId'] })
       )
 
       expect(parseCmrServicesMock).toBeCalledTimes(1)
@@ -127,7 +127,7 @@ describe('service', () => {
       expect(response).toEqual({
         count: 84,
         items: [{
-          concept_id: 'S100000-EDSC'
+          conceptId: 'S100000-EDSC'
         }]
       })
     })
@@ -148,9 +148,9 @@ describe('service', () => {
               args: {},
               fieldsByTypeName: {
                 Service: {
-                  concept_id: {
-                    name: 'concept_id',
-                    alias: 'concept_id',
+                  conceptId: {
+                    name: 'conceptId',
+                    alias: 'conceptId',
                     args: {},
                     fieldsByTypeName: {}
                   },
@@ -192,13 +192,13 @@ describe('service', () => {
 
     //   const parseCmrServicesMock = jest.spyOn(parseCmrServices, 'parseCmrServices')
 
-    //   const response = await serviceDatasource({ concept_id: 'S100000-EDSC' }, {}, requestInfo, 'service')
+    //   const response = await serviceDatasource({ conceptId: 'S100000-EDSC' }, {}, requestInfo, 'service')
 
     //   expect(queryCmrServicesMock).toBeCalledTimes(1)
     //   expect(queryCmrServicesMock).toBeCalledWith(
-    //     { concept_id: 'S100000-EDSC' },
+    //     { conceptId: 'S100000-EDSC' },
     //     { 'CMR-Request-ID': 'abcd-1234-efgh-5678' },
-    //     expect.objectContaining({ jsonKeys: ['concept_id'], ummKeys: ['type'] })
+    //     expect.objectContaining({ jsonKeys: ['conceptId'], ummKeys: ['type'] })
     //   )
 
     //   expect(parseCmrServicesMock).toBeCalledTimes(2)
@@ -224,7 +224,7 @@ describe('service', () => {
     //   })
 
     //   expect(response).toEqual([{
-    //     concept_id: 'S100000-EDSC',
+    //     conceptId: 'S100000-EDSC',
     //     type: 'OPeNDAP'
     //   }])
     // })
@@ -251,9 +251,9 @@ describe('service', () => {
                     args: {},
                     fieldsByTypeName: {}
                   },
-                  service_options: {
-                    name: 'service_options',
-                    alias: 'service_options',
+                  serviceOptions: {
+                    name: 'serviceOptions',
+                    alias: 'serviceOptions',
                     args: {},
                     fieldsByTypeName: {}
                   }
@@ -292,7 +292,7 @@ describe('service', () => {
       expect(queryCmrServicesMock).toBeCalledWith(
         { concept_id: 'S100000-EDSC' },
         { 'CMR-Request-ID': 'abcd-1234-efgh-5678' },
-        expect.objectContaining({ jsonKeys: [], ummKeys: ['service_options', 'type'] })
+        expect.objectContaining({ jsonKeys: [], ummKeys: ['serviceOptions', 'type'] })
       )
 
       expect(parseCmrServicesMock).toBeCalledTimes(1)
@@ -335,15 +335,15 @@ describe('service', () => {
     const parseCmrServicesMock = jest.spyOn(parseCmrServices, 'parseCmrServices')
 
     await expect(
-      serviceDatasource({ concept_id: 'S100000-EDSC' }, { 'CMR-Request-ID': 'abcd-1234-efgh-5678' }, requestInfo, 'service')
+      serviceDatasource({ conceptId: 'S100000-EDSC' }, { 'CMR-Request-ID': 'abcd-1234-efgh-5678' }, requestInfo, 'service')
     ).rejects.toThrow(ApolloError)
 
 
     expect(queryCmrServicesMock).toBeCalledTimes(1)
     expect(queryCmrServicesMock).toBeCalledWith(
-      { concept_id: 'S100000-EDSC' },
+      { conceptId: 'S100000-EDSC' },
       { 'CMR-Request-ID': 'abcd-1234-efgh-5678' },
-      expect.objectContaining({ jsonKeys: ['concept_id'] })
+      expect.objectContaining({ jsonKeys: ['conceptId'] })
     )
 
     expect(parseCmrServicesMock).toBeCalledTimes(0)

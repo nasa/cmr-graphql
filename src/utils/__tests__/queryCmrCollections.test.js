@@ -19,7 +19,7 @@ describe('queryCmrCollections', () => {
 
     // Default requestInfo an empty
     requestInfo = {
-      jsonKeys: ['concept_id'],
+      jsonKeys: ['conceptId'],
       ummKeys: [],
       ummKeyMappings: {}
     }
