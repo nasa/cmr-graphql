@@ -13,6 +13,7 @@ export const queryCmrVariables = (params, headers, requestInfo) => {
   // Pick out permitted parameters
   const permittedSearchParams = pick(snakeCaseKeys(params), [
     'concept_id',
+    'name',
     'page_size'
   ])
 

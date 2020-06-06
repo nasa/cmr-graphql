@@ -3,6 +3,7 @@ type Collection {
   abstract: String
   "Find collections matching 'archive_center' param value"
   archiveCenter: String
+  "Allows a data provider to provide archive and distribution information up front to an end user, to help them decide if they can use the product."
   archiveAndDistributionInformation: JSON
   boxes: [String]
   "True if the metadata contains browse imagery"
@@ -91,6 +92,8 @@ type Collection {
     conceptId: [String]
     "The number of variables requested by the user"
     first: Int
+    "The name of a variable."
+    name: String
   ): VariableList!
 }
 

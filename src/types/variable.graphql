@@ -40,6 +40,8 @@ type Query {
     conceptId: [String],
     "The number of variables requested by the user"
     first: Int
+    "The name of a variable."
+    name: String
   ): VariableList!
   variable(
     "The unique concept id assigned to the variable."
