@@ -36,7 +36,7 @@ The local development environment for the static assets can be started by execut
 
     serverless offline
 
-This will run the application at [http://localhost:3001/api](http://localhost:3001/api)
+This will run the application at [http://localhost:3003/api](http://localhost:3003/api)
 
 ## Usage
 
