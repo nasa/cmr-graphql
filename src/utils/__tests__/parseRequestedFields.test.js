@@ -1,166 +1,169 @@
 import { parseRequestedFields } from '../parseRequestedFields'
 
 const ummKeyMappings = {
-  concept_id: 'meta.concept-id',
-  key_one: 'umm.KeyOne',
-  key_two: 'umm.KeyTwo'
+  conceptId: 'meta.concept-id',
+  keyOne: 'umm.KeyOne',
+  keyTwo: 'umm.KeyTwo'
 }
 
 const keyMap = {
   sharedKeys: [
-    'concept_id',
-    'key_one'
+    'conceptId',
+    'keyOne'
   ],
   ummKeyMappings
 }
 
 describe('parseRequestedFields', () => {
-  // describe('only json keys requested', () => {
-  //   test('returns only json keys', () => {
-  //     const requestInfo = {
-  //       name: 'tests',
-  //       alias: 'tests',
-  //       args: {},
-  //       fieldsByTypeName: {
-  //         TestList: {
-  //           items: {
-  //             name: 'items',
-  //             alias: 'items',
-  //             args: {},
-  //             fieldsByTypeName: {
-  //               Test: {
-  //                 concept_id: {
-  //                   name: 'concept_id',
-  //                   alias: 'concept_id',
-  //                   args: {},
-  //                   fieldsByTypeName: {}
-  //                 },
-  //                 key_three: {
-  //                   name: 'key_three',
-  //                   alias: 'key_three',
-  //                   args: {},
-  //                   fieldsByTypeName: {}
-  //                 }
-  //               }
-  //             }
-  //           }
-  //         }
-  //       }
-  //     }
+  describe('only json keys requested', () => {
+    test('returns only json keys', () => {
+      const requestInfo = {
+        name: 'tests',
+        alias: 'tests',
+        args: {},
+        fieldsByTypeName: {
+          TestList: {
+            items: {
+              name: 'items',
+              alias: 'items',
+              args: {},
+              fieldsByTypeName: {
+                Test: {
+                  conceptId: {
+                    name: 'conceptId',
+                    alias: 'conceptId',
+                    args: {},
+                    fieldsByTypeName: {}
+                  },
+                  keyThree: {
+                    name: 'keyThree',
+                    alias: 'keyThree',
+                    args: {},
+                    fieldsByTypeName: {}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
 
-  //     const requestedFields = parseRequestedFields(requestInfo, keyMap, 'test')
+      const requestedFields = parseRequestedFields(requestInfo, keyMap, 'test')
 
-  //     expect(requestedFields).toEqual({
-  //       jsonKeys: ['concept_id', 'key_three'],
-  //       ummKeys: [],
-  //       ummKeyMappings,
-  //       isList: true
-  //     })
-  //   })
-  // })
+      expect(requestedFields).toEqual({
+        jsonKeys: ['conceptId', 'keyThree'],
+        metaKeys: [],
+        ummKeys: [],
+        ummKeyMappings,
+        isList: true
+      })
+    })
+  })
 
-  // describe('only umm keys requested', () => {
-  //   test('returns only umm keys', () => {
-  //     const requestInfo = {
-  //       name: 'tests',
-  //       alias: 'tests',
-  //       args: {},
-  //       fieldsByTypeName: {
-  //         TestList: {
-  //           items: {
-  //             name: 'items',
-  //             alias: 'items',
-  //             args: {},
-  //             fieldsByTypeName: {
-  //               Test: {
-  //                 concept_id: {
-  //                   name: 'concept_id',
-  //                   alias: 'concept_id',
-  //                   args: {},
-  //                   fieldsByTypeName: {}
-  //                 },
-  //                 key_two: {
-  //                   name: 'key_two',
-  //                   alias: 'key_two',
-  //                   args: {},
-  //                   fieldsByTypeName: {}
-  //                 }
-  //               }
-  //             }
-  //           }
-  //         }
-  //       }
-  //     }
+  describe('only umm keys requested', () => {
+    test('returns only umm keys', () => {
+      const requestInfo = {
+        name: 'tests',
+        alias: 'tests',
+        args: {},
+        fieldsByTypeName: {
+          TestList: {
+            items: {
+              name: 'items',
+              alias: 'items',
+              args: {},
+              fieldsByTypeName: {
+                Test: {
+                  conceptId: {
+                    name: 'conceptId',
+                    alias: 'conceptId',
+                    args: {},
+                    fieldsByTypeName: {}
+                  },
+                  keyTwo: {
+                    name: 'keyTwo',
+                    alias: 'keyTwo',
+                    args: {},
+                    fieldsByTypeName: {}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
 
-  //     const requestedFields = parseRequestedFields(requestInfo, keyMap, 'test')
+      const requestedFields = parseRequestedFields(requestInfo, keyMap, 'test')
 
-  //     expect(requestedFields).toEqual({
-  //       jsonKeys: [],
-  //       ummKeys: ['concept_id', 'key_two'],
-  //       ummKeyMappings,
-  //       isList: true
-  //     })
-  //   })
-  // })
+      expect(requestedFields).toEqual({
+        jsonKeys: [],
+        metaKeys: [],
+        ummKeys: ['conceptId', 'keyTwo'],
+        ummKeyMappings,
+        isList: true
+      })
+    })
+  })
 
-  // describe('both json and umm keys requested', () => {
-  //   test('returns both json and umm keys optimized for json', () => {
-  //     const requestInfo = {
-  //       name: 'tests',
-  //       alias: 'tests',
-  //       args: {},
-  //       fieldsByTypeName: {
-  //         TestList: {
-  //           items: {
-  //             name: 'items',
-  //             alias: 'items',
-  //             args: {},
-  //             fieldsByTypeName: {
-  //               Test: {
-  //                 concept_id: {
-  //                   name: 'concept_id',
-  //                   alias: 'concept_id',
-  //                   args: {},
-  //                   fieldsByTypeName: {}
-  //                 },
-  //                 key_one: {
-  //                   name: 'key_one',
-  //                   alias: 'key_one',
-  //                   args: {},
-  //                   fieldsByTypeName: {}
-  //                 },
-  //                 key_two: {
-  //                   name: 'key_two',
-  //                   alias: 'key_two',
-  //                   args: {},
-  //                   fieldsByTypeName: {}
-  //                 },
-  //                 key_three: {
-  //                   name: 'key_three',
-  //                   alias: 'key_three',
-  //                   args: {},
-  //                   fieldsByTypeName: {}
-  //                 }
-  //               }
-  //             }
-  //           }
-  //         }
-  //       }
-  //     }
+  describe('both json and umm keys requested', () => {
+    test('returns both json and umm keys optimized for json', () => {
+      const requestInfo = {
+        name: 'tests',
+        alias: 'tests',
+        args: {},
+        fieldsByTypeName: {
+          TestList: {
+            items: {
+              name: 'items',
+              alias: 'items',
+              args: {},
+              fieldsByTypeName: {
+                Test: {
+                  conceptId: {
+                    name: 'conceptId',
+                    alias: 'conceptId',
+                    args: {},
+                    fieldsByTypeName: {}
+                  },
+                  keyOne: {
+                    name: 'keyOne',
+                    alias: 'keyOne',
+                    args: {},
+                    fieldsByTypeName: {}
+                  },
+                  keyTwo: {
+                    name: 'keyTwo',
+                    alias: 'keyTwo',
+                    args: {},
+                    fieldsByTypeName: {}
+                  },
+                  keyThree: {
+                    name: 'keyThree',
+                    alias: 'keyThree',
+                    args: {},
+                    fieldsByTypeName: {}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
 
-  //     const requestedFields = parseRequestedFields(requestInfo, keyMap, 'test')
+      const requestedFields = parseRequestedFields(requestInfo, keyMap, 'test')
 
-  //     expect(requestedFields).toEqual({
-  //       jsonKeys: ['concept_id', 'key_one', 'key_three'],
-  //       ummKeys: ['key_two'],
-  //       ummKeyMappings,
-  //       isList: true
-  //     })
-  //   })
-  // })
+      expect(requestedFields).toEqual({
+        jsonKeys: ['conceptId', 'keyOne', 'keyThree'],
+        metaKeys: [],
+        ummKeys: ['keyTwo'],
+        ummKeyMappings,
+        isList: true
+      })
+    })
+  })
 
   describe('only count', () => {
-    test('returns only concept_id', () => {
+    test('returns only conceptId', () => {
       const requestInfo = {
         name: 'tests',
         alias: 'tests',
@@ -180,8 +183,8 @@ describe('parseRequestedFields', () => {
       const requestedFields = parseRequestedFields(requestInfo, keyMap, 'test')
 
       expect(requestedFields).toEqual({
-        jsonKeys: ['concept_id'],
-        metaKeys: ['test_count'],
+        jsonKeys: ['conceptId'],
+        metaKeys: ['testCount'],
         ummKeys: [],
         ummKeyMappings,
         isList: true

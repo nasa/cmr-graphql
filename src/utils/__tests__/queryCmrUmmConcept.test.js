@@ -63,6 +63,7 @@ describe('queryCmrUmmConcept', () => {
   describe('when only a json key is requested', () => {
     test('only makes a request to the json endpoint', async () => {
       const consoleMock = jest.spyOn(console, 'log').mockImplementationOnce(() => jest.fn())
+
       const queryCmrMock = jest.spyOn(queryCmr, 'queryCmr').mockImplementationOnce(() => Promise.resolve({
         data: {
           feed: {
@@ -114,6 +115,7 @@ describe('queryCmrUmmConcept', () => {
   describe('when only a umm key is requested', () => {
     test('only makes a request to the json endpoint', async () => {
       const consoleMock = jest.spyOn(console, 'log').mockImplementationOnce(() => jest.fn())
+
       const queryCmrMock = jest.spyOn(queryCmr, 'queryCmr').mockImplementationOnce(() => Promise.resolve({
         data: {
           items: [{
@@ -135,7 +137,7 @@ describe('queryCmrUmmConcept', () => {
         },
         {
           jsonKeys: [],
-          ummKeys: ['Type'],
+          ummKeys: ['type'],
           keyMappings: {
             type: 'umm.Type'
           }
@@ -163,14 +165,16 @@ describe('queryCmrUmmConcept', () => {
           }
         }]
       })
+
       expect(consoleMock).toBeCalledTimes(1)
-      expect(consoleMock).toBeCalledWith('Request abcd-1234-efgh-5678 to [concept: collections] requested [format: umm, key: Type]')
+      expect(consoleMock).toBeCalledWith('Request abcd-1234-efgh-5678 to [concept: collections] requested [format: umm, key: type]')
     })
   })
 
   describe('when both a json key and a umm key is requested', () => {
     test('only makes a request to the json endpoint', async () => {
       const consoleMock = jest.spyOn(console, 'log').mockImplementationOnce(() => jest.fn())
+
       const queryCmrMock = jest.spyOn(queryCmr, 'queryCmr').mockImplementationOnce(() => Promise.resolve({
         data: {
           feed: {
@@ -201,7 +205,7 @@ describe('queryCmrUmmConcept', () => {
         },
         {
           jsonKeys: ['concept_id'],
-          ummKeys: ['Type'],
+          ummKeys: ['type'],
           keyMappings: {
             type: 'umm.Type'
           }
@@ -247,13 +251,15 @@ describe('queryCmrUmmConcept', () => {
         }]
       })
 
-      const { mock } = consoleMock
-      const { calls } = mock
-      const [jsonLog, ummLog] = calls
-
       expect(consoleMock).toBeCalledTimes(2)
-      expect(jsonLog).toEqual(['Request abcd-1234-efgh-5678 to [concept: collections] requested [format: json, key: concept_id]'])
-      expect(ummLog).toEqual(['Request abcd-1234-efgh-5678 to [concept: collections] requested [format: umm, key: Type]'])
+      const [jsonLog, ummLog] = consoleMock.mock.calls
+
+      expect(jsonLog).toEqual([
+        'Request abcd-1234-efgh-5678 to [concept: collections] requested [format: json, key: concept_id]'
+      ])
+      expect(ummLog).toEqual([
+        'Request abcd-1234-efgh-5678 to [concept: collections] requested [format: umm, key: type]'
+      ])
     })
   })
 })

@@ -1,3 +1,7 @@
+import nock from 'nock'
+
+import { ApolloError } from 'apollo-server-lambda'
+
 import collectionDatasource from '../collection'
 
 import * as parseCmrCollections from '../../utils/parseCmrCollections'
@@ -25,9 +29,15 @@ describe('collection', () => {
             args: {},
             fieldsByTypeName: {
               Collection: {
-                concept_id: {
-                  name: 'concept_id',
-                  alias: 'concept_id',
+                conceptId: {
+                  name: 'conceptId',
+                  alias: 'conceptId',
+                  args: {},
+                  fieldsByTypeName: {}
+                },
+                tags: {
+                  name: 'tags',
+                  alias: 'tags',
                   args: {},
                   fieldsByTypeName: {}
                 }
@@ -56,13 +66,13 @@ describe('collection', () => {
 
       const parseCmrCollectionsMock = jest.spyOn(parseCmrCollections, 'parseCmrCollections')
 
-      const response = await collectionDatasource({}, {}, requestInfo, 'collection')
+      const response = await collectionDatasource({}, { 'CMR-Request-ID': 'abcd-1234-efgh-5678' }, requestInfo, 'collection')
 
       expect(queryCmrCollectionsMock).toBeCalledTimes(1)
       expect(queryCmrCollectionsMock).toBeCalledWith(
         {},
-        {},
-        expect.objectContaining({ jsonKeys: ['concept_id'] })
+        { 'CMR-Request-ID': 'abcd-1234-efgh-5678' },
+        expect.objectContaining({ jsonKeys: ['conceptId', 'tags'] })
       )
 
       expect(parseCmrCollectionsMock).toBeCalledTimes(1)
@@ -82,7 +92,7 @@ describe('collection', () => {
       expect(response).toEqual({
         count: 84,
         items: [{
-          concept_id: 'C100000-EDSC'
+          conceptId: 'C100000-EDSC'
         }]
       })
     })
@@ -97,7 +107,17 @@ describe('collection', () => {
         data: {
           feed: {
             entry: [{
-              id: 'C100000-EDSC'
+              id: 'C100000-EDSC',
+              tags: {
+                'edsc.extra.serverless.collection_capabilities': {
+                  data: {
+                    cloud_cover: true,
+                    day_night_flag: true,
+                    granule_online_access_flag: true,
+                    orbit_calculated_spatial_domains: false
+                  }
+                }
+              }
             }]
           }
         }
@@ -105,13 +125,13 @@ describe('collection', () => {
 
       const parseCmrCollectionsMock = jest.spyOn(parseCmrCollections, 'parseCmrCollections')
 
-      const response = await collectionDatasource({ concept_id: 'C100000-EDSC' }, {}, requestInfo, 'collection')
+      const response = await collectionDatasource({ conceptId: 'C100000-EDSC' }, { 'CMR-Request-ID': 'abcd-1234-efgh-5678' }, requestInfo, 'collection')
 
       expect(queryCmrCollectionsMock).toBeCalledTimes(1)
       expect(queryCmrCollectionsMock).toBeCalledWith(
-        { concept_id: 'C100000-EDSC' },
-        {},
-        expect.objectContaining({ jsonKeys: ['concept_id'] })
+        { conceptId: 'C100000-EDSC' },
+        { 'CMR-Request-ID': 'abcd-1234-efgh-5678' },
+        expect.objectContaining({ jsonKeys: ['conceptId', 'tags'] })
       )
 
       expect(parseCmrCollectionsMock).toBeCalledTimes(1)
@@ -122,7 +142,17 @@ describe('collection', () => {
         data: {
           feed: {
             entry: [{
-              concept_id: 'C100000-EDSC'
+              concept_id: 'C100000-EDSC',
+              tags: {
+                'edsc.extra.serverless.collection_capabilities': {
+                  data: {
+                    cloud_cover: true,
+                    day_night_flag: true,
+                    granule_online_access_flag: true,
+                    orbit_calculated_spatial_domains: false
+                  }
+                }
+              }
             }]
           }
         }
@@ -131,7 +161,17 @@ describe('collection', () => {
       expect(response).toEqual({
         count: 84,
         items: [{
-          concept_id: 'C100000-EDSC'
+          conceptId: 'C100000-EDSC',
+          tags: {
+            'edsc.extra.serverless.collection_capabilities': {
+              data: {
+                cloud_cover: true,
+                day_night_flag: true,
+                granule_online_access_flag: true,
+                orbit_calculated_spatial_domains: false
+              }
+            }
+          }
         }]
       })
     })
@@ -152,9 +192,9 @@ describe('collection', () => {
               args: {},
               fieldsByTypeName: {
                 Collection: {
-                  concept_id: {
-                    name: 'concept_id',
-                    alias: 'concept_id',
+                  conceptId: {
+                    name: 'conceptId',
+                    alias: 'conceptId',
                     args: {},
                     fieldsByTypeName: {}
                   },
@@ -209,13 +249,15 @@ describe('collection', () => {
 
       const parseCmrCollectionsMock = jest.spyOn(parseCmrCollections, 'parseCmrCollections')
 
-      const response = await collectionDatasource({ concept_id: 'C100000-EDSC' }, {}, requestInfo, 'collection')
+      const response = await collectionDatasource({ conceptId: 'C100000-EDSC' }, { 'CMR-Request-ID': 'abcd-1234-efgh-5678' }, requestInfo, 'colletion')
 
       expect(queryCmrCollectionsMock).toBeCalledTimes(1)
       expect(queryCmrCollectionsMock).toBeCalledWith(
-        { concept_id: 'C100000-EDSC' },
-        {},
-        expect.objectContaining({ jsonKeys: ['concept_id', 'title'], ummKeys: ['abstract'] })
+        { conceptId: 'C100000-EDSC' },
+        {
+          'CMR-Request-ID': 'abcd-1234-efgh-5678'
+        },
+        expect.objectContaining({ jsonKeys: ['conceptId', 'title'], ummKeys: ['abstract'] })
       )
 
       expect(parseCmrCollectionsMock).toBeCalledTimes(2)
@@ -252,7 +294,7 @@ describe('collection', () => {
       expect(response).toEqual({
         count: 84,
         items: [{
-          concept_id: 'C100000-EDSC',
+          conceptId: 'C100000-EDSC',
           abstract: 'Lorem ipsum dolor sit amet, consectetur adipiscing',
           title: 'Maecenas sed diam eget risus varius blandit sit amet non magna.'
         }]
@@ -281,9 +323,9 @@ describe('collection', () => {
                     args: {},
                     fieldsByTypeName: {}
                   },
-                  spatial_extent: {
-                    name: 'spatial_extent',
-                    alias: 'spatial_extent',
+                  spatialExtent: {
+                    name: 'spatialExtent',
+                    alias: 'spatialExtent',
                     args: {},
                     fieldsByTypeName: {}
                   }
@@ -305,7 +347,12 @@ describe('collection', () => {
           data: {
             items: [{
               meta: {
-                'concept-id': 'C100000-EDSC'
+                'concept-id': 'C100000-EDSC',
+                associations: {
+                  services: [
+                    'S100000-EDSC'
+                  ]
+                }
               },
               umm: {
                 Abstract: 'Lorem ipsum dolor sit amet, consectetur adipiscing'
@@ -316,13 +363,13 @@ describe('collection', () => {
 
       const parseCmrCollectionsMock = jest.spyOn(parseCmrCollections, 'parseCmrCollections')
 
-      const response = await collectionDatasource({ concept_id: 'C100000-EDSC' }, {}, requestInfo, 'collection')
+      const response = await collectionDatasource({ conceptId: 'C100000-EDSC' }, { 'CMR-Request-ID': 'abcd-1234-efgh-5678' }, requestInfo, 'collection')
 
       expect(queryCmrCollectionsMock).toBeCalledTimes(1)
       expect(queryCmrCollectionsMock).toBeCalledWith(
-        { concept_id: 'C100000-EDSC' },
-        {},
-        expect.objectContaining({ jsonKeys: [], ummKeys: ['abstract', 'spatial_extent'] })
+        { conceptId: 'C100000-EDSC' },
+        { 'CMR-Request-ID': 'abcd-1234-efgh-5678' },
+        expect.objectContaining({ jsonKeys: [], ummKeys: ['abstract', 'spatialExtent'] })
       )
 
       expect(parseCmrCollectionsMock).toBeCalledTimes(1)
@@ -333,7 +380,12 @@ describe('collection', () => {
         data: {
           items: [{
             meta: {
-              'concept-id': 'C100000-EDSC'
+              'concept-id': 'C100000-EDSC',
+              associations: {
+                services: [
+                  'S100000-EDSC'
+                ]
+              }
             },
             umm: {
               Abstract: 'Lorem ipsum dolor sit amet, consectetur adipiscing'
@@ -345,29 +397,42 @@ describe('collection', () => {
       expect(response).toEqual({
         count: 84,
         items: [{
-          abstract: 'Lorem ipsum dolor sit amet, consectetur adipiscing'
+          abstract: 'Lorem ipsum dolor sit amet, consectetur adipiscing',
+          associations: {
+            services: [
+              'S100000-EDSC'
+            ]
+          },
+          conceptId: 'C100000-EDSC'
         }]
       })
     })
   })
 
   test('catches errors received from queryCmrCollections', async () => {
+    nock(/localhost/)
+      .post(/collections/)
+      .reply(500, {
+        errors: ['HTTP Error']
+      }, {
+        'cmr-request-id': 'abcd-1234-efgh-5678'
+      })
+
     const queryCmrCollectionsMock = jest.spyOn(queryCmrCollections, 'queryCmrCollections')
-      .mockImplementationOnce(() => new Promise((resolve, reject) => reject(new Error('HTTP Error'))))
 
     const parseCmrCollectionsMock = jest.spyOn(parseCmrCollections, 'parseCmrCollections')
 
-    const response = await collectionDatasource({ concept_id: 'C100000-EDSC' }, {}, requestInfo, 'collection')
+    await expect(
+      collectionDatasource({ conceptId: 'C100000-EDSC' }, { 'CMR-Request-ID': 'abcd-1234-efgh-5678' }, requestInfo, 'collection')
+    ).rejects.toThrow(ApolloError)
 
     expect(queryCmrCollectionsMock).toBeCalledTimes(1)
     expect(queryCmrCollectionsMock).toBeCalledWith(
-      { concept_id: 'C100000-EDSC' },
-      {},
-      expect.objectContaining({ jsonKeys: ['concept_id'] })
+      { conceptId: 'C100000-EDSC' },
+      { 'CMR-Request-ID': 'abcd-1234-efgh-5678' },
+      expect.objectContaining({ jsonKeys: ['conceptId', 'tags'] })
     )
 
     expect(parseCmrCollectionsMock).toBeCalledTimes(0)
-
-    expect(response).toEqual([])
   })
 })

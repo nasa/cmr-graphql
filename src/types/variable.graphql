@@ -1,16 +1,30 @@
 type Variable {
+  "The alias for the name of a variable"
+  alias: String
   "The unique concept id assigned to the variable."
-  concept_id: String!
+  conceptId: String!
+  "Specify data type of a variable. These types can be either: uint8, uint16, etc."
+  dataType: String
   "The definition of the variable."
   definition: String
+  "A variable consists of one or more dimensions. An example of a dimension name is 'XDim'. An example of a dimension size is '1200'. Variables are rarely one dimensional."
+  dimensions: JSON
   "The expanded or long name related to the variable Name."
-  long_name: String
+  longName: String
+  "The measurement information of a variable."
+  measurementIdentifiers: JSON
   "The name of a variable."
   name: String
+  "The offset is the value which is either added to or subtracted from all values in the stored data field in order to obtain the original values. May be used together with Scale. An example of an offset is '0.49'."
+  offset: Float
+  "The scale is the numerical factor by which all values in the stored data field are multiplied in order to obtain the original values. May be used together with Offset. An example of a scale factor is '0.002'"
+  scale: Float
   "Controlled Science Keywords describing the collection. The controlled vocabulary for Science Keywords is maintained in the Keyword Management System (KMS)."
-  science_keywords: JSON
+  scienceKeywords: JSON
+  "The units associated with a variable."
+  units: String
   "This element is used to classify the variable as a Science Variable, Quality Variable or Ancillary Variable. If a variable does not contain this field, it will be assumed to be a science variable"
-  variable_type: String
+  variableType: String
 }
 
 type VariableList {
@@ -23,12 +37,14 @@ type VariableList {
 type Query {
   variables(
     "The unique concept id assigned to the variable."
-    concept_id: [String],
+    conceptId: [String],
     "The number of variables requested by the user"
     first: Int
+    "The name of a variable."
+    name: String
   ): VariableList!
   variable(
     "The unique concept id assigned to the variable."
-    concept_id: String!
+    conceptId: String!
   ): Variable!
 }

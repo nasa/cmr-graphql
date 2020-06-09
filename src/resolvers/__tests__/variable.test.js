@@ -27,7 +27,7 @@ const server = new ApolloServer({
   })
 })
 
-describe('Collection', () => {
+describe('Variable', () => {
   const OLD_ENV = process.env
 
   beforeEach(() => {
@@ -65,7 +65,7 @@ describe('Collection', () => {
         query: `{
           variables(first:2) {
             items {
-              concept_id
+              conceptId
             }
           }
         }`
@@ -76,9 +76,9 @@ describe('Collection', () => {
       expect(data).toEqual({
         variables: {
           items: [{
-            concept_id: 'V100000-EDSC'
+            conceptId: 'V100000-EDSC'
           }, {
-            concept_id: 'V100001-EDSC'
+            conceptId: 'V100001-EDSC'
           }]
         }
       })
@@ -104,9 +104,9 @@ describe('Collection', () => {
       const response = await query({
         variables: {},
         query: `{
-          variable(concept_id: "V100000-EDSC") {
-            concept_id
-            long_name
+          variable(conceptId: "V100000-EDSC") {
+            conceptId
+            longName
             name
           }
         }`
@@ -116,8 +116,8 @@ describe('Collection', () => {
 
       expect(data).toEqual({
         variable: {
-          concept_id: 'V100000-EDSC',
-          long_name: 'Cras mattis consectetur purus sit amet fermentum.',
+          conceptId: 'V100000-EDSC',
+          longName: 'Cras mattis consectetur purus sit amet fermentum.',
           name: 'Lorem Ipsum'
         }
       })

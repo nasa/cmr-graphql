@@ -29,11 +29,11 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
     // If the user requested `count` and no other fields, default the requested fields
     // to convince graph that it should still make a request
     if (count && isEmpty(items)) {
-      requestedFields = ['concept_id']
+      requestedFields = ['conceptId']
     }
 
     // Track meta keys for analytics on how often they are requested
-    if (count) metaKeys.push(`${conceptName.toLowerCase()}_count`)
+    if (count) metaKeys.push(`${conceptName.toLowerCase()}Count`)
   }
 
   // If a plural query is being performed, and the user has not requested any
@@ -45,6 +45,9 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
 
     requestedFields = Object.keys(conceptKeysRequested)
   }
+
+  const ummTypes = ['collections', 'granules', 'services', 'variables']
+  requestedFields = requestedFields.filter((field) => ummTypes.indexOf(field) === -1)
 
   const { sharedKeys, ummKeyMappings } = keyMap
 

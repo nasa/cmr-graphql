@@ -1,3 +1,7 @@
+import nock from 'nock'
+
+import { ApolloError } from 'apollo-server-lambda'
+
 import granuleDatasource from '../granule'
 
 import * as parseCmrGranules from '../../utils/parseCmrGranules'
@@ -25,9 +29,9 @@ describe('granule', () => {
             args: {},
             fieldsByTypeName: {
               Granule: {
-                concept_id: {
-                  name: 'concept_id',
-                  alias: 'concept_id',
+                conceptId: {
+                  name: 'conceptId',
+                  alias: 'conceptId',
                   args: {},
                   fieldsByTypeName: {}
                 }
@@ -56,13 +60,13 @@ describe('granule', () => {
 
       const parseCmrGranulesMock = jest.spyOn(parseCmrGranules, 'parseCmrGranules')
 
-      const response = await granuleDatasource({}, {}, requestInfo, 'granule')
+      const response = await granuleDatasource({}, { 'CMR-Request-ID': 'abcd-1234-efgh-5678' }, requestInfo, 'granule')
 
       expect(queryCmrGranulesMock).toBeCalledTimes(1)
       expect(queryCmrGranulesMock).toBeCalledWith(
         {},
-        {},
-        expect.objectContaining({ jsonKeys: ['concept_id'] })
+        { 'CMR-Request-ID': 'abcd-1234-efgh-5678' },
+        expect.objectContaining({ jsonKeys: ['conceptId'] })
       )
 
       expect(parseCmrGranulesMock).toBeCalledTimes(1)
@@ -82,7 +86,7 @@ describe('granule', () => {
       expect(response).toEqual({
         count: 84,
         items: [{
-          concept_id: 'G100000-EDSC'
+          conceptId: 'G100000-EDSC'
         }]
       })
     })
@@ -105,13 +109,13 @@ describe('granule', () => {
 
       const parseCmrGranulesMock = jest.spyOn(parseCmrGranules, 'parseCmrGranules')
 
-      const response = await granuleDatasource({ concept_id: 'G100000-EDSC' }, {}, requestInfo, 'granule')
+      const response = await granuleDatasource({ concept_id: 'G100000-EDSC' }, { 'CMR-Request-ID': 'abcd-1234-efgh-5678' }, requestInfo, 'granule')
 
       expect(queryCmrGranulesMock).toBeCalledTimes(1)
       expect(queryCmrGranulesMock).toBeCalledWith(
         { concept_id: 'G100000-EDSC' },
-        {},
-        expect.objectContaining({ jsonKeys: ['concept_id'] })
+        { 'CMR-Request-ID': 'abcd-1234-efgh-5678' },
+        expect.objectContaining({ jsonKeys: ['conceptId'] })
       )
 
       expect(parseCmrGranulesMock).toBeCalledTimes(1)
@@ -131,7 +135,7 @@ describe('granule', () => {
       expect(response).toEqual({
         count: 84,
         items: [{
-          concept_id: 'G100000-EDSC'
+          conceptId: 'G100000-EDSC'
         }]
       })
     })
@@ -152,21 +156,21 @@ describe('granule', () => {
               args: {},
               fieldsByTypeName: {
                 Granule: {
-                  concept_id: {
-                    name: 'concept_id',
-                    alias: 'concept_id',
+                  conceptId: {
+                    name: 'conceptId',
+                    alias: 'conceptId',
                     args: {},
                     fieldsByTypeName: {}
                   },
-                  browse_flag: {
-                    name: 'browse_flag',
-                    alias: 'browse_flag',
+                  browseFlag: {
+                    name: 'browseFlag',
+                    alias: 'browseFlag',
                     args: {},
                     fieldsByTypeName: {}
                   },
-                  granule_ur: {
-                    name: 'granule_ur',
-                    alias: 'granule_ur',
+                  granuleUr: {
+                    name: 'granuleUr',
+                    alias: 'granuleUr',
                     args: {},
                     fieldsByTypeName: {}
                   }
@@ -209,13 +213,13 @@ describe('granule', () => {
 
       const parseCmrGranulesMock = jest.spyOn(parseCmrGranules, 'parseCmrGranules')
 
-      const response = await granuleDatasource({ concept_id: 'G100000-EDSC' }, {}, requestInfo, 'granule')
+      const response = await granuleDatasource({ concept_id: 'G100000-EDSC' }, { 'CMR-Request-ID': 'abcd-1234-efgh-5678' }, requestInfo, 'granule')
 
       expect(queryCmrGranulesMock).toBeCalledTimes(1)
       expect(queryCmrGranulesMock).toBeCalledWith(
         { concept_id: 'G100000-EDSC' },
-        {},
-        expect.objectContaining({ jsonKeys: ['browse_flag', 'concept_id'], ummKeys: ['granule_ur'] })
+        { 'CMR-Request-ID': 'abcd-1234-efgh-5678' },
+        expect.objectContaining({ jsonKeys: ['browseFlag', 'conceptId'], ummKeys: ['granuleUr'] })
       )
 
       expect(parseCmrGranulesMock).toBeCalledTimes(2)
@@ -252,9 +256,9 @@ describe('granule', () => {
       expect(response).toEqual({
         count: 84,
         items: [{
-          concept_id: 'G100000-EDSC',
-          browse_flag: true,
-          granule_ur: 'GLDAS_CLSM025_D.2.0:GLDAS_CLSM025_D.A19480101.020.nc4'
+          conceptId: 'G100000-EDSC',
+          browseFlag: true,
+          granuleUr: 'GLDAS_CLSM025_D.2.0:GLDAS_CLSM025_D.A19480101.020.nc4'
         }]
       })
     })
@@ -275,15 +279,15 @@ describe('granule', () => {
               args: {},
               fieldsByTypeName: {
                 Granule: {
-                  granule_ur: {
-                    name: 'granule_ur',
-                    alias: 'granule_ur',
+                  granuleUr: {
+                    name: 'granuleUr',
+                    alias: 'granuleUr',
                     args: {},
                     fieldsByTypeName: {}
                   },
-                  temporal_extent: {
-                    name: 'temporal_extent',
-                    alias: 'temporal_extent',
+                  temporalExtent: {
+                    name: 'temporalExtent',
+                    alias: 'temporalExtent',
                     args: {},
                     fieldsByTypeName: {}
                   }
@@ -316,13 +320,13 @@ describe('granule', () => {
 
       const parseCmrGranulesMock = jest.spyOn(parseCmrGranules, 'parseCmrGranules')
 
-      const response = await granuleDatasource({ concept_id: 'G100000-EDSC' }, {}, requestInfo, 'granule')
+      const response = await granuleDatasource({ concept_id: 'G100000-EDSC' }, { 'CMR-Request-ID': 'abcd-1234-efgh-5678' }, requestInfo, 'granule')
 
       expect(queryCmrGranulesMock).toBeCalledTimes(1)
       expect(queryCmrGranulesMock).toBeCalledWith(
         { concept_id: 'G100000-EDSC' },
-        {},
-        expect.objectContaining({ jsonKeys: [], ummKeys: ['granule_ur', 'temporal_extent'] })
+        { 'CMR-Request-ID': 'abcd-1234-efgh-5678' },
+        expect.objectContaining({ jsonKeys: [], ummKeys: ['granuleUr', 'temporalExtent'] })
       )
 
       expect(parseCmrGranulesMock).toBeCalledTimes(1)
@@ -345,29 +349,36 @@ describe('granule', () => {
       expect(response).toEqual({
         count: 84,
         items: [{
-          granule_ur: 'GLDAS_CLSM025_D.2.0:GLDAS_CLSM025_D.A19480101.020.nc4'
+          granuleUr: 'GLDAS_CLSM025_D.2.0:GLDAS_CLSM025_D.A19480101.020.nc4'
         }]
       })
     })
   })
 
   test('catches errors received from queryCmrGranules', async () => {
+    nock(/localhost/)
+      .post(/granules/)
+      .reply(500, {
+        errors: ['HTTP Error']
+      }, {
+        'cmr-request-id': 'abcd-1234-efgh-5678'
+      })
+
     const queryCmrGranulesMock = jest.spyOn(queryCmrGranules, 'queryCmrGranules')
-      .mockImplementationOnce(() => new Promise((resolve, reject) => reject(new Error('HTTP Error'))))
 
     const parseCmrGranulesMock = jest.spyOn(parseCmrGranules, 'parseCmrGranules')
 
-    const response = await granuleDatasource({ concept_id: 'G100000-EDSC' }, {}, requestInfo, 'granule')
+    await expect(
+      granuleDatasource({ conceptId: 'G100000-EDSC' }, { 'CMR-Request-ID': 'abcd-1234-efgh-5678' }, requestInfo, 'granule')
+    ).rejects.toThrow(ApolloError)
 
     expect(queryCmrGranulesMock).toBeCalledTimes(1)
     expect(queryCmrGranulesMock).toBeCalledWith(
-      { concept_id: 'G100000-EDSC' },
-      {},
-      expect.objectContaining({ jsonKeys: ['concept_id'] })
+      { conceptId: 'G100000-EDSC' },
+      { 'CMR-Request-ID': 'abcd-1234-efgh-5678' },
+      expect.objectContaining({ jsonKeys: ['conceptId'] })
     )
 
     expect(parseCmrGranulesMock).toBeCalledTimes(0)
-
-    expect(response).toEqual([])
   })
 })

@@ -21,7 +21,7 @@ export default {
     granules: async (source, args, { dataSources, headers }, info) => {
       // Pull out parent collection id to provide to the granules endpoint because cmr requires it
       const {
-        concept_id: collectionId
+        conceptId: collectionId
       } = source
 
       // Empty object that will contain the search parameters sent to CMR
@@ -30,7 +30,7 @@ export default {
       // If filtering parameters were supplied to the collection query it is expected
       // that the granules will also be filtered by those same conditions
       const passthroughParams = [
-        'bounding_box',
+        'boundingBox',
         'circle',
         'point',
         'polygon',
@@ -62,7 +62,7 @@ export default {
 
       // Splat granuleParams before args to allow for overwriting granuleParams
       const requestedParams = handlePagingParams({
-        collection_concept_id: collectionId,
+        collectionConceptId: collectionId,
         ...granuleParams,
         ...args
       })
@@ -83,7 +83,7 @@ export default {
         }
       }
       return dataSources.serviceSource({
-        concept_id: services,
+        conceptId: services,
         ...handlePagingParams(args, services.length)
       }, headers, parseResolveInfo(info))
     },
@@ -102,7 +102,7 @@ export default {
       }
 
       return dataSources.variableSource({
-        concept_id: variables,
+        conceptId: variables,
         ...handlePagingParams(args, variables.length)
       }, headers, parseResolveInfo(info))
     }

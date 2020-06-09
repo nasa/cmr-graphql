@@ -1,3 +1,7 @@
+import nock from 'nock'
+
+import { ApolloError } from 'apollo-server-lambda'
+
 import variableDatasource from '../variable'
 
 import * as parseCmrVariables from '../../utils/parseCmrVariables'
@@ -25,9 +29,9 @@ describe('variable', () => {
             args: {},
             fieldsByTypeName: {
               Variable: {
-                concept_id: {
-                  name: 'concept_id',
-                  alias: 'concept_id',
+                conceptId: {
+                  name: 'conceptId',
+                  alias: 'conceptId',
                   args: {},
                   fieldsByTypeName: {}
                 }
@@ -54,13 +58,13 @@ describe('variable', () => {
 
       const parseCmrVariablesMock = jest.spyOn(parseCmrVariables, 'parseCmrVariables')
 
-      const response = await variableDatasource({}, {}, requestInfo, 'variable')
+      const response = await variableDatasource({}, { 'CMR-Request-ID': 'abcd-1234-efgh-5678' }, requestInfo, 'variable')
 
       expect(queryCmrVariablesMock).toBeCalledTimes(1)
       expect(queryCmrVariablesMock).toBeCalledWith(
         {},
-        {},
-        expect.objectContaining({ jsonKeys: ['concept_id'] })
+        { 'CMR-Request-ID': 'abcd-1234-efgh-5678' },
+        expect.objectContaining({ jsonKeys: ['conceptId'] })
       )
 
       expect(parseCmrVariablesMock).toBeCalledTimes(1)
@@ -78,7 +82,7 @@ describe('variable', () => {
       expect(response).toEqual({
         count: 84,
         items: [{
-          concept_id: 'V100000-EDSC'
+          conceptId: 'V100000-EDSC'
         }]
       })
     })
@@ -99,13 +103,13 @@ describe('variable', () => {
 
       const parseCmrVariablesMock = jest.spyOn(parseCmrVariables, 'parseCmrVariables')
 
-      const response = await variableDatasource({ concept_id: 'V100000-EDSC' }, {}, requestInfo, 'variable')
+      const response = await variableDatasource({ concept_id: 'V100000-EDSC' }, { 'CMR-Request-ID': 'abcd-1234-efgh-5678' }, requestInfo, 'variable')
 
       expect(queryCmrVariablesMock).toBeCalledTimes(1)
       expect(queryCmrVariablesMock).toBeCalledWith(
         { concept_id: 'V100000-EDSC' },
-        {},
-        expect.objectContaining({ jsonKeys: ['concept_id'] })
+        { 'CMR-Request-ID': 'abcd-1234-efgh-5678' },
+        expect.objectContaining({ jsonKeys: ['conceptId'] })
       )
 
       expect(parseCmrVariablesMock).toBeCalledTimes(1)
@@ -123,7 +127,7 @@ describe('variable', () => {
       expect(response).toEqual({
         count: 84,
         items: [{
-          concept_id: 'V100000-EDSC'
+          conceptId: 'V100000-EDSC'
         }]
       })
     })
@@ -144,15 +148,15 @@ describe('variable', () => {
               args: {},
               fieldsByTypeName: {
                 Variable: {
-                  concept_id: {
-                    name: 'concept_id',
-                    alias: 'concept_id',
+                  conceptId: {
+                    name: 'conceptId',
+                    alias: 'conceptId',
                     args: {},
                     fieldsByTypeName: {}
                   },
-                  variable_type: {
-                    name: 'variable_type',
-                    alias: 'variable_type',
+                  variableType: {
+                    name: 'variableType',
+                    alias: 'variableType',
                     args: {},
                     fieldsByTypeName: {}
                   }
@@ -193,8 +197,8 @@ describe('variable', () => {
     //   expect(queryCmrVariablesMock).toBeCalledTimes(1)
     //   expect(queryCmrVariablesMock).toBeCalledWith(
     //     { concept_id: 'V100000-EDSC' },
-    //     {},
-    //     expect.objectContaining({ jsonKeys: ['concept_id'], ummKeys: ['variable_type'] })
+    //     { 'CMR-Request-ID': 'abcd-1234-efgh-5678' },
+    //     expect.objectContaining({ jsonKeys: ['conceptId'], ummKeys: ['variableType'] })
     //   )
 
     //   expect(parseCmrVariablesMock).toBeCalledTimes(2)
@@ -220,8 +224,8 @@ describe('variable', () => {
     //   })
 
     //   expect(response).toEqual([{
-    //     concept_id: 'V100000-EDSC',
-    //     variable_type: 'SCIENCE_VARIABLE'
+    //     conceptId: 'V100000-EDSC',
+    //     variableType: 'SCIENCE_VARIABLE'
     //   }])
     // })
   })
@@ -241,15 +245,15 @@ describe('variable', () => {
               args: {},
               fieldsByTypeName: {
                 Variable: {
-                  variable_type: {
-                    name: 'variable_type',
-                    alias: 'variable_type',
+                  variableType: {
+                    name: 'variableType',
+                    alias: 'variableType',
                     args: {},
                     fieldsByTypeName: {}
                   },
-                  science_keywords: {
-                    name: 'science_keywords',
-                    alias: 'science_keywords',
+                  scienceKeywords: {
+                    name: 'scienceKeywords',
+                    alias: 'scienceKeywords',
                     args: {},
                     fieldsByTypeName: {}
                   }
@@ -282,13 +286,13 @@ describe('variable', () => {
 
       const parseCmrVariablesMock = jest.spyOn(parseCmrVariables, 'parseCmrVariables')
 
-      const response = await variableDatasource({ concept_id: 'V100000-EDSC' }, {}, requestInfo, 'variable')
+      const response = await variableDatasource({ conceptId: 'V100000-EDSC' }, { 'CMR-Request-ID': 'abcd-1234-efgh-5678' }, requestInfo, 'variable')
 
       expect(queryCmrVariablesMock).toBeCalledTimes(1)
       expect(queryCmrVariablesMock).toBeCalledWith(
-        { concept_id: 'V100000-EDSC' },
-        {},
-        expect.objectContaining({ jsonKeys: [], ummKeys: ['science_keywords', 'variable_type'] })
+        { conceptId: 'V100000-EDSC' },
+        { 'CMR-Request-ID': 'abcd-1234-efgh-5678' },
+        expect.objectContaining({ jsonKeys: [], ummKeys: ['scienceKeywords', 'variableType'] })
       )
 
       expect(parseCmrVariablesMock).toBeCalledTimes(1)
@@ -311,29 +315,36 @@ describe('variable', () => {
       expect(response).toEqual({
         count: 84,
         items: [{
-          variable_type: 'SCIENCE_VARIABLE'
+          variableType: 'SCIENCE_VARIABLE'
         }]
       })
     })
   })
 
   test('catches errors received from queryCmrVariables', async () => {
+    nock(/localhost/)
+      .post(/variables/)
+      .reply(500, {
+        errors: ['HTTP Error']
+      }, {
+        'cmr-request-id': 'abcd-1234-efgh-5678'
+      })
+
     const queryCmrVariablesMock = jest.spyOn(queryCmrVariables, 'queryCmrVariables')
-      .mockImplementationOnce(() => new Promise((resolve, reject) => reject(new Error('HTTP Error'))))
 
     const parseCmrVariablesMock = jest.spyOn(parseCmrVariables, 'parseCmrVariables')
 
-    const response = await variableDatasource({ concept_id: 'V100000-EDSC' }, {}, requestInfo, 'variable')
+    await expect(
+      variableDatasource({ conceptId: 'V100000-EDSC' }, { 'CMR-Request-ID': 'abcd-1234-efgh-5678' }, requestInfo, 'variable')
+    ).rejects.toThrow(ApolloError)
 
     expect(queryCmrVariablesMock).toBeCalledTimes(1)
     expect(queryCmrVariablesMock).toBeCalledWith(
-      { concept_id: 'V100000-EDSC' },
-      {},
-      expect.objectContaining({ jsonKeys: ['concept_id'] })
+      { conceptId: 'V100000-EDSC' },
+      { 'CMR-Request-ID': 'abcd-1234-efgh-5678' },
+      expect.objectContaining({ jsonKeys: ['conceptId'] })
     )
 
     expect(parseCmrVariablesMock).toBeCalledTimes(0)
-
-    expect(response).toEqual([])
   })
 })

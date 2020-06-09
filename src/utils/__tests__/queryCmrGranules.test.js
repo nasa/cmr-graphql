@@ -19,7 +19,7 @@ describe('queryCmrGranules', () => {
 
     // Default requestInfo an empty
     requestInfo = {
-      jsonKeys: ['concept_id'],
+      jsonKeys: ['conceptId'],
       ummKeys: [],
       ummKeyMappings: {}
     }

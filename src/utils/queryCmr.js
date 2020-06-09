@@ -1,4 +1,7 @@
 import axios from 'axios'
+
+import snakeCaseKeys from 'snakecase-keys'
+
 import { pick } from 'lodash'
 import { stringify } from 'qs'
 
@@ -27,7 +30,9 @@ export const queryCmr = (conceptType, params, headers, options = {}) => {
     'Echo-Token'
   ])
 
-  const cmrParameters = stringify(params, { indices: false, arrayFormat: 'brackets' })
+  const cmrParameters = stringify(
+    snakeCaseKeys(params), { indices: false, arrayFormat: 'brackets' }
+  )
 
   const { 'CMR-Request-ID': requestId } = permittedHeaders
 
@@ -38,6 +43,7 @@ export const queryCmr = (conceptType, params, headers, options = {}) => {
     url: `${process.env.cmrRootUrl}/search/${conceptType}.${format}`
   }
 
+  // Interceptors require an instance of axios
   const instance = axios.create()
   const { interceptors } = instance
   const {
@@ -45,18 +51,21 @@ export const queryCmr = (conceptType, params, headers, options = {}) => {
     response: responseInterceptor
   } = interceptors
 
-  // Using interceptors allow us to time axios requests and should be
-  // broken out if a more complicated use-case arises
+  // Intercept the request to inject timing information
   requestInterceptor.use((config) => {
     // eslint-disable-next-line no-param-reassign
     config.headers['request-startTime'] = process.hrtime()
+
     return config
   })
 
   responseInterceptor.use((response) => {
+    // Determine total time to complete this request
     const start = response.config.headers['request-startTime']
     const end = process.hrtime(start)
     const milliseconds = Math.round((end[0] * 1000) + (end[1] / 1000000))
+
+    // Retrieve the reported timing from CMR
     const { headers } = response
     const { 'cmr-took': cmrTook } = headers
     response.headers['request-duration'] = milliseconds

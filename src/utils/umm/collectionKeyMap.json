@@ -1,14 +1,19 @@
 {
   "sharedKeys": [
-    "concept_id",
+    "conceptId",
     "title",
-    "version_id"
+    "versionId"
   ],
   "ummKeyMappings": {
     "abstract": "umm.Abstract",
-    "temporal_extents": "umm.TemporalExtents",
-    "spatial_extent": "umm.SpatialExtent",
+    "archiveAndDistributionInformation": "umm.ArchiveAndDistributionInformation",
+    "dataCenters": "umm.DataCenters",
+    "doi": "umm.DOI",
+    "relatedUrls": "umm.RelatedUrls",
+    "scienceKeywords": "umm.ScienceKeywords",
+    "spatialExtent": "umm.SpatialExtent",
+    "temporalExtents": "umm.TemporalExtents",
     "title": "umm.EntryTitle",
-    "version_id": "umm.Version"
+    "versionId": "umm.Version"
   }
 }

@@ -11,6 +11,6 @@ export const handlePagingParams = (params, defaultPageSize = 20) => {
 
   return {
     ...params,
-    page_size: pageSize || defaultPageSize
+    pageSize: pageSize || defaultPageSize
   }
 }

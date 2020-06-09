@@ -1,16 +1,22 @@
 type Service {
    "The unique concept id assigned to the service."
-   concept_id: String!
+   conceptId: String!
    "A brief description of the service."
    description: String
    "The long name of the service, software, or tool."
-   long_name: String
+   longName: String
    "The name of the service, software, or tool."
    name: String
    "This element contains important information about the universal resource locator (URL) for the service."
-   related_urls: JSON
-   "This object describes service options, data transformations and output formats."
-   service_options: JSON
+   relatedUrls: JSON
+   "Service options, data transformations and output formats."
+   serviceOptions: JSON
+   "List of input format names supported by the service."
+   supportedInputFormats: JSON
+   "List of output format names supported by the service."
+   supportedOutputFormats: JSON
+   "List of format name combinations which explicitly state which re-formatting options are available."
+   supportedReformattings: JSON
    "The type of the service, software, or tool."
    type: String
  }
@@ -25,12 +31,12 @@ type ServiceList {
 type Query {
   services(
     "The unique concept id assigned to the service."
-    concept_id: [String],
+    conceptId: [String],
     "The number of servies requested by the user"
     first: Int
   ): ServiceList!
   service(
     "The unique concept id assigned to the service."
-    concept_id: String!
+    conceptId: String!
   ): Service!
 }

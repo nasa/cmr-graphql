@@ -1,3 +1,5 @@
+import snakeCaseKeys from 'snakecase-keys'
+
 import { pick } from 'lodash'
 
 import { queryCmrUmmConcept } from './queryCmrUmmConcept'
@@ -9,14 +11,19 @@ import { queryCmrUmmConcept } from './queryCmrUmmConcept'
  */
 export const queryCmrCollections = (params, headers, requestInfo) => {
   // Pick out permitted parameters
-  const permittedSearchParams = pick(params, [
+  const permittedSearchParams = pick(snakeCaseKeys(params), [
     'bounding_box',
     'circle',
     'concept_id',
+    'has_granules_or_cwic',
+    'has_granules',
+    'include_has_granules',
+    'include_tags',
     'page_size',
     'point',
     'polygon',
     'short_name',
+    'sort_key',
     'temporal'
   ])
 

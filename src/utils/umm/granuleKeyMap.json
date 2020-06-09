@@ -1,15 +1,15 @@
 {
   "sharedKeys": [
-    "cloud_cover",
-    "concept_id"
+    "cloudCover",
+    "conceptId"
   ],
   "ummKeyMappings": {
-    "cloud_cover": "umm.CloudCover",
-    "concept_id": "meta.concept-id",
-    "granule_ur": "umm.GranuleUR",
-    "orbit_calculated_spatial_domains": "umm.OrbitCalculatedSpatialDomains",
-    "related_urls": "umm.RelatedUrls",
-    "spatial_extent": "umm.SpatialExtent",
-    "temporal_extent": "umm.TemporalExtent"
+    "cloudCover": "umm.CloudCover",
+    "conceptId": "meta.concept-id",
+    "granuleUr": "umm.GranuleUR",
+    "orbitCalculatedSpatialDomains": "umm.OrbitCalculatedSpatialDomains",
+    "relatedUrls": "umm.RelatedUrls",
+    "spatialExtent": "umm.SpatialExtent",
+    "temporalExtent": "umm.TemporalExtent"
   }
 }

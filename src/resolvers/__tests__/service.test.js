@@ -65,7 +65,7 @@ describe('Collection', () => {
         query: `{
           services(first:2) {
             items {
-              concept_id
+              conceptId
             }
           }
         }`
@@ -76,9 +76,9 @@ describe('Collection', () => {
       expect(data).toEqual({
         services: {
           items: [{
-            concept_id: 'S100000-EDSC'
+            conceptId: 'S100000-EDSC'
           }, {
-            concept_id: 'S100001-EDSC'
+            conceptId: 'S100001-EDSC'
           }]
         }
       })
@@ -102,8 +102,8 @@ describe('Collection', () => {
       const response = await query({
         variables: {},
         query: `{
-          service(concept_id: "S100000-EDSC") {
-            concept_id
+          service(conceptId: "S100000-EDSC") {
+            conceptId
           }
         }`
       })
@@ -112,7 +112,7 @@ describe('Collection', () => {
 
       expect(data).toEqual({
         service: {
-          concept_id: 'S100000-EDSC'
+          conceptId: 'S100000-EDSC'
         }
       })
     })

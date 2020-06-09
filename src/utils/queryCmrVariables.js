@@ -1,3 +1,5 @@
+import snakeCaseKeys from 'snakecase-keys'
+
 import { pick } from 'lodash'
 
 import { queryCmrUmmConcept } from './queryCmrUmmConcept'
@@ -9,8 +11,9 @@ import { queryCmrUmmConcept } from './queryCmrUmmConcept'
  */
 export const queryCmrVariables = (params, headers, requestInfo) => {
   // Pick out permitted parameters
-  const permittedSearchParams = pick(params, [
+  const permittedSearchParams = pick(snakeCaseKeys(params), [
     'concept_id',
+    'name',
     'page_size'
   ])
 

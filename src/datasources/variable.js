@@ -1,4 +1,4 @@
-import snakeCaseKeys from 'snakecase-keys'
+import camelCaseKeys from 'camelcase-keys'
 
 import { get } from 'lodash'
 
@@ -39,7 +39,7 @@ export default async (params, headers, parsedInfo) => {
         // There are no keys in the json endpoint that are not available
         // in the umm endpoint so services should never make two requests
         // meaning that result will never be already set for a particular id
-        result[id] = variable
+        result[id] = camelCaseKeys(variable)
       })
     }
 
@@ -70,7 +70,7 @@ export default async (params, headers, parsedInfo) => {
 
           if (keyValue) {
             // Snake case the key requested and any children of that key
-            Object.assign(result[id], snakeCaseKeys({ [ummKey]: keyValue }))
+            Object.assign(result[id], camelCaseKeys({ [ummKey]: keyValue }, { deep: true }))
           }
         })
       })
@@ -84,8 +84,6 @@ export default async (params, headers, parsedInfo) => {
     }
     return Object.values(result)
   } catch (error) {
-    parseCmrError(error)
+    return parseCmrError(error)
   }
-
-  return []
 }
