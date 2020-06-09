@@ -30,7 +30,9 @@ export const queryCmr = (conceptType, params, headers, options = {}) => {
     'Echo-Token'
   ])
 
-  const cmrParameters = stringify(snakeCaseKeys(params), { indices: false, arrayFormat: 'brackets' })
+  const cmrParameters = stringify(
+    snakeCaseKeys(params), { indices: false, arrayFormat: 'brackets' }
+  )
 
   const { 'CMR-Request-ID': requestId } = permittedHeaders
 

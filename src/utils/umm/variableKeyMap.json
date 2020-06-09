@@ -16,7 +16,6 @@
     "offset": "umm.Offset",
     "scale": "umm.Scale",
     "scienceKeywords": "umm.ScienceKeywords",
-    "sizeEstimation": "umm.SizeEstimation",
     "units": "umm.Units",
     "variableType": "umm.VariableType"
   }
