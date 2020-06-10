@@ -20,6 +20,7 @@ const server = new ApolloServer({
     const { headers } = event
 
     const {
+      'Client-Id': clientId,
       'Echo-Token': token,
       'X-Request-ID': requestId
     } = headers
@@ -28,6 +29,10 @@ const server = new ApolloServer({
       'CMR-Request-ID': requestId || uuidv4()
     }
 
+    // If the client has identified themselves using Client-Id supply it to CMR
+    if (clientId) requestHeaders['Client-Id'] = clientId
+
+    // If the client has provided an EDL token supply it to CMR
     if (token) requestHeaders['Echo-Token'] = token
 
     // add the user to the context
@@ -48,7 +53,10 @@ const server = new ApolloServer({
 export const graphqlHandler = server.createHandler({
   cors: {
     origin: true,
-    credentials: true
+    credentials: true,
+    allowedHeaders: [
+      'Client-Id'
+    ]
   }
 })
 
