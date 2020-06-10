@@ -50,10 +50,9 @@ const server = new ApolloServer({
   })
 })
 
-export const graphqlHandler = server.createHandler({
+const graphqlHandler = server.createHandler({
   cors: {
     origin: '*',
-    credentials: true,
     allowedHeaders: [
       'Client-Id',
       'Content-Type',
@@ -74,7 +73,7 @@ const graphql = (event, context, callback) => {
   context.callbackWaitsForEmptyEventLoop = false
 
   // Use Apollo Server to construct the callback
-  const handler = server.createHandler()
+  const handler = graphqlHandler
 
   // Call and return the callback from Apollo Server
   return handler(event, context, callback)
