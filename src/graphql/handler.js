@@ -22,11 +22,11 @@ const server = new ApolloServer({
     const {
       'Client-Id': clientId,
       'Echo-Token': token,
-      'X-Request-ID': requestId
+      'X-Request-Id': requestId
     } = headers
 
     const requestHeaders = {
-      'CMR-Request-ID': requestId || uuidv4()
+      'CMR-Request-Id': requestId || uuidv4()
     }
 
     // If the client has identified themselves using Client-Id supply it to CMR

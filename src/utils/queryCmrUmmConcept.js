@@ -15,7 +15,7 @@ export const queryCmrUmmConcept = (
     metaKeys = [],
     ummKeys
   } = requestInfo
-  const { 'CMR-Request-ID': requestId } = headers
+  const { 'CMR-Request-Id': requestId } = headers
 
   metaKeys.forEach((param) => {
     console.log(`Request ${requestId} to [concept: ${conceptType}] requested [format: meta, key: ${param}]`)

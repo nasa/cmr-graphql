@@ -26,7 +26,7 @@ export const queryCmr = (conceptType, params, headers, options = {}) => {
   }, [
     'Accept',
     'Client-Id',
-    'CMR-Request-ID',
+    'CMR-Request-Id',
     'Echo-Token'
   ])
 
@@ -34,7 +34,7 @@ export const queryCmr = (conceptType, params, headers, options = {}) => {
     snakeCaseKeys(params), { indices: false, arrayFormat: 'brackets' }
   )
 
-  const { 'CMR-Request-ID': requestId } = permittedHeaders
+  const { 'CMR-Request-Id': requestId } = permittedHeaders
 
   const requestConfiguration = {
     data: cmrParameters,

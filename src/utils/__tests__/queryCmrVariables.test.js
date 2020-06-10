@@ -42,7 +42,7 @@ describe('queryCmrVariables', () => {
 
     const response = await queryCmrVariables(
       {},
-      { 'CMR-Request-ID': 'abcd-1234-efgh-5678' },
+      { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
       requestInfo
     )
 
@@ -52,7 +52,7 @@ describe('queryCmrVariables', () => {
       {},
       {
         Accept: 'application/vnd.nasa.cmr.umm_results+json; version=0.5',
-        'CMR-Request-ID': 'abcd-1234-efgh-5678'
+        'CMR-Request-Id': 'abcd-1234-efgh-5678'
       },
       requestInfo
     )
@@ -81,7 +81,7 @@ describe('queryCmrVariables', () => {
 
       const response = await queryCmrVariables(
         { concept_id: 'V100000-EDSC' },
-        { 'CMR-Request-ID': 'abcd-1234-efgh-5678' },
+        { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
         requestInfo
       )
 
@@ -91,7 +91,7 @@ describe('queryCmrVariables', () => {
         { concept_id: 'V100000-EDSC' },
         {
           Accept: 'application/vnd.nasa.cmr.umm_results+json; version=0.5',
-          'CMR-Request-ID': 'abcd-1234-efgh-5678'
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
         },
         requestInfo
       )
@@ -119,7 +119,7 @@ describe('queryCmrVariables', () => {
 
       const response = await queryCmrVariables(
         { random_param: 'value' },
-        { 'CMR-Request-ID': 'abcd-1234-efgh-5678' },
+        { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
         requestInfo
       )
 
@@ -129,7 +129,7 @@ describe('queryCmrVariables', () => {
         {},
         {
           Accept: 'application/vnd.nasa.cmr.umm_results+json; version=0.5',
-          'CMR-Request-ID': 'abcd-1234-efgh-5678'
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
         },
         requestInfo
       )
@@ -151,7 +151,7 @@ describe('queryCmrVariables', () => {
 
     const response = queryCmrVariables(
       {},
-      { 'CMR-Request-ID': 'abcd-1234-efgh-5678' },
+      { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
       requestInfo
     )
 
@@ -161,7 +161,7 @@ describe('queryCmrVariables', () => {
       {},
       {
         Accept: 'application/vnd.nasa.cmr.umm_results+json; version=0.5',
-        'CMR-Request-ID': 'abcd-1234-efgh-5678'
+        'CMR-Request-Id': 'abcd-1234-efgh-5678'
       },
       requestInfo
     )

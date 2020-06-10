@@ -22,7 +22,7 @@ describe('queryCmr', () => {
 
     nock(/example/, {
       reqheaders: {
-        'CMR-Request-ID': 'abcd-1234-efgh-5678'
+        'CMR-Request-Id': 'abcd-1234-efgh-5678'
       }
     })
       .defaultReplyHeaders({
@@ -40,7 +40,7 @@ describe('queryCmr', () => {
     const response = await queryCmr(
       'collections',
       {},
-      { 'CMR-Request-ID': 'abcd-1234-efgh-5678' }
+      { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }
     )
 
     const { data, headers } = response
@@ -67,7 +67,7 @@ describe('queryCmr', () => {
     test('queries cmr', async () => {
       nock(/example/, {
         reqheaders: {
-          'CMR-Request-ID': 'abcd-1234-efgh-5678'
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
         }
       })
         .post(/collections\.umm_json/)
@@ -82,7 +82,7 @@ describe('queryCmr', () => {
       const response = await queryCmr(
         'collections',
         {},
-        { 'CMR-Request-ID': 'abcd-1234-efgh-5678' },
+        { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
         { format: 'umm_json' }
       )
 
@@ -101,7 +101,7 @@ describe('queryCmr', () => {
     test('queries cmr', async () => {
       nock(/example/, {
         reqheaders: {
-          'CMR-Request-ID': 'abcd-1234-efgh-5678',
+          'CMR-Request-Id': 'abcd-1234-efgh-5678',
           'Echo-Token': 'test-token'
         }
       })
@@ -118,7 +118,7 @@ describe('queryCmr', () => {
         'collections',
         {},
         {
-          'CMR-Request-ID': 'abcd-1234-efgh-5678',
+          'CMR-Request-Id': 'abcd-1234-efgh-5678',
           'Echo-Token': 'test-token'
         }
       )
@@ -138,7 +138,7 @@ describe('queryCmr', () => {
     test('throws an exception', async () => {
       nock(/example/, {
         reqheaders: {
-          'CMR-Request-ID': 'abcd-1234-efgh-5678'
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
         }
       })
         .post(/collections\.json/)
@@ -150,7 +150,7 @@ describe('queryCmr', () => {
         'collections',
         {},
         {
-          'CMR-Request-ID': 'abcd-1234-efgh-5678'
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
         }
       )
 

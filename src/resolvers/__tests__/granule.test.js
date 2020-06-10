@@ -16,7 +16,7 @@ const server = new ApolloServer({
   resolvers,
   context: () => ({
     headers: {
-      'CMR-Request-ID': 'abcd-1234-efgh-5678'
+      'CMR-Request-Id': 'abcd-1234-efgh-5678'
     }
   }),
   dataSources: () => ({
@@ -49,7 +49,7 @@ describe('Collection', () => {
       nock(/example/)
         .defaultReplyHeaders({
           'CMR-Took': 7,
-          'CMR-Request-ID': 'abcd-1234-efgh-5678'
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
         .post(/granules\.json/, 'page_size=2')
         .reply(200, {
@@ -92,7 +92,7 @@ describe('Collection', () => {
       nock(/example/)
         .defaultReplyHeaders({
           'CMR-Took': 7,
-          'CMR-Request-ID': 'abcd-1234-efgh-5678'
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
         .post(/granules\.json/, 'concept_id=G100000-EDSC')
         .reply(200, {
