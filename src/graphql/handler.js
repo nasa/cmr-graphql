@@ -50,7 +50,7 @@ const server = new ApolloServer({
   })
 })
 
-const graphqlHandler = server.createHandler({
+export default server.createHandler({
   cors: {
     origin: true,
     allowedHeaders: [
@@ -60,23 +60,3 @@ const graphqlHandler = server.createHandler({
     ]
   }
 })
-
-/**
- * Construct and run a GraphQL query against CMR
- * @param {Object} event AWS Event object
- * @param {Object} context Handler context
- * @param {Function} callback Callback function to call when complete
- */
-const graphql = (event, context, callback) => {
-  // Tell AWS lambda we do not want to wait for NodeJS event loop to be empty in order to send the response
-  // eslint-disable-next-line no-param-reassign
-  context.callbackWaitsForEmptyEventLoop = false
-
-  // Use Apollo Server to construct the callback
-  const handler = graphqlHandler
-
-  // Call and return the callback from Apollo Server
-  return handler(event, context, callback)
-}
-
-export default graphql
