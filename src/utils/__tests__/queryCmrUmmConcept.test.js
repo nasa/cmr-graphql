@@ -24,7 +24,7 @@ describe('queryCmrUmmConcept', () => {
         'collections',
         { concept_id: 'C100000-EDSC' },
         {
-          'CMR-Request-ID': 'abcd-1234-efgh-5678'
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
         },
         {
           jsonKeys: ['concept_id'],
@@ -40,7 +40,7 @@ describe('queryCmrUmmConcept', () => {
       expect(queryCmrMock).toBeCalledWith(
         'collections',
         { concept_id: 'C100000-EDSC' },
-        { 'CMR-Request-ID': 'abcd-1234-efgh-5678' }
+        { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }
       )
 
       const [jsonResponse] = response
@@ -78,7 +78,7 @@ describe('queryCmrUmmConcept', () => {
         'collections',
         { concept_id: 'C100000-EDSC' },
         {
-          'CMR-Request-ID': 'abcd-1234-efgh-5678'
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
         },
         {
           jsonKeys: ['concept_id'],
@@ -93,7 +93,7 @@ describe('queryCmrUmmConcept', () => {
       expect(queryCmrMock).toBeCalledWith(
         'collections',
         { concept_id: 'C100000-EDSC' },
-        { 'CMR-Request-ID': 'abcd-1234-efgh-5678' }
+        { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }
       )
 
       const [jsonResponse] = response
@@ -133,7 +133,7 @@ describe('queryCmrUmmConcept', () => {
         'collections',
         { concept_id: 'C100000-EDSC' },
         {
-          'CMR-Request-ID': 'abcd-1234-efgh-5678'
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
         },
         {
           jsonKeys: [],
@@ -148,7 +148,7 @@ describe('queryCmrUmmConcept', () => {
       expect(queryCmrMock).toBeCalledWith(
         'collections',
         { concept_id: 'C100000-EDSC' },
-        { 'CMR-Request-ID': 'abcd-1234-efgh-5678' },
+        { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
         { format: 'umm_json' }
       )
 
@@ -201,7 +201,7 @@ describe('queryCmrUmmConcept', () => {
         'collections',
         { concept_id: 'C100000-EDSC' },
         {
-          'CMR-Request-ID': 'abcd-1234-efgh-5678'
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
         },
         {
           jsonKeys: ['concept_id'],
@@ -217,13 +217,13 @@ describe('queryCmrUmmConcept', () => {
       expect(jsonCall[0]).toEqual(
         'collections',
         { concept_id: 'C100000-EDSC' },
-        { 'CMR-Request-ID': 'abcd-1234-efgh-5678' }
+        { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }
       )
 
       expect(ummCall[0]).toEqual(
         'collections',
         { concept_id: 'C100000-EDSC' },
-        { 'CMR-Request-ID': 'abcd-1234-efgh-5678' },
+        { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
         { format: 'umm_json' }
       )
 

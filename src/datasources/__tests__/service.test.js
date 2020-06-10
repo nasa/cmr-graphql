@@ -58,12 +58,12 @@ describe('service', () => {
 
       const parseCmrServicesMock = jest.spyOn(parseCmrServices, 'parseCmrServices')
 
-      const response = await serviceDatasource({}, { 'CMR-Request-ID': 'abcd-1234-efgh-5678' }, requestInfo, 'service')
+      const response = await serviceDatasource({}, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'service')
 
       expect(queryCmrServicesMock).toBeCalledTimes(1)
       expect(queryCmrServicesMock).toBeCalledWith(
         {},
-        { 'CMR-Request-ID': 'abcd-1234-efgh-5678' },
+        { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
         expect.objectContaining({ jsonKeys: ['conceptId'] })
       )
 
@@ -103,12 +103,12 @@ describe('service', () => {
 
       const parseCmrServicesMock = jest.spyOn(parseCmrServices, 'parseCmrServices')
 
-      const response = await serviceDatasource({ concept_id: 'S100000-EDSC' }, { 'CMR-Request-ID': 'abcd-1234-efgh-5678' }, requestInfo, 'service')
+      const response = await serviceDatasource({ concept_id: 'S100000-EDSC' }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'service')
 
       expect(queryCmrServicesMock).toBeCalledTimes(1)
       expect(queryCmrServicesMock).toBeCalledWith(
         { concept_id: 'S100000-EDSC' },
-        { 'CMR-Request-ID': 'abcd-1234-efgh-5678' },
+        { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
         expect.objectContaining({ jsonKeys: ['conceptId'] })
       )
 
@@ -197,7 +197,7 @@ describe('service', () => {
     //   expect(queryCmrServicesMock).toBeCalledTimes(1)
     //   expect(queryCmrServicesMock).toBeCalledWith(
     //     { conceptId: 'S100000-EDSC' },
-    //     { 'CMR-Request-ID': 'abcd-1234-efgh-5678' },
+    //     { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
     //     expect.objectContaining({ jsonKeys: ['conceptId'], ummKeys: ['type'] })
     //   )
 
@@ -286,12 +286,12 @@ describe('service', () => {
 
       const parseCmrServicesMock = jest.spyOn(parseCmrServices, 'parseCmrServices')
 
-      const response = await serviceDatasource({ concept_id: 'S100000-EDSC' }, { 'CMR-Request-ID': 'abcd-1234-efgh-5678' }, requestInfo, 'service')
+      const response = await serviceDatasource({ concept_id: 'S100000-EDSC' }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'service')
 
       expect(queryCmrServicesMock).toBeCalledTimes(1)
       expect(queryCmrServicesMock).toBeCalledWith(
         { concept_id: 'S100000-EDSC' },
-        { 'CMR-Request-ID': 'abcd-1234-efgh-5678' },
+        { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
         expect.objectContaining({ jsonKeys: [], ummKeys: ['serviceOptions', 'type'] })
       )
 
@@ -335,14 +335,14 @@ describe('service', () => {
     const parseCmrServicesMock = jest.spyOn(parseCmrServices, 'parseCmrServices')
 
     await expect(
-      serviceDatasource({ conceptId: 'S100000-EDSC' }, { 'CMR-Request-ID': 'abcd-1234-efgh-5678' }, requestInfo, 'service')
+      serviceDatasource({ conceptId: 'S100000-EDSC' }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'service')
     ).rejects.toThrow(ApolloError)
 
 
     expect(queryCmrServicesMock).toBeCalledTimes(1)
     expect(queryCmrServicesMock).toBeCalledWith(
       { conceptId: 'S100000-EDSC' },
-      { 'CMR-Request-ID': 'abcd-1234-efgh-5678' },
+      { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
       expect.objectContaining({ jsonKeys: ['conceptId'] })
     )
 

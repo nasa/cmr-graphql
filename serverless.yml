@@ -45,7 +45,12 @@ functions:
     - http:
         path: api
         method: post
-        cors: true
+        cors:
+          origin: '*'
+          headers:
+            - Client-Id
+            - Content-Type
+            - X-Request-Id
     - http:
         path: api
         method: get

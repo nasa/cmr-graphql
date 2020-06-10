@@ -60,12 +60,12 @@ describe('granule', () => {
 
       const parseCmrGranulesMock = jest.spyOn(parseCmrGranules, 'parseCmrGranules')
 
-      const response = await granuleDatasource({}, { 'CMR-Request-ID': 'abcd-1234-efgh-5678' }, requestInfo, 'granule')
+      const response = await granuleDatasource({}, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'granule')
 
       expect(queryCmrGranulesMock).toBeCalledTimes(1)
       expect(queryCmrGranulesMock).toBeCalledWith(
         {},
-        { 'CMR-Request-ID': 'abcd-1234-efgh-5678' },
+        { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
         expect.objectContaining({ jsonKeys: ['conceptId'] })
       )
 
@@ -109,12 +109,12 @@ describe('granule', () => {
 
       const parseCmrGranulesMock = jest.spyOn(parseCmrGranules, 'parseCmrGranules')
 
-      const response = await granuleDatasource({ concept_id: 'G100000-EDSC' }, { 'CMR-Request-ID': 'abcd-1234-efgh-5678' }, requestInfo, 'granule')
+      const response = await granuleDatasource({ concept_id: 'G100000-EDSC' }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'granule')
 
       expect(queryCmrGranulesMock).toBeCalledTimes(1)
       expect(queryCmrGranulesMock).toBeCalledWith(
         { concept_id: 'G100000-EDSC' },
-        { 'CMR-Request-ID': 'abcd-1234-efgh-5678' },
+        { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
         expect.objectContaining({ jsonKeys: ['conceptId'] })
       )
 
@@ -213,12 +213,12 @@ describe('granule', () => {
 
       const parseCmrGranulesMock = jest.spyOn(parseCmrGranules, 'parseCmrGranules')
 
-      const response = await granuleDatasource({ concept_id: 'G100000-EDSC' }, { 'CMR-Request-ID': 'abcd-1234-efgh-5678' }, requestInfo, 'granule')
+      const response = await granuleDatasource({ concept_id: 'G100000-EDSC' }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'granule')
 
       expect(queryCmrGranulesMock).toBeCalledTimes(1)
       expect(queryCmrGranulesMock).toBeCalledWith(
         { concept_id: 'G100000-EDSC' },
-        { 'CMR-Request-ID': 'abcd-1234-efgh-5678' },
+        { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
         expect.objectContaining({ jsonKeys: ['browseFlag', 'conceptId'], ummKeys: ['granuleUr'] })
       )
 
@@ -320,12 +320,12 @@ describe('granule', () => {
 
       const parseCmrGranulesMock = jest.spyOn(parseCmrGranules, 'parseCmrGranules')
 
-      const response = await granuleDatasource({ concept_id: 'G100000-EDSC' }, { 'CMR-Request-ID': 'abcd-1234-efgh-5678' }, requestInfo, 'granule')
+      const response = await granuleDatasource({ concept_id: 'G100000-EDSC' }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'granule')
 
       expect(queryCmrGranulesMock).toBeCalledTimes(1)
       expect(queryCmrGranulesMock).toBeCalledWith(
         { concept_id: 'G100000-EDSC' },
-        { 'CMR-Request-ID': 'abcd-1234-efgh-5678' },
+        { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
         expect.objectContaining({ jsonKeys: [], ummKeys: ['granuleUr', 'temporalExtent'] })
       )
 
@@ -369,13 +369,13 @@ describe('granule', () => {
     const parseCmrGranulesMock = jest.spyOn(parseCmrGranules, 'parseCmrGranules')
 
     await expect(
-      granuleDatasource({ conceptId: 'G100000-EDSC' }, { 'CMR-Request-ID': 'abcd-1234-efgh-5678' }, requestInfo, 'granule')
+      granuleDatasource({ conceptId: 'G100000-EDSC' }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'granule')
     ).rejects.toThrow(ApolloError)
 
     expect(queryCmrGranulesMock).toBeCalledTimes(1)
     expect(queryCmrGranulesMock).toBeCalledWith(
       { conceptId: 'G100000-EDSC' },
-      { 'CMR-Request-ID': 'abcd-1234-efgh-5678' },
+      { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
       expect.objectContaining({ jsonKeys: ['conceptId'] })
     )
 
