@@ -57,7 +57,7 @@ functions:
         cors: true
 
   cloudfrontToCloudwatch:
-    handler: serverless/src/cloudfrontToCloudwatch/handler.default
+    handler: src/cloudfrontToCloudwatch/handler.default
     timeout: 300
     role: IamRoleCustomResourcesLambdaExecution
     events:
