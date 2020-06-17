@@ -1,4 +1,6 @@
 type Granule {
+  "Spatial coverage of the granule"
+  boxes: [String]
   "Boolean value displaying whether or not a granule has browse imagery"
   browseFlag: Boolean
   "The concept id of the parent CMR collection"
