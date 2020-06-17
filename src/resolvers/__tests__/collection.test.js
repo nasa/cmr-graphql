@@ -9,6 +9,7 @@ import typeDefs from '../../types'
 import collectionSource from '../../datasources/collection'
 import granuleSource from '../../datasources/granule'
 import serviceSource from '../../datasources/service'
+import toolSource from '../../datasources/tool'
 import variableSource from '../../datasources/variable'
 
 const server = new ApolloServer({
@@ -23,6 +24,7 @@ const server = new ApolloServer({
     collectionSource,
     granuleSource,
     serviceSource,
+    toolSource,
     variableSource
   })
 })
@@ -523,6 +525,224 @@ describe('Collection', () => {
                     conceptId: 'S100002-EDSC'
                   }, {
                     conceptId: 'S100003-EDSC'
+                  }]
+                }
+              }]
+            }
+          })
+        })
+      })
+    })
+
+    describe('tools', () => {
+      describe('no associations are present in the metadata', () => {
+        test('doesn\'t query for or return tools', async () => {
+          const { query } = createTestClient(server)
+
+          nock(/example/)
+            .defaultReplyHeaders({
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .post(/collections\.json/)
+            .reply(200, {
+              feed: {
+                entry: [{
+                  id: 'C100000-EDSC'
+                }, {
+                  id: 'C100001-EDSC'
+                }]
+              }
+            })
+
+          const response = await query({
+            variables: {},
+            query: `{
+              collections {
+                items {
+                  conceptId
+                  tools {
+                    items {
+                      conceptId
+                    }
+                  }
+                }
+              }
+            }`
+          })
+
+          const { data } = response
+
+          expect(data).toEqual({
+            collections: {
+              items: [{
+                conceptId: 'C100000-EDSC',
+                tools: {
+                  items: null
+                }
+              }, {
+                conceptId: 'C100001-EDSC',
+                tools: {
+                  items: null
+                }
+              }]
+            }
+          })
+        })
+      })
+
+      describe('association are present in the metadata but not tool assocations', () => {
+        test('doesn\'t query for or return tools', async () => {
+          const { query } = createTestClient(server)
+
+          nock(/example/)
+            .defaultReplyHeaders({
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .post(/collections\.json/)
+            .reply(200, {
+              feed: {
+                entry: [{
+                  id: 'C100000-EDSC',
+                  associations: {
+                    variables: ['V100000-EDSC']
+                  }
+                }, {
+                  id: 'C100001-EDSC',
+                  associations: {
+                    variables: ['V100000-EDSC']
+                  }
+                }]
+              }
+            })
+
+          const response = await query({
+            variables: {},
+            query: `{
+              collections {
+                items {
+                  conceptId
+                  tools {
+                    items {
+                      conceptId
+                    }
+                  }
+                }
+              }
+            }`
+          })
+
+          const { data } = response
+
+          expect(data).toEqual({
+            collections: {
+              items: [{
+                conceptId: 'C100000-EDSC',
+                tools: {
+                  items: null
+                }
+              }, {
+                conceptId: 'C100001-EDSC',
+                tools: {
+                  items: null
+                }
+              }]
+            }
+          })
+        })
+      })
+
+      describe('when tool associations are present in the metadata', () => {
+        test(' queries for and returns tools', async () => {
+          const { query } = createTestClient(server)
+
+          nock(/example/)
+            .defaultReplyHeaders({
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .post(/collections\.json/)
+            .reply(200, {
+              feed: {
+                entry: [{
+                  id: 'C100000-EDSC',
+                  associations: {
+                    tools: ['T100000-EDSC', 'T100001-EDSC']
+                  }
+                }, {
+                  id: 'C100001-EDSC',
+                  associations: {
+                    tools: ['T100002-EDSC', 'T100003-EDSC']
+                  }
+                }]
+              }
+            })
+
+          nock(/example/)
+            .defaultReplyHeaders({
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .post(/tools\.json/, 'concept_id%5B%5D=T100000-EDSC&concept_id%5B%5D=T100001-EDSC&page_size=2')
+            .reply(200, {
+              items: [{
+                concept_id: 'T100000-EDSC'
+              }, {
+                concept_id: 'T100001-EDSC'
+              }]
+            })
+
+          nock(/example/)
+            .defaultReplyHeaders({
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .post(/tools\.json/, 'concept_id%5B%5D=T100002-EDSC&concept_id%5B%5D=T100003-EDSC&page_size=2')
+            .reply(200, {
+              items: [{
+                concept_id: 'T100002-EDSC'
+              }, {
+                concept_id: 'T100003-EDSC'
+              }]
+            })
+
+          const response = await query({
+            variables: {},
+            query: `{
+              collections {
+                items {
+                  conceptId
+                  tools {
+                    items {
+                      conceptId
+                    }
+                  }
+                }
+              }
+            }`
+          })
+
+          const { data } = response
+
+          expect(data).toEqual({
+            collections: {
+              items: [{
+                conceptId: 'C100000-EDSC',
+                tools: {
+                  items: [{
+                    conceptId: 'T100000-EDSC'
+                  }, {
+                    conceptId: 'T100001-EDSC'
+                  }]
+                }
+              }, {
+                conceptId: 'C100001-EDSC',
+                tools: {
+                  items: [{
+                    conceptId: 'T100002-EDSC'
+                  }, {
+                    conceptId: 'T100003-EDSC'
                   }]
                 }
               }]

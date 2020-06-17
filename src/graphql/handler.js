@@ -7,6 +7,7 @@ import typeDefs from '../types'
 import collectionSource from '../datasources/collection'
 import granuleSource from '../datasources/granule'
 import serviceSource from '../datasources/service'
+import toolSource from '../datasources/tool'
 import variableSource from '../datasources/variable'
 
 // Creating the server
@@ -46,6 +47,7 @@ const server = new ApolloServer({
     collectionSource,
     granuleSource,
     serviceSource,
+    toolSource,
     variableSource
   })
 })

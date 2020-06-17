@@ -87,6 +87,13 @@ type Collection {
     first: Int
   ): ServiceList!
 
+  tools(
+    "The unique concept id assigned to the tool."
+    conceptId: [String]
+    "The number of tools requested by the user"
+    first: Int
+  ): ToolList!
+
   variables(
     "The unique concept id assigned to the variable."
     conceptId: [String]

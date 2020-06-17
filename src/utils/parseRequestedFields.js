@@ -46,7 +46,7 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
     requestedFields = Object.keys(conceptKeysRequested)
   }
 
-  const ummTypes = ['collections', 'granules', 'services', 'variables']
+  const ummTypes = ['collections', 'granules', 'services', 'tools', 'variables']
   requestedFields = requestedFields.filter((field) => ummTypes.indexOf(field) === -1)
 
   const { sharedKeys, ummKeyMappings } = keyMap
