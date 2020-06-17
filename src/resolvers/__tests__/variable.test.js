@@ -65,7 +65,7 @@ describe('Variable', () => {
       const response = await query({
         variables: {},
         query: `{
-          variables(first:2) {
+          variables(limit:2) {
             items {
               conceptId
             }

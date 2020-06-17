@@ -67,7 +67,7 @@ describe('Collection', () => {
       const response = await query({
         variables: {},
         query: `{
-          granules(first:2) {
+          granules(limit:2) {
             items {
               conceptId
             }

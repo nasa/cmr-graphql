@@ -67,7 +67,7 @@ describe('Collection', () => {
       const response = await query({
         variables: {},
         query: `{
-          collections(first:2) {
+          collections(limit:2) {
             items {
               conceptId
             }
@@ -274,7 +274,7 @@ describe('Collection', () => {
         variables: {},
         query: `{
           collections(
-            first:2
+            limit:2
             boundingBox:"-90.08940124511719,41.746426050239336,-82.33992004394531,47.84755587105307"
           ) {
             items {

@@ -65,7 +65,7 @@ describe('Service', () => {
       const response = await query({
         variables: {},
         query: `{
-          services(first:2) {
+          services(limit:2) {
             items {
               conceptId
             }

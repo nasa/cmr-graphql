@@ -67,7 +67,9 @@ type Collection {
     "The unique concept id assigned to the parent collection."
     collectionConceptId: String
     "The number of granules requested by the user"
-    first: Int
+    limit: Int
+    "Zero based offset of individual results"
+    offset: Int
     "Bounding boxes define an area on the earth aligned with longitude and latitude. The Bounding box parameters must be 4 comma-separated numbers: lower left longitude, lower left latitude, upper right longitude, upper right latitude."
     boundingBox: String
     "Circle defines a circle area on the earth with a center point and a radius. The center parameters must be 3 comma-separated numbers: longitude of the center point, latitude of the center point, radius of the circle in meters. The circle center cannot be on North or South pole. The radius of the circle must be between 10 and 6,000,000."
@@ -84,21 +86,27 @@ type Collection {
     "The unique concept id assigned to the service."
     conceptId: [String]
     "The number of services requested by the user"
-    first: Int
+    limit: Int
+    "Zero based offset of individual results"
+    offset: Int
   ): ServiceList!
 
   tools(
     "The unique concept id assigned to the tool."
     conceptId: [String]
     "The number of tools requested by the user"
-    first: Int
+    limit: Int
+    "Zero based offset of individual results"
+    offset: Int
   ): ToolList!
 
   variables(
     "The unique concept id assigned to the variable."
     conceptId: [String]
     "The number of variables requested by the user"
-    first: Int
+    limit: Int
+    "Zero based offset of individual results"
+    offset: Int
     "The name of a variable."
     name: String
   ): VariableList!
@@ -120,7 +128,9 @@ type Query {
     "Circle defines a circle area on the earth with a center point and a radius. The center parameters must be 3 comma-separated numbers: longitude of the center point, latitude of the center point, radius of the circle in meters. The circle center cannot be on North or South pole. The radius of the circle must be between 10 and 6,000,000."
     circle: String
     "The number of collections requested by the user"
-    first: Int
+    limit: Int
+    "Zero based offset of individual results"
+    offset: Int
     "When true, the results will be restricted to collections with granules or with the configured CWIC tag. When false, results will be restricted to collections without granules."
     hasGranulesOrCwic: Boolean,
     "When has_granules is set to 'true' or 'false', results will be restricted to collections with or without granules, respectively."
