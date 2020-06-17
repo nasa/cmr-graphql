@@ -19,6 +19,7 @@ export const queryCmrCollections = (params, headers, requestInfo) => {
     'has_granules',
     'include_has_granules',
     'include_tags',
+    'offset',
     'page_size',
     'point',
     'polygon',
