@@ -16,6 +16,7 @@ export const queryCmrGranules = (params, headers, requestInfo) => {
     'circle',
     'collection_concept_id',
     'concept_id',
+    'offset',
     'page_size',
     'point',
     'polygon',
