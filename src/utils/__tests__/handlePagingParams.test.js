@@ -17,7 +17,7 @@ describe('handlePagingParams', () => {
   describe('when page size is provided', () => {
     test('the provided page size is returned in the payload', () => {
       const response = handlePagingParams({
-        first: 5,
+        limit: 5,
         param: 'value'
       })
 

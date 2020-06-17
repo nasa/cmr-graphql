@@ -1,4 +1,6 @@
 type Granule {
+  "Spatial coverage of the granule"
+  boxes: [String]
   "Boolean value displaying whether or not a granule has browse imagery"
   browseFlag: Boolean
   "The concept id of the parent CMR collection"
@@ -63,7 +65,9 @@ type Query {
     "The unique concept id assigned to the parent collection."
     collectionConceptId: String,
     "The number of granules requested by the user."
-    first: Int
+    limit: Int
+    "Zero based offset of individual results"
+    offset: Int
     "Search using a point involves using a pair of values representing the point coordinates as parameters. The first value is the longitude and second value is the latitude."
     point: String
     "Polygon points are provided in counter-clockwise order. The last point should match the first point to close the polygon. The values are listed comma separated in longitude latitude order, i.e. lon1, lat1, lon2, lat2, lon3, lat3, and so on."

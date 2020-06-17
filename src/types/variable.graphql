@@ -39,9 +39,11 @@ type Query {
     "The unique concept id assigned to the variable."
     conceptId: [String],
     "The number of variables requested by the user"
-    first: Int
+    limit: Int
     "The name of a variable."
     name: String
+    "Zero based offset of individual results"
+    offset: Int
   ): VariableList!
   variable(
     "The unique concept id assigned to the variable."
