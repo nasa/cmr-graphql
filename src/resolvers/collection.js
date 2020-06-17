@@ -87,6 +87,24 @@ export default {
         ...handlePagingParams(args, services.length)
       }, headers, parseResolveInfo(info))
     },
+    tools: async (source, args, { dataSources, headers }, info) => {
+      const {
+        associations = {}
+      } = source
+
+      const { tools = [] } = associations
+
+      if (!tools.length) {
+        return {
+          count: 0,
+          items: null
+        }
+      }
+      return dataSources.toolSource({
+        conceptId: tools,
+        ...handlePagingParams(args, tools.length)
+      }, headers, parseResolveInfo(info))
+    },
     variables: async (source, args, { dataSources, headers }, info) => {
       const {
         associations = {}

@@ -9,6 +9,7 @@ import typeDefs from '../../types'
 import collectionSource from '../../datasources/collection'
 import granuleSource from '../../datasources/granule'
 import serviceSource from '../../datasources/service'
+import toolSource from '../../datasources/tool'
 import variableSource from '../../datasources/variable'
 
 const server = new ApolloServer({
@@ -23,11 +24,12 @@ const server = new ApolloServer({
     collectionSource,
     granuleSource,
     serviceSource,
+    toolSource,
     variableSource
   })
 })
 
-describe('Collection', () => {
+describe('Service', () => {
   const OLD_ENV = process.env
 
   beforeEach(() => {

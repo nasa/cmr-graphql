@@ -29,7 +29,7 @@ const server = new ApolloServer({
   })
 })
 
-describe('Variable', () => {
+describe('Tool', () => {
   const OLD_ENV = process.env
 
   beforeEach(() => {
@@ -45,7 +45,7 @@ describe('Variable', () => {
   })
 
   describe('Query', () => {
-    test('variables', async () => {
+    test('tools', async () => {
       const { query } = createTestClient(server)
 
       nock(/example/)
@@ -53,19 +53,19 @@ describe('Variable', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/variables\.json/, 'page_size=2')
+        .post(/tools\.json/, 'page_size=2')
         .reply(200, {
           items: [{
-            concept_id: 'V100000-EDSC'
+            concept_id: 'T100000-EDSC'
           }, {
-            concept_id: 'V100001-EDSC'
+            concept_id: 'T100001-EDSC'
           }]
         })
 
       const response = await query({
         variables: {},
         query: `{
-          variables(first:2) {
+          tools(first:2) {
             items {
               conceptId
             }
@@ -76,17 +76,17 @@ describe('Variable', () => {
       const { data } = response
 
       expect(data).toEqual({
-        variables: {
+        tools: {
           items: [{
-            conceptId: 'V100000-EDSC'
+            conceptId: 'T100000-EDSC'
           }, {
-            conceptId: 'V100001-EDSC'
+            conceptId: 'T100001-EDSC'
           }]
         }
       })
     })
 
-    test('variable', async () => {
+    test('tool', async () => {
       const { query } = createTestClient(server)
 
       nock(/example/)
@@ -94,22 +94,18 @@ describe('Variable', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/variables\.json/, 'concept_id=V100000-EDSC')
+        .post(/tools\.json/, 'concept_id=T100000-EDSC')
         .reply(200, {
           items: [{
-            concept_id: 'V100000-EDSC',
-            long_name: 'Cras mattis consectetur purus sit amet fermentum.',
-            name: 'Lorem Ipsum'
+            concept_id: 'T100000-EDSC'
           }]
         })
 
       const response = await query({
         variables: {},
         query: `{
-          variable(conceptId: "V100000-EDSC") {
+          tool(conceptId: "T100000-EDSC") {
             conceptId
-            longName
-            name
           }
         }`
       })
@@ -117,10 +113,8 @@ describe('Variable', () => {
       const { data } = response
 
       expect(data).toEqual({
-        variable: {
-          conceptId: 'V100000-EDSC',
-          longName: 'Cras mattis consectetur purus sit amet fermentum.',
-          name: 'Lorem Ipsum'
+        tool: {
+          conceptId: 'T100000-EDSC'
         }
       })
     })
