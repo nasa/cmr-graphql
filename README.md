@@ -40,7 +40,7 @@ This will run the application at [http://localhost:3003/api](http://localhost:30
 
 ## Usage
 
-Currently, this API supports searching and retrieving data for [Collections](#collections), [Granules](#granules), [Services](#services) and [Variables](#variables).
+Currently, this API supports searching and retrieving data for [Collections](#collections), [Granules](#granules), [Services](#services), [Tools](#tools) and [Variables](#variables).
 
 #### Basics
 
@@ -93,6 +93,13 @@ For all supported arguments and columns, see [the schema](src/types/collection.g
             type
           }
         }
+        tools {
+          count
+          items {
+            conceptId
+            supportedBrowsers
+          }
+        }
         variables {
           count
           items {
@@ -121,6 +128,13 @@ For all supported arguments and columns, see [the schema](src/types/collection.g
             items {
               conceptId
               type
+            }
+          }
+          tools {
+            count
+            items {
+              conceptId
+              supportedBrowsers
             }
           }
           variables {
@@ -201,6 +215,35 @@ For all supported arguments and columns, see [the schema](src/types/service.grap
       }
     }
 
+
+#### Tools
+
+For all supported arguments and columns, see [the schema](src/types/tool.graphql).
+
+##### Example Queries
+
+###### Single
+
+    {
+      tool(conceptId:"T1000000001-EXAMPLE") {
+        conceptId
+        scienceKeywords
+        supportedBrowsers
+      }
+    }
+
+###### Multiple
+
+    {
+      tools {
+        count
+        items {
+          conceptId
+          toolKeywords
+          supportedBrowsers
+        }
+      }
+    }
 
 #### Variables
 
