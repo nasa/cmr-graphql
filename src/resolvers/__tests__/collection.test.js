@@ -88,38 +88,75 @@ describe('Collection', () => {
       })
     })
 
-    test('collection', async () => {
-      const { query } = createTestClient(server)
+    describe('collection', () => {
+      describe('with results', () => {
+        test('returns results', async () => {
+          const { query } = createTestClient(server)
 
-      nock(/example/)
-        .defaultReplyHeaders({
-          'CMR-Took': 7,
-          'CMR-Request-Id': 'abcd-1234-efgh-5678'
-        })
-        .post(/collections\.json/, 'concept_id=C100000-EDSC')
-        .reply(200, {
-          feed: {
-            entry: [{
-              id: 'C100000-EDSC'
-            }]
-          }
-        })
+          nock(/example/)
+            .defaultReplyHeaders({
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .post(/collections\.json/, 'concept_id=C100000-EDSC')
+            .reply(200, {
+              feed: {
+                entry: [{
+                  id: 'C100000-EDSC'
+                }]
+              }
+            })
 
-      const response = await query({
-        variables: {},
-        query: `{
-          collection(conceptId: "C100000-EDSC") {
-            conceptId
-          }
-        }`
+          const response = await query({
+            variables: {},
+            query: `{
+              collection(conceptId: "C100000-EDSC") {
+                conceptId
+              }
+            }`
+          })
+
+          const { data } = response
+
+          expect(data).toEqual({
+            collection: {
+              conceptId: 'C100000-EDSC'
+            }
+          })
+        })
       })
 
-      const { data } = response
+      describe('with no results', () => {
+        test('returns no results', async () => {
+          const { query } = createTestClient(server)
 
-      expect(data).toEqual({
-        collection: {
-          conceptId: 'C100000-EDSC'
-        }
+          nock(/example/)
+            .defaultReplyHeaders({
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .post(/collections\.json/, 'concept_id=C100000-EDSC')
+            .reply(200, {
+              feed: {
+                entry: []
+              }
+            })
+
+          const response = await query({
+            variables: {},
+            query: `{
+              collection(conceptId: "C100000-EDSC") {
+                conceptId
+              }
+            }`
+          })
+
+          const { data } = response
+
+          expect(data).toEqual({
+            collection: null
+          })
+        })
       })
     })
   })

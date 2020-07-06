@@ -88,38 +88,75 @@ describe('Collection', () => {
       })
     })
 
-    test('granule', async () => {
-      const { query } = createTestClient(server)
+    describe('granule', () => {
+      describe('with results', () => {
+        test('returns results', async () => {
+          const { query } = createTestClient(server)
 
-      nock(/example/)
-        .defaultReplyHeaders({
-          'CMR-Took': 7,
-          'CMR-Request-Id': 'abcd-1234-efgh-5678'
-        })
-        .post(/granules\.json/, 'concept_id=G100000-EDSC')
-        .reply(200, {
-          feed: {
-            entry: [{
-              id: 'G100000-EDSC'
-            }]
-          }
-        })
+          nock(/example/)
+            .defaultReplyHeaders({
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .post(/granules\.json/, 'concept_id=G100000-EDSC')
+            .reply(200, {
+              feed: {
+                entry: [{
+                  id: 'G100000-EDSC'
+                }]
+              }
+            })
 
-      const response = await query({
-        variables: {},
-        query: `{
-          granule(conceptId: "G100000-EDSC") {
-            conceptId
-          }
-        }`
+          const response = await query({
+            variables: {},
+            query: `{
+              granule(conceptId: "G100000-EDSC") {
+                conceptId
+              }
+            }`
+          })
+
+          const { data } = response
+
+          expect(data).toEqual({
+            granule: {
+              conceptId: 'G100000-EDSC'
+            }
+          })
+        })
       })
 
-      const { data } = response
+      describe('with no results', () => {
+        test('returns no results', async () => {
+          const { query } = createTestClient(server)
 
-      expect(data).toEqual({
-        granule: {
-          conceptId: 'G100000-EDSC'
-        }
+          nock(/example/)
+            .defaultReplyHeaders({
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .post(/granules\.json/, 'concept_id=G100000-EDSC')
+            .reply(200, {
+              feed: {
+                entry: []
+              }
+            })
+
+          const response = await query({
+            variables: {},
+            query: `{
+              granule(conceptId: "G100000-EDSC") {
+                conceptId
+              }
+            }`
+          })
+
+          const { data } = response
+
+          expect(data).toEqual({
+            granule: null
+          })
+        })
       })
     })
   })

@@ -86,42 +86,79 @@ describe('Variable', () => {
       })
     })
 
-    test('variable', async () => {
-      const { query } = createTestClient(server)
+    describe('variable', () => {
+      describe('with results', () => {
+        test('returns results', async () => {
+          const { query } = createTestClient(server)
 
-      nock(/example/)
-        .defaultReplyHeaders({
-          'CMR-Took': 7,
-          'CMR-Request-Id': 'abcd-1234-efgh-5678'
-        })
-        .post(/variables\.json/, 'concept_id=V100000-EDSC')
-        .reply(200, {
-          items: [{
-            concept_id: 'V100000-EDSC',
-            long_name: 'Cras mattis consectetur purus sit amet fermentum.',
-            name: 'Lorem Ipsum'
-          }]
-        })
+          nock(/example/)
+            .defaultReplyHeaders({
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .post(/variables\.json/, 'concept_id=V100000-EDSC')
+            .reply(200, {
+              items: [{
+                concept_id: 'V100000-EDSC',
+                long_name: 'Cras mattis consectetur purus sit amet fermentum.',
+                name: 'Lorem Ipsum'
+              }]
+            })
 
-      const response = await query({
-        variables: {},
-        query: `{
-          variable(conceptId: "V100000-EDSC") {
-            conceptId
-            longName
-            name
-          }
-        }`
+          const response = await query({
+            variables: {},
+            query: `{
+              variable(conceptId: "V100000-EDSC") {
+                conceptId
+                longName
+                name
+              }
+            }`
+          })
+
+          const { data } = response
+
+          expect(data).toEqual({
+            variable: {
+              conceptId: 'V100000-EDSC',
+              longName: 'Cras mattis consectetur purus sit amet fermentum.',
+              name: 'Lorem Ipsum'
+            }
+          })
+        })
       })
 
-      const { data } = response
+      describe('with no results', () => {
+        test('returns results', async () => {
+          const { query } = createTestClient(server)
 
-      expect(data).toEqual({
-        variable: {
-          conceptId: 'V100000-EDSC',
-          longName: 'Cras mattis consectetur purus sit amet fermentum.',
-          name: 'Lorem Ipsum'
-        }
+          nock(/example/)
+            .defaultReplyHeaders({
+              'CMR-Took': 0,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .post(/variables\.json/, 'concept_id=V100000-EDSC')
+            .reply(200, {
+              items: []
+            })
+
+          const response = await query({
+            variables: {},
+            query: `{
+              variable(conceptId: "V100000-EDSC") {
+                conceptId
+                longName
+                name
+              }
+            }`
+          })
+
+          const { data } = response
+
+          expect(data).toEqual({
+            variable: null
+          })
+        })
       })
     })
   })

@@ -40,5 +40,5 @@ type Query {
   service(
     "The unique concept id assigned to the service."
     conceptId: String!
-  ): Service!
+  ): Service
 }

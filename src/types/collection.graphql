@@ -157,5 +157,5 @@ type Query {
     includeHasGranules: Boolean,
     "If this parameter is set (e.g. include_tags=gov.nasa.earthdata.search.*,gov.nasa.echo.*), the collection results will contain an additional field 'tags' within each collection. The value of the tags field is a list of tag_keys that are associated with the collection. Only the tags with tag_key matching the values of include_tags parameter (with wildcard support) are included in the results."
     includeTags: String
-  ): Collection!
+  ): Collection
 }
