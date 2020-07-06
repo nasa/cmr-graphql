@@ -70,5 +70,5 @@ type Query {
   tool(
     "The unique concept id assigned to the tool."
     conceptId: String!
-  ): Tool!
+  ): Tool
 }

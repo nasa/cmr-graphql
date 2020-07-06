@@ -78,5 +78,5 @@ type Query {
   granule(
     "The unique concept id assigned to the granule."
     conceptId: String!
-  ): Granule!
+  ): Granule
 }

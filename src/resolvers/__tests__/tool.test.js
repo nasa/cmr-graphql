@@ -86,36 +86,71 @@ describe('Tool', () => {
       })
     })
 
-    test('tool', async () => {
-      const { query } = createTestClient(server)
+    describe('tool', () => {
+      describe('with results', () => {
+        test('returns results', async () => {
+          const { query } = createTestClient(server)
 
-      nock(/example/)
-        .defaultReplyHeaders({
-          'CMR-Took': 7,
-          'CMR-Request-Id': 'abcd-1234-efgh-5678'
-        })
-        .post(/tools\.json/, 'concept_id=T100000-EDSC')
-        .reply(200, {
-          items: [{
-            concept_id: 'T100000-EDSC'
-          }]
-        })
+          nock(/example/)
+            .defaultReplyHeaders({
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .post(/tools\.json/, 'concept_id=T100000-EDSC')
+            .reply(200, {
+              items: [{
+                concept_id: 'T100000-EDSC'
+              }]
+            })
 
-      const response = await query({
-        variables: {},
-        query: `{
-          tool(conceptId: "T100000-EDSC") {
-            conceptId
-          }
-        }`
+          const response = await query({
+            variables: {},
+            query: `{
+              tool(conceptId: "T100000-EDSC") {
+                conceptId
+              }
+            }`
+          })
+
+          const { data } = response
+
+          expect(data).toEqual({
+            tool: {
+              conceptId: 'T100000-EDSC'
+            }
+          })
+        })
       })
 
-      const { data } = response
+      describe('with no results', () => {
+        test('returns no results', async () => {
+          const { query } = createTestClient(server)
 
-      expect(data).toEqual({
-        tool: {
-          conceptId: 'T100000-EDSC'
-        }
+          nock(/example/)
+            .defaultReplyHeaders({
+              'CMR-Took': 0,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .post(/tools\.json/, 'concept_id=T100000-EDSC')
+            .reply(200, {
+              items: []
+            })
+
+          const response = await query({
+            variables: {},
+            query: `{
+              tool(conceptId: "T100000-EDSC") {
+                conceptId
+              }
+            }`
+          })
+
+          const { data } = response
+
+          expect(data).toEqual({
+            tool: null
+          })
+        })
       })
     })
   })

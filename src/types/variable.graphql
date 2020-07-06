@@ -48,5 +48,5 @@ type Query {
   variable(
     "The unique concept id assigned to the variable."
     conceptId: String!
-  ): Variable!
+  ): Variable
 }
