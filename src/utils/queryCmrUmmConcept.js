@@ -45,7 +45,8 @@ export const queryCmrUmmConcept = (
       'concept_id',
       'name',
       'offset',
-      'page_size'
+      'page_size',
+      'provider'
     ])
 
     // Construct the promise that will request data from the umm endpoint

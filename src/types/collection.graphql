@@ -127,9 +127,9 @@ type Query {
     boundingBox: String
     "Circle defines a circle area on the earth with a center point and a radius. The center parameters must be 3 comma-separated numbers: longitude of the center point, latitude of the center point, radius of the circle in meters. The circle center cannot be on North or South pole. The radius of the circle must be between 10 and 6,000,000."
     circle: String
-    "The number of collections requested by the user"
+    "The number of collections requested by the user."
     limit: Int
-    "Zero based offset of individual results"
+    "Zero based offset of individual results."
     offset: Int
     "When true, the results will be restricted to collections with granules or with the configured CWIC tag. When false, results will be restricted to collections without granules."
     hasGranulesOrCwic: Boolean,
@@ -143,6 +143,8 @@ type Query {
     point: String
     "Polygon points are provided in counter-clockwise order. The last point should match the first point to close the polygon. The values are listed comma separated in longitude latitude order, i.e. lon1, lat1, lon2, lat2, lon3, lat3, and so on."
     polygon: String
+    "The name of the provider associated with the collection."
+    provider: String,
     "The short name associated with the collection."
     shortName: String
     "One or more sort keys can be specified to impact searching. Fields can be prepended with a '-' to sort in descending order. Ascending order is the default but + can be used to explicitly request ascending."
