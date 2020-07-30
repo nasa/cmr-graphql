@@ -132,7 +132,7 @@ custom:
 
   # Default is 3000 so to avoid conflicts with other applications we'll define a new port
   serverless-offline:
-    port: 3003
+    httpPort: 3003
 
   # Serverless Webpack configurations
   webpack:
