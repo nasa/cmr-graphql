@@ -42,7 +42,24 @@ This will run the application at [http://localhost:3003/api](http://localhost:30
 
 Currently, this API supports searching and retrieving data for [Collections](#collections), [Granules](#granules), [Services](#services), [Tools](#tools) and [Variables](#variables).
 
-#### Basics
+#### Optional Headers
+
+GraphQL supports a few optional headers that can be used for various features and debugging purposes.
+
+##### Authentication
+
+GraphQL accepts [Earthdata Login (EDL)](https://urs.earthdata.nasa.gov/) tokens via the `Echo-Token` header. If provided, this token will be provided to any CMR call made as part of the query. GraphQL will return errors if the token is invalid or expired in which case you as the client will need to handle (refresh).
+
+##### Identification
+
+In order for us to best provide debugging, statistics, and to inform us of future feature work GraphQL accepts the `Client-Id` header that allows all clients to identifiy themselves. If provided, this value is passed to any CMR call made as part of the query and is used to determine usage patterns, helps debug issues by filtering down logs, and also will help determine priority of feature requests.
+
+##### Request Tracking
+
+Logging is key to debugging, and to ensure that we can provide the best support to users' when issues may arise, GraphQL supports the `X-Request-Id` header. This header will be passed to any CMR call made as part of the query which will be prepended to any CMR logs that are generated as a result of a query. This value is also used in GraphQL logs so that we can associate our logs, CMR logs, and any logs you may have if debugging becomes necessary. We recommend setting this value with all requests in the event it is needed, it cannot be added retroactively.
+
+
+#### Queries
 
 When querying for multiple items there are two high level parameters that can be provided, `count` and `items`. `count` will hold the value returned from the CMR header `CMR-Hits` for the respective concept type. `type` is where you will provide the columns you'd like returned from CMR.
 

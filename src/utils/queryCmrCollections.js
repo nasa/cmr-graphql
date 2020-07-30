@@ -23,6 +23,7 @@ export const queryCmrCollections = (params, headers, requestInfo) => {
     'page_size',
     'point',
     'polygon',
+    'provider',
     'short_name',
     'sort_key',
     'temporal'

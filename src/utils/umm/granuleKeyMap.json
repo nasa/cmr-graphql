@@ -6,8 +6,11 @@
   "ummKeyMappings": {
     "cloudCover": "umm.CloudCover",
     "conceptId": "meta.concept-id",
+    "dataGranule": "umm.DataGranule",
     "granuleUr": "umm.GranuleUR",
+    "measuredParameters": "umm.MeasuredParameters",
     "orbitCalculatedSpatialDomains": "umm.OrbitCalculatedSpatialDomains",
+    "providerDates": "umm.ProviderDates",
     "relatedUrls": "umm.RelatedUrls",
     "spatialExtent": "umm.SpatialExtent",
     "temporalExtent": "umm.TemporalExtent"
