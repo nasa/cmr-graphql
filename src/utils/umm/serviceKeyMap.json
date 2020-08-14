@@ -14,6 +14,7 @@
     "supportedInputFormats": "umm.ServiceOptions.SupportedInputFormats",
     "supportedOutputFormats": "umm.ServiceOptions.SupportedOutputFormats",
     "supportedReformattings": "umm.ServiceOptions.SupportedReformattings",
-    "type": "umm.Type"
+    "type": "umm.Type",
+    "url": "umm.URL"
   }
 }

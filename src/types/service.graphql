@@ -19,6 +19,8 @@ type Service {
   supportedReformattings: JSON
   "The type of the service, software, or tool."
   type: String
+  "Represents the Internet site where you can directly access the back-end service"
+  url: JSON
 }
 
 type ServiceList {
