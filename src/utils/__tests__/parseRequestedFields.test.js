@@ -18,17 +18,17 @@ describe('parseRequestedFields', () => {
   describe('only json keys requested', () => {
     test('returns only json keys', () => {
       const requestInfo = {
-        name: 'tests',
-        alias: 'tests',
+        name: 'collections',
+        alias: 'collections',
         args: {},
         fieldsByTypeName: {
-          TestList: {
+          CollectionList: {
             items: {
               name: 'items',
               alias: 'items',
               args: {},
               fieldsByTypeName: {
-                Test: {
+                Collection: {
                   conceptId: {
                     name: 'conceptId',
                     alias: 'conceptId',
@@ -48,7 +48,7 @@ describe('parseRequestedFields', () => {
         }
       }
 
-      const requestedFields = parseRequestedFields(requestInfo, keyMap, 'test')
+      const requestedFields = parseRequestedFields(requestInfo, keyMap, 'collection')
 
       expect(requestedFields).toEqual({
         jsonKeys: ['conceptId', 'keyThree'],
@@ -63,17 +63,17 @@ describe('parseRequestedFields', () => {
   describe('only umm keys requested', () => {
     test('returns only umm keys', () => {
       const requestInfo = {
-        name: 'tests',
-        alias: 'tests',
+        name: 'collections',
+        alias: 'collections',
         args: {},
         fieldsByTypeName: {
-          TestList: {
+          CollectionList: {
             items: {
               name: 'items',
               alias: 'items',
               args: {},
               fieldsByTypeName: {
-                Test: {
+                Collection: {
                   conceptId: {
                     name: 'conceptId',
                     alias: 'conceptId',
@@ -93,7 +93,7 @@ describe('parseRequestedFields', () => {
         }
       }
 
-      const requestedFields = parseRequestedFields(requestInfo, keyMap, 'test')
+      const requestedFields = parseRequestedFields(requestInfo, keyMap, 'collection')
 
       expect(requestedFields).toEqual({
         jsonKeys: [],
@@ -108,17 +108,17 @@ describe('parseRequestedFields', () => {
   describe('both json and umm keys requested', () => {
     test('returns both json and umm keys optimized for json', () => {
       const requestInfo = {
-        name: 'tests',
-        alias: 'tests',
+        name: 'collections',
+        alias: 'collections',
         args: {},
         fieldsByTypeName: {
-          TestList: {
+          CollectionList: {
             items: {
               name: 'items',
               alias: 'items',
               args: {},
               fieldsByTypeName: {
-                Test: {
+                Collection: {
                   conceptId: {
                     name: 'conceptId',
                     alias: 'conceptId',
@@ -150,7 +150,7 @@ describe('parseRequestedFields', () => {
         }
       }
 
-      const requestedFields = parseRequestedFields(requestInfo, keyMap, 'test')
+      const requestedFields = parseRequestedFields(requestInfo, keyMap, 'collection')
 
       expect(requestedFields).toEqual({
         jsonKeys: ['conceptId', 'keyOne', 'keyThree'],
@@ -165,11 +165,11 @@ describe('parseRequestedFields', () => {
   describe('only count', () => {
     test('returns only conceptId', () => {
       const requestInfo = {
-        name: 'tests',
-        alias: 'tests',
+        name: 'collections',
+        alias: 'collections',
         args: {},
         fieldsByTypeName: {
-          TestList: {
+          CollectionList: {
             count: {
               name: 'count',
               alias: 'count',
@@ -180,11 +180,65 @@ describe('parseRequestedFields', () => {
         }
       }
 
-      const requestedFields = parseRequestedFields(requestInfo, keyMap, 'test')
+      const requestedFields = parseRequestedFields(requestInfo, keyMap, 'collection')
 
       expect(requestedFields).toEqual({
         jsonKeys: ['conceptId'],
-        metaKeys: ['testCount'],
+        metaKeys: ['collectionCount'],
+        ummKeys: [],
+        ummKeyMappings,
+        isList: true
+      })
+    })
+  })
+
+  describe('nested with only count', () => {
+    test('returns only the concept for the child and not conceptId', () => {
+      const requestInfo = {
+        name: 'collections',
+        alias: 'collections',
+        args: {},
+        fieldsByTypeName: {
+          CollectionList: {
+            count: {
+              name: 'count',
+              alias: 'count',
+              args: {},
+              fieldsByTypeName: {}
+            },
+            items: {
+              name: 'items',
+              alias: 'items',
+              args: {},
+              fieldsByTypeName: {
+                Collection: {
+                  granules: {
+                    name: 'granules',
+                    alias: 'granules',
+                    args: {},
+                    fieldsByTypeName: {
+                      GranuleList: {
+                        count: {
+                          name: 'count',
+                          alias: 'count',
+                          args: {},
+                          fieldsByTypeName: {}
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      const requestedFields = parseRequestedFields(requestInfo, keyMap, 'collection')
+
+      expect(requestedFields).toEqual({
+        jsonKeys: ['granules'],
+        metaKeys: ['collectionCount'],
         ummKeys: [],
         ummKeyMappings,
         isList: true

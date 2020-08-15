@@ -1,5 +1,6 @@
 import { pick } from 'lodash'
 
+import { getConceptTypes } from './getConceptTypes'
 import { queryCmr } from './queryCmr'
 
 export const queryCmrUmmConcept = (
@@ -27,7 +28,13 @@ export const queryCmrUmmConcept = (
       queryCmr(conceptType, permittedSearchParams, headers)
     )
 
-    jsonKeys.forEach((param) => {
+    // Define all the objects a user can query against
+    const ummTypes = getConceptTypes()
+
+    // Prevent logging concept types, their meta keys are logged above
+    const filteredJsonKeys = jsonKeys.filter((field) => ummTypes.indexOf(field) === -1)
+
+    filteredJsonKeys.forEach((param) => {
       console.log(`Request ${requestId} to [concept: ${conceptType}] requested [format: json, key: ${param}]`)
     })
   } else {
@@ -46,7 +53,8 @@ export const queryCmrUmmConcept = (
       'name',
       'offset',
       'page_size',
-      'provider'
+      'provider',
+      'short_name'
     ])
 
     // Construct the promise that will request data from the umm endpoint
