@@ -1,6 +1,7 @@
 {
   "sharedKeys": [
     "conceptId",
+    "abstract",
     "title",
     "versionId"
   ],

@@ -35,7 +35,10 @@ export default async (params, headers, parsedInfo) => {
 
       collections.forEach((collection) => {
         // Alias conceptId for consistency in responses
-        const { id: conceptId } = collection
+        const {
+          id: conceptId,
+          summary
+        } = collection
 
         // Rename (delete the id key and set the conceptId key) `id` for consistency
         // eslint-disable-next-line no-param-reassign
@@ -43,6 +46,13 @@ export default async (params, headers, parsedInfo) => {
 
         // eslint-disable-next-line no-param-reassign
         collection.concept_id = conceptId
+
+        // Rename (delete the summary key and set the abstract key) `summary` for consistency
+        // eslint-disable-next-line no-param-reassign
+        delete collection.summary
+
+        // eslint-disable-next-line no-param-reassign
+        collection.abstract = summary
 
         // If no record of this concept is found create an empty object at its key
         const { [conceptId]: existingResult = { conceptId } } = result

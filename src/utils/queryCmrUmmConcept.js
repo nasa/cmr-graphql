@@ -47,14 +47,29 @@ export const queryCmrUmmConcept = (
 
   // If any requested keys are umm keys, we need to make an additional request to cmr
   if (ummKeys.length > 0) {
+    /**
+     * The following keys are 'supported' by CMR in that they don't throw an error, but
+     * nothing returns when they are used
+     *
+     * - include_has_granules
+     * - include_tags
+     */
     const ummPermittedKeys = pick(permittedSearchParams, [
+      'bounding_box',
+      'circle',
       'collection_concept_id',
       'concept_id',
+      'has_granules_or_cwic',
+      'has_granules',
       'name',
       'offset',
       'page_size',
+      'point',
+      'polygon',
       'provider',
-      'short_name'
+      'short_name',
+      'sort_key',
+      'temporal'
     ])
 
     // Construct the promise that will request data from the umm endpoint

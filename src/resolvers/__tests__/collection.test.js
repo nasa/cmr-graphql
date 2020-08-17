@@ -142,7 +142,6 @@ describe('Collection', () => {
               scienceKeywords
               shortName
               spatialExtent
-              summary
               tags
               temporalExtents
               timeStart
@@ -184,7 +183,6 @@ describe('Collection', () => {
             scienceKeywords: [],
             shortName: 'LOREM-QUAM',
             spatialExtent: {},
-            summary: 'Cras mattis consectetur purus sit amet fermentum.',
             tags: {},
             temporalExtents: [],
             timeEnd: '2016-04-04T08:00:00.000Z',
