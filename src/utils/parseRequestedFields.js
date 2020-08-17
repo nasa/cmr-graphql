@@ -24,17 +24,24 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
     const {
       [`${upperFirst(conceptName.toLowerCase())}List`]: conceptListKeysRequested
     } = fieldsByTypeName
-    const { count, items = {} } = conceptListKeysRequested
+    const {
+      count,
+      cursor,
+      items = {}
+    } = conceptListKeysRequested
 
     fieldsByTypeName = items.fieldsByTypeName
 
-    // If the user requested `count` and no other fields, default the requested fields
+    // If the user requested `count` or `cursor` and no other fields, default the requested fields
     // to convince graph that it should still make a request
-    if (count && isEmpty(items)) {
+    if ((count || cursor) && isEmpty(items)) {
       requestedFields = ['conceptId']
     }
 
     // Track meta keys for analytics on how often they are requested
+    if (cursor) metaKeys.push('cursor')
+
+    // If count was requested, append the specific concept for logging specificity
     if (count) metaKeys.push(`${conceptName.toLowerCase()}Count`)
   }
 

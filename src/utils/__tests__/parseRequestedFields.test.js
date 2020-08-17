@@ -245,4 +245,34 @@ describe('parseRequestedFields', () => {
       })
     })
   })
+
+  describe('only cursor', () => {
+    test('returns only conceptId', () => {
+      const requestInfo = {
+        name: 'tests',
+        alias: 'tests',
+        args: {},
+        fieldsByTypeName: {
+          TestList: {
+            cursor: {
+              name: 'cursor',
+              alias: 'cursor',
+              args: {},
+              fieldsByTypeName: {}
+            }
+          }
+        }
+      }
+
+      const requestedFields = parseRequestedFields(requestInfo, keyMap, 'test')
+
+      expect(requestedFields).toEqual({
+        jsonKeys: ['conceptId'],
+        metaKeys: ['cursor'],
+        ummKeys: [],
+        ummKeyMappings,
+        isList: true
+      })
+    })
+  })
 })

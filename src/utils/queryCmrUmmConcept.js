@@ -11,21 +11,57 @@ export const queryCmrUmmConcept = (
 ) => {
   // Default an array to hold the promises we need to make depending on the requested fields
   const promises = []
+
   const {
     jsonKeys,
     metaKeys = [],
     ummKeys
   } = requestInfo
-  const { 'CMR-Request-Id': requestId } = headers
+
+  // Pull out request id for logging
+  const {
+    'CMR-Request-Id': requestId
+  } = headers
+
+  const {
+    cursor
+  } = permittedSearchParams
+
+  let scrollIds = {}
+  if (cursor) {
+    scrollIds = JSON.parse(Buffer.from(cursor, 'base64').toString())
+
+    // eslint-disable-next-line no-param-reassign
+    delete permittedSearchParams.cursor
+  }
+
+  const {
+    json: jsonScrollId,
+    umm: ummScrollId
+  } = scrollIds
+
+  if (metaKeys.indexOf('cursor') > -1 && !cursor) {
+    // eslint-disable-next-line no-param-reassign
+    permittedSearchParams.scroll = true
+  }
 
   metaKeys.forEach((param) => {
     console.log(`Request ${requestId} to [concept: ${conceptType}] requested [format: meta, key: ${param}]`)
   })
 
   if (jsonKeys.length > 0) {
+    const jsonHeaders = {}
+
+    if (jsonScrollId) {
+      jsonHeaders['CMR-Scroll-Id'] = parseFloat(jsonScrollId)
+    }
+
     // Construct the promise that will request data from the json endpoint
     promises.push(
-      queryCmr(conceptType, permittedSearchParams, headers)
+      queryCmr(conceptType, permittedSearchParams, {
+        ...headers,
+        ...jsonHeaders
+      })
     )
 
     // Define all the objects a user can query against
@@ -72,9 +108,18 @@ export const queryCmrUmmConcept = (
       'temporal'
     ])
 
+    const ummHeaders = {}
+
+    if (ummScrollId) {
+      ummHeaders['CMR-Scroll-Id'] = parseFloat(ummScrollId)
+    }
+
     // Construct the promise that will request data from the umm endpoint
     promises.push(
-      queryCmr(conceptType, ummPermittedKeys, headers, {
+      queryCmr(conceptType, ummPermittedKeys, {
+        ...headers,
+        ...ummHeaders
+      }, {
         format: 'umm_json'
       })
     )

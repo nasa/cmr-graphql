@@ -15,6 +15,7 @@ export const queryCmrCollections = (params, headers, requestInfo) => {
     'bounding_box',
     'circle',
     'concept_id',
+    'cursor', // Will be stripped out manually before the request is sent to CMR
     'has_granules_or_cwic',
     'has_granules',
     'include_has_granules',

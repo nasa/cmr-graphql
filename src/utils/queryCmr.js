@@ -27,6 +27,7 @@ export const queryCmr = (conceptType, params, headers, options = {}) => {
     'Accept',
     'Client-Id',
     'CMR-Request-Id',
+    'CMR-Scroll-Id',
     'Echo-Token'
   ])
 

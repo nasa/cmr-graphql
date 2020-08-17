@@ -3,9 +3,9 @@ import camelCaseKeys from 'camelcase-keys'
 import { get, snakeCase } from 'lodash'
 
 import { parseCmrCollections } from '../utils/parseCmrCollections'
-import { queryCmrCollections } from '../utils/queryCmrCollections'
 import { parseCmrError } from '../utils/parseCmrError'
 import { parseRequestedFields } from '../utils/parseRequestedFields'
+import { queryCmrCollections } from '../utils/queryCmrCollections'
 
 import collectionKeyMap from '../utils/umm/collectionKeyMap.json'
 
@@ -13,6 +13,7 @@ export default async (params, headers, parsedInfo) => {
   try {
     const result = {}
 
+    const scrollIds = {}
     let totalCount = 0
 
     const requestInfo = parseRequestedFields(parsedInfo, collectionKeyMap, 'collection')
@@ -28,8 +29,13 @@ export default async (params, headers, parsedInfo) => {
 
     if (jsonResponse) {
       const { headers } = jsonResponse
-      const { 'cmr-hits': cmrHits } = headers
+      const {
+        'cmr-hits': cmrHits,
+        'cmr-scroll-id': jsonScrollId
+      } = headers
+
       totalCount = cmrHits
+      if (jsonScrollId) scrollIds.json = jsonScrollId
 
       const collections = parseCmrCollections(jsonResponse)
 
@@ -81,8 +87,13 @@ export default async (params, headers, parsedInfo) => {
       const { ummKeyMappings } = collectionKeyMap
 
       const { headers } = ummResponse
-      const { 'cmr-hits': cmrHits } = headers
+      const {
+        'cmr-hits': cmrHits,
+        'cmr-scroll-id': ummScrollId
+      } = headers
+
       totalCount = cmrHits
+      if (ummScrollId) scrollIds.umm = ummScrollId
 
       const collections = parseCmrCollections(ummResponse, 'umm_json')
 
@@ -116,6 +127,9 @@ export default async (params, headers, parsedInfo) => {
     if (isList) {
       return {
         count: totalCount,
+        cursor: Buffer.from(
+          JSON.stringify(scrollIds)
+        ).toString('base64'),
         items: Object.values(result)
       }
     }

@@ -1,6 +1,8 @@
 type Variable {
   "The alias for the name of a variable"
   alias: String
+  "The characteristics of a variable."
+  characteristics: JSON
   "The unique concept id assigned to the variable."
   conceptId: String!
   "Specify data type of a variable. These types can be either: uint8, uint16, etc."
