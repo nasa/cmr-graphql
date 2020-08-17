@@ -51,7 +51,7 @@ type Granule {
   timeStart: String
   "Atom response: either 'ECHO dataset metadata' or 'ECHO granule metadata'"
   title: String
-  "Atom response: the date/time the search was executed"
+  "The date/time the search was executed"
   updated: String
 }
 

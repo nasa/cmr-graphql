@@ -1,10 +1,10 @@
 type Tool {
-  "The unique concept id assigned to the tool."
-  conceptId: String!
   "Information about any constraints for accessing the downloadable tool or web user interface."
   accessConstraints: String,
   "Words or phrases to further describe the downloadable tool or web user interface."
   ancillaryKeywords: JSON,
+  "The unique concept id assigned to the tool."
+  conceptId: String!
   "Group(s) to contact at an organization to get information about the web user interface or downloadable tool, including how the group may be contacted."
   contactGroups: JSON,
   "This is the contact persons of the downloadable tool or web user interface."

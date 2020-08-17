@@ -45,6 +45,85 @@ describe('Service', () => {
   })
 
   describe('Query', () => {
+    test('all service fields', async () => {
+      const { query } = createTestClient(server)
+
+      nock(/example/)
+        .defaultReplyHeaders({
+          'CMR-Hits': 1,
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .post(/services\.umm_json/)
+        .reply(200, {
+          items: [{
+            meta: {
+              'concept-id': 'S100000-EDSC'
+            },
+            umm: {
+              Description: 'Parturient Dolor Cras Aenean Dapibus',
+              LongName: 'Parturient Egestas Lorem',
+              Name: 'Parturient',
+              RelatedURLs: [],
+              ServiceOptions: {
+                SupportedInputFormats: {},
+                SupportedOutputFormats: {},
+                SupportedReformattings: {}
+              },
+              Type: 'Tristique',
+              URL: {}
+            }
+          }]
+        })
+
+      const response = await query({
+        variables: {},
+        query: `{
+          services {
+            count
+            items {
+              conceptId
+              description
+              longName
+              name
+              relatedUrls
+              serviceOptions
+              supportedInputFormats
+              supportedOutputFormats
+              supportedReformattings
+              type
+              url
+            }
+          }
+        }`
+      })
+
+      const { data } = response
+
+      expect(data).toEqual({
+        services: {
+          count: 1,
+          items: [{
+            conceptId: 'S100000-EDSC',
+            description: 'Parturient Dolor Cras Aenean Dapibus',
+            longName: 'Parturient Egestas Lorem',
+            name: 'Parturient',
+            relatedUrls: [],
+            serviceOptions: {
+              supportedInputFormats: {},
+              supportedOutputFormats: {},
+              supportedReformattings: {}
+            },
+            supportedInputFormats: {},
+            supportedOutputFormats: {},
+            supportedReformattings: {},
+            type: 'Tristique',
+            url: {}
+          }]
+        }
+      })
+    })
+
     test('services', async () => {
       const { query } = createTestClient(server)
 

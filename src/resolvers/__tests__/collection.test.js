@@ -45,6 +45,157 @@ describe('Collection', () => {
   })
 
   describe('Query', () => {
+    test('all collection fields', async () => {
+      const { query } = createTestClient(server)
+
+      nock(/example/)
+        .defaultReplyHeaders({
+          'CMR-Hits': 1,
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .post(/collections\.json/)
+        .reply(200, {
+          feed: {
+            entry: [{
+              archive_center: 'CONDIMENTUM/TELLUS/PHARETRA',
+              boxes: [],
+              browse_flag: true,
+              coordinate_system: 'CARTESIAN',
+              data_center: 'PORTA',
+              dataset_id: 'Condimentum Quam Mattis Cursus Pharetra',
+              has_formats: true,
+              has_granules: true,
+              has_spatial_subsetting: true,
+              has_temporal_subsetting: true,
+              has_transforms: true,
+              has_variables: true,
+              id: 'C100000-EDSC',
+              online_access_flag: true,
+              organizations: [],
+              original_format: 'RISUS',
+              short_name: 'LOREM-QUAM',
+              summary: 'Cras mattis consectetur purus sit amet fermentum.',
+              tags: {},
+              time_end: '2016-04-04T08:00:00.000Z',
+              time_start: '2016-04-04T17:00:00.000Z',
+              title: 'Condimentum Quam Mattis Cursus Pharetra',
+              version_id: '1.0.0'
+            }]
+          }
+        })
+
+      nock(/example/)
+        .defaultReplyHeaders({
+          'CMR-Hits': 1,
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .post(/collections\.umm_json/)
+        .reply(200, {
+          items: [{
+            meta: {
+              'concept-id': 'C100000-EDSC'
+            },
+            umm: {
+              Abstract: 'Cras mattis consectetur purus sit amet fermentum.',
+              ArchiveAndDistributionInformation: {},
+              DataCenters: [],
+              DOI: {},
+              RelatedUrls: [],
+              ScienceKeywords: [],
+              SpatialExtent: {},
+              TemporalExtents: [],
+              EntryTitle: 'Condimentum Quam Mattis Cursus Pharetra',
+              VersionId: '1.0.0'
+            }
+          }]
+        })
+
+      const response = await query({
+        variables: {},
+        query: `{
+          collections {
+            count
+            items {
+              abstract
+              archiveCenter
+              archiveAndDistributionInformation
+              boxes
+              browseFlag
+              conceptId
+              coordinateSystem
+              dataCenter
+              dataCenters
+              doi
+              datasetId
+              hasFormats
+              hasGranules
+              hasSpatialSubsetting
+              hasTemporalSubsetting
+              hasTransforms
+              hasVariables
+              onlineAccessFlag
+              organizations
+              originalFormat
+              relatedUrls
+              scienceKeywords
+              shortName
+              spatialExtent
+              summary
+              tags
+              temporalExtents
+              timeStart
+              timeEnd
+              title
+              versionId
+            }
+          }
+        }`
+      })
+
+      const { data } = response
+
+      expect(data).toEqual({
+        collections: {
+          count: 1,
+          items: [{
+            abstract: 'Cras mattis consectetur purus sit amet fermentum.',
+            archiveAndDistributionInformation: {},
+            archiveCenter: 'CONDIMENTUM/TELLUS/PHARETRA',
+            boxes: [],
+            browseFlag: true,
+            conceptId: 'C100000-EDSC',
+            coordinateSystem: 'CARTESIAN',
+            dataCenter: 'PORTA',
+            dataCenters: [],
+            datasetId: 'Condimentum Quam Mattis Cursus Pharetra',
+            doi: {},
+            hasFormats: true,
+            hasGranules: true,
+            hasSpatialSubsetting: true,
+            hasTemporalSubsetting: true,
+            hasTransforms: true,
+            hasVariables: true,
+            onlineAccessFlag: true,
+            organizations: [],
+            originalFormat: 'RISUS',
+            relatedUrls: [],
+            scienceKeywords: [],
+            shortName: 'LOREM-QUAM',
+            spatialExtent: {},
+            summary: 'Cras mattis consectetur purus sit amet fermentum.',
+            tags: {},
+            temporalExtents: [],
+            timeEnd: '2016-04-04T08:00:00.000Z',
+            timeStart: '2016-04-04T17:00:00.000Z',
+            title: 'Condimentum Quam Mattis Cursus Pharetra',
+            versionId: '1.0.0'
+          }]
+        }
+      })
+    })
+
     test('collections', async () => {
       const { query } = createTestClient(server)
 

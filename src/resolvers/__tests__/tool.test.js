@@ -45,6 +45,122 @@ describe('Tool', () => {
   })
 
   describe('Query', () => {
+    test('all tool fields', async () => {
+      const { query } = createTestClient(server)
+
+      nock(/example/)
+        .defaultReplyHeaders({
+          'CMR-Hits': 1,
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .post(/tools\.umm_json/)
+        .reply(200, {
+          items: [{
+            meta: {
+              'concept-id': 'T100000-EDSC'
+            },
+            umm: {
+              AccessConstraints: 'NONE',
+              AncillaryKeywords: [],
+              ContactGroups: [],
+              ContactPersons: [],
+              Description: 'Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.',
+              DOI: 'doi:10.4225/15/5747A',
+              LongName: 'Etiam Mollis Sem Venenatis',
+              MetadataSpecification: {},
+              Name: 'Etiam',
+              Organizations: [],
+              Quality: {},
+              RelatedURLs: [],
+              SearchAction: {},
+              SupportedBrowsers: [],
+              SupportedInputFormats: [],
+              SupportedOperatingSystems: [],
+              SupportedOutputFormats: [],
+              SupportedSoftwareLanguages: [],
+              ToolKeywords: [],
+              Type: 'Vulputate',
+              URL: {},
+              UseConstraints: {},
+              Version: '1.0.0',
+              VersionDescription: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
+            }
+          }]
+        })
+
+      const response = await query({
+        variables: {},
+        query: `{
+          tools {
+            count
+            items {
+              accessConstraints
+              ancillaryKeywords
+              conceptId
+              contactGroups
+              contactPersons
+              description
+              doi
+              longName
+              metadataSpecification
+              name
+              organizations
+              quality
+              relatedUrls
+              searchAction
+              supportedBrowsers
+              supportedInputFormats
+              supportedOperatingSystems
+              supportedOutputFormats
+              supportedSoftwareLanguages
+              toolKeywords
+              type
+              url
+              useConstraints
+              version
+              versionDescription
+            }
+          }
+        }`
+      })
+
+      const { data } = response
+
+      expect(data).toEqual({
+        tools: {
+          count: 1,
+          items: [{
+            accessConstraints: 'NONE',
+            ancillaryKeywords: [],
+            conceptId: 'T100000-EDSC',
+            contactGroups: [],
+            contactPersons: [],
+            description: 'Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.',
+            doi: 'doi:10.4225/15/5747A',
+            longName: 'Etiam Mollis Sem Venenatis',
+            metadataSpecification: {},
+            name: 'Etiam',
+            organizations: [],
+            quality: {},
+            relatedUrls: [],
+            searchAction: {},
+            supportedBrowsers: [],
+            supportedInputFormats: [],
+            supportedOperatingSystems: [],
+            supportedOutputFormats: [],
+            supportedSoftwareLanguages: [],
+            toolKeywords: [],
+            type: 'Vulputate',
+            url: {},
+            useConstraints: {},
+            version: '1.0.0',
+            versionDescription: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
+          }]
+        }
+      })
+    })
+
     test('tools', async () => {
       const { query } = createTestClient(server)
 

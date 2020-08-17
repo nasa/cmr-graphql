@@ -5,6 +5,7 @@ type Collection {
   archiveCenter: String
   "Allows a data provider to provide archive and distribution information up front to an end user, to help them decide if they can use the product."
   archiveAndDistributionInformation: JSON
+  "Spatial coverage of the collection"
   boxes: [String]
   "True if the metadata contains browse imagery"
   browseFlag: Boolean
