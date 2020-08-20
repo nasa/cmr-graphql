@@ -8,8 +8,6 @@ describe('queryCmr', () => {
   beforeEach(() => {
     process.env = { ...OLD_ENV }
 
-    delete process.env.NODE_ENV
-
     process.env.cmrRootUrl = 'http://example.com'
   })
 
