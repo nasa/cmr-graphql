@@ -47,6 +47,8 @@ type Collection {
   shortName: String
   "Specifies the geographic and vertical (altitude, depth) coverage of the data."
   spatialExtent: JSON
+  "The summary of intentions with which this collection was developed."
+  summary: String @deprecated(reason: "Use `abstract`.")
   "Tags associated with the collection. It includes sub-elements of tagKey and optional data which is in embedded JSON."
   tags: JSON
   "This class contains attributes which describe the temporal range of a specific collection. Temporal Extent includes a specification of the Temporal Range Type of the collection, which is one of Range Date Time, Single Date Time, or Periodic Date Time"
