@@ -119,10 +119,7 @@ export default class Collection extends Concept {
     // eslint-disable-next-line no-param-reassign
     item.concept_id = conceptId
 
-    // Rename (delete the summary key and set the abstract key) `summary` for consistency
-    // eslint-disable-next-line no-param-reassign
-    delete item.summary
-
+    // Alias summary offering the same value using a different key to allow clients to transition
     // eslint-disable-next-line no-param-reassign
     item.abstract = summary
 
