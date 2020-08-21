@@ -39,7 +39,7 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
     }
 
     // Track meta keys for analytics on how often they are requested
-    if (cursor) metaKeys.push('cursor')
+    if (cursor) metaKeys.push(`${conceptName.toLowerCase()}Cursor`)
 
     // If count was requested, append the specific concept for logging specificity
     if (count) metaKeys.push(`${conceptName.toLowerCase()}Count`)
