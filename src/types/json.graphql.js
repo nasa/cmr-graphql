@@ -1,4 +1,4 @@
-import { makeExecutableSchema } from 'graphql-tools'
+import { makeExecutableSchema } from 'apollo-server-lambda'
 import GraphQLJSON from 'graphql-type-json'
 
 const schemaString = 'scalar JSON'

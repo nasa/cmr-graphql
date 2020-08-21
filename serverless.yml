@@ -4,6 +4,7 @@ provider:
   name: aws
   runtime: nodejs12.x
   region: us-east-1
+  stage: ${opt:stage, 'dev'}
   endpointType: PRIVATE
   environment:
     cmrRootUrl: ${env:CMR_ROOT_URL}
@@ -123,7 +124,7 @@ resources:
                 - "s3:GetObject"
               Effect: "Allow"
               Resource: "*"
-        PolicyName: ${opt:stage}-S3CloudfrontLogToCloudwatchPolicy
+        PolicyName: ${self:provider.stage}-S3CloudfrontLogToCloudwatchPolicy
         Roles:
           - Ref: IamRoleCustomResourcesLambdaExecution
 

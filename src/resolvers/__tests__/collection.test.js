@@ -35,8 +35,6 @@ describe('Collection', () => {
   beforeEach(() => {
     process.env = { ...OLD_ENV }
 
-    delete process.env.NODE_ENV
-
     process.env.cmrRootUrl = 'http://example.com'
   })
 
@@ -335,7 +333,7 @@ describe('Collection', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/granules\.json/, 'collection_concept_id=C100000-EDSC&page_size=20')
+        .post(/granules\.json/, 'page_size=20&collection_concept_id=C100000-EDSC')
         .reply(200, {
           feed: {
             entry: [{
@@ -351,7 +349,7 @@ describe('Collection', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/granules\.json/, 'collection_concept_id=C100001-EDSC&page_size=20')
+        .post(/granules\.json/, 'page_size=20&collection_concept_id=C100001-EDSC')
         .reply(200, {
           feed: {
             entry: [{
@@ -429,7 +427,7 @@ describe('Collection', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/granules\.json/, 'bounding_box=-90.08940124511719%2C41.746426050239336%2C-82.33992004394531%2C47.84755587105307&collection_concept_id=C100000-EDSC&page_size=20')
+        .post(/granules\.json/, 'page_size=20&bounding_box=-90.08940124511719%2C41.746426050239336%2C-82.33992004394531%2C47.84755587105307&collection_concept_id=C100000-EDSC')
         .reply(200, {
           feed: {
             entry: [{
@@ -445,7 +443,7 @@ describe('Collection', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/granules\.json/, 'bounding_box=-90.08940124511719%2C41.746426050239336%2C-82.33992004394531%2C47.84755587105307&collection_concept_id=C100001-EDSC&page_size=20')
+        .post(/granules\.json/, 'page_size=20&bounding_box=-90.08940124511719%2C41.746426050239336%2C-82.33992004394531%2C47.84755587105307&collection_concept_id=C100001-EDSC')
         .reply(200, {
           feed: {
             entry: [{

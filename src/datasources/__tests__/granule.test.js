@@ -1,22 +1,22 @@
 import nock from 'nock'
 
-import { ApolloError } from 'apollo-server-lambda'
-
 import granuleDatasource from '../granule'
-
-import * as parseCmrGranules from '../../utils/parseCmrGranules'
-import * as queryCmrGranules from '../../utils/queryCmrGranules'
 
 let requestInfo
 
 describe('granule', () => {
+  const OLD_ENV = process.env
+
   beforeEach(() => {
     jest.resetAllMocks()
 
-    // Resets the parser mock
     jest.restoreAllMocks()
 
-    // Default requestInfo an empty
+    process.env = { ...OLD_ENV }
+
+    process.env.cmrRootUrl = 'http://example.com'
+
+    // Default requestInfo
     requestInfo = {
       name: 'granules',
       alias: 'granules',
@@ -43,48 +43,182 @@ describe('granule', () => {
     }
   })
 
+  afterEach(() => {
+    process.env = OLD_ENV
+  })
+
+  describe('cursor', () => {
+    beforeEach(() => {
+      // Overwrite default requestInfo
+      requestInfo = {
+        name: 'granules',
+        alias: 'granules',
+        args: {},
+        fieldsByTypeName: {
+          GranuleList: {
+            cursor: {
+              name: 'cursor',
+              alias: 'cursor',
+              args: {},
+              fieldsByTypeName: {}
+            },
+            items: {
+              name: 'items',
+              alias: 'items',
+              args: {},
+              fieldsByTypeName: {
+                Granule: {
+                  conceptId: {
+                    name: 'conceptId',
+                    alias: 'conceptId',
+                    args: {},
+                    fieldsByTypeName: {}
+                  },
+                  dayNightFlag: {
+                    name: 'dayNightFlag',
+                    alias: 'dayNightFlag',
+                    args: {},
+                    fieldsByTypeName: {}
+                  },
+                  granuleUr: {
+                    name: 'granuleUr',
+                    alias: 'granuleUr',
+                    args: {},
+                    fieldsByTypeName: {}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    })
+
+    test('returns a cursor', async () => {
+      nock(/example/)
+        .defaultReplyHeaders({
+          'CMR-Hits': 84,
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678',
+          'CMR-Scroll-Id': '-29834750'
+        })
+        .post(/granules\.json/)
+        .reply(200, {
+          feed: {
+            entry: [{
+              id: 'G100000-EDSC',
+              day_night_flag: 'UNSPECIFIED'
+            }]
+          }
+        })
+
+      nock(/example/)
+        .defaultReplyHeaders({
+          'CMR-Hits': 84,
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678',
+          'CMR-Scroll-Id': '-98726357'
+        })
+        .post(/granules\.umm_json/)
+        .reply(200, {
+          items: [{
+            meta: {
+              'concept-id': 'G100000-EDSC'
+            },
+            umm: {
+              GranuleUR: 'GLDAS_CLSM025_D.2.0:GLDAS_CLSM025_D.A19480101.020.nc4'
+            }
+          }]
+        })
+
+      const response = await granuleDatasource({ cursor: 'eyJqc29uIjoiLTI5ODM0NzUwIiwidW1tIjoiLTk4NzI2MzU3In0=' }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'granule')
+
+      expect(response).toEqual({
+        count: 84,
+        cursor: 'eyJqc29uIjoiLTI5ODM0NzUwIiwidW1tIjoiLTk4NzI2MzU3In0=',
+        items: [{
+          conceptId: 'G100000-EDSC',
+          dayNightFlag: 'UNSPECIFIED',
+          granuleUr: 'GLDAS_CLSM025_D.2.0:GLDAS_CLSM025_D.A19480101.020.nc4'
+        }]
+      })
+    })
+
+    describe('when a cursor is requested', () => {
+      test('requests a cursor', async () => {
+        nock(/example/)
+          .defaultReplyHeaders({
+            'CMR-Hits': 84,
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678',
+            'CMR-Scroll-Id': '-29834750'
+          })
+          .post(/granules\.json/, 'scroll=true')
+          .reply(200, {
+            feed: {
+              entry: [{
+                id: 'G100000-EDSC',
+                day_night_flag: 'UNSPECIFIED'
+              }]
+            }
+          })
+
+        nock(/example/)
+          .defaultReplyHeaders({
+            'CMR-Hits': 84,
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678',
+            'CMR-Scroll-Id': '-98726357'
+          })
+          .post(/granules\.umm_json/, 'scroll=true')
+          .reply(200, {
+            items: [{
+              meta: {
+                'concept-id': 'G100000-EDSC'
+              },
+              umm: {
+                GranuleUR: 'GLDAS_CLSM025_D.2.0:GLDAS_CLSM025_D.A19480101.020.nc4'
+              }
+            }]
+          })
+
+        const response = await granuleDatasource({}, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'collection')
+
+        expect(response).toEqual({
+          count: 84,
+          cursor: 'eyJqc29uIjoiLTI5ODM0NzUwIiwidW1tIjoiLTk4NzI2MzU3In0=',
+          items: [{
+            conceptId: 'G100000-EDSC',
+            dayNightFlag: 'UNSPECIFIED',
+            granuleUr: 'GLDAS_CLSM025_D.2.0:GLDAS_CLSM025_D.A19480101.020.nc4'
+          }]
+        })
+      })
+    })
+  })
+
   describe('without params', () => {
     test('returns the parsed granule results', async () => {
-      const queryCmrGranulesMock = jest.spyOn(queryCmrGranules, 'queryCmrGranules').mockImplementationOnce(() => [{
-        headers: {
-          'cmr-hits': 84
-        },
-        data: {
+      nock(/example/)
+        .defaultReplyHeaders({
+          'CMR-Hits': 84,
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .post(/granules\.json/)
+        .reply(200, {
           feed: {
             entry: [{
               id: 'G100000-EDSC'
             }]
           }
-        }
-      }])
-
-      const parseCmrGranulesMock = jest.spyOn(parseCmrGranules, 'parseCmrGranules')
+        })
 
       const response = await granuleDatasource({}, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'granule')
 
-      expect(queryCmrGranulesMock).toBeCalledTimes(1)
-      expect(queryCmrGranulesMock).toBeCalledWith(
-        {},
-        { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
-        expect.objectContaining({ jsonKeys: ['conceptId'] })
-      )
-
-      expect(parseCmrGranulesMock).toBeCalledTimes(1)
-      expect(parseCmrGranulesMock).toBeCalledWith({
-        headers: {
-          'cmr-hits': 84
-        },
-        data: {
-          feed: {
-            entry: [{
-              concept_id: 'G100000-EDSC'
-            }]
-          }
-        }
-      })
-
       expect(response).toEqual({
         count: 84,
+        cursor: 'e30=',
         items: [{
           conceptId: 'G100000-EDSC'
         }]
@@ -94,46 +228,26 @@ describe('granule', () => {
 
   describe('with params', () => {
     test('returns the parsed granule results', async () => {
-      const queryCmrGranulesMock = jest.spyOn(queryCmrGranules, 'queryCmrGranules').mockImplementationOnce(() => [{
-        headers: {
-          'cmr-hits': 84
-        },
-        data: {
+      nock(/example/)
+        .defaultReplyHeaders({
+          'CMR-Hits': 84,
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .post(/granules\.json/)
+        .reply(200, {
           feed: {
             entry: [{
               id: 'G100000-EDSC'
             }]
           }
-        }
-      }])
-
-      const parseCmrGranulesMock = jest.spyOn(parseCmrGranules, 'parseCmrGranules')
+        })
 
       const response = await granuleDatasource({ concept_id: 'G100000-EDSC' }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'granule')
 
-      expect(queryCmrGranulesMock).toBeCalledTimes(1)
-      expect(queryCmrGranulesMock).toBeCalledWith(
-        { concept_id: 'G100000-EDSC' },
-        { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
-        expect.objectContaining({ jsonKeys: ['conceptId'] })
-      )
-
-      expect(parseCmrGranulesMock).toBeCalledTimes(1)
-      expect(parseCmrGranulesMock).toBeCalledWith({
-        headers: {
-          'cmr-hits': 84
-        },
-        data: {
-          feed: {
-            entry: [{
-              concept_id: 'G100000-EDSC'
-            }]
-          }
-        }
-      })
-
       expect(response).toEqual({
         count: 84,
+        cursor: 'e30=',
         items: [{
           conceptId: 'G100000-EDSC'
         }]
@@ -183,23 +297,30 @@ describe('granule', () => {
     })
 
     test('returns the parsed granule results', async () => {
-      const queryCmrGranulesMock = jest.spyOn(queryCmrGranules, 'queryCmrGranules').mockImplementationOnce(() => [{
-        headers: {
-          'cmr-hits': 84
-        },
-        data: {
+      nock(/example/)
+        .defaultReplyHeaders({
+          'CMR-Hits': 84,
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .post(/granules\.json/)
+        .reply(200, {
           feed: {
             entry: [{
               id: 'G100000-EDSC',
               browse_flag: true
             }]
           }
-        }
-      }, {
-        headers: {
-          'cmr-hits': 84
-        },
-        data: {
+        })
+
+      nock(/example/)
+        .defaultReplyHeaders({
+          'CMR-Hits': 84,
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .post(/granules\.umm_json/)
+        .reply(200, {
           items: [{
             meta: {
               'concept-id': 'G100000-EDSC'
@@ -208,53 +329,13 @@ describe('granule', () => {
               GranuleUR: 'GLDAS_CLSM025_D.2.0:GLDAS_CLSM025_D.A19480101.020.nc4'
             }
           }]
-        }
-      }])
-
-      const parseCmrGranulesMock = jest.spyOn(parseCmrGranules, 'parseCmrGranules')
+        })
 
       const response = await granuleDatasource({ concept_id: 'G100000-EDSC' }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'granule')
 
-      expect(queryCmrGranulesMock).toBeCalledTimes(1)
-      expect(queryCmrGranulesMock).toBeCalledWith(
-        { concept_id: 'G100000-EDSC' },
-        { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
-        expect.objectContaining({ jsonKeys: ['browseFlag', 'conceptId'], ummKeys: ['granuleUr'] })
-      )
-
-      expect(parseCmrGranulesMock).toBeCalledTimes(2)
-      const [jsonCall, ummCall] = parseCmrGranulesMock.mock.calls
-      expect(jsonCall[0]).toEqual({
-        headers: {
-          'cmr-hits': 84
-        },
-        data: {
-          feed: {
-            entry: [{
-              concept_id: 'G100000-EDSC',
-              browse_flag: true
-            }]
-          }
-        }
-      })
-      expect(ummCall[0]).toEqual({
-        headers: {
-          'cmr-hits': 84
-        },
-        data: {
-          items: [{
-            meta: {
-              'concept-id': 'G100000-EDSC'
-            },
-            umm: {
-              GranuleUR: 'GLDAS_CLSM025_D.2.0:GLDAS_CLSM025_D.A19480101.020.nc4'
-            }
-          }]
-        }
-      })
-
       expect(response).toEqual({
         count: 84,
+        cursor: 'e30=',
         items: [{
           conceptId: 'G100000-EDSC',
           browseFlag: true,
@@ -300,41 +381,14 @@ describe('granule', () => {
     })
 
     test('returns the parsed granule results', async () => {
-      const queryCmrGranulesMock = jest.spyOn(queryCmrGranules, 'queryCmrGranules').mockImplementationOnce(() => [
-        null,
-        {
-          headers: {
-            'cmr-hits': 84
-          },
-          data: {
-            items: [{
-              meta: {
-                'concept-id': 'G100000-EDSC'
-              },
-              umm: {
-                GranuleUR: 'GLDAS_CLSM025_D.2.0:GLDAS_CLSM025_D.A19480101.020.nc4'
-              }
-            }]
-          }
-        }])
-
-      const parseCmrGranulesMock = jest.spyOn(parseCmrGranules, 'parseCmrGranules')
-
-      const response = await granuleDatasource({ concept_id: 'G100000-EDSC' }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'granule')
-
-      expect(queryCmrGranulesMock).toBeCalledTimes(1)
-      expect(queryCmrGranulesMock).toBeCalledWith(
-        { concept_id: 'G100000-EDSC' },
-        { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
-        expect.objectContaining({ jsonKeys: [], ummKeys: ['granuleUr', 'temporalExtent'] })
-      )
-
-      expect(parseCmrGranulesMock).toBeCalledTimes(1)
-      expect(parseCmrGranulesMock).toBeCalledWith({
-        headers: {
-          'cmr-hits': 84
-        },
-        data: {
+      nock(/example/)
+        .defaultReplyHeaders({
+          'CMR-Hits': 84,
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .post(/granules\.umm_json/)
+        .reply(200, {
           items: [{
             meta: {
               'concept-id': 'G100000-EDSC'
@@ -343,11 +397,13 @@ describe('granule', () => {
               GranuleUR: 'GLDAS_CLSM025_D.2.0:GLDAS_CLSM025_D.A19480101.020.nc4'
             }
           }]
-        }
-      }, 'umm_json')
+        })
+
+      const response = await granuleDatasource({ concept_id: 'G100000-EDSC' }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'granule')
 
       expect(response).toEqual({
         count: 84,
+        cursor: 'e30=',
         items: [{
           granuleUr: 'GLDAS_CLSM025_D.2.0:GLDAS_CLSM025_D.A19480101.020.nc4'
         }]
@@ -356,7 +412,7 @@ describe('granule', () => {
   })
 
   test('catches errors received from queryCmrGranules', async () => {
-    nock(/localhost/)
+    nock(/example/)
       .post(/granules/)
       .reply(500, {
         errors: ['HTTP Error']
@@ -364,21 +420,8 @@ describe('granule', () => {
         'cmr-request-id': 'abcd-1234-efgh-5678'
       })
 
-    const queryCmrGranulesMock = jest.spyOn(queryCmrGranules, 'queryCmrGranules')
-
-    const parseCmrGranulesMock = jest.spyOn(parseCmrGranules, 'parseCmrGranules')
-
     await expect(
       granuleDatasource({ conceptId: 'G100000-EDSC' }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'granule')
-    ).rejects.toThrow(ApolloError)
-
-    expect(queryCmrGranulesMock).toBeCalledTimes(1)
-    expect(queryCmrGranulesMock).toBeCalledWith(
-      { conceptId: 'G100000-EDSC' },
-      { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
-      expect.objectContaining({ jsonKeys: ['conceptId'] })
-    )
-
-    expect(parseCmrGranulesMock).toBeCalledTimes(0)
+    ).rejects.toThrow(Error)
   })
 })

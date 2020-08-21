@@ -1,6 +1,8 @@
 type Variable {
   "The alias for the name of a variable"
   alias: String
+  "The characteristics of a variable."
+  characteristics: JSON
   "The unique concept id assigned to the variable."
   conceptId: String!
   "Specify data type of a variable. These types can be either: uint8, uint16, etc."
@@ -30,6 +32,8 @@ type Variable {
 type VariableList {
   "The number of hits for a given search."
   count: Int
+  "Cursor that points to the a specific position in a list of requested records"
+  cursor: String
   "The list of variable search results."
   items: [Variable]
 }
@@ -38,6 +42,8 @@ type Query {
   variables(
     "The unique concept id assigned to the variable."
     conceptId: [String],
+    "Cursor that points to the a specific position in a list of requested records"
+    cursor: String
     "The number of variables requested by the user"
     limit: Int
     "The name of a variable."

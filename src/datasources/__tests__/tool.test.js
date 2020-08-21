@@ -1,22 +1,22 @@
 import nock from 'nock'
 
-import { ApolloError } from 'apollo-server-lambda'
-
 import toolDatasource from '../tool'
-
-import * as parseCmrTools from '../../utils/parseCmrTools'
-import * as queryCmrTools from '../../utils/queryCmrTools'
 
 let requestInfo
 
 describe('tool', () => {
+  const OLD_ENV = process.env
+
   beforeEach(() => {
     jest.resetAllMocks()
 
-    // Resets the parser mock
     jest.restoreAllMocks()
 
-    // Default requestInfo an empty
+    process.env = { ...OLD_ENV }
+
+    process.env.cmrRootUrl = 'http://example.com'
+
+    // Default requestInfo
     requestInfo = {
       name: 'tools',
       alias: 'tools',
@@ -43,44 +43,138 @@ describe('tool', () => {
     }
   })
 
-  describe('without params', () => {
-    test('returns the parsed tool results', async () => {
-      const queryCmrToolsMock = jest.spyOn(queryCmrTools, 'queryCmrTools').mockImplementationOnce(() => [{
-        headers: {
-          'cmr-hits': 84
-        },
-        data: {
-          items: [{
-            concept_id: 'T100000-EDSC'
-          }]
-        }
-      }])
+  afterEach(() => {
+    process.env = OLD_ENV
+  })
 
-      const parseCmrToolsMock = jest.spyOn(parseCmrTools, 'parseCmrTools')
+  describe('cursor', () => {
+    beforeEach(() => {
+      // Overwrite default requestInfo
+      requestInfo = {
+        name: 'tools',
+        alias: 'tools',
+        args: {},
+        fieldsByTypeName: {
+          ToolList: {
+            cursor: {
+              name: 'cursor',
+              alias: 'cursor',
+              args: {},
+              fieldsByTypeName: {}
+            },
+            items: {
+              name: 'items',
+              alias: 'items',
+              args: {},
+              fieldsByTypeName: {
+                Tool: {
+                  conceptId: {
+                    name: 'conceptId',
+                    alias: 'conceptId',
+                    args: {},
+                    fieldsByTypeName: {}
+                  },
+                  type: {
+                    name: 'type',
+                    alias: 'type',
+                    args: {},
+                    fieldsByTypeName: {}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    })
+
+    test('returns a cursor', async () => {
+      nock(/example/)
+        .defaultReplyHeaders({
+          'CMR-Hits': 84,
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678',
+          'CMR-Scroll-Id': '-98726357'
+        })
+        .post(/tools\.umm_json/)
+        .reply(200, {
+          items: [{
+            meta: {
+              'concept-id': 'T100000-EDSC'
+            },
+            umm: {
+              Type: 'Downloadable Tool'
+            }
+          }]
+        })
 
       const response = await toolDatasource({}, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'tool')
 
-      expect(queryCmrToolsMock).toBeCalledTimes(1)
-      expect(queryCmrToolsMock).toBeCalledWith(
-        {},
-        { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
-        expect.objectContaining({ jsonKeys: ['conceptId'] })
-      )
+      expect(response).toEqual({
+        count: 84,
+        cursor: 'eyJ1bW0iOiItOTg3MjYzNTcifQ==',
+        items: [{
+          conceptId: 'T100000-EDSC',
+          type: 'Downloadable Tool'
+        }]
+      })
+    })
 
-      expect(parseCmrToolsMock).toBeCalledTimes(1)
-      expect(parseCmrToolsMock).toBeCalledWith({
-        headers: {
-          'cmr-hits': 84
-        },
-        data: {
+    describe('when a cursor is requested', () => {
+      test('requests a cursor', async () => {
+        nock(/example/)
+          .defaultReplyHeaders({
+            'CMR-Hits': 84,
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678',
+            'CMR-Scroll-Id': '-98726357'
+          })
+          .post(/tools\.umm_json/, 'scroll=true')
+          .reply(200, {
+            items: [{
+              meta: {
+                'concept-id': 'T100000-EDSC'
+              },
+              umm: {
+                Type: 'Downloadable Tool'
+              }
+            }]
+          })
+
+        const response = await toolDatasource({}, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'collection')
+
+        expect(response).toEqual({
+          count: 84,
+          cursor: 'eyJ1bW0iOiItOTg3MjYzNTcifQ==',
+          items: [{
+            conceptId: 'T100000-EDSC',
+            type: 'Downloadable Tool'
+          }]
+        })
+      })
+    })
+  })
+
+  describe('without params', () => {
+    test('returns the parsed tool results', async () => {
+      nock(/example/)
+        .defaultReplyHeaders({
+          'CMR-Hits': 84,
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .post(/tools\.json/)
+        .reply(200, {
           items: [{
             concept_id: 'T100000-EDSC'
           }]
-        }
-      })
+        })
+
+      const response = await toolDatasource({}, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'tool')
 
       expect(response).toEqual({
         count: 84,
+        cursor: 'e30=',
         items: [{
           conceptId: 'T100000-EDSC'
         }]
@@ -90,42 +184,24 @@ describe('tool', () => {
 
   describe('with params', () => {
     test('returns the parsed tool results', async () => {
-      const queryCmrToolsMock = jest.spyOn(queryCmrTools, 'queryCmrTools').mockImplementationOnce(() => [{
-        headers: {
-          'cmr-hits': 84
-        },
-        data: {
+      nock(/example/)
+        .defaultReplyHeaders({
+          'CMR-Hits': 84,
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .post(/tools\.json/, 'concept_id=T100000-EDSC')
+        .reply(200, {
           items: [{
             concept_id: 'T100000-EDSC'
           }]
-        }
-      }])
-
-      const parseCmrToolsMock = jest.spyOn(parseCmrTools, 'parseCmrTools')
+        })
 
       const response = await toolDatasource({ concept_id: 'T100000-EDSC' }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'tool')
 
-      expect(queryCmrToolsMock).toBeCalledTimes(1)
-      expect(queryCmrToolsMock).toBeCalledWith(
-        { concept_id: 'T100000-EDSC' },
-        { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
-        expect.objectContaining({ jsonKeys: ['conceptId'] })
-      )
-
-      expect(parseCmrToolsMock).toBeCalledTimes(1)
-      expect(parseCmrToolsMock).toBeCalledWith({
-        headers: {
-          'cmr-hits': 84
-        },
-        data: {
-          items: [{
-            concept_id: 'T100000-EDSC'
-          }]
-        }
-      })
-
       expect(response).toEqual({
         count: 84,
+        cursor: 'e30=',
         items: [{
           conceptId: 'T100000-EDSC'
         }]
@@ -167,67 +243,6 @@ describe('tool', () => {
         }
       }
     })
-
-    // There are no keys in the json endpoint that are not available
-    // in the umm endpoint so tools should never make two requests
-    // test.skip('returns the parsed tool results', async () => {
-    //   const queryCmrToolsMock = jest.spyOn(queryCmrTools, 'queryCmrTools').mockImplementationOnce(() => [{
-    //     data: {
-    //       items: [{
-    //         concept_id: 'T100000-EDSC'
-    //       }]
-    //     }
-    //   }, {
-    //     data: {
-    //       items: [{
-    //         meta: {
-    //           'concept-id': 'T100000-EDSC'
-    //         },
-    //         umm: {
-    //           Type: 'OPeNDAP'
-    //         }
-    //       }]
-    //     }
-    //   }])
-
-    //   const parseCmrToolsMock = jest.spyOn(parseCmrTools, 'parseCmrTools')
-
-    //   const response = await toolDatasource({ conceptId: 'T100000-EDSC' }, {}, requestInfo, 'tool')
-
-    //   expect(queryCmrToolsMock).toBeCalledTimes(1)
-    //   expect(queryCmrToolsMock).toBeCalledWith(
-    //     { conceptId: 'T100000-EDSC' },
-    //     { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
-    //     expect.objectContaining({ jsonKeys: ['conceptId'], ummKeys: ['type'] })
-    //   )
-
-    //   expect(parseCmrToolsMock).toBeCalledTimes(2)
-    //   const [jsonCall, ummCall] = parseCmrToolsMock.mock.calls
-    //   expect(jsonCall[0]).toEqual({
-    //     data: {
-    //       items: [{
-    //         concept_id: 'T100000-EDSC'
-    //       }]
-    //     }
-    //   })
-    //   expect(ummCall[0]).toEqual({
-    //     data: {
-    //       items: [{
-    //         meta: {
-    //           'concept-id': 'T100000-EDSC'
-    //         },
-    //         umm: {
-    //           Type: 'OPeNDAP'
-    //         }
-    //       }]
-    //     }
-    //   })
-
-    //   expect(response).toEqual([{
-    //     conceptId: 'T100000-EDSC',
-    //     type: 'OPeNDAP'
-    //   }])
-    // })
   })
 
   describe('with only umm keys', () => {
@@ -266,63 +281,38 @@ describe('tool', () => {
     })
 
     test('returns the parsed tool results', async () => {
-      const queryCmrToolsMock = jest.spyOn(queryCmrTools, 'queryCmrTools').mockImplementationOnce(() => [
-        null,
-        {
-          headers: {
-            'cmr-hits': 84
-          },
-          data: {
-            items: [{
-              meta: {
-                'concept-id': 'T100000-EDSC'
-              },
-              umm: {
-                Type: 'OPeNDAP'
-              }
-            }]
-          }
-        }])
-
-      const parseCmrToolsMock = jest.spyOn(parseCmrTools, 'parseCmrTools')
-
-      const response = await toolDatasource({ concept_id: 'T100000-EDSC' }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'tool')
-
-      expect(queryCmrToolsMock).toBeCalledTimes(1)
-      expect(queryCmrToolsMock).toBeCalledWith(
-        { concept_id: 'T100000-EDSC' },
-        { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
-        expect.objectContaining({ jsonKeys: [], ummKeys: ['toolKeywords', 'type'] })
-      )
-
-      expect(parseCmrToolsMock).toBeCalledTimes(1)
-      expect(parseCmrToolsMock).toBeCalledWith({
-        headers: {
-          'cmr-hits': 84
-        },
-        data: {
+      nock(/example/)
+        .defaultReplyHeaders({
+          'CMR-Hits': 84,
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .post(/tools\.umm_json/)
+        .reply(200, {
           items: [{
             meta: {
               'concept-id': 'T100000-EDSC'
             },
             umm: {
-              Type: 'OPeNDAP'
+              Type: 'Downloadable Tool'
             }
           }]
-        }
-      })
+        })
+
+      const response = await toolDatasource({ concept_id: 'T100000-EDSC' }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'tool')
 
       expect(response).toEqual({
         count: 84,
+        cursor: 'e30=',
         items: [{
-          type: 'OPeNDAP'
+          type: 'Downloadable Tool'
         }]
       })
     })
   })
 
   test('catches errors received from queryCmrTools', async () => {
-    nock(/localhost/)
+    nock(/example/)
       .post(/tools/)
       .reply(500, {
         errors: ['HTTP Error']
@@ -330,22 +320,8 @@ describe('tool', () => {
         'cmr-request-id': 'abcd-1234-efgh-5678'
       })
 
-    const queryCmrToolsMock = jest.spyOn(queryCmrTools, 'queryCmrTools')
-
-    const parseCmrToolsMock = jest.spyOn(parseCmrTools, 'parseCmrTools')
-
     await expect(
       toolDatasource({ conceptId: 'T100000-EDSC' }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'tool')
-    ).rejects.toThrow(ApolloError)
-
-
-    expect(queryCmrToolsMock).toBeCalledTimes(1)
-    expect(queryCmrToolsMock).toBeCalledWith(
-      { conceptId: 'T100000-EDSC' },
-      { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
-      expect.objectContaining({ jsonKeys: ['conceptId'] })
-    )
-
-    expect(parseCmrToolsMock).toBeCalledTimes(0)
+    ).rejects.toThrow(Error)
   })
 })

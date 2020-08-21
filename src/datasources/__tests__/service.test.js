@@ -1,22 +1,22 @@
 import nock from 'nock'
 
-import { ApolloError } from 'apollo-server-lambda'
-
 import serviceDatasource from '../service'
-
-import * as parseCmrServices from '../../utils/parseCmrServices'
-import * as queryCmrServices from '../../utils/queryCmrServices'
 
 let requestInfo
 
 describe('service', () => {
+  const OLD_ENV = process.env
+
   beforeEach(() => {
     jest.resetAllMocks()
 
-    // Resets the parser mock
     jest.restoreAllMocks()
 
-    // Default requestInfo an empty
+    process.env = { ...OLD_ENV }
+
+    process.env.cmrRootUrl = 'http://example.com'
+
+    // Default requestInfo
     requestInfo = {
       name: 'services',
       alias: 'services',
@@ -43,44 +43,138 @@ describe('service', () => {
     }
   })
 
-  describe('without params', () => {
-    test('returns the parsed service results', async () => {
-      const queryCmrServicesMock = jest.spyOn(queryCmrServices, 'queryCmrServices').mockImplementationOnce(() => [{
-        headers: {
-          'cmr-hits': 84
-        },
-        data: {
-          items: [{
-            concept_id: 'S100000-EDSC'
-          }]
-        }
-      }])
+  afterEach(() => {
+    process.env = OLD_ENV
+  })
 
-      const parseCmrServicesMock = jest.spyOn(parseCmrServices, 'parseCmrServices')
+  describe('cursor', () => {
+    beforeEach(() => {
+      // Overwrite default requestInfo
+      requestInfo = {
+        name: 'services',
+        alias: 'services',
+        args: {},
+        fieldsByTypeName: {
+          ServiceList: {
+            cursor: {
+              name: 'cursor',
+              alias: 'cursor',
+              args: {},
+              fieldsByTypeName: {}
+            },
+            items: {
+              name: 'items',
+              alias: 'items',
+              args: {},
+              fieldsByTypeName: {
+                Service: {
+                  conceptId: {
+                    name: 'conceptId',
+                    alias: 'conceptId',
+                    args: {},
+                    fieldsByTypeName: {}
+                  },
+                  type: {
+                    name: 'type',
+                    alias: 'type',
+                    args: {},
+                    fieldsByTypeName: {}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    })
+
+    test('returns a cursor', async () => {
+      nock(/example/)
+        .defaultReplyHeaders({
+          'CMR-Hits': 84,
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678',
+          'CMR-Scroll-Id': '-98726357'
+        })
+        .post(/services\.umm_json/)
+        .reply(200, {
+          items: [{
+            meta: {
+              'concept-id': 'S100000-EDSC'
+            },
+            umm: {
+              Type: 'OPeNDAP'
+            }
+          }]
+        })
 
       const response = await serviceDatasource({}, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'service')
 
-      expect(queryCmrServicesMock).toBeCalledTimes(1)
-      expect(queryCmrServicesMock).toBeCalledWith(
-        {},
-        { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
-        expect.objectContaining({ jsonKeys: ['conceptId'] })
-      )
+      expect(response).toEqual({
+        count: 84,
+        cursor: 'eyJ1bW0iOiItOTg3MjYzNTcifQ==',
+        items: [{
+          conceptId: 'S100000-EDSC',
+          type: 'OPeNDAP'
+        }]
+      })
+    })
 
-      expect(parseCmrServicesMock).toBeCalledTimes(1)
-      expect(parseCmrServicesMock).toBeCalledWith({
-        headers: {
-          'cmr-hits': 84
-        },
-        data: {
+    describe('when a cursor is requested', () => {
+      test('requests a cursor', async () => {
+        nock(/example/)
+          .defaultReplyHeaders({
+            'CMR-Hits': 84,
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678',
+            'CMR-Scroll-Id': '-98726357'
+          })
+          .post(/services\.umm_json/, 'scroll=true')
+          .reply(200, {
+            items: [{
+              meta: {
+                'concept-id': 'S100000-EDSC'
+              },
+              umm: {
+                Type: 'OPeNDAP'
+              }
+            }]
+          })
+
+        const response = await serviceDatasource({}, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'collection')
+
+        expect(response).toEqual({
+          count: 84,
+          cursor: 'eyJ1bW0iOiItOTg3MjYzNTcifQ==',
+          items: [{
+            conceptId: 'S100000-EDSC',
+            type: 'OPeNDAP'
+          }]
+        })
+      })
+    })
+  })
+
+  describe('without params', () => {
+    test('returns the parsed service results', async () => {
+      nock(/example/)
+        .defaultReplyHeaders({
+          'CMR-Hits': 84,
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .post(/services\.json/)
+        .reply(200, {
           items: [{
             concept_id: 'S100000-EDSC'
           }]
-        }
-      })
+        })
+
+      const response = await serviceDatasource({}, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'service')
 
       expect(response).toEqual({
         count: 84,
+        cursor: 'e30=',
         items: [{
           conceptId: 'S100000-EDSC'
         }]
@@ -90,42 +184,24 @@ describe('service', () => {
 
   describe('with params', () => {
     test('returns the parsed service results', async () => {
-      const queryCmrServicesMock = jest.spyOn(queryCmrServices, 'queryCmrServices').mockImplementationOnce(() => [{
-        headers: {
-          'cmr-hits': 84
-        },
-        data: {
+      nock(/example/)
+        .defaultReplyHeaders({
+          'CMR-Hits': 84,
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .post(/services\.json/, 'concept_id=S100000-EDSC')
+        .reply(200, {
           items: [{
             concept_id: 'S100000-EDSC'
           }]
-        }
-      }])
-
-      const parseCmrServicesMock = jest.spyOn(parseCmrServices, 'parseCmrServices')
+        })
 
       const response = await serviceDatasource({ concept_id: 'S100000-EDSC' }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'service')
 
-      expect(queryCmrServicesMock).toBeCalledTimes(1)
-      expect(queryCmrServicesMock).toBeCalledWith(
-        { concept_id: 'S100000-EDSC' },
-        { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
-        expect.objectContaining({ jsonKeys: ['conceptId'] })
-      )
-
-      expect(parseCmrServicesMock).toBeCalledTimes(1)
-      expect(parseCmrServicesMock).toBeCalledWith({
-        headers: {
-          'cmr-hits': 84
-        },
-        data: {
-          items: [{
-            concept_id: 'S100000-EDSC'
-          }]
-        }
-      })
-
       expect(response).toEqual({
         count: 84,
+        cursor: 'e30=',
         items: [{
           conceptId: 'S100000-EDSC'
         }]
@@ -167,67 +243,6 @@ describe('service', () => {
         }
       }
     })
-
-    // There are no keys in the json endpoint that are not available
-    // in the umm endpoint so services should never make two requests
-    // test.skip('returns the parsed service results', async () => {
-    //   const queryCmrServicesMock = jest.spyOn(queryCmrServices, 'queryCmrServices').mockImplementationOnce(() => [{
-    //     data: {
-    //       items: [{
-    //         concept_id: 'S100000-EDSC'
-    //       }]
-    //     }
-    //   }, {
-    //     data: {
-    //       items: [{
-    //         meta: {
-    //           'concept-id': 'S100000-EDSC'
-    //         },
-    //         umm: {
-    //           Type: 'OPeNDAP'
-    //         }
-    //       }]
-    //     }
-    //   }])
-
-    //   const parseCmrServicesMock = jest.spyOn(parseCmrServices, 'parseCmrServices')
-
-    //   const response = await serviceDatasource({ conceptId: 'S100000-EDSC' }, {}, requestInfo, 'service')
-
-    //   expect(queryCmrServicesMock).toBeCalledTimes(1)
-    //   expect(queryCmrServicesMock).toBeCalledWith(
-    //     { conceptId: 'S100000-EDSC' },
-    //     { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
-    //     expect.objectContaining({ jsonKeys: ['conceptId'], ummKeys: ['type'] })
-    //   )
-
-    //   expect(parseCmrServicesMock).toBeCalledTimes(2)
-    //   const [jsonCall, ummCall] = parseCmrServicesMock.mock.calls
-    //   expect(jsonCall[0]).toEqual({
-    //     data: {
-    //       items: [{
-    //         concept_id: 'S100000-EDSC'
-    //       }]
-    //     }
-    //   })
-    //   expect(ummCall[0]).toEqual({
-    //     data: {
-    //       items: [{
-    //         meta: {
-    //           'concept-id': 'S100000-EDSC'
-    //         },
-    //         umm: {
-    //           Type: 'OPeNDAP'
-    //         }
-    //       }]
-    //     }
-    //   })
-
-    //   expect(response).toEqual([{
-    //     conceptId: 'S100000-EDSC',
-    //     type: 'OPeNDAP'
-    //   }])
-    // })
   })
 
   describe('with only umm keys', () => {
@@ -266,41 +281,14 @@ describe('service', () => {
     })
 
     test('returns the parsed service results', async () => {
-      const queryCmrServicesMock = jest.spyOn(queryCmrServices, 'queryCmrServices').mockImplementationOnce(() => [
-        null,
-        {
-          headers: {
-            'cmr-hits': 84
-          },
-          data: {
-            items: [{
-              meta: {
-                'concept-id': 'S100000-EDSC'
-              },
-              umm: {
-                Type: 'OPeNDAP'
-              }
-            }]
-          }
-        }])
-
-      const parseCmrServicesMock = jest.spyOn(parseCmrServices, 'parseCmrServices')
-
-      const response = await serviceDatasource({ concept_id: 'S100000-EDSC' }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'service')
-
-      expect(queryCmrServicesMock).toBeCalledTimes(1)
-      expect(queryCmrServicesMock).toBeCalledWith(
-        { concept_id: 'S100000-EDSC' },
-        { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
-        expect.objectContaining({ jsonKeys: [], ummKeys: ['serviceOptions', 'type'] })
-      )
-
-      expect(parseCmrServicesMock).toBeCalledTimes(1)
-      expect(parseCmrServicesMock).toBeCalledWith({
-        headers: {
-          'cmr-hits': 84
-        },
-        data: {
+      nock(/example/)
+        .defaultReplyHeaders({
+          'CMR-Hits': 84,
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .post(/services\.umm_json/)
+        .reply(200, {
           items: [{
             meta: {
               'concept-id': 'S100000-EDSC'
@@ -309,11 +297,13 @@ describe('service', () => {
               Type: 'OPeNDAP'
             }
           }]
-        }
-      })
+        })
+
+      const response = await serviceDatasource({ concept_id: 'S100000-EDSC' }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'service')
 
       expect(response).toEqual({
         count: 84,
+        cursor: 'e30=',
         items: [{
           type: 'OPeNDAP'
         }]
@@ -322,7 +312,7 @@ describe('service', () => {
   })
 
   test('catches errors received from queryCmrServices', async () => {
-    nock(/localhost/)
+    nock(/example/)
       .post(/services/)
       .reply(500, {
         errors: ['HTTP Error']
@@ -330,22 +320,8 @@ describe('service', () => {
         'cmr-request-id': 'abcd-1234-efgh-5678'
       })
 
-    const queryCmrServicesMock = jest.spyOn(queryCmrServices, 'queryCmrServices')
-
-    const parseCmrServicesMock = jest.spyOn(parseCmrServices, 'parseCmrServices')
-
     await expect(
       serviceDatasource({ conceptId: 'S100000-EDSC' }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'service')
-    ).rejects.toThrow(ApolloError)
-
-
-    expect(queryCmrServicesMock).toBeCalledTimes(1)
-    expect(queryCmrServicesMock).toBeCalledWith(
-      { conceptId: 'S100000-EDSC' },
-      { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
-      expect.objectContaining({ jsonKeys: ['conceptId'] })
-    )
-
-    expect(parseCmrServicesMock).toBeCalledTimes(0)
+    ).rejects.toThrow(Error)
   })
 })

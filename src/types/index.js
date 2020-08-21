@@ -1,4 +1,4 @@
-import { mergeTypes } from 'merge-graphql-schemas'
+import { mergeTypeDefs } from '@graphql-tools/merge'
 
 import collection from './collection.graphql'
 import granule from './granule.graphql'
@@ -7,7 +7,7 @@ import service from './service.graphql'
 import tool from './tool.graphql'
 import variable from './variable.graphql'
 
-export default mergeTypes(
+export default mergeTypeDefs(
   [
     collection,
     granule,

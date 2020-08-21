@@ -35,8 +35,6 @@ describe('Collection', () => {
   beforeEach(() => {
     process.env = { ...OLD_ENV }
 
-    delete process.env.NODE_ENV
-
     process.env.cmrRootUrl = 'http://example.com'
   })
 
@@ -54,7 +52,7 @@ describe('Collection', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/granules\.json/, 'collection_concept_id=C100000-EDSC&page_size=20')
+        .post(/granules\.json/, 'page_size=20&collection_concept_id=C100000-EDSC')
         .reply(200, {
           feed: {
             entry: [{
@@ -87,7 +85,7 @@ describe('Collection', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/granules\.umm_json/, 'collection_concept_id=C100000-EDSC&page_size=20')
+        .post(/granules\.umm_json/, 'page_size=20&collection_concept_id=C100000-EDSC')
         .reply(200, {
           items: [{
             meta: {

@@ -58,6 +58,8 @@ type Granule {
 type GranuleList {
   "The number of hits for a given search."
   count: Int
+  "Cursor that points to the a specific position in a list of requested records"
+  cursor: String
   "The list of granule search results."
   items: [Granule]
 }
@@ -72,6 +74,8 @@ type Query {
     conceptId: [String],
     "The unique concept id assigned to the parent collection."
     collectionConceptId: String,
+    "Cursor that points to the a specific position in a list of requested records"
+    cursor: String
     "The number of granules requested by the user."
     limit: Int
     "Zero based offset of individual results"

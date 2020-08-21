@@ -1,6 +1,6 @@
 import { difference, isEmpty, upperFirst } from 'lodash'
 
-import { getConceptTypes } from './getConceptTypes'
+import { CONCEPT_TYPES } from '../constants'
 
 /**
  * Construct an object defining UMM key information
@@ -24,17 +24,24 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
     const {
       [`${upperFirst(conceptName.toLowerCase())}List`]: conceptListKeysRequested
     } = fieldsByTypeName
-    const { count, items = {} } = conceptListKeysRequested
+    const {
+      count,
+      cursor,
+      items = {}
+    } = conceptListKeysRequested
 
     fieldsByTypeName = items.fieldsByTypeName
 
-    // If the user requested `count` and no other fields, default the requested fields
+    // If the user requested `count` or `cursor` and no other fields, default the requested fields
     // to convince graph that it should still make a request
-    if (count && isEmpty(items)) {
+    if ((count || cursor) && isEmpty(items)) {
       requestedFields = ['conceptId']
     }
 
     // Track meta keys for analytics on how often they are requested
+    if (cursor) metaKeys.push(`${conceptName.toLowerCase()}Cursor`)
+
+    // If count was requested, append the specific concept for logging specificity
     if (count) metaKeys.push(`${conceptName.toLowerCase()}Count`)
   }
 
@@ -48,14 +55,11 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
     requestedFields = Object.keys(conceptKeysRequested)
   }
 
-  // Define all the objects a user can query against
-  const ummTypes = getConceptTypes()
-
   // Determine which of the requested fields are concept types
-  const conceptFields = requestedFields.filter((field) => ummTypes.indexOf(field) > -1)
+  const conceptFields = requestedFields.filter((field) => CONCEPT_TYPES.indexOf(field) > -1)
 
   // Determine which of the requested fields are not concept types
-  const nonConceptFields = requestedFields.filter((field) => ummTypes.indexOf(field) === -1)
+  const nonConceptFields = requestedFields.filter((field) => CONCEPT_TYPES.indexOf(field) === -1)
 
   // If the user has requested concept fields but no non-concept fields
   if (conceptFields.length > 0 && nonConceptFields.length === 0) {

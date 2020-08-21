@@ -8,6 +8,7 @@
   "ummKeyMappings": {
     "abstract": "umm.Abstract",
     "archiveAndDistributionInformation": "umm.ArchiveAndDistributionInformation",
+    "conceptId": "meta.concept-id",
     "dataCenters": "umm.DataCenters",
     "doi": "umm.DOI",
     "relatedUrls": "umm.RelatedUrls",

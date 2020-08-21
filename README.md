@@ -36,7 +36,7 @@ The local development environment for the static assets can be started by execut
 
     serverless offline
 
-This will run the application at [http://localhost:3003/api](http://localhost:3003/api)
+This will run the application at [http://localhost:3003/dev/api](http://localhost:3003/dev/api)
 
 ## Usage
 
@@ -61,7 +61,66 @@ Logging is key to debugging, and to ensure that we can provide the best support 
 
 #### Queries
 
-When querying for multiple items there are two high level parameters that can be provided, `count` and `items`. `count` will hold the value returned from the CMR header `CMR-Hits` for the respective concept type. `type` is where you will provide the columns you'd like returned from CMR.
+When querying for multiple items there are three high level parameters that can be provided, `count`, `cursor` and `items`. 
+
+##### Count
+
+`count` will hold the value returned from the CMR header `CMR-Hits` for the respective concept type providing the total number of results (ignoring the current page size). 
+
+##### Cursor
+
+`cursor` tells CMR that you'd like to initiate a scroll session with the intent of harvesting data. If you request this key without providing cursor as a search parameter GraphQL will ask CMR to start a new scroll session and return the value as a cursor in the response. To take advantage of the cursor you can then include it in subsequent queries until no data is returned. 
+
+###### First Request:
+
+    {
+      concept {
+        count
+        cursor
+        items {
+          conceptId
+        }
+      }
+    }
+    
+Which will return something similar to the following:
+
+    {
+      "data": {
+        "concept": {
+          "count": 2483,
+          "cursor": "eyJqc29uIjoiLTQ2OTA0MDY3NyJ9=",
+          "items": [
+            {
+              "conceptId": "C1000000001-EXAMPLE"
+            },
+            ...
+        }
+      }
+    }
+    
+###### Subsequent Requests
+
+    {
+      concept(cursor: "eyJqc29uIjoiLTQ2OTA0MDY3NyJ9=") {
+        count
+        cursor
+        items {
+          conceptId
+        }
+      }
+    }
+    
+A couple of things to keep in mind when using a cursor
+
+1. Subsequent queries will **not** accept new parameters, the search parameters provided in this initial query are used for *all* subsequent queries using the returned cursor value.
+2. Subsequent queries must be made **sequentially** (as of August 21, 2020) as the version of Elastic Search CMR uses does not support parallel queries using the same cursor value.
+    
+
+
+##### Items
+
+`items` is where you will provide the columns you'd like returned from CMR.
 
     {
       concept {
