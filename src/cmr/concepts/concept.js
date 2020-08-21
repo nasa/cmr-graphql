@@ -3,7 +3,8 @@ import snakeCaseKeys from 'snakecase-keys'
 
 import { snakeCase, get, pick } from 'lodash'
 
-import { getConceptTypes } from '../../utils/getConceptTypes'
+import { CONCEPT_TYPES } from '../../constants'
+
 import { queryCmr } from '../../utils/queryCmr'
 import { parseError } from '../../utils/parseError'
 
@@ -252,11 +253,8 @@ export default class Concept {
    * @param {String} format Format of the request (json, umm, meta)
    */
   logKeyRequest(keys, format) {
-    // Define all the objects a user can query against
-    const conceptTypes = getConceptTypes()
-
     // Prevent logging concept types, their meta keys are logged above
-    const filteredKeys = keys.filter((field) => conceptTypes.indexOf(field) === -1)
+    const filteredKeys = keys.filter((field) => CONCEPT_TYPES.indexOf(field) === -1)
 
     filteredKeys.forEach((key) => {
       console.log(`Request ${this.getRequestId()} to [concept: ${this.getConceptType()}] requested [format: ${format}, key: ${key}]`)
