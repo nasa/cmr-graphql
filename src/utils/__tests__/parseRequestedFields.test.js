@@ -253,7 +253,7 @@ describe('parseRequestedFields', () => {
         alias: 'tests',
         args: {},
         fieldsByTypeName: {
-          TestList: {
+          CollectionList: {
             cursor: {
               name: 'cursor',
               alias: 'cursor',
@@ -264,11 +264,11 @@ describe('parseRequestedFields', () => {
         }
       }
 
-      const requestedFields = parseRequestedFields(requestInfo, keyMap, 'test')
+      const requestedFields = parseRequestedFields(requestInfo, keyMap, 'collection')
 
       expect(requestedFields).toEqual({
         jsonKeys: ['conceptId'],
-        metaKeys: ['cursor'],
+        metaKeys: ['collectionCursor'],
         ummKeys: [],
         ummKeyMappings,
         isList: true

@@ -325,7 +325,7 @@ export default class Concept {
       umm: ummScrollId
     } = this.decodeCursor(cursor)
 
-    if (metaKeys.indexOf('cursor') > -1 && !cursor) {
+    if (metaKeys.some((key) => key.toLowerCase().includes('cursor')) && !cursor) {
       // eslint-disable-next-line no-param-reassign
       searchParams.scroll = true
     }

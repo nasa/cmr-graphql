@@ -80,9 +80,9 @@ describe('collection', () => {
                     args: {},
                     fieldsByTypeName: {}
                   },
-                  cursor: {
-                    name: 'cursor',
-                    alias: 'cursor',
+                  hasSpatialSubsetting: {
+                    name: 'hasSpatialSubsetting',
+                    alias: 'hasSpatialSubsetting',
                     args: {},
                     fieldsByTypeName: {}
                   },
@@ -112,7 +112,8 @@ describe('collection', () => {
         .reply(200, {
           feed: {
             entry: [{
-              id: 'C100000-EDSC'
+              id: 'C100000-EDSC',
+              has_spatial_subsetting: false
             }]
           }
         })
@@ -147,7 +148,8 @@ describe('collection', () => {
           conceptId: 'C100000-EDSC',
           doi: {
             doi: 'doi:10.4225/15/5747A30'
-          }
+          },
+          hasSpatialSubsetting: false
         }]
       })
     })
@@ -165,7 +167,8 @@ describe('collection', () => {
           .reply(200, {
             feed: {
               entry: [{
-                id: 'C100000-EDSC'
+                id: 'C100000-EDSC',
+                has_spatial_subsetting: false
               }]
             }
           })
@@ -200,7 +203,8 @@ describe('collection', () => {
             conceptId: 'C100000-EDSC',
             doi: {
               doi: 'doi:10.4225/15/5747A30'
-            }
+            },
+            hasSpatialSubsetting: false
           }]
         })
       })
