@@ -45,6 +45,144 @@ describe('Collection', () => {
   })
 
   describe('Query', () => {
+    test('all granule fields', async () => {
+      const { query } = createTestClient(server)
+
+      nock(/example/)
+        .defaultReplyHeaders({
+          'CMR-Hits': 1,
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .post(/granules\.json/, 'collection_concept_id=C100000-EDSC&page_size=20')
+        .reply(200, {
+          feed: {
+            entry: [{
+              boxes: [],
+              browse_flag: false,
+              cloud_cover: 25,
+              collection_concept_id: 'C100000-EDSC',
+              coordinate_system: 'CARTESIAN',
+              data_center: 'Tortor Lorem',
+              dataset_id: 'Condimentum Ullamcorper Malesuada Sollicitudin',
+              day_night_flag: 'BOTH',
+              granule_size: '525.0454',
+              id: 'G100000-EDSC',
+              links: [],
+              online_access_flag: true,
+              original_format: 'Elit',
+              points: [],
+              producer_granule_id: 'ornare-cursus-ultricies-nibh',
+              time_end: '2016-04-04T08:00:00.000Z',
+              time_start: '2016-04-04T17:00:00.000Z',
+              title: 'Condimentum Ullamcorper Malesuada Sollicitudin',
+              updated: '2016-04-04T20:00:00.000Z'
+            }]
+          }
+        })
+
+      nock(/example/)
+        .defaultReplyHeaders({
+          'CMR-Hits': 1,
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .post(/granules\.umm_json/, 'collection_concept_id=C100000-EDSC&page_size=20')
+        .reply(200, {
+          items: [{
+            meta: {
+              'concept-id': 'G100000-EDSC'
+            },
+            umm: {
+              CloudCover: 25,
+              DataGranule: {},
+              GranuleUR: 'parturient-etiam-malesuada',
+              MeasuredParameters: {},
+              OrbitCalculatedSpatialDomains: {},
+              ProviderDates: {},
+              RelatedUrls: [],
+              SpatialExtent: {},
+              TemporalExtent: {}
+            }
+          }]
+        })
+
+      const response = await query({
+        variables: {},
+        query: `{
+          granules(collectionConceptId: "C100000-EDSC") {
+            count
+            items {
+              boxes
+              browseFlag
+              cloudCover
+              collectionConceptId
+              conceptId
+              coordinateSystem
+              dataCenter
+              dataGranule
+              datasetId
+              dayNightFlag
+              granuleSize
+              granuleUr
+              links
+              measuredParameters
+              onlineAccessFlag
+              orbitCalculatedSpatialDomains
+              originalFormat
+              points
+              producerGranuleId
+              providerDates
+              relatedUrls
+              spatialExtent
+              temporalExtent
+              timeEnd
+              timeStart
+              title
+              updated
+            }
+          }
+        }`
+      })
+
+      const { data } = response
+
+      expect(data).toEqual({
+        granules: {
+          count: 1,
+          items: [{
+            boxes: [],
+            browseFlag: false,
+            collectionConceptId: 'C100000-EDSC',
+            cloudCover: 25,
+            conceptId: 'G100000-EDSC',
+            coordinateSystem: 'CARTESIAN',
+            dataCenter: 'Tortor Lorem',
+            dataGranule: {},
+            datasetId: 'Condimentum Ullamcorper Malesuada Sollicitudin',
+            dayNightFlag: 'BOTH',
+            granuleSize: '525.0454',
+            granuleUr: 'parturient-etiam-malesuada',
+            links: [],
+            measuredParameters: {},
+            onlineAccessFlag: true,
+            orbitCalculatedSpatialDomains: {},
+            originalFormat: 'Elit',
+            points: [],
+            producerGranuleId: 'ornare-cursus-ultricies-nibh',
+            providerDates: {},
+            relatedUrls: [],
+            spatialExtent: {},
+            temporalExtent: {},
+            timeEnd: '2016-04-04T08:00:00.000Z',
+            timeStart: '2016-04-04T17:00:00.000Z',
+            title: 'Condimentum Ullamcorper Malesuada Sollicitudin',
+            updated: '2016-04-04T20:00:00.000Z'
+          }]
+        }
+      })
+    })
+
     test('granules', async () => {
       const { query } = createTestClient(server)
 

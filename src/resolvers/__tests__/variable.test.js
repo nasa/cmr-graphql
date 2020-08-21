@@ -45,6 +45,86 @@ describe('Variable', () => {
   })
 
   describe('Query', () => {
+    test('all variable fields', async () => {
+      const { query } = createTestClient(server)
+
+      nock(/example/)
+        .defaultReplyHeaders({
+          'CMR-Hits': 1,
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .post(/variables\.umm_json/)
+        .reply(200, {
+          items: [{
+            meta: {
+              'concept-id': 'V100000-EDSC'
+            },
+            umm: {
+              Alias: 'Etiam',
+              DataType: 'Dolor Nullam Venenatis',
+              Definition: 'Cras mattis consectetur purus sit amet fermentum.',
+              Dimensions: {},
+              LongName: 'Vehicula Aenean Lorem',
+              MeasurementIdentifiers: [],
+              Name: 'Vehicula',
+              Offset: 1.234,
+              Scale: 1.234,
+              ScienceKeywords: [],
+              Units: 'K',
+              VariableType: 'Malesuada'
+            }
+          }]
+        })
+
+      const response = await query({
+        variables: {},
+        query: `{
+          variables {
+            count
+            items {
+              alias
+              conceptId
+              dataType
+              definition
+              dimensions
+              longName
+              measurementIdentifiers
+              name
+              offset
+              scale
+              scienceKeywords
+              units
+              variableType
+            }
+          }
+        }`
+      })
+
+      const { data } = response
+
+      expect(data).toEqual({
+        variables: {
+          count: 1,
+          items: [{
+            alias: 'Etiam',
+            conceptId: 'V100000-EDSC',
+            dataType: 'Dolor Nullam Venenatis',
+            definition: 'Cras mattis consectetur purus sit amet fermentum.',
+            dimensions: {},
+            longName: 'Vehicula Aenean Lorem',
+            measurementIdentifiers: [],
+            name: 'Vehicula',
+            offset: 1.234,
+            scale: 1.234,
+            scienceKeywords: [],
+            units: 'K',
+            variableType: 'Malesuada'
+          }]
+        }
+      })
+    })
+
     test('variables', async () => {
       const { query } = createTestClient(server)
 

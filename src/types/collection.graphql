@@ -1,10 +1,11 @@
 type Collection {
-  "A brief description of the collection or service the metadata represents."
+  "A brief description of the collection the metadata represents."
   abstract: String
   "Find collections matching 'archive_center' param value"
   archiveCenter: String
   "Allows a data provider to provide archive and distribution information up front to an end user, to help them decide if they can use the product."
   archiveAndDistributionInformation: JSON
+  "Spatial coverage of the collection"
   boxes: [String]
   "True if the metadata contains browse imagery"
   browseFlag: Boolean
@@ -47,7 +48,7 @@ type Collection {
   "Specifies the geographic and vertical (altitude, depth) coverage of the data."
   spatialExtent: JSON
   "The summary of intentions with which this collection was developed."
-  summary: String
+  summary: String @deprecated(reason: "Use `abstract`.")
   "Tags associated with the collection. It includes sub-elements of tagKey and optional data which is in embedded JSON."
   tags: JSON
   "This class contains attributes which describe the temporal range of a specific collection. Temporal Extent includes a specification of the Temporal Range Type of the collection, which is one of Range Date Time, Single Date Time, or Periodic Date Time"

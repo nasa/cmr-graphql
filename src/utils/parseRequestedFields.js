@@ -1,5 +1,7 @@
 import { difference, isEmpty, upperFirst } from 'lodash'
 
+import { getConceptTypes } from './getConceptTypes'
+
 /**
  * Construct an object defining UMM key information
  * @param {Array} requestedFields Fields requested
@@ -46,8 +48,19 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
     requestedFields = Object.keys(conceptKeysRequested)
   }
 
-  const ummTypes = ['collections', 'granules', 'services', 'tools', 'variables']
-  requestedFields = requestedFields.filter((field) => ummTypes.indexOf(field) === -1)
+  // Define all the objects a user can query against
+  const ummTypes = getConceptTypes()
+
+  // Determine which of the requested fields are concept types
+  const conceptFields = requestedFields.filter((field) => ummTypes.indexOf(field) > -1)
+
+  // Determine which of the requested fields are not concept types
+  const nonConceptFields = requestedFields.filter((field) => ummTypes.indexOf(field) === -1)
+
+  // If the user has requested concept fields but no non-concept fields
+  if (conceptFields.length > 0 && nonConceptFields.length === 0) {
+    requestedFields = conceptFields
+  }
 
   const { sharedKeys, ummKeyMappings } = keyMap
 

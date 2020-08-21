@@ -198,9 +198,9 @@ describe('collection', () => {
                     args: {},
                     fieldsByTypeName: {}
                   },
-                  abstract: {
-                    name: 'abstract',
-                    alias: 'abstract',
+                  doi: {
+                    name: 'doi',
+                    alias: 'doi',
                     args: {},
                     fieldsByTypeName: {}
                   },
@@ -241,7 +241,9 @@ describe('collection', () => {
               'concept-id': 'C100000-EDSC'
             },
             umm: {
-              Abstract: 'Lorem ipsum dolor sit amet, consectetur adipiscing'
+              DOI: {
+                DOI: 'doi:10.4225/15/5747A30'
+              }
             }
           }]
         }
@@ -257,7 +259,7 @@ describe('collection', () => {
         {
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         },
-        expect.objectContaining({ jsonKeys: ['conceptId', 'title'], ummKeys: ['abstract'] })
+        expect.objectContaining({ jsonKeys: ['conceptId', 'title'], ummKeys: ['doi'] })
       )
 
       expect(parseCmrCollectionsMock).toBeCalledTimes(2)
@@ -285,7 +287,9 @@ describe('collection', () => {
               'concept-id': 'C100000-EDSC'
             },
             umm: {
-              Abstract: 'Lorem ipsum dolor sit amet, consectetur adipiscing'
+              DOI: {
+                DOI: 'doi:10.4225/15/5747A30'
+              }
             }
           }]
         }
@@ -295,7 +299,9 @@ describe('collection', () => {
         count: 84,
         items: [{
           conceptId: 'C100000-EDSC',
-          abstract: 'Lorem ipsum dolor sit amet, consectetur adipiscing',
+          doi: {
+            doi: 'doi:10.4225/15/5747A30'
+          },
           title: 'Maecenas sed diam eget risus varius blandit sit amet non magna.'
         }]
       })
