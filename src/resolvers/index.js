@@ -1,4 +1,4 @@
-import { mergeResolvers } from 'merge-graphql-schemas'
+import { mergeResolvers } from '@graphql-tools/merge'
 
 import collectionResolver from './collection'
 import granuleResolver from './granule'

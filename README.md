@@ -36,7 +36,7 @@ The local development environment for the static assets can be started by execut
 
     serverless offline
 
-This will run the application at [http://localhost:3003/api](http://localhost:3003/api)
+This will run the application at [http://localhost:3003/dev/api](http://localhost:3003/dev/api)
 
 ## Usage
 
@@ -76,6 +76,7 @@ When querying for multiple items there are three high level parameters that can 
     {
       concept {
         count
+        cursor
         items {
           conceptId
         }
@@ -88,7 +89,7 @@ Which will return something similar to the following:
       "data": {
         "concept": {
           "count": 2483,
-          "cursor": "eyJqc29uIjoiLTQ2OTA0MDY3NyJ9",
+          "cursor": "eyJqc29uIjoiLTQ2OTA0MDY3NyJ9=",
           "items": [
             {
               "conceptId": "C1000000001-EXAMPLE"
@@ -101,13 +102,21 @@ Which will return something similar to the following:
 ###### Subsequent Requests
 
     {
-      concept(cursor: "eyJqc29uIjoiLTQ2OTA0MDY3NyJ9") {
+      concept(cursor: "eyJqc29uIjoiLTQ2OTA0MDY3NyJ9=") {
         count
+        cursor
         items {
           conceptId
         }
       }
     }
+    
+A couple of things to keep in mind when using a cursor
+
+1. Subsequent queries will **not** accept new parameters, the search parameters provided in this initial query are used for *all* subsequent queries using the returned cursor value.
+2. Subsequent queries must be made **sequentially** (as of August 21, 2020) as the version of Elastic Search CMR uses does not support parallel queries using the same cursor value.
+    
+
 
 ##### Items
 
