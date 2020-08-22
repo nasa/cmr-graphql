@@ -21,7 +21,7 @@ provider:
 
   vpc:
     securityGroupIds:
-      - Fn::ImportValue: ${self:provider.stage}-LambdaSecurityGroup
+      - Fn::ImportValue: ${self:provider.stage}-GraphQLLambdaSecurityGroup
     subnetIds:
       - ${env:SUBNET_ID_A}
       - ${env:SUBNET_ID_B}

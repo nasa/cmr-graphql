@@ -7,7 +7,7 @@ provider:
   stage: ${opt:stage, 'dev'}
   vpc:
     securityGroupIds:
-      - Ref: LambdaSecurityGroup
+      - Ref: GraphQLLambdaSecurityGroup
     subnetIds:
       - ${env:SUBNET_ID_A}
       - ${env:SUBNET_ID_B}
