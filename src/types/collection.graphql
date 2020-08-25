@@ -3,6 +3,8 @@ type Collection {
   abstract: String
   "Find collections matching 'archive_center' param value"
   archiveCenter: String
+  "Allows authors to provide words or phrases outside of the controlled Science Keyword vocabulary, to further describe the collection."
+  ancillaryKeywords: [String]
   "Allows a data provider to provide archive and distribution information up front to an end user, to help them decide if they can use the product."
   archiveAndDistributionInformation: JSON
   "Spatial coverage of the collection"
@@ -11,6 +13,10 @@ type Collection {
   browseFlag: Boolean
   "The unique concept id assigned to the collection."
   conceptId: String!
+  "Information required to properly cite the collection in professional scientific literature."
+  collectionCitations: JSON
+  "Information about the personnel responsible for this collection and its metadata"
+  contactPersons: JSON
   "Coordinate system of the metadata."
   coordinateSystem: String
   "Provider associated with the metadata"
@@ -33,12 +39,16 @@ type Collection {
   hasTransforms: Boolean
   "True if there are variables associated with the collection."
   hasVariables: Boolean
+  "Dates related to activities involving the metadata record itself."
+  metadataDates: JSON
   "True if the data is available online."
   onlineAccessFlag: Boolean
   "Organizations associated with the metadata, including data centers."
   organizations: [String]
   "Original metadata format."
   originalFormat: String
+  "Free text description of the quality of the collection data."
+  quality: String
   "Describes any data/service related URLs that include project home pages, services, related data archives/servers, metadata extensions, direct links to online software packages, web mapping services, links to images, or other data."
   relatedUrls: JSON
   "Controlled Science Keywords describing the collection.  The controlled vocabulary for Science Keywords is maintained in the Keyword Management System (KMS)."

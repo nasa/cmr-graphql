@@ -80,9 +80,9 @@ describe('collection', () => {
                     args: {},
                     fieldsByTypeName: {}
                   },
-                  hasSpatialSubsetting: {
-                    name: 'hasSpatialSubsetting',
-                    alias: 'hasSpatialSubsetting',
+                  onlineAccessFlag: {
+                    name: 'onlineAccessFlag',
+                    alias: 'onlineAccessFlag',
                     args: {},
                     fieldsByTypeName: {}
                   },
@@ -113,7 +113,7 @@ describe('collection', () => {
           feed: {
             entry: [{
               id: 'C100000-EDSC',
-              has_spatial_subsetting: false
+              online_access_flag: false
             }]
           }
         })
@@ -149,7 +149,7 @@ describe('collection', () => {
           doi: {
             doi: 'doi:10.4225/15/5747A30'
           },
-          hasSpatialSubsetting: false
+          onlineAccessFlag: false
         }]
       })
     })
@@ -168,7 +168,7 @@ describe('collection', () => {
             feed: {
               entry: [{
                 id: 'C100000-EDSC',
-                has_spatial_subsetting: false
+                online_access_flag: false
               }]
             }
           })
@@ -204,7 +204,7 @@ describe('collection', () => {
             doi: {
               doi: 'doi:10.4225/15/5747A30'
             },
-            hasSpatialSubsetting: false
+            onlineAccessFlag: false
           }]
         })
       })
@@ -316,9 +316,9 @@ describe('collection', () => {
                     args: {},
                     fieldsByTypeName: {}
                   },
-                  hasSpatialSubsetting: {
-                    name: 'hasSpatialSubsetting',
-                    alias: 'hasSpatialSubsetting',
+                  onlineAccessFlag: {
+                    name: 'onlineAccessFlag',
+                    alias: 'onlineAccessFlag',
                     args: {},
                     fieldsByTypeName: {}
                   }
@@ -342,7 +342,7 @@ describe('collection', () => {
           feed: {
             entry: [{
               id: 'C100000-EDSC',
-              has_spatial_subsetting: false
+              online_access_flag: false
             }]
           }
         })
@@ -377,7 +377,7 @@ describe('collection', () => {
           doi: {
             doi: 'doi:10.4225/15/5747A30'
           },
-          hasSpatialSubsetting: false
+          onlineAccessFlag: false
         }]
       })
     })
