@@ -47,6 +47,12 @@ type Collection {
   organizations: [String]
   "Original metadata format."
   originalFormat: String
+  "Spatial coverage of the collection"
+  lines: [String]
+  "Spatial coverage of the collection"
+  points: [String]
+  "Spatial coverage of the collection"
+  polygons: [String]
   "Free text description of the quality of the collection data."
   quality: String
   "Describes any data/service related URLs that include project home pages, services, related data archives/servers, metadata extensions, direct links to online software packages, web mapping services, links to images, or other data."

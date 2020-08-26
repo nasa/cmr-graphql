@@ -69,9 +69,12 @@ describe('Collection', () => {
               has_transforms: true,
               has_variables: true,
               id: 'C100000-EDSC',
+              lines: [],
               online_access_flag: true,
               organizations: [],
               original_format: 'RISUS',
+              points: [],
+              polygons: [],
               short_name: 'LOREM-QUAM',
               summary: 'Cras mattis consectetur purus sit amet fermentum.',
               tags: {},
@@ -141,10 +144,13 @@ describe('Collection', () => {
               hasTemporalSubsetting
               hasTransforms
               hasVariables
+              lines
               metadataDates
               onlineAccessFlag
               organizations
               originalFormat
+              points
+              polygons
               quality
               relatedUrls
               scienceKeywords
@@ -187,10 +193,13 @@ describe('Collection', () => {
             hasTemporalSubsetting: true,
             hasTransforms: true,
             hasVariables: true,
+            lines: [],
             metadataDates: [],
             onlineAccessFlag: true,
             organizations: [],
             originalFormat: 'RISUS',
+            points: [],
+            polygons: [],
             quality: 'Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.',
             relatedUrls: [],
             scienceKeywords: [],
