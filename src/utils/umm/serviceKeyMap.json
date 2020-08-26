@@ -5,14 +5,19 @@
     "name"
   ],
   "ummKeyMappings": {
+    "ancillaryKeywords": "umm.AncillaryKeywords",
     "conceptId": "meta.concept-id",
+    "contactGroups": "umm.ContactGroups",
+    "contactPersons": "umm.ContactPersons",
     "description": "umm.Description",
     "longName": "umm.LongName",
     "name": "umm.Name",
     "relatedUrls": "umm.RelatedURLs",
+    "serviceKeywords": "umm.ServiceKeywords",
     "serviceOptions": "umm.ServiceOptions",
-    "supportedInputFormats": "umm.ServiceOptions.SupportedInputFormats",
-    "supportedOutputFormats": "umm.ServiceOptions.SupportedOutputFormats",
+    "serviceOrganizations": "umm.ServiceOrganizations",
+    "supportedInputProjections": "umm.ServiceOptions.SupportedInputProjections",
+    "supportedOutputProjections": "umm.ServiceOptions.SupportedOutputProjections",
     "supportedReformattings": "umm.ServiceOptions.SupportedReformattings",
     "type": "umm.Type",
     "url": "umm.URL"

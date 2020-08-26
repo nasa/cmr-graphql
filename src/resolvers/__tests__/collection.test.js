@@ -69,9 +69,12 @@ describe('Collection', () => {
               has_transforms: true,
               has_variables: true,
               id: 'C100000-EDSC',
+              lines: [],
               online_access_flag: true,
               organizations: [],
               original_format: 'RISUS',
+              points: [],
+              polygons: [],
               short_name: 'LOREM-QUAM',
               summary: 'Cras mattis consectetur purus sit amet fermentum.',
               tags: {},
@@ -97,9 +100,14 @@ describe('Collection', () => {
             },
             umm: {
               Abstract: 'Cras mattis consectetur purus sit amet fermentum.',
+              AncillaryKeywords: [],
               ArchiveAndDistributionInformation: {},
+              CollectionCitations: [],
+              ContactPersons: [],
               DataCenters: [],
               DOI: {},
+              MetadataDates: [],
+              Quality: 'Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.',
               RelatedUrls: [],
               ScienceKeywords: [],
               SpatialExtent: {},
@@ -117,33 +125,41 @@ describe('Collection', () => {
             count
             items {
               abstract
-              archiveCenter
+              ancillaryKeywords
               archiveAndDistributionInformation
+              archiveCenter
               boxes
               browseFlag
+              collectionCitations
               conceptId
+              contactPersons
               coordinateSystem
               dataCenter
               dataCenters
-              doi
               datasetId
+              doi
               hasFormats
               hasGranules
               hasSpatialSubsetting
               hasTemporalSubsetting
               hasTransforms
               hasVariables
+              lines
+              metadataDates
               onlineAccessFlag
               organizations
               originalFormat
+              points
+              polygons
+              quality
               relatedUrls
               scienceKeywords
               shortName
               spatialExtent
               tags
               temporalExtents
-              timeStart
               timeEnd
+              timeStart
               title
               versionId
             }
@@ -158,11 +174,14 @@ describe('Collection', () => {
           count: 1,
           items: [{
             abstract: 'Cras mattis consectetur purus sit amet fermentum.',
+            ancillaryKeywords: [],
             archiveAndDistributionInformation: {},
             archiveCenter: 'CONDIMENTUM/TELLUS/PHARETRA',
             boxes: [],
             browseFlag: true,
+            collectionCitations: [],
             conceptId: 'C100000-EDSC',
+            contactPersons: [],
             coordinateSystem: 'CARTESIAN',
             dataCenter: 'PORTA',
             dataCenters: [],
@@ -174,9 +193,14 @@ describe('Collection', () => {
             hasTemporalSubsetting: true,
             hasTransforms: true,
             hasVariables: true,
+            lines: [],
+            metadataDates: [],
             onlineAccessFlag: true,
             organizations: [],
             originalFormat: 'RISUS',
+            points: [],
+            polygons: [],
+            quality: 'Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.',
             relatedUrls: [],
             scienceKeywords: [],
             shortName: 'LOREM-QUAM',
