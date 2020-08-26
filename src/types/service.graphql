@@ -1,6 +1,12 @@
 type Service {
+  "Words or phrases to further describe the service."
+  ancillaryKeywords: [String]
   "The unique concept id assigned to the service."
   conceptId: String!
+  "This is the contact groups of the service."
+  contactGroups: JSON
+  "This is the contact persons of the service."
+  contactPersons: JSON
   "A brief description of the service."
   description: String
   "The long name of the service, software, or tool."
@@ -9,12 +15,16 @@ type Service {
   name: String
   "This element contains important information about the universal resource locator (URL) for the service."
   relatedUrls: JSON
+  "Allows for the specification of Earth Science Service keywords that are representative of the service."
+  serviceKeywords: JSON
   "Service options, data transformations and output formats."
   serviceOptions: JSON
-  "List of input format names supported by the service."
-  supportedInputFormats: JSON
-  "List of output format names supported by the service."
-  supportedOutputFormats: JSON
+  "The service provider, or organization, or institution responsible for developing, archiving, and/or distributing the service."
+  serviceOrganizations: JSON
+  "List of input projection names supported by the service."
+  supportedInputProjections: JSON
+  "List of output projection names supported by the service."
+  supportedOutputProjections: JSON
   "List of format name combinations which explicitly state which re-formatting options are available."
   supportedReformattings: JSON
   "The type of the service, software, or tool."

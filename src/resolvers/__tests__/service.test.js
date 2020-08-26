@@ -64,9 +64,10 @@ describe('Service', () => {
               Name: 'Parturient',
               RelatedURLs: [],
               ServiceOptions: {
-                SupportedInputFormats: {},
-                SupportedOutputFormats: {},
-                SupportedReformattings: {}
+                SupportedReformattings: [{
+                  SupportedInputFormats: '',
+                  SupportedOutputFormats: []
+                }]
               },
               Type: 'Tristique',
               URL: {}
@@ -86,8 +87,6 @@ describe('Service', () => {
               name
               relatedUrls
               serviceOptions
-              supportedInputFormats
-              supportedOutputFormats
               supportedReformattings
               type
               url
@@ -108,13 +107,15 @@ describe('Service', () => {
             name: 'Parturient',
             relatedUrls: [],
             serviceOptions: {
-              supportedInputFormats: {},
-              supportedOutputFormats: {},
-              supportedReformattings: {}
+              supportedReformattings: [{
+                supportedInputFormats: '',
+                supportedOutputFormats: []
+              }]
             },
-            supportedInputFormats: {},
-            supportedOutputFormats: {},
-            supportedReformattings: {},
+            supportedReformattings: [{
+              supportedInputFormats: '',
+              supportedOutputFormats: []
+            }],
             type: 'Tristique',
             url: {}
           }]

@@ -15,7 +15,7 @@ provider:
     # Pinned UMM versions
     ummCollectionVersion: '1.13'
     ummGranuleVersion: '1.5'
-    ummServiceVersion: '1.3.3'
+    ummServiceVersion: '1.3.4'
     ummToolVersion: '1.0'
     ummVariableVersion: '1.5'
 
