@@ -6,8 +6,10 @@ provider:
   region: us-east-1
   stage: ${opt:stage, 'dev'}
   endpointType: PRIVATE
+  memorySize: 512
+
   environment:
-    cmrRootUrl: ${env:CMR_ROOT_URL}
+    cmrRootUrl: ${self:custom.variables.cmrRootUrl}
 
     # Timeout for lambda 
     lambdaTimeout: ${env:LAMBDA_TIMEOUT}
@@ -131,9 +133,14 @@ resources:
 custom:
   siteName: graphql-${self:provider.stage}
 
+  variables:
+    # Default values for environment variables used to set environment variables
+    cmrRootUrl: ${env:CMR_ROOT_URL, 'http://cmr.earthdata.nasa.gov'}
+
   # Default is 3000 so to avoid conflicts with other applications we'll define a new port
   serverless-offline:
     httpPort: 3003
+    lambdaPort: 3004
 
   # Serverless Webpack configurations
   webpack:
