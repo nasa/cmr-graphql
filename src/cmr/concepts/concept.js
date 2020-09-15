@@ -207,7 +207,7 @@ export default class Concept {
   }
 
   /**
-   * Retrieve
+   * Retrieve the request id header from the request
    * @param {Object} headers The provided headers from the query
    */
   getRequestId() {
