@@ -59,7 +59,6 @@ describe('Variable', () => {
               'concept-id': 'V100000-EDSC'
             },
             umm: {
-              Alias: 'Etiam',
               DataType: 'Dolor Nullam Venenatis',
               Definition: 'Cras mattis consectetur purus sit amet fermentum.',
               Dimensions: {},
@@ -81,7 +80,6 @@ describe('Variable', () => {
           variables {
             count
             items {
-              alias
               conceptId
               dataType
               definition
@@ -105,7 +103,6 @@ describe('Variable', () => {
         variables: {
           count: 1,
           items: [{
-            alias: 'Etiam',
             conceptId: 'V100000-EDSC',
             dataType: 'Dolor Nullam Venenatis',
             definition: 'Cras mattis consectetur purus sit amet fermentum.',
