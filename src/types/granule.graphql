@@ -19,8 +19,8 @@ type Granule {
   datasetId: String
   "The day/night flag of the granule"
   dayNightFlag: String
-  "The file size of the granule contents"
-  granuleSize: String
+  "The file size of the granule contents in bytes"
+  granuleSize: Float
   "The Universal Reference ID of the granule referred by the data provider. This ID is unique per data provider."
   granuleUr: String
   "A list of any URLs in the granule"
@@ -35,6 +35,8 @@ type Granule {
   originalFormat: String
   "A list of associated lat/lon points"
   points: [String]
+  "Spatial coverage of the collection"
+  polygons: [String]
   "Granule ID provided by the producer"
   producerGranuleId: String
   "Dates related to activities involving the the granule and the data provider database with the exception for Delete. For Create, Update, and Insert the date is the date that the granule file is created, updated, or inserted into the provider database by the provider. Delete is the date that the CMR should delete the granule metadata record from its repository."

@@ -80,7 +80,7 @@ type Collection {
   "Provider defined version id of the collection"
   versionId: String
   
-  granules(
+  granules (
     "The unique concept id assigned to the granule."
     conceptId: String
     "The unique concept id assigned to the parent collection."
@@ -99,27 +99,27 @@ type Collection {
     polygon: String
     "The temporal datetime has to be in yyyy-MM-ddTHH:mm:ssZ format."
     temporal: String
-  ): GranuleList!
+  ): GranuleList
 
-  services(
+  services (
     "The unique concept id assigned to the service."
     conceptId: [String]
     "The number of services requested by the user"
     limit: Int
     "Zero based offset of individual results"
     offset: Int
-  ): ServiceList!
+  ): ServiceList
 
-  tools(
+  tools (
     "The unique concept id assigned to the tool."
     conceptId: [String]
     "The number of tools requested by the user"
     limit: Int
     "Zero based offset of individual results"
     offset: Int
-  ): ToolList!
+  ): ToolList
 
-  variables(
+  variables (
     "The unique concept id assigned to the variable."
     conceptId: [String]
     "The number of variables requested by the user"
@@ -128,7 +128,7 @@ type Collection {
     offset: Int
     "The name of a variable."
     name: String
-  ): VariableList!
+  ): VariableList
 }
 
 type CollectionList {

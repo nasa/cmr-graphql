@@ -10,10 +10,13 @@ import { CONCEPT_TYPES } from '../constants'
  */
 export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
   let { fieldsByTypeName } = parsedInfo
+
   const { name } = parsedInfo
 
   let isList = false
+
   const metaKeys = []
+
   let requestedFields = []
 
   // Name will match the query, if the query is plural we have a slightly different
@@ -64,6 +67,15 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
   // If the user has requested concept fields but no non-concept fields
   if (conceptFields.length > 0 && nonConceptFields.length === 0) {
     requestedFields = conceptFields
+  }
+
+  if (name === 'collections') {
+    // If a user has requested granules, from within a collection request the resolver
+    // will pull the conceptId and provide it to the granules request but if a user
+    // doesn't explicity ask for the collection concept id we need to request it
+    if (requestedFields.includes('granules') && !requestedFields.includes('conceptId')) {
+      requestedFields.push('conceptId')
+    }
   }
 
   const { sharedKeys, ummKeyMappings } = keyMap
