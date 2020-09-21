@@ -55,13 +55,15 @@ describe('parseError', () => {
           const consoleMock = jest.spyOn(console, 'log')
 
           const response = parseError({
-            error: {
-              errors: [
-                '400 Bad Request'
-              ]
+            response: {
+              data: {
+                errors: [
+                  '400 Bad Request'
+                ]
+              },
+              status: 400
             },
-            name: 'HTTP Error',
-            statusCode: 400
+            name: 'HTTP Error'
           })
 
           expect(consoleMock).toBeCalledTimes(1)
@@ -83,12 +85,14 @@ describe('parseError', () => {
             const consoleMock = jest.spyOn(console, 'log')
 
             const response = parseError({
-              error: {
-                errors: [
-                  '400 Bad Request'
-                ]
-              },
-              statusCode: 400
+              response: {
+                data: {
+                  errors: [
+                    '400 Bad Request'
+                  ]
+                },
+                status: 400
+              }
             })
 
             expect(consoleMock).toBeCalledTimes(1)
@@ -111,11 +115,13 @@ describe('parseError', () => {
             const consoleMock = jest.spyOn(console, 'log')
 
             const response = parseError({
-              error: {
-                nonErrorsKey: 'will be ignored'
+              response: {
+                data: {
+                  nonErrorsKey: 'will be ignored'
+                },
+                status: 400
               },
-              name: 'HTTP Error',
-              statusCode: 400
+              name: 'HTTP Error'
             })
 
             expect(consoleMock).toBeCalledTimes(1)
@@ -139,13 +145,15 @@ describe('parseError', () => {
           const consoleMock = jest.spyOn(console, 'log')
 
           const response = parseError({
-            error: {
-              errors: [
-                '400 Bad Request'
-              ]
+            response: {
+              data: {
+                errors: [
+                  '400 Bad Request'
+                ]
+              },
+              status: 400
             },
-            name: 'HTTP Error',
-            statusCode: 400
+            name: 'HTTP Error'
           }, {
             asJSON: false
           })
@@ -164,13 +172,15 @@ describe('parseError', () => {
           const consoleMock = jest.spyOn(console, 'log')
 
           expect(() => parseError({
-            error: {
-              errors: [
-                '400 Bad Request'
-              ]
+            response: {
+              data: {
+                errors: [
+                  '400 Bad Request'
+                ]
+              },
+              status: 400
             },
-            name: 'HTTP Error',
-            statusCode: 400
+            name: 'HTTP Error'
           }, {
             reThrowError: true
           })).toThrow()
@@ -187,13 +197,15 @@ describe('parseError', () => {
           const consoleMock = jest.spyOn(console, 'log')
 
           const response = parseError({
-            error: {
-              errors: [
-                '400 Bad Request'
-              ]
+            response: {
+              data: {
+                errors: [
+                  '400 Bad Request'
+                ]
+              },
+              status: 400
             },
-            name: 'HTTP Error',
-            statusCode: 400
+            name: 'HTTP Error'
           }, {
             asJSON: false,
             shouldLog: false
@@ -212,13 +224,15 @@ describe('parseError', () => {
           const consoleMock = jest.spyOn(console, 'log')
 
           expect(() => parseError({
-            error: {
-              errors: [
-                '400 Bad Request'
-              ]
+            response: {
+              data: {
+                errors: [
+                  '400 Bad Request'
+                ]
+              },
+              status: 400
             },
-            name: 'HTTP Error',
-            statusCode: 400
+            name: 'HTTP Error'
           }, {
             reThrowError: true,
             shouldLog: false

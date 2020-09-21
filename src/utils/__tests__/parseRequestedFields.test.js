@@ -237,7 +237,7 @@ describe('parseRequestedFields', () => {
       const requestedFields = parseRequestedFields(requestInfo, keyMap, 'collection')
 
       expect(requestedFields).toEqual({
-        jsonKeys: ['granules'],
+        jsonKeys: ['granules', 'conceptId'],
         metaKeys: ['collectionCount'],
         ummKeys: [],
         ummKeyMappings,

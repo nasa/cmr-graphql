@@ -21,6 +21,7 @@ export default class Collection extends Concept {
     // Associations are used by services and variables, its required to correctly
     // retrieve those objects and shouldn't need to be provided by the client
     const { associations } = item
+
     if (associations) {
       this.setItemValue(id, 'associations', associations)
     }
@@ -61,8 +62,10 @@ export default class Collection extends Concept {
       'point',
       'polygon',
       'provider',
+      'service_concept_id',
       'short_name',
-      'temporal'
+      'temporal',
+      'variable_concept_id'
     ]
   }
 
@@ -81,8 +84,10 @@ export default class Collection extends Concept {
       'point',
       'polygon',
       'provider',
+      'service_concept_id',
       'short_name',
-      'temporal'
+      'temporal',
+      'variable_concept_id'
     ]
   }
 

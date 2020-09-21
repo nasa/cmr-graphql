@@ -1,3 +1,5 @@
+import { ApolloError } from 'apollo-server-lambda'
+
 /**
  * Parse and return a lambda friendly response to errors
  * @param {Object} errorObj The error object that was thrown
@@ -9,24 +11,29 @@ export const parseError = (errorObj, {
   reThrowError = false
 } = {}) => {
   const {
-    error,
     name = 'Error',
-    statusCode = 500
+    response
   } = errorObj
 
   let errorArray = []
+  let statusCode = 500
 
-  if (error) {
-    const { errors = ['Unknown Error'] } = error
+  if (response) {
+    const {
+      data,
+      status
+    } = response
+
+    statusCode = status;
+
+    ({ errors: errorArray = ['Unknown Error'] } = data)
 
     if (shouldLog) {
       // Log each error provided
-      errors.forEach((message) => {
+      errorArray.forEach((message) => {
         console.log(`${name} (${statusCode}): ${message}`)
       })
     }
-
-    errorArray = errors
   } else {
     if (shouldLog) {
       console.log(errorObj.toString())
@@ -37,7 +44,7 @@ export const parseError = (errorObj, {
 
   // If the error needs to be thrown again, do so before returning
   if (reThrowError) {
-    throw errorObj
+    throw new ApolloError(errorArray, 'CMR_ERROR')
   }
 
   if (asJSON) {
