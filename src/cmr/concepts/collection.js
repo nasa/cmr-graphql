@@ -62,6 +62,7 @@ export default class Collection extends Concept {
       'point',
       'polygon',
       'provider',
+      'service_concept_id',
       'short_name',
       'temporal',
       'variable_concept_id'
@@ -83,6 +84,7 @@ export default class Collection extends Concept {
       'point',
       'polygon',
       'provider',
+      'service_concept_id',
       'short_name',
       'temporal',
       'variable_concept_id'

@@ -31,6 +31,15 @@ type Service {
   type: String
   "Represents the Internet site where you can directly access the back-end service"
   url: JSON
+
+  collections (
+    "The unique concept id assigned to the service."
+    conceptId: [String]
+    "The number of services requested by the user"
+    limit: Int
+    "Zero based offset of individual results"
+    offset: Int
+  ): CollectionList
 }
 
 type ServiceList {
