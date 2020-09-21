@@ -14,5 +14,21 @@ export default {
 
       return firstResult
     }
+  },
+
+  Variable: {
+    collections: async (source, args, { dataSources, headers }, info) => {
+      // Pull out parent collection id to provide to the granules endpoint because cmr requires it
+      const {
+        conceptId
+      } = source
+
+      const requestedParams = handlePagingParams({
+        variableConceptId: conceptId,
+        ...args
+      })
+
+      return dataSources.collectionSource(requestedParams, headers, parseResolveInfo(info))
+    }
   }
 }

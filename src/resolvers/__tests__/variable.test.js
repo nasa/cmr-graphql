@@ -237,4 +237,98 @@ describe('Variable', () => {
       })
     })
   })
+
+  describe('Variable', () => {
+    test('collections', async () => {
+      const { query } = createTestClient(server)
+
+      nock(/example/)
+        .defaultReplyHeaders({
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .post(/variables\.json/)
+        .reply(200, {
+          items: [{
+            concept_id: 'V100000-EDSC'
+          }, {
+            concept_id: 'V100001-EDSC'
+          }]
+        })
+
+      nock(/example/)
+        .defaultReplyHeaders({
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .post(/collections\.json/, 'page_size=20&variable_concept_id=V100000-EDSC')
+        .reply(200, {
+          feed: {
+            entry: [{
+              id: 'C100000-EDSC'
+            }, {
+              id: 'C100001-EDSC'
+            }]
+          }
+        })
+
+      nock(/example/)
+        .defaultReplyHeaders({
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .post(/collections\.json/, 'page_size=20&variable_concept_id=V100001-EDSC')
+        .reply(200, {
+          feed: {
+            entry: [{
+              id: 'C100002-EDSC'
+            }, {
+              id: 'C100003-EDSC'
+            }]
+          }
+        })
+
+      const response = await query({
+        variables: {},
+        query: `{
+          variables {
+            items {
+              conceptId
+              collections {
+                items {
+                  conceptId
+                }
+              }
+            }
+          }
+        }`
+      })
+
+      const { data } = response
+
+      expect(data).toEqual({
+        variables: {
+          items: [{
+            conceptId: 'V100000-EDSC',
+            collections: {
+              items: [{
+                conceptId: 'C100000-EDSC'
+              }, {
+                conceptId: 'C100001-EDSC'
+              }]
+            }
+          }, {
+            conceptId: 'V100001-EDSC',
+            collections: {
+              items: [{
+                conceptId: 'C100002-EDSC'
+              }, {
+                conceptId: 'C100003-EDSC'
+              }]
+            }
+          }]
+        }
+      })
+    })
+  })
 })

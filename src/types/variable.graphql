@@ -27,6 +27,15 @@ type Variable {
   units: String
   "This element is used to classify the variable as a Science Variable, Quality Variable or Ancillary Variable. If a variable does not contain this field, it will be assumed to be a science variable"
   variableType: String
+
+  collections (
+    "The unique concept id assigned to the service."
+    conceptId: [String]
+    "The number of services requested by the user"
+    limit: Int
+    "Zero based offset of individual results"
+    offset: Int
+  ): CollectionList
 }
 
 type VariableList {
