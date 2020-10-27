@@ -25,11 +25,20 @@ export const queryCmr = (conceptType, params, headers, options = {}) => {
     ...headers
   }, [
     'Accept',
+    'Authorization',
     'Client-Id',
     'CMR-Request-Id',
     'CMR-Scroll-Id',
     'Echo-Token'
   ])
+
+  // If both authentication headers are provided favor Authorization
+  if (
+    Object.keys(permittedHeaders).includes('Authorization')
+    && Object.keys(permittedHeaders).includes('Echo-Token')
+  ) {
+    delete permittedHeaders['Echo-Token']
+  }
 
   const cmrParameters = stringify(
     snakeCaseKeys(params), { indices: false, arrayFormat: 'brackets' }
