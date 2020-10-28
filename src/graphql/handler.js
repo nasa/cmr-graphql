@@ -21,8 +21,9 @@ const server = new ApolloServer({
     const { headers } = event
 
     const {
+      Authorization: bearerToken,
       'Client-Id': clientId,
-      'Echo-Token': token,
+      'Echo-Token': echoToken,
       'X-Request-Id': requestId
     } = headers
 
@@ -30,11 +31,14 @@ const server = new ApolloServer({
       'CMR-Request-Id': requestId || uuidv4()
     }
 
+    // If the client has provided an EDL token supply it to CMR
+    if (bearerToken) requestHeaders.Authorization = bearerToken
+
     // If the client has identified themselves using Client-Id supply it to CMR
     if (clientId) requestHeaders['Client-Id'] = clientId
 
     // If the client has provided an EDL token supply it to CMR
-    if (token) requestHeaders['Echo-Token'] = token
+    if (echoToken) requestHeaders['Echo-Token'] = echoToken
 
     // add the user to the context
     return {
