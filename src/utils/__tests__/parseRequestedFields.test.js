@@ -237,7 +237,7 @@ describe('parseRequestedFields', () => {
       const requestedFields = parseRequestedFields(requestInfo, keyMap, 'collection')
 
       expect(requestedFields).toEqual({
-        jsonKeys: ['granules', 'conceptId'],
+        jsonKeys: ['conceptId', 'granules'],
         metaKeys: ['collectionCount'],
         ummKeys: [],
         ummKeyMappings,
@@ -269,6 +269,60 @@ describe('parseRequestedFields', () => {
       expect(requestedFields).toEqual({
         jsonKeys: ['conceptId'],
         metaKeys: ['collectionCursor'],
+        ummKeys: [],
+        ummKeyMappings,
+        isList: true
+      })
+    })
+  })
+
+  describe('when granules are requested from within a collection without conceptId', () => {
+    test('requestedFields includes conceptId', () => {
+      const requestInfo = {
+        name: 'collections',
+        alias: 'collections',
+        args: {},
+        fieldsByTypeName: {
+          CollectionList: {
+            items: {
+              name: 'items',
+              alias: 'items',
+              args: {},
+              fieldsByTypeName: {
+                Collection: {
+                  title: {
+                    name: 'title',
+                    alias: 'title',
+                    args: {},
+                    fieldsByTypeName: {}
+                  },
+                  granules: {
+                    name: 'granules',
+                    alias: 'granules',
+                    args: {},
+                    fieldsByTypeName: {
+                      GranuleList: {
+                        count: {
+                          name: 'count',
+                          alias: 'count',
+                          args: {},
+                          fieldsByTypeName: {}
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      const requestedFields = parseRequestedFields(requestInfo, keyMap, 'collection')
+
+      expect(requestedFields).toEqual({
+        jsonKeys: ['title', 'granules', 'conceptId'],
+        metaKeys: [],
         ummKeys: [],
         ummKeyMappings,
         isList: true

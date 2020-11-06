@@ -64,9 +64,12 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
   // Determine which of the requested fields are not concept types
   const nonConceptFields = requestedFields.filter((field) => CONCEPT_TYPES.indexOf(field) === -1)
 
-  // If the user has requested concept fields but no non-concept fields
+  // If the requested fields only include concepts append conceptId to ensure a request is made
   if (conceptFields.length > 0 && nonConceptFields.length === 0) {
-    requestedFields = conceptFields
+    requestedFields = [
+      'conceptId',
+      ...conceptFields
+    ]
   }
 
   if (name === 'collections') {
