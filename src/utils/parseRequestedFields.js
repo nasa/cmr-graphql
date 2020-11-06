@@ -56,6 +56,11 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
     } = fieldsByTypeName
 
     requestedFields = Object.keys(conceptKeysRequested)
+
+    // If the requested fields only include concepts append conceptId to ensure a request is made
+    if (requestedFields.every((field) => CONCEPT_TYPES.includes(field))) {
+      requestedFields.push('conceptId')
+    }
   }
 
   // Determine which of the requested fields are concept types
