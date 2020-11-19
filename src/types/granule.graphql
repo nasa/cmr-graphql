@@ -67,13 +67,13 @@ type GranuleList {
 }
 
 type Query {
-  granules(
+  granules (
     "Bounding boxes define an area on the earth aligned with longitude and latitude. The Bounding box parameters must be 4 comma-separated numbers: lower left longitude, lower left latitude, upper right longitude, upper right latitude."
     boundingBox: String
     "Circle defines a circle area on the earth with a center point and a radius. The center parameters must be 3 comma-separated numbers: longitude of the center point, latitude of the center point, radius of the circle in meters. The circle center cannot be on North or South pole. The radius of the circle must be between 10 and 6,000,000."
     circle: String
     "The unique concept id assigned to the granule."
-    conceptId: [String],
+    conceptId: [String]
     "The unique concept id assigned to the parent collection."
     collectionConceptId: String,
     "Cursor that points to the a specific position in a list of requested records"
@@ -89,7 +89,8 @@ type Query {
     "The temporal datetime has to be in yyyy-MM-ddTHH:mm:ssZ format."
     temporal: String
   ): GranuleList!
-  granule(
+
+  granule (
     "The unique concept id assigned to the granule."
     conceptId: String!
   ): Granule

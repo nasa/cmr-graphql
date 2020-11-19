@@ -61,9 +61,9 @@ type ToolList {
 }
 
 type Query {
-  tools(
+  tools (
     "The unique concept id assigned to the tool."
-    conceptId: [String],
+    conceptId: [String]
     "Cursor that points to the a specific position in a list of requested records"
     cursor: String
     "The number of servies requested by the user"
@@ -71,7 +71,8 @@ type Query {
     "Zero based offset of individual results"
     offset: Int
   ): ToolList!
-  tool(
+
+  tool (
     "The unique concept id assigned to the tool."
     conceptId: String!
   ): Tool

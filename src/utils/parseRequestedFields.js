@@ -81,6 +81,15 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
     }
   }
 
+  if (name === 'subscriptions') {
+    // If a user has requested collection, from within a subscriptions request the resolver
+    // will pull the collectionConceptId and provide it to the subscriptions request but if a user
+    // doesn't explicity ask for the collection concept id we need to request it
+    if (requestedFields.includes('collection') && !requestedFields.includes('collectionConceptId')) {
+      requestedFields.push('collectionConceptId')
+    }
+  }
+
   const { sharedKeys, ummKeyMappings } = keyMap
 
   // Gather keys that the user requested that only exist in umm

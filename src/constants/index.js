@@ -5,6 +5,7 @@ export const CONCEPT_TYPES = [
   'collections',
   'granules',
   'services',
+  'subscriptions',
   'tools',
   'variables'
 ]

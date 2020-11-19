@@ -1,0 +1,16 @@
+{
+  "sharedKeys": [
+    "collectionConceptId",
+    "conceptId",
+    "name",
+    "subscriberId"
+  ],
+  "ummKeyMappings": {
+    "collectionConceptId": "umm.CollectionConceptId",
+    "conceptId": "meta.concept-id",
+    "emailAddress": "umm.EmailAddress",
+    "name": "umm.Name",
+    "query": "umm.Query",
+    "subscriberId": "umm.SubscriberId"
+  }
+}

@@ -1,12 +1,16 @@
 module.exports = {
   collectCoverage: true,
   coveragePathIgnorePatterns: [
-    'package.json',
+    'handler.js',
     'package-lock.json',
+    'package.json',
     'types'
   ],
   setupFiles: [
     '<rootDir>/test-env.js'
+  ],
+  collectCoverageFrom: [
+    'src/**/*.js'
   ],
 
   // https://github.com/axios/axios/issues/1180#issuecomment-375093333
