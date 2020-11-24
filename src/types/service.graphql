@@ -35,7 +35,7 @@ type Service {
   collections (
     "The unique concept id assigned to the service."
     conceptId: [String]
-    "The number of services requested by the user"
+    "The number of collections requested by the user"
     limit: Int
     "Zero based offset of individual results"
     offset: Int
@@ -52,9 +52,9 @@ type ServiceList {
 }
 
 type Query {
-  services(
+  services (
     "The unique concept id assigned to the service."
-    conceptId: [String],
+    conceptId: [String]
     "Cursor that points to the a specific position in a list of requested records"
     cursor: String
     "The number of servies requested by the user"
@@ -62,7 +62,8 @@ type Query {
     "Zero based offset of individual results"
     offset: Int
   ): ServiceList!
-  service(
+
+  service (
     "The unique concept id assigned to the service."
     conceptId: String!
   ): Service

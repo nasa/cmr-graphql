@@ -141,7 +141,7 @@ type CollectionList {
 }
 
 type Query {
-  collections(
+  collections (
     "The unique concept id assigned to the collection."
     conceptId: [String]
     "Cursor that points to the a specific position in a list of requested records"
@@ -179,7 +179,8 @@ type Query {
     "UMM Variable concept id"
     variableConceptId: String
   ): CollectionList!
-  collection(
+
+  collection (
     "The unique concept id assigned to the collection."
     conceptId: String!
     "If this parameter is set to 'true' this will include a flag indicating true or false if the collection has any granules at all."

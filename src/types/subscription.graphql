@@ -1,0 +1,49 @@
+type Subscription {
+  "The concept id of the parent CMR collection"
+  collectionConceptId: String
+  "The unique concept id assigned to the subscription"
+  conceptId: String!
+  "The email address that notifications will be delivered to"
+  emailAddress: String
+  "The name of a subscription"
+  name: String
+  "The URS userid of the subscriber"
+  subscriberId: String
+  "The query used to retrieve data for the subscription"
+  query: JSON
+
+  collection: Collection
+}
+
+type SubscriptionList {
+  "The number of hits for a given search"
+  count: Int
+  "Cursor that points to the a specific position in a list of requested records"
+  cursor: String
+  "The list of variable search results"
+  items: [Subscription]
+}
+
+type Query {
+  subscriptions (
+    "The concept id of the parent CMR collection"
+    collectionConceptId: String
+    "The unique concept id assigned to the variable"
+    conceptId: [String]
+    "Cursor that points to the a specific position in a list of requested records"
+    cursor: String
+    "The number of subscriptions requested by the user"
+    limit: Int
+    "The name of a variable"
+    name: String
+    "The userid of the subscriber"
+    subscriberId: String
+    "Zero based offset of individual results"
+    offset: Int
+  ): SubscriptionList!
+
+  subscription (
+    "The unique concept id assigned to the variable"
+    conceptId: String!
+  ): Subscription
+}

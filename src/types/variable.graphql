@@ -31,7 +31,7 @@ type Variable {
   collections (
     "The unique concept id assigned to the service."
     conceptId: [String]
-    "The number of services requested by the user"
+    "The number of collections requested by the user"
     limit: Int
     "Zero based offset of individual results"
     offset: Int
@@ -48,9 +48,9 @@ type VariableList {
 }
 
 type Query {
-  variables(
+  variables (
     "The unique concept id assigned to the variable."
-    conceptId: [String],
+    conceptId: [String]
     "Cursor that points to the a specific position in a list of requested records"
     cursor: String
     "The number of variables requested by the user"
@@ -60,7 +60,8 @@ type Query {
     "Zero based offset of individual results"
     offset: Int
   ): VariableList!
-  variable(
+
+  variable (
     "The unique concept id assigned to the variable."
     conceptId: String!
   ): Variable

@@ -65,6 +65,7 @@ export default class Collection extends Concept {
       'service_concept_id',
       'short_name',
       'temporal',
+      'tool_concept_id',
       'variable_concept_id'
     ]
   }
@@ -87,6 +88,7 @@ export default class Collection extends Concept {
       'service_concept_id',
       'short_name',
       'temporal',
+      'tool_concept_id',
       'variable_concept_id'
     ]
   }

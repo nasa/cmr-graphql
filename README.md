@@ -40,7 +40,7 @@ This will run the application at [http://localhost:3003/dev/api](http://localhos
 
 ## Usage
 
-Currently, this API supports searching and retrieving data for [Collections](#collections), [Granules](#granules), [Services](#services), [Tools](#tools) and [Variables](#variables).
+Currently, this API supports searching and retrieving data for [Collections](#collections), [Granules](#granules), [Services](#services), [Subscriptions](#subscriptions), [Tools](#tools) and [Variables](#variables).
 
 #### Optional Headers
 
@@ -291,6 +291,60 @@ For all supported arguments and columns, see [the schema](src/types/service.grap
       }
     }
 
+
+#### Subscriptions
+
+For all supported arguments and columns, see [the schema](src/types/subscription.graphql).
+
+##### Example Queries
+
+###### Single
+
+    {
+      subscription(conceptId:"SUB1000000001-EXAMPLE") {
+        conceptId
+        query
+      }
+    }
+
+*To also retrieve details pertaining to the associated collection:*
+
+    {
+      subscription(conceptId:"SUB1000000001-EXAMPLE") {
+        conceptId
+        query
+        collection {
+          title
+        }
+      }
+    }
+
+###### Multiple
+
+    {
+      subscriptions {
+        count
+        items {
+          conceptId
+          query
+        }
+      }
+    }
+
+*To also retrieve details pertaining to the associated collections:*
+
+    {
+      subscriptions {
+        count
+        items {
+          conceptId
+          query
+          collection {
+            title
+          }
+        }
+      }
+    }
 
 #### Tools
 
