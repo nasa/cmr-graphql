@@ -83,9 +83,21 @@ export default {
           items: null
         }
       }
+
       return dataSources.serviceSource({
         conceptId: services,
         ...handlePagingParams(args, services.length)
+      }, headers, parseResolveInfo(info))
+    },
+    subscriptions: async (source, args, { dataSources, headers }, info) => {
+      // Pull out parent collection id
+      const {
+        conceptId: collectionId
+      } = source
+
+      return dataSources.subscriptionSourceFetch({
+        collectionConceptId: collectionId,
+        ...handlePagingParams(args)
       }, headers, parseResolveInfo(info))
     },
     tools: async (source, args, { dataSources, headers }, info) => {
@@ -101,6 +113,7 @@ export default {
           items: null
         }
       }
+
       return dataSources.toolSource({
         conceptId: tools,
         ...handlePagingParams(args, tools.length)

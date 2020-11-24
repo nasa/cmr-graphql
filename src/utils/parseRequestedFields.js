@@ -89,7 +89,9 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
     // If a user has requested granules, from within a collection request the resolver
     // will pull the conceptId and provide it to the granules request but if a user
     // doesn't explicity ask for the collection concept id we need to request it
-    if (requestedFields.includes('granules') && !requestedFields.includes('conceptId')) {
+    if (
+      (requestedFields.includes('granules') || requestedFields.includes('subscriptions'))
+       && !requestedFields.includes('conceptId')) {
       requestedFields.push('conceptId')
     }
   }
