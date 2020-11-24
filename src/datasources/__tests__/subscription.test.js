@@ -1,10 +1,15 @@
 import nock from 'nock'
 
-import subscriptionDatasource from '../subscription'
+jest.mock('uuid', () => ({ v4: () => '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed' }))
+
+import {
+  fetch as subscriptionSourceFetch,
+  ingest as subscriptionSourceIngest
+} from '../subscription'
 
 let requestInfo
 
-describe('subscription', () => {
+describe('subscription#fetch', () => {
   const OLD_ENV = process.env
 
   beforeEach(() => {
@@ -108,7 +113,7 @@ describe('subscription', () => {
           }]
         })
 
-      const response = await subscriptionDatasource({}, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'subscription')
+      const response = await subscriptionSourceFetch({}, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'subscription')
 
       expect(response).toEqual({
         count: 84,
@@ -141,7 +146,7 @@ describe('subscription', () => {
             }]
           })
 
-        const response = await subscriptionDatasource({}, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'collection')
+        const response = await subscriptionSourceFetch({}, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'collection')
 
         expect(response).toEqual({
           count: 84,
@@ -170,7 +175,7 @@ describe('subscription', () => {
           }]
         })
 
-      const response = await subscriptionDatasource({}, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'subscription')
+      const response = await subscriptionSourceFetch({}, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'subscription')
 
       expect(response).toEqual({
         count: 84,
@@ -197,7 +202,7 @@ describe('subscription', () => {
           }]
         })
 
-      const response = await subscriptionDatasource({ concept_id: 'SUB100000-EDSC' }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'subscription')
+      const response = await subscriptionSourceFetch({ concept_id: 'SUB100000-EDSC' }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'subscription')
 
       expect(response).toEqual({
         count: 84,
@@ -293,7 +298,7 @@ describe('subscription', () => {
           }]
         })
 
-      const response = await subscriptionDatasource({ concept_id: 'SUB100000-EDSC' }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'subscription')
+      const response = await subscriptionSourceFetch({ concept_id: 'SUB100000-EDSC' }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'subscription')
 
       expect(response).toEqual({
         count: 84,
@@ -315,7 +320,129 @@ describe('subscription', () => {
       })
 
     await expect(
-      subscriptionDatasource({ conceptId: 'SUB100000-EDSC' }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'subscription')
+      subscriptionSourceFetch({ conceptId: 'SUB100000-EDSC' }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'subscription')
+    ).rejects.toThrow(Error)
+  })
+})
+
+describe('subscription#ingest', () => {
+  const OLD_ENV = process.env
+
+  beforeEach(() => {
+    jest.resetAllMocks()
+
+    jest.restoreAllMocks()
+
+    process.env = { ...OLD_ENV }
+
+    process.env.cmrRootUrl = 'http://example.com'
+
+    // Default requestInfo
+    requestInfo = {
+      name: 'createSubscription',
+      alias: 'createSubscription',
+      args: {
+        collectionConceptId: 'C100000-EDSC',
+        emailAddress: 'test@example.com',
+        name: 'Test Subscription',
+        query: 'polygon=-18,-78,-13,-74,-16,-73,-22,-77,-18,-78',
+        subscriberId: 'testuser'
+      },
+      fieldsByTypeName: {
+        SubscriptionMutationResponse: {
+          conceptId: {
+            name: 'conceptId',
+            alias: 'conceptId',
+            args: {},
+            fieldsByTypeName: {}
+          },
+          revisionId: {
+            name: 'revisionId',
+            alias: 'revisionId',
+            args: {},
+            fieldsByTypeName: {}
+          }
+        }
+      }
+    }
+  })
+
+  afterEach(() => {
+    process.env = OLD_ENV
+  })
+
+  describe('when a native id is not provided', () => {
+    test('returns the parsed subscription results', async () => {
+      nock(/example/)
+        .defaultReplyHeaders({
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .put(/ingest\/providers\/EDSC\/subscriptions\/1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed/)
+        .reply(201, {
+          'concept-id': 'SUB100000-EDSC',
+          'revision-id': '1'
+        })
+
+      const response = await subscriptionSourceIngest({
+        collectionConceptId: 'C100000-EDSC',
+        emailAddress: 'test@example.com',
+        name: 'Test Subscription',
+        query: 'polygon=-18,-78,-13,-74,-16,-73,-22,-77,-18,-78',
+        subscriberId: 'testuser'
+      }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'subscription')
+
+      expect(response).toEqual({
+        conceptId: 'SUB100000-EDSC',
+        revisionId: '1'
+      })
+    })
+  })
+
+  describe('when a native id is provided', () => {
+    test('returns the parsed subscription results', async () => {
+      nock(/example/)
+        .defaultReplyHeaders({
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .put(/ingest\/providers\/EDSC\/subscriptions\/test-guid/)
+        .reply(201, {
+          'concept-id': 'SUB100000-EDSC',
+          'revision-id': '1'
+        })
+
+      const response = await subscriptionSourceIngest({
+        collectionConceptId: 'C100000-EDSC',
+        emailAddress: 'test@example.com',
+        name: 'Test Subscription',
+        nativeId: 'test-guid',
+        query: 'polygon=-18,-78,-13,-74,-16,-73,-22,-77,-18,-78',
+        subscriberId: 'testuser'
+      }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'subscription')
+
+      expect(response).toEqual({
+        conceptId: 'SUB100000-EDSC',
+        revisionId: '1'
+      })
+    })
+  })
+
+  test('catches errors received from ingestCmr', async () => {
+    nock(/example/)
+      .put(/ingest\/providers\/EDSC\/subscriptions\/1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed/)
+      .reply(500, {
+        errors: ['HTTP Error']
+      }, {
+        'cmr-request-id': 'abcd-1234-efgh-5678'
+      })
+
+    await expect(
+      subscriptionSourceIngest({
+        collectionConceptId: 'C100000-EDSC',
+        emailAddress: 'test@example.com',
+        name: 'Test Subscription',
+        query: 'polygon=-18,-78,-13,-74,-16,-73,-22,-77,-18,-78',
+        subscriberId: 'testuser'
+      }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'subscription')
     ).rejects.toThrow(Error)
   })
 })

@@ -1,12 +1,14 @@
 import camelcaseKeys from 'camelcase-keys'
+import dasherize from 'dasherize'
 import snakeCaseKeys from 'snakecase-keys'
 
 import { snakeCase, get, pick } from 'lodash'
 
 import { CONCEPT_TYPES } from '../../constants'
 
-import { queryCmr } from '../../utils/queryCmr'
+import { cmrIngest } from '../../utils/cmrIngest'
 import { parseError } from '../../utils/parseError'
+import { queryCmr } from '../../utils/queryCmr'
 
 export default class Concept {
   /**
@@ -33,7 +35,16 @@ export default class Concept {
   }
 
   /**
-   * Set a specific property on an object within the result set
+   * Set a specific property on an object within the result set of an ingest operation
+   * @param {String} key The key to set within the result
+   * @param {Any} value They value to assign to the key within the result
+   */
+  setIngestValue(key, value) {
+    this.items[key] = value
+  }
+
+  /**
+   * Set a specific property on an object within the result set of a search operation
    * @param {String} id Concept ID to set a value for within the result set
    * @param {String} key The key to set within the result
    * @param {Any} value They value to assign to the key within the result
@@ -154,6 +165,16 @@ export default class Concept {
   }
 
   /**
+   * Return the ingest result set formatted for the graphql json response
+   */
+  getFormattedIngestResponse() {
+    // Retrieve the result set regardless of whether or not the query is a list or not
+    const items = this.getItems()
+
+    return items
+  }
+
+  /**
    * Return the result set formatted for the graphql json response
    */
   getFormattedResponse() {
@@ -245,6 +266,23 @@ export default class Concept {
         umm: this.ummScrollId
       })
     ).toString('base64')
+  }
+
+  /**
+   * Ingest the provided object into the CMR
+   * @param {Object} data Parameters provided by the query
+   * @param {Array} requestedKeys Keys requested by the query
+   * @param {Object} providedHeaders Headers requested by the query
+   */
+  ingest(data, requestedKeys, providedHeaders) {
+    this.logKeyRequest(requestedKeys, 'ingest')
+
+    // Construct the promise that will ingest data into CMR
+    this.response = cmrIngest(
+      this.getConceptType(),
+      data,
+      providedHeaders
+    )
   }
 
   /**
@@ -392,6 +430,16 @@ export default class Concept {
   }
 
   /**
+   * Parse and return the body of an ingest operation
+   * @param {Object} ingestResponse HTTP response from the CMR endpoint
+   */
+  parseIngestBody(ingestResponse) {
+    const { data } = ingestResponse
+
+    return data
+  }
+
+  /**
    * Parse and return the array of data from the nested response body
    * @param {Object} jsonResponse HTTP response from the CMR endpoint
    */
@@ -502,6 +550,32 @@ export default class Concept {
         }
       })
     })
+  }
+
+  /**
+   * Parses the response from an ingest
+   * @param {Object} requestInfo Parsed data pertaining to the ingest operation
+   */
+  async parseIngest(requestInfo) {
+    try {
+      const {
+        ingestKeys
+      } = requestInfo
+
+      const result = await this.getResponse()
+
+      const data = this.parseIngestBody(result)
+
+      ingestKeys.forEach((key) => {
+        const cmrKey = dasherize(key)
+
+        const { [cmrKey]: keyValue } = data
+
+        this.setIngestValue(key, keyValue)
+      })
+    } catch (e) {
+      parseError(e, { reThrowError: true })
+    }
   }
 
   /**

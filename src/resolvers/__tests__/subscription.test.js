@@ -1,5 +1,7 @@
 import nock from 'nock'
 
+jest.mock('uuid', () => ({ v4: () => '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed' }))
+
 import { ApolloServer } from 'apollo-server-lambda'
 import { createTestClient } from 'apollo-server-testing'
 
@@ -9,7 +11,10 @@ import typeDefs from '../../types'
 import collectionSource from '../../datasources/collection'
 import granuleSource from '../../datasources/granule'
 import serviceSource from '../../datasources/service'
-import subscriptionSource from '../../datasources/subscription'
+import {
+  fetch as subscriptionSourceFetch,
+  ingest as subscriptionSourceIngest
+} from '../../datasources/subscription'
 import toolSource from '../../datasources/tool'
 import variableSource from '../../datasources/variable'
 
@@ -25,7 +30,8 @@ const server = new ApolloServer({
     collectionSource,
     granuleSource,
     serviceSource,
-    subscriptionSource,
+    subscriptionSourceFetch,
+    subscriptionSourceIngest,
     toolSource,
     variableSource
   })
@@ -58,7 +64,10 @@ describe('Subscription', () => {
         .reply(200, {
           items: [{
             meta: {
-              'concept-id': 'SUB100000-EDSC'
+              'concept-id': 'SUB100000-EDSC',
+              'native-id': 'test-guid',
+              'provider-id': 'EDSC',
+              'revision-id': '1'
             },
             umm: {
               CollectionConceptId: 'C100000-EDSC',
@@ -80,7 +89,10 @@ describe('Subscription', () => {
               conceptId
               emailAddress
               name
+              nativeId
+              providerId
               query
+              revisionId
               subscriberId
             }
           }
@@ -97,7 +109,10 @@ describe('Subscription', () => {
             conceptId: 'SUB100000-EDSC',
             emailAddress: 'test@example.com',
             name: 'Test Subscription',
+            nativeId: 'test-guid',
+            providerId: 'EDSC',
             query: 'polygon=-18,-78,-13,-74,-16,-73,-22,-77,-18,-78',
+            revisionId: '1',
             subscriberId: 'testuser'
           }]
         }
@@ -291,6 +306,115 @@ describe('Subscription', () => {
               conceptId: 'C100003-EDSC'
             }
           }]
+        }
+      })
+    })
+  })
+
+  describe('Subscription', () => {
+    test('createSubscription', async () => {
+      const { query } = createTestClient(server)
+
+      nock(/example/)
+        .defaultReplyHeaders({
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .put(/ingest\/providers\/EDSC\/subscriptions\/1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed/)
+        .reply(201, {
+          'concept-id': 'SUB100000-EDSC',
+          'revision-id': '1'
+        })
+
+      const response = await query({
+        variables: {
+          collectionConceptId: 'C100000-EDSC',
+          emailAddress: 'test@example.com',
+          name: 'Test Subscription',
+          query: 'polygon=-18,-78,-13,-74,-16,-73,-22,-77,-18,-78',
+          subscriberId: 'testuser'
+        },
+        query: `mutation CreateSubscription (
+          $collectionConceptId: String!
+          $emailAddress: String!
+          $name: String!
+          $query: String!
+          $subscriberId: String!
+        ) {
+          createSubscription(
+            collectionConceptId: $collectionConceptId
+            emailAddress: $emailAddress
+            name: $name
+            query: $query
+            subscriberId: $subscriberId
+          ) {
+              conceptId
+              revisionId
+            }
+          }`
+      })
+
+      const { data } = response
+
+      expect(data).toEqual({
+        createSubscription: {
+          conceptId: 'SUB100000-EDSC',
+          revisionId: '1'
+        }
+      })
+    })
+
+    test('updateSubscription', async () => {
+      const { query } = createTestClient(server)
+
+      nock(/example/)
+        .defaultReplyHeaders({
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .put(/ingest\/providers\/EDSC\/subscriptions\/test-guid/)
+        .reply(201, {
+          'concept-id': 'SUB100000-EDSC',
+          'revision-id': '2'
+        })
+
+      const response = await query({
+        variables: {
+          collectionConceptId: 'C100000-EDSC',
+          emailAddress: 'test@example.com',
+          name: 'Test Subscription',
+          nativeId: 'test-guid',
+          query: 'polygon=-18,-78,-13,-74,-16,-73,-22,-77,-18,-78',
+          subscriberId: 'testuser'
+        },
+        query: `mutation UpdateSubscription (
+          $collectionConceptId: String!
+          $emailAddress: String!
+          $name: String!
+          $nativeId: String!
+          $query: String!
+          $subscriberId: String!
+        ) {
+          updateSubscription(
+            collectionConceptId: $collectionConceptId
+            emailAddress: $emailAddress
+            name: $name
+            nativeId: $nativeId
+            query: $query
+            subscriberId: $subscriberId
+          ) {
+              conceptId
+              revisionId
+            }
+          }`
+      })
+
+      const { data } = response
+
+      expect(data).toEqual({
+        updateSubscription: {
+          conceptId: 'SUB100000-EDSC',
+          revisionId: '2'
         }
       })
     })

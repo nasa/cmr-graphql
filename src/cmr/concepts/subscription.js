@@ -29,6 +29,7 @@ export default class Subscription extends Concept {
     return [
       ...super.getPermittedJsonSearchParams(),
       'collection_concept_id',
+      'provider',
       'subscriber_id'
     ]
   }
@@ -40,6 +41,7 @@ export default class Subscription extends Concept {
     return [
       ...super.getPermittedUmmSearchParams(),
       'collection_concept_id',
+      'provider',
       'subscriber_id'
     ]
   }
