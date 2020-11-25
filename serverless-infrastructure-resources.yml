@@ -45,12 +45,6 @@ Resources:
 
 # Output the following resources so that other stacks can access the values
 Outputs:
-  GraphQLLambdaSecurityGroupDev:
-    Value:
-      Ref: LambdaSecurityGroup
-    Export:
-      Name: dev-LambdaSecurityGroup
-
   GraphQLLambdaSecurityGroup:
     Value:
       Ref: LambdaSecurityGroup

@@ -110,6 +110,15 @@ type Collection {
     offset: Int
   ): ServiceList
 
+  subscriptions (
+    "The unique concept id assigned to the subscription."
+    conceptId: [String]
+    "The number of services requested by the user"
+    limit: Int
+    "Zero based offset of individual results"
+    offset: Int
+  ): SubscriptionList
+
   tools (
     "The unique concept id assigned to the tool."
     conceptId: [String]

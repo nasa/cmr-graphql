@@ -303,6 +303,7 @@ For all supported arguments and columns, see [the schema](src/types/subscription
     {
       subscription(conceptId:"SUB1000000001-EXAMPLE") {
         conceptId
+        nativeId
         query
       }
     }
@@ -312,6 +313,7 @@ For all supported arguments and columns, see [the schema](src/types/subscription
     {
       subscription(conceptId:"SUB1000000001-EXAMPLE") {
         conceptId
+        nativeId
         query
         collection {
           title
@@ -343,6 +345,61 @@ For all supported arguments and columns, see [the schema](src/types/subscription
             title
           }
         }
+      }
+    }
+
+##### Mutations
+
+##### Creating a Subscription
+
+If no `nativeId` is provided, GraphQL will generate a GUID and supply it.
+
+    mutation {
+      createSubscription(
+        collectionConceptId: "C1000000001-EXAMPLE"
+        emailAddress: "username@example.com"
+        name: "Example Subscription"
+        query: "polygon=-18,-78,-13,-74,-16,-73,-22,-77,-18,-78"
+        subscriberId: "username"
+      ) {
+        conceptId
+        revisionId
+      }
+    }
+    
+To set the `nativeId` to a desired value, simply provide it as an argument and it will be used.
+
+    mutation {
+      createSubscription(
+        collectionConceptId: "C1000000001-EXAMPLE"
+        emailAddress: "username@example.com"
+        name: "Example Subscription"
+        nativeId: "SUPPLIED-NATIVE-ID"
+        query: "polygon=-18,-78,-13,-74,-16,-73,-22,-77,-18,-78"
+        subscriberId: "username"
+      ) {
+        conceptId
+        revisionId
+      }
+    }
+
+##### Updating a Subscription
+
+CMR defines a record as unique based on the `nativeId`, in order to update a subscription supply a `nativeId` that belongs an existing record.
+
+**NOTE**: Due to the way in which CMR works, `createSubscription` and `updateSubscription` will operate identically when supplying an existing `nativeId` however, this may not always be the case so we encourage you to use the explicit `updateSubscription` mutation noted below.
+
+    mutation {
+      updateSubscription(
+        collectionConceptId: "C1000000001-EXAMPLE"
+        emailAddress: "username@example.com"
+        name: "Example Subscription"
+        nativeId: "EXISTING-NATIVE-ID"
+        query: "polygon=-18,-78,-13,-74,-16,-73,-22,-77,-18,-78"
+        subscriberId: "username"
+      ) {
+        conceptId
+        revisionId
       }
     }
 

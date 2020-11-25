@@ -3,6 +3,8 @@
     "collectionConceptId",
     "conceptId",
     "name",
+    "providerId",
+    "revisionId",
     "subscriberId"
   ],
   "ummKeyMappings": {
@@ -10,7 +12,10 @@
     "conceptId": "meta.concept-id",
     "emailAddress": "umm.EmailAddress",
     "name": "umm.Name",
+    "nativeId": "meta.native-id",
+    "providerId": "meta.provider-id",
     "query": "umm.Query",
+    "revisionId": "meta.revision-id",
     "subscriberId": "umm.SubscriberId"
   }
 }

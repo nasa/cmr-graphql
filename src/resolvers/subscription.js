@@ -5,10 +5,14 @@ import { handlePagingParams } from '../utils/handlePagingParams'
 export default {
   Query: {
     subscriptions: async (source, args, { dataSources, headers }, info) => (
-      dataSources.subscriptionSource(handlePagingParams(args), headers, parseResolveInfo(info))
+      dataSources.subscriptionSourceFetch(
+        handlePagingParams(args), headers, parseResolveInfo(info)
+      )
     ),
     subscription: async (source, args, { dataSources, headers }, info) => {
-      const result = await dataSources.subscriptionSource(args, headers, parseResolveInfo(info))
+      const result = await dataSources.subscriptionSourceFetch(
+        args, headers, parseResolveInfo(info)
+      )
 
       const [firstResult] = result
 
@@ -35,6 +39,23 @@ export default {
       const [firstResult] = result
 
       return firstResult
+    }
+  },
+
+  Mutation: {
+    createSubscription: async (source, args, { dataSources, headers }, info) => {
+      const result = await dataSources.subscriptionSourceIngest(
+        args, headers, parseResolveInfo(info)
+      )
+
+      return result
+    },
+    updateSubscription: async (source, args, { dataSources, headers }, info) => {
+      const result = await dataSources.subscriptionSourceIngest(
+        args, headers, parseResolveInfo(info)
+      )
+
+      return result
     }
   }
 }

@@ -65,13 +65,15 @@
     "array-foreach-async": "^1.0.1",
     "axios": "^0.19.2",
     "camelcase-keys": "^6.2.2",
+    "dasherize": "^2.0.0",
     "graphql": "^14.2.0",
     "graphql-parse-resolve-info": "^4.7.0",
     "graphql-type-json": "^0.3.1",
     "lodash": "^4.17.20",
+    "pascalcase-keys": "^1.0.1",
     "qs": "^6.9.4",
     "serverless-plugin-log-subscription": "^1.2.0",
     "snakecase-keys": "^3.2.0",
-    "uuid": "^8.0.0"
+    "uuid": "^8.3.1"
   }
 }

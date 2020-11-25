@@ -9,6 +9,10 @@ import typeDefs from '../../types'
 import collectionSource from '../../datasources/collection'
 import granuleSource from '../../datasources/granule'
 import serviceSource from '../../datasources/service'
+import {
+  fetch as subscriptionSourceFetch,
+  ingest as subscriptionSourceIngest
+} from '../../datasources/subscription'
 import toolSource from '../../datasources/tool'
 import variableSource from '../../datasources/variable'
 
@@ -24,6 +28,8 @@ const server = new ApolloServer({
     collectionSource,
     granuleSource,
     serviceSource,
+    subscriptionSourceFetch,
+    subscriptionSourceIngest,
     toolSource,
     variableSource
   })

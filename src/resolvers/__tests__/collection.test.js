@@ -9,6 +9,10 @@ import typeDefs from '../../types'
 import collectionSource from '../../datasources/collection'
 import granuleSource from '../../datasources/granule'
 import serviceSource from '../../datasources/service'
+import {
+  fetch as subscriptionSourceFetch,
+  ingest as subscriptionSourceIngest
+} from '../../datasources/subscription'
 import toolSource from '../../datasources/tool'
 import variableSource from '../../datasources/variable'
 
@@ -24,6 +28,8 @@ const server = new ApolloServer({
     collectionSource,
     granuleSource,
     serviceSource,
+    subscriptionSourceFetch,
+    subscriptionSourceIngest,
     toolSource,
     variableSource
   })
@@ -647,7 +653,7 @@ describe('Collection', () => {
       })
 
       describe('when service associations are present in the metadata', () => {
-        test(' queries for and returns services', async () => {
+        test('queries for and returns services', async () => {
           const { query } = createTestClient(server)
 
           nock(/example/)
@@ -741,6 +747,98 @@ describe('Collection', () => {
               }]
             }
           })
+        })
+      })
+    })
+
+    describe('subscriptions', () => {
+      test('queries for and returns subscriptions', async () => {
+        const { query } = createTestClient(server)
+
+        nock(/example/)
+          .defaultReplyHeaders({
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .post(/collections\.json/)
+          .reply(200, {
+            feed: {
+              entry: [{
+                id: 'C100000-EDSC'
+              }, {
+                id: 'C100001-EDSC'
+              }]
+            }
+          })
+
+        nock(/example/)
+          .defaultReplyHeaders({
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .post(/subscriptions\.json/, 'page_size=20&collection_concept_id=C100000-EDSC')
+          .reply(200, {
+            items: [{
+              concept_id: 'SUB100000-EDSC'
+            }, {
+              concept_id: 'SUB100001-EDSC'
+            }]
+          })
+
+        nock(/example/)
+          .defaultReplyHeaders({
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .post(/subscriptions\.json/, 'page_size=20&collection_concept_id=C100001-EDSC')
+          .reply(200, {
+            items: [{
+              concept_id: 'SUB100002-EDSC'
+            }, {
+              concept_id: 'SUB100003-EDSC'
+            }]
+          })
+
+        const response = await query({
+          variables: {},
+          query: `{
+            collections {
+              items {
+                conceptId
+                subscriptions {
+                  items {
+                    conceptId
+                  }
+                }
+              }
+            }
+          }`
+        })
+
+        const { data } = response
+
+        expect(data).toEqual({
+          collections: {
+            items: [{
+              conceptId: 'C100000-EDSC',
+              subscriptions: {
+                items: [{
+                  conceptId: 'SUB100000-EDSC'
+                }, {
+                  conceptId: 'SUB100001-EDSC'
+                }]
+              }
+            }, {
+              conceptId: 'C100001-EDSC',
+              subscriptions: {
+                items: [{
+                  conceptId: 'SUB100002-EDSC'
+                }, {
+                  conceptId: 'SUB100003-EDSC'
+                }]
+              }
+            }]
+          }
         })
       })
     })
@@ -865,7 +963,7 @@ describe('Collection', () => {
       })
 
       describe('when tool associations are present in the metadata', () => {
-        test(' queries for and returns tools', async () => {
+        test('queries for and returns tools', async () => {
           const { query } = createTestClient(server)
 
           nock(/example/)
@@ -1083,7 +1181,7 @@ describe('Collection', () => {
       })
 
       describe('when service associations are present in the metadata', () => {
-        test(' queries for and returns variables', async () => {
+        test('queries for and returns variables', async () => {
           const { query } = createTestClient(server)
 
           nock(/example/)

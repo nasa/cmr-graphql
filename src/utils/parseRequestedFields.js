@@ -31,9 +31,9 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
       count,
       cursor,
       items = {}
-    } = conceptListKeysRequested
+    } = conceptListKeysRequested;
 
-    fieldsByTypeName = items.fieldsByTypeName
+    ({ fieldsByTypeName } = items)
 
     // If the user requested `count` or `cursor` and no other fields, default the requested fields
     // to convince graph that it should still make a request
@@ -55,7 +55,20 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
       [upperFirst(conceptName.toLowerCase())]: conceptKeysRequested
     } = fieldsByTypeName
 
-    requestedFields = Object.keys(conceptKeysRequested)
+    if (conceptKeysRequested) {
+      requestedFields = Object.keys(conceptKeysRequested)
+    }
+
+    const {
+      [`${upperFirst(conceptName.toLowerCase())}MutationResponse`]: ingestKeysRequested
+    } = fieldsByTypeName
+
+    if (ingestKeysRequested) {
+      // If the type is a mutation response we onlh need to return the ingest keys
+      return {
+        ingestKeys: Object.keys(ingestKeysRequested)
+      }
+    }
   }
 
   // Determine which of the requested fields are concept types
@@ -76,7 +89,9 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
     // If a user has requested granules, from within a collection request the resolver
     // will pull the conceptId and provide it to the granules request but if a user
     // doesn't explicity ask for the collection concept id we need to request it
-    if (requestedFields.includes('granules') && !requestedFields.includes('conceptId')) {
+    if (
+      (requestedFields.includes('granules') || requestedFields.includes('subscriptions'))
+       && !requestedFields.includes('conceptId')) {
       requestedFields.push('conceptId')
     }
   }
