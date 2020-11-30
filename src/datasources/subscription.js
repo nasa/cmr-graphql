@@ -54,5 +54,5 @@ export const deleteSubscription = async (params, headers, parsedInfo) => {
   await subscription.parseDelete(requestInfo)
 
   // Return a formatted JSON response
-  return subscription.getFormattedIngestResponse()
+  return subscription.getFormattedDeleteResponse()
 }

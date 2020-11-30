@@ -6,10 +6,10 @@ import { snakeCase, get, pick } from 'lodash'
 
 import { CONCEPT_TYPES } from '../../constants'
 
+import { cmrDelete } from '../../utils/cmrDelete'
 import { cmrIngest } from '../../utils/cmrIngest'
 import { parseError } from '../../utils/parseError'
 import { queryCmr } from '../../utils/queryCmr'
-import { cmrDelete } from '../../utils/cmrDelete'
 
 export default class Concept {
   /**
@@ -176,6 +176,16 @@ export default class Concept {
   }
 
   /**
+   * Return the delete result set formatted for the graphql json response
+   */
+  getFormattedDeleteResponse() {
+    // Retrieve the result set regardless of whether or not the query is a list or not
+    const items = this.getItems()
+
+    return items
+  }
+
+  /**
    * Return the result set formatted for the graphql json response
    */
   getFormattedResponse() {
@@ -295,7 +305,7 @@ export default class Concept {
   delete(data, requestedKeys, providedHeaders) {
     this.logKeyRequest(requestedKeys, 'ingest')
 
-    // Construct the promise that will ingest data into CMR
+    // Construct the promise that will delete data from CMR
     this.response = cmrDelete(
       this.getConceptType(),
       data,
@@ -598,10 +608,10 @@ export default class Concept {
 
   /**
    * Parses the response from a delete
-   * @param {Object} requestInfo Parsed data pertaining to the ingest operation
+   * @param {Object} requestInfo Parsed data pertaining to the delete operation
    */
   async parseDelete(requestInfo) {
-    return this.parseIngest(requestInfo)
+    await this.parseIngest(requestInfo)
   }
 
   /**

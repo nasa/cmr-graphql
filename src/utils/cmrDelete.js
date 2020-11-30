@@ -39,7 +39,7 @@ export const cmrDelete = async (conceptType, data, headers) => {
     delete permittedHeaders['Echo-Token']
   }
 
-  // Use the provided native id if one is provided, default to a guid
+  // Use the provided native id
   const { conceptId, nativeId } = data
 
   // Use the string after '-' to determine the provider
