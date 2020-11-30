@@ -9,6 +9,7 @@ import { CONCEPT_TYPES } from '../../constants'
 import { cmrIngest } from '../../utils/cmrIngest'
 import { parseError } from '../../utils/parseError'
 import { queryCmr } from '../../utils/queryCmr'
+import { cmrDelete } from '../../utils/cmrDelete'
 
 export default class Concept {
   /**
@@ -279,6 +280,23 @@ export default class Concept {
 
     // Construct the promise that will ingest data into CMR
     this.response = cmrIngest(
+      this.getConceptType(),
+      data,
+      providedHeaders
+    )
+  }
+
+  /**
+   * Delete the provided object into the CMR
+   * @param {Object} data Parameters provided by the query
+   * @param {Array} requestedKeys Keys requested by the query
+   * @param {Object} providedHeaders Headers requested by the query
+   */
+  delete(data, requestedKeys, providedHeaders) {
+    this.logKeyRequest(requestedKeys, 'ingest')
+
+    // Construct the promise that will ingest data into CMR
+    this.response = cmrDelete(
       this.getConceptType(),
       data,
       providedHeaders
@@ -576,6 +594,14 @@ export default class Concept {
     } catch (e) {
       parseError(e, { reThrowError: true })
     }
+  }
+
+  /**
+   * Parses the response from a delete
+   * @param {Object} requestInfo Parsed data pertaining to the ingest operation
+   */
+  async parseDelete(requestInfo) {
+    return this.parseIngest(requestInfo)
   }
 
   /**

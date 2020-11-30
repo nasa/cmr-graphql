@@ -86,6 +86,13 @@ type Mutation {
     "The query used to retrieve data for the subscription"
     query: String!
   ): SubscriptionMutationResponse
+
+  deleteSubscription (
+    "The concept id of the subscription"
+    conceptId: String!
+    "The native id of the subscription"
+    nativeId: String!
+  ): SubscriptionMutationResponse
 }
 
 type SubscriptionMutationResponse {

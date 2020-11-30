@@ -12,8 +12,9 @@ import collectionSource from '../../datasources/collection'
 import granuleSource from '../../datasources/granule'
 import serviceSource from '../../datasources/service'
 import {
-  fetch as subscriptionSourceFetch,
-  ingest as subscriptionSourceIngest
+  deleteSubscription as subscriptionSourceDelete,
+  fetchSubscription as subscriptionSourceFetch,
+  ingestSubscription as subscriptionSourceIngest
 } from '../../datasources/subscription'
 import toolSource from '../../datasources/tool'
 import variableSource from '../../datasources/variable'
@@ -30,6 +31,7 @@ const server = new ApolloServer({
     collectionSource,
     granuleSource,
     serviceSource,
+    subscriptionSourceDelete,
     subscriptionSourceFetch,
     subscriptionSourceIngest,
     toolSource,
@@ -413,6 +415,49 @@ describe('Subscription', () => {
 
       expect(data).toEqual({
         updateSubscription: {
+          conceptId: 'SUB100000-EDSC',
+          revisionId: '2'
+        }
+      })
+    })
+
+    test('deleteSubscription', async () => {
+      const { query } = createTestClient(server)
+
+      nock(/example/)
+        .defaultReplyHeaders({
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .delete(/ingest\/providers\/EDSC\/subscriptions\/test-guid/)
+        .reply(201, {
+          'concept-id': 'SUB100000-EDSC',
+          'revision-id': '2'
+        })
+
+      const response = await query({
+        variables: {
+          conceptId: 'SUB100000-EDSC',
+          nativeId: 'test-guid'
+        },
+        query: `mutation DeleteSubscription (
+          $conceptId: String!
+          $nativeId: String!
+        ) {
+          deleteSubscription(
+            conceptId: $conceptId
+            nativeId: $nativeId
+          ) {
+              conceptId
+              revisionId
+            }
+          }`
+      })
+
+      const { data } = response
+
+      expect(data).toEqual({
+        deleteSubscription: {
           conceptId: 'SUB100000-EDSC',
           revisionId: '2'
         }
