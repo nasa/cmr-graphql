@@ -56,6 +56,13 @@ export default {
       )
 
       return result
+    },
+    deleteSubscription: async (source, args, { dataSources, headers }, info) => {
+      const result = await dataSources.subscriptionSourceDelete(
+        args, headers, parseResolveInfo(info)
+      )
+
+      return result
     }
   }
 }

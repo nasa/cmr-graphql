@@ -3,8 +3,9 @@ import nock from 'nock'
 jest.mock('uuid', () => ({ v4: () => '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed' }))
 
 import {
-  fetch as subscriptionSourceFetch,
-  ingest as subscriptionSourceIngest
+  deleteSubscription as subscriptionSourceDelete,
+  fetchSubscription as subscriptionSourceFetch,
+  ingestSubscription as subscriptionSourceIngest
 } from '../subscription'
 
 let requestInfo
@@ -442,6 +443,91 @@ describe('subscription#ingest', () => {
         name: 'Test Subscription',
         query: 'polygon=-18,-78,-13,-74,-16,-73,-22,-77,-18,-78',
         subscriberId: 'testuser'
+      }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'subscription')
+    ).rejects.toThrow(Error)
+  })
+})
+
+describe('subscription#delete', () => {
+  const OLD_ENV = process.env
+
+  beforeEach(() => {
+    jest.resetAllMocks()
+
+    jest.restoreAllMocks()
+
+    process.env = { ...OLD_ENV }
+
+    process.env.cmrRootUrl = 'http://example.com'
+
+    // Default requestInfo
+    requestInfo = {
+      name: 'deleteSubscription',
+      alias: 'deleteSubscription',
+      args: {
+        conceptId: 'SUB100000-EDSC',
+        nativeId: 'test-guid'
+      },
+      fieldsByTypeName: {
+        SubscriptionMutationResponse: {
+          conceptId: {
+            name: 'conceptId',
+            alias: 'conceptId',
+            args: {},
+            fieldsByTypeName: {}
+          },
+          revisionId: {
+            name: 'revisionId',
+            alias: 'revisionId',
+            args: {},
+            fieldsByTypeName: {}
+          }
+        }
+      }
+    }
+  })
+
+  afterEach(() => {
+    process.env = OLD_ENV
+  })
+
+  describe('when a native id is provided', () => {
+    test('returns the parsed subscription results', async () => {
+      nock(/example/)
+        .defaultReplyHeaders({
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .delete(/ingest\/providers\/EDSC\/subscriptions\/test-guid/)
+        .reply(201, {
+          'concept-id': 'SUB100000-EDSC',
+          'revision-id': '1'
+        })
+
+      const response = await subscriptionSourceDelete({
+        conceptId: 'SUB100000-EDSC',
+        nativeId: 'test-guid'
+      }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'subscription')
+
+      expect(response).toEqual({
+        conceptId: 'SUB100000-EDSC',
+        revisionId: '1'
+      })
+    })
+  })
+
+  test('catches errors received from cmrDelete', async () => {
+    nock(/example/)
+      .delete(/ingest\/providers\/EDSC\/subscriptions\/test-guid/)
+      .reply(500, {
+        errors: ['HTTP Error']
+      }, {
+        'cmr-request-id': 'abcd-1234-efgh-5678'
+      })
+
+    await expect(
+      subscriptionSourceDelete({
+        conceptId: 'C100000-EDSC',
+        nativeId: 'test-guid'
       }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'subscription')
     ).rejects.toThrow(Error)
   })

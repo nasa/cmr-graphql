@@ -6,6 +6,7 @@ import { snakeCase, get, pick } from 'lodash'
 
 import { CONCEPT_TYPES } from '../../constants'
 
+import { cmrDelete } from '../../utils/cmrDelete'
 import { cmrIngest } from '../../utils/cmrIngest'
 import { parseError } from '../../utils/parseError'
 import { queryCmr } from '../../utils/queryCmr'
@@ -175,6 +176,16 @@ export default class Concept {
   }
 
   /**
+   * Return the delete result set formatted for the graphql json response
+   */
+  getFormattedDeleteResponse() {
+    // Retrieve the result set regardless of whether or not the query is a list or not
+    const items = this.getItems()
+
+    return items
+  }
+
+  /**
    * Return the result set formatted for the graphql json response
    */
   getFormattedResponse() {
@@ -279,6 +290,23 @@ export default class Concept {
 
     // Construct the promise that will ingest data into CMR
     this.response = cmrIngest(
+      this.getConceptType(),
+      data,
+      providedHeaders
+    )
+  }
+
+  /**
+   * Delete the provided object into the CMR
+   * @param {Object} data Parameters provided by the query
+   * @param {Array} requestedKeys Keys requested by the query
+   * @param {Object} providedHeaders Headers requested by the query
+   */
+  delete(data, requestedKeys, providedHeaders) {
+    this.logKeyRequest(requestedKeys, 'ingest')
+
+    // Construct the promise that will delete data from CMR
+    this.response = cmrDelete(
       this.getConceptType(),
       data,
       providedHeaders
@@ -576,6 +604,14 @@ export default class Concept {
     } catch (e) {
       parseError(e, { reThrowError: true })
     }
+  }
+
+  /**
+   * Parses the response from a delete
+   * @param {Object} requestInfo Parsed data pertaining to the delete operation
+   */
+  async parseDelete(requestInfo) {
+    await this.parseIngest(requestInfo)
   }
 
   /**

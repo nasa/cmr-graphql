@@ -61,15 +61,15 @@ Logging is key to debugging, and to ensure that we can provide the best support 
 
 #### Queries
 
-When querying for multiple items there are three high level parameters that can be provided, `count`, `cursor` and `items`. 
+When querying for multiple items there are three high level parameters that can be provided, `count`, `cursor` and `items`.
 
 ##### Count
 
-`count` will hold the value returned from the CMR header `CMR-Hits` for the respective concept type providing the total number of results (ignoring the current page size). 
+`count` will hold the value returned from the CMR header `CMR-Hits` for the respective concept type providing the total number of results (ignoring the current page size).
 
 ##### Cursor
 
-`cursor` tells CMR that you'd like to initiate a scroll session with the intent of harvesting data. If you request this key without providing cursor as a search parameter GraphQL will ask CMR to start a new scroll session and return the value as a cursor in the response. To take advantage of the cursor you can then include it in subsequent queries until no data is returned. 
+`cursor` tells CMR that you'd like to initiate a scroll session with the intent of harvesting data. If you request this key without providing cursor as a search parameter GraphQL will ask CMR to start a new scroll session and return the value as a cursor in the response. To take advantage of the cursor you can then include it in subsequent queries until no data is returned.
 
 ###### First Request:
 
@@ -82,7 +82,7 @@ When querying for multiple items there are three high level parameters that can 
         }
       }
     }
-    
+
 Which will return something similar to the following:
 
     {
@@ -98,7 +98,7 @@ Which will return something similar to the following:
         }
       }
     }
-    
+
 ###### Subsequent Requests
 
     {
@@ -110,12 +110,12 @@ Which will return something similar to the following:
         }
       }
     }
-    
+
 A couple of things to keep in mind when using a cursor
 
 1. Subsequent queries will **not** accept new parameters, the search parameters provided in this initial query are used for *all* subsequent queries using the returned cursor value.
 2. Subsequent queries must be made **sequentially** (as of August 21, 2020) as the version of Elastic Search CMR uses does not support parallel queries using the same cursor value.
-    
+
 
 
 ##### Items
@@ -366,7 +366,7 @@ If no `nativeId` is provided, GraphQL will generate a GUID and supply it.
         revisionId
       }
     }
-    
+
 To set the `nativeId` to a desired value, simply provide it as an argument and it will be used.
 
     mutation {
@@ -397,6 +397,20 @@ CMR defines a record as unique based on the `nativeId`, in order to update a sub
         nativeId: "EXISTING-NATIVE-ID"
         query: "polygon=-18,-78,-13,-74,-16,-73,-22,-77,-18,-78"
         subscriberId: "username"
+      ) {
+        conceptId
+        revisionId
+      }
+    }
+
+##### Deleting a Subscription
+
+CMR defines a record as unique based on the `nativeId`, in order to delete a subscription supply a `nativeId` that belongs an existing record.
+
+    mutation {
+      deleteSubscription(
+        conceptId: "SUB1000000001-EXAMPLE"
+        nativeId: "EXISTING-NATIVE-ID"
       ) {
         conceptId
         revisionId

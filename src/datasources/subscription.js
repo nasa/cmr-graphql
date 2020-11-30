@@ -4,7 +4,7 @@ import subscriptionKeyMap from '../utils/umm/subscriptionKeyMap.json'
 
 import Subscription from '../cmr/concepts/subscription'
 
-export const fetch = async (params, headers, parsedInfo) => {
+export const fetchSubscription = async (params, headers, parsedInfo) => {
   const requestInfo = parseRequestedFields(parsedInfo, subscriptionKeyMap, 'subscription')
 
   const subscription = new Subscription(headers, requestInfo)
@@ -19,7 +19,7 @@ export const fetch = async (params, headers, parsedInfo) => {
   return subscription.getFormattedResponse()
 }
 
-export const ingest = async (params, headers, parsedInfo) => {
+export const ingestSubscription = async (params, headers, parsedInfo) => {
   const requestInfo = parseRequestedFields(parsedInfo, subscriptionKeyMap, 'subscription')
 
   const {
@@ -36,4 +36,23 @@ export const ingest = async (params, headers, parsedInfo) => {
 
   // Return a formatted JSON response
   return subscription.getFormattedIngestResponse()
+}
+
+export const deleteSubscription = async (params, headers, parsedInfo) => {
+  const requestInfo = parseRequestedFields(parsedInfo, subscriptionKeyMap, 'subscription')
+
+  const {
+    ingestKeys
+  } = requestInfo
+
+  const subscription = new Subscription(headers, requestInfo)
+
+  // Contact CMR
+  subscription.delete(params, ingestKeys, headers)
+
+  // Parse the response from CMR
+  await subscription.parseDelete(requestInfo)
+
+  // Return a formatted JSON response
+  return subscription.getFormattedDeleteResponse()
 }
