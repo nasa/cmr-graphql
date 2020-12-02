@@ -11,7 +11,7 @@ import { stringify } from 'qs'
  * @param {Object} params Parameters to send to CMR
  * @param {Object} headers Headers to send to CMR
  */
-export const queryCmr = (conceptType, params, headers, options = {}) => {
+export const cmrQuery = (conceptType, params, headers, options = {}) => {
   const {
     format = 'json'
   } = options

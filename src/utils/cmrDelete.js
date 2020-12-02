@@ -84,7 +84,7 @@ export const cmrDelete = async (conceptType, data, headers) => {
 
     response.headers['request-duration'] = milliseconds
 
-    console.log(`Request ${requestId} to [concept: ${conceptType}] completed external request in [observed: ${milliseconds} ms]`)
+    console.log(`Request ${requestId} to delete [concept: ${conceptType}] completed external request in [observed: ${milliseconds} ms]`)
 
     return response
   })

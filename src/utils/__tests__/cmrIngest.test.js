@@ -50,7 +50,7 @@ describe('cmrIngest', () => {
     })
 
     expect(consoleMock).toBeCalledWith(
-      `Request abcd-1234-efgh-5678 to [concept: subscriptions] completed external request in [observed: ${requestDuration} ms]`
+      `Request abcd-1234-efgh-5678 to ingest [concept: subscriptions] completed external request in [observed: ${requestDuration} ms]`
     )
   })
 
@@ -91,7 +91,7 @@ describe('cmrIngest', () => {
       })
 
       expect(consoleMock).toBeCalledWith(
-        `Request abcd-1234-efgh-5678 to [concept: subscriptions] completed external request in [observed: ${requestDuration} ms]`
+        `Request abcd-1234-efgh-5678 to ingest [concept: subscriptions] completed external request in [observed: ${requestDuration} ms]`
       )
     })
   })
@@ -131,7 +131,7 @@ describe('cmrIngest', () => {
       })
 
       expect(consoleMock).toBeCalledWith(
-        `Request abcd-1234-efgh-5678 to [concept: subscriptions] completed external request in [observed: ${requestDuration} ms]`
+        `Request abcd-1234-efgh-5678 to ingest [concept: subscriptions] completed external request in [observed: ${requestDuration} ms]`
       )
     })
   })
@@ -174,7 +174,7 @@ describe('cmrIngest', () => {
       })
 
       expect(consoleMock).toBeCalledWith(
-        `Request abcd-1234-efgh-5678 to [concept: subscriptions] completed external request in [observed: ${requestDuration} ms]`
+        `Request abcd-1234-efgh-5678 to ingest [concept: subscriptions] completed external request in [observed: ${requestDuration} ms]`
       )
     })
   })
@@ -218,7 +218,7 @@ describe('cmrIngest', () => {
       })
 
       expect(consoleMock).toBeCalledWith(
-        `Request abcd-1234-efgh-5678 to [concept: subscriptions] completed external request in [observed: ${requestDuration} ms]`
+        `Request abcd-1234-efgh-5678 to ingest [concept: subscriptions] completed external request in [observed: ${requestDuration} ms]`
       )
     })
   })

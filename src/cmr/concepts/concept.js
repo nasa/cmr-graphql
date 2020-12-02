@@ -8,8 +8,8 @@ import { CONCEPT_TYPES } from '../../constants'
 
 import { cmrDelete } from '../../utils/cmrDelete'
 import { cmrIngest } from '../../utils/cmrIngest'
+import { cmrQuery } from '../../utils/cmrQuery'
 import { parseError } from '../../utils/parseError'
-import { queryCmr } from '../../utils/queryCmr'
 
 export default class Concept {
   /**
@@ -337,7 +337,7 @@ export default class Concept {
     this.logKeyRequest(requestedKeys, 'json')
 
     // Construct the promise that will request data from the json endpoint
-    return queryCmr(
+    return cmrQuery(
       this.getConceptType(),
       pick(snakeCaseKeys(searchParams), this.getPermittedJsonSearchParams()),
       providedHeaders
@@ -354,7 +354,7 @@ export default class Concept {
     this.logKeyRequest(requestedKeys, 'umm')
 
     // Construct the promise that will request data from the umm endpoint
-    return queryCmr(
+    return cmrQuery(
       this.getConceptType(),
       pick(snakeCaseKeys(searchParams), this.getPermittedUmmSearchParams(searchParams)),
       providedHeaders, {

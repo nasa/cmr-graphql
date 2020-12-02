@@ -51,7 +51,7 @@ describe('cmrDelete', () => {
     })
 
     expect(consoleMock).toBeCalledWith(
-      `Request abcd-1234-efgh-5678 to [concept: subscriptions] completed external request in [observed: ${requestDuration} ms]`
+      `Request abcd-1234-efgh-5678 to delete [concept: subscriptions] completed external request in [observed: ${requestDuration} ms]`
     )
   })
 
@@ -93,7 +93,7 @@ describe('cmrDelete', () => {
       })
 
       expect(consoleMock).toBeCalledWith(
-        `Request abcd-1234-efgh-5678 to [concept: subscriptions] completed external request in [observed: ${requestDuration} ms]`
+        `Request abcd-1234-efgh-5678 to delete [concept: subscriptions] completed external request in [observed: ${requestDuration} ms]`
       )
     })
   })
@@ -139,7 +139,7 @@ describe('cmrDelete', () => {
       })
 
       expect(consoleMock).toBeCalledWith(
-        `Request abcd-1234-efgh-5678 to [concept: subscriptions] completed external request in [observed: ${requestDuration} ms]`
+        `Request abcd-1234-efgh-5678 to delete [concept: subscriptions] completed external request in [observed: ${requestDuration} ms]`
       )
     })
   })
@@ -186,7 +186,7 @@ describe('cmrDelete', () => {
       })
 
       expect(consoleMock).toBeCalledWith(
-        `Request abcd-1234-efgh-5678 to [concept: subscriptions] completed external request in [observed: ${requestDuration} ms]`
+        `Request abcd-1234-efgh-5678 to delete [concept: subscriptions] completed external request in [observed: ${requestDuration} ms]`
       )
     })
   })

@@ -1,8 +1,8 @@
 import nock from 'nock'
 
-import { queryCmr } from '../queryCmr'
+import { cmrQuery } from '../cmrQuery'
 
-describe('queryCmr', () => {
+describe('cmrQuery', () => {
   const OLD_ENV = process.env
 
   beforeEach(() => {
@@ -35,7 +35,7 @@ describe('queryCmr', () => {
         }
       })
 
-    const response = await queryCmr(
+    const response = await cmrQuery(
       'collections',
       {},
       { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }
@@ -77,7 +77,7 @@ describe('queryCmr', () => {
           }
         })
 
-      const response = await queryCmr(
+      const response = await cmrQuery(
         'collections',
         {},
         { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
@@ -112,7 +112,7 @@ describe('queryCmr', () => {
           }
         })
 
-      const response = await queryCmr(
+      const response = await cmrQuery(
         'collections',
         {},
         {
@@ -149,7 +149,7 @@ describe('queryCmr', () => {
           }
         })
 
-      const response = await queryCmr(
+      const response = await cmrQuery(
         'collections',
         {},
         {
@@ -186,7 +186,7 @@ describe('queryCmr', () => {
           }
         })
 
-      const response = await queryCmr(
+      const response = await cmrQuery(
         'collections',
         {},
         {
@@ -219,7 +219,7 @@ describe('queryCmr', () => {
           errors: ['HTTP Error']
         })
 
-      const response = queryCmr(
+      const response = cmrQuery(
         'collections',
         {},
         {

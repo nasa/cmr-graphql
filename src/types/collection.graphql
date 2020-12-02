@@ -119,7 +119,7 @@ type Collection {
     limit: Int
     "Zero based offset of individual results"
     offset: Int
-    "The URS userid of the subscriber"
+    "The EDL userid of the subscriber"
     subscriberId: String
   ): SubscriptionList
 
