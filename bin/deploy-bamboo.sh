@@ -28,6 +28,8 @@ dockerRun() {
         -e "AWS_SECRET_ACCESS_KEY=$bamboo_AWS_SECRET_ACCESS_KEY" \
         -e "CLOUDFRONT_BUCKET_NAME=$bamboo_CLOUDFRONT_BUCKET_NAME" \
         -e "CMR_ROOT_URL=$bamboo_CMR_ROOT_URL" \
+        -e "EDL_ROOT_URL=$bamboo_EDL_ROOT_URL" \
+        -e "EDL_CLIENT_ID=$bamboo_EDL_CLIENT_ID" \
         -e "LAMBDA_TIMEOUT=$bamboo_LAMBDA_TIMEOUT" \
         -e "LOG_DESTINATION_ARN=$bamboo_LOG_DESTINATION_ARN" \
         -e "NODE_ENV=production" \
