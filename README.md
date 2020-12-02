@@ -382,12 +382,12 @@ To set the `nativeId` to a desired value, simply provide it as an argument and i
         revisionId
       }
     }
+    
+**NOTE**: `emailAddress` is an optional field when creating a subscription, but if and only if the token you are providing is an Earthdata Login token provided in the `Authorization` header. If this header is set *and* no `emailAddress` is provided, GraphQL will retrieve the email address for the provided `subscriberId` from Earthdata Login and use that value.
 
 ##### Updating a Subscription
 
 CMR defines a record as unique based on the `nativeId`, in order to update a subscription supply a `nativeId` that belongs an existing record.
-
-**NOTE**: Due to the way in which CMR works, `createSubscription` and `updateSubscription` will operate identically when supplying an existing `nativeId` however, this may not always be the case so we encourage you to use the explicit `updateSubscription` mutation noted below.
 
     mutation {
       updateSubscription(
@@ -402,6 +402,11 @@ CMR defines a record as unique based on the `nativeId`, in order to update a sub
         revisionId
       }
     }
+    
+**NOTES**:
+
+  - Due to the way in which CMR works, `createSubscription` and `updateSubscription` will operate identically when supplying an existing `nativeId` however, this may not always be the case so we encourage you to use the explicit `updateSubscription` mutation noted below.
+  - `emailAddress` is an optional field when updating a subscription, but if and only if the token you are providing is an Earthdata Login token provided in the `Authorization` header. If this header is set *and* no `emailAddress` is provided, GraphQL will retrieve the email address for the provided `subscriberId` from Earthdata Login and use that value.
 
 ##### Deleting a Subscription
 
