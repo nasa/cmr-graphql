@@ -12,6 +12,7 @@
     "longName": "umm.LongName",
     "measurementIdentifiers": "umm.MeasurementIdentifiers",
     "name": "umm.Name",
+    "nativeId": "meta.native-id",
     "offset": "umm.Offset",
     "scale": "umm.Scale",
     "scienceKeywords": "umm.ScienceKeywords",

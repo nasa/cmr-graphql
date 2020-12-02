@@ -1,21 +1,13 @@
 import axios from 'axios'
 
-import snakeCaseKeys from 'snakecase-keys'
-
 import { pick } from 'lodash'
-import { stringify } from 'qs'
 
 /**
  * Make a request to CMR and return the promise
- * @param {String} conceptType Concept type to search
- * @param {Object} params Parameters to send to CMR
+ * @param {String} username EDL username to retrieve profile information for
  * @param {Object} headers Headers to send to CMR
  */
-export const queryCmr = (conceptType, params, headers, options = {}) => {
-  const {
-    format = 'json'
-  } = options
-
+export const edlQuery = (username, headers) => {
   // Default headers
   const defaultHeaders = {}
 
@@ -24,33 +16,16 @@ export const queryCmr = (conceptType, params, headers, options = {}) => {
     ...defaultHeaders,
     ...headers
   }, [
-    'Accept',
-    'Authorization',
-    'Client-Id',
-    'CMR-Request-Id',
-    'CMR-Scroll-Id',
-    'Echo-Token'
+    'Authorization'
   ])
 
-  // If both authentication headers are provided favor Authorization
-  if (
-    Object.keys(permittedHeaders).includes('Authorization')
-    && Object.keys(permittedHeaders).includes('Echo-Token')
-  ) {
-    delete permittedHeaders['Echo-Token']
-  }
-
-  const cmrParameters = stringify(
-    snakeCaseKeys(params), { indices: false, arrayFormat: 'brackets' }
-  )
-
-  const { 'CMR-Request-Id': requestId } = permittedHeaders
-
   const requestConfiguration = {
-    data: cmrParameters,
     headers: permittedHeaders,
-    method: 'POST',
-    url: `${process.env.cmrRootUrl}/search/${conceptType}.${format}`
+    method: 'GET',
+    params: {
+      calling_application: process.env.edlClientId
+    },
+    url: `${process.env.edlRootUrl}/api/users/${username}`
   }
 
   // Interceptors require an instance of axios
@@ -75,12 +50,9 @@ export const queryCmr = (conceptType, params, headers, options = {}) => {
     const end = process.hrtime(start)
     const milliseconds = Math.round((end[0] * 1000) + (end[1] / 1000000))
 
-    // Retrieve the reported timing from CMR
-    const { headers } = response
-    const { 'cmr-took': cmrTook } = headers
     response.headers['request-duration'] = milliseconds
 
-    console.log(`Request ${requestId} to [concept: ${conceptType}, format: ${format}] completed external request in [reported: ${cmrTook} ms, observed: ${milliseconds} ms]`)
+    console.log(`Request to EDL completed in ${milliseconds} ms`)
 
     return response
   })

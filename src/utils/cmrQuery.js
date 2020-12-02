@@ -1,22 +1,23 @@
 import axios from 'axios'
 
-import pascalCaseKeys from 'pascalcase-keys'
+import snakeCaseKeys from 'snakecase-keys'
 
 import { pick } from 'lodash'
-
+import { stringify } from 'qs'
 
 /**
- * Make a DELETE request to CMR and return the promise
+ * Make a request to CMR and return the promise
  * @param {String} conceptType Concept type to search
- * @param {Object} data Parameters to send to CMR
+ * @param {Object} params Parameters to send to CMR
  * @param {Object} headers Headers to send to CMR
  */
-export const cmrDelete = async (conceptType, data, headers) => {
+export const cmrQuery = (conceptType, params, headers, options = {}) => {
+  const {
+    format = 'json'
+  } = options
+
   // Default headers
-  const defaultHeaders = {
-    Accept: 'application/json',
-    'Content-Type': 'application/vnd.nasa.cmr.umm+json'
-  }
+  const defaultHeaders = {}
 
   // Merge default headers into the provided headers and then pick out only permitted values
   const permittedHeaders = pick({
@@ -26,8 +27,8 @@ export const cmrDelete = async (conceptType, data, headers) => {
     'Accept',
     'Authorization',
     'Client-Id',
-    'Content-Type',
     'CMR-Request-Id',
+    'CMR-Scroll-Id',
     'Echo-Token'
   ])
 
@@ -39,25 +40,17 @@ export const cmrDelete = async (conceptType, data, headers) => {
     delete permittedHeaders['Echo-Token']
   }
 
-  // Use the provided native id
-  const { conceptId, nativeId } = data
-
-  // Use the string after '-' to determine the provider
-  const [, provider] = conceptId.split('-')
-
-  // Remove native id as it is not a supported key in umm
-  // eslint-disable-next-line no-param-reassign
-  delete data.nativeId
-
-  const cmrParameters = pascalCaseKeys(data)
+  const cmrParameters = stringify(
+    snakeCaseKeys(params), { indices: false, arrayFormat: 'brackets' }
+  )
 
   const { 'CMR-Request-Id': requestId } = permittedHeaders
 
   const requestConfiguration = {
     data: cmrParameters,
     headers: permittedHeaders,
-    method: 'DELETE',
-    url: `${process.env.cmrRootUrl}/ingest/providers/${provider}/${conceptType}/${nativeId}`
+    method: 'POST',
+    url: `${process.env.cmrRootUrl}/search/${conceptType}.${format}`
   }
 
   // Interceptors require an instance of axios
@@ -82,9 +75,12 @@ export const cmrDelete = async (conceptType, data, headers) => {
     const end = process.hrtime(start)
     const milliseconds = Math.round((end[0] * 1000) + (end[1] / 1000000))
 
+    // Retrieve the reported timing from CMR
+    const { headers } = response
+    const { 'cmr-took': cmrTook } = headers
     response.headers['request-duration'] = milliseconds
 
-    console.log(`Request ${requestId} to delete [concept: ${conceptType}] completed external request in [observed: ${milliseconds} ms]`)
+    console.log(`Request ${requestId} to [concept: ${conceptType}, format: ${format}] completed external request in [reported: ${cmrTook} ms, observed: ${milliseconds} ms]`)
 
     return response
   })

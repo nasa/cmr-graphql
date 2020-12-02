@@ -55,6 +55,8 @@ type Collection {
   polygons: [String]
   "Free text description of the quality of the collection data"
   quality: String
+  "The native id to set on the collection"
+  nativeId: String!
   "Describes any data/service related URLs that include project home pages, services, related data archives/servers, metadata extensions, direct links to online software packages, web mapping services, links to images, or other data"
   relatedUrls: JSON
   "Controlled Science Keywords describing the collection.  The controlled vocabulary for Science Keywords is maintained in the Keyword Management System (KMS)"
@@ -119,7 +121,7 @@ type Collection {
     limit: Int
     "Zero based offset of individual results"
     offset: Int
-    "The URS userid of the subscriber"
+    "The EDL userid of the subscriber"
     subscriberId: String
   ): SubscriptionList
 

@@ -29,7 +29,7 @@ export const ingestSubscription = async (params, headers, parsedInfo) => {
   const subscription = new Subscription(headers, requestInfo)
 
   // Contact CMR
-  subscription.ingest(params, ingestKeys, headers)
+  await subscription.ingest(params, ingestKeys, headers)
 
   // Parse the response from CMR
   await subscription.parseIngest(requestInfo)

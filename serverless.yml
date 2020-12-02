@@ -10,6 +10,8 @@ provider:
 
   environment:
     cmrRootUrl: ${self:custom.variables.cmrRootUrl}
+    edlRootUrl: ${self:custom.variables.edlRootUrl}
+    edlClientId: ${self:custom.variables.edlClientId}
 
     # Timeout for lambda 
     lambdaTimeout: ${env:LAMBDA_TIMEOUT}
@@ -137,6 +139,8 @@ custom:
   variables:
     # Default values for environment variables used to set environment variables
     cmrRootUrl: ${env:CMR_ROOT_URL, 'http://cmr.earthdata.nasa.gov'}
+    edlRootUrl: ${env:EDL_ROOT_URL, 'http://urs.earthdata.nasa.gov'}
+    edlClientId: ${env:EDL_CLIENT_ID, ''}
 
   # Default is 3000 so to avoid conflicts with other applications we'll define a new port
   serverless-offline:

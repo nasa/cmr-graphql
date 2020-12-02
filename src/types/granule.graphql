@@ -27,6 +27,8 @@ type Granule {
   links: JSON
   "The name of the geophysical parameter expressed in the data as well as associated quality flags and quality statistics. The quality statistics element contains measures of quality for the granule. The parameters used to set these measures are not preset and will be determined by the data producer. Each set of measures can occur many times either for the granule as a whole or for individual parameters. The quality flags contain the science, operational and automatic quality flags which indicate the overall quality assurance levels of specific parameter values within a granule."
   measuredParameters: JSON
+  "The native id to set on the granule"
+  nativeId: String!
   "A flag to indicate whether associated data can be downloaded"
   onlineAccessFlag: Boolean
   "This entity is used to store the characteristics of the orbit calculated spatial domain to include the model name, orbit number, start and stop orbit number, equator crossing date and time, and equator crossing longitude."

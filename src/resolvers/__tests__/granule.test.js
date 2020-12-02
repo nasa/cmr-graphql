@@ -97,7 +97,8 @@ describe('Collection', () => {
         .reply(200, {
           items: [{
             meta: {
-              'concept-id': 'G100000-EDSC'
+              'concept-id': 'G100000-EDSC',
+              'native-id': 'test-guid'
             },
             umm: {
               CloudCover: 25,
@@ -133,6 +134,7 @@ describe('Collection', () => {
               granuleUr
               links
               measuredParameters
+              nativeId
               onlineAccessFlag
               orbitCalculatedSpatialDomains
               originalFormat
@@ -171,6 +173,7 @@ describe('Collection', () => {
             granuleUr: 'parturient-etiam-malesuada',
             links: [],
             measuredParameters: {},
+            nativeId: 'test-guid',
             onlineAccessFlag: true,
             orbitCalculatedSpatialDomains: {},
             originalFormat: 'Elit',

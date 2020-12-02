@@ -25,6 +25,7 @@
     "hasTransforms": "meta.has-transforms",
     "hasVariables": "meta.has-variables",
     "metadataDates": "umm.MetadataDates",
+    "nativeId": "meta.native-id",
     "quality": "umm.Quality",
     "relatedUrls": "umm.RelatedUrls",
     "scienceKeywords": "umm.ScienceKeywords",

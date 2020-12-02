@@ -12,6 +12,7 @@
     "description": "umm.Description",
     "longName": "umm.LongName",
     "name": "umm.Name",
+    "nativeId": "meta.native-id",
     "relatedUrls": "umm.RelatedURLs",
     "serviceKeywords": "umm.ServiceKeywords",
     "serviceOptions": "umm.ServiceOptions",

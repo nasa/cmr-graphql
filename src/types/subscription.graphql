@@ -15,7 +15,7 @@ type Subscription {
   query: String
   "The revision associated with this subscription"
   revisionId: String
-  "The URS userid of the subscriber"
+  "The EDL userid of the subscriber"
   subscriberId: String
 
   collection: Collection
@@ -61,12 +61,12 @@ type Mutation {
     "The concept id of the parent CMR collection"
     collectionConceptId: String!
     "The email address that notifications will be delivered to"
-    emailAddress: String!
+    emailAddress: String
     "The name of a subscription"
     name: String!
     "The native id to set on the subscription"
     nativeId: String
-    "The URS userid of the subscriber"
+    "The EDL userid of the subscriber"
     subscriberId: String!
     "The query used to retrieve data for the subscription"
     query: String!
@@ -76,12 +76,12 @@ type Mutation {
     "The concept id of the parent CMR collection"
     collectionConceptId: String!
     "The email address that notifications will be delivered to"
-    emailAddress: String!
+    emailAddress: String
     "The name of a subscription"
     name: String!
     "The native id to set on the subscription"
     nativeId: String!
-    "The URS userid of the subscriber"
+    "The EDL userid of the subscriber"
     subscriberId: String!
     "The query used to retrieve data for the subscription"
     query: String!

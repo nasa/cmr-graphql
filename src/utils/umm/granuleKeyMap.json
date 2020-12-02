@@ -9,6 +9,7 @@
     "dataGranule": "umm.DataGranule",
     "granuleUr": "umm.GranuleUR",
     "measuredParameters": "umm.MeasuredParameters",
+    "nativeId": "meta.native-id",
     "orbitCalculatedSpatialDomains": "umm.OrbitCalculatedSpatialDomains",
     "providerDates": "umm.ProviderDates",
     "relatedUrls": "umm.RelatedUrls",
