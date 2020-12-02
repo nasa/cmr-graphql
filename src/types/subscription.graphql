@@ -67,7 +67,7 @@ type Mutation {
     "The native id to set on the subscription"
     nativeId: String
     "The EDL userid of the subscriber"
-    subscriberId: String
+    subscriberId: String!
     "The query used to retrieve data for the subscription"
     query: String!
   ): SubscriptionMutationResponse
@@ -82,7 +82,7 @@ type Mutation {
     "The native id to set on the subscription"
     nativeId: String!
     "The EDL userid of the subscriber"
-    subscriberId: String
+    subscriberId: String!
     "The query used to retrieve data for the subscription"
     query: String!
   ): SubscriptionMutationResponse
