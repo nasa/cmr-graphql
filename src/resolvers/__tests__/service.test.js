@@ -64,7 +64,8 @@ describe('Service', () => {
         .reply(200, {
           items: [{
             meta: {
-              'concept-id': 'S100000-EDSC'
+              'concept-id': 'S100000-EDSC',
+              'native-id': 'test-guid'
             },
             umm: {
               Description: 'Parturient Dolor Cras Aenean Dapibus',
@@ -93,6 +94,7 @@ describe('Service', () => {
               description
               longName
               name
+              nativeId
               relatedUrls
               serviceOptions
               supportedReformattings
@@ -113,6 +115,7 @@ describe('Service', () => {
             description: 'Parturient Dolor Cras Aenean Dapibus',
             longName: 'Parturient Egestas Lorem',
             name: 'Parturient',
+            nativeId: 'test-guid',
             relatedUrls: [],
             serviceOptions: {
               supportedReformattings: [{

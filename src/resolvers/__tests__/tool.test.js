@@ -64,7 +64,8 @@ describe('Tool', () => {
         .reply(200, {
           items: [{
             meta: {
-              'concept-id': 'T100000-EDSC'
+              'concept-id': 'T100000-EDSC',
+              'native-id': 'test-guid'
             },
             umm: {
               AccessConstraints: 'NONE',
@@ -111,6 +112,7 @@ describe('Tool', () => {
               longName
               metadataSpecification
               name
+              nativeId
               organizations
               quality
               relatedUrls
@@ -147,6 +149,7 @@ describe('Tool', () => {
             longName: 'Etiam Mollis Sem Venenatis',
             metadataSpecification: {},
             name: 'Etiam',
+            nativeId: 'test-guid',
             organizations: [],
             quality: {},
             relatedUrls: [],

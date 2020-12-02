@@ -15,6 +15,7 @@
     "longName": "umm.LongName",
     "metadataSpecification": "umm.MetadataSpecification",
     "name": "umm.Name",
+    "nativeId": "meta.native-id",
     "organizations": "umm.Organizations",
     "quality": "umm.Quality",
     "relatedUrls": "umm.RelatedURLs",

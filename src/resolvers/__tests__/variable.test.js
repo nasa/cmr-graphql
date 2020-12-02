@@ -64,7 +64,8 @@ describe('Variable', () => {
         .reply(200, {
           items: [{
             meta: {
-              'concept-id': 'V100000-EDSC'
+              'concept-id': 'V100000-EDSC',
+              'native-id': 'test-guid'
             },
             umm: {
               DataType: 'Dolor Nullam Venenatis',
@@ -95,6 +96,7 @@ describe('Variable', () => {
               longName
               measurementIdentifiers
               name
+              nativeId
               offset
               scale
               scienceKeywords
@@ -118,6 +120,7 @@ describe('Variable', () => {
             longName: 'Vehicula Aenean Lorem',
             measurementIdentifiers: [],
             name: 'Vehicula',
+            nativeId: 'test-guid',
             offset: 1.234,
             scale: 1.234,
             scienceKeywords: [],

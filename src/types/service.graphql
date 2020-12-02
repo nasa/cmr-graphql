@@ -13,6 +13,8 @@ type Service {
   longName: String
   "The name of the service, software, or tool"
   name: String
+  "The native id to set on the service"
+  nativeId: String!
   "This element contains important information about the universal resource locator (URL) for the service"
   relatedUrls: JSON
   "Allows for the specification of Earth Science Service keywords that are representative of the service"

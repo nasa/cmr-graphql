@@ -104,7 +104,8 @@ describe('Collection', () => {
         .reply(200, {
           items: [{
             meta: {
-              'concept-id': 'C100000-EDSC'
+              'concept-id': 'C100000-EDSC',
+              'native-id': 'test-guid'
             },
             umm: {
               Abstract: 'Cras mattis consectetur purus sit amet fermentum.',
@@ -155,6 +156,7 @@ describe('Collection', () => {
               hasVariables
               lines
               metadataDates
+              nativeId
               onlineAccessFlag
               organizations
               originalFormat
@@ -205,6 +207,7 @@ describe('Collection', () => {
             hasVariables: true,
             lines: [],
             metadataDates: [],
+            nativeId: 'test-guid',
             onlineAccessFlag: true,
             organizations: [],
             originalFormat: 'RISUS',

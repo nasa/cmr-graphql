@@ -13,6 +13,8 @@ type Tool {
   description: String,
   "The Digital Object Identifier (DOI) of the web user interface or downloadable tool"
   doi: String,
+  "The native id of a tool"
+  nativeId: String
   "The long name of the downloadable tool or web user interface"
   longName: String,
   "Requires the client, or user, to add in schema information into every tool record. It includes the schema's name, version, and URL location. The information is controlled through enumerations at the end of this schema"
