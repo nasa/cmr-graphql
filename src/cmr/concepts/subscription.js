@@ -38,7 +38,7 @@ export default class Subscription extends Concept {
 
     super.ingest({
       ...data,
-      EmailAddress: emailAddress
+      emailAddress
     }, requestedKeys, providedHeaders)
   }
 
