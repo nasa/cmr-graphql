@@ -81,6 +81,7 @@ describe('Collection', () => {
               online_access_flag: true,
               organizations: [],
               original_format: 'RISUS',
+              processing_level_id: 'Not Provided',
               points: [],
               polygons: [],
               short_name: 'LOREM-QUAM',
@@ -116,6 +117,9 @@ describe('Collection', () => {
               DataCenters: [],
               DOI: {},
               MetadataDates: [],
+              ProcessingLevel: {
+                Id: 'Not Provided'
+              },
               Quality: 'Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.',
               RelatedUrls: [],
               ScienceKeywords: [],
@@ -160,6 +164,7 @@ describe('Collection', () => {
               onlineAccessFlag
               organizations
               originalFormat
+              processingLevelId
               points
               polygons
               quality
@@ -211,6 +216,7 @@ describe('Collection', () => {
             onlineAccessFlag: true,
             organizations: [],
             originalFormat: 'RISUS',
+            processingLevelId: 'Not Provided',
             points: [],
             polygons: [],
             quality: 'Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.',

@@ -63,6 +63,8 @@ type Query {
     limit: Int
     "Zero based offset of individual results"
     offset: Int
+    "The type of the service"
+    type: String
   ): ServiceList!
 
   service (
