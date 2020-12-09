@@ -57,6 +57,8 @@ type Collection {
   quality: String
   "The native id to set on the collection"
   nativeId: String!
+  "An identifier indicating the level at which the data in the collection are processed, ranging from Level0 (raw instrument data at full resolution) to Level4 (model output or analysis results).  The value of Processing Level Id is chosen from a controlled vocabulary"
+  processingLevelId: String
   "Describes any data/service related URLs that include project home pages, services, related data archives/servers, metadata extensions, direct links to online software packages, web mapping services, links to images, or other data"
   relatedUrls: JSON
   "Controlled Science Keywords describing the collection.  The controlled vocabulary for Science Keywords is maintained in the Keyword Management System (KMS)"
@@ -181,6 +183,8 @@ type Query {
     point: String
     "Polygon points are provided in counter-clockwise order. The last point should match the first point to close the polygon. The values are listed comma separated in longitude latitude order, i.e. lon1, lat1, lon2, lat2, lon3, lat3, and so on"
     polygon: String
+    "An identifier indicating the level at which the data in the collection are processed, ranging from Level0 (raw instrument data at full resolution) to Level4 (model output or analysis results).  The value of Processing Level Id is chosen from a controlled vocabulary"
+    processingLevelId: String
     "The name of the provider associated with the collection"
     provider: String,
     "UMM Service concept id"
@@ -189,6 +193,8 @@ type Query {
     shortName: String
     "One or more sort keys can be specified to impact searching. Fields can be prepended with a '-' to sort in descending order. Ascending order is the default but + can be used to explicitly request ascending"
     sortKey: String
+    "Tags associated with the collection."
+    tagKey: String
     "The temporal datetime has to be in yyyy-MM-ddTHH:mm:ssZ format"
     temporal: String
     "UMM Variable concept id"
