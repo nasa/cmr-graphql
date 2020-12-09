@@ -11,6 +11,26 @@ export default class Service extends Concept {
   }
 
   /**
+ * Returns an array of keys representing supported search params for the json endpoint
+ */
+  getPermittedJsonSearchParams() {
+    return [
+      ...super.getPermittedJsonSearchParams(),
+      'type'
+    ]
+  }
+
+  /**
+   * Returns an array of keys representing supported search params for the umm endpoint
+   */
+  getPermittedUmmSearchParams() {
+    return [
+      ...super.getPermittedUmmSearchParams(),
+      'type'
+    ]
+  }
+
+  /**
    * Parse and return the array of data from the nested response body
    * @param {Object} jsonResponse HTTP response from the CMR endpoint
    */
