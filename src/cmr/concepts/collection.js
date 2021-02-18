@@ -1,3 +1,4 @@
+import camelcaseKeys from 'camelcase-keys'
 import Concept from './concept'
 
 export default class Collection extends Concept {
@@ -8,6 +9,8 @@ export default class Collection extends Concept {
    */
   constructor(headers, requestInfo) {
     super('collections', headers, requestInfo)
+
+    this.facets = []
   }
 
   /**
@@ -46,6 +49,13 @@ export default class Collection extends Concept {
   }
 
   /**
+   * Return facets associated with the collection results
+   */
+  getFacets() {
+    return this.facets
+  }
+
+  /**
    * Returns an array of keys representing supported search params for the json endpoint
    */
   getPermittedJsonSearchParams() {
@@ -56,6 +66,7 @@ export default class Collection extends Concept {
       'collection_concept_id',
       'has_granules_or_cwic',
       'has_granules',
+      'include_facets',
       'include_has_granules',
       'include_tags',
       'name',
@@ -95,6 +106,49 @@ export default class Collection extends Concept {
       'tool_concept_id',
       'variable_concept_id'
     ]
+  }
+
+  /**
+   * Return the result set formatted for the graphql json response
+   */
+  getFormattedResponse() {
+    // Determine if the query was a list or not, list queries return meta
+    // keys using a slightly different format
+    const {
+      isList,
+      metaKeys
+    } = this.requestInfo
+
+    // While technically the facets are available with a single collection because we use the
+    // search endpoint, we dont support it in the response so we'll only return facets when
+    // when the user has requested the list response
+    if (isList && metaKeys.includes('collectionFacets')) {
+      // Incuded the facets in the metakeys returned
+      return {
+        facets: this.getFacets(),
+        ...super.getFormattedResponse()
+      }
+    }
+
+    // Facets were not requested, fall back to the default response
+    return super.getFormattedResponse()
+  }
+
+  /**
+   * Parse and return the array of data from the nested response body
+   * @param {Object} jsonResponse HTTP response from the CMR endpoint
+   */
+  parseJsonBody(jsonResponse) {
+    const { data } = jsonResponse
+
+    const { feed } = data
+
+    const { entry, facets } = feed
+
+    // Store the facets (potentially) returned by the request
+    this.facets = camelcaseKeys(facets, { deep: true })
+
+    return entry
   }
 
   /**

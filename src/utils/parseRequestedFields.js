@@ -27,17 +27,19 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
     const {
       [`${upperFirst(conceptName.toLowerCase())}List`]: conceptListKeysRequested
     } = fieldsByTypeName
+
     const {
       count,
       cursor,
-      items = {}
+      items = {},
+      facets
     } = conceptListKeysRequested;
 
     ({ fieldsByTypeName } = items)
 
-    // If the user requested `count` or `cursor` and no other fields, default the requested fields
+    // If the user requested `count`, `cursor` or `facets` and no other fields, default the requested fields
     // to convince graph that it should still make a request
-    if ((count || cursor) && isEmpty(items)) {
+    if ((count || cursor || facets) && isEmpty(items)) {
       requestedFields = ['conceptId']
     }
 
@@ -46,6 +48,9 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
 
     // If count was requested, append the specific concept for logging specificity
     if (count) metaKeys.push(`${conceptName.toLowerCase()}Count`)
+
+    // If facets were included append the facet metakey
+    if (facets) metaKeys.push(`${conceptName.toLowerCase()}Facets`)
   }
 
   // If a plural query is being performed, and the user has not requested any

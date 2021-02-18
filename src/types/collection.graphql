@@ -155,6 +155,8 @@ type CollectionList {
   cursor: String
   "The list of collection search results"
   items: [Collection]
+  "Facets are counts of unique values from fields in items matching search results"
+  facets: JSON
 }
 
 type Query {
@@ -177,7 +179,9 @@ type Query {
     hasGranules: Boolean,
     "If this parameter is set to 'true' this will include a flag indicating true or false if the collection has any granules at all"
     includeHasGranules: Boolean,
-    "If this parameter is set (e.g. include_tags=gov.nasa.earthdata.search.*,gov.nasa.echo.*), the collection results will contain an additional field 'tags' within each collection. The value of the tags field is a list of tag_keys that are associated with the collection. Only the tags with tag_key matching the values of include_tags parameter (with wildcard support) are included in the results"
+    "If this parameter is set (e.g. includeFacets=v2), the results will include a new top level key `facets` that contains the facets related to the collection results"
+    includeFacets: String,
+    "If this parameter is set (e.g. includeTags=gov.nasa.earthdata.search.*,gov.nasa.echo.*), the collection results will contain an additional field 'tags' within each collection. The value of the tags field is a list of tag_keys that are associated with the collection. Only the tags with tag_key matching the values of include_tags parameter (with wildcard support) are included in the results"
     includeTags: String,
     "Search using a point involves using a pair of values representing the point coordinates as parameters. The first value is the longitude and second value is the latitude"
     point: String
