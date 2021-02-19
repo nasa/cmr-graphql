@@ -19,6 +19,7 @@
     "conceptId": "meta.concept-id",
     "contactPersons": "umm.ContactPersons",
     "dataCenters": "umm.DataCenters",
+    "nativeDataFormats": "custom.NativeDataFormats",
     "doi": "umm.DOI",
     "hasFormats": "meta.has-formats",
     "hasSpatialSubsetting": "meta.has-spatial-subsetting",

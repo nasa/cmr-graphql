@@ -27,6 +27,8 @@ type Collection {
   doi: JSON
   "True if any of its associated services support spatial subsetting"
   datasetId: String
+  "An array containing all of the different formats of the underlying data of a collection"
+  nativeDataFormats: [String]
   "True if there are multiple supported formats for any services associated with the collection"
   hasFormats: Boolean 
   "True if there are granules associated with the collection"
@@ -41,12 +43,14 @@ type Collection {
   hasVariables: Boolean
   "Dates related to activities involving the metadata record itself"
   metadataDates: JSON
+  "The format of original collection metadata (Known in CMR as original format)"
+  metadataFormat: String
   "True if the data is available online"
   onlineAccessFlag: Boolean
   "Organizations associated with the metadata, including data centers"
   organizations: [String]
   "Original metadata format"
-  originalFormat: String
+  originalFormat: String @deprecated(reason: "Use `metadataFormat`.")
   "Spatial coverage of the collection"
   lines: [String]
   "Spatial coverage of the collection"
@@ -183,6 +187,8 @@ type Query {
     includeFacets: String,
     "If this parameter is set (e.g. includeTags=gov.nasa.earthdata.search.*,gov.nasa.echo.*), the collection results will contain an additional field 'tags' within each collection. The value of the tags field is a list of tag_keys that are associated with the collection. Only the tags with tag_key matching the values of include_tags parameter (with wildcard support) are included in the results"
     includeTags: String,
+    "Options to provide to CMR pertaining to and, or, and wildcard searching"
+    options: JSON
     "Search using a point involves using a pair of values representing the point coordinates as parameters. The first value is the longitude and second value is the latitude"
     point: String
     "Polygon points are provided in counter-clockwise order. The last point should match the first point to close the polygon. The values are listed comma separated in longitude latitude order, i.e. lon1, lat1, lon2, lat2, lon3, lat3, and so on"
@@ -196,7 +202,7 @@ type Query {
     "The short name associated with the collection"
     shortName: String
     "One or more sort keys can be specified to impact searching. Fields can be prepended with a '-' to sort in descending order. Ascending order is the default but + can be used to explicitly request ascending"
-    sortKey: String
+    sortKey: [String]
     "Tags associated with the collection."
     tagKey: String
     "The temporal datetime has to be in yyyy-MM-ddTHH:mm:ssZ format"

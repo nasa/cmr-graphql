@@ -144,6 +144,15 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
     ummKeys = ummKeys.filter((x) => !jsonKeys.includes(x))
   }
 
+  // If facets were requested, we need to ensure we have at least 1 json key
+  // some dabecause facets are not available from the umm endpoint
+  if (metaKeys.includes('collectionFacets') && jsonKeys.length === 0) {
+    jsonKeys.push('conceptId')
+
+    // Remove the concept id from the ummKeys (if it exists) because we just moved it to the jsonKeys
+    ummKeys = ummKeys.filter((e) => e !== 'conceptId')
+  }
+
   // Sort the keys to prevent fragility in testing
   return {
     jsonKeys: jsonKeys.sort(),

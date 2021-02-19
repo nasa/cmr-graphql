@@ -136,7 +136,18 @@ describe('Collection', () => {
             umm: {
               Abstract: 'Cras mattis consectetur purus sit amet fermentum.',
               AncillaryKeywords: [],
-              ArchiveAndDistributionInformation: {},
+              ArchiveAndDistributionInformation: {
+                FileDistributionInformation: [
+                  {
+                    FormatType: 'Native',
+                    Fees: 'Free',
+                    Format: 'ASCII',
+                    Media: ['FTP']
+                  }, {
+                    Format: 'UNSPECIFIED'
+                  }
+                ]
+              },
               CollectionCitations: [],
               ContactPersons: [],
               DataCenters: [],
@@ -186,13 +197,15 @@ describe('Collection', () => {
               hasVariables
               lines
               metadataDates
+              metadataFormat
+              nativeDataFormats
               nativeId
               onlineAccessFlag
               organizations
               originalFormat
-              processingLevelId
               points
               polygons
+              processingLevelId
               quality
               relatedUrls
               scienceKeywords
@@ -228,22 +241,33 @@ describe('Collection', () => {
                       apply: 'http://example.com:443/search/collections.json?include_facets=v2&science_keywords_h%5B0%5D%5Btopic%5D=Aerosols',
                     },
                     title: 'Aerosols',
-                    type: 'filter',
+                    type: 'filter'
                   }
                 ],
                 hasChildren: true,
                 title: 'Keywords',
-                type: 'group',
+                type: 'group'
               }
             ],
             hasChildren: true,
             title: 'Browse Collections',
-            type: 'group',
+            type: 'group'
           },
           items: [{
             abstract: 'Cras mattis consectetur purus sit amet fermentum.',
             ancillaryKeywords: [],
-            archiveAndDistributionInformation: {},
+            archiveAndDistributionInformation: {
+              fileDistributionInformation: [
+                {
+                  formatType: 'Native',
+                  fees: 'Free',
+                  format: 'ASCII',
+                  media: ['FTP']
+                }, {
+                  format: 'UNSPECIFIED'
+                }
+              ]
+            },
             archiveCenter: 'CONDIMENTUM/TELLUS/PHARETRA',
             boxes: [],
             browseFlag: true,
@@ -263,7 +287,9 @@ describe('Collection', () => {
             hasVariables: true,
             lines: [],
             metadataDates: [],
+            metadataFormat: 'RISUS',
             nativeId: 'test-guid',
+            nativeDataFormats: ['ASCII'],
             onlineAccessFlag: true,
             organizations: [],
             originalFormat: 'RISUS',
