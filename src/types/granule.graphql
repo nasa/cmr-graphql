@@ -1,45 +1,45 @@
 type Granule {
-  "Spatial coverage of the granule"
+  "Spatial coverage of the granule."
   boxes: [String]
-  "Boolean value displaying whether or not a granule has browse imagery"
+  "Boolean value displaying whether or not a granule has browse imagery."
   browseFlag: Boolean
-  "The concept id of the parent CMR collection"
+  "The concept id of the parent CMR collection."
   collectionConceptId: String
   "A percentage value indicating how much of the area of a granule (the EOSDIS data unit) has been obscured by clouds. It is worth noting that there are many different measures of cloud cover within the EOSDIS data holdings and that the cloud cover parameter that is represented in the archive is dataset-specific."
   cloudCover: Int
   "The unique concept id assigned to the granule."
   conceptId: String!
-  "Coordinate system info of the metadata"
+  "Coordinate system info of the metadata."
   coordinateSystem: String
-  "Provider Id"
+  "Provider Id."
   dataCenter: String
-  "The basic descriptive characteristics associated with a granule"
+  "The basic descriptive characteristics associated with a granule."
   dataGranule: JSON
-  "Alias for entry_title"
+  "Alias for entry_title."
   datasetId: String
-  "The day/night flag of the granule"
+  "The day/night flag of the granule."
   dayNightFlag: String
-  "The file size of the granule contents in bytes"
+  "The file size of the granule contents in bytes."
   granuleSize: Float
   "The Universal Reference ID of the granule referred by the data provider. This ID is unique per data provider."
   granuleUr: String
-  "A list of any URLs in the granule"
+  "A list of any URLs in the granule."
   links: JSON
   "The name of the geophysical parameter expressed in the data as well as associated quality flags and quality statistics. The quality statistics element contains measures of quality for the granule. The parameters used to set these measures are not preset and will be determined by the data producer. Each set of measures can occur many times either for the granule as a whole or for individual parameters. The quality flags contain the science, operational and automatic quality flags which indicate the overall quality assurance levels of specific parameter values within a granule."
   measuredParameters: JSON
-  "The native id to set on the granule"
+  "The native id to set on the granule."
   nativeId: String!
-  "A flag to indicate whether associated data can be downloaded"
+  "A flag to indicate whether associated data can be downloaded."
   onlineAccessFlag: Boolean
   "This entity is used to store the characteristics of the orbit calculated spatial domain to include the model name, orbit number, start and stop orbit number, equator crossing date and time, and equator crossing longitude."
   orbitCalculatedSpatialDomains: JSON
-  "Native format of the granule"
+  "Native format of the granule."
   originalFormat: String
-  "A list of associated lat/lon points"
+  "A list of associated lat/lon points."
   points: [String]
-  "Spatial coverage of the collection"
+  "Spatial coverage of the collection."
   polygons: [String]
-  "Granule ID provided by the producer"
+  "Granule ID provided by the producer."
   producerGranuleId: String
   "Dates related to activities involving the the granule and the data provider database with the exception for Delete. For Create, Update, and Insert the date is the date that the granule file is created, updated, or inserted into the provider database by the provider. Delete is the date that the CMR should delete the granule metadata record from its repository."
   providerDates: JSON
@@ -47,22 +47,22 @@ type Granule {
   relatedUrls: JSON
   "This class contains attributes which describe the spatial extent of a granule. Spatial Extent includes any or all of Granule Localities, Horizontal Spatial Domain, and Vertical Spatial Domain."
   spatialExtent: JSON
-  "This class contains attributes which describe the temporal extent of a granule. Temporal Extent includes either a Range Date Time, or a Single Date Time"
+  "This class contains attributes which describe the temporal extent of a granule. Temporal Extent includes either a Range Date Time, or a Single Date Time."
   temporalExtent: JSON
-  "End time of the metadata"
+  "End time of the metadata."
   timeEnd: String
-  "Start time of the metadata"
+  "Start time of the metadata."
   timeStart: String
-  "Atom response: either 'ECHO dataset metadata' or 'ECHO granule metadata'"
+  "Atom response: either 'ECHO dataset metadata' or 'ECHO granule metadata'."
   title: String
-  "The date/time the search was executed"
+  "The date/time the search was executed."
   updated: String
 }
 
 type GranuleList {
   "The number of hits for a given search."
   count: Int
-  "Cursor that points to the a specific position in a list of requested records"
+  "Cursor that points to the a specific position in a list of requested records."
   cursor: String
   "The list of granule search results."
   items: [Granule]
@@ -78,11 +78,11 @@ type Query {
     conceptId: [String]
     "The unique concept id assigned to the parent collection."
     collectionConceptId: String,
-    "Cursor that points to the a specific position in a list of requested records"
+    "Cursor that points to the a specific position in a list of requested records."
     cursor: String
     "The number of granules requested by the user."
     limit: Int
-    "Zero based offset of individual results"
+    "Zero based offset of individual results."
     offset: Int
     "Search using a point involves using a pair of values representing the point coordinates as parameters. The first value is the longitude and second value is the latitude."
     point: String

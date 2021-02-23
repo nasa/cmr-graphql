@@ -27,17 +27,19 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
     const {
       [`${upperFirst(conceptName.toLowerCase())}List`]: conceptListKeysRequested
     } = fieldsByTypeName
+
     const {
       count,
       cursor,
-      items = {}
+      items = {},
+      facets
     } = conceptListKeysRequested;
 
     ({ fieldsByTypeName } = items)
 
-    // If the user requested `count` or `cursor` and no other fields, default the requested fields
+    // If the user requested `count`, `cursor` or `facets` and no other fields, default the requested fields
     // to convince graph that it should still make a request
-    if ((count || cursor) && isEmpty(items)) {
+    if ((count || cursor || facets) && isEmpty(items)) {
       requestedFields = ['conceptId']
     }
 
@@ -46,6 +48,9 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
 
     // If count was requested, append the specific concept for logging specificity
     if (count) metaKeys.push(`${conceptName.toLowerCase()}Count`)
+
+    // If facets were included append the facet metakey
+    if (facets) metaKeys.push(`${conceptName.toLowerCase()}Facets`)
   }
 
   // If a plural query is being performed, and the user has not requested any
@@ -137,6 +142,15 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
 
     // Remove any keys that we moved over to jsonKeys
     ummKeys = ummKeys.filter((x) => !jsonKeys.includes(x))
+  }
+
+  // If facets were requested, we need to ensure we have at least 1 json key
+  // some dabecause facets are not available from the umm endpoint
+  if (metaKeys.includes('collectionFacets') && jsonKeys.length === 0) {
+    jsonKeys.push('conceptId')
+
+    // Remove the concept id from the ummKeys (if it exists) because we just moved it to the jsonKeys
+    ummKeys = ummKeys.filter((e) => e !== 'conceptId')
   }
 
   // Sort the keys to prevent fragility in testing

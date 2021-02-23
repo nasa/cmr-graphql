@@ -1,74 +1,74 @@
 type Service {
-  "Words or phrases to further describe the service"
+  "Words or phrases to further describe the service."
   ancillaryKeywords: [String]
-  "The unique concept id assigned to the service"
+  "The unique concept id assigned to the service."
   conceptId: String!
-  "This is the contact groups of the service"
+  "This is the contact groups of the service."
   contactGroups: JSON
-  "This is the contact persons of the service"
+  "This is the contact persons of the service."
   contactPersons: JSON
-  "A brief description of the service"
+  "A brief description of the service."
   description: String
-  "The long name of the service, software, or tool"
+  "The long name of the service, software, or tool."
   longName: String
-  "The name of the service, software, or tool"
+  "The name of the service, software, or tool."
   name: String
-  "The native id to set on the service"
+  "The native id to set on the service."
   nativeId: String!
-  "This element contains important information about the universal resource locator (URL) for the service"
+  "This element contains important information about the universal resource locator (URL) for the service."
   relatedUrls: JSON
-  "Allows for the specification of Earth Science Service keywords that are representative of the service"
+  "Allows for the specification of Earth Science Service keywords that are representative of the service."
   serviceKeywords: JSON
-  "Service options, data transformations and output formats"
+  "Service options, data transformations and output formats."
   serviceOptions: JSON
-  "The service provider, or organization, or institution responsible for developing, archiving, and/or distributing the service"
+  "The service provider, or organization, or institution responsible for developing, archiving, and/or distributing the service."
   serviceOrganizations: JSON
-  "List of input projection names supported by the service"
+  "List of input projection names supported by the service."
   supportedInputProjections: JSON
-  "List of output projection names supported by the service"
+  "List of output projection names supported by the service."
   supportedOutputProjections: JSON
-  "List of format name combinations which explicitly state which re-formatting options are available"
+  "List of format name combinations which explicitly state which re-formatting options are available."
   supportedReformattings: JSON
-  "The type of the service"
+  "The type of the service."
   type: String
-  "Represents the Internet site where you can directly access the back-end service"
+  "Represents the Internet site where you can directly access the back-end service."
   url: JSON
 
   collections (
-    "The unique concept id assigned to the service"
+    "The unique concept id assigned to the service."
     conceptId: [String]
-    "The number of collections requested by the user"
+    "The number of collections requested by the user."
     limit: Int
-    "Zero based offset of individual results"
+    "Zero based offset of individual results."
     offset: Int
   ): CollectionList
 }
 
 type ServiceList {
-  "The number of hits for a given search"
+  "The number of hits for a given search."
   count: Int
-  "Cursor that points to the a specific position in a list of requested records"
+  "Cursor that points to the a specific position in a list of requested records."
   cursor: String
-  "The list of service search results"
+  "The list of service search results."
   items: [Service]
 }
 
 type Query {
   services (
-    "The unique concept id assigned to the service"
+    "The unique concept id assigned to the service."
     conceptId: [String]
-    "Cursor that points to the a specific position in a list of requested records"
+    "Cursor that points to the a specific position in a list of requested records."
     cursor: String
-    "The number of servies requested by the user"
+    "The number of servies requested by the user."
     limit: Int
-    "Zero based offset of individual results"
+    "Zero based offset of individual results."
     offset: Int
-    "The type of the service"
+    "The type of the service."
     type: String
   ): ServiceList!
 
   service (
-    "The unique concept id assigned to the service"
+    "The unique concept id assigned to the service."
     conceptId: String!
   ): Service
 }

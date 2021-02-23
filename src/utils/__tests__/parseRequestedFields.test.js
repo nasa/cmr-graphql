@@ -103,6 +103,56 @@ describe('parseRequestedFields', () => {
         isList: true
       })
     })
+    describe('with facets requested', () => {
+      test('returns both json (conceptId), umm keys and facets', () => {
+        const requestInfo = {
+          name: 'collections',
+          alias: 'collections',
+          args: {},
+          fieldsByTypeName: {
+            CollectionList: {
+              facets: {
+                name: 'facets',
+                alias: 'facets',
+                args: {},
+                fieldsByTypeName: {}
+              },
+              items: {
+                name: 'items',
+                alias: 'items',
+                args: {},
+                fieldsByTypeName: {
+                  Collection: {
+                    conceptId: {
+                      name: 'conceptId',
+                      alias: 'conceptId',
+                      args: {},
+                      fieldsByTypeName: {}
+                    },
+                    keyTwo: {
+                      name: 'keyTwo',
+                      alias: 'keyTwo',
+                      args: {},
+                      fieldsByTypeName: {}
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        const requestedFields = parseRequestedFields(requestInfo, keyMap, 'collection')
+
+        expect(requestedFields).toEqual({
+          jsonKeys: ['conceptId'],
+          metaKeys: ['collectionFacets'],
+          ummKeys: ['keyTwo'],
+          ummKeyMappings,
+          isList: true
+        })
+      })
+    })
   })
 
   describe('both json and umm keys requested', () => {
@@ -249,8 +299,8 @@ describe('parseRequestedFields', () => {
   describe('only cursor', () => {
     test('returns only conceptId', () => {
       const requestInfo = {
-        name: 'tests',
-        alias: 'tests',
+        name: 'collections',
+        alias: 'collections',
         args: {},
         fieldsByTypeName: {
           CollectionList: {
@@ -269,6 +319,36 @@ describe('parseRequestedFields', () => {
       expect(requestedFields).toEqual({
         jsonKeys: ['conceptId'],
         metaKeys: ['collectionCursor'],
+        ummKeys: [],
+        ummKeyMappings,
+        isList: true
+      })
+    })
+  })
+
+  describe('only facets', () => {
+    test('returns only facets', () => {
+      const requestInfo = {
+        name: 'collections',
+        alias: 'collections',
+        args: {},
+        fieldsByTypeName: {
+          CollectionList: {
+            facets: {
+              name: 'facets',
+              alias: 'facets',
+              args: {},
+              fieldsByTypeName: {}
+            }
+          }
+        }
+      }
+
+      const requestedFields = parseRequestedFields(requestInfo, keyMap, 'collection')
+
+      expect(requestedFields).toEqual({
+        jsonKeys: ['conceptId'],
+        metaKeys: ['collectionFacets'],
         ummKeys: [],
         ummKeyMappings,
         isList: true

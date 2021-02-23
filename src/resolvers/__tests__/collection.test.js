@@ -91,7 +91,32 @@ describe('Collection', () => {
               time_start: '2016-04-04T17:00:00.000Z',
               title: 'Condimentum Quam Mattis Cursus Pharetra',
               version_id: '1.0.0'
-            }]
+            }],
+            facets: {
+              title: 'Browse Collections',
+              type: 'group',
+              has_children: true,
+              children: [
+                {
+                  title: 'Keywords',
+                  type: 'group',
+                  applied: false,
+                  has_children: true,
+                  children: [
+                    {
+                      title: 'Aerosols',
+                      type: 'filter',
+                      applied: false,
+                      count: 1,
+                      links: {
+                        apply: 'http://example.com:443/search/collections.json?include_facets=v2&science_keywords_h%5B0%5D%5Btopic%5D=Aerosols'
+                      },
+                      has_children: true
+                    }
+                  ]
+                }
+              ]
+            }
           }
         })
 
@@ -111,7 +136,18 @@ describe('Collection', () => {
             umm: {
               Abstract: 'Cras mattis consectetur purus sit amet fermentum.',
               AncillaryKeywords: [],
-              ArchiveAndDistributionInformation: {},
+              ArchiveAndDistributionInformation: {
+                FileDistributionInformation: [
+                  {
+                    FormatType: 'Native',
+                    Fees: 'Free',
+                    Format: 'ASCII',
+                    Media: ['FTP']
+                  }, {
+                    Format: 'UNSPECIFIED'
+                  }
+                ]
+              },
               CollectionCitations: [],
               ContactPersons: [],
               DataCenters: [],
@@ -137,6 +173,7 @@ describe('Collection', () => {
         query: `{
           collections {
             count
+            facets
             items {
               abstract
               ancillaryKeywords
@@ -160,13 +197,15 @@ describe('Collection', () => {
               hasVariables
               lines
               metadataDates
+              metadataFormat
+              nativeDataFormats
               nativeId
               onlineAccessFlag
               organizations
               originalFormat
-              processingLevelId
               points
               polygons
+              processingLevelId
               quality
               relatedUrls
               scienceKeywords
@@ -189,10 +228,46 @@ describe('Collection', () => {
       expect(data).toEqual({
         collections: {
           count: 1,
+          facets: {
+            children: [
+              {
+                applied: false,
+                children: [
+                  {
+                    applied: false,
+                    count: 1,
+                    hasChildren: true,
+                    links: {
+                      apply: 'http://example.com:443/search/collections.json?include_facets=v2&science_keywords_h%5B0%5D%5Btopic%5D=Aerosols',
+                    },
+                    title: 'Aerosols',
+                    type: 'filter'
+                  }
+                ],
+                hasChildren: true,
+                title: 'Keywords',
+                type: 'group'
+              }
+            ],
+            hasChildren: true,
+            title: 'Browse Collections',
+            type: 'group'
+          },
           items: [{
             abstract: 'Cras mattis consectetur purus sit amet fermentum.',
             ancillaryKeywords: [],
-            archiveAndDistributionInformation: {},
+            archiveAndDistributionInformation: {
+              fileDistributionInformation: [
+                {
+                  formatType: 'Native',
+                  fees: 'Free',
+                  format: 'ASCII',
+                  media: ['FTP']
+                }, {
+                  format: 'UNSPECIFIED'
+                }
+              ]
+            },
             archiveCenter: 'CONDIMENTUM/TELLUS/PHARETRA',
             boxes: [],
             browseFlag: true,
@@ -212,7 +287,9 @@ describe('Collection', () => {
             hasVariables: true,
             lines: [],
             metadataDates: [],
+            metadataFormat: 'RISUS',
             nativeId: 'test-guid',
+            nativeDataFormats: ['ASCII'],
             onlineAccessFlag: true,
             organizations: [],
             originalFormat: 'RISUS',

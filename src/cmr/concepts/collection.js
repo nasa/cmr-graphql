@@ -1,3 +1,6 @@
+import camelcaseKeys from 'camelcase-keys'
+import { uniq } from 'lodash'
+
 import Concept from './concept'
 
 export default class Collection extends Concept {
@@ -8,6 +11,8 @@ export default class Collection extends Concept {
    */
   constructor(headers, requestInfo) {
     super('collections', headers, requestInfo)
+
+    this.facets = []
   }
 
   /**
@@ -46,6 +51,13 @@ export default class Collection extends Concept {
   }
 
   /**
+   * Return facets associated with the collection results
+   */
+  getFacets() {
+    return this.facets
+  }
+
+  /**
    * Returns an array of keys representing supported search params for the json endpoint
    */
   getPermittedJsonSearchParams() {
@@ -56,9 +68,10 @@ export default class Collection extends Concept {
       'collection_concept_id',
       'has_granules_or_cwic',
       'has_granules',
+      'include_facets',
       'include_has_granules',
       'include_tags',
-      'name',
+      'options',
       'point',
       'polygon',
       'processing_level_id',
@@ -83,7 +96,6 @@ export default class Collection extends Concept {
       'collection_concept_id',
       'has_granules_or_cwic',
       'has_granules',
-      'name',
       'point',
       'polygon',
       'processing_level_id',
@@ -95,6 +107,49 @@ export default class Collection extends Concept {
       'tool_concept_id',
       'variable_concept_id'
     ]
+  }
+
+  /**
+   * Return the result set formatted for the graphql json response
+   */
+  getFormattedResponse() {
+    // Determine if the query was a list or not, list queries return meta
+    // keys using a slightly different format
+    const {
+      isList,
+      metaKeys
+    } = this.requestInfo
+
+    // While technically the facets are available with a single collection because we use the
+    // search endpoint, we dont support it in the response so we'll only return facets when
+    // when the user has requested the list response
+    if (isList && metaKeys.includes('collectionFacets')) {
+      // Incuded the facets in the metakeys returned
+      return {
+        facets: this.getFacets(),
+        ...super.getFormattedResponse()
+      }
+    }
+
+    // Facets were not requested, fall back to the default response
+    return super.getFormattedResponse()
+  }
+
+  /**
+   * Parse and return the array of data from the nested response body
+   * @param {Object} jsonResponse HTTP response from the CMR endpoint
+   */
+  parseJsonBody(jsonResponse) {
+    const { data } = jsonResponse
+
+    const { feed } = data
+
+    const { entry, facets } = feed
+
+    // Store the facets (potentially) returned by the request
+    this.facets = camelcaseKeys(facets, { deep: true })
+
+    return entry
   }
 
   /**
@@ -120,6 +175,7 @@ export default class Collection extends Concept {
     // Alias conceptId for consistency in responses
     const {
       id: conceptId,
+      original_format: originalFormat,
       summary
     } = item
 
@@ -127,12 +183,57 @@ export default class Collection extends Concept {
     // eslint-disable-next-line no-param-reassign
     delete item.id
 
-    // eslint-disable-next-line no-param-reassign
-    item.concept_id = conceptId
-
     // Alias summary offering the same value using a different key to allow clients to transition
     // eslint-disable-next-line no-param-reassign
     item.abstract = summary
+
+    // eslint-disable-next-line no-param-reassign
+    item.concept_id = conceptId
+
+    // Rename original format
+    // eslint-disable-next-line no-param-reassign
+    item.metadata_format = originalFormat
+
+    return item
+  }
+
+  /**
+   * Rename fields, add fields, modify fields, etc
+   * @param {Object} item The item returned from the CMR umm endpoint
+   */
+  normalizeUmmItem(item) {
+    const { umm } = item
+
+    const { ArchiveAndDistributionInformation: archiveAndDistributionInformation = {} } = umm
+
+    let fileDistributionInformation = [];
+
+    ({
+      FileDistributionInformation: fileDistributionInformation = []
+    } = archiveAndDistributionInformation)
+
+    const formats = []
+
+    fileDistributionInformation.forEach((info) => {
+      const {
+        Format: format,
+        FormatType: formatType
+      } = info
+
+      if (
+        formatType
+        && formatType.toLowerCase() === 'native'
+        && format.toLowerCase() !== 'not provided'
+      ) {
+        formats.push(format)
+      }
+    })
+
+    // Append a custom key to the UMM response for curated data
+    // eslint-disable-next-line no-param-reassign
+    item.custom = {
+      NativeDataFormats: uniq(formats)
+    }
 
     return item
   }

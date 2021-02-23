@@ -1,212 +1,228 @@
 type Collection {
-  "A brief description of the collection the metadata represents"
+  "A brief description of the collection the metadata represents."
   abstract: String
-  "Find collections matching 'archive_center' param value"
+  "Find collections matching 'archive_center' param value."
   archiveCenter: String
-  "Allows authors to provide words or phrases outside of the controlled Science Keyword vocabulary, to further describe the collection"
+  "Allows authors to provide words or phrases outside of the controlled Science Keyword vocabulary, to further describe the collection."
   ancillaryKeywords: [String]
-  "Allows a data provider to provide archive and distribution information up front to an end user, to help them decide if they can use the product"
+  "Allows a data provider to provide archive and distribution information up front to an end user, to help them decide if they can use the product."
   archiveAndDistributionInformation: JSON
-  "Spatial coverage of the collection"
+  "Spatial coverage of the collection."
   boxes: [String]
-  "True if the metadata contains browse imagery"
+  "True if the metadata contains browse imagery."
   browseFlag: Boolean
-  "The unique concept id assigned to the collection"
+  "The unique concept id assigned to the collection."
   conceptId: String!
-  "Information required to properly cite the collection in professional scientific literature"
+  "Information required to properly cite the collection in professional scientific literature."
   collectionCitations: JSON
-  "Information about the personnel responsible for this collection and its metadata"
+  "Information about the personnel responsible for this collection and its metadata."
   contactPersons: JSON
-  "Coordinate system of the metadata"
+  "Coordinate system of the metadata."
   coordinateSystem: String
-  "Provider associated with the metadata"
+  "Provider associated with the metadata."
   dataCenter: String
-  "Information about the data centers responsible for this collection and its metadata"
+  "Information about the data centers responsible for this collection and its metadata."
   dataCenters: JSON
-  "This element stores the DOI (Digital Object Identifier) that identifies the collection. note: The values should start with the directory indicator which in ESDIS' case is 10.  If the DOI was registered through ESDIS, the beginning of the string should be 10.5067. The DOI URL is not stored here; it should be stored as a RelatedURL. The DOI organization that is responsible for creating the DOI is described in the Authority element. For ESDIS records the value of https://doi.org/ should be used. While this element is not required, NASA metadata providers are strongly encouraged to include DOI and DOI Authority for their collections"
+  "This element stores the DOI (Digital Object Identifier) that identifies the collection. note: The values should start with the directory indicator which in ESDIS' case is 10.  If the DOI was registered through ESDIS, the beginning of the string should be 10.5067. The DOI URL is not stored here; it should be stored as a RelatedURL. The DOI organization that is responsible for creating the DOI is described in the Authority element. For ESDIS records the value of https://doi.org/ should be used. While this element is not required, NASA metadata providers are strongly encouraged to include DOI and DOI Authority for their collections."
   doi: JSON
-  "True if any of its associated services support spatial subsetting"
+  "True if any of its associated services support spatial subsetting."
   datasetId: String
-  "True if there are multiple supported formats for any services associated with the collection"
+  "An array containing all of the different formats of the underlying data of a collection."
+  nativeDataFormats: [String]
+  "True if there are multiple supported formats for any services associated with the collection."
   hasFormats: Boolean 
-  "True if there are granules associated with the collection"
+  "True if there are granules associated with the collection."
   hasGranules: Boolean 
-  "True if any of its associated services support spatial subsetting"
+  "True if any of its associated services support spatial subsetting."
   hasSpatialSubsetting: Boolean
-  "True if any of its associated services support temporal subsetting"
+  "True if any of its associated services support temporal subsetting."
   hasTemporalSubsetting: Boolean
-  "True if there are transformations (subset, interpolation or projection) in any of its associated services"
+  "True if there are transformations (subset, interpolation or projection) in any of its associated services."
   hasTransforms: Boolean
-  "True if there are variables associated with the collection"
+  "True if there are variables associated with the collection."
   hasVariables: Boolean
-  "Dates related to activities involving the metadata record itself"
+  "Dates related to activities involving the metadata record itself."
   metadataDates: JSON
-  "True if the data is available online"
+  "The format of original collection metadata (Known in CMR as original format)."
+  metadataFormat: String
+  "True if the data is available online."
   onlineAccessFlag: Boolean
-  "Organizations associated with the metadata, including data centers"
+  "Organizations associated with the metadata, including data centers."
   organizations: [String]
-  "Original metadata format"
-  originalFormat: String
-  "Spatial coverage of the collection"
+  "Original metadata format."
+  originalFormat: String @deprecated(reason: "Use `metadataFormat`.")
+  "Spatial coverage of the collection."
   lines: [String]
-  "Spatial coverage of the collection"
+  "Spatial coverage of the collection."
   points: [String]
-  "Spatial coverage of the collection"
+  "Spatial coverage of the collection."
   polygons: [String]
-  "Free text description of the quality of the collection data"
+  "Free text description of the quality of the collection data."
   quality: String
-  "The native id to set on the collection"
+  "The native id to set on the collection."
   nativeId: String!
-  "An identifier indicating the level at which the data in the collection are processed, ranging from Level0 (raw instrument data at full resolution) to Level4 (model output or analysis results).  The value of Processing Level Id is chosen from a controlled vocabulary"
+  "An identifier indicating the level at which the data in the collection are processed, ranging from Level0 (raw instrument data at full resolution) to Level4 (model output or analysis results).  The value of Processing Level Id is chosen from a controlled vocabulary."
   processingLevelId: String
-  "Describes any data/service related URLs that include project home pages, services, related data archives/servers, metadata extensions, direct links to online software packages, web mapping services, links to images, or other data"
+  "Describes any data/service related URLs that include project home pages, services, related data archives/servers, metadata extensions, direct links to online software packages, web mapping services, links to images, or other data."
   relatedUrls: JSON
-  "Controlled Science Keywords describing the collection.  The controlled vocabulary for Science Keywords is maintained in the Keyword Management System (KMS)"
+  "Controlled Science Keywords describing the collection.  The controlled vocabulary for Science Keywords is maintained in the Keyword Management System (KMS)."
   scienceKeywords: JSON
-  "Find collections matching any of the 'short_name' param values"
+  "Find collections matching any of the 'short_name' param values."
   shortName: String
-  "Specifies the geographic and vertical (altitude, depth) coverage of the data"
+  "Specifies the geographic and vertical (altitude, depth) coverage of the data."
   spatialExtent: JSON
-  "The summary of intentions with which this collection was developed"
+  "The summary of intentions with which this collection was developed."
   summary: String @deprecated(reason: "Use `abstract`")
-  "Tags associated with the collection. It includes sub-elements of tagKey and optional data which is in embedded JSON"
+  "Tags associated with the collection. It includes sub-elements of tagKey and optional data which is in embedded JSON."
   tags: JSON
-  "This class contains attributes which describe the temporal range of a specific collection. Temporal Extent includes a specification of the Temporal Range Type of the collection, which is one of Range Date Time, Single Date Time, or Periodic Date Time"
+  "This class contains attributes which describe the temporal range of a specific collection. Temporal Extent includes a specification of the Temporal Range Type of the collection, which is one of Range Date Time, Single Date Time, or Periodic Date Time."
   temporalExtents: JSON
-  "Name of the two-dimensional tiling system for the collection"
+  "Name of the two-dimensional tiling system for the collection."
   tilingIdentificationSystems: JSON
-  "Start time of the metadata"
+  "Start time of the metadata."
   timeStart: String
-  "End time of the metadata"
+  "End time of the metadata."
   timeEnd: String
-  "The title of the collection described by the metadata"
+  "The title of the collection described by the metadata."
   title: String
-  "Provider defined version id of the collection"
+  "Provider defined version id of the collection."
   versionId: String
   
   granules (
-    "The unique concept id assigned to the granule"
+    "The unique concept id assigned to the granule."
     conceptId: String
-    "The unique concept id assigned to the parent collection"
+    "The unique concept id assigned to the parent collection."
     collectionConceptId: String
-    "The number of granules requested by the user"
+    "The number of granules requested by the user."
     limit: Int
-    "Zero based offset of individual results"
+    "Zero based offset of individual results."
     offset: Int
-    "Bounding boxes define an area on the earth aligned with longitude and latitude. The Bounding box parameters must be 4 comma-separated numbers: lower left longitude, lower left latitude, upper right longitude, upper right latitude"
+    "Bounding boxes define an area on the earth aligned with longitude and latitude. The Bounding box parameters must be 4 comma-separated numbers: lower left longitude, lower left latitude, upper right longitude, upper right latitude."
     boundingBox: String
-    "Circle defines a circle area on the earth with a center point and a radius. The center parameters must be 3 comma-separated numbers: longitude of the center point, latitude of the center point, radius of the circle in meters. The circle center cannot be on North or South pole. The radius of the circle must be between 10 and 6,000,000"
+    "Circle defines a circle area on the earth with a center point and a radius. The center parameters must be 3 comma-separated numbers: longitude of the center point, latitude of the center point, radius of the circle in meters. The circle center cannot be on North or South pole. The radius of the circle must be between 10 and 6,000,000."
     circle: String
-    "Search using a point involves using a pair of values representing the point coordinates as parameters. The first value is the longitude and second value is the latitude"
+    "Search using a point involves using a pair of values representing the point coordinates as parameters. The first value is the longitude and second value is the latitude."
     point: String
-    "Polygon points are provided in counter-clockwise order. The last point should match the first point to close the polygon. The values are listed comma separated in longitude latitude order, i.e. lon1, lat1, lon2, lat2, lon3, lat3, and so on"
+    "Polygon points are provided in counter-clockwise order. The last point should match the first point to close the polygon. The values are listed comma separated in longitude latitude order, i.e. lon1, lat1, lon2, lat2, lon3, lat3, and so on."
     polygon: String
-    "The temporal datetime has to be in yyyy-MM-ddTHH:mm:ssZ format"
+    "The temporal datetime has to be in yyyy-MM-ddTHH:mm:ssZ format."
     temporal: String
   ): GranuleList
 
   services (
-    "The unique concept id assigned to the service"
+    "The unique concept id assigned to the service."
     conceptId: [String]
-    "The number of services requested by the user"
+    "The number of services requested by the user."
     limit: Int
-    "Zero based offset of individual results"
+    "Zero based offset of individual results."
     offset: Int
-    "The type of the service"
+    "The type of the service."
     type: String
   ): ServiceList
 
   subscriptions (
-    "The unique concept id assigned to the subscription"
+    "The unique concept id assigned to the subscription."
     conceptId: [String]
-    "The number of services requested by the user"
+    "The number of services requested by the user."
     limit: Int
-    "Zero based offset of individual results"
+    "Zero based offset of individual results."
     offset: Int
-    "The EDL userid of the subscriber"
+    "The EDL userid of the subscriber."
     subscriberId: String
   ): SubscriptionList
 
   tools (
-    "The unique concept id assigned to the tool"
+    "The unique concept id assigned to the tool."
     conceptId: [String]
-    "The number of tools requested by the user"
+    "The number of tools requested by the user."
     limit: Int
-    "Zero based offset of individual results"
+    "Zero based offset of individual results."
     offset: Int
   ): ToolList
 
   variables (
-    "The unique concept id assigned to the variable"
+    "The unique concept id assigned to the variable."
     conceptId: [String]
-    "The number of variables requested by the user"
+    "The number of variables requested by the user."
     limit: Int
-    "Zero based offset of individual results"
+    "Zero based offset of individual results."
     offset: Int
-    "The name of a variable"
+    "The name of a variable."
     name: String
   ): VariableList
 }
 
 type CollectionList {
-  "The number of hits for a given search"
+  "The number of hits for a given search."
   count: Int
-  "Cursor that points to the a specific position in a list of requested records"
+  "Cursor that points to the a specific position in a list of requested records."
   cursor: String
-  "The list of collection search results"
+  "The list of collection search results."
   items: [Collection]
+  "Facets are counts of unique values from fields within items matching search results."
+  facets: JSON
 }
 
 type Query {
   collections (
-    "The unique concept id assigned to the collection"
+    "The unique concept id assigned to the collection."
     conceptId: [String]
-    "Cursor that points to the a specific position in a list of requested records"
+    "Cursor that points to the a specific position in a list of requested records."
     cursor: String
-    "Bounding boxes define an area on the earth aligned with longitude and latitude. The Bounding box parameters must be 4 comma-separated numbers: lower left longitude, lower left latitude, upper right longitude, upper right latitude"
+    "Bounding boxes define an area on the earth aligned with longitude and latitude. The Bounding box parameters must be 4 comma-separated numbers: lower left longitude, lower left latitude, upper right longitude, upper right latitude."
     boundingBox: String
-    "Circle defines a circle area on the earth with a center point and a radius. The center parameters must be 3 comma-separated numbers: longitude of the center point, latitude of the center point, radius of the circle in meters. The circle center cannot be on North or South pole. The radius of the circle must be between 10 and 6,000,000"
+    "Circle defines a circle area on the earth with a center point and a radius. The center parameters must be 3 comma-separated numbers: longitude of the center point, latitude of the center point, radius of the circle in meters. The circle center cannot be on North or South pole. The radius of the circle must be between 10 and 6,000,000."
     circle: String
-    "The number of collections requested by the user"
+    "The number of collections requested by the user."
     limit: Int
-    "Zero based offset of individual results"
+    "Zero based offset of individual results."
     offset: Int
-    "When true, the results will be restricted to collections with granules or with the configured CWIC tag. When false, results will be restricted to collections without granules"
+    "When true, the results will be restricted to collections with granules or with the configured CWIC tag. When false, results will be restricted to collections without granules."
     hasGranulesOrCwic: Boolean,
-    "When has_granules is set to 'true' or 'false', results will be restricted to collections with or without granules, respectively"
+    "When has_granules is set to 'true' or 'false', results will be restricted to collections with or without granules, respectively."
     hasGranules: Boolean,
-    "If this parameter is set to 'true' this will include a flag indicating true or false if the collection has any granules at all"
+    "If this parameter is set to 'true' this will include a flag indicating true or false if the collection has any granules at all."
     includeHasGranules: Boolean,
-    "If this parameter is set (e.g. include_tags=gov.nasa.earthdata.search.*,gov.nasa.echo.*), the collection results will contain an additional field 'tags' within each collection. The value of the tags field is a list of tag_keys that are associated with the collection. Only the tags with tag_key matching the values of include_tags parameter (with wildcard support) are included in the results"
+    """
+    If this parameter is set (e.g. includeFacets=v2), the results will include a new top level key `facets` that contains the facets related to the collection results.
+    **NOTE**: This only requests the facets be returned by CMR, you will need to include `facets` in your query to have the results returned in the query.
+    """
+    includeFacets: String,
+    """
+    If this parameter is set (e.g. includeTags=gov.nasa.earthdata.search.*,gov.nasa.echo.*), the collection results will contain an additional field 'tags' within each collection. The value of the tags field is a list of tag_keys that are associated with the collection. Only the tags with tag_key matching the values of include_tags parameter (with wildcard support) are included.
+    **NOTE**: This only requests the tags be returned by CMR, you will need to include `tags` in your query to have the results returned in the query.
+    """
     includeTags: String,
-    "Search using a point involves using a pair of values representing the point coordinates as parameters. The first value is the longitude and second value is the latitude"
+    "Options to provide to CMR pertaining to and, or, and wildcard searching."
+    options: JSON
+    "Search using a point involves using a pair of values representing the point coordinates as parameters. The first value is the longitude and second value is the latitude."
     point: String
-    "Polygon points are provided in counter-clockwise order. The last point should match the first point to close the polygon. The values are listed comma separated in longitude latitude order, i.e. lon1, lat1, lon2, lat2, lon3, lat3, and so on"
+    "Polygon points are provided in counter-clockwise order. The last point should match the first point to close the polygon. The values are listed comma separated in longitude latitude order, i.e. lon1, lat1, lon2, lat2, lon3, lat3, and so on."
     polygon: String
-    "An identifier indicating the level at which the data in the collection are processed, ranging from Level0 (raw instrument data at full resolution) to Level4 (model output or analysis results).  The value of Processing Level Id is chosen from a controlled vocabulary"
+    "An identifier indicating the level at which the data in the collection are processed, ranging from Level0 (raw instrument data at full resolution) to Level4 (model output or analysis results).  The value of Processing Level Id is chosen from a controlled vocabulary."
     processingLevelId: String
-    "The name of the provider associated with the collection"
+    "The name of the provider associated with the collection."
     provider: String,
-    "UMM Service concept id"
+    "UMM Service concept id."
     serviceConceptId: String
-    "The short name associated with the collection"
+    "The short name associated with the collection."
     shortName: String
-    "One or more sort keys can be specified to impact searching. Fields can be prepended with a '-' to sort in descending order. Ascending order is the default but + can be used to explicitly request ascending"
-    sortKey: String
+    "One or more sort keys can be specified to impact searching. Fields can be prepended with a '-' to sort in descending order. Ascending order is the default but + can be used to explicitly request ascending."
+    sortKey: [String]
     "Tags associated with the collection."
     tagKey: String
-    "The temporal datetime has to be in yyyy-MM-ddTHH:mm:ssZ format"
+    "The temporal datetime has to be in yyyy-MM-ddTHH:mm:ssZ format."
     temporal: String
-    "UMM Variable concept id"
+    "UMM Variable concept id."
     variableConceptId: String
   ): CollectionList!
 
   collection (
-    "The unique concept id assigned to the collection"
+    "The unique concept id assigned to the collection."
     conceptId: String!
-    "If this parameter is set to 'true' this will include a flag indicating true or false if the collection has any granules at all"
+    "If this parameter is set to 'true' this will include a flag indicating true or false if the collection has any granules at all."
     includeHasGranules: Boolean,
-    "If this parameter is set (e.g. include_tags=gov.nasa.earthdata.search.*,gov.nasa.echo.*), the collection results will contain an additional field 'tags' within each collection. The value of the tags field is a list of tag_keys that are associated with the collection. Only the tags with tag_key matching the values of include_tags parameter (with wildcard support) are included in the results"
+    "If this parameter is set (e.g. include_tags=gov.nasa.earthdata.search.*,gov.nasa.echo.*), the collection results will contain an additional field 'tags' within each collection. The value of the tags field is a list of tag_keys that are associated with the collection. Only the tags with tag_key matching the values of include_tags parameter (with wildcard support) are included in the results."
     includeTags: String
   ): Collection
 }

@@ -1,103 +1,103 @@
 type Subscription {
-  "The concept id of the parent CMR collection"
+  "The concept id of the parent CMR collection."
   collectionConceptId: String
-  "The unique concept id assigned to the subscription"
+  "The unique concept id assigned to the subscription."
   conceptId: String!
-  "The email address that notifications will be delivered to"
+  "The email address that notifications will be delivered to."
   emailAddress: String
-  "The name of a subscription"
+  "The name of a subscription."
   name: String
-  "The native id of a subscription"
+  "The native id of a subscription."
   nativeId: String
-  "The provider associated with this subscription"
+  "The provider associated with this subscription."
   providerId: String
-  "The query used to retrieve data for the subscription"
+  "The query used to retrieve data for the subscription."
   query: String
-  "The revision associated with this subscription"
+  "The revision associated with this subscription."
   revisionId: String
-  "The EDL userid of the subscriber"
+  "The EDL userid of the subscriber."
   subscriberId: String
 
   collection: Collection
 }
 
 type SubscriptionList {
-  "The number of hits for a given search"
+  "The number of hits for a given search."
   count: Int
-  "Cursor that points to the a specific position in a list of requested records"
+  "Cursor that points to the a specific position in a list of requested records."
   cursor: String
-  "The list of subscription search results"
+  "The list of subscription search results."
   items: [Subscription]
 }
 
 type Query {
   subscriptions (
-    "The concept id of the parent CMR collection"
+    "The concept id of the parent CMR collection."
     collectionConceptId: String
-    "The unique concept id assigned to the subscription"
+    "The unique concept id assigned to the subscription."
     conceptId: [String]
-    "Cursor that points to the a specific position in a list of requested records"
+    "Cursor that points to the a specific position in a list of requested records."
     cursor: String
-    "The number of subscriptions requested by the user"
+    "The number of subscriptions requested by the user."
     limit: Int
-    "The name of a subscription"
+    "The name of a subscription."
     name: String
-    "The provider associated with this subscription"
+    "The provider associated with this subscription."
     provider: String
-    "The userid of the subscriber"
+    "The userid of the subscriber."
     subscriberId: String
-    "Zero based offset of individual results"
+    "Zero based offset of individual results."
     offset: Int
   ): SubscriptionList!
 
   subscription (
-    "The unique concept id assigned to the subscription"
+    "The unique concept id assigned to the subscription."
     conceptId: String!
   ): Subscription
 }
 
 type Mutation {
   createSubscription (
-    "The concept id of the parent CMR collection"
+    "The concept id of the parent CMR collection."
     collectionConceptId: String!
-    "The email address that notifications will be delivered to"
+    "The email address that notifications will be delivered to."
     emailAddress: String
-    "The name of a subscription"
+    "The name of a subscription."
     name: String!
-    "The native id to set on the subscription"
+    "The native id to set on the subscription."
     nativeId: String
-    "The EDL userid of the subscriber"
+    "The EDL userid of the subscriber."
     subscriberId: String!
-    "The query used to retrieve data for the subscription"
+    "The query used to retrieve data for the subscription."
     query: String!
   ): SubscriptionMutationResponse
 
   updateSubscription (
-    "The concept id of the parent CMR collection"
+    "The concept id of the parent CMR collection."
     collectionConceptId: String!
-    "The email address that notifications will be delivered to"
+    "The email address that notifications will be delivered to."
     emailAddress: String
-    "The name of a subscription"
+    "The name of a subscription."
     name: String!
-    "The native id to set on the subscription"
+    "The native id to set on the subscription."
     nativeId: String!
-    "The EDL userid of the subscriber"
+    "The EDL userid of the subscriber."
     subscriberId: String!
-    "The query used to retrieve data for the subscription"
+    "The query used to retrieve data for the subscription."
     query: String!
   ): SubscriptionMutationResponse
 
   deleteSubscription (
-    "The concept id of the subscription"
+    "The concept id of the subscription."
     conceptId: String!
-    "The native id of the subscription"
+    "The native id of the subscription."
     nativeId: String!
   ): SubscriptionMutationResponse
 }
 
 type SubscriptionMutationResponse {
-  "The unique concept id assigned to the subscription"
+  "The unique concept id assigned to the subscription."
   conceptId: String
-  "The revision of the subscription"
+  "The revision of the subscription."
   revisionId: String
 }
