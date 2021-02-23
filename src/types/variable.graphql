@@ -1,70 +1,70 @@
 type Variable {
-  "The alias for the name of a variable"
+  "The alias for the name of a variable."
   alias: String @deprecated(reason: "Removed as of 1.7")
-  "The characteristics of a variable"
+  "The characteristics of a variable."
   characteristics: JSON @deprecated(reason: "Removed as of 1.7")
-  "The unique concept id assigned to the variable"
+  "The unique concept id assigned to the variable."
   conceptId: String!
-  "Specify data type of a variable. These types can be either: uint8, uint16, etc"
+  "Specify data type of a variable. These types can be either: uint8, uint16, etc."
   dataType: String
-  "The definition of the variable"
+  "The definition of the variable."
   definition: String
-  "A variable consists of one or more dimensions. An example of a dimension name is 'XDim'. An example of a dimension size is '1200'. Variables are rarely one dimensional"
+  "A variable consists of one or more dimensions. An example of a dimension name is 'XDim'. An example of a dimension size is '1200'. Variables are rarely one dimensional."
   dimensions: JSON
-  "The expanded or long name related to the variable Name"
+  "The expanded or long name related to the variable Name."
   longName: String
-  "The measurement information of a variable"
+  "The measurement information of a variable."
   measurementIdentifiers: JSON
-  "The name of a variable"
+  "The name of a variable."
   name: String
-  "The native id of a variable"
+  "The native id of a variable."
   nativeId: String
-  "The offset is the value which is either added to or subtracted from all values in the stored data field in order to obtain the original values. May be used together with Scale. An example of an offset is '0.49'"
+  "The offset is the value which is either added to or subtracted from all values in the stored data field in order to obtain the original values. May be used together with Scale. An example of an offset is '0.49'."
   offset: Float
-  "The scale is the numerical factor by which all values in the stored data field are multiplied in order to obtain the original values. May be used together with Offset. An example of a scale factor is '0.002'"
+  "The scale is the numerical factor by which all values in the stored data field are multiplied in order to obtain the original values. May be used together with Offset. An example of a scale factor is '0.002'."
   scale: Float
-  "Controlled Science Keywords describing the collection. The controlled vocabulary for Science Keywords is maintained in the Keyword Management System (KMS)"
+  "Controlled Science Keywords describing the collection. The controlled vocabulary for Science Keywords is maintained in the Keyword Management System (KMS)."
   scienceKeywords: JSON
-  "The units associated with a variable"
+  "The units associated with a variable."
   units: String
-  "This element is used to classify the variable as a Science Variable, Quality Variable or Ancillary Variable. If a variable does not contain this field, it will be assumed to be a science variable"
+  "This element is used to classify the variable as a Science Variable, Quality Variable or Ancillary Variable. If a variable does not contain this field, it will be assumed to be a science variable."
   variableType: String
 
   collections (
-    "The unique concept id assigned to the service"
+    "The unique concept id assigned to the service."
     conceptId: [String]
-    "The number of collections requested by the user"
+    "The number of collections requested by the user."
     limit: Int
-    "Zero based offset of individual results"
+    "Zero based offset of individual results."
     offset: Int
   ): CollectionList
 }
 
 type VariableList {
-  "The number of hits for a given search"
+  "The number of hits for a given search."
   count: Int
-  "Cursor that points to the a specific position in a list of requested records"
+  "Cursor that points to the a specific position in a list of requested records."
   cursor: String
-  "The list of variable search results"
+  "The list of variable search results."
   items: [Variable]
 }
 
 type Query {
   variables (
-    "The unique concept id assigned to the variable"
+    "The unique concept id assigned to the variable."
     conceptId: [String]
-    "Cursor that points to the a specific position in a list of requested records"
+    "Cursor that points to the a specific position in a list of requested records."
     cursor: String
-    "The number of variables requested by the user"
+    "The number of variables requested by the user."
     limit: Int
-    "The name of a variable"
+    "The name of a variable."
     name: String
-    "Zero based offset of individual results"
+    "Zero based offset of individual results."
     offset: Int
   ): VariableList!
 
   variable (
-    "The unique concept id assigned to the variable"
+    "The unique concept id assigned to the variable."
     conceptId: String!
   ): Variable
 }

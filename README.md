@@ -61,7 +61,7 @@ Logging is key to debugging, and to ensure that we can provide the best support 
 
 #### Queries
 
-When querying for multiple items there are three high level parameters that can be provided, `count`, `cursor` and `items`.
+When querying for multiple items there are three high level parameters that can be provided, `count`, `cursor`, `facets` and `items`.
 
 ##### Count
 
@@ -116,7 +116,20 @@ A couple of things to keep in mind when using a cursor
 1. Subsequent queries will **not** accept new parameters, the search parameters provided in this initial query are used for *all* subsequent queries using the returned cursor value.
 2. Subsequent queries must be made **sequentially** (as of August 21, 2020) as the version of Elastic Search CMR uses does not support parallel queries using the same cursor value.
 
+##### Facets
 
+`facets` will return the data provided by CMR determined by which facets you requested in your query. In order for this data to be provided by CMR you will need to include the `includeFacets` parameter in your query. For more information regarding facets refer to the [CMR documentation](https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html#facets). See below for a basic example:
+
+    {
+      collections(
+        includeFacets:"v2"
+      ) {
+        facets
+        items {
+          conceptId
+        }
+      }
+    }
 
 ##### Items
 
@@ -144,7 +157,7 @@ Note that the response you get will match the structure of your query, meaning t
 
 #### Collections
 
-A subset of supported arguments will automatically be sent to immidiately adjacent granule queries, for a list of those arguments see [Passthrough Arguments](#passthrough-arguments).
+A subset of supported arguments will automatically be sent to immediately adjacent granule queries, for a list of those arguments see [Passthrough Arguments](#passthrough-arguments).
 
 For all supported arguments and columns, see [the schema](src/types/collection.graphql).
 
