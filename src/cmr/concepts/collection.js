@@ -222,6 +222,7 @@ export default class Collection extends Concept {
 
       if (
         formatType
+        && format
         && formatType.toLowerCase() === 'native'
         && format.toLowerCase() !== 'not provided'
       ) {
