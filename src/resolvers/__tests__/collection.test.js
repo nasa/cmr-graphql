@@ -148,6 +148,16 @@ describe('Collection', () => {
                   }
                 ]
               },
+              AssociatedDOIs: [{
+                DOI: '10.1234/ParentDOIID1',
+                Title: 'DOI Title 1',
+                Authority: 'https://doi.org/'
+              },
+              {
+                DOI: '10.1234/ParentDOIID2',
+                Title: 'DOI Title 2',
+                Authority: 'https://doi.org/'
+              }],
               CollectionCitations: [],
               ContactPersons: [],
               DataCenters: [],
@@ -179,6 +189,7 @@ describe('Collection', () => {
               ancillaryKeywords
               archiveAndDistributionInformation
               archiveCenter
+              associatedDois
               boxes
               browseFlag
               collectionCitations
@@ -269,6 +280,16 @@ describe('Collection', () => {
               ]
             },
             archiveCenter: 'CONDIMENTUM/TELLUS/PHARETRA',
+            associatedDois: [{
+              doi: '10.1234/ParentDOIID1',
+              title: 'DOI Title 1',
+              authority: 'https://doi.org/'
+            },
+            {
+              doi: '10.1234/ParentDOIID2',
+              title: 'DOI Title 2',
+              authority: 'https://doi.org/'
+            }],
             boxes: [],
             browseFlag: true,
             collectionCitations: [],

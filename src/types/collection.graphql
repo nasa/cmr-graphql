@@ -1,6 +1,8 @@
 type Collection {
   "A brief description of the collection the metadata represents."
   abstract: String
+  "This element stores DOIs that are associated with the collection such as from campaigns and other related sources."
+  associatedDois: JSON
   "Find collections matching 'archive_center' param value."
   archiveCenter: String
   "Allows authors to provide words or phrases outside of the controlled Science Keyword vocabulary, to further describe the collection."
