@@ -13,6 +13,7 @@
   ],
   "ummKeyMappings": {
     "abstract": "umm.Abstract",
+    "associatedDois": "umm.AssociatedDOIs",
     "ancillaryKeywords": "umm.AncillaryKeywords",
     "archiveAndDistributionInformation": "umm.ArchiveAndDistributionInformation",
     "collectionCitations": "umm.CollectionCitations",
