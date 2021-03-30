@@ -25,6 +25,8 @@ type Collection {
   dataCenter: String
   "Information about the data centers responsible for this collection and its metadata."
   dataCenters: JSON
+  "This element allows end users to get direct access to data products that are stored in the Amazon Web Service (AWS) S3 buckets. The sub elements include S3 credentials end point and a documentation URL as well as bucket prefix names and an AWS region."
+  directDistributionInformation: JSON
   "This element stores the DOI (Digital Object Identifier) that identifies the collection. note: The values should start with the directory indicator which in ESDIS' case is 10.  If the DOI was registered through ESDIS, the beginning of the string should be 10.5067. The DOI URL is not stored here; it should be stored as a RelatedURL. The DOI organization that is responsible for creating the DOI is described in the Authority element. For ESDIS records the value of https://doi.org/ should be used. While this element is not required, NASA metadata providers are strongly encouraged to include DOI and DOI Authority for their collections."
   doi: JSON
   "True if any of its associated services support spatial subsetting."
@@ -32,9 +34,9 @@ type Collection {
   "An array containing all of the different formats of the underlying data of a collection."
   nativeDataFormats: [String]
   "True if there are multiple supported formats for any services associated with the collection."
-  hasFormats: Boolean 
+  hasFormats: Boolean
   "True if there are granules associated with the collection."
-  hasGranules: Boolean 
+  hasGranules: Boolean
   "True if any of its associated services support spatial subsetting."
   hasSpatialSubsetting: Boolean
   "True if any of its associated services support temporal subsetting."
@@ -89,7 +91,7 @@ type Collection {
   title: String
   "Provider defined version id of the collection."
   versionId: String
-  
+
   granules (
     "The unique concept id assigned to the granule."
     conceptId: String
