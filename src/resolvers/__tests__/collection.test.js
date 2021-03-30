@@ -161,6 +161,12 @@ describe('Collection', () => {
               CollectionCitations: [],
               ContactPersons: [],
               DataCenters: [],
+              DirectDistributionInformation: {
+                region: 'us-east-2',
+                s3BucketAndObjectPrefixNames: ['TestBucketOrObjectPrefix'],
+                s3CredentialsApiEndpoint: 'https://DAACCredentialEndpoint.org',
+                s3CredentialsApiDocumentationUrl: 'https://DAACCredentialDocumentation.org'
+              },
               DOI: {},
               MetadataDates: [],
               ProcessingLevel: {
@@ -199,6 +205,7 @@ describe('Collection', () => {
               dataCenter
               dataCenters
               datasetId
+              directDistributionInformation
               doi
               hasFormats
               hasGranules
@@ -249,7 +256,7 @@ describe('Collection', () => {
                     count: 1,
                     hasChildren: true,
                     links: {
-                      apply: 'http://example.com:443/search/collections.json?include_facets=v2&science_keywords_h%5B0%5D%5Btopic%5D=Aerosols',
+                      apply: 'http://example.com:443/search/collections.json?include_facets=v2&science_keywords_h%5B0%5D%5Btopic%5D=Aerosols'
                     },
                     title: 'Aerosols',
                     type: 'filter'
@@ -299,6 +306,12 @@ describe('Collection', () => {
             dataCenter: 'PORTA',
             dataCenters: [],
             datasetId: 'Condimentum Quam Mattis Cursus Pharetra',
+            directDistributionInformation: {
+              region: 'us-east-2',
+              s3BucketAndObjectPrefixNames: ['TestBucketOrObjectPrefix'],
+              s3CredentialsApiEndpoint: 'https://DAACCredentialEndpoint.org',
+              s3CredentialsApiDocumentationUrl: 'https://DAACCredentialDocumentation.org'
+            },
             doi: {},
             hasFormats: true,
             hasGranules: true,

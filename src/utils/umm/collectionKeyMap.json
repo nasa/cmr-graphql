@@ -20,6 +20,7 @@
     "conceptId": "meta.concept-id",
     "contactPersons": "umm.ContactPersons",
     "dataCenters": "umm.DataCenters",
+    "directDistributionInformation": "umm.DirectDistributionInformation",
     "nativeDataFormats": "custom.NativeDataFormats",
     "doi": "umm.DOI",
     "hasFormats": "meta.has-formats",
