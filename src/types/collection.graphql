@@ -17,6 +17,8 @@ type Collection {
   conceptId: String!
   "Information required to properly cite the collection in professional scientific literature."
   collectionCitations: JSON
+  "Data type of the collection, e.g. NEAR_REAL_TIME"
+  collectionDataType: String
   "Information about the personnel responsible for this collection and its metadata."
   contactPersons: JSON
   "Coordinate system of the metadata."
@@ -60,7 +62,7 @@ type Collection {
   "Spatial coverage of the collection."
   points: [String]
   "Spatial coverage of the collection."
-  polygons: [String]
+  polygons: [[String]]
   "Free text description of the quality of the collection data."
   quality: String
   "The native id to set on the collection."
@@ -177,46 +179,88 @@ type Query {
     boundingBox: String
     "Circle defines a circle area on the earth with a center point and a radius. The center parameters must be 3 comma-separated numbers: longitude of the center point, latitude of the center point, radius of the circle in meters. The circle center cannot be on North or South pole. The radius of the circle must be between 10 and 6,000,000."
     circle: String
-    "The number of collections requested by the user."
-    limit: Int
-    "Zero based offset of individual results."
-    offset: Int
+    "Type of the collection"
+    collectionDataType: [String]
+    "Data center assigned to the collection."
+    dataCenter: String
+    "Data center assigned to the collection, in facet form."
+    dataCenterH: [String]
+    "The number of facets to return in each category."
+    facetsSize: Int
+    "The data format of the granules belonging to the collection."
+    granuleDataFormat: String
+    "The data format of the granules belonging to the collection, in facet form."
+    granuleDataFormatH: [String]
     "When true, the results will be restricted to collections with granules or with the configured CWIC tag. When false, results will be restricted to collections without granules."
     hasGranulesOrCwic: Boolean,
     "When has_granules is set to 'true' or 'false', results will be restricted to collections with or without granules, respectively."
     hasGranules: Boolean,
-    "If this parameter is set to 'true' this will include a flag indicating true or false if the collection has any granules at all."
-    includeHasGranules: Boolean,
+    "The horizontal data resolution of the data belonging to the collection."
+    horizontalDataResolutionRange: String
     """
     If this parameter is set (e.g. includeFacets=v2), the results will include a new top level key `facets` that contains the facets related to the collection results.
     **NOTE**: This only requests the facets be returned by CMR, you will need to include `facets` in your query to have the results returned in the query.
     """
     includeFacets: String,
+    "If this parameter is set to 'true' this will include a flag indicating true or false if the collection has any granules at all."
+    includeHasGranules: Boolean,
     """
     If this parameter is set (e.g. includeTags=gov.nasa.earthdata.search.*,gov.nasa.echo.*), the collection results will contain an additional field 'tags' within each collection. The value of the tags field is a list of tag_keys that are associated with the collection. Only the tags with tag_key matching the values of include_tags parameter (with wildcard support) are included.
     **NOTE**: This only requests the tags be returned by CMR, you will need to include `tags` in your query to have the results returned in the query.
     """
     includeTags: String,
+    "Instrument associated with the collection."
+    instrument: String
+    "Instrument associated with the collection, in facet form."
+    instrumentH: [String]
+    "Keyword search value."
+    keyword: String
+    "The number of collections requested by the user."
+    limit: Int
+    "Search for collections that intersect with provided lines."
+    line: String
+    "Zero based offset of individual results."
+    offset: Int
     "Options to provide to CMR pertaining to and, or, and wildcard searching."
     options: JSON
+    "Which page to request from the current collection results."
+    pageSize: Int
+    "Platform assocaited with the collection."
+    platform: String
+    "Platform assocaited with the collection, in facet form."
+    platformH: [String]
     "Search using a point involves using a pair of values representing the point coordinates as parameters. The first value is the longitude and second value is the latitude."
     point: String
     "Polygon points are provided in counter-clockwise order. The last point should match the first point to close the polygon. The values are listed comma separated in longitude latitude order, i.e. lon1, lat1, lon2, lat2, lon3, lat3, and so on."
     polygon: String
     "An identifier indicating the level at which the data in the collection are processed, ranging from Level0 (raw instrument data at full resolution) to Level4 (model output or analysis results).  The value of Processing Level Id is chosen from a controlled vocabulary."
     processingLevelId: String
+    "An identifier indicating the level at which the data in the collection are processed, ranging from Level0 (raw instrument data at full resolution) to Level4 (model output or analysis results), in facet form.  The value of Processing Level Id is chosen from a controlled vocabulary."
+    processingLevelIdH: [String]
+    "The project associated with the collection."
+    project: String
+    "The project associated with the collection, in facet form."
+    projectH: [String]
     "The name of the provider associated with the collection."
     provider: String,
+    "Science Keywords associated with the collection, in facet form."
+    scienceKeywordsH: [String]
     "UMM Service concept id."
     serviceConceptId: String
+    "UMM Service type."
+    serviceType: [String]
     "The short name associated with the collection."
     shortName: String
     "One or more sort keys can be specified to impact searching. Fields can be prepended with a '-' to sort in descending order. Ascending order is the default but + can be used to explicitly request ascending."
     sortKey: [String]
+    "Keywords relating to spatial aspects of the collection."
+    spatialKeyword: String
     "Tags associated with the collection."
-    tagKey: String
+    tagKey: [String]
     "The temporal datetime has to be in yyyy-MM-ddTHH:mm:ssZ format."
     temporal: String
+    "The 2D coordinate system associated with the collection"
+    twoDCoordinateSystemName: [String]
     "UMM Variable concept id."
     variableConceptId: String
   ): CollectionList!
