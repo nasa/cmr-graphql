@@ -176,9 +176,9 @@ type Query {
     "Cursor that points to the a specific position in a list of requested records."
     cursor: String
     "Bounding boxes define an area on the earth aligned with longitude and latitude. The Bounding box parameters must be 4 comma-separated numbers: lower left longitude, lower left latitude, upper right longitude, upper right latitude."
-    boundingBox: String
+    boundingBox: [String]
     "Circle defines a circle area on the earth with a center point and a radius. The center parameters must be 3 comma-separated numbers: longitude of the center point, latitude of the center point, radius of the circle in meters. The circle center cannot be on North or South pole. The radius of the circle must be between 10 and 6,000,000."
-    circle: String
+    circle: [String]
     "Type of the collection"
     collectionDataType: [String]
     "Data center assigned to the collection."
@@ -218,7 +218,7 @@ type Query {
     "The number of collections requested by the user."
     limit: Int
     "Search for collections that intersect with provided lines."
-    line: String
+    line: [String]
     "Zero based offset of individual results."
     offset: Int
     "Options to provide to CMR pertaining to and, or, and wildcard searching."
@@ -230,9 +230,9 @@ type Query {
     "Platform assocaited with the collection, in facet form."
     platformH: [String]
     "Search using a point involves using a pair of values representing the point coordinates as parameters. The first value is the longitude and second value is the latitude."
-    point: String
+    point: [String]
     "Polygon points are provided in counter-clockwise order. The last point should match the first point to close the polygon. The values are listed comma separated in longitude latitude order, i.e. lon1, lat1, lon2, lat2, lon3, lat3, and so on."
-    polygon: String
+    polygon: [String]
     "An identifier indicating the level at which the data in the collection are processed, ranging from Level0 (raw instrument data at full resolution) to Level4 (model output or analysis results).  The value of Processing Level Id is chosen from a controlled vocabulary."
     processingLevelId: String
     "An identifier indicating the level at which the data in the collection are processed, ranging from Level0 (raw instrument data at full resolution) to Level4 (model output or analysis results), in facet form.  The value of Processing Level Id is chosen from a controlled vocabulary."
