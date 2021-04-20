@@ -31,7 +31,7 @@ type Collection {
   directDistributionInformation: JSON
   "This element stores the DOI (Digital Object Identifier) that identifies the collection. note: The values should start with the directory indicator which in ESDIS' case is 10.  If the DOI was registered through ESDIS, the beginning of the string should be 10.5067. The DOI URL is not stored here; it should be stored as a RelatedURL. The DOI organization that is responsible for creating the DOI is described in the Authority element. For ESDIS records the value of https://doi.org/ should be used. While this element is not required, NASA metadata providers are strongly encouraged to include DOI and DOI Authority for their collections."
   doi: JSON
-  "True if any of its associated services support spatial subsetting."
+  "The title of the collection described by the metadata."
   datasetId: String
   "An array containing all of the different formats of the underlying data of a collection."
   nativeDataFormats: [String]
