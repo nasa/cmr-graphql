@@ -370,7 +370,6 @@ If no `nativeId` is provided, GraphQL will generate a GUID and supply it.
     mutation {
       createSubscription(
         collectionConceptId: "C1000000001-EXAMPLE"
-        emailAddress: "username@example.com"
         name: "Example Subscription"
         query: "polygon=-18,-78,-13,-74,-16,-73,-22,-77,-18,-78"
         subscriberId: "username"
@@ -385,7 +384,6 @@ To set the `nativeId` to a desired value, simply provide it as an argument and i
     mutation {
       createSubscription(
         collectionConceptId: "C1000000001-EXAMPLE"
-        emailAddress: "username@example.com"
         name: "Example Subscription"
         nativeId: "SUPPLIED-NATIVE-ID"
         query: "polygon=-18,-78,-13,-74,-16,-73,-22,-77,-18,-78"
@@ -395,8 +393,6 @@ To set the `nativeId` to a desired value, simply provide it as an argument and i
         revisionId
       }
     }
-    
-**NOTE**: `emailAddress` is an optional field when creating a subscription, but if and only if the token you are providing is an Earthdata Login token provided in the `Authorization` header. If this header is set *and* no `emailAddress` is provided, GraphQL will retrieve the email address for the provided `subscriberId` from Earthdata Login and use that value.
 
 ##### Updating a Subscription
 
@@ -405,7 +401,6 @@ CMR defines a record as unique based on the `nativeId`, in order to update a sub
     mutation {
       updateSubscription(
         collectionConceptId: "C1000000001-EXAMPLE"
-        emailAddress: "username@example.com"
         name: "Example Subscription"
         nativeId: "EXISTING-NATIVE-ID"
         query: "polygon=-18,-78,-13,-74,-16,-73,-22,-77,-18,-78"
@@ -415,11 +410,10 @@ CMR defines a record as unique based on the `nativeId`, in order to update a sub
         revisionId
       }
     }
-    
+
 **NOTES**:
 
   - Due to the way in which CMR works, `createSubscription` and `updateSubscription` will operate identically when supplying an existing `nativeId` however, this may not always be the case so we encourage you to use the explicit `updateSubscription` mutation noted below.
-  - `emailAddress` is an optional field when updating a subscription, but if and only if the token you are providing is an Earthdata Login token provided in the `Authorization` header. If this header is set *and* no `emailAddress` is provided, GraphQL will retrieve the email address for the provided `subscriberId` from Earthdata Login and use that value.
 
 ##### Deleting a Subscription
 

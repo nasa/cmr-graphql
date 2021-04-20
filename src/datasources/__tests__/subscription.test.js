@@ -345,7 +345,6 @@ describe('subscription#ingest', () => {
       alias: 'createSubscription',
       args: {
         collectionConceptId: 'C100000-EDSC',
-        emailAddress: 'test@example.com',
         name: 'Test Subscription',
         query: 'polygon=-18,-78,-13,-74,-16,-73,-22,-77,-18,-78',
         subscriberId: 'testuser'
@@ -387,7 +386,6 @@ describe('subscription#ingest', () => {
 
       const response = await subscriptionSourceIngest({
         collectionConceptId: 'C100000-EDSC',
-        emailAddress: 'test@example.com',
         name: 'Test Subscription',
         query: 'polygon=-18,-78,-13,-74,-16,-73,-22,-77,-18,-78',
         subscriberId: 'testuser'
