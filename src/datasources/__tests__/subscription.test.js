@@ -337,7 +337,6 @@ describe('subscription#ingest', () => {
     process.env = { ...OLD_ENV }
 
     process.env.cmrRootUrl = 'http://example.com'
-    process.env.edlRootUrl = 'http://edl.com'
 
     // Default requestInfo
     requestInfo = {
@@ -394,76 +393,6 @@ describe('subscription#ingest', () => {
       expect(response).toEqual({
         conceptId: 'SUB100000-EDSC',
         revisionId: '1'
-      })
-    })
-  })
-
-  describe('when an email is not provided', () => {
-    describe('when the call to EDL is successful', () => {
-      test('fetches the authenticated users data from earthdata login', async () => {
-        nock(/example/)
-          .defaultReplyHeaders({
-            'CMR-Request-Id': 'abcd-1234-efgh-5678'
-          })
-          .put(/ingest\/providers\/EDSC\/subscriptions\/1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed/)
-          .reply(201, {
-            'concept-id': 'SUB100000-EDSC',
-            'revision-id': '1'
-          })
-
-        nock(/edl/)
-          .get('/api/users/testuser')
-          .reply(200, {
-            uid: 'testuser',
-            first_name: 'Test',
-            last_name: 'User',
-            email_address: 'testuser@example.com',
-            registered_date: '2 Oct 2018 02:31:32AM',
-            country: 'United States',
-            study_area: 'Other',
-            allow_auth_app_emails: 'ru',
-            user_type: 'Application',
-            affiliation: 'Something',
-            organization: 'NASA',
-            user_groups: '',
-            user_authorized_apps: '',
-            nams_auid: 'testuser'
-          })
-
-        const response = await subscriptionSourceIngest({
-          collectionConceptId: 'C100000-EDSC',
-          name: 'Test Subscription',
-          query: 'polygon=-18,-78,-13,-74,-16,-73,-22,-77,-18,-78',
-          subscriberId: 'testuser'
-        }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'subscription')
-
-        expect(response).toEqual({
-          conceptId: 'SUB100000-EDSC',
-          revisionId: '1'
-        })
-      })
-    })
-
-    describe('when the call to EDL fails', () => {
-      test('doesnt contact cmr and throws an error', async () => {
-        nock(/edl/, {
-          reqheaders: {
-            Authorization: 'bad-token'
-          }
-        })
-          .get('/api/users/testuser')
-          .reply(401, {
-            error: 'invalid_token'
-          })
-
-        const response = subscriptionSourceIngest({
-          collectionConceptId: 'C100000-EDSC',
-          name: 'Test Subscription',
-          query: 'polygon=-18,-78,-13,-74,-16,-73,-22,-77,-18,-78',
-          subscriberId: 'testuser'
-        }, { Authorization: 'bad-token' }, requestInfo, 'subscription')
-
-        await expect(response).rejects.toThrow()
       })
     })
   })
