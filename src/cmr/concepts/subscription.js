@@ -1,7 +1,5 @@
 import Concept from './concept'
 
-import { edlQuery } from '../../utils/edlQuery'
-
 export default class Subscription extends Concept {
   /**
    * Instantiates a Subscription object
@@ -10,36 +8,6 @@ export default class Subscription extends Concept {
    */
   constructor(headers, requestInfo) {
     super('subscriptions', headers, requestInfo)
-  }
-
-  /**
-   * Ingest the provided object into the CMR
-   * @param {Object} data Parameters provided by the query
-   * @param {Array} requestedKeys Keys requested by the query
-   * @param {Object} providedHeaders Headers requested by the query
-   */
-  async ingest(data, requestedKeys, providedHeaders) {
-    let {
-      emailAddress
-    } = data
-
-    const {
-      subscriberId
-    } = data
-
-    // If an email address was not provided, fetch one from EDL
-    if (emailAddress == null) {
-      const ursResponse = await edlQuery(subscriberId, providedHeaders)
-
-      const { data: ursResponseData } = ursResponse;
-
-      ({ email_address: emailAddress } = ursResponseData)
-    }
-
-    super.ingest({
-      ...data,
-      emailAddress
-    }, requestedKeys, providedHeaders)
   }
 
   /**

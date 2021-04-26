@@ -331,21 +331,18 @@ describe('Subscription', () => {
       const response = await query({
         variables: {
           collectionConceptId: 'C100000-EDSC',
-          emailAddress: 'test@example.com',
           name: 'Test Subscription',
           query: 'polygon=-18,-78,-13,-74,-16,-73,-22,-77,-18,-78',
           subscriberId: 'testuser'
         },
         query: `mutation CreateSubscription (
           $collectionConceptId: String!
-          $emailAddress: String!
           $name: String!
           $query: String!
           $subscriberId: String!
         ) {
           createSubscription(
             collectionConceptId: $collectionConceptId
-            emailAddress: $emailAddress
             name: $name
             query: $query
             subscriberId: $subscriberId
@@ -383,7 +380,6 @@ describe('Subscription', () => {
       const response = await query({
         variables: {
           collectionConceptId: 'C100000-EDSC',
-          emailAddress: 'test@example.com',
           name: 'Test Subscription',
           nativeId: 'test-guid',
           query: 'polygon=-18,-78,-13,-74,-16,-73,-22,-77,-18,-78',
@@ -391,7 +387,6 @@ describe('Subscription', () => {
         },
         query: `mutation UpdateSubscription (
           $collectionConceptId: String!
-          $emailAddress: String!
           $name: String!
           $nativeId: String!
           $query: String!
@@ -399,7 +394,6 @@ describe('Subscription', () => {
         ) {
           updateSubscription(
             collectionConceptId: $collectionConceptId
-            emailAddress: $emailAddress
             name: $name
             nativeId: $nativeId
             query: $query

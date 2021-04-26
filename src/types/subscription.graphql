@@ -61,8 +61,6 @@ type Mutation {
     "The concept id of the parent CMR collection."
     collectionConceptId: String!
     "The email address that notifications will be delivered to."
-    emailAddress: String
-    "The name of a subscription."
     name: String!
     "The native id to set on the subscription."
     nativeId: String
@@ -76,8 +74,6 @@ type Mutation {
     "The concept id of the parent CMR collection."
     collectionConceptId: String!
     "The email address that notifications will be delivered to."
-    emailAddress: String
-    "The name of a subscription."
     name: String!
     "The native id to set on the subscription."
     nativeId: String!
