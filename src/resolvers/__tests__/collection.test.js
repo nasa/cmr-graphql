@@ -131,7 +131,8 @@ describe('Collection', () => {
           items: [{
             meta: {
               'concept-id': 'C100000-EDSC',
-              'native-id': 'test-guid'
+              'native-id': 'test-guid',
+              'provider-id': 'FakeProvider'
             },
             umm: {
               Abstract: 'Cras mattis consectetur purus sit amet fermentum.',
@@ -169,6 +170,7 @@ describe('Collection', () => {
               },
               DOI: {},
               MetadataDates: [],
+              Platforms: [],
               ProcessingLevel: {
                 Id: 'Not Provided'
               },
@@ -221,9 +223,11 @@ describe('Collection', () => {
               onlineAccessFlag
               organizations
               originalFormat
+              platforms
               points
               polygons
               processingLevelId
+              provider
               quality
               relatedUrls
               scienceKeywords
@@ -327,9 +331,11 @@ describe('Collection', () => {
             onlineAccessFlag: true,
             organizations: [],
             originalFormat: 'RISUS',
-            processingLevelId: 'Not Provided',
+            platforms: [],
             points: [],
             polygons: [],
+            processingLevelId: 'Not Provided',
+            provider: 'FakeProvider',
             quality: 'Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.',
             relatedUrls: [],
             scienceKeywords: [],
