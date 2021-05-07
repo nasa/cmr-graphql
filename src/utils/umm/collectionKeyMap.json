@@ -7,7 +7,9 @@
     "hasTemporalSubsetting",
     "hasTransforms",
     "hasVariables",
+    "platforms",
     "processingLevelId",
+    "provider",
     "title",
     "versionId"
   ],
