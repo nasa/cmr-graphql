@@ -227,6 +227,7 @@ describe('Collection', () => {
               points
               polygons
               processingLevelId
+              provider
               quality
               relatedUrls
               scienceKeywords
@@ -334,6 +335,7 @@ describe('Collection', () => {
             points: [],
             polygons: [],
             processingLevelId: 'Not Provided',
+            provider: 'PORTA',
             quality: 'Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.',
             relatedUrls: [],
             scienceKeywords: [],

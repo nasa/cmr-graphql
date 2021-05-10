@@ -24,7 +24,7 @@ type Collection {
   "Coordinate system of the metadata."
   coordinateSystem: String
   "Provider associated with the metadata."
-  dataCenter: String
+  dataCenter: String @deprecated(reason: "Use `provider`.")
   "Information about the data centers responsible for this collection and its metadata."
   dataCenters: JSON
   "This element allows end users to get direct access to data products that are stored in the Amazon Web Service (AWS) S3 buckets. The sub elements include S3 credentials end point and a documentation URL as well as bucket prefix names and an AWS region."
@@ -65,6 +65,8 @@ type Collection {
   points: [String]
   "Spatial coverage of the collection."
   polygons: [[String]]
+  "The identity of the provider in the CMR."
+  provider: String
   "Free text description of the quality of the collection data."
   quality: String
   "The native id to set on the collection."

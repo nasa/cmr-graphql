@@ -214,6 +214,7 @@ export default class Collection extends Concept {
     // Alias conceptId for consistency in responses
     const {
       id: conceptId,
+      data_center: dataCenter,
       original_format: originalFormat,
       summary
     } = item
@@ -232,6 +233,9 @@ export default class Collection extends Concept {
     // Rename original format
     // eslint-disable-next-line no-param-reassign
     item.metadata_format = originalFormat
+
+    // eslint-disable-next-line no-param-reassign
+    item.provider = dataCenter
 
     return item
   }
