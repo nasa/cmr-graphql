@@ -83,7 +83,6 @@ describe('Collection', () => {
               original_format: 'RISUS',
               platforms: [],
               processing_level_id: 'Not Provided',
-              provider: 'FakeProvider',
               points: [],
               polygons: [],
               short_name: 'LOREM-QUAM',
@@ -133,8 +132,7 @@ describe('Collection', () => {
           items: [{
             meta: {
               'concept-id': 'C100000-EDSC',
-              'native-id': 'test-guid',
-              'provider-id': 'FakeProvider'
+              'native-id': 'test-guid'
             },
             umm: {
               Abstract: 'Cras mattis consectetur purus sit amet fermentum.',
@@ -229,7 +227,6 @@ describe('Collection', () => {
               points
               polygons
               processingLevelId
-              provider
               quality
               relatedUrls
               scienceKeywords
@@ -337,7 +334,6 @@ describe('Collection', () => {
             points: [],
             polygons: [],
             processingLevelId: 'Not Provided',
-            provider: 'FakeProvider',
             quality: 'Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.',
             relatedUrls: [],
             scienceKeywords: [],

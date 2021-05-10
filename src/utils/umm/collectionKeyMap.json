@@ -9,7 +9,6 @@
     "hasVariables",
     "platforms",
     "processingLevelId",
-    "provider",
     "title",
     "versionId"
   ],
@@ -34,7 +33,6 @@
     "nativeId": "meta.native-id",
     "platforms": "umm.Platforms",
     "processingLevelId": "umm.ProcessingLevel.Id",
-    "provider": "meta.provider-id",
     "quality": "umm.Quality",
     "relatedUrls": "umm.RelatedUrls",
     "scienceKeywords": "umm.ScienceKeywords",

@@ -65,8 +65,6 @@ type Collection {
   points: [String]
   "Spatial coverage of the collection."
   polygons: [[String]]
-  "The identity of the provider in the CMR."
-  provider: String
   "Free text description of the quality of the collection data."
   quality: String
   "The native id to set on the collection."
