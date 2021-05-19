@@ -200,7 +200,7 @@ type Query {
     "When has_granules is set to 'true' or 'false', results will be restricted to collections with or without granules, respectively."
     hasGranules: Boolean,
     "The horizontal data resolution of the data belonging to the collection."
-    horizontalDataResolutionRange: String
+    horizontalDataResolutionRange: [String]
     """
     If this parameter is set (e.g. includeFacets=v2), the results will include a new top level key `facets` that contains the facets related to the collection results.
     **NOTE**: This only requests the facets be returned by CMR, you will need to include `facets` in your query to have the results returned in the query.
@@ -248,7 +248,7 @@ type Query {
     "The name of the provider associated with the collection."
     provider: String,
     "Science Keywords associated with the collection, in facet form."
-    scienceKeywordsH: [String]
+    scienceKeywordsH: JSON
     "UMM Service concept id."
     serviceConceptId: String
     "UMM Service type."

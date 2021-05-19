@@ -1,3 +1,4 @@
+import { uniq } from 'lodash'
 import Concept from './concept'
 
 export default class Granule extends Concept {
@@ -45,6 +46,25 @@ export default class Granule extends Concept {
       'polygon',
       'temporal'
     ]
+  }
+
+  /**
+   * Returns an array of keys that should not be indexed when sent to CMR
+   */
+  getNonIndexedKeys() {
+    return uniq([
+      ...super.getNonIndexedKeys(),
+      'bounding_box',
+      'circle',
+      'collection_concept_id',
+      'concept_id',
+      'exclude',
+      'line',
+      'point',
+      'polygon',
+      'readable_granule_name',
+      'sort_key'
+    ])
   }
 
   /**

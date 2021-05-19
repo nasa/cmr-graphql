@@ -1,3 +1,4 @@
+import { uniq } from 'lodash'
 import Concept from './concept'
 
 export default class Subscription extends Concept {
@@ -44,6 +45,16 @@ export default class Subscription extends Concept {
       'provider',
       'subscriber_id'
     ]
+  }
+
+  /**
+   * Returns an array of keys that should not be indexed when sent to CMR
+   */
+  getNonIndexedKeys() {
+    return uniq([
+      ...super.getNonIndexedKeys(),
+      'collection_concept_id'
+    ])
   }
 
   /**

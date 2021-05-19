@@ -239,6 +239,19 @@ export default class Concept {
   }
 
   /**
+   * Returns an array of keys that should not be indexed when sent to CMR
+   */
+  getNonIndexedKeys() {
+    return [
+      'concept_id',
+      'offset',
+      'page_size',
+      'scroll',
+      'sort_key'
+    ]
+  }
+
+  /**
    * Retrieve the request id header from the request
    * @param {Object} headers The provided headers from the query
    */
@@ -337,11 +350,12 @@ export default class Concept {
     this.logKeyRequest(requestedKeys, 'json')
 
     // Construct the promise that will request data from the json endpoint
-    return cmrQuery(
-      this.getConceptType(),
-      pick(snakeCaseKeys(searchParams), this.getPermittedJsonSearchParams()),
-      providedHeaders
-    )
+    return cmrQuery({
+      conceptType: this.getConceptType(),
+      params: pick(snakeCaseKeys(searchParams), this.getPermittedJsonSearchParams()),
+      nonIndexedKeys: this.getNonIndexedKeys(),
+      headers: providedHeaders
+    })
   }
 
   /**
@@ -354,13 +368,15 @@ export default class Concept {
     this.logKeyRequest(requestedKeys, 'umm')
 
     // Construct the promise that will request data from the umm endpoint
-    return cmrQuery(
-      this.getConceptType(),
-      pick(snakeCaseKeys(searchParams), this.getPermittedUmmSearchParams(searchParams)),
-      providedHeaders, {
+    return cmrQuery({
+      conceptType: this.getConceptType(),
+      params: pick(snakeCaseKeys(searchParams), this.getPermittedUmmSearchParams()),
+      nonIndexedKeys: this.getNonIndexedKeys(),
+      headers: providedHeaders,
+      options: {
         format: 'umm_json'
       }
-    )
+    })
   }
 
   /**
