@@ -35,11 +35,11 @@ describe('cmrQuery', () => {
         }
       })
 
-    const response = await cmrQuery(
-      'collections',
-      {},
-      { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }
-    )
+    const response = await cmrQuery({
+      conceptType: 'collections',
+      params: {},
+      headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }
+    })
 
     const { data, headers } = response
 
@@ -77,12 +77,12 @@ describe('cmrQuery', () => {
           }
         })
 
-      const response = await cmrQuery(
-        'collections',
-        {},
-        { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
-        { format: 'umm_json' }
-      )
+      const response = await cmrQuery({
+        conceptType: 'collections',
+        params: {},
+        headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
+        options: { format: 'umm_json' }
+      })
 
       const { data } = response
       expect(data).toEqual({
@@ -112,14 +112,14 @@ describe('cmrQuery', () => {
           }
         })
 
-      const response = await cmrQuery(
-        'collections',
-        {},
-        {
+      const response = await cmrQuery({
+        conceptType: 'collections',
+        params: {},
+        headers: {
           'CMR-Request-Id': 'abcd-1234-efgh-5678',
           'Echo-Token': 'test-token'
         }
-      )
+      })
 
       const { data } = response
       expect(data).toEqual({
@@ -149,14 +149,14 @@ describe('cmrQuery', () => {
           }
         })
 
-      const response = await cmrQuery(
-        'collections',
-        {},
-        {
+      const response = await cmrQuery({
+        conceptType: 'collections',
+        params: {},
+        headers: {
           'CMR-Request-Id': 'abcd-1234-efgh-5678',
           Authorization: 'test-token'
         }
-      )
+      })
 
       const { data } = response
       expect(data).toEqual({
@@ -186,15 +186,15 @@ describe('cmrQuery', () => {
           }
         })
 
-      const response = await cmrQuery(
-        'collections',
-        {},
-        {
+      const response = await cmrQuery({
+        conceptType: 'collections',
+        params: {},
+        headers: {
           'CMR-Request-Id': 'abcd-1234-efgh-5678',
           Authorization: 'authorization-token',
           'Echo-Token': 'echo-token'
         }
-      )
+      })
 
       const { data } = response
       expect(data).toEqual({
@@ -219,13 +219,13 @@ describe('cmrQuery', () => {
           errors: ['HTTP Error']
         })
 
-      const response = cmrQuery(
-        'collections',
-        {},
-        {
+      const response = cmrQuery({
+        conceptType: 'collections',
+        params: {},
+        headers: {
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         }
-      )
+      })
 
       await expect(response).rejects.toThrow()
     })

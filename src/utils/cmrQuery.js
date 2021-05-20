@@ -3,15 +3,24 @@ import axios from 'axios'
 import snakeCaseKeys from 'snakecase-keys'
 
 import { pick } from 'lodash'
-import { stringify } from 'qs'
+import { prepKeysForCmr } from './prepKeysForCmr'
 
 /**
  * Make a request to CMR and return the promise
- * @param {String} conceptType Concept type to search
- * @param {Object} params Parameters to send to CMR
- * @param {Object} headers Headers to send to CMR
+ * @param {Object} param0
+ * @param {Object} param0.headers Headers to send to CMR
+ * @param {Array} param0.nonIndexedKeys Parameter names that should not be indexed before sending to CMR
+ * @param {Object} param0.options Additional Options (format)
+ * @param {Object} param0.params Parameters to send to CMR
+ * @param {String} param0.conceptType Concept type to search
  */
-export const cmrQuery = (conceptType, params, headers, options = {}) => {
+export const cmrQuery = ({
+  conceptType,
+  headers,
+  nonIndexedKeys = [],
+  options = {},
+  params
+}) => {
   const {
     format = 'json'
   } = options
@@ -40,9 +49,7 @@ export const cmrQuery = (conceptType, params, headers, options = {}) => {
     delete permittedHeaders['Echo-Token']
   }
 
-  const cmrParameters = stringify(
-    snakeCaseKeys(params), { indices: false, arrayFormat: 'brackets' }
-  )
+  const cmrParameters = prepKeysForCmr(snakeCaseKeys(params), nonIndexedKeys)
 
   const { 'CMR-Request-Id': requestId } = permittedHeaders
 
