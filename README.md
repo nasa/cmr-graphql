@@ -205,7 +205,7 @@ For all supported arguments and columns, see [the schema](src/types/collection.g
       collections(
         conceptId:["C1000000001-EXAMPLE", "C1000000002-EXAMPLE"]
       ) {
-		count
+        count
         items {
           title
           granules {

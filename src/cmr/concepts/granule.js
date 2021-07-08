@@ -18,18 +18,24 @@ export default class Granule extends Concept {
     return [
       ...super.getPermittedJsonSearchParams(),
       'bounding_box',
+      'browse_only',
       'circle',
+      'cloud_cover',
       'collection_concept_id',
-      'has_granules_or_cwic',
-      'has_granules',
-      'include_has_granules',
-      'include_tags',
-      'name',
+      'day_night_flag',
+      'equator_crossing_date',
+      'equator_crossing_longitude',
+      'exclude',
+      'line',
+      'online_only',
+      'options',
+      'orbit_number',
       'point',
       'polygon',
-      'provider',
-      'short_name',
-      'temporal'
+      'readable_granule_name',
+      'sort_key',
+      'temporal',
+      'two_d_coordinate_system'
     ]
   }
 
@@ -40,11 +46,24 @@ export default class Granule extends Concept {
     return [
       ...super.getPermittedUmmSearchParams(),
       'bounding_box',
+      'browse_only',
       'circle',
+      'cloud_cover',
       'collection_concept_id',
+      'day_night_flag',
+      'equator_crossing_date',
+      'equator_crossing_longitude',
+      'exclude',
+      'line',
+      'online_only',
+      'options',
+      'orbit_number',
       'point',
       'polygon',
-      'temporal'
+      'readable_granule_name',
+      'sort_key',
+      'temporal',
+      'two_d_coordinate_system'
     ]
   }
 
