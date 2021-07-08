@@ -7,7 +7,7 @@ import Subscription from '../cmr/concepts/subscription'
 export const fetchSubscription = async (params, headers, parsedInfo) => {
   const requestInfo = parseRequestedFields(parsedInfo, subscriptionKeyMap, 'subscription')
 
-  const subscription = new Subscription(headers, requestInfo)
+  const subscription = new Subscription(headers, requestInfo, params)
 
   // Query CMR
   subscription.fetch(params)
@@ -26,7 +26,7 @@ export const ingestSubscription = async (params, headers, parsedInfo) => {
     ingestKeys
   } = requestInfo
 
-  const subscription = new Subscription(headers, requestInfo)
+  const subscription = new Subscription(headers, requestInfo, params)
 
   // Contact CMR
   await subscription.ingest(params, ingestKeys, headers)
@@ -45,7 +45,7 @@ export const deleteSubscription = async (params, headers, parsedInfo) => {
     ingestKeys
   } = requestInfo
 
-  const subscription = new Subscription(headers, requestInfo)
+  const subscription = new Subscription(headers, requestInfo, params)
 
   // Contact CMR
   subscription.delete(params, ingestKeys, headers)

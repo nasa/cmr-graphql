@@ -7,7 +7,7 @@ import Granule from '../cmr/concepts/granule'
 export default async (params, headers, parsedInfo) => {
   const requestInfo = parseRequestedFields(parsedInfo, granuleKeyMap, 'granule')
 
-  const granule = new Granule(headers, requestInfo)
+  const granule = new Granule(headers, requestInfo, params)
 
   // Query CMR
   granule.fetch(params)

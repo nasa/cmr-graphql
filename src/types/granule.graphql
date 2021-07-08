@@ -82,6 +82,8 @@ type Query {
     cursor: String
     "The number of granules requested by the user."
     limit: Int
+    "Filter the links based on these types."
+    linkTypes: [String]
     "Zero based offset of individual results."
     offset: Int
     "Search using a point involves using a pair of values representing the point coordinates as parameters. The first value is the longitude and second value is the latitude."

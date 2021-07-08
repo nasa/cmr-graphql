@@ -7,8 +7,8 @@ export default class Subscription extends Concept {
    * @param {Object} headers HTTP headers provided by the query
    * @param {Object} requestInfo Parsed data pertaining to the Graph query
    */
-  constructor(headers, requestInfo) {
-    super('subscriptions', headers, requestInfo)
+  constructor(headers, requestInfo, params) {
+    super('subscriptions', headers, requestInfo, params)
   }
 
   /**

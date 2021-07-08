@@ -7,8 +7,8 @@ export default class Granule extends Concept {
    * @param {Object} headers HTTP headers provided by the query
    * @param {Object} requestInfo Parsed data pertaining to the Graph query
    */
-  constructor(headers, requestInfo) {
-    super('granules', headers, requestInfo)
+  constructor(headers, requestInfo, params) {
+    super('granules', headers, requestInfo, params)
   }
 
   /**
@@ -70,8 +70,8 @@ export default class Granule extends Concept {
   /**
    * Query the CMR UMM API endpoint to retrieve requested data
    * @param {Object} searchParams Parameters provided by the query
-   * @param {Array} requestedKeys Keys requested by the query
-   * @param {Object} providedHeaders Headers requested by the query
+   * @param {Array} ummKeys Keys requested by the query
+   * @param {Object} headers Headers requested by the query
    */
   fetchUmm(searchParams, ummKeys, headers) {
     const ummHeaders = {
@@ -89,7 +89,8 @@ export default class Granule extends Concept {
   normalizeJsonItem(item) {
     // Alias conceptId for consistency in responses
     const {
-      id: conceptId
+      id: conceptId,
+      links = []
     } = item
 
     // Rename (delete the id key and set the conceptId key) `id` for consistency
@@ -98,6 +99,24 @@ export default class Granule extends Concept {
 
     // eslint-disable-next-line no-param-reassign
     item.concept_id = conceptId
+
+    const { linkTypes = [] } = this.params
+
+    // If linkTypes parameter was included and links field was requested, filter the links based on linkTypes
+    if (linkTypes.length && links.length) {
+      // eslint-disable-next-line no-param-reassign
+      item.links = links.filter((link) => {
+        const { inherited, rel } = link
+        let matchedAnyType = false
+
+        // Only keep the link if the rel matches one of the linkTypes parameter
+        linkTypes.forEach((linkType) => {
+          if (rel.includes(`/${linkType}#`) && !inherited) matchedAnyType = true
+        })
+
+        return matchedAnyType
+      })
+    }
 
     return item
   }

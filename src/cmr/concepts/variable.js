@@ -6,8 +6,8 @@ export default class Variable extends Concept {
    * @param {Object} headers HTTP headers provided by the query
    * @param {Object} requestInfo Parsed data pertaining to the Graph query
    */
-  constructor(headers, requestInfo) {
-    super('variables', headers, requestInfo)
+  constructor(headers, requestInfo, params) {
+    super('variables', headers, requestInfo, params)
   }
 
   /**

@@ -7,7 +7,7 @@ import Collection from '../cmr/concepts/collection'
 export default async (params, headers, parsedInfo) => {
   const requestInfo = parseRequestedFields(parsedInfo, collectionKeyMap, 'collection')
 
-  const collection = new Collection(headers, requestInfo)
+  const collection = new Collection(headers, requestInfo, params)
 
   // Query CMR
   collection.fetch(params)
