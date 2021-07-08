@@ -305,12 +305,25 @@ describe('granule', () => {
                 hreflang: 'en-US',
                 rel: 'https://example.com/metadata#',
                 type: 'application/x-hdf5'
+              }, {
+                href: 'https://example.com/s3_link',
+                hreflang: 'en-US',
+                rel: 'https://example.com/s3#',
+                type: 'application/x-hdf5'
               }]
             }]
           }
         })
 
-      const response = await granuleDatasource({ collectionConceptId: 'C100000-EDSC', linkTypes: ['data'] }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'granule')
+      const response = await granuleDatasource(
+        {
+          collectionConceptId: 'C100000-EDSC',
+          linkTypes: ['data', 's3']
+        },
+        { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
+        requestInfo,
+        'granule'
+      )
 
       expect(response).toEqual({
         count: 84,
@@ -320,6 +333,11 @@ describe('granule', () => {
             href: 'https://example.com/data_link',
             hreflang: 'en-US',
             rel: 'https://example.com/data#',
+            type: 'application/x-hdf5'
+          }, {
+            href: 'https://example.com/s3_link',
+            hreflang: 'en-US',
+            rel: 'https://example.com/s3#',
             type: 'application/x-hdf5'
           }]
         }]

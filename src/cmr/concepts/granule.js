@@ -107,14 +107,9 @@ export default class Granule extends Concept {
       // eslint-disable-next-line no-param-reassign
       item.links = links.filter((link) => {
         const { inherited, rel } = link
-        let matchedAnyType = false
 
-        // Only keep the link if the rel matches one of the linkTypes parameter
-        linkTypes.forEach((linkType) => {
-          if (rel.includes(`/${linkType}#`) && !inherited) matchedAnyType = true
-        })
-
-        return matchedAnyType
+        // Returns true to .filter if any (.some) of the linkTypes are found in the rel field
+        return linkTypes.some((linkType) => rel.includes(`/${linkType}#`) && !inherited)
       })
     }
 
