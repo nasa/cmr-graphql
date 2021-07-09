@@ -7,8 +7,8 @@ export default class Granule extends Concept {
    * @param {Object} headers HTTP headers provided by the query
    * @param {Object} requestInfo Parsed data pertaining to the Graph query
    */
-  constructor(headers, requestInfo) {
-    super('granules', headers, requestInfo)
+  constructor(headers, requestInfo, params) {
+    super('granules', headers, requestInfo, params)
   }
 
   /**
@@ -18,18 +18,24 @@ export default class Granule extends Concept {
     return [
       ...super.getPermittedJsonSearchParams(),
       'bounding_box',
+      'browse_only',
       'circle',
+      'cloud_cover',
       'collection_concept_id',
-      'has_granules_or_cwic',
-      'has_granules',
-      'include_has_granules',
-      'include_tags',
-      'name',
+      'day_night_flag',
+      'equator_crossing_date',
+      'equator_crossing_longitude',
+      'exclude',
+      'line',
+      'online_only',
+      'options',
+      'orbit_number',
       'point',
       'polygon',
-      'provider',
-      'short_name',
-      'temporal'
+      'readable_granule_name',
+      'sort_key',
+      'temporal',
+      'two_d_coordinate_system'
     ]
   }
 
@@ -40,11 +46,24 @@ export default class Granule extends Concept {
     return [
       ...super.getPermittedUmmSearchParams(),
       'bounding_box',
+      'browse_only',
       'circle',
+      'cloud_cover',
       'collection_concept_id',
+      'day_night_flag',
+      'equator_crossing_date',
+      'equator_crossing_longitude',
+      'exclude',
+      'line',
+      'online_only',
+      'options',
+      'orbit_number',
       'point',
       'polygon',
-      'temporal'
+      'readable_granule_name',
+      'sort_key',
+      'temporal',
+      'two_d_coordinate_system'
     ]
   }
 
@@ -70,8 +89,8 @@ export default class Granule extends Concept {
   /**
    * Query the CMR UMM API endpoint to retrieve requested data
    * @param {Object} searchParams Parameters provided by the query
-   * @param {Array} requestedKeys Keys requested by the query
-   * @param {Object} providedHeaders Headers requested by the query
+   * @param {Array} ummKeys Keys requested by the query
+   * @param {Object} headers Headers requested by the query
    */
   fetchUmm(searchParams, ummKeys, headers) {
     const ummHeaders = {
@@ -89,7 +108,8 @@ export default class Granule extends Concept {
   normalizeJsonItem(item) {
     // Alias conceptId for consistency in responses
     const {
-      id: conceptId
+      id: conceptId,
+      links = []
     } = item
 
     // Rename (delete the id key and set the conceptId key) `id` for consistency
@@ -98,6 +118,19 @@ export default class Granule extends Concept {
 
     // eslint-disable-next-line no-param-reassign
     item.concept_id = conceptId
+
+    const { linkTypes = [] } = this.params
+
+    // If linkTypes parameter was included and links field was requested, filter the links based on linkTypes
+    if (linkTypes.length && links.length) {
+      // eslint-disable-next-line no-param-reassign
+      item.links = links.filter((link) => {
+        const { inherited, rel } = link
+
+        // Returns true to .filter if any (.some) of the linkTypes are found in the rel field
+        return linkTypes.some((linkType) => rel.includes(`/${linkType}#`) && !inherited)
+      })
+    }
 
     return item
   }

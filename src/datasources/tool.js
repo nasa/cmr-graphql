@@ -7,7 +7,7 @@ import Tool from '../cmr/concepts/tool'
 export default async (params, headers, parsedInfo) => {
   const requestInfo = parseRequestedFields(parsedInfo, toolKeyMap, 'tool')
 
-  const tool = new Tool(headers, requestInfo)
+  const tool = new Tool(headers, requestInfo, params)
 
   // Query CMR
   tool.fetch(params)

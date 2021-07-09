@@ -7,7 +7,7 @@ import Variable from '../cmr/concepts/variable'
 export default async (params, headers, parsedInfo) => {
   const requestInfo = parseRequestedFields(parsedInfo, variableKeyMap, 'variable')
 
-  const variable = new Variable(headers, requestInfo)
+  const variable = new Variable(headers, requestInfo, params)
 
   // Query CMR
   variable.fetch(params)

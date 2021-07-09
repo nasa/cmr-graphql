@@ -7,7 +7,7 @@ import Service from '../cmr/concepts/service'
 export default async (params, headers, parsedInfo) => {
   const requestInfo = parseRequestedFields(parsedInfo, serviceKeyMap, 'service')
 
-  const service = new Service(headers, requestInfo)
+  const service = new Service(headers, requestInfo, params)
 
   // Query CMR
   service.fetch(params)

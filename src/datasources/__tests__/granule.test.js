@@ -255,6 +255,96 @@ describe('granule', () => {
     })
   })
 
+  describe('with linkTypes parameter', () => {
+    beforeEach(() => {
+      // Overwrite default requestInfo
+      requestInfo = {
+        name: 'granules',
+        alias: 'granules',
+        args: {},
+        fieldsByTypeName: {
+          GranuleList: {
+            items: {
+              name: 'items',
+              alias: 'items',
+              args: {},
+              fieldsByTypeName: {
+                Granule: {
+                  links: {
+                    name: 'links',
+                    alias: 'links',
+                    args: {},
+                    fieldsByTypeName: {}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    })
+
+    test('returns filtered links', async () => {
+      nock(/example/)
+        .defaultReplyHeaders({
+          'CMR-Hits': 84,
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .post(/granules\.json/)
+        .reply(200, {
+          feed: {
+            entry: [{
+              links: [{
+                href: 'https://example.com/data_link',
+                hreflang: 'en-US',
+                rel: 'https://example.com/data#',
+                type: 'application/x-hdf5'
+              }, {
+                href: 'https://example.com/metadata_link',
+                hreflang: 'en-US',
+                rel: 'https://example.com/metadata#',
+                type: 'application/x-hdf5'
+              }, {
+                href: 'https://example.com/s3_link',
+                hreflang: 'en-US',
+                rel: 'https://example.com/s3#',
+                type: 'application/x-hdf5'
+              }]
+            }]
+          }
+        })
+
+      const response = await granuleDatasource(
+        {
+          collectionConceptId: 'C100000-EDSC',
+          linkTypes: ['data', 's3']
+        },
+        { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
+        requestInfo,
+        'granule'
+      )
+
+      expect(response).toEqual({
+        count: 84,
+        cursor: 'e30=',
+        items: [{
+          links: [{
+            href: 'https://example.com/data_link',
+            hreflang: 'en-US',
+            rel: 'https://example.com/data#',
+            type: 'application/x-hdf5'
+          }, {
+            href: 'https://example.com/s3_link',
+            hreflang: 'en-US',
+            rel: 'https://example.com/s3#',
+            type: 'application/x-hdf5'
+          }]
+        }]
+      })
+    })
+  })
+
   describe('with json and umm keys', () => {
     beforeEach(() => {
       // Overwrite default requestInfo

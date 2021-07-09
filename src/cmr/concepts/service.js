@@ -6,8 +6,8 @@ export default class Service extends Concept {
    * @param {Object} headers HTTP headers provided by the query
    * @param {Object} requestInfo Parsed data pertaining to the Graph query
    */
-  constructor(headers, requestInfo) {
-    super('services', headers, requestInfo)
+  constructor(headers, requestInfo, params) {
+    super('services', headers, requestInfo, params)
   }
 
   /**

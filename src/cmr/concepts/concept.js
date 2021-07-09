@@ -18,7 +18,7 @@ export default class Concept {
    * @param {Object} headers HTTP headers provided by the query
    * @param {Object} requestInfo Parsed data pertaining to the Graph query
    */
-  constructor(conceptType, headers = {}, requestInfo = {}) {
+  constructor(conceptType, headers = {}, requestInfo = {}, params = {}) {
     // Set properties for data available during instantiation
     this.conceptType = conceptType
     this.headers = headers
@@ -33,6 +33,8 @@ export default class Concept {
 
     this.ummItemCount = 0
     this.ummScrollId = undefined
+
+    this.params = params
   }
 
   /**

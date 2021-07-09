@@ -9,8 +9,8 @@ export default class Collection extends Concept {
    * @param {Object} headers HTTP headers provided by the query
    * @param {Object} requestInfo Parsed data pertaining to the Graph query
    */
-  constructor(headers, requestInfo) {
-    super('collections', headers, requestInfo)
+  constructor(headers, requestInfo, params) {
+    super('collections', headers, requestInfo, params)
 
     this.facets = []
   }
