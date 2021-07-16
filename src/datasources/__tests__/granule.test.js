@@ -182,7 +182,7 @@ describe('granule', () => {
             }]
           })
 
-        const response = await granuleDatasource({}, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'collection')
+        const response = await granuleDatasource({}, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'granule')
 
         expect(response).toEqual({
           count: 84,
@@ -192,6 +192,52 @@ describe('granule', () => {
             dayNightFlag: 'UNSPECIFIED',
             granuleUr: 'GLDAS_CLSM025_D.2.0:GLDAS_CLSM025_D.A19480101.020.nc4'
           }]
+        })
+      })
+    })
+
+    describe('when a cursor returns no results', () => {
+      test('calls CMR to clear the scroll session', async () => {
+        nock(/example/)
+          .defaultReplyHeaders({
+            'CMR-Hits': 0,
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678',
+            'CMR-Scroll-Id': '-29834750'
+          })
+          .post(/granules\.json/, 'scroll=true')
+          .reply(200, {
+            feed: {
+              entry: []
+            }
+          })
+
+        nock(/example/)
+          .defaultReplyHeaders({
+            'CMR-Hits': 0,
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678',
+            'CMR-Scroll-Id': '-98726357'
+          })
+          .post(/granules\.umm_json/, 'scroll=true')
+          .reply(200, {
+            items: []
+          })
+
+        nock(/example/)
+          .post('/search/clear-scroll', { scroll_id: '-29834750' })
+          .reply(204)
+
+        nock(/example/)
+          .post('/search/clear-scroll', { scroll_id: '-98726357' })
+          .reply(204)
+
+        const response = await granuleDatasource({}, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'granule')
+
+        expect(response).toEqual({
+          count: 0,
+          cursor: 'eyJqc29uIjoiLTI5ODM0NzUwIiwidW1tIjoiLTk4NzI2MzU3In0=',
+          items: []
         })
       })
     })

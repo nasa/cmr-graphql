@@ -16,5 +16,13 @@ export default async (params, headers, parsedInfo) => {
   await granule.parse(requestInfo)
 
   // Return a formatted JSON response
-  return granule.getFormattedResponse()
+  const response = granule.getFormattedResponse()
+
+  // Clear any existing scroll sessions if no items were returned
+  const { cursor, items } = response
+  if (cursor && !items.length) {
+    await granule.clearScrollSessions(cursor)
+  }
+
+  return response
 }

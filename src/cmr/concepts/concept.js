@@ -1,3 +1,5 @@
+import axios from 'axios'
+
 import camelcaseKeys from 'camelcase-keys'
 import dasherize from 'dasherize'
 import snakeCaseKeys from 'snakecase-keys'
@@ -656,6 +658,42 @@ export default class Concept {
       }
     } catch (e) {
       parseError(e, { reThrowError: true })
+    }
+  }
+
+  /**
+   * Clears a CMR Scroll Session
+   * @param {String} scrollId A CMR Scroll ID
+   */
+  async clearScrollSession(scrollId) {
+    return axios({
+      method: 'post',
+      url: `${process.env.cmrRootUrl}/search/clear-scroll`,
+      data: {
+        scroll_id: scrollId
+      },
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+  }
+
+  /**
+   * Parses a base64 hashed object of CMR scroll ids and clears each scroll session
+   * @param {String} cursor A base64 hashed object containing scroll ids from CMR
+   */
+  async clearScrollSessions(cursor) {
+    const {
+      json: jsonScrollId,
+      umm: ummScrollId
+    } = this.decodeCursor(cursor)
+
+    if (jsonScrollId) {
+      await this.clearScrollSession(jsonScrollId)
+    }
+
+    if (ummScrollId) {
+      await this.clearScrollSession(ummScrollId)
     }
   }
 }

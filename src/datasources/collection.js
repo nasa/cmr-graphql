@@ -16,5 +16,13 @@ export default async (params, headers, parsedInfo) => {
   await collection.parse(requestInfo)
 
   // Return a formatted JSON response
-  return collection.getFormattedResponse()
+  const response = collection.getFormattedResponse()
+
+  // Clear any existing scroll sessions if no items were returned
+  const { cursor, items } = response
+  if (cursor && !items.length) {
+    await collection.clearScrollSessions(cursor)
+  }
+
+  return response
 }
