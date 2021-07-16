@@ -518,7 +518,7 @@ export default class Concept {
    * @param {Object} jsonResponse HTTP response from the CMR endpoint
    * @param {Array} jsonKeys Array of the keys requested in the query
    */
-  parseJson(jsonResponse, jsonKeys) {
+  async parseJson(jsonResponse, jsonKeys) {
     const { headers } = jsonResponse
     const {
       'cmr-hits': cmrHits,
@@ -530,6 +530,10 @@ export default class Concept {
     this.setJsonScrollId(jsonScrollId)
 
     const items = this.parseJsonBody(jsonResponse)
+
+    if (jsonScrollId && !items.length) {
+      await this.clearScrollSession(jsonScrollId)
+    }
 
     items.forEach((item) => {
       const normalizedItem = this.normalizeJsonItem(item)
@@ -554,7 +558,7 @@ export default class Concept {
    * @param {Object} ummResponse HTTP response from the CMR endpoint
    * @param {Array} ummKeys Array of the keys requested in the query
    */
-  parseUmm(ummResponse, ummKeys) {
+  async parseUmm(ummResponse, ummKeys) {
     // Pull out the key mappings so we can retrieve the values below
     const { ummKeyMappings } = this.requestInfo
 
@@ -569,6 +573,10 @@ export default class Concept {
     this.setUmmScrollId(ummScrollId)
 
     const items = this.parseUmmBody(ummResponse)
+
+    if (ummScrollId && !items.length) {
+      await this.clearScrollSession(ummScrollId)
+    }
 
     items.forEach((item) => {
       const normalizedItem = this.normalizeUmmItem(item)
@@ -650,11 +658,11 @@ export default class Concept {
       const [jsonResponse, ummResponse] = response
 
       if (jsonResponse) {
-        this.parseJson(jsonResponse, jsonKeys)
+        await this.parseJson(jsonResponse, jsonKeys)
       }
 
       if (ummResponse) {
-        this.parseUmm(ummResponse, ummKeys)
+        await this.parseUmm(ummResponse, ummKeys)
       }
     } catch (e) {
       parseError(e, { reThrowError: true })
@@ -676,24 +684,5 @@ export default class Concept {
         'Content-Type': 'application/json'
       }
     })
-  }
-
-  /**
-   * Parses a base64 hashed object of CMR scroll ids and clears each scroll session
-   * @param {String} cursor A base64 hashed object containing scroll ids from CMR
-   */
-  async clearScrollSessions(cursor) {
-    const {
-      json: jsonScrollId,
-      umm: ummScrollId
-    } = this.decodeCursor(cursor)
-
-    if (jsonScrollId) {
-      await this.clearScrollSession(jsonScrollId)
-    }
-
-    if (ummScrollId) {
-      await this.clearScrollSession(ummScrollId)
-    }
   }
 }

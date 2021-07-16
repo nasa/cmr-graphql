@@ -108,7 +108,7 @@ describe('variable', () => {
           }]
         })
 
-      const response = await variableDatasource({}, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'service')
+      const response = await variableDatasource({}, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'variable')
 
       expect(response).toEqual({
         count: 84,
@@ -141,7 +141,7 @@ describe('variable', () => {
             }]
           })
 
-        const response = await variableDatasource({}, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'collection')
+        const response = await variableDatasource({}, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'variable')
 
         expect(response).toEqual({
           count: 84,
@@ -150,6 +150,52 @@ describe('variable', () => {
             conceptId: 'V100000-EDSC',
             variableType: 'SCIENCE_VARIABLE'
           }]
+        })
+      })
+    })
+
+    describe('when a cursor returns no results', () => {
+      test('calls CMR to clear the scroll session', async () => {
+        nock(/example/)
+          .defaultReplyHeaders({
+            'CMR-Hits': 0,
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678',
+            'CMR-Scroll-Id': '-29834750'
+          })
+          .post(/variables\.json/, 'scroll=true')
+          .reply(200, {
+            feed: {
+              entry: []
+            }
+          })
+
+        nock(/example/)
+          .defaultReplyHeaders({
+            'CMR-Hits': 0,
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678',
+            'CMR-Scroll-Id': '-98726357'
+          })
+          .post(/variables\.umm_json/, 'scroll=true')
+          .reply(200, {
+            items: []
+          })
+
+        nock(/example/)
+          .post('/search/clear-scroll', { scroll_id: '-29834750' })
+          .reply(204)
+
+        nock(/example/)
+          .post('/search/clear-scroll', { scroll_id: '-98726357' })
+          .reply(204)
+
+        const response = await variableDatasource({}, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'variable')
+
+        expect(response).toEqual({
+          count: 0,
+          cursor: 'eyJ1bW0iOiItOTg3MjYzNTcifQ==',
+          items: []
         })
       })
     })

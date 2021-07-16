@@ -413,7 +413,7 @@ describe('collection', () => {
           }]
         })
 
-      const response = await collectionDatasource({ conceptId: 'C100000-EDSC' }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'colletion')
+      const response = await collectionDatasource({ conceptId: 'C100000-EDSC' }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'collection')
 
       expect(response).toEqual({
         count: 84,
