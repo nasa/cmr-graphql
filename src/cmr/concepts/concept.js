@@ -674,15 +674,19 @@ export default class Concept {
    * @param {String} scrollId A CMR Scroll ID
    */
   async clearScrollSession(scrollId) {
-    return axios({
-      method: 'post',
-      url: `${process.env.cmrRootUrl}/search/clear-scroll`,
-      data: {
-        scroll_id: scrollId
-      },
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
+    try {
+      await axios({
+        method: 'post',
+        url: `${process.env.cmrRootUrl}/search/clear-scroll`,
+        data: {
+          scroll_id: scrollId
+        },
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+    } catch (error) {
+      parseError(error, { reThrowError: true })
+    }
   }
 }

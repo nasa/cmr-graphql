@@ -204,6 +204,47 @@ describe('subscription#fetch', () => {
           items: []
         })
       })
+
+      test('catches errors received from CMR', async () => {
+        nock(/example/)
+          .defaultReplyHeaders({
+            'CMR-Hits': 0,
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678',
+            'CMR-Scroll-Id': '-29834750'
+          })
+          .post(/subscriptions\.json/, 'scroll=true')
+          .reply(200, {
+            feed: {
+              entry: []
+            }
+          })
+
+        nock(/example/)
+          .defaultReplyHeaders({
+            'CMR-Hits': 0,
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678',
+            'CMR-Scroll-Id': '-98726357'
+          })
+          .post(/subscriptions\.umm_json/, 'scroll=true')
+          .reply(200, {
+            items: []
+          })
+
+        nock(/example/)
+          .post('/search/clear-scroll', { scroll_id: '-29834750' })
+          .reply(500)
+
+        nock(/example/)
+          .post('/search/clear-scroll', { scroll_id: '-98726357' })
+          .reply(500)
+
+
+        await expect(
+          subscriptionSourceFetch({}, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'subscription')
+        ).rejects.toThrow(Error)
+      })
     })
   })
 
