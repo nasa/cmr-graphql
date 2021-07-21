@@ -14,8 +14,7 @@ describe('prepKeysForCmr', () => {
     const params = {
       a: ['a', 'b']
     }
-    const nonIndexedKeys = []
 
-    expect(prepKeysForCmr(params, nonIndexedKeys)).toEqual('a%5B0%5D=a&a%5B1%5D=b')
+    expect(prepKeysForCmr(params)).toEqual('a%5B0%5D=a&a%5B1%5D=b')
   })
 })

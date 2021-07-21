@@ -1,3 +1,5 @@
+import axios from 'axios'
+
 import camelcaseKeys from 'camelcase-keys'
 import dasherize from 'dasherize'
 import snakeCaseKeys from 'snakecase-keys'
@@ -516,7 +518,7 @@ export default class Concept {
    * @param {Object} jsonResponse HTTP response from the CMR endpoint
    * @param {Array} jsonKeys Array of the keys requested in the query
    */
-  parseJson(jsonResponse, jsonKeys) {
+  async parseJson(jsonResponse, jsonKeys) {
     const { headers } = jsonResponse
     const {
       'cmr-hits': cmrHits,
@@ -528,6 +530,10 @@ export default class Concept {
     this.setJsonScrollId(jsonScrollId)
 
     const items = this.parseJsonBody(jsonResponse)
+
+    if (jsonScrollId && !items.length) {
+      await this.clearScrollSession(jsonScrollId)
+    }
 
     items.forEach((item) => {
       const normalizedItem = this.normalizeJsonItem(item)
@@ -552,7 +558,7 @@ export default class Concept {
    * @param {Object} ummResponse HTTP response from the CMR endpoint
    * @param {Array} ummKeys Array of the keys requested in the query
    */
-  parseUmm(ummResponse, ummKeys) {
+  async parseUmm(ummResponse, ummKeys) {
     // Pull out the key mappings so we can retrieve the values below
     const { ummKeyMappings } = this.requestInfo
 
@@ -567,6 +573,10 @@ export default class Concept {
     this.setUmmScrollId(ummScrollId)
 
     const items = this.parseUmmBody(ummResponse)
+
+    if (ummScrollId && !items.length) {
+      await this.clearScrollSession(ummScrollId)
+    }
 
     items.forEach((item) => {
       const normalizedItem = this.normalizeUmmItem(item)
@@ -648,14 +658,35 @@ export default class Concept {
       const [jsonResponse, ummResponse] = response
 
       if (jsonResponse) {
-        this.parseJson(jsonResponse, jsonKeys)
+        await this.parseJson(jsonResponse, jsonKeys)
       }
 
       if (ummResponse) {
-        this.parseUmm(ummResponse, ummKeys)
+        await this.parseUmm(ummResponse, ummKeys)
       }
     } catch (e) {
       parseError(e, { reThrowError: true })
+    }
+  }
+
+  /**
+   * Clears a CMR Scroll Session
+   * @param {String} scrollId A CMR Scroll ID
+   */
+  async clearScrollSession(scrollId) {
+    try {
+      await axios({
+        method: 'post',
+        url: `${process.env.cmrRootUrl}/search/clear-scroll`,
+        data: {
+          scroll_id: scrollId
+        },
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+    } catch (error) {
+      parseError(error, { reThrowError: true })
     }
   }
 }
