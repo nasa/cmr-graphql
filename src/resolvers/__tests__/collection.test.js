@@ -179,6 +179,7 @@ describe('Collection', () => {
               ScienceKeywords: [],
               SpatialExtent: {},
               TemporalExtents: [],
+              TemporalKeywords: [],
               TilingIdentificationSystems: {},
               EntryTitle: 'Condimentum Quam Mattis Cursus Pharetra',
               VersionId: '1.0.0'
@@ -235,6 +236,7 @@ describe('Collection', () => {
               spatialExtent
               tags
               temporalExtents
+              temporalKeywords
               tilingIdentificationSystems
               timeEnd
               timeStart
@@ -343,6 +345,7 @@ describe('Collection', () => {
             spatialExtent: {},
             tags: {},
             temporalExtents: [],
+            temporalKeywords: [],
             tilingIdentificationSystems: {},
             timeEnd: '2016-04-04T08:00:00.000Z',
             timeStart: '2016-04-04T17:00:00.000Z',
