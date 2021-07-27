@@ -87,6 +87,8 @@ type Collection {
   tags: JSON
   "This class contains attributes which describe the temporal range of a specific collection. Temporal Extent includes a specification of the Temporal Range Type of the collection, which is one of Range Date Time, Single Date Time, or Periodic Date Time."
   temporalExtents: JSON
+  "One or more words or phrases that describe the temporal resolution of the dataset."
+  temporalKeywords: [String]
   "Name of the two-dimensional tiling system for the collection."
   tilingIdentificationSystems: JSON
   "Start time of the metadata."

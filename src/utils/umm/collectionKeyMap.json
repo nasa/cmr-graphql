@@ -38,6 +38,7 @@
     "scienceKeywords": "umm.ScienceKeywords",
     "spatialExtent": "umm.SpatialExtent",
     "temporalExtents": "umm.TemporalExtents",
+    "temporalKeywords": "umm.TemporalKeywords",
     "tilingIdentificationSystems": "umm.TilingIdentificationSystems",
     "title": "umm.EntryTitle",
     "versionId": "umm.Version"
