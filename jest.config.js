@@ -22,5 +22,8 @@ module.exports = {
   transform: {
     '\\.(gql|graphql)$': 'jest-transform-graphql',
     '^.+\\.(js)$': 'babel-jest'
-  }
+  },
+  testPathIgnorePatterns: [
+    'mocks.js'
+  ]
 }
