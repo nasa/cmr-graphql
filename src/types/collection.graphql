@@ -102,7 +102,7 @@ type Collection {
 
   "Collections that share documentation"
   documentedWith (
-    "The method of grouping relationships. Possible values are 'collection' and 'value'"
+    "The method of grouping relationships."
     groupBy: GroupByValues!
     "Documentation url to use in filtering relationships"
     url: String
@@ -113,9 +113,10 @@ type Collection {
     "The beginning of the range GraphDB searches on"
     offset: Int
   ): [RelationshipGroup]
+
   "Collections that share a campaign"
   campaignedWith (
-    "The method of grouping relationships. Possible values are 'collection' and 'value'"
+    "The method of grouping relationships."
     groupBy: GroupByValues!
     "Campaign name to use in filtering relationships"
     name: String
@@ -124,9 +125,10 @@ type Collection {
     "The beginning of the range GraphDB searches on"
     offset: Int
   ): [RelationshipGroup]
+
   "Collections that share a platform/instrument"
   acquiredWith (
-    "The method of grouping relationships. Possible values are 'collection' and 'value'"
+    "The method of grouping relationships."
     groupBy: GroupByValues!
     "Platform name to use in filtering relationships"
     platform: String

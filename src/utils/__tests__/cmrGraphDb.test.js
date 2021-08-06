@@ -23,9 +23,6 @@ describe('cmrGraphDb', () => {
         'CMR-Request-Id': 'abcd-1234-efgh-5678'
       }
     })
-      .defaultReplyHeaders({
-        'CMR-Took': 7
-      })
       .post(/graphdb/)
       .reply(200, {
         mock: 'result'
@@ -40,8 +37,7 @@ describe('cmrGraphDb', () => {
     const { data, headers } = response
 
     const {
-      'request-duration': requestDuration,
-      'cmr-took': cmrTook
+      'request-duration': requestDuration
     } = headers
 
     expect(data).toEqual({
@@ -49,99 +45,8 @@ describe('cmrGraphDb', () => {
     })
 
     expect(consoleMock).toBeCalledWith(
-      `Request abcd-1234-efgh-5678 to [graphdb conceptId: C100000-EDSC] completed external request in [reported: ${cmrTook} ms, observed: ${requestDuration} ms]`
+      `Request abcd-1234-efgh-5678 to [graphdb conceptId: C100000-EDSC] completed external request in [observed: ${requestDuration} ms]`
     )
-  })
-
-  describe('when provided a token via the Echo-Token header', () => {
-    test('queries cmr using the Echo-Token header', async () => {
-      nock(/example/, {
-        reqheaders: {
-          'CMR-Request-Id': 'abcd-1234-efgh-5678',
-          'Echo-Token': 'test-token'
-        }
-      })
-        .defaultReplyHeaders({
-          'CMR-Took': 7
-        })
-        .post(/graphdb/)
-        .reply(200, {
-          mock: 'result'
-        })
-
-      const response = await cmrGraphDb({
-        conceptId: 'C100000-EDSC',
-        headers: {
-          'CMR-Request-Id': 'abcd-1234-efgh-5678',
-          'Echo-Token': 'test-token'
-        },
-        query: 'mock query'
-      })
-
-      const { data } = response
-      expect(data).toEqual({
-        mock: 'result'
-      })
-    })
-  })
-
-  describe('when provided a token via the Authorization header', () => {
-    test('queries cmr using the Authorization header', async () => {
-      nock(/example/, {
-        reqheaders: {
-          'CMR-Request-Id': 'abcd-1234-efgh-5678',
-          Authorization: 'test-token'
-        }
-      })
-        .post(/graphdb/)
-        .reply(200, {
-          mock: 'result'
-        })
-
-      const response = await cmrGraphDb({
-        conceptId: 'C100000-EDSC',
-        headers: {
-          'CMR-Request-Id': 'abcd-1234-efgh-5678',
-          Authorization: 'test-token'
-        },
-        query: 'mock query'
-      })
-
-      const { data } = response
-      expect(data).toEqual({
-        mock: 'result'
-      })
-    })
-  })
-
-  describe('when provided a token via the Authorization header and the Echo-Token header', () => {
-    test('queries cmr using the Authorization header', async () => {
-      nock(/example/, {
-        reqheaders: {
-          'CMR-Request-Id': 'abcd-1234-efgh-5678',
-          Authorization: 'authorization-token'
-        }
-      })
-        .post(/graphdb/)
-        .reply(200, {
-          mock: 'result'
-        })
-
-      const response = await cmrGraphDb({
-        conceptId: 'C100000-EDSC',
-        headers: {
-          'CMR-Request-Id': 'abcd-1234-efgh-5678',
-          Authorization: 'authorization-token',
-          'Echo-Token': 'echo-token'
-        },
-        query: 'mock query'
-      })
-
-      const { data } = response
-      expect(data).toEqual({
-        mock: 'result'
-      })
-    })
   })
 
   describe('when an error is returned', () => {

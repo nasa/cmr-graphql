@@ -3,6 +3,7 @@ import {
   chunk,
   fromPairs
 } from 'lodash'
+
 import { cmrGraphDb } from '../utils/cmrGraphDb'
 
 /**
@@ -17,7 +18,7 @@ const documentedWithTraversal = (params) => {
   const {
     url,
     title,
-    limit = 5,
+    limit = 20,
     offset = 0
   } = params
 
@@ -58,7 +59,7 @@ const documentedWithTraversal = (params) => {
 const campaignedWithTraversal = (params) => {
   const {
     name,
-    limit = 5,
+    limit = 20,
     offset = 0
   } = params
 
@@ -98,7 +99,7 @@ const acquiredWithTraversal = (params) => {
   const {
     platform,
     instrument,
-    limit = 5,
+    limit = 20,
     offset = 0
   } = params
 
@@ -149,9 +150,11 @@ export default async (
   if (type === 'documentedWith') {
     traversal = documentedWithTraversal(params)
   }
+
   if (type === 'campaignedWith') {
     traversal = campaignedWithTraversal(params)
   }
+
   if (type === 'acquiredWith') {
     traversal = acquiredWithTraversal(params)
   }
@@ -213,13 +216,14 @@ export default async (
     })
 
     // Parse the relationshipResults down to simple objects of relationship values
-    //
+
     // This list: [
     //   'instrument',
     //   { '@type': 'g:List', '@value': [ 'VISSR' ] },
     //   'platform',
     //   { '@type': 'g:List', '@value': [ 'METEOSAT-7' ] }
     // ]
+    //
     // will become this object: {
     //   instrument: 'VISSR',
     //   platform: 'METEOSAT-7'
@@ -227,8 +231,10 @@ export default async (
     //
     // This list:
     // [ 'name', { '@type': 'g:List', '@value': [ 'Project2' ] } ]
+    //
     // will become this object:
     // { name: 'Project2' }
+
     const relationshipValues = {}
 
     const { '@value': valueMappingList } = relationshipResults
@@ -238,7 +244,6 @@ export default async (
       const { '@value': values } = valueMapping[key]
       relationshipValues[key] = values.join()
     })
-
 
     // Map the relationshipValues and collection to an object keyed with the collection conceptId
     if (groupBy === 'collection') {
@@ -254,6 +259,7 @@ export default async (
           ...relationshipValues,
           type
         })
+
         relationshipByCollectionMap[conceptId].group = {
           ...collection,
           type: 'collection'
@@ -286,7 +292,6 @@ export default async (
     return relationshipByCollectionList
   }
 
-  // Return the relationshipByValueList
-  // if groupBy is value
+  // Return the relationshipByValueList if groupBy is value
   return relationshipByValueList
 }

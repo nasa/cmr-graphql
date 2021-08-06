@@ -493,7 +493,7 @@ For all supported arguments and columns, see [the schema](src/types/collection.g
 
 GraphQL queries CMR's GraphDB in order to find related collections on supported fields. These related collections can be returned as part of the Collection type response.
 
-All the related collection fields required a `groupBy` parameter, and accept `limit` and `offset` parameters, with default values of `limit = 5` and `offset = 0`.
+All the related collection fields require a `groupBy` parameter, and accept `limit` and `offset` parameters, with default values of `limit = 20` and `offset = 0`.
 
 ##### Supported fields
 
