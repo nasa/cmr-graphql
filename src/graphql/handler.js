@@ -6,6 +6,7 @@ import typeDefs from '../types'
 
 import collectionSource from '../datasources/collection'
 import granuleSource from '../datasources/granule'
+import graphDbSource from '../datasources/graphDb'
 import serviceSource from '../datasources/service'
 import {
   deleteSubscription as subscriptionSourceDelete,
@@ -55,6 +56,7 @@ const server = new ApolloServer({
   dataSources: () => ({
     collectionSource,
     granuleSource,
+    graphDbSource,
     serviceSource,
     subscriptionSourceDelete,
     subscriptionSourceFetch,

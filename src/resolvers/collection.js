@@ -70,6 +70,42 @@ export default {
 
       return dataSources.granuleSource(requestedParams, headers, parseResolveInfo(info))
     },
+    documentedWith: async (source, args, { dataSources, headers }) => {
+      const { conceptId } = source
+      const { groupBy } = args
+
+      return dataSources.graphDbSource(
+        conceptId,
+        'documentedWith',
+        args,
+        headers,
+        groupBy
+      )
+    },
+    campaignedWith: async (source, args, { dataSources, headers }) => {
+      const { conceptId } = source
+      const { groupBy } = args
+
+      return dataSources.graphDbSource(
+        conceptId,
+        'campaignedWith',
+        args,
+        headers,
+        groupBy
+      )
+    },
+    acquiredWith: async (source, args, { dataSources, headers }) => {
+      const { conceptId } = source
+      const { groupBy } = args
+
+      return dataSources.graphDbSource(
+        conceptId,
+        'acquiredWith',
+        args,
+        headers,
+        groupBy
+      )
+    },
     services: async (source, args, { dataSources, headers }, info) => {
       const {
         associations = {}
@@ -137,6 +173,28 @@ export default {
         conceptId: variables,
         ...handlePagingParams(args, variables.length)
       }, headers, parseResolveInfo(info))
+    }
+  },
+  RelationshipGroupUnion: {
+    __resolveType: (object) => {
+      // When a RelationshipGroupUnion object is requested, this resolver will determine which of the available types the data matches and return that type
+      if (object.type === 'documentedWith') {
+        return 'GraphDbDocumentation'
+      }
+
+      if (object.type === 'campaignedWith') {
+        return 'GraphDbCampaign'
+      }
+
+      if (object.type === 'acquiredWith') {
+        return 'GraphDbPlatformInstrument'
+      }
+
+      if (object.type === 'collection') {
+        return 'GraphDbCollection'
+      }
+
+      return null
     }
   }
 }

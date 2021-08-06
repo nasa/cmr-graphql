@@ -4,7 +4,6 @@ import pascalCaseKeys from 'pascalcase-keys'
 
 import { pick } from 'lodash'
 
-
 /**
  * Make a DELETE request to CMR and return the promise
  * @param {String} conceptType Concept type to search

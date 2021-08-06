@@ -100,6 +100,46 @@ type Collection {
   "Provider defined version id of the collection."
   versionId: String
 
+  "Collections that share documentation"
+  documentedWith (
+    "The method of grouping relationships."
+    groupBy: GroupByValues!
+    "Documentation url to use in filtering relationships"
+    url: String
+    "Documentation title to use in filtering relationships"
+    title: String
+    "The size of the range GraphDB searches on. Defaults to 5"
+    limit: Int
+    "The beginning of the range GraphDB searches on"
+    offset: Int
+  ): [RelationshipGroup]
+
+  "Collections that share a campaign"
+  campaignedWith (
+    "The method of grouping relationships."
+    groupBy: GroupByValues!
+    "Campaign name to use in filtering relationships"
+    name: String
+    "The size of the range GraphDB searches on. Defaults to 5"
+    limit: Int
+    "The beginning of the range GraphDB searches on"
+    offset: Int
+  ): [RelationshipGroup]
+
+  "Collections that share a platform/instrument"
+  acquiredWith (
+    "The method of grouping relationships."
+    groupBy: GroupByValues!
+    "Platform name to use in filtering relationships"
+    platform: String
+    "Instrument name to use in filtering relationships"
+    instrument: String
+    "The size of the range GraphDB searches on. Defaults to 5"
+    limit: Int
+    "The beginning of the range GraphDB searches on"
+    offset: Int
+  ): [RelationshipGroup]
+
   granules (
     "Bounding boxes define an area on the earth aligned with longitude and latitude. The Bounding box parameters must be 4 comma-separated numbers: lower left longitude, lower left latitude, upper right longitude, upper right latitude."
     boundingBox: [String]
@@ -192,6 +232,46 @@ type Collection {
     "The name of a variable."
     name: String
   ): VariableList
+}
+
+type GraphDbDocumentation {
+  "The url of the documentaion."
+  url: String
+  "The title of the documentaion."
+  title: String
+}
+type GraphDbCampaign {
+  "The name of the campaign"
+  name: String
+}
+type GraphDbPlatformInstrument {
+  "The name of the platform."
+  platform: String
+  "The name of the instrument."
+  instrument: String
+}
+
+union RelationshipGroupUnion = GraphDbCollection | GraphDbCampaign | GraphDbDocumentation | GraphDbPlatformInstrument
+
+type RelationshipGroup {
+  "The value the relationships are grouped by."
+  group: RelationshipGroupUnion
+  "The items of the relationship."
+  items: [RelationshipGroupUnion]
+}
+
+enum GroupByValues {
+  collection
+  value
+}
+
+type GraphDbCollection {
+  "The unique concept id assigned to the collection."
+  id: String
+  "The DOI that identifies the collection."
+  doi: String
+  "The title of the collection described by the metadata."
+  title: String
 }
 
 type CollectionList {
