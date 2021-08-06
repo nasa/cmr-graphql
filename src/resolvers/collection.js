@@ -70,6 +70,8 @@ export default {
 
       return dataSources.granuleSource(requestedParams, headers, parseResolveInfo(info))
     },
+    // TODO somehow disable in UAT/PROD
+    // ??? ignore 404 errors?
     documentedWith: async (source, args, { dataSources, headers }) => {
       const { conceptId } = source
       const { groupBy } = args

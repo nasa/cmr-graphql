@@ -15,16 +15,15 @@ import { cmrGraphDb } from '../utils/cmrGraphDb'
  */
 const documentedWithTraversal = (params) => {
   const {
-    name,
+    url,
     title,
     limit = 5,
     offset = 0
   } = params
 
   let filterStep = ''
-  // TODO change name to url when the field changes
-  if (name) {
-    filterStep += `.has("documentation", "name", "${name}")`
+  if (url) {
+    filterStep += `.has("documentation", "url", "${url}")`
   }
   if (title) {
     filterStep += `.has("documentation", "title", "${title}")`
@@ -32,7 +31,6 @@ const documentedWithTraversal = (params) => {
 
   const rangeStep = `.range(${offset}, ${offset + limit})`
 
-  // TODO change dataset to collection when the field changes
   return `
   .outE('documentedBy')
   .inV()
@@ -40,7 +38,7 @@ const documentedWithTraversal = (params) => {
   .project('collections', 'documentedWith')
   .by(inE('documentedBy')
     .outV()
-    .hasLabel('dataset')
+    .hasLabel('collection')
     .where(neq('initialVertex'))
     ${rangeStep}
     .valueMap()
@@ -71,7 +69,6 @@ const campaignedWithTraversal = (params) => {
 
   const rangeStep = `.range(${offset}, ${offset + limit})`
 
-  // TODO change dataset to collection when the field changes
   return `
   .outE('includedIn')
   .inV()
@@ -79,7 +76,7 @@ const campaignedWithTraversal = (params) => {
   .project('collections', 'campaignedWith')
   .by(inE('includedIn')
     .outV()
-    .hasLabel('dataset')
+    .hasLabel('collection')
     .where(neq('initialVertex'))
     ${rangeStep}
     .valueMap()
@@ -115,7 +112,6 @@ const acquiredWithTraversal = (params) => {
 
   const rangeStep = `.range(${offset}, ${offset + limit})`
 
-  // TODO change dataset to collection when the field changes
   return `
   .outE('acquiredBy')
   .inV()
@@ -123,7 +119,7 @@ const acquiredWithTraversal = (params) => {
   .project('collections', 'acquiredWith')
   .by(inE('acquiredBy')
     .outV()
-    .hasLabel('dataset')
+    .hasLabel('collection')
     .where(neq('initialVertex'))
     ${rangeStep}
     .valueMap()
@@ -161,12 +157,11 @@ export default async (
   }
 
   // Query CMR GraphDB for the provided conceptId's relationships
-  // TODO change dataset to collection when the field changes
   const query = JSON.stringify({
     gremlin: `
     g
     .V()
-    .has('dataset', 'concept-id', '${conceptId}')
+    .has('collection', 'id', '${conceptId}')
     .as('initialVertex')
     ${traversal}
     `
@@ -177,10 +172,12 @@ export default async (
     headers,
     query
   })
-  console.log('🚀 ~ file: graphDb.js ~ line 162 ~ data', data)
 
   const { result } = data
-  console.log('🚀 ~ file: graphDb.js ~ line 169 ~ result', JSON.stringify(result, null, 2))
+
+  // Useful for debugging!
+  // console.log('GraphDB Response result: ', JSON.stringify(result, null, 2))
+
   const { data: resultData } = result
   const { '@value': values } = resultData
 
@@ -246,7 +243,7 @@ export default async (
     // Map the relationshipValues and collection to an object keyed with the collection conceptId
     if (groupBy === 'collection') {
       collections.forEach((collection) => {
-        const { conceptId } = collection
+        const { id: conceptId } = collection
         if (!relationshipByCollectionMap[conceptId]) {
           relationshipByCollectionMap[conceptId] = {
             items: []

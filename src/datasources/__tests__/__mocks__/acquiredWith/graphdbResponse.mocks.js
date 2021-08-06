@@ -13,25 +13,115 @@ export default {
                 {
                   '@type': 'g:Map',
                   '@value': [
-                    'concept-id',
+                    'id',
                     {
                       '@type': 'g:List',
                       '@value': [
-                        'C1200400933-GHRC'
-                      ]
-                    },
-                    'name',
-                    {
-                      '@type': 'g:List',
-                      '@value': [
-                        'https://dx.doi.org/undefined'
+                        'C1200400792-GHRC'
                       ]
                     },
                     'title',
                     {
                       '@type': 'g:List',
                       '@value': [
-                        'Infrared Global Geostationary Composite Demo 010'
+                        'Infrared Global Geostationary Composite Demo 4'
+                      ]
+                    },
+                    'doi',
+                    {
+                      '@type': 'g:List',
+                      '@value': [
+                        '10.5067/GHRC/AMSU-A/DATA303'
+                      ]
+                    }
+                  ]
+                },
+                {
+                  '@type': 'g:Map',
+                  '@value': [
+                    'id',
+                    {
+                      '@type': 'g:List',
+                      '@value': [
+                        'C1200400820-GHRC'
+                      ]
+                    },
+                    'title',
+                    {
+                      '@type': 'g:List',
+                      '@value': [
+                        'Infrared Global Geostationary Composite Demo 8'
+                      ]
+                    },
+                    'doi',
+                    {
+                      '@type': 'g:List',
+                      '@value': [
+                        '10.5067/GHRC/AMSU-A/DATA303'
+                      ]
+                    }
+                  ]
+                },
+                {
+                  '@type': 'g:Map',
+                  '@value': [
+                    'id',
+                    {
+                      '@type': 'g:List',
+                      '@value': [
+                        'C1182-GHRC'
+                      ]
+                    },
+                    'title',
+                    {
+                      '@type': 'g:List',
+                      '@value': [
+                        'INFRARED GLOBAL GEOSTATIONARY COMPOSITE V1'
+                      ]
+                    }
+                  ]
+                },
+                {
+                  '@type': 'g:Map',
+                  '@value': [
+                    'id',
+                    {
+                      '@type': 'g:List',
+                      '@value': [
+                        'C1200400803-GHRC'
+                      ]
+                    },
+                    'title',
+                    {
+                      '@type': 'g:List',
+                      '@value': [
+                        'Infrared Global Geostationary Composite Demo 7'
+                      ]
+                    },
+                    'doi',
+                    {
+                      '@type': 'g:List',
+                      '@value': [
+                        '10.5067/GHRC/AMSU-A/DATA303'
+                      ]
+                    }
+                  ]
+                },
+                {
+                  '@type': 'g:Map',
+                  '@value': [
+                    'id',
+                    {
+                      '@type': 'g:List',
+                      '@value': [
+                        'C1200400790-GHRC'
+                      ]
+                    },
+                    'title',
+                    {
+                      '@type': 'g:List',
+                      '@value': [
+                        'Infrared Global Geostationary Composite Demo'
                       ]
                     },
                     'doi',

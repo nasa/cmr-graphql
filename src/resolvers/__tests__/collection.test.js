@@ -1462,15 +1462,14 @@ describe('Collection', () => {
                   ) {
                     group {
                       ... on GraphDbCollection {
-                        conceptId
+                        id
                         title
-                        name
                         doi
                       }
                     }
                     items {
                       ... on GraphDbDocumentation {
-                        name
+                        url
                         title
                       }
                     }
@@ -1525,15 +1524,14 @@ describe('Collection', () => {
                   ) {
                     group {
                       ... on GraphDbDocumentation {
-                        name
+                        url
                         title
                       }
                     }
                     items {
                       ... on GraphDbCollection {
-                        conceptId
+                        id
                         title
-                        name
                         doi
                       }
                     }
@@ -1590,9 +1588,8 @@ describe('Collection', () => {
                   ) {
                     group {
                       ... on GraphDbCollection {
-                        conceptId
+                        id
                         title
-                        name
                         doi
                       }
                     }
@@ -1657,9 +1654,8 @@ describe('Collection', () => {
                     }
                     items {
                       ... on GraphDbCollection {
-                        conceptId
+                        id
                         title
-                        name
                         doi
                       }
                     }
@@ -1716,9 +1712,8 @@ describe('Collection', () => {
                   ) {
                     group {
                       ... on GraphDbCollection {
-                        conceptId
+                        id
                         title
-                        name
                         doi
                       }
                     }
@@ -1785,9 +1780,8 @@ describe('Collection', () => {
                     }
                     items {
                       ... on GraphDbCollection {
-                        conceptId
+                        id
                         title
-                        name
                         doi
                       }
                     }

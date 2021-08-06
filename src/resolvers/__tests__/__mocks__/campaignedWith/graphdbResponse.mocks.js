@@ -13,51 +13,11 @@ export default {
                 {
                   '@type': 'g:Map',
                   '@value': [
-                    'concept-id',
-                    {
-                      '@type': 'g:List',
-                      '@value': [
-                        'C1200342904-DEMO_PROV'
-                      ]
-                    },
-                    'name',
-                    {
-                      '@type': 'g:List',
-                      '@value': [
-                        'https://cmr.sit.earthdata.nasa.gov/concepts/C1200342904-DEMO_PROV.html'
-                      ]
-                    },
-                    'title',
-                    {
-                      '@type': 'g:List',
-                      '@value': [
-                        'CollectionTitle0 v1.5'
-                      ]
-                    },
-                    'doi',
-                    {
-                      '@type': 'g:List',
-                      '@value': [
-                        'Not provided'
-                      ]
-                    }
-                  ]
-                },
-                {
-                  '@type': 'g:Map',
-                  '@value': [
-                    'concept-id',
+                    'id',
                     {
                       '@type': 'g:List',
                       '@value': [
                         'C1200370847-CMR_ONLY'
-                      ]
-                    },
-                    'name',
-                    {
-                      '@type': 'g:List',
-                      '@value': [
-                        'https://cmr.sit.earthdata.nasa.gov/concepts/C1200370847-CMR_ONLY.html'
                       ]
                     },
                     'title',
@@ -66,64 +26,17 @@ export default {
                       '@value': [
                         'CollectionTitle0 v1.6'
                       ]
-                    },
-                    'doi',
-                    {
-                      '@type': 'g:List',
-                      '@value': [
-                        'Not provided'
-                      ]
                     }
                   ]
                 },
                 {
                   '@type': 'g:Map',
                   '@value': [
-                    'concept-id',
+                    'id',
                     {
                       '@type': 'g:List',
                       '@value': [
-                        'C1200342905-DEMO_PROV'
-                      ]
-                    },
-                    'name',
-                    {
-                      '@type': 'g:List',
-                      '@value': [
-                        'https://cmr.sit.earthdata.nasa.gov/concepts/C1200342905-DEMO_PROV.html'
-                      ]
-                    },
-                    'title',
-                    {
-                      '@type': 'g:List',
-                      '@value': [
-                        'CollectionTitle v1.5'
-                      ]
-                    },
-                    'doi',
-                    {
-                      '@type': 'g:List',
-                      '@value': [
-                        'Not provided'
-                      ]
-                    }
-                  ]
-                },
-                {
-                  '@type': 'g:Map',
-                  '@value': [
-                    'concept-id',
-                    {
-                      '@type': 'g:List',
-                      '@value': [
-                        'C1200346689-CMR_ONLY'
-                      ]
-                    },
-                    'name',
-                    {
-                      '@type': 'g:List',
-                      '@value': [
-                        'https://cmr.sit.earthdata.nasa.gov/concepts/C1200346689-CMR_ONLY.html'
+                        'C1200342904-DEMO_PROV'
                       ]
                     },
                     'title',
@@ -132,12 +45,24 @@ export default {
                       '@value': [
                         'CollectionTitle0 v1.5'
                       ]
-                    },
-                    'doi',
+                    }
+                  ]
+                },
+                {
+                  '@type': 'g:Map',
+                  '@value': [
+                    'id',
                     {
                       '@type': 'g:List',
                       '@value': [
-                        'Not provided'
+                        'C1200342905-DEMO_PROV'
+                      ]
+                    },
+                    'title',
+                    {
+                      '@type': 'g:List',
+                      '@value': [
+                        'CollectionTitle v1.5'
                       ]
                     }
                   ]
@@ -145,18 +70,30 @@ export default {
                 {
                   '@type': 'g:Map',
                   '@value': [
-                    'concept-id',
+                    'id',
+                    {
+                      '@type': 'g:List',
+                      '@value': [
+                        'C1200346689-CMR_ONLY'
+                      ]
+                    },
+                    'title',
+                    {
+                      '@type': 'g:List',
+                      '@value': [
+                        'CollectionTitle0 v1.5'
+                      ]
+                    }
+                  ]
+                },
+                {
+                  '@type': 'g:Map',
+                  '@value': [
+                    'id',
                     {
                       '@type': 'g:List',
                       '@value': [
                         'C1200388194-DEMO_PROV'
-                      ]
-                    },
-                    'name',
-                    {
-                      '@type': 'g:List',
-                      '@value': [
-                        'https://cmr.sit.earthdata.nasa.gov/concepts/C1200388194-DEMO_PROV.html'
                       ]
                     },
                     'title',
@@ -164,13 +101,6 @@ export default {
                       '@type': 'g:List',
                       '@value': [
                         'Graph Demo Coll 2'
-                      ]
-                    },
-                    'doi',
-                    {
-                      '@type': 'g:List',
-                      '@value': [
-                        'Not provided'
                       ]
                     }
                   ]
@@ -185,7 +115,7 @@ export default {
                 {
                   '@type': 'g:List',
                   '@value': [
-                    'Project2'
+                    'Project1'
                   ]
                 }
               ]
@@ -202,150 +132,30 @@ export default {
                 {
                   '@type': 'g:Map',
                   '@value': [
-                    'concept-id',
-                    {
-                      '@type': 'g:List',
-                      '@value': [
-                        'C1200388194-DEMO_PROV'
-                      ]
-                    },
-                    'name',
-                    {
-                      '@type': 'g:List',
-                      '@value': [
-                        'https://cmr.sit.earthdata.nasa.gov/concepts/C1200388194-DEMO_PROV.html'
-                      ]
-                    },
-                    'title',
-                    {
-                      '@type': 'g:List',
-                      '@value': [
-                        'Graph Demo Coll 2'
-                      ]
-                    },
-                    'doi',
-                    {
-                      '@type': 'g:List',
-                      '@value': [
-                        'Not provided'
-                      ]
-                    }
-                  ]
-                },
-                {
-                  '@type': 'g:Map',
-                  '@value': [
-                    'concept-id',
+                    'id',
                     {
                       '@type': 'g:List',
                       '@value': [
                         'C1200342904-DEMO_PROV'
                       ]
                     },
-                    'name',
-                    {
-                      '@type': 'g:List',
-                      '@value': [
-                        'https://cmr.sit.earthdata.nasa.gov/concepts/C1200342904-DEMO_PROV.html'
-                      ]
-                    },
                     'title',
                     {
                       '@type': 'g:List',
                       '@value': [
                         'CollectionTitle0 v1.5'
                       ]
-                    },
-                    'doi',
-                    {
-                      '@type': 'g:List',
-                      '@value': [
-                        'Not provided'
-                      ]
                     }
                   ]
                 },
                 {
                   '@type': 'g:Map',
                   '@value': [
-                    'concept-id',
-                    {
-                      '@type': 'g:List',
-                      '@value': [
-                        'C1200370847-CMR_ONLY'
-                      ]
-                    },
-                    'name',
-                    {
-                      '@type': 'g:List',
-                      '@value': [
-                        'https://cmr.sit.earthdata.nasa.gov/concepts/C1200370847-CMR_ONLY.html'
-                      ]
-                    },
-                    'title',
-                    {
-                      '@type': 'g:List',
-                      '@value': [
-                        'CollectionTitle0 v1.6'
-                      ]
-                    },
-                    'doi',
-                    {
-                      '@type': 'g:List',
-                      '@value': [
-                        'Not provided'
-                      ]
-                    }
-                  ]
-                },
-                {
-                  '@type': 'g:Map',
-                  '@value': [
-                    'concept-id',
-                    {
-                      '@type': 'g:List',
-                      '@value': [
-                        'C1200346689-CMR_ONLY'
-                      ]
-                    },
-                    'name',
-                    {
-                      '@type': 'g:List',
-                      '@value': [
-                        'https://cmr.sit.earthdata.nasa.gov/concepts/C1200346689-CMR_ONLY.html'
-                      ]
-                    },
-                    'title',
-                    {
-                      '@type': 'g:List',
-                      '@value': [
-                        'CollectionTitle0 v1.5'
-                      ]
-                    },
-                    'doi',
-                    {
-                      '@type': 'g:List',
-                      '@value': [
-                        'Not provided'
-                      ]
-                    }
-                  ]
-                },
-                {
-                  '@type': 'g:Map',
-                  '@value': [
-                    'concept-id',
+                    'id',
                     {
                       '@type': 'g:List',
                       '@value': [
                         'C1200342905-DEMO_PROV'
-                      ]
-                    },
-                    'name',
-                    {
-                      '@type': 'g:List',
-                      '@value': [
-                        'https://cmr.sit.earthdata.nasa.gov/concepts/C1200342905-DEMO_PROV.html'
                       ]
                     },
                     'title',
@@ -354,12 +164,62 @@ export default {
                       '@value': [
                         'CollectionTitle v1.5'
                       ]
-                    },
-                    'doi',
+                    }
+                  ]
+                },
+                {
+                  '@type': 'g:Map',
+                  '@value': [
+                    'id',
                     {
                       '@type': 'g:List',
                       '@value': [
-                        'Not provided'
+                        'C1200346689-CMR_ONLY'
+                      ]
+                    },
+                    'title',
+                    {
+                      '@type': 'g:List',
+                      '@value': [
+                        'CollectionTitle0 v1.5'
+                      ]
+                    }
+                  ]
+                },
+                {
+                  '@type': 'g:Map',
+                  '@value': [
+                    'id',
+                    {
+                      '@type': 'g:List',
+                      '@value': [
+                        'C1200388194-DEMO_PROV'
+                      ]
+                    },
+                    'title',
+                    {
+                      '@type': 'g:List',
+                      '@value': [
+                        'Graph Demo Coll 2'
+                      ]
+                    }
+                  ]
+                },
+                {
+                  '@type': 'g:Map',
+                  '@value': [
+                    'id',
+                    {
+                      '@type': 'g:List',
+                      '@value': [
+                        'C1200370847-CMR_ONLY'
+                      ]
+                    },
+                    'title',
+                    {
+                      '@type': 'g:List',
+                      '@value': [
+                        'CollectionTitle0 v1.6'
                       ]
                     }
                   ]
@@ -374,7 +234,7 @@ export default {
                 {
                   '@type': 'g:List',
                   '@value': [
-                    'Project1'
+                    'Project2'
                   ]
                 }
               ]

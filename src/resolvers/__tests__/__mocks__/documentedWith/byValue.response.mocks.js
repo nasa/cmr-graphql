@@ -7,77 +7,67 @@ export default {
           documentedWith: [
             {
               group: {
-                name: 'http://ghrc.nsstc.nasa.gov/uso/ds_docs/globalir/globalir_dataset.html',
+                url: 'http://ghrc.nsstc.nasa.gov/uso/ds_docs/globalir/globalir_dataset.html',
                 title: "USER'S GUIDE"
               },
               items: [
                 {
-                  conceptId: 'C1200400824-GHRC',
+                  id: 'C1200400790-GHRC',
+                  title: 'Infrared Global Geostationary Composite Demo',
+                  doi: '10.5067/GHRC/AMSU-A/DATA303'
+                },
+                {
+                  id: 'C1200400933-GHRC',
+                  title: 'Infrared Global Geostationary Composite Demo 010',
+                  doi: '10.5067/GHRC/AMSU-A/DATA303'
+                },
+                {
+                  id: 'C1200400824-GHRC',
                   title: 'Infrared Global Geostationary Composite Demo 9',
-                  name: 'https://dx.doi.org/undefined',
                   doi: '10.5067/GHRC/AMSU-A/DATA303'
                 },
                 {
-                  conceptId: 'C1182-GHRC',
-                  title: 'INFRARED GLOBAL GEOSTATIONARY COMPOSITE V1',
-                  name: 'https://cmr.sit.earthdata.nasa.gov/concepts/C1182-GHRC.html',
-                  doi: 'Not provided'
-                },
-                {
-                  conceptId: 'C1200400792-GHRC',
-                  title: 'Infrared Global Geostationary Composite Demo 4',
-                  name: 'https://dx.doi.org/undefined',
+                  id: 'C1200400763-GHRC',
+                  title: 'Infrared Global Geostationary Composite',
                   doi: '10.5067/GHRC/AMSU-A/DATA303'
                 },
                 {
-                  conceptId: 'C1200400791-GHRC',
-                  title: 'Infrared Global Geostationary Composite Demo 3',
-                  name: 'https://dx.doi.org/undefined',
-                  doi: '10.5067/GHRC/AMSU-A/DATA303'
-                },
-                {
-                  conceptId: 'C1200400819-GHRC',
-                  title: 'Infrared Global Geostationary Composite Demo 71',
-                  name: 'https://dx.doi.org/undefined',
+                  id: 'C1200400820-GHRC',
+                  title: 'Infrared Global Geostationary Composite Demo 8',
                   doi: '10.5067/GHRC/AMSU-A/DATA303'
                 }
               ]
             },
             {
               group: {
-                name: 'https://doi.org/10.5067/9LNYIYOBNBR5',
+                url: 'https://doi.org/10.5067/9LNYIYOBNBR5',
                 title: 'Another Related URL for Demo'
               },
               items: [
                 {
-                  conceptId: 'C1200400819-GHRC',
-                  title: 'Infrared Global Geostationary Composite Demo 71',
-                  name: 'https://dx.doi.org/undefined',
-                  doi: '10.5067/GHRC/AMSU-A/DATA303'
-                },
-                {
-                  conceptId: 'C1200376745-EDF_DEV02',
-                  title: 'SMAP L4 Global 3-hourly 9 km EASE-Grid Surface and Root Zone Soil Moisture Geophysical Data V005',
-                  name: 'https://dx.doi.org/undefined',
-                  doi: '10.5067/9LNYIYOBNBR5'
-                },
-                {
-                  conceptId: 'C1200376296-EDF_DEV08',
-                  title: 'SMAP L4 Global 3-hourly 9 km EASE-Grid Surface and Root Zone Soil Moisture Geophysical Data V005',
-                  name: 'https://dx.doi.org/undefined',
-                  doi: '10.5067/9LNYIYOBNBR5'
-                },
-                {
-                  conceptId: 'C1200400820-GHRC',
+                  id: 'C1200400820-GHRC',
                   title: 'Infrared Global Geostationary Composite Demo 8',
-                  name: 'https://dx.doi.org/undefined',
                   doi: '10.5067/GHRC/AMSU-A/DATA303'
                 },
                 {
-                  conceptId: 'C1200375338-EDF_DEV09',
-                  title: 'SMAP L4 Global 3-hourly 9 km EASE-Grid Surface and Root Zone Soil Moisture Geophysical Data V005',
-                  name: 'https://dx.doi.org/undefined',
-                  doi: '10.5067/9LNYIYOBNBR5'
+                  id: 'C1200400803-GHRC',
+                  title: 'Infrared Global Geostationary Composite Demo 7',
+                  doi: '10.5067/GHRC/AMSU-A/DATA303'
+                },
+                {
+                  id: 'C1200400933-GHRC',
+                  title: 'Infrared Global Geostationary Composite Demo 010',
+                  doi: '10.5067/GHRC/AMSU-A/DATA303'
+                },
+                {
+                  id: 'C1200400824-GHRC',
+                  title: 'Infrared Global Geostationary Composite Demo 9',
+                  doi: '10.5067/GHRC/AMSU-A/DATA303'
+                },
+                {
+                  id: 'C1200400819-GHRC',
+                  title: 'Infrared Global Geostationary Composite Demo 71',
+                  doi: '10.5067/GHRC/AMSU-A/DATA303'
                 }
               ]
             }

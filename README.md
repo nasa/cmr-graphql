@@ -486,3 +486,75 @@ For all supported arguments and columns, see [the schema](src/types/variable.gra
         }
       }
     }
+
+#### Related Collections
+
+For all supported arguments and columns, see [the schema](src/types/collection.graphql).
+
+GraphQL queries CMR's GraphDB in order to find related collections on supported fields. These related collections can be returned as part of the Collection type response.
+
+All the related collection fields required a `groupBy` parameter, and accept `limit` and `offset` parameters, with default values of `limit = 5` and `offset = 0`.
+
+##### Supported fields
+
+###### documentedWith
+
+`documetedWith` will return collections that share documentation with the parent collection. This field is filterable by `url` and `title`
+
+###### campaignedWith
+
+`campaignedWith` will return collections that share a campaign(s) with the parent collection. This field is filterable by `name`
+###### acquiredWith
+
+`acquiredWith` will return collections that share platform(s) and/or instrument(s) with the parent collection. This field is filterable by `platform` and `instrument`
+
+Each of these fields can be requested under the Collection type.
+
+###### groupBy
+
+The `groupBy` parameter is required and will determine how the relationship data is formated in the response. The two available optios are `collection` and `value`. With `groupBy: collection` GraphQl will return a list grouped by collections, with a list of relationship value items. With `groupBy: value` GraphQl will return a list grouped by relationship values, with a list of related collection items.
+##### Example Queries
+
+###### Sorting By collection
+
+    {
+      documentedWith (
+        groupBy: collection
+      ) {
+        group {
+          ... on GraphDbCollection {
+            id
+            title
+            doi
+          }
+        }
+        items {
+          ... on GraphDbDocumentation {
+            url
+            title
+          }
+        }
+      }
+    }
+
+###### Sorting by relationship value
+
+    {
+      documentedWith (
+        groupBy: value
+      ) {
+        items {
+          ... on GraphDbDocumentation {
+            url
+            title
+          }
+        }
+        group {
+          ... on GraphDbCollection {
+            id
+            title
+            doi
+          }
+        }
+      }
+    }

@@ -43,7 +43,7 @@ describe('graphDb', () => {
           'C1200400842-GHRC',
           'documentedWith',
           {
-            name: 'http://ghrc.nsstc.nasa.gov/uso/ds_docs/globalir/globalir_dataset.html',
+            url: 'http://ghrc.nsstc.nasa.gov/uso/ds_docs/globalir/globalir_dataset.html',
             title: 'USER\'S GUIDE'
           },
           { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
@@ -67,7 +67,7 @@ describe('graphDb', () => {
           'C1200400842-GHRC',
           'documentedWith',
           {
-            name: 'http://ghrc.nsstc.nasa.gov/uso/ds_docs/globalir/globalir_dataset.html',
+            url: 'http://ghrc.nsstc.nasa.gov/uso/ds_docs/globalir/globalir_dataset.html',
             title: 'USER\'S GUIDE'
           },
           { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },

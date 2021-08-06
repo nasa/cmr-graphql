@@ -104,9 +104,8 @@ type Collection {
   documentedWith (
     "The method of grouping relationships. Possible values are 'collection' and 'value'"
     groupBy: GroupByValues!
-    # TODO change name to url when the field changes
-    "Documentation name to use in filtering relationships"
-    name: String
+    "Documentation url to use in filtering relationships"
+    url: String
     "Documentation title to use in filtering relationships"
     title: String
     "The size of the range GraphDB searches on. Defaults to 5"
@@ -234,9 +233,8 @@ type Collection {
 }
 
 type GraphDbDocumentation {
-  # TODO change name to url when the field changes
-  "The name or something"
-  name: String
+  "The url of the documentaion."
+  url: String
   "The title of the documentaion."
   title: String
 }
@@ -267,12 +265,9 @@ enum GroupByValues {
 
 type GraphDbCollection {
   "The unique concept id assigned to the collection."
-  conceptId: String
+  id: String
   "The DOI that identifies the collection."
   doi: String
-  # TODO change name when graphdb changes it
-  "The name GraphDB store for the collection."
-  name: String
   "The title of the collection described by the metadata."
   title: String
 }
