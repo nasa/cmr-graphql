@@ -7,12 +7,12 @@ import { prepKeysForCmr } from './prepKeysForCmr'
 
 /**
  * Make a request to CMR and return the promise
- * @param {Object} param0
- * @param {Object} param0.headers Headers to send to CMR
- * @param {Array} param0.nonIndexedKeys Parameter names that should not be indexed before sending to CMR
- * @param {Object} param0.options Additional Options (format)
- * @param {Object} param0.params Parameters to send to CMR
- * @param {String} param0.conceptType Concept type to search
+ * @param {Object} params
+ * @param {Object} params.headers Headers to send to CMR
+ * @param {Array} params.nonIndexedKeys Parameter names that should not be indexed before sending to CMR
+ * @param {Object} params.options Additional Options (format)
+ * @param {Object} params.params Parameters to send to CMR
+ * @param {String} params.conceptType Concept type to search
  */
 export const cmrQuery = ({
   conceptType,

@@ -3,10 +3,10 @@ import { pick } from 'lodash'
 
 /**
  * Make a request to CMR and return the promise.
- * @param {Object} param0
- * @param {Object} param0.headers Headers to send to CMR.
- * @param {String} param0.conceptId Concept ID that is being searched on.
- * @param {String} param0.query GraphDB query to search with.
+ * @param {Object} params
+ * @param {Object} params.headers Headers to send to CMR.
+ * @param {String} params.conceptId Concept ID that is being searched on.
+ * @param {String} params.query GraphDB query to search with.
  */
 export const cmrGraphDb = ({
   conceptId,

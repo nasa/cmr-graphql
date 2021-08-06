@@ -8,10 +8,10 @@ import { cmrGraphDb } from '../utils/cmrGraphDb'
 /**
  * Creates the traversal needed to return the documentedWith relationships.
  * @param {Object} params Query parameters passed in from the resolver.
- * @param {String} param0.name GraphDB `documentation` vertex name property to use for filtering.
- * @param {String} param0.title GraphDB `documentation` vertex title property to use for filtering.
- * @param {Integer} param0.limit Limit parameter used to create the range step in the traversal.
- * @param {Integer} param0.offset Offset parameter used to create the range step in the traversal.
+ * @param {String} params.url GraphDB `documentation` vertex url property to use for filtering.
+ * @param {String} params.title GraphDB `documentation` vertex title property to use for filtering.
+ * @param {Integer} params.limit Limit parameter used to create the range step in the traversal.
+ * @param {Integer} params.offset Offset parameter used to create the range step in the traversal.
  */
 const documentedWithTraversal = (params) => {
   const {
@@ -51,9 +51,9 @@ const documentedWithTraversal = (params) => {
 /**
  * Creates the traversal needed to return the campaignedWith relationships.
  * @param {Object} params Query parameters passed in from the resolver.
- * @param {String} param0.name GraphDB `campaign` vertex name property to use for filtering.
- * @param {Integer} param0.limit Limit parameter used to create the range step in the traversal.
- * @param {Integer} param0.offset Offset parameter used to create the range step in the traversal.
+ * @param {String} params.name GraphDB `campaign` vertex name property to use for filtering.
+ * @param {Integer} params.limit Limit parameter used to create the range step in the traversal.
+ * @param {Integer} params.offset Offset parameter used to create the range step in the traversal.
  */
 const campaignedWithTraversal = (params) => {
   const {
@@ -89,10 +89,10 @@ const campaignedWithTraversal = (params) => {
 /**
  * Creates the traversal needed to return the campaignedWith relationships.
  * @param {Object} params Query parameters passed in from the resolver.
- * @param {String} param0.platform GraphDB `platformInstrument` vertex platform property to use for filtering.
- * @param {String} param0.instrument GraphDB `platformInstrument` vertex instrument property to use for filtering.
- * @param {Integer} param0.limit Limit parameter used to create the range step in the traversal.
- * @param {Integer} param0.offset Offset parameter used to create the range step in the traversal.
+ * @param {String} params.platform GraphDB `platformInstrument` vertex platform property to use for filtering.
+ * @param {String} params.instrument GraphDB `platformInstrument` vertex instrument property to use for filtering.
+ * @param {Integer} params.limit Limit parameter used to create the range step in the traversal.
+ * @param {Integer} params.offset Offset parameter used to create the range step in the traversal.
  */
 const acquiredWithTraversal = (params) => {
   const {
