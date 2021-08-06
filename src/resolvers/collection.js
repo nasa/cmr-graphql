@@ -181,9 +181,11 @@ export default {
       if (object.type === 'documentedWith') {
         return 'GraphDbDocumentation'
       }
+
       if (object.type === 'campaignedWith') {
         return 'GraphDbCampaign'
       }
+
       if (object.type === 'acquiredWith') {
         return 'GraphDbPlatformInstrument'
       }
