@@ -12,7 +12,9 @@ module.exports = {
   collectCoverageFrom: [
     'src/**/*.js'
   ],
-
+  modulePathIgnorePatterns: [
+    '.*__mocks__.*'
+  ],
   // https://github.com/axios/axios/issues/1180#issuecomment-375093333
   // By default jest runs tests in jsdom mode which adds XmlHttpRequest
   // to global scope which in turns causes axios to think it's running
