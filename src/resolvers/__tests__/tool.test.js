@@ -78,6 +78,7 @@ describe('Tool', () => {
               MetadataSpecification: {},
               Name: 'Etiam',
               Organizations: [],
+              PotentialAction: {},
               Quality: {},
               RelatedURLs: [],
               SearchAction: {},
@@ -114,6 +115,7 @@ describe('Tool', () => {
               name
               nativeId
               organizations
+              potentialAction
               quality
               relatedUrls
               searchAction
@@ -151,6 +153,7 @@ describe('Tool', () => {
             name: 'Etiam',
             nativeId: 'test-guid',
             organizations: [],
+            potentialAction: {},
             quality: {},
             relatedUrls: [],
             searchAction: {},

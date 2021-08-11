@@ -23,6 +23,8 @@ type Tool {
   name: String,
   "The tool provider, or organization, or institution responsible for developing, archiving, and/or distributing the web user interface, software, or tool."
   organizations: JSON,
+  "This element contains information about a smart handoff from one web user interface to another."
+  potentialAction: JSON,
   "Information about the quality of the downloadable tool or web user interface. This would include information about any quality assurance procedures followed in development. Note: This field allows lightweight markup language with plain text formatting syntax. Line breaks within the text are preserved."
   quality: JSON,
   "A URL associated with the web user interface or downloadable tool, e.g., the home page for the tool provider which is responsible for the tool."

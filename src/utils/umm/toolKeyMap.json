@@ -17,6 +17,7 @@
     "name": "umm.Name",
     "nativeId": "meta.native-id",
     "organizations": "umm.Organizations",
+    "potentialAction": "umm.PotentialAction",
     "quality": "umm.Quality",
     "relatedUrls": "umm.RelatedURLs",
     "searchAction": "umm.SearchAction",

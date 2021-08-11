@@ -19,7 +19,7 @@ provider:
     ummGranuleVersion: '1.5'
     ummServiceVersion: '1.3.4'
     ummSubscriptionVersion: '1.0'
-    ummToolVersion: '1.0'
+    ummToolVersion: '1.1'
     ummVariableVersion: '1.7'
 
   vpc:
