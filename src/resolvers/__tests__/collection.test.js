@@ -182,7 +182,23 @@ describe('Collection', () => {
               },
               DOI: {},
               MetadataDates: [],
-              Platforms: [],
+              Platforms: [{
+                Type: 'Not Specified',
+                ShortName: 'AQUA',
+                LongName: 'Earth Observing System, AQUA',
+                Instruments: [
+                  {
+                    ShortName: 'AIRS',
+                    LongName: 'Atmospheric Infrared Sounder',
+                    ComposedOf: [
+                      {
+                        ShortName: 'AIRS',
+                        LongName: 'Atmospheric Infrared Sounder'
+                      }
+                    ]
+                  }
+                ]
+              }],
               ProcessingLevel: {
                 Id: 'Not Provided'
               },
@@ -345,7 +361,23 @@ describe('Collection', () => {
             onlineAccessFlag: true,
             organizations: [],
             originalFormat: 'RISUS',
-            platforms: [],
+            platforms: [{
+              type: 'Not Specified',
+              shortName: 'AQUA',
+              longName: 'Earth Observing System, AQUA',
+              instruments: [
+                {
+                  shortName: 'AIRS',
+                  longName: 'Atmospheric Infrared Sounder',
+                  composedOf: [
+                    {
+                      shortName: 'AIRS',
+                      longName: 'Atmospheric Infrared Sounder'
+                    }
+                  ]
+                }
+              ]
+            }],
             points: [],
             polygons: [],
             processingLevelId: 'Not Provided',
