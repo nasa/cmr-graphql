@@ -70,40 +70,13 @@ export default {
 
       return dataSources.granuleSource(requestedParams, headers, parseResolveInfo(info))
     },
-    documentedWith: async (source, args, { dataSources, headers }) => {
+    relatedCollections: async (source, args, { dataSources, headers }) => {
       const { conceptId } = source
-      const { groupBy } = args
 
       return dataSources.graphDbSource(
         conceptId,
-        'documentedWith',
         args,
         headers,
-        groupBy
-      )
-    },
-    campaignedWith: async (source, args, { dataSources, headers }) => {
-      const { conceptId } = source
-      const { groupBy } = args
-
-      return dataSources.graphDbSource(
-        conceptId,
-        'campaignedWith',
-        args,
-        headers,
-        groupBy
-      )
-    },
-    acquiredWith: async (source, args, { dataSources, headers }) => {
-      const { conceptId } = source
-      const { groupBy } = args
-
-      return dataSources.graphDbSource(
-        conceptId,
-        'acquiredWith',
-        args,
-        headers,
-        groupBy
       )
     },
     services: async (source, args, { dataSources, headers }, info) => {
@@ -175,26 +148,27 @@ export default {
       }, headers, parseResolveInfo(info))
     }
   },
-  RelationshipGroupUnion: {
+  RelatedCollection: {
     __resolveType: (object) => {
-      // When a RelationshipGroupUnion object is requested, this resolver will determine which of the available types the data matches and return that type
-      if (object.type === 'documentedWith') {
+      // Return what the GraphQL Type of the given object by looking for specific properties
+      // Watch out for duplicate property names in the future!
+      if (object.url) {
         return 'GraphDbDocumentation'
       }
 
-      if (object.type === 'campaignedWith') {
+      if (object.name) {
         return 'GraphDbCampaign'
       }
 
-      if (object.type === 'acquiredWith') {
+      if (object.instrument) {
         return 'GraphDbPlatformInstrument'
-      }
-
-      if (object.type === 'collection') {
-        return 'GraphDbCollection'
       }
 
       return null
     }
+  },
+  GraphDbDocumentation: {
+    // documentation has a `title` field, but we can't have duplicate params so rename documentation's `title` to `documentationTitle`
+    documentationTitle: (parent) => parent.title
   }
 }

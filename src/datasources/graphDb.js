@@ -1,172 +1,55 @@
 import {
-  camelCase,
   chunk,
-  fromPairs
+  fromPairs,
+  isObject
 } from 'lodash'
 
 import { cmrGraphDb } from '../utils/cmrGraphDb'
 
 /**
- * Creates the traversal needed to return the documentedWith relationships.
- * @param {Object} params Query parameters passed in from the resolver.
- * @param {String} params.url GraphDB `documentation` vertex url property to use for filtering.
- * @param {String} params.title GraphDB `documentation` vertex title property to use for filtering.
- * @param {Integer} params.limit Limit parameter used to create the range step in the traversal.
- * @param {Integer} params.offset Offset parameter used to create the range step in the traversal.
- */
-const documentedWithTraversal = (params) => {
-  const {
-    url,
-    title,
-    limit = 20,
-    offset = 0
-  } = params
-
-  let filterStep = ''
-  if (url) {
-    filterStep += `.has("documentation", "url", "${url}")`
-  }
-  if (title) {
-    filterStep += `.has("documentation", "title", "${title}")`
-  }
-
-  const rangeStep = `.range(${offset}, ${offset + limit})`
-
-  return `
-  .outE('documentedBy')
-  .inV()
-  ${filterStep}
-  .project('collections', 'documentedWith')
-  .by(inE('documentedBy')
-    .outV()
-    .hasLabel('collection')
-    .where(neq('initialVertex'))
-    ${rangeStep}
-    .valueMap()
-    .fold()
-  )
-  .by(valueMap())
-  `
-}
-
-/**
- * Creates the traversal needed to return the campaignedWith relationships.
- * @param {Object} params Query parameters passed in from the resolver.
- * @param {String} params.name GraphDB `campaign` vertex name property to use for filtering.
- * @param {Integer} params.limit Limit parameter used to create the range step in the traversal.
- * @param {Integer} params.offset Offset parameter used to create the range step in the traversal.
- */
-const campaignedWithTraversal = (params) => {
-  const {
-    name,
-    limit = 20,
-    offset = 0
-  } = params
-
-  let filterStep = ''
-  if (name) {
-    filterStep += `.has("campaign", "name", "${name}")`
-  }
-
-  const rangeStep = `.range(${offset}, ${offset + limit})`
-
-  return `
-  .outE('includedIn')
-  .inV()
-  ${filterStep}
-  .project('collections', 'campaignedWith')
-  .by(inE('includedIn')
-    .outV()
-    .hasLabel('collection')
-    .where(neq('initialVertex'))
-    ${rangeStep}
-    .valueMap()
-    .fold()
-  )
-  .by(valueMap())
-  `
-}
-
-/**
- * Creates the traversal needed to return the campaignedWith relationships.
- * @param {Object} params Query parameters passed in from the resolver.
- * @param {String} params.platform GraphDB `platformInstrument` vertex platform property to use for filtering.
- * @param {String} params.instrument GraphDB `platformInstrument` vertex instrument property to use for filtering.
- * @param {Integer} params.limit Limit parameter used to create the range step in the traversal.
- * @param {Integer} params.offset Offset parameter used to create the range step in the traversal.
- */
-const acquiredWithTraversal = (params) => {
-  const {
-    platform,
-    instrument,
-    limit = 20,
-    offset = 0
-  } = params
-
-  let filterStep = ''
-  if (platform) {
-    filterStep += `.has("platformInstrument", "platform", "${platform}")`
-  }
-  if (instrument) {
-    filterStep += `.has("platformInstrument", "instrument", "${instrument}")`
-  }
-
-  const rangeStep = `.range(${offset}, ${offset + limit})`
-
-  return `
-  .outE('acquiredBy')
-  .inV()
-  ${filterStep}
-  .project('collections', 'acquiredWith')
-  .by(inE('acquiredBy')
-    .outV()
-    .hasLabel('collection')
-    .where(neq('initialVertex'))
-    ${rangeStep}
-    .valueMap()
-    .fold()
-  )
-  .by(valueMap())
-  `
-}
-
-/**
  * Queries CMR GraphDB for related collections.
  * @param {String} conceptId ConceptID for the initial collection to find relationships on.
- * @param {String} type Relationship type to search for. `documentedWith`, `campaignedWith` or `acquiredWith`.
  * @param {String} params Search parameters for the relationship search.
  * @param {String} headers Headers to be passed to CMR.
- * @param {String} groupBy Group by parameter for grouping the relationship results. `collection` or `value`.
  */
 export default async (
   conceptId,
-  type,
   params,
   headers,
-  groupBy
 ) => {
-  let traversal
+  const {
+    limit = 10,
+    offset = 0
+  } = params
 
-  if (type === 'documentedWith') {
-    traversal = documentedWithTraversal(params)
-  }
+  const rangeStep = `.range(${offset}, ${offset + limit})`
 
-  if (type === 'campaignedWith') {
-    traversal = campaignedWithTraversal(params)
-  }
-
-  if (type === 'acquiredWith') {
-    traversal = acquiredWithTraversal(params)
-  }
-
-  // Query CMR GraphDB for the provided conceptId's relationships
   const query = JSON.stringify({
     gremlin: `
     g
     .V()
     .has('collection', 'id', '${conceptId}')
-    .as('initialVertex')
-    ${traversal}
+    .sideEffect(
+      bothE()
+      .inV()
+      .bothE()
+      .outV()
+      .hasLabel('collection')
+      .simplePath()
+      .count()
+      .store('count')
+    )
+    .bothE()
+    .inV()
+    .bothE()
+    .outV()
+    .hasLabel('collection')
+    .simplePath()
+    ${rangeStep}
+    .path()
+    .by(valueMap(true))
+    .as('values')
+    .select('values', 'count')
     `
   })
 
@@ -182,116 +65,84 @@ export default async (
   // console.log('GraphDB Response result: ', JSON.stringify(result, null, 2))
 
   const { data: resultData } = result
-  const { '@value': values } = resultData
+  const { '@value': dataValues } = resultData
 
-  const relationshipByCollectionMap = {}
-  const relationshipByValueList = []
+  const collectionsList = []
+  let count
 
-  values.forEach((value) => {
+  dataValues.forEach((dataValue) => {
+    const { '@value': dataValueMap } = dataValue
+    const { values: value, count: countMap } = fromPairs(chunk(dataValueMap, 2))
+
+    // Parse the count object
+    const { '@value': countValueMap } = countMap;
+
+    // The first value returned holds the total count
+    ([{ '@value': count }] = countValueMap)
+
+
+    // Parse the collection values
     const { '@value': valueMap } = value
-    const valuesMap = fromPairs(chunk(valueMap, 2))
+    const { objects } = valueMap
+    const { '@value': objectValueMap } = objects
 
-    const {
-      collections: collectionResults,
-      [type]: relationshipResults
-    } = valuesMap
+    // objectValueMap[0] is starting collection vertex
+    // objectValueMap[1] is the edge going out of the starting collection vertex
+    // objectValueMap[2] is relationship vertex (campaign, documenation, platformInstrument)
+    // objectValueMap[3] is the edge going out of the relationship vertex
+    // objectValueMap[4] is related collection vertex
 
-    // Minimize collection list down to array of collection objects
-    const { '@value': collectionList } = collectionResults
+    // Parse the relationship vertex (objectValueMap[2]) for values
+    const { '@value': relationshipVertexMap } = objectValueMap[2]
+    const relationshipVertexPairs = chunk(relationshipVertexMap, 2)
+    let relationshipLabel
+    const relationshipVertexValues = {}
+    relationshipVertexPairs.forEach((pair) => {
+      const [key, value] = pair
 
-    const collections = collectionList.map((collectionListItem) => {
-      const { '@value': collectionValues } = collectionListItem
-      const collectionStuff = fromPairs(chunk(collectionValues, 2))
+      if (isObject(key)) {
+        const { '@value': keyMap } = key
 
-      const collection = {
-        type: 'collection'
+        if (keyMap === 'label') {
+          relationshipLabel = value
+        }
+
+        return
       }
 
-      Object.keys(collectionStuff).forEach((key) => {
-        const { '@value': [value] } = collectionStuff[key]
-        collection[camelCase(key)] = value
-      })
+      const { '@value': relationshipVertexValueMap } = value
 
-      return collection
+      const [relationshipVertexValue] = relationshipVertexValueMap
+      relationshipVertexValues[key] = relationshipVertexValue
     })
 
-    // Parse the relationshipResults down to simple objects of relationship values
+    // Parse the related collection vertex (objectValueMap[4]) for values
+    const { '@value': relatedCollectionVertexMap } = objectValueMap[4]
+    const relatedCollectionVertexPairs = chunk(relatedCollectionVertexMap, 2)
+    const relatedCollectionValues = {}
+    relatedCollectionVertexPairs.forEach((pair) => {
+      const [key, value] = pair
 
-    // This list: [
-    //   'instrument',
-    //   { '@type': 'g:List', '@value': [ 'VISSR' ] },
-    //   'platform',
-    //   { '@type': 'g:List', '@value': [ 'METEOSAT-7' ] }
-    // ]
-    //
-    // will become this object: {
-    //   instrument: 'VISSR',
-    //   platform: 'METEOSAT-7'
-    // }
-    //
-    // This list:
-    // [ 'name', { '@type': 'g:List', '@value': [ 'Project2' ] } ]
-    //
-    // will become this object:
-    // { name: 'Project2' }
+      if (isObject(key)) {
+        return
+      }
 
-    const relationshipValues = {}
+      const { '@value': relatedCollectionVertexValueMap } = value
 
-    const { '@value': valueMappingList } = relationshipResults
-    const valueMapping = fromPairs(chunk(valueMappingList, 2))
-
-    Object.keys(valueMapping).forEach((key) => {
-      const { '@value': values } = valueMapping[key]
-      relationshipValues[key] = values.join()
+      const [relatedCollectionVertexValue] = relatedCollectionVertexValueMap
+      relatedCollectionValues[key] = relatedCollectionVertexValue
     })
 
-    // Map the relationshipValues and collection to an object keyed with the collection conceptId
-    if (groupBy === 'collection') {
-      collections.forEach((collection) => {
-        const { id: conceptId } = collection
-        if (!relationshipByCollectionMap[conceptId]) {
-          relationshipByCollectionMap[conceptId] = {
-            items: []
-          }
-        }
-
-        relationshipByCollectionMap[conceptId].items.push({
-          ...relationshipValues,
-          type
-        })
-
-        relationshipByCollectionMap[conceptId].group = {
-          ...collection,
-          type: 'collection'
-        }
-      })
-    }
-
-    // Add the relationshipValues and collections onto the relationshipByValueList to be returned
-    if (groupBy === 'value') {
-      relationshipByValueList.push({
-        group: {
-          ...relationshipValues,
-          type
-        },
-        items: collections
-      })
-    }
+    // Push the data onto the collectionsList to be returned to the resolver
+    collectionsList.push({
+      ...relatedCollectionValues,
+      relationship: relationshipLabel,
+      ...relationshipVertexValues
+    })
   })
 
-  // Turn the relationshipByCollectionMap into an array and return
-  if (groupBy === 'collection') {
-    const relationshipByCollectionList = []
-
-    Object.keys(relationshipByCollectionMap).forEach((conceptId) => {
-      relationshipByCollectionList.push({
-        ...relationshipByCollectionMap[conceptId]
-      })
-    })
-
-    return relationshipByCollectionList
+  return {
+    count,
+    items: collectionsList
   }
-
-  // Return the relationshipByValueList if groupBy is value
-  return relationshipByValueList
 }
