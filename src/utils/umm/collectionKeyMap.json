@@ -32,6 +32,7 @@
     "nativeId": "meta.native-id",
     "platforms": "umm.Platforms",
     "processingLevelId": "umm.ProcessingLevel.Id",
+    "purpose": "umm.Purpose",
     "quality": "umm.Quality",
     "relatedUrls": "umm.RelatedUrls",
     "scienceKeywords": "umm.ScienceKeywords",
