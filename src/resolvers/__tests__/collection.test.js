@@ -1487,21 +1487,24 @@ describe('Collection', () => {
                 relatedCollections {
                   count
                   items {
-                    __typename
                     id
                     title
                     doi
-                    relationship
-                    ... on GraphDbCampaign {
-                      name
-                    }
-                    ... on GraphDbPlatformInstrument {
-                      platform
-                      instrument
-                    }
-                    ... on GraphDbDocumentation {
-                      url
-                      documentationTitle
+                    relationships {
+                      relationshipType
+                      ... on GraphDbProject {
+                        name
+                      }
+                      ... on GraphDbPlatformInstrument {
+                        platform
+                        instrument
+                      }
+                      ... on GraphDbRelatedUrl {
+                        url
+                        description
+                        type
+                        subType
+                      }
                     }
                   }
                 }
@@ -1517,55 +1520,45 @@ describe('Collection', () => {
     })
   })
 
-  describe('RelatedCollection', () => {
-    describe('When the object has a url field', () => {
+  describe('Relationship', () => {
+    describe('When the object has the relatedUrl relationshipType', () => {
       test('returns the correct type', () => {
-        const { RelatedCollection: relatedCollection } = resolvers
-        const { __resolveType: resolveType } = relatedCollection
+        const { Relationship: relationship } = resolvers
+        const { __resolveType: resolveType } = relationship
 
-        const result = resolveType({ url: 'mock-url' })
-        expect(result).toEqual('GraphDbDocumentation')
+        const result = resolveType({ relationshipType: 'relatedUrl' })
+        expect(result).toEqual('GraphDbRelatedUrl')
       })
     })
 
-    describe('When the object has a name field', () => {
+    describe('When the object has the relatedUrl relationshipType', () => {
       test('returns the correct type', () => {
-        const { RelatedCollection: relatedCollection } = resolvers
-        const { __resolveType: resolveType } = relatedCollection
+        const { Relationship: relationship } = resolvers
+        const { __resolveType: resolveType } = relationship
 
-        const result = resolveType({ name: 'mock name' })
-        expect(result).toEqual('GraphDbCampaign')
+        const result = resolveType({ relationshipType: 'project' })
+        expect(result).toEqual('GraphDbProject')
       })
     })
 
-    describe('When the object has an instrument', () => {
+    describe('When the object has the relatedUrl relationshipType', () => {
       test('returns the correct type', () => {
-        const { RelatedCollection: relatedCollection } = resolvers
-        const { __resolveType: resolveType } = relatedCollection
+        const { Relationship: relationship } = resolvers
+        const { __resolveType: resolveType } = relationship
 
-        const result = resolveType({ instrument: 'mock instrument' })
+        const result = resolveType({ relationshipType: 'platformInstrument' })
         expect(result).toEqual('GraphDbPlatformInstrument')
       })
     })
 
     describe('When the object type is not recognized', () => {
       test('returns the correct type', () => {
-        const { RelatedCollection: relatedCollection } = resolvers
-        const { __resolveType: resolveType } = relatedCollection
+        const { Relationship: relationship } = resolvers
+        const { __resolveType: resolveType } = relationship
 
-        const result = resolveType({ type: 'something wrong' })
+        const result = resolveType({ relationshipType: 'something wrong' })
         expect(result).toEqual(null)
       })
-    })
-  })
-
-  describe('GraphDbDocumentation', () => {
-    test('renames the title field to documentationTitle', () => {
-      const { GraphDbDocumentation: graphDbDocumentation } = resolvers
-      const { documentationTitle } = graphDbDocumentation
-
-      const result = documentationTitle({ title: 'mock title' })
-      expect(result).toEqual('mock title')
     })
   })
 })

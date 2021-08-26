@@ -148,27 +148,22 @@ export default {
       }, headers, parseResolveInfo(info))
     }
   },
-  RelatedCollection: {
+  Relationship: {
     __resolveType: (object) => {
       // Return what the GraphQL Type of the given object by looking for specific properties
-      // Watch out for duplicate property names in the future!
-      if (object.url) {
-        return 'GraphDbDocumentation'
+      if (object.relationshipType === 'relatedUrl') {
+        return 'GraphDbRelatedUrl'
       }
 
-      if (object.name) {
-        return 'GraphDbCampaign'
+      if (object.relationshipType === 'project') {
+        return 'GraphDbProject'
       }
 
-      if (object.instrument) {
+      if (object.relationshipType === 'platformInstrument') {
         return 'GraphDbPlatformInstrument'
       }
 
       return null
     }
-  },
-  GraphDbDocumentation: {
-    // documentation has a `title` field, but we can't have duplicate params so rename documentation's `title` to `documentationTitle`
-    documentationTitle: (parent) => parent.title
   }
 }

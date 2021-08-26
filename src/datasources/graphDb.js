@@ -18,38 +18,86 @@ export default async (
   headers,
 ) => {
   const {
-    limit = 10,
-    offset = 0
+    limit = 20,
+    offset = 0,
+    relatedUrlSubType,
+    relatedUrlType
   } = params
 
-  const rangeStep = `.range(${offset}, ${offset + limit})`
+  const relatedUrlFilters = []
+  let filters = ''
+
+  // Filter the relationship vertexes based on GraphQL query parameters
+  if (relatedUrlType && !relatedUrlSubType) {
+    relatedUrlFilters.push(`has('relatedUrl', 'type', within('${relatedUrlType.join('\',\'')}'))`)
+  }
+  if (relatedUrlSubType && !relatedUrlType) {
+    relatedUrlFilters.push(`has('relatedUrl', 'subType', within("${relatedUrlSubType.join('","')}"))`)
+  }
+  // If both type and subType are provided we need to AND those params together, while still ORing the other relationship vertex types
+  if (relatedUrlType && relatedUrlSubType) {
+    relatedUrlFilters.push(`
+      and(
+        has('relatedUrl', 'type', within('${relatedUrlType.join('\',\'')}')),
+        has('relatedUrl', 'subType', within("${relatedUrlSubType.join('","')}"))
+      )
+    `)
+  }
+
+  if (relatedUrlFilters.length > 0) {
+    // If relatedUrl filters exist, we need to OR those filters `not(hasLabel('relatedUrl'))`
+    // This will include all other relationships, and only filter the relatedUrl relationships
+    filters = `
+    .or(
+      ${relatedUrlFilters.join()},
+      not(hasLabel('relatedUrl'))
+    )
+    `
+  }
 
   const query = JSON.stringify({
     gremlin: `
     g
     .V()
     .has('collection', 'id', '${conceptId}')
-    .sideEffect(
-      bothE()
-      .inV()
-      .bothE()
-      .outV()
-      .hasLabel('collection')
-      .simplePath()
-      .count()
-      .store('count')
-    )
     .bothE()
     .inV()
+    ${filters}
     .bothE()
     .outV()
     .hasLabel('collection')
-    .simplePath()
-    ${rangeStep}
-    .path()
-    .by(valueMap(true))
-    .as('values')
-    .select('values', 'count')
+    .group()
+    .by('id')
+    .by(
+      simplePath()
+      .path()
+      .by(valueMap(true))
+      .fold()
+      .as('pathValues')
+      .project('relationshipValues', 'relationshipCount')
+      .by(select('pathValues'))
+      .by(
+        unfold()
+        .count()
+      )
+    )
+    .order(local)
+    .by(
+      select(values)
+      .select('relationshipCount'), desc
+    )
+    .sideEffect(
+      unfold()
+      .count()
+      .aggregate('totalRelatedCollections')
+    )
+    .sideEffect(
+      unfold()
+      .range(${offset}, ${offset + limit})
+      .fold()
+      .aggregate('relatedCollections')
+    )
+    .cap('totalRelatedCollections', 'relatedCollections')
     `
   })
 
@@ -68,81 +116,105 @@ export default async (
   const { '@value': dataValues } = resultData
 
   const collectionsList = []
-  let count
+  let totalRelatedCollectionsCount
 
   dataValues.forEach((dataValue) => {
     const { '@value': dataValueMap } = dataValue
-    const { values: value, count: countMap } = fromPairs(chunk(dataValueMap, 2))
+    const {
+      relatedCollections: relatedCollectionsBulkSet,
+      totalRelatedCollections: totalRelatedCollectionsBulkSet
+    } = fromPairs(chunk(dataValueMap, 2))
 
     // Parse the count object
-    const { '@value': countValueMap } = countMap;
+    const { '@value': totalRelatedCollectionsMap } = totalRelatedCollectionsBulkSet;
 
     // The first value returned holds the total count
-    ([{ '@value': count }] = countValueMap)
+    ([{ '@value': totalRelatedCollectionsCount }] = totalRelatedCollectionsMap)
 
 
     // Parse the collection values
-    const { '@value': valueMap } = value
-    const { objects } = valueMap
-    const { '@value': objectValueMap } = objects
+    const { '@value': relatedCollectionsList } = relatedCollectionsBulkSet
+    const [{ '@value': relatedCollectionsMap }] = relatedCollectionsList
 
-    // objectValueMap[0] is starting collection vertex
-    // objectValueMap[1] is the edge going out of the starting collection vertex
-    // objectValueMap[2] is relationship vertex (campaign, documenation, platformInstrument)
-    // objectValueMap[3] is the edge going out of the relationship vertex
-    // objectValueMap[4] is related collection vertex
+    relatedCollectionsMap.forEach((relatedCollectionMap) => {
+      const { '@value': relatedCollectionMapValues } = relatedCollectionMap
+      const [, conceptIdMapping] = relatedCollectionMapValues
+      const { '@value': conceptIdMappingValues } = conceptIdMapping
 
-    // Parse the relationship vertex (objectValueMap[2]) for values
-    const { '@value': relationshipVertexMap } = objectValueMap[2]
-    const relationshipVertexPairs = chunk(relationshipVertexMap, 2)
-    let relationshipLabel
-    const relationshipVertexValues = {}
-    relationshipVertexPairs.forEach((pair) => {
-      const [key, value] = pair
+      const {
+        relationshipValues: relationshipValuesList
+      } = fromPairs(chunk(conceptIdMappingValues, 2))
 
-      if (isObject(key)) {
-        const { '@value': keyMap } = key
+      const { '@value': relationshipValues } = relationshipValuesList
 
-        if (keyMap === 'label') {
-          relationshipLabel = value
-        }
+      const relationships = []
+      const relatedCollectionValues = {}
 
-        return
-      }
+      relationshipValues.forEach((relationshipValue) => {
+        const { '@value': relationshipPathValue } = relationshipValue
+        const { objects } = relationshipPathValue
 
-      const { '@value': relationshipVertexValueMap } = value
+        const { '@value': objectValueList } = objects
 
-      const [relationshipVertexValue] = relationshipVertexValueMap
-      relationshipVertexValues[key] = relationshipVertexValue
-    })
+        // objectValueList[0] is starting collection vertex
+        // objectValueList[1] is the edge going out of the starting collection vertex
+        // objectValueList[2] is relationship vertex (project, documenation, platformInstrument)
+        // objectValueList[3] is the edge going out of the relationship vertex
+        // objectValueList[4] is related collection vertex
 
-    // Parse the related collection vertex (objectValueMap[4]) for values
-    const { '@value': relatedCollectionVertexMap } = objectValueMap[4]
-    const relatedCollectionVertexPairs = chunk(relatedCollectionVertexMap, 2)
-    const relatedCollectionValues = {}
-    relatedCollectionVertexPairs.forEach((pair) => {
-      const [key, value] = pair
+        // Parse the relationship vertex (objectValueList[2]) for values
+        const { '@value': relationshipVertexMap } = objectValueList[2]
+        const relationshipVertexPairs = chunk(relationshipVertexMap, 2)
+        let relationshipLabel
+        const relationshipVertexValues = {}
+        relationshipVertexPairs.forEach((pair) => {
+          const [key, value] = pair
 
-      if (isObject(key)) {
-        return
-      }
+          if (isObject(key)) {
+            const { '@value': keyMap } = key
 
-      const { '@value': relatedCollectionVertexValueMap } = value
+            if (keyMap === 'label') {
+              relationshipLabel = value
+              relationshipVertexValues.relationshipType = relationshipLabel
+            }
 
-      const [relatedCollectionVertexValue] = relatedCollectionVertexValueMap
-      relatedCollectionValues[key] = relatedCollectionVertexValue
-    })
+            return
+          }
 
-    // Push the data onto the collectionsList to be returned to the resolver
-    collectionsList.push({
-      ...relatedCollectionValues,
-      relationship: relationshipLabel,
-      ...relationshipVertexValues
+          const { '@value': relationshipVertexValueMap } = value
+
+          const [relationshipVertexValue] = relationshipVertexValueMap
+          relationshipVertexValues[key] = relationshipVertexValue
+        })
+        relationships.push(relationshipVertexValues)
+
+        // Parse the related collection vertex (objectValueList[4]) for values
+        const { '@value': relatedCollectionVertexMap } = objectValueList[4]
+        const relatedCollectionVertexPairs = chunk(relatedCollectionVertexMap, 2)
+        relatedCollectionVertexPairs.forEach((pair) => {
+          const [key, value] = pair
+
+          if (isObject(key)) {
+            return
+          }
+
+          const { '@value': relatedCollectionVertexValueMap } = value
+
+          const [relatedCollectionVertexValue] = relatedCollectionVertexValueMap
+          relatedCollectionValues[key] = relatedCollectionVertexValue
+        })
+      })
+
+      // Push the data onto the collectionsList to be returned to the resolver
+      collectionsList.push({
+        ...relatedCollectionValues,
+        relationships
+      })
     })
   })
 
   return {
-    count,
+    count: totalRelatedCollectionsCount,
     items: collectionsList
   }
 }

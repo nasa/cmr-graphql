@@ -107,6 +107,10 @@ type Collection {
     limit: Int
     "The beginning of the range GraphDB searches on"
     offset: Int
+    "Filter the RelatedURL relationships by the Type property."
+    relatedUrlType: [String]
+    "Filter the RelatedURL relationships by the SubType property."
+    relatedUrlSubType: [String]
   ): RelatedCollectionsList
 
   granules (
@@ -201,15 +205,20 @@ type Collection {
   ): VariableList
 }
 
-interface RelatedCollection {
+type RelatedCollection {
   "The unique concept id assigned to the collection."
   id: String
   "The DOI that identifies the collection."
   doi: String
   "The title of the collection described by the metadata."
   title: String
-  "Type of relationship shared with the parent collection."
-  relationship: String
+  "The list of relationships."
+  relationships: [Relationship]
+}
+
+interface Relationship {
+  "The type of relationship."
+  relationshipType: String
 }
 
 type RelatedCollectionsList {
@@ -219,44 +228,29 @@ type RelatedCollectionsList {
   items: [RelatedCollection]
 }
 
-type GraphDbDocumentation implements RelatedCollection {
-  "The unique concept id assigned to the collection."
-  id: String
-  "The DOI that identifies the collection."
-  doi: String
-  "The title of the collection described by the metadata."
-  title: String
-  "Type of relationship shared with the parent collection."
-  relationship: String
-
+type GraphDbRelatedUrl implements Relationship {
+  "The type of relationship."
+  relationshipType: String
   "The url of the documentaion."
   url: String
-  # "The title of the documentaion."
-  documentationTitle: String
+  # "The description of the documentaion."
+  description: String
+  "A keyword describing the type of the online resource to this resource."
+  type: String
+  "A keyword describing the subtype of the online resource to this resource."
+  subType: String
 }
-type GraphDbCampaign implements RelatedCollection {
-  "The unique concept id assigned to the collection."
-  id: String
-  "The DOI that identifies the collection."
-  doi: String
-  "The title of the collection described by the metadata."
-  title: String
-  "Type of relationship shared with the parent collection."
-  relationship: String
 
-  "The name of the campaign"
+type GraphDbProject implements Relationship {
+  "The type of relationship."
+  relationshipType: String
+  "The name of the project"
   name: String
 }
-type GraphDbPlatformInstrument implements RelatedCollection {
-  "The unique concept id assigned to the collection."
-  id: String
-  "The DOI that identifies the collection."
-  doi: String
-  "The title of the collection described by the metadata."
-  title: String
-  "Type of relationship shared with the parent collection."
-  relationship: String
 
+type GraphDbPlatformInstrument implements Relationship {
+  "The type of relationship."
+  relationshipType: String
   "The name of the platform."
   platform: String
   "The name of the instrument."
