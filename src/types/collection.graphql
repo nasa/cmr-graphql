@@ -233,7 +233,7 @@ type GraphDbRelatedUrl implements Relationship {
   relationshipType: String
   "The url of the documentaion."
   url: String
-  # "The description of the documentaion."
+  "The description of the documentaion."
   description: String
   "A keyword describing the type of the online resource to this resource."
   type: String
