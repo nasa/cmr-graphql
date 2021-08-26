@@ -73,6 +73,8 @@ type Collection {
   nativeId: String!
   "An identifier indicating the level at which the data in the collection are processed, ranging from Level0 (raw instrument data at full resolution) to Level4 (model output or analysis results).  The value of Processing Level Id is chosen from a controlled vocabulary."
   processingLevelId: String
+  "Suggested usage or purpose for the collection data or service."
+  purpose: String
   "Describes any data/service related URLs that include project home pages, services, related data archives/servers, metadata extensions, direct links to online software packages, web mapping services, links to images, or other data."
   relatedUrls: JSON
   "Controlled Science Keywords describing the collection.  The controlled vocabulary for Science Keywords is maintained in the Keyword Management System (KMS)."

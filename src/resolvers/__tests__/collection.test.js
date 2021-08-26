@@ -202,6 +202,7 @@ describe('Collection', () => {
               ProcessingLevel: {
                 Id: 'Not Provided'
               },
+              Purpose: 'Mock Purpose',
               Quality: 'Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.',
               RelatedUrls: [],
               ScienceKeywords: [],
@@ -257,6 +258,7 @@ describe('Collection', () => {
               polygons
               processingLevelId
               provider
+              purpose
               quality
               relatedUrls
               scienceKeywords
@@ -382,6 +384,7 @@ describe('Collection', () => {
             polygons: [],
             processingLevelId: 'Not Provided',
             provider: 'PORTA',
+            purpose: 'Mock Purpose',
             quality: 'Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.',
             relatedUrls: [],
             scienceKeywords: [],
