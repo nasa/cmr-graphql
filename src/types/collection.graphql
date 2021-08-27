@@ -1,6 +1,8 @@
 type Collection {
   "A brief description of the collection the metadata represents."
   abstract: String
+  "Allows the author to constrain access to the collection. This includes any special restrictions, legal prerequisites, limitations and/or warnings on obtaining collection data. Some words that may be used in this element's value include: Public, In-house, Limited, None. The value field is used for special ACL rules (Access Control Lists (http://en.wikipedia.org/wiki/Access_control_list)). For example it can be used to hide metadata when it isn't ready for public consumption."
+  accessConstraints: JSON
   "This element stores DOIs that are associated with the collection such as from campaigns and other related sources."
   associatedDois: JSON
   "Find collections matching 'archive_center' param value."
@@ -19,6 +21,8 @@ type Collection {
   collectionCitations: JSON
   "Data type of the collection, e.g. NEAR_REAL_TIME"
   collectionDataType: String
+  "This element describes the production status of the data set."
+  collectionProgress: String
   "Information about the personnel responsible for this collection and its metadata."
   contactPersons: JSON
   "Coordinate system of the metadata."
@@ -27,6 +31,8 @@ type Collection {
   dataCenter: String @deprecated(reason: "Use `provider`.")
   "Information about the data centers responsible for this collection and its metadata."
   dataCenters: JSON
+  "Dates related to activities involving the collection data."
+  dataDates: JSON
   "This element allows end users to get direct access to data products that are stored in the Amazon Web Service (AWS) S3 buckets. The sub elements include S3 credentials end point and a documentation URL as well as bucket prefix names and an AWS region."
   directDistributionInformation: JSON
   "This element stores the DOI (Digital Object Identifier) that identifies the collection. note: The values should start with the directory indicator which in ESDIS' case is 10.  If the DOI was registered through ESDIS, the beginning of the string should be 10.5067. The DOI URL is not stored here; it should be stored as a RelatedURL. The DOI organization that is responsible for creating the DOI is described in the Authority element. For ESDIS records the value of https://doi.org/ should be used. While this element is not required, NASA metadata providers are strongly encouraged to include DOI and DOI Authority for their collections."
@@ -47,6 +53,8 @@ type Collection {
   hasTransforms: Boolean
   "True if there are variables associated with the collection."
   hasVariables: Boolean
+  "This element is used to identify other services, collections, visualizations, granules, and other metadata types and resources that are associated with or dependent on the data described by the metadata. This element is also used to identify a parent metadata record if it exists. This usage should be reserved for instances where a group of metadata records are subsets that can be better represented by one parent metadata record, which describes the entire set. In some instances, a child may point to more than one parent. The EntryId is the same as the element described elsewhere in this document where it contains an ID and Version."
+  metadataAssociations: JSON
   "Dates related to activities involving the metadata record itself."
   metadataDates: JSON
   "The format of original collection metadata (Known in CMR as original format)."
@@ -67,12 +75,16 @@ type Collection {
   polygons: [[String]]
   "The identity of the provider in the CMR."
   provider: String
+  "Describes key bibliographic citations pertaining to the collection."
+  publicationReferences: JSON
   "Free text description of the quality of the collection data."
   quality: String
   "The native id to set on the collection."
   nativeId: String!
+  "The identifier for the processing level of the collection."
+  processingLevel: JSON
   "An identifier indicating the level at which the data in the collection are processed, ranging from Level0 (raw instrument data at full resolution) to Level4 (model output or analysis results).  The value of Processing Level Id is chosen from a controlled vocabulary."
-  processingLevelId: String
+  processingLevelId: String @deprecated(reason: "Use `processingLevel`.")
   "Suggested usage or purpose for the collection data or service."
   purpose: String
   "Describes any data/service related URLs that include project home pages, services, related data archives/servers, metadata extensions, direct links to online software packages, web mapping services, links to images, or other data."
@@ -99,6 +111,8 @@ type Collection {
   timeEnd: String
   "The title of the collection described by the metadata."
   title: String
+  "Designed to protect privacy and/or intellectual property by allowing the author to specify how the collection may or may not be used after access is granted. This includes any special restrictions, legal prerequisites, terms and conditions, and/or limitations on using the item. Providers may request acknowledgement of the item from users and claim no responsibility for quality and completeness. Note: Use Constraints describe how the item may be used once access has been granted; and is distinct from Access Constraints, which refers to any constraints in accessing the item."
+  useConstraints: JSON
   "Provider defined version id of the collection."
   versionId: String
 

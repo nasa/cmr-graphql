@@ -141,6 +141,7 @@ describe('Collection', () => {
             },
             umm: {
               Abstract: 'Cras mattis consectetur purus sit amet fermentum.',
+              AccessConstraints: [],
               AncillaryKeywords: [],
               ArchiveAndDistributionInformation: {
                 FileDistributionInformation: [
@@ -165,8 +166,10 @@ describe('Collection', () => {
                 Authority: 'https://doi.org/'
               }],
               CollectionCitations: [],
+              CollectionProgress: 'ACTIVE',
               ContactPersons: [],
               DataCenters: [],
+              DataDates: [],
               DirectDistributionInformation: {
                 region: 'us-east-2',
                 s3BucketAndObjectPrefixNames: ['TestBucketOrObjectPrefix'],
@@ -174,6 +177,7 @@ describe('Collection', () => {
                 s3CredentialsApiDocumentationUrl: 'https://DAACCredentialDocumentation.org'
               },
               DOI: {},
+              MetadataAssociations: [],
               MetadataDates: [],
               Platforms: [{
                 Type: 'Not Specified',
@@ -195,6 +199,7 @@ describe('Collection', () => {
               ProcessingLevel: {
                 Id: 'Not Provided'
               },
+              PublicationReferences: [],
               Purpose: 'Mock Purpose',
               Quality: 'Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.',
               RelatedUrls: [],
@@ -203,6 +208,7 @@ describe('Collection', () => {
               TemporalExtents: [],
               TemporalKeywords: [],
               TilingIdentificationSystems: {},
+              UseConstraints: [],
               EntryTitle: 'Condimentum Quam Mattis Cursus Pharetra',
               VersionId: '1.0.0'
             }
@@ -217,6 +223,7 @@ describe('Collection', () => {
             facets
             items {
               abstract
+              accessConstraints
               ancillaryKeywords
               archiveAndDistributionInformation
               archiveCenter
@@ -224,11 +231,13 @@ describe('Collection', () => {
               boxes
               browseFlag
               collectionCitations
+              collectionProgress
               conceptId
               contactPersons
               coordinateSystem
               dataCenter
               dataCenters
+              dataDates
               datasetId
               directDistributionInformation
               doi
@@ -239,6 +248,7 @@ describe('Collection', () => {
               hasTransforms
               hasVariables
               lines
+              metadataAssociations
               metadataDates
               metadataFormat
               nativeDataFormats
@@ -249,8 +259,10 @@ describe('Collection', () => {
               platforms
               points
               polygons
+              processingLevel
               processingLevelId
               provider
+              publicationReferences
               purpose
               quality
               relatedUrls
@@ -264,6 +276,7 @@ describe('Collection', () => {
               timeEnd
               timeStart
               title
+              useConstraints
               versionId
             }
           }
@@ -302,6 +315,7 @@ describe('Collection', () => {
           },
           items: [{
             abstract: 'Cras mattis consectetur purus sit amet fermentum.',
+            accessConstraints: [],
             ancillaryKeywords: [],
             archiveAndDistributionInformation: {
               fileDistributionInformation: [
@@ -329,11 +343,13 @@ describe('Collection', () => {
             boxes: [],
             browseFlag: true,
             collectionCitations: [],
+            collectionProgress: 'ACTIVE',
             conceptId: 'C100000-EDSC',
             contactPersons: [],
             coordinateSystem: 'CARTESIAN',
             dataCenter: 'PORTA',
             dataCenters: [],
+            dataDates: [],
             datasetId: 'Condimentum Quam Mattis Cursus Pharetra',
             directDistributionInformation: {
               region: 'us-east-2',
@@ -349,6 +365,7 @@ describe('Collection', () => {
             hasTransforms: true,
             hasVariables: true,
             lines: [],
+            metadataAssociations: [],
             metadataDates: [],
             metadataFormat: 'RISUS',
             nativeId: 'test-guid',
@@ -375,8 +392,12 @@ describe('Collection', () => {
             }],
             points: [],
             polygons: [],
+            processingLevel: {
+              id: 'Not Provided'
+            },
             processingLevelId: 'Not Provided',
             provider: 'PORTA',
+            publicationReferences: [],
             purpose: 'Mock Purpose',
             quality: 'Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.',
             relatedUrls: [],
@@ -390,6 +411,7 @@ describe('Collection', () => {
             timeEnd: '2016-04-04T08:00:00.000Z',
             timeStart: '2016-04-04T17:00:00.000Z',
             title: 'Condimentum Quam Mattis Cursus Pharetra',
+            useConstraints: [],
             versionId: '1.0.0'
           }]
         }
