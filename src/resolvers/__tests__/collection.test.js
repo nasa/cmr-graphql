@@ -18,15 +18,8 @@ import {
 import toolSource from '../../datasources/tool'
 import variableSource from '../../datasources/variable'
 
-import documentedWithByCollectionResponseMocks from './__mocks__/documentedWith/byCollection.response.mocks'
-import documentedWithByValueResponseMocks from './__mocks__/documentedWith/byValue.response.mocks'
-import documentedWithGraphdbResponseMocks from './__mocks__/documentedWith/graphdbResponse.mocks'
-import campaignedWithByCollectionResponseMocks from './__mocks__/campaignedWith/byCollection.response.mocks'
-import campaignedWithByValueResponseMocks from './__mocks__/campaignedWith/byValue.response.mocks'
-import campaignedWithGraphdbResponseMocks from './__mocks__/campaignedWith/graphdbResponse.mocks'
-import acquiredWithByCollectionResponseMocks from './__mocks__/acquiredWith/byCollection.response.mocks'
-import acquiredWithByValueResponseMocks from './__mocks__/acquiredWith/byValue.response.mocks'
-import acquiredWithGraphdbResponseMocks from './__mocks__/acquiredWith/graphdbResponse.mocks'
+import relatedCollectionsGraphdbResponseMocks from './__mocks__/relatedCollections.graphdbResponse.mocks'
+import relatedCollectionsResponseMocks from './__mocks__/relatedCollections.response.mocks'
 
 const server = new ApolloServer({
   typeDefs,
@@ -1457,430 +1450,113 @@ describe('Collection', () => {
       })
     })
 
-    describe('documentedWith', () => {
-      describe('grouped by collection', () => {
-        test('queries CMR GraphDB for relationships', async () => {
-          const { query } = createTestClient(server)
+    describe('relatedCollections', () => {
+      test('queries CMR GraphDB for relationships', async () => {
+        const { query } = createTestClient(server)
 
-          nock(/example/)
-            .defaultReplyHeaders({
-              'CMR-Took': 7,
-              'CMR-Request-Id': 'abcd-1234-efgh-5678'
-            })
-            .post(/collections\.json/)
-            .reply(200, {
-              feed: {
-                entry: [{
-                  id: 'C1200400842-GHRC'
-                }]
-              }
-            })
-
-          nock(/example/)
-            .defaultReplyHeaders({
-              'CMR-Took': 7,
-              'CMR-Request-Id': 'abcd-1234-efgh-5678'
-            })
-            .post('/graphdb')
-            .reply(200, documentedWithGraphdbResponseMocks)
-
-          const response = await query({
-            variables: {},
-            query: `{
-              collections (
-                conceptId: "C1200400842-GHRC"
-              ) {
-                items {
-                  conceptId
-                  documentedWith (
-                    groupBy: collection
-                  ) {
-                    group {
-                      ... on GraphDbCollection {
-                        id
-                        title
-                        doi
-                      }
-                    }
-                    items {
-                      ... on GraphDbDocumentation {
-                        url
-                        title
-                      }
-                    }
-                  }
-                }
-              }
-            }`
+        nock(/example/)
+          .defaultReplyHeaders({
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .post(/collections\.json/)
+          .reply(200, {
+            feed: {
+              entry: [{
+                id: 'C1200400842-GHRC'
+              }]
+            }
           })
 
-          const { data } = response
-
-          expect(data).toEqual(documentedWithByCollectionResponseMocks.data)
-        })
-      })
-
-      describe('grouped by value', () => {
-        test('queries CMR GraphDB for relationships', async () => {
-          const { query } = createTestClient(server)
-
-          nock(/example/)
-            .defaultReplyHeaders({
-              'CMR-Took': 7,
-              'CMR-Request-Id': 'abcd-1234-efgh-5678'
-            })
-            .post(/collections\.json/)
-            .reply(200, {
-              feed: {
-                entry: [{
-                  id: 'C1200400842-GHRC'
-                }]
-              }
-            })
-
-          nock(/example/)
-            .defaultReplyHeaders({
-              'CMR-Took': 7,
-              'CMR-Request-Id': 'abcd-1234-efgh-5678'
-            })
-            .post('/graphdb')
-            .reply(200, documentedWithGraphdbResponseMocks)
-
-          const response = await query({
-            variables: {},
-            query: `{
-              collections (
-                conceptId: "C1200400842-GHRC"
-              ) {
-                items {
-                  conceptId
-                  documentedWith (
-                    groupBy: value
-                  ) {
-                    group {
-                      ... on GraphDbDocumentation {
-                        url
-                        title
-                      }
-                    }
-                    items {
-                      ... on GraphDbCollection {
-                        id
-                        title
-                        doi
-                      }
-                    }
-                  }
-                }
-              }
-            }`
+        nock(/example/)
+          .defaultReplyHeaders({
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
+          .post('/graphdb')
+          .reply(200, relatedCollectionsGraphdbResponseMocks)
 
-          const { data } = response
-
-          expect(data).toEqual(documentedWithByValueResponseMocks.data)
-        })
-      })
-    })
-
-    describe('campaignedWith', () => {
-      describe('grouped by collection', () => {
-        test('queries CMR GraphDB for relationships', async () => {
-          const { query } = createTestClient(server)
-
-          nock(/example/)
-            .defaultReplyHeaders({
-              'CMR-Took': 7,
-              'CMR-Request-Id': 'abcd-1234-efgh-5678'
-            })
-            .post(/collections\.json/)
-            .reply(200, {
-              feed: {
-                entry: [{
-                  id: 'C1200400842-GHRC'
-                }]
-              }
-            })
-
-          nock(/example/)
-            .defaultReplyHeaders({
-              'CMR-Took': 7,
-              'CMR-Request-Id': 'abcd-1234-efgh-5678'
-            })
-            .post('/graphdb')
-            .reply(200, campaignedWithGraphdbResponseMocks)
-
-          const response = await query({
-            variables: {},
-            query: `{
-              collections (
-                conceptId: "C1200400842-GHRC"
-              ) {
-                items {
-                  conceptId
-                  campaignedWith (
-                    groupBy: collection
-                  ) {
-                    group {
-                      ... on GraphDbCollection {
-                        id
-                        title
-                        doi
-                      }
-                    }
-                    items {
-                      ... on GraphDbCampaign {
+        const response = await query({
+          variables: {},
+          query: `{
+            collections (
+              conceptId: "C1200400842-GHRC"
+            ) {
+              items {
+                conceptId
+                relatedCollections {
+                  count
+                  items {
+                    id
+                    title
+                    doi
+                    relationships {
+                      relationshipType
+                      ... on GraphDbProject {
                         name
                       }
-                    }
-                  }
-                }
-              }
-            }`
-          })
-
-          const { data } = response
-
-          expect(data).toEqual(campaignedWithByCollectionResponseMocks.data)
-        })
-      })
-
-      describe('grouped by value', () => {
-        test('queries CMR GraphDB for relationships', async () => {
-          const { query } = createTestClient(server)
-
-          nock(/example/)
-            .defaultReplyHeaders({
-              'CMR-Took': 7,
-              'CMR-Request-Id': 'abcd-1234-efgh-5678'
-            })
-            .post(/collections\.json/)
-            .reply(200, {
-              feed: {
-                entry: [{
-                  id: 'C1200400842-GHRC'
-                }]
-              }
-            })
-
-          nock(/example/)
-            .defaultReplyHeaders({
-              'CMR-Took': 7,
-              'CMR-Request-Id': 'abcd-1234-efgh-5678'
-            })
-            .post('/graphdb')
-            .reply(200, campaignedWithGraphdbResponseMocks)
-
-          const response = await query({
-            variables: {},
-            query: `{
-              collections (
-                conceptId: "C1200400842-GHRC"
-              ) {
-                items {
-                  conceptId
-                  campaignedWith (
-                    groupBy: value
-                  ) {
-                    group {
-                      ... on GraphDbCampaign {
-                        name
-                      }
-                    }
-                    items {
-                      ... on GraphDbCollection {
-                        id
-                        title
-                        doi
-                      }
-                    }
-                  }
-                }
-              }
-            }`
-          })
-
-          const { data } = response
-
-          expect(data).toEqual(campaignedWithByValueResponseMocks.data)
-        })
-      })
-    })
-
-    describe('acquiredWith', () => {
-      describe('grouped by collection', () => {
-        test('queries CMR GraphDB for relationships', async () => {
-          const { query } = createTestClient(server)
-
-          nock(/example/)
-            .defaultReplyHeaders({
-              'CMR-Took': 7,
-              'CMR-Request-Id': 'abcd-1234-efgh-5678'
-            })
-            .post(/collections\.json/)
-            .reply(200, {
-              feed: {
-                entry: [{
-                  id: 'C1200400842-GHRC'
-                }]
-              }
-            })
-
-          nock(/example/)
-            .defaultReplyHeaders({
-              'CMR-Took': 7,
-              'CMR-Request-Id': 'abcd-1234-efgh-5678'
-            })
-            .post('/graphdb')
-            .reply(200, acquiredWithGraphdbResponseMocks)
-
-          const response = await query({
-            variables: {},
-            query: `{
-              collections (
-                conceptId: "C1200400842-GHRC"
-              ) {
-                items {
-                  conceptId
-                  acquiredWith (
-                    groupBy: collection
-                  ) {
-                    group {
-                      ... on GraphDbCollection {
-                        id
-                        title
-                        doi
-                      }
-                    }
-                    items {
                       ... on GraphDbPlatformInstrument {
                         platform
                         instrument
                       }
-                    }
-                  }
-                }
-              }
-            }`
-          })
-
-          const { data } = response
-
-          expect(data).toEqual(acquiredWithByCollectionResponseMocks.data)
-        })
-      })
-
-      describe('grouped by value', () => {
-        test('queries CMR GraphDB for relationships', async () => {
-          const { query } = createTestClient(server)
-
-          nock(/example/)
-            .defaultReplyHeaders({
-              'CMR-Took': 7,
-              'CMR-Request-Id': 'abcd-1234-efgh-5678'
-            })
-            .post(/collections\.json/)
-            .reply(200, {
-              feed: {
-                entry: [{
-                  id: 'C1200400842-GHRC'
-                }]
-              }
-            })
-
-          nock(/example/)
-            .defaultReplyHeaders({
-              'CMR-Took': 7,
-              'CMR-Request-Id': 'abcd-1234-efgh-5678'
-            })
-            .post('/graphdb')
-            .reply(200, acquiredWithGraphdbResponseMocks)
-
-          const response = await query({
-            variables: {},
-            query: `{
-              collections (
-                conceptId: "C1200400842-GHRC"
-              ) {
-                items {
-                  conceptId
-                  acquiredWith (
-                    groupBy: value
-                  ) {
-                    group {
-                      ... on GraphDbPlatformInstrument {
-                        platform
-                        instrument
-                      }
-                    }
-                    items {
-                      ... on GraphDbCollection {
-                        id
-                        title
-                        doi
+                      ... on GraphDbRelatedUrl {
+                        url
+                        description
+                        type
+                        subType
                       }
                     }
                   }
                 }
               }
-            }`
-          })
-
-          const { data } = response
-
-          expect(data).toEqual(acquiredWithByValueResponseMocks.data)
+            }
+          }`
         })
+
+        const { data } = response
+
+        expect(data).toEqual(relatedCollectionsResponseMocks.data)
       })
     })
   })
 
-  describe('RelationshipGroupUnion', () => {
-    describe('When the object type is documentedWith', () => {
+  describe('Relationship', () => {
+    describe('When the object has the relatedUrl relationshipType', () => {
       test('returns the correct type', () => {
-        const { RelationshipGroupUnion: relationshipGroupUnion } = resolvers
-        const { __resolveType: resolveType } = relationshipGroupUnion
+        const { Relationship: relationship } = resolvers
+        const { __resolveType: resolveType } = relationship
 
-        const result = resolveType({ type: 'documentedWith' })
-        expect(result).toEqual('GraphDbDocumentation')
+        const result = resolveType({ relationshipType: 'relatedUrl' })
+        expect(result).toEqual('GraphDbRelatedUrl')
       })
     })
 
-    describe('When the object type is campaignedWith', () => {
+    describe('When the object has the relatedUrl relationshipType', () => {
       test('returns the correct type', () => {
-        const { RelationshipGroupUnion: relationshipGroupUnion } = resolvers
-        const { __resolveType: resolveType } = relationshipGroupUnion
+        const { Relationship: relationship } = resolvers
+        const { __resolveType: resolveType } = relationship
 
-        const result = resolveType({ type: 'campaignedWith' })
-        expect(result).toEqual('GraphDbCampaign')
+        const result = resolveType({ relationshipType: 'project' })
+        expect(result).toEqual('GraphDbProject')
       })
     })
 
-    describe('When the object type is acquiredWith', () => {
+    describe('When the object has the relatedUrl relationshipType', () => {
       test('returns the correct type', () => {
-        const { RelationshipGroupUnion: relationshipGroupUnion } = resolvers
-        const { __resolveType: resolveType } = relationshipGroupUnion
+        const { Relationship: relationship } = resolvers
+        const { __resolveType: resolveType } = relationship
 
-        const result = resolveType({ type: 'acquiredWith' })
+        const result = resolveType({ relationshipType: 'platformInstrument' })
         expect(result).toEqual('GraphDbPlatformInstrument')
-      })
-    })
-
-    describe('When the object type is collection', () => {
-      test('returns the correct type', () => {
-        const { RelationshipGroupUnion: relationshipGroupUnion } = resolvers
-        const { __resolveType: resolveType } = relationshipGroupUnion
-
-        const result = resolveType({ type: 'collection' })
-        expect(result).toEqual('GraphDbCollection')
       })
     })
 
     describe('When the object type is not recognized', () => {
       test('returns the correct type', () => {
-        const { RelationshipGroupUnion: relationshipGroupUnion } = resolvers
-        const { __resolveType: resolveType } = relationshipGroupUnion
+        const { Relationship: relationship } = resolvers
+        const { __resolveType: resolveType } = relationship
 
-        const result = resolveType({ type: 'something wrong' })
+        const result = resolveType({ relationshipType: 'something wrong' })
         expect(result).toEqual(null)
       })
     })

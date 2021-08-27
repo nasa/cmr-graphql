@@ -70,40 +70,14 @@ export default {
 
       return dataSources.granuleSource(requestedParams, headers, parseResolveInfo(info))
     },
-    documentedWith: async (source, args, { dataSources, headers }) => {
+    relatedCollections: async (source, args, { dataSources, headers }, info) => {
       const { conceptId } = source
-      const { groupBy } = args
 
       return dataSources.graphDbSource(
         conceptId,
-        'documentedWith',
         args,
         headers,
-        groupBy
-      )
-    },
-    campaignedWith: async (source, args, { dataSources, headers }) => {
-      const { conceptId } = source
-      const { groupBy } = args
-
-      return dataSources.graphDbSource(
-        conceptId,
-        'campaignedWith',
-        args,
-        headers,
-        groupBy
-      )
-    },
-    acquiredWith: async (source, args, { dataSources, headers }) => {
-      const { conceptId } = source
-      const { groupBy } = args
-
-      return dataSources.graphDbSource(
-        conceptId,
-        'acquiredWith',
-        args,
-        headers,
-        groupBy
+        parseResolveInfo(info)
       )
     },
     services: async (source, args, { dataSources, headers }, info) => {
@@ -175,23 +149,19 @@ export default {
       }, headers, parseResolveInfo(info))
     }
   },
-  RelationshipGroupUnion: {
+  Relationship: {
     __resolveType: (object) => {
-      // When a RelationshipGroupUnion object is requested, this resolver will determine which of the available types the data matches and return that type
-      if (object.type === 'documentedWith') {
-        return 'GraphDbDocumentation'
+      // Return what the GraphQL Type of the given object by looking for specific properties
+      if (object.relationshipType === 'relatedUrl') {
+        return 'GraphDbRelatedUrl'
       }
 
-      if (object.type === 'campaignedWith') {
-        return 'GraphDbCampaign'
+      if (object.relationshipType === 'project') {
+        return 'GraphDbProject'
       }
 
-      if (object.type === 'acquiredWith') {
+      if (object.relationshipType === 'platformInstrument') {
         return 'GraphDbPlatformInstrument'
-      }
-
-      if (object.type === 'collection') {
-        return 'GraphDbCollection'
       }
 
       return null

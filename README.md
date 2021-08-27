@@ -493,68 +493,71 @@ For all supported arguments and columns, see [the schema](src/types/collection.g
 
 GraphQL queries CMR's GraphDB in order to find related collections on supported fields. These related collections can be returned as part of the Collection type response.
 
-All the related collection fields require a `groupBy` parameter, and accept `limit` and `offset` parameters, with default values of `limit = 20` and `offset = 0`.
+`relatedCollections` will return related collections, with those collections that share the most relationships first
 
-##### Supported fields
+We use [GraphQL interfaces](https://graphql.org/learn/schema/#interfaces) in order to return the different relationship types as siblings in the return object.
 
-###### documentedWith
-
-`documetedWith` will return collections that share documentation with the parent collection. This field is filterable by `url` and `title`
-
-###### campaignedWith
-
-`campaignedWith` will return collections that share a campaign(s) with the parent collection. This field is filterable by `name`
-###### acquiredWith
-
-`acquiredWith` will return collections that share platform(s) and/or instrument(s) with the parent collection. This field is filterable by `platform` and `instrument`
-
-Each of these fields can be requested under the Collection type.
-
-###### groupBy
-
-The `groupBy` parameter is required and will determine how the relationship data is formated in the response. The two available optios are `collection` and `value`. With `groupBy: collection` GraphQl will return a list grouped by collections, with a list of relationship value items. With `groupBy: value` GraphQl will return a list grouped by relationship values, with a list of related collection items.
 ##### Example Queries
 
-###### Sorting By collection
-
     {
-      documentedWith (
-        groupBy: collection
+      conceptId
+      relatedCollections (
+        limit: 1
       ) {
-        group {
-          ... on GraphDbCollection {
-            id
-            title
-            doi
-          }
-        }
+        count
         items {
-          ... on GraphDbDocumentation {
-            url
-            title
+          id
+          title
+          doi
+          relationships {
+            relationshipType
+            ... on GraphDbProject {
+              name
+            }
+            ... on GraphDbPlatformInstrument {
+              platform
+              instrument
+            }
+            ... on GraphDbRelatedUrl {
+              url
+              description
+              type
+              subType
+            }
           }
         }
       }
-    }
 
-###### Sorting by relationship value
+##### Example Response
 
     {
-      documentedWith (
-        groupBy: value
-      ) {
-        items {
-          ... on GraphDbDocumentation {
-            url
-            title
+      "conceptId": "C1200400842-GHRC",
+      "relatedCollections": {
+        "count": 18,
+        "items": [
+          {
+            "id": "C1200400792-GHRC",
+            "title": "Infrared Global Geostationary Composite Demo 4",
+            "doi": "10.5067/GHRC/AMSU-A/DATA303",
+            "relationships": [
+              {
+                "relationshipType": "platformInstrument",
+                "platform": "MTSAT-1R",
+                "instrument": "VISSR"
+              },
+              {
+                "relationshipType": "relatedUrl",
+                "url": "https://doi.org/10.5067/9LNYIYOBNBR5",
+                "description": "Another Related URL for Demo",
+                "type": "VIEW RELATED INFORMATION",
+                "subType": "DATA RECIPE"
+              },
+              {
+                "relationshipType": "project",
+                "name": "Project2"
+              }
+            ]
           }
-        }
-        group {
-          ... on GraphDbCollection {
-            id
-            title
-            doi
-          }
-        }
+        ]
       }
     }
