@@ -70,13 +70,14 @@ export default {
 
       return dataSources.granuleSource(requestedParams, headers, parseResolveInfo(info))
     },
-    relatedCollections: async (source, args, { dataSources, headers }) => {
+    relatedCollections: async (source, args, { dataSources, headers }, info) => {
       const { conceptId } = source
 
       return dataSources.graphDbSource(
         conceptId,
         args,
         headers,
+        parseResolveInfo(info)
       )
     },
     services: async (source, args, { dataSources, headers }, info) => {

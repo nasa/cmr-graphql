@@ -16,7 +16,18 @@ export default async (
   conceptId,
   params,
   headers,
+  parsedInfo
 ) => {
+  // Parse the request info to find the requested types in the query
+  const { fieldsByTypeName } = parsedInfo
+  const { RelatedCollectionsList: relatedCollectionsList } = fieldsByTypeName
+  const { items } = relatedCollectionsList
+  const { fieldsByTypeName: relatedCollectionsListFields } = items
+  const { RelatedCollection: relatedCollection } = relatedCollectionsListFields
+  const { relationships } = relatedCollection
+  const { fieldsByTypeName: relationshipsFields } = relationships
+  const { Relationship: relationshipFields } = relationshipsFields
+
   const {
     limit = 20,
     offset = 0,
@@ -27,31 +38,57 @@ export default async (
   const relatedUrlFilters = []
   let filters = ''
 
-  // Filter the relationship vertexes based on GraphQL query parameters
-  if (relatedUrlType && !relatedUrlSubType) {
-    relatedUrlFilters.push(`has('relatedUrl', 'type', within('${relatedUrlType.join('\',\'')}'))`)
+  const includedLabels = []
+  if (Object.keys(relationshipsFields).includes('GraphDbProject')) {
+    includedLabels.push('project')
   }
-  if (relatedUrlSubType && !relatedUrlType) {
-    relatedUrlFilters.push(`has('relatedUrl', 'subType', within("${relatedUrlSubType.join('","')}"))`)
+  if (Object.keys(relationshipsFields).includes('GraphDbPlatformInstrument')) {
+    includedLabels.push('platformInstrument')
   }
-  // If both type and subType are provided we need to AND those params together, while still ORing the other relationship vertex types
-  if (relatedUrlType && relatedUrlSubType) {
-    relatedUrlFilters.push(`
-      and(
-        has('relatedUrl', 'type', within('${relatedUrlType.join('\',\'')}')),
-        has('relatedUrl', 'subType', within("${relatedUrlSubType.join('","')}"))
-      )
-    `)
+  if (Object.keys(relationshipsFields).includes('GraphDbRelatedUrl')) {
+    includedLabels.push('relatedUrl')
   }
 
-  if (relatedUrlFilters.length > 0) {
-    // If relatedUrl filters exist, we need to OR those filters `not(hasLabel('relatedUrl'))`
-    // This will include all other relationships, and only filter the relatedUrl relationships
+  if (
+    includedLabels.includes('relatedUrl')
+    && (relatedUrlType || relatedUrlSubType)
+  ) {
+    // If the relatedUrl type was requested, filter relatedUrls based on the GraphQL query parameters
+    if (relatedUrlType && !relatedUrlSubType) {
+      relatedUrlFilters.push(`has('relatedUrl', 'type', within('${relatedUrlType.join('\',\'')}'))`)
+    }
+    if (relatedUrlSubType && !relatedUrlType) {
+      relatedUrlFilters.push(`has('relatedUrl', 'subType', within("${relatedUrlSubType.join('","')}"))`)
+    }
+    // If both type and subType are provided we need to AND those params together, while still ORing the other relationship vertex types
+    if (relatedUrlType && relatedUrlSubType) {
+      relatedUrlFilters.push(`
+        and(
+          has('relatedUrl', 'type', within('${relatedUrlType.join('\',\'')}')),
+          has('relatedUrl', 'subType', within("${relatedUrlSubType.join('","')}"))
+        )
+      `)
+    }
+
+    // Need to OR the relatedUrl filters with the other labels requested
+    const otherLabels = includedLabels.filter((label) => label !== 'relatedUrl')
+    if (otherLabels.length > 0) {
+      filters = `
+      .or(
+        ${relatedUrlFilters.join()},
+        hasLabel('${otherLabels.join("','")}')
+      )
+      `
+    } else {
+      filters = `.${relatedUrlFilters.join()}`
+    }
+  } else if (includedLabels.length === 0 || Object.keys(relationshipFields).includes('relationshipType')) {
+    // If no relationship labels are included or if relationshipType was requested, filter by all relationships
+    filters = ".hasLabel('project','platformInstrument','relatedUrl')"
+  } else {
+    // Default to returning all values for those relationship labels that were requested
     filters = `
-    .or(
-      ${relatedUrlFilters.join()},
-      not(hasLabel('relatedUrl'))
-    )
+      .hasLabel('${includedLabels.join("','")}')
     `
   }
 

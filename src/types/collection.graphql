@@ -231,9 +231,9 @@ type RelatedCollectionsList {
 type GraphDbRelatedUrl implements Relationship {
   "The type of relationship."
   relationshipType: String
-  "The url of the documentaion."
+  "The url of the related url."
   url: String
-  "The description of the documentaion."
+  "The description of the related url."
   description: String
   "A keyword describing the type of the online resource to this resource."
   type: String
