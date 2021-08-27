@@ -49,6 +49,8 @@ export default async (
     includedLabels.push('relatedUrl')
   }
 
+  const relationshipTypeRequested = Object.keys(relationshipFields).includes('relationshipType')
+
   if (
     includedLabels.includes('relatedUrl')
     && (relatedUrlType || relatedUrlSubType)
@@ -72,7 +74,14 @@ export default async (
 
     // Need to OR the relatedUrl filters with the other labels requested
     const otherLabels = includedLabels.filter((label) => label !== 'relatedUrl')
-    if (otherLabels.length > 0) {
+    if (relationshipTypeRequested) {
+      filters = `
+      .or(
+        ${relatedUrlFilters.join()},
+        hasLabel('project','platformInstrument')
+      )
+      `
+    } else if (otherLabels.length > 0) {
       filters = `
       .or(
         ${relatedUrlFilters.join()},
@@ -82,7 +91,7 @@ export default async (
     } else {
       filters = `.${relatedUrlFilters.join()}`
     }
-  } else if (includedLabels.length === 0 || Object.keys(relationshipFields).includes('relationshipType')) {
+  } else if (includedLabels.length === 0 || relationshipTypeRequested) {
     // If no relationship labels are included or if relationshipType was requested, filter by all relationships
     filters = ".hasLabel('project','platformInstrument','relatedUrl')"
   } else {
@@ -147,6 +156,7 @@ export default async (
   const { result } = data
 
   // Useful for debugging!
+  // console.log('GraphDB query', JSON.parse(query))
   // console.log('GraphDB Response result: ', JSON.stringify(result, null, 2))
 
   const { data: resultData } = result

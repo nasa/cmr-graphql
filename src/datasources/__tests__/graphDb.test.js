@@ -2,18 +2,22 @@ import nock from 'nock'
 
 import graphDbDatasource from '../graphDb'
 
-import relatedCollectionsRelatedUrlTypeGraphdbResponseMocks from './__mocks__/relatedCollections.relatedUrlType.graphdbResponse.mocks'
-import relatedCollectionsRelatedUrlTypeResponseMocks from './__mocks__/relatedCollections.relatedUrlType.response.mocks'
+import relatedCollectionsGraphDbPlatformInstrumentGraphdbResponseMocks from './__mocks__/relatedCollections.graphDbPlatformInstrument.graphdbResponse.mocks'
+import relatedCollectionsGraphDbPlatformInstrumentResponseMocks from './__mocks__/relatedCollections.graphDbPlatformInstrument.response.mocks'
+import relatedCollectionsGraphDbProjectGraphdbResponseMocks from './__mocks__/relatedCollections.graphDbProject.graphdbResponse.mocks'
+import relatedCollectionsGraphDbProjectResponseMocks from './__mocks__/relatedCollections.graphDbProject.response.mocks'
+import relatedCollectionsGraphDbRelatedUrlGraphdbResponseMocks from './__mocks__/relatedCollections.graphDbRelatedUrl.graphdbResponse.mocks'
+import relatedCollectionsGraphDbRelatedUrlProjectGraphdbResponseMocks from './__mocks__/relatedCollections.graphDbRelatedUrlProject.graphdbResponse.mocks'
+import relatedCollectionsGraphDbRelatedUrlProjectResponseMocks from './__mocks__/relatedCollections.graphDbRelatedUrlProject.response.mocks'
+import relatedCollectionsGraphDbRelatedUrlRelationshipTypeGraphdbResponseMocks from './__mocks__/relatedCollections.graphDbRelatedUrlRelationshipType.graphdbResponse.mocks'
+import relatedCollectionsGraphDbRelatedUrlRelationshipTypeResponseMocks from './__mocks__/relatedCollections.graphDbRelatedUrlRelationshipType.response.mocks'
+import relatedCollectionsGraphDbRelatedUrlResponseMocks from './__mocks__/relatedCollections.graphDbRelatedUrl.response.mocks'
 import relatedCollectionsRelatedUrlSubTypeGraphdbResponseMocks from './__mocks__/relatedCollections.relatedUrlSubType.graphdbResponse.mocks'
 import relatedCollectionsRelatedUrlSubTypeResponseMocks from './__mocks__/relatedCollections.relatedUrlSubType.response.mocks'
 import relatedCollectionsRelatedUrlTypeAndSubTypeGraphdbResponseMocks from './__mocks__/relatedCollections.relatedUrlTypeAndSubType.graphdbResponse.mocks'
 import relatedCollectionsRelatedUrlTypeAndSubTypeResponseMocks from './__mocks__/relatedCollections.relatedUrlTypeAndSubType.response.mocks'
-import relatedCollectionsGraphDbProjectGraphdbResponseMocks from './__mocks__/relatedCollections.graphDbProject.graphdbResponse.mocks'
-import relatedCollectionsGraphDbProjectResponseMocks from './__mocks__/relatedCollections.graphDbProject.response.mocks'
-import relatedCollectionsGraphDbPlatformInstrumentGraphdbResponseMocks from './__mocks__/relatedCollections.graphDbPlatformInstrument.graphdbResponse.mocks'
-import relatedCollectionsGraphDbPlatformInstrumentResponseMocks from './__mocks__/relatedCollections.graphDbPlatformInstrument.response.mocks'
-import relatedCollectionsGraphDbRelatedUrlGraphdbResponseMocks from './__mocks__/relatedCollections.graphDbRelatedUrl.graphdbResponse.mocks'
-import relatedCollectionsGraphDbRelatedUrlResponseMocks from './__mocks__/relatedCollections.graphDbRelatedUrl.response.mocks'
+import relatedCollectionsRelatedUrlTypeGraphdbResponseMocks from './__mocks__/relatedCollections.relatedUrlType.graphdbResponse.mocks'
+import relatedCollectionsRelatedUrlTypeResponseMocks from './__mocks__/relatedCollections.relatedUrlType.response.mocks'
 import relatedCollectionsRelationshipTypeGraphdbResponseMocks from './__mocks__/relatedCollections.relationshipType.graphdbResponse.mocks'
 import relatedCollectionsRelationshipTypeResponseMocks from './__mocks__/relatedCollections.relationshipType.response.mocks'
 
@@ -591,6 +595,237 @@ describe('graphDb', () => {
         )
 
         expect(response).toEqual(relatedCollectionsGraphDbRelatedUrlResponseMocks)
+      })
+    })
+
+    describe('When GraphDbRelatedUrl is requested with parameters and other types', () => {
+      beforeEach(() => {
+        parsedInfo = {
+          name: 'relatedCollections',
+          alias: 'relatedCollections',
+          args: {
+            limit: 1,
+            relatedUrlType: [
+              'VIEW RELATED INFORMATION'
+            ]
+          },
+          fieldsByTypeName: {
+            RelatedCollectionsList: {
+              count: {
+                name: 'count',
+                alias: 'count',
+                args: {},
+                fieldsByTypeName: {}
+              },
+              items: {
+                name: 'items',
+                alias: 'items',
+                args: {},
+                fieldsByTypeName: {
+                  RelatedCollection: {
+                    id: {
+                      name: 'id',
+                      alias: 'id',
+                      args: {},
+                      fieldsByTypeName: {}
+                    },
+                    title: {
+                      name: 'title',
+                      alias: 'title',
+                      args: {},
+                      fieldsByTypeName: {}
+                    },
+                    doi: {
+                      name: 'doi',
+                      alias: 'doi',
+                      args: {},
+                      fieldsByTypeName: {}
+                    },
+                    relationships: {
+                      name: 'relationships',
+                      alias: 'relationships',
+                      args: {},
+                      fieldsByTypeName: {
+                        Relationship: {},
+                        GraphDbProject: {
+                          name: {
+                            name: 'name',
+                            alias: 'name',
+                            args: {},
+                            fieldsByTypeName: {}
+                          }
+                        },
+                        GraphDbRelatedUrl: {
+                          url: {
+                            name: 'url',
+                            alias: 'url',
+                            args: {},
+                            fieldsByTypeName: {}
+                          },
+                          description: {
+                            name: 'description',
+                            alias: 'description',
+                            args: {},
+                            fieldsByTypeName: {}
+                          },
+                          type: {
+                            name: 'type',
+                            alias: 'type',
+                            args: {},
+                            fieldsByTypeName: {}
+                          },
+                          subType: {
+                            name: 'subType',
+                            alias: 'subType',
+                            args: {},
+                            fieldsByTypeName: {}
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      })
+
+      test('returns a result with only relatedUrl and project types', async () => {
+        nock(/example/)
+          .defaultReplyHeaders({
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .post(/graphdb/,
+            /\.or\(.+has\('relatedUrl', 'type', within\('VIEW RELATED INFORMATION'\)\),.+hasLabel\('project'\)/)
+          .reply(200, relatedCollectionsGraphDbRelatedUrlProjectGraphdbResponseMocks)
+
+        const response = await graphDbDatasource(
+          'C1200400842-GHRC',
+          {
+            limit: 1,
+            relatedUrlType: ['VIEW RELATED INFORMATION']
+          },
+          { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
+          parsedInfo
+        )
+
+        expect(response).toEqual(relatedCollectionsGraphDbRelatedUrlProjectResponseMocks)
+      })
+    })
+
+    describe('When only GraphDbRelatedUrl is requested with parameters and relationshipType', () => {
+      beforeEach(() => {
+        parsedInfo = {
+          name: 'relatedCollections',
+          alias: 'relatedCollections',
+          args: {
+            limit: 1,
+            relatedUrlType: [
+              'VIEW RELATED INFORMATION'
+            ]
+          },
+          fieldsByTypeName: {
+            RelatedCollectionsList: {
+              count: {
+                name: 'count',
+                alias: 'count',
+                args: {},
+                fieldsByTypeName: {}
+              },
+              items: {
+                name: 'items',
+                alias: 'items',
+                args: {},
+                fieldsByTypeName: {
+                  RelatedCollection: {
+                    id: {
+                      name: 'id',
+                      alias: 'id',
+                      args: {},
+                      fieldsByTypeName: {}
+                    },
+                    title: {
+                      name: 'title',
+                      alias: 'title',
+                      args: {},
+                      fieldsByTypeName: {}
+                    },
+                    doi: {
+                      name: 'doi',
+                      alias: 'doi',
+                      args: {},
+                      fieldsByTypeName: {}
+                    },
+                    relationships: {
+                      name: 'relationships',
+                      alias: 'relationships',
+                      args: {},
+                      fieldsByTypeName: {
+                        Relationship: {
+                          relationshipType: {
+                            name: 'relationshipType',
+                            alias: 'relationshipType',
+                            args: {},
+                            fieldsByTypeName: {}
+                          }
+                        },
+                        GraphDbRelatedUrl: {
+                          url: {
+                            name: 'url',
+                            alias: 'url',
+                            args: {},
+                            fieldsByTypeName: {}
+                          },
+                          description: {
+                            name: 'description',
+                            alias: 'description',
+                            args: {},
+                            fieldsByTypeName: {}
+                          },
+                          type: {
+                            name: 'type',
+                            alias: 'type',
+                            args: {},
+                            fieldsByTypeName: {}
+                          },
+                          subType: {
+                            name: 'subType',
+                            alias: 'subType',
+                            args: {},
+                            fieldsByTypeName: {}
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      })
+
+      test('returns a result with only all types', async () => {
+        nock(/example/)
+          .defaultReplyHeaders({
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .post(/graphdb/,
+            /\.or\(.+has\('relatedUrl', 'type', within\('VIEW RELATED INFORMATION'\)\),.+hasLabel\('project','platformInstrument'\)/)
+          .reply(200, relatedCollectionsGraphDbRelatedUrlRelationshipTypeGraphdbResponseMocks)
+
+        const response = await graphDbDatasource(
+          'C1200400842-GHRC',
+          {
+            limit: 1,
+            relatedUrlType: ['VIEW RELATED INFORMATION']
+          },
+          { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
+          parsedInfo
+        )
+
+        expect(response).toEqual(relatedCollectionsGraphDbRelatedUrlRelationshipTypeResponseMocks)
       })
     })
 
