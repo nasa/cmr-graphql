@@ -179,6 +179,7 @@ describe('Collection', () => {
               DOI: {},
               MetadataAssociations: [],
               MetadataDates: [],
+              PaleoTemporalCoverages: [],
               Platforms: [{
                 Type: 'Not Specified',
                 ShortName: 'AQUA',
@@ -199,6 +200,7 @@ describe('Collection', () => {
               ProcessingLevel: {
                 Id: 'Not Provided'
               },
+              Projects: [],
               PublicationReferences: [],
               Purpose: 'Mock Purpose',
               Quality: 'Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.',
@@ -256,11 +258,13 @@ describe('Collection', () => {
               onlineAccessFlag
               organizations
               originalFormat
+              paleoTemporalCoverages
               platforms
               points
               polygons
               processingLevel
               processingLevelId
+              projects
               provider
               publicationReferences
               purpose
@@ -373,6 +377,7 @@ describe('Collection', () => {
             onlineAccessFlag: true,
             organizations: [],
             originalFormat: 'RISUS',
+            paleoTemporalCoverages: [],
             platforms: [{
               type: 'Not Specified',
               shortName: 'AQUA',
@@ -396,6 +401,7 @@ describe('Collection', () => {
               id: 'Not Provided'
             },
             processingLevelId: 'Not Provided',
+            projects: [],
             provider: 'PORTA',
             publicationReferences: [],
             purpose: 'Mock Purpose',
