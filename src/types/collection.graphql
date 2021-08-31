@@ -67,12 +67,16 @@ type Collection {
   originalFormat: String @deprecated(reason: "Use `metadataFormat`.")
   "Spatial coverage of the collection."
   lines: [String]
+  "For paleoclimate or geologic data, PaleoTemporalCoverage is the length of time represented by the data collected. PaleoTemporalCoverage should be used when the data spans time frames earlier than yyyy-mm-dd = 0001-01-01."
+  paleoTemporalCoverages: JSON
   "Information about the relevant platform(s) used to acquire the data in the collection. The controlled vocabulary for platform types is maintained in the Keyword Management System (KMS), and includes Spacecraft, Aircraft, Vessel, Buoy, Platform, Station, Network, Human, etc."
   platforms: JSON
   "Spatial coverage of the collection."
   points: [String]
   "Spatial coverage of the collection."
   polygons: [[String]]
+  "The name of the scientific program, field campaign, or project from which the data were collected."
+  projects: JSON
   "The identity of the provider in the CMR."
   provider: String
   "Describes key bibliographic citations pertaining to the collection."
