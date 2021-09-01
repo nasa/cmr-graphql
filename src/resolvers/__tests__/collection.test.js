@@ -212,6 +212,7 @@ describe('Collection', () => {
               TilingIdentificationSystems: {},
               UseConstraints: [],
               EntryTitle: 'Condimentum Quam Mattis Cursus Pharetra',
+              VersionDescription: 'The description of the version',
               VersionId: '1.0.0'
             }
           }]
@@ -281,6 +282,7 @@ describe('Collection', () => {
               timeStart
               title
               useConstraints
+              versionDescription
               versionId
             }
           }
@@ -418,7 +420,8 @@ describe('Collection', () => {
             timeStart: '2016-04-04T17:00:00.000Z',
             title: 'Condimentum Quam Mattis Cursus Pharetra',
             useConstraints: [],
-            versionId: '1.0.0'
+            versionId: '1.0.0',
+            versionDescription: 'The description of the version'
           }]
         }
       })
