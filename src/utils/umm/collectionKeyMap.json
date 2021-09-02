@@ -50,6 +50,7 @@
     "tilingIdentificationSystems": "umm.TilingIdentificationSystems",
     "title": "umm.EntryTitle",
     "useConstraints": "umm.UseConstraints",
+    "versionDescription": "umm.VersionDescription",
     "versionId": "umm.Version"
   }
 }
