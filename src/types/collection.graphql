@@ -136,7 +136,7 @@ type Collection {
     "Filter the RelatedURL relationships by the Type property."
     relatedUrlType: [String]
     "Filter the RelatedURL relationships by the subtype property."
-    relatedUrlsubtype: [String]
+    relatedUrlSubtype: [String]
   ): RelatedCollectionsList
 
   granules (

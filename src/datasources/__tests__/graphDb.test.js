@@ -12,8 +12,8 @@ import relatedCollectionsGraphDbRelatedUrlProjectResponseMocks from './__mocks__
 import relatedCollectionsGraphDbRelatedUrlRelationshipTypeGraphdbResponseMocks from './__mocks__/relatedCollections.graphDbRelatedUrlRelationshipType.graphdbResponse.mocks'
 import relatedCollectionsGraphDbRelatedUrlRelationshipTypeResponseMocks from './__mocks__/relatedCollections.graphDbRelatedUrlRelationshipType.response.mocks'
 import relatedCollectionsGraphDbRelatedUrlResponseMocks from './__mocks__/relatedCollections.graphDbRelatedUrl.response.mocks'
-import relatedCollectionsRelatedUrlsubtypeGraphdbResponseMocks from './__mocks__/relatedCollections.relatedUrlsubtype.graphdbResponse.mocks'
-import relatedCollectionsRelatedUrlsubtypeResponseMocks from './__mocks__/relatedCollections.relatedUrlsubtype.response.mocks'
+import relatedCollectionsRelatedUrlsubtypeGraphdbResponseMocks from './__mocks__/relatedCollections.relatedUrlSubtype.graphdbResponse.mocks'
+import relatedCollectionsRelatedUrlsubtypeResponseMocks from './__mocks__/relatedCollections.relatedUrlSubtype.response.mocks'
 import relatedCollectionsRelatedUrlTypeAndsubtypeGraphdbResponseMocks from './__mocks__/relatedCollections.relatedUrlTypeAndsubtype.graphdbResponse.mocks'
 import relatedCollectionsRelatedUrlTypeAndsubtypeResponseMocks from './__mocks__/relatedCollections.relatedUrlTypeAndsubtype.response.mocks'
 import relatedCollectionsRelatedUrlTypeGraphdbResponseMocks from './__mocks__/relatedCollections.relatedUrlType.graphdbResponse.mocks'
@@ -160,7 +160,7 @@ describe('graphDb', () => {
       })
     })
 
-    describe('When the relatedUrlsubtype parameter is used', () => {
+    describe('When the relatedUrlSubtype parameter is used', () => {
       test('returns the parsed graphDb response', async () => {
         nock(/example/)
           .defaultReplyHeaders({
@@ -174,7 +174,7 @@ describe('graphDb', () => {
           'C1200400842-GHRC',
           {
             limit: 1,
-            relatedUrlsubtype: ["USER'S GUIDE"]
+            relatedUrlSubtype: ["USER'S GUIDE"]
           },
           { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
           parsedInfo
@@ -184,7 +184,7 @@ describe('graphDb', () => {
       })
     })
 
-    describe('When the relatedUrlType and relatedUrlsubtype parameters are used', () => {
+    describe('When the relatedUrlType and relatedUrlSubtype parameters are used', () => {
       test('returns the parsed graphDb response', async () => {
         nock(/example/)
           .defaultReplyHeaders({
@@ -199,7 +199,7 @@ describe('graphDb', () => {
           {
             limit: 1,
             relatedUrlType: ['VIEW RELATED INFORMATION'],
-            relatedUrlsubtype: ["USER'S GUIDE"]
+            relatedUrlSubtype: ["USER'S GUIDE"]
           },
           { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
           parsedInfo

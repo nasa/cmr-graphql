@@ -31,7 +31,7 @@ export default async (
   const {
     limit = 20,
     offset = 0,
-    relatedUrlsubtype,
+    relatedUrlSubtype,
     relatedUrlType
   } = params
 
@@ -53,21 +53,21 @@ export default async (
 
   if (
     includedLabels.includes('relatedUrl')
-    && (relatedUrlType || relatedUrlsubtype)
+    && (relatedUrlType || relatedUrlSubtype)
   ) {
     // If the relatedUrl type was requested, filter relatedUrls based on the GraphQL query parameters
-    if (relatedUrlType && !relatedUrlsubtype) {
+    if (relatedUrlType && !relatedUrlSubtype) {
       relatedUrlFilters.push(`has('relatedUrl', 'type', within('${relatedUrlType.join('\',\'')}'))`)
     }
-    if (relatedUrlsubtype && !relatedUrlType) {
-      relatedUrlFilters.push(`has('relatedUrl', 'subtype', within("${relatedUrlsubtype.join('","')}"))`)
+    if (relatedUrlSubtype && !relatedUrlType) {
+      relatedUrlFilters.push(`has('relatedUrl', 'subtype', within("${relatedUrlSubtype.join('","')}"))`)
     }
     // If both type and subtype are provided we need to AND those params together, while still ORing the other relationship vertex types
-    if (relatedUrlType && relatedUrlsubtype) {
+    if (relatedUrlType && relatedUrlSubtype) {
       relatedUrlFilters.push(`
         and(
           has('relatedUrl', 'type', within('${relatedUrlType.join('\',\'')}')),
-          has('relatedUrl', 'subtype', within("${relatedUrlsubtype.join('","')}"))
+          has('relatedUrl', 'subtype', within("${relatedUrlSubtype.join('","')}"))
         )
       `)
     }
