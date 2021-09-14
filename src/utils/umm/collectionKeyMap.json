@@ -45,6 +45,7 @@
     "relatedUrls": "umm.RelatedUrls",
     "scienceKeywords": "umm.ScienceKeywords",
     "spatialExtent": "umm.SpatialExtent",
+    "spatialInformation": "umm.SpatialInformation",
     "temporalExtents": "umm.TemporalExtents",
     "temporalKeywords": "umm.TemporalKeywords",
     "tilingIdentificationSystems": "umm.TilingIdentificationSystems",

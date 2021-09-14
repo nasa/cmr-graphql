@@ -99,6 +99,8 @@ type Collection {
   shortName: String
   "Specifies the geographic and vertical (altitude, depth) coverage of the data."
   spatialExtent: JSON
+  "The reference frame or system in which altitudes (elevations) are given. The information contains the datum name, distance units and encoding method, which provide the definition for the system. This field also stores the characteristics of the reference frame or system from which depths are measured. The additional information in the field is geometry reference data etc."
+  spatialInformation: JSON
   "The summary of intentions with which this collection was developed."
   summary: String @deprecated(reason: "Use `abstract`")
   "Tags associated with the collection. It includes sub-elements of tagKey and optional data which is in embedded JSON."

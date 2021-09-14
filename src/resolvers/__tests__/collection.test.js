@@ -207,6 +207,7 @@ describe('Collection', () => {
               RelatedUrls: [],
               ScienceKeywords: [],
               SpatialExtent: {},
+              SpatialInformation: {},
               TemporalExtents: [],
               TemporalKeywords: [],
               TilingIdentificationSystems: {},
@@ -274,6 +275,7 @@ describe('Collection', () => {
               scienceKeywords
               shortName
               spatialExtent
+              spatialInformation
               tags
               temporalExtents
               temporalKeywords
@@ -412,6 +414,7 @@ describe('Collection', () => {
             scienceKeywords: [],
             shortName: 'LOREM-QUAM',
             spatialExtent: {},
+            spatialInformation: {},
             tags: {},
             temporalExtents: [],
             temporalKeywords: [],
