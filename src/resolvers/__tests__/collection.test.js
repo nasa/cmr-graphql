@@ -177,6 +177,7 @@ describe('Collection', () => {
                 s3CredentialsApiDocumentationUrl: 'https://DAACCredentialDocumentation.org'
               },
               DOI: {},
+              LocationKeywords: [],
               MetadataAssociations: [],
               MetadataDates: [],
               PaleoTemporalCoverages: [],
@@ -251,6 +252,7 @@ describe('Collection', () => {
               hasTemporalSubsetting
               hasTransforms
               hasVariables
+              locationKeywords
               lines
               metadataAssociations
               metadataDates
@@ -373,6 +375,7 @@ describe('Collection', () => {
             hasTransforms: true,
             hasVariables: true,
             lines: [],
+            locationKeywords: [],
             metadataAssociations: [],
             metadataDates: [],
             metadataFormat: 'RISUS',

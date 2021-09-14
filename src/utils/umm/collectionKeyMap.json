@@ -25,6 +25,7 @@
     "dataDates": "umm.DataDates",
     "directDistributionInformation": "umm.DirectDistributionInformation",
     "doi": "umm.DOI",
+    "locationKeywords": "umm.LocationKeywords",
     "hasFormats": "meta.has-formats",
     "hasSpatialSubsetting": "meta.has-spatial-subsetting",
     "hasTemporalSubsetting": "meta.has-temporal-subsetting",
