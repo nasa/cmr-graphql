@@ -12,10 +12,10 @@ import relatedCollectionsGraphDbRelatedUrlProjectResponseMocks from './__mocks__
 import relatedCollectionsGraphDbRelatedUrlRelationshipTypeGraphdbResponseMocks from './__mocks__/relatedCollections.graphDbRelatedUrlRelationshipType.graphdbResponse.mocks'
 import relatedCollectionsGraphDbRelatedUrlRelationshipTypeResponseMocks from './__mocks__/relatedCollections.graphDbRelatedUrlRelationshipType.response.mocks'
 import relatedCollectionsGraphDbRelatedUrlResponseMocks from './__mocks__/relatedCollections.graphDbRelatedUrl.response.mocks'
-import relatedCollectionsRelatedUrlsubtypeGraphdbResponseMocks from './__mocks__/relatedCollections.relatedUrlSubtype.graphdbResponse.mocks'
-import relatedCollectionsRelatedUrlsubtypeResponseMocks from './__mocks__/relatedCollections.relatedUrlSubtype.response.mocks'
-import relatedCollectionsRelatedUrlTypeAndsubtypeGraphdbResponseMocks from './__mocks__/relatedCollections.relatedUrlTypeAndsubtype.graphdbResponse.mocks'
-import relatedCollectionsRelatedUrlTypeAndsubtypeResponseMocks from './__mocks__/relatedCollections.relatedUrlTypeAndsubtype.response.mocks'
+import relatedCollectionsRelatedUrlSubtypeGraphdbResponseMocks from './__mocks__/relatedCollections.relatedUrlSubtype.graphdbResponse.mocks'
+import relatedCollectionsRelatedUrlSubtypeResponseMocks from './__mocks__/relatedCollections.relatedUrlSubtype.response.mocks'
+import relatedCollectionsRelatedUrlTypeAndSubtypeGraphdbResponseMocks from './__mocks__/relatedCollections.relatedUrlTypeAndSubtype.graphdbResponse.mocks'
+import relatedCollectionsRelatedUrlTypeAndSubtypeResponseMocks from './__mocks__/relatedCollections.relatedUrlTypeAndSubtype.response.mocks'
 import relatedCollectionsRelatedUrlTypeGraphdbResponseMocks from './__mocks__/relatedCollections.relatedUrlType.graphdbResponse.mocks'
 import relatedCollectionsRelatedUrlTypeResponseMocks from './__mocks__/relatedCollections.relatedUrlType.response.mocks'
 import relatedCollectionsRelationshipTypeGraphdbResponseMocks from './__mocks__/relatedCollections.relationshipType.graphdbResponse.mocks'
@@ -168,7 +168,7 @@ describe('graphDb', () => {
           })
           .post(/graphdb/,
             /\.or\(.+has\('relatedUrl', 'subtype', within\(\\"USER'S GUIDE\\"\)\),.+hasLabel\('project','platformInstrument'\)/)
-          .reply(200, relatedCollectionsRelatedUrlsubtypeGraphdbResponseMocks)
+          .reply(200, relatedCollectionsRelatedUrlSubtypeGraphdbResponseMocks)
 
         const response = await graphDbDatasource(
           'C1200400842-GHRC',
@@ -180,7 +180,7 @@ describe('graphDb', () => {
           parsedInfo
         )
 
-        expect(response).toEqual(relatedCollectionsRelatedUrlsubtypeResponseMocks)
+        expect(response).toEqual(relatedCollectionsRelatedUrlSubtypeResponseMocks)
       })
     })
 
@@ -192,7 +192,7 @@ describe('graphDb', () => {
           })
           .post(/graphdb/,
             /\.or\(.+and\(.+has\('relatedUrl', 'type', within\('VIEW RELATED INFORMATION'\)\),.+has\('relatedUrl', 'subtype', within\(\\"USER'S GUIDE\\"\)\).+\).+hasLabel\('project','platformInstrument'\)/)
-          .reply(200, relatedCollectionsRelatedUrlTypeAndsubtypeGraphdbResponseMocks)
+          .reply(200, relatedCollectionsRelatedUrlTypeAndSubtypeGraphdbResponseMocks)
 
         const response = await graphDbDatasource(
           'C1200400842-GHRC',
@@ -205,7 +205,7 @@ describe('graphDb', () => {
           parsedInfo
         )
 
-        expect(response).toEqual(relatedCollectionsRelatedUrlTypeAndsubtypeResponseMocks)
+        expect(response).toEqual(relatedCollectionsRelatedUrlTypeAndSubtypeResponseMocks)
       })
     })
   })
