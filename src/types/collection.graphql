@@ -133,8 +133,8 @@ type Collection {
     offset: Int
     "Filter the RelatedURL relationships by the Type property."
     relatedUrlType: [String]
-    "Filter the RelatedURL relationships by the SubType property."
-    relatedUrlSubType: [String]
+    "Filter the RelatedURL relationships by the subtype property."
+    relatedUrlsubtype: [String]
   ): RelatedCollectionsList
 
   granules (
@@ -262,7 +262,7 @@ type GraphDbRelatedUrl implements Relationship {
   "A keyword describing the type of the online resource to this resource."
   type: String
   "A keyword describing the subtype of the online resource to this resource."
-  subType: String
+  subtype: String
 }
 
 type GraphDbProject implements Relationship {

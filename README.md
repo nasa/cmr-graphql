@@ -522,7 +522,7 @@ We use [GraphQL interfaces](https://graphql.org/learn/schema/#interfaces) in ord
               url
               description
               type
-              subType
+              subtype
             }
           }
         }
@@ -550,7 +550,7 @@ We use [GraphQL interfaces](https://graphql.org/learn/schema/#interfaces) in ord
                 "url": "https://doi.org/10.5067/9LNYIYOBNBR5",
                 "description": "Another Related URL for Demo",
                 "type": "VIEW RELATED INFORMATION",
-                "subType": "DATA RECIPE"
+                "subtype": "DATA RECIPE"
               },
               {
                 "relationshipType": "project",

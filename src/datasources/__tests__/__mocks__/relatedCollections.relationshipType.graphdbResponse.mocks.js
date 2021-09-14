@@ -638,7 +638,7 @@ export default {
                                                 'Another Related URL for Demo'
                                               ]
                                             },
-                                            'subType',
+                                            'subtype',
                                             {
                                               '@type': 'g:List',
                                               '@value': [
@@ -811,7 +811,7 @@ export default {
                                               '@value': 'label'
                                             },
                                             'relatedUrl',
-                                            'subType',
+                                            'subtype',
                                             {
                                               '@type': 'g:List',
                                               '@value': [

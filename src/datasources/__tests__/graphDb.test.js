@@ -12,10 +12,10 @@ import relatedCollectionsGraphDbRelatedUrlProjectResponseMocks from './__mocks__
 import relatedCollectionsGraphDbRelatedUrlRelationshipTypeGraphdbResponseMocks from './__mocks__/relatedCollections.graphDbRelatedUrlRelationshipType.graphdbResponse.mocks'
 import relatedCollectionsGraphDbRelatedUrlRelationshipTypeResponseMocks from './__mocks__/relatedCollections.graphDbRelatedUrlRelationshipType.response.mocks'
 import relatedCollectionsGraphDbRelatedUrlResponseMocks from './__mocks__/relatedCollections.graphDbRelatedUrl.response.mocks'
-import relatedCollectionsRelatedUrlSubTypeGraphdbResponseMocks from './__mocks__/relatedCollections.relatedUrlSubType.graphdbResponse.mocks'
-import relatedCollectionsRelatedUrlSubTypeResponseMocks from './__mocks__/relatedCollections.relatedUrlSubType.response.mocks'
-import relatedCollectionsRelatedUrlTypeAndSubTypeGraphdbResponseMocks from './__mocks__/relatedCollections.relatedUrlTypeAndSubType.graphdbResponse.mocks'
-import relatedCollectionsRelatedUrlTypeAndSubTypeResponseMocks from './__mocks__/relatedCollections.relatedUrlTypeAndSubType.response.mocks'
+import relatedCollectionsRelatedUrlsubtypeGraphdbResponseMocks from './__mocks__/relatedCollections.relatedUrlsubtype.graphdbResponse.mocks'
+import relatedCollectionsRelatedUrlsubtypeResponseMocks from './__mocks__/relatedCollections.relatedUrlsubtype.response.mocks'
+import relatedCollectionsRelatedUrlTypeAndsubtypeGraphdbResponseMocks from './__mocks__/relatedCollections.relatedUrlTypeAndsubtype.graphdbResponse.mocks'
+import relatedCollectionsRelatedUrlTypeAndsubtypeResponseMocks from './__mocks__/relatedCollections.relatedUrlTypeAndsubtype.response.mocks'
 import relatedCollectionsRelatedUrlTypeGraphdbResponseMocks from './__mocks__/relatedCollections.relatedUrlType.graphdbResponse.mocks'
 import relatedCollectionsRelatedUrlTypeResponseMocks from './__mocks__/relatedCollections.relatedUrlType.response.mocks'
 import relatedCollectionsRelationshipTypeGraphdbResponseMocks from './__mocks__/relatedCollections.relationshipType.graphdbResponse.mocks'
@@ -119,9 +119,9 @@ describe('graphDb', () => {
                           args: {},
                           fieldsByTypeName: {}
                         },
-                        subType: {
-                          name: 'subType',
-                          alias: 'subType',
+                        subtype: {
+                          name: 'subtype',
+                          alias: 'subtype',
                           args: {},
                           fieldsByTypeName: {}
                         }
@@ -160,52 +160,52 @@ describe('graphDb', () => {
       })
     })
 
-    describe('When the relatedUrlSubType parameter is used', () => {
+    describe('When the relatedUrlsubtype parameter is used', () => {
       test('returns the parsed graphDb response', async () => {
         nock(/example/)
           .defaultReplyHeaders({
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
           .post(/graphdb/,
-            /\.or\(.+has\('relatedUrl', 'subType', within\(\\"USER'S GUIDE\\"\)\),.+hasLabel\('project','platformInstrument'\)/)
-          .reply(200, relatedCollectionsRelatedUrlSubTypeGraphdbResponseMocks)
+            /\.or\(.+has\('relatedUrl', 'subtype', within\(\\"USER'S GUIDE\\"\)\),.+hasLabel\('project','platformInstrument'\)/)
+          .reply(200, relatedCollectionsRelatedUrlsubtypeGraphdbResponseMocks)
 
         const response = await graphDbDatasource(
           'C1200400842-GHRC',
           {
             limit: 1,
-            relatedUrlSubType: ["USER'S GUIDE"]
+            relatedUrlsubtype: ["USER'S GUIDE"]
           },
           { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
           parsedInfo
         )
 
-        expect(response).toEqual(relatedCollectionsRelatedUrlSubTypeResponseMocks)
+        expect(response).toEqual(relatedCollectionsRelatedUrlsubtypeResponseMocks)
       })
     })
 
-    describe('When the relatedUrlType and relatedUrlSubType parameters are used', () => {
+    describe('When the relatedUrlType and relatedUrlsubtype parameters are used', () => {
       test('returns the parsed graphDb response', async () => {
         nock(/example/)
           .defaultReplyHeaders({
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
           .post(/graphdb/,
-            /\.or\(.+and\(.+has\('relatedUrl', 'type', within\('VIEW RELATED INFORMATION'\)\),.+has\('relatedUrl', 'subType', within\(\\"USER'S GUIDE\\"\)\).+\).+hasLabel\('project','platformInstrument'\)/)
-          .reply(200, relatedCollectionsRelatedUrlTypeAndSubTypeGraphdbResponseMocks)
+            /\.or\(.+and\(.+has\('relatedUrl', 'type', within\('VIEW RELATED INFORMATION'\)\),.+has\('relatedUrl', 'subtype', within\(\\"USER'S GUIDE\\"\)\).+\).+hasLabel\('project','platformInstrument'\)/)
+          .reply(200, relatedCollectionsRelatedUrlTypeAndsubtypeGraphdbResponseMocks)
 
         const response = await graphDbDatasource(
           'C1200400842-GHRC',
           {
             limit: 1,
             relatedUrlType: ['VIEW RELATED INFORMATION'],
-            relatedUrlSubType: ["USER'S GUIDE"]
+            relatedUrlsubtype: ["USER'S GUIDE"]
           },
           { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
           parsedInfo
         )
 
-        expect(response).toEqual(relatedCollectionsRelatedUrlTypeAndSubTypeResponseMocks)
+        expect(response).toEqual(relatedCollectionsRelatedUrlTypeAndsubtypeResponseMocks)
       })
     })
   })
@@ -452,9 +452,9 @@ describe('graphDb', () => {
                             args: {},
                             fieldsByTypeName: {}
                           },
-                          subType: {
-                            name: 'subType',
-                            alias: 'subType',
+                          subtype: {
+                            name: 'subtype',
+                            alias: 'subtype',
                             args: {},
                             fieldsByTypeName: {}
                           }
@@ -558,9 +558,9 @@ describe('graphDb', () => {
                             args: {},
                             fieldsByTypeName: {}
                           },
-                          subType: {
-                            name: 'subType',
-                            alias: 'subType',
+                          subtype: {
+                            name: 'subtype',
+                            alias: 'subtype',
                             args: {},
                             fieldsByTypeName: {}
                           }
@@ -674,9 +674,9 @@ describe('graphDb', () => {
                             args: {},
                             fieldsByTypeName: {}
                           },
-                          subType: {
-                            name: 'subType',
-                            alias: 'subType',
+                          subtype: {
+                            name: 'subtype',
+                            alias: 'subtype',
                             args: {},
                             fieldsByTypeName: {}
                           }
@@ -789,9 +789,9 @@ describe('graphDb', () => {
                             args: {},
                             fieldsByTypeName: {}
                           },
-                          subType: {
-                            name: 'subType',
-                            alias: 'subType',
+                          subtype: {
+                            name: 'subtype',
+                            alias: 'subtype',
                             args: {},
                             fieldsByTypeName: {}
                           }

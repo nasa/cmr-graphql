@@ -1540,7 +1540,7 @@ describe('Collection', () => {
                         url
                         description
                         type
-                        subType
+                        subtype
                       }
                     }
                   }
