@@ -26,13 +26,13 @@ export default {
           url: 'https://doi.org/10.5067/9LNYIYOBNBR5',
           description: 'Another Related URL for Demo',
           type: 'VIEW RELATED INFORMATION',
-          subType: 'DATA RECIPE'
+          subtype: 'DATA RECIPE'
         },
         {
           relationshipType: 'relatedUrl',
           url: 'http://ghrc.nsstc.nasa.gov/uso/ds_docs/globalir/globalir_dataset.html',
           type: 'VIEW RELATED INFORMATION',
-          subType: "USER'S GUIDE"
+          subtype: "USER'S GUIDE"
         }
       ]
     }

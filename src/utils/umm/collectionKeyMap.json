@@ -20,6 +20,7 @@
     "collectionCitations": "umm.CollectionCitations",
     "collectionProgress": "umm.CollectionProgress",
     "conceptId": "meta.concept-id",
+    "contactGroups": "umm.ContactGroups",
     "contactPersons": "umm.ContactPersons",
     "dataCenters": "umm.DataCenters",
     "dataDates": "umm.DataDates",

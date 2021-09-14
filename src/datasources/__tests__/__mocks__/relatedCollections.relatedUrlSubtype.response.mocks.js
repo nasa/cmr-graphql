@@ -25,7 +25,7 @@ export default {
           relationshipType: 'relatedUrl',
           url: 'http://ghrc.nsstc.nasa.gov/uso/ds_docs/globalir/globalir_dataset.html',
           type: 'VIEW RELATED INFORMATION',
-          subType: "USER'S GUIDE"
+          subtype: "USER'S GUIDE"
         }
       ]
     }

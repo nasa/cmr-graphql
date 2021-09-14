@@ -631,7 +631,7 @@ export default {
                                               '@value': 'label'
                                             },
                                             'relatedUrl',
-                                            'subType',
+                                            'subtype',
                                             {
                                               '@type': 'g:List',
                                               '@value': [

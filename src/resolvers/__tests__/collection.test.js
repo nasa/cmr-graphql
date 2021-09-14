@@ -167,6 +167,7 @@ describe('Collection', () => {
               }],
               CollectionCitations: [],
               CollectionProgress: 'ACTIVE',
+              ContactGroups: [],
               ContactPersons: [],
               DataCenters: [],
               DataDates: [],
@@ -238,6 +239,7 @@ describe('Collection', () => {
               collectionCitations
               collectionProgress
               conceptId
+              contactGroups
               contactPersons
               coordinateSystem
               dataCenter
@@ -355,6 +357,7 @@ describe('Collection', () => {
             collectionCitations: [],
             collectionProgress: 'ACTIVE',
             conceptId: 'C100000-EDSC',
+            contactGroups: [],
             contactPersons: [],
             coordinateSystem: 'CARTESIAN',
             dataCenter: 'PORTA',
@@ -1540,7 +1543,7 @@ describe('Collection', () => {
                         url
                         description
                         type
-                        subType
+                        subtype
                       }
                     }
                   }
