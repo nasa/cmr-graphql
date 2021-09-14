@@ -167,6 +167,7 @@ describe('Collection', () => {
               }],
               CollectionCitations: [],
               CollectionProgress: 'ACTIVE',
+              ContactGroups: [],
               ContactPersons: [],
               DataCenters: [],
               DataDates: [],
@@ -238,6 +239,7 @@ describe('Collection', () => {
               collectionCitations
               collectionProgress
               conceptId
+              contactGroups
               contactPersons
               coordinateSystem
               dataCenter

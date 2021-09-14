@@ -23,6 +23,8 @@ type Collection {
   collectionDataType: String
   "This element describes the production status of the data set."
   collectionProgress: String
+  "Information about the personnel groups responsible for this collection and its metadata."
+  contactGroups: JSON
   "Information about the personnel responsible for this collection and its metadata."
   contactPersons: JSON
   "Coordinate system of the metadata."
