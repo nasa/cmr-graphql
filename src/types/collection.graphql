@@ -67,6 +67,8 @@ type Collection {
   originalFormat: String @deprecated(reason: "Use `metadataFormat`.")
   "Spatial coverage of the collection."
   lines: [String]
+  "Controlled hierarchical keywords used to specify the spatial location of the collection.   The controlled vocabulary for spatial keywords is maintained in the Keyword Management System (KMS).  The Spatial Keyword hierarchy includes one or more of the following layers: Category (e.g., Continent), Type (e.g. Africa), Subregion1 (e.g., Central Africa), Subregion2 (e.g., Cameroon), and Subregion3. DetailedLocation exists outside the hierarchy."
+  locationKeywords: JSON
   "For paleoclimate or geologic data, PaleoTemporalCoverage is the length of time represented by the data collected. PaleoTemporalCoverage should be used when the data spans time frames earlier than yyyy-mm-dd = 0001-01-01."
   paleoTemporalCoverages: JSON
   "Information about the relevant platform(s) used to acquire the data in the collection. The controlled vocabulary for platform types is maintained in the Keyword Management System (KMS), and includes Spacecraft, Aircraft, Vessel, Buoy, Platform, Station, Network, Human, etc."
@@ -99,6 +101,8 @@ type Collection {
   shortName: String
   "Specifies the geographic and vertical (altitude, depth) coverage of the data."
   spatialExtent: JSON
+  "The reference frame or system in which altitudes (elevations) are given. The information contains the datum name, distance units and encoding method, which provide the definition for the system. This field also stores the characteristics of the reference frame or system from which depths are measured. The additional information in the field is geometry reference data etc."
+  spatialInformation: JSON
   "The summary of intentions with which this collection was developed."
   summary: String @deprecated(reason: "Use `abstract`")
   "Tags associated with the collection. It includes sub-elements of tagKey and optional data which is in embedded JSON."

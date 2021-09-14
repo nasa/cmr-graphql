@@ -177,6 +177,7 @@ describe('Collection', () => {
                 s3CredentialsApiDocumentationUrl: 'https://DAACCredentialDocumentation.org'
               },
               DOI: {},
+              LocationKeywords: [],
               MetadataAssociations: [],
               MetadataDates: [],
               PaleoTemporalCoverages: [],
@@ -207,6 +208,7 @@ describe('Collection', () => {
               RelatedUrls: [],
               ScienceKeywords: [],
               SpatialExtent: {},
+              SpatialInformation: {},
               TemporalExtents: [],
               TemporalKeywords: [],
               TilingIdentificationSystems: {},
@@ -250,6 +252,7 @@ describe('Collection', () => {
               hasTemporalSubsetting
               hasTransforms
               hasVariables
+              locationKeywords
               lines
               metadataAssociations
               metadataDates
@@ -274,6 +277,7 @@ describe('Collection', () => {
               scienceKeywords
               shortName
               spatialExtent
+              spatialInformation
               tags
               temporalExtents
               temporalKeywords
@@ -371,6 +375,7 @@ describe('Collection', () => {
             hasTransforms: true,
             hasVariables: true,
             lines: [],
+            locationKeywords: [],
             metadataAssociations: [],
             metadataDates: [],
             metadataFormat: 'RISUS',
@@ -412,6 +417,7 @@ describe('Collection', () => {
             scienceKeywords: [],
             shortName: 'LOREM-QUAM',
             spatialExtent: {},
+            spatialInformation: {},
             tags: {},
             temporalExtents: [],
             temporalKeywords: [],
