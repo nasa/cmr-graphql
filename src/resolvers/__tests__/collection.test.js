@@ -357,6 +357,7 @@ describe('Collection', () => {
             collectionCitations: [],
             collectionProgress: 'ACTIVE',
             conceptId: 'C100000-EDSC',
+            contactGroups: [],
             contactPersons: [],
             coordinateSystem: 'CARTESIAN',
             dataCenter: 'PORTA',
