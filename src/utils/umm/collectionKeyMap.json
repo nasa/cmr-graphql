@@ -14,7 +14,7 @@
   "ummKeyMappings": {
     "abstract": "umm.Abstract",
     "accessConstraints": "umm.AccessConstraints",
-    "additionalAttributes": "umm.AdditionalAttributes"
+    "additionalAttributes": "umm.AdditionalAttributes",
     "ancillaryKeywords": "umm.AncillaryKeywords",
     "archiveAndDistributionInformation": "umm.ArchiveAndDistributionInformation",
     "associatedDois": "umm.AssociatedDOIs",
