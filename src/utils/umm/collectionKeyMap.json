@@ -14,6 +14,7 @@
   "ummKeyMappings": {
     "abstract": "umm.Abstract",
     "accessConstraints": "umm.AccessConstraints",
+    "additionalAttributes": "umm.AdditionalAttributes"
     "ancillaryKeywords": "umm.AncillaryKeywords",
     "archiveAndDistributionInformation": "umm.ArchiveAndDistributionInformation",
     "associatedDois": "umm.AssociatedDOIs",
@@ -32,6 +33,7 @@
     "hasTemporalSubsetting": "meta.has-temporal-subsetting",
     "hasTransforms": "meta.has-transforms",
     "hasVariables": "meta.has-variables",
+    "isoTopicCategories": "umm.ISOTopicCategories",
     "metadataAssociations": "umm.MetadataAssociations",
     "metadataDates": "umm.MetadataDates",
     "nativeDataFormats": "custom.NativeDataFormats",

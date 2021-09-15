@@ -3,6 +3,8 @@ type Collection {
   abstract: String
   "Allows the author to constrain access to the collection. This includes any special restrictions, legal prerequisites, limitations and/or warnings on obtaining collection data. Some words that may be used in this element's value include: Public, In-house, Limited, None. The value field is used for special ACL rules (Access Control Lists (http://en.wikipedia.org/wiki/Access_control_list)). For example it can be used to hide metadata when it isn't ready for public consumption."
   accessConstraints: JSON
+  "The data’s distinctive attributes of the collection (i.e. attributes used to describe the unique characteristics of the collection which extend beyond those defined)."
+  additionalAttributes: JSON
   "This element stores DOIs that are associated with the collection such as from campaigns and other related sources."
   associatedDois: JSON
   "Find collections matching 'archive_center' param value."
@@ -55,6 +57,8 @@ type Collection {
   hasTransforms: Boolean
   "True if there are variables associated with the collection."
   hasVariables: Boolean
+  "Identifies the topic categories from the EN ISO 19115-1:2014 Geographic Information – Metadata – Part 1: Fundamentals (http://www.isotc211.org/) Topic Category Code List that pertain to this collection, based on the Science Keywords associated with the collection. An ISO Topic Category is a high-level thematic classification to assist in the grouping of and search for available collections. The controlled vocabulary for ISO topic categories is maintained in the Keyword Management System (KMS)."
+  isoTopicCategories: [String]
   "This element is used to identify other services, collections, visualizations, granules, and other metadata types and resources that are associated with or dependent on the data described by the metadata. This element is also used to identify a parent metadata record if it exists. This usage should be reserved for instances where a group of metadata records are subsets that can be better represented by one parent metadata record, which describes the entire set. In some instances, a child may point to more than one parent. The EntryId is the same as the element described elsewhere in this document where it contains an ID and Version."
   metadataAssociations: JSON
   "Dates related to activities involving the metadata record itself."
