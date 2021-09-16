@@ -142,6 +142,7 @@ describe('Collection', () => {
             umm: {
               Abstract: 'Cras mattis consectetur purus sit amet fermentum.',
               AccessConstraints: [],
+              AdditionalAttributes: [],
               AncillaryKeywords: [],
               ArchiveAndDistributionInformation: {
                 FileDistributionInformation: [
@@ -178,6 +179,7 @@ describe('Collection', () => {
                 s3CredentialsApiDocumentationUrl: 'https://DAACCredentialDocumentation.org'
               },
               DOI: {},
+              ISOTopicCategories: [],
               LocationKeywords: [],
               MetadataAssociations: [],
               MetadataDates: [],
@@ -230,6 +232,7 @@ describe('Collection', () => {
             items {
               abstract
               accessConstraints
+              additionalAttributes
               ancillaryKeywords
               archiveAndDistributionInformation
               archiveCenter
@@ -254,6 +257,7 @@ describe('Collection', () => {
               hasTemporalSubsetting
               hasTransforms
               hasVariables
+              isoTopicCategories
               locationKeywords
               lines
               metadataAssociations
@@ -328,6 +332,7 @@ describe('Collection', () => {
           items: [{
             abstract: 'Cras mattis consectetur purus sit amet fermentum.',
             accessConstraints: [],
+            additionalAttributes: [],
             ancillaryKeywords: [],
             archiveAndDistributionInformation: {
               fileDistributionInformation: [
@@ -377,6 +382,7 @@ describe('Collection', () => {
             hasTemporalSubsetting: true,
             hasTransforms: true,
             hasVariables: true,
+            isoTopicCategories: [],
             lines: [],
             locationKeywords: [],
             metadataAssociations: [],
