@@ -5,6 +5,7 @@ export default class Service extends Concept {
    * Instantiates a Service object
    * @param {Object} headers HTTP headers provided by the query
    * @param {Object} requestInfo Parsed data pertaining to the Graph query
+   * @param {Object} params GraphQL query parameters
    */
   constructor(headers, requestInfo, params) {
     super('services', headers, requestInfo, params)

@@ -57,7 +57,7 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
   // fields (e.g. only count) then fieldsByTypeName will be undefined and we can ignore it
   if (fieldsByTypeName) {
     const {
-      [upperFirst(conceptName.toLowerCase())]: conceptKeysRequested
+      [upperFirst(conceptName)]: conceptKeysRequested
     } = fieldsByTypeName
 
     if (conceptKeysRequested) {
@@ -115,7 +115,7 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
     }
   }
 
-  const { sharedKeys, ummKeyMappings } = keyMap
+  const { sharedKeys = [], ummKeyMappings } = keyMap
 
   // Gather keys that the user requested that only exist in umm
   let ummKeys = requestedFields.filter((x) => (

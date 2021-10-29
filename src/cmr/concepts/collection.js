@@ -8,6 +8,7 @@ export default class Collection extends Concept {
    * Instantiates a Collection object
    * @param {Object} headers HTTP headers provided by the query
    * @param {Object} requestInfo Parsed data pertaining to the Graph query
+   * @param {Object} params GraphQL query parameters
    */
   constructor(headers, requestInfo, params) {
     super('collections', headers, requestInfo, params)

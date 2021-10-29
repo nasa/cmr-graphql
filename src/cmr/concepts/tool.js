@@ -5,6 +5,7 @@ export default class Tool extends Concept {
    * Instantiates a Tool object
    * @param {Object} headers HTTP headers provided by the query
    * @param {Object} requestInfo Parsed data pertaining to the Graph query
+   * @param {Object} params GraphQL query parameters
    */
   constructor(headers, requestInfo, params) {
     super('tools', headers, requestInfo, params)

@@ -19,6 +19,7 @@ export default class Concept {
    * @param {String} conceptType The CMR concept type to query against
    * @param {Object} headers HTTP headers provided by the query
    * @param {Object} requestInfo Parsed data pertaining to the Graph query
+   * @param {Object} params GraphQL query parameters
    */
   constructor(conceptType, headers = {}, requestInfo = {}, params = {}) {
     // Set properties for data available during instantiation
@@ -588,7 +589,7 @@ export default class Concept {
 
       // Loop through the requested umm keys
       ummKeys.forEach((ummKey) => {
-        // Use lodash.get to retrieve a value from the umm response given they
+        // Use lodash.get to retrieve a value from the umm response given the
         // path we've defined above
         const keyValue = get(item, ummKeyMappings[ummKey])
 

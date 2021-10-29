@@ -10,6 +10,8 @@ provider:
 
   environment:
     cmrRootUrl: ${self:custom.variables.cmrRootUrl}
+    mmtRootUrl: ${self:custom.variables.mmtRootUrl}
+    draftMmtRootUrl: ${self:custom.variables.draftMmtRootUrl}
 
     # Timeout for lambda
     lambdaTimeout: ${env:LAMBDA_TIMEOUT}
@@ -136,7 +138,9 @@ custom:
 
   variables:
     # Default values for environment variables used to set environment variables
-    cmrRootUrl: ${env:CMR_ROOT_URL, 'http://cmr.earthdata.nasa.gov'}
+    cmrRootUrl: ${env:CMR_ROOT_URL, 'https://cmr.earthdata.nasa.gov'}
+    mmtRootUrl: ${env:MMT_ROOT_URL, 'https://mmt.earthdata.nasa.gov'}
+    draftMmtRootUrl: ${env:DRAFT_MMT_ROOT_URL, 'https://draftmmt.earthdata.nasa.gov'}
 
   # Default is 3000 so to avoid conflicts with other applications we'll define a new port
   serverless-offline:
