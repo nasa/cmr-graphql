@@ -6,6 +6,7 @@ export default class Granule extends Concept {
    * Instantiates a Granule object
    * @param {Object} headers HTTP headers provided by the query
    * @param {Object} requestInfo Parsed data pertaining to the Graph query
+   * @param {Object} params GraphQL query parameters
    */
   constructor(headers, requestInfo, params) {
     super('granules', headers, requestInfo, params)

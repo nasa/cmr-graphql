@@ -47,35 +47,6 @@ describe('draftMmtQuery', () => {
     )
   })
 
-  describe('when provided a token via the Echo-Token header', () => {
-    test('queries draft mmt using the Echo-Token header', async () => {
-      nock(/example/, {
-        reqheaders: {
-          'X-Request-Id': 'abcd-1234-efgh-5678',
-          'Echo-Token': 'test-token'
-        }
-      })
-        .get(/collection_draft_proposals/)
-        .reply(200, {
-          ShortName: 'Mock ShortName'
-        })
-
-      const response = await draftMmtQuery({
-        conceptType: 'collectionDraftProposal',
-        params: {},
-        headers: {
-          'X-Request-Id': 'abcd-1234-efgh-5678',
-          'Echo-Token': 'test-token'
-        }
-      })
-
-      const { data } = response
-      expect(data).toEqual({
-        ShortName: 'Mock ShortName'
-      })
-    })
-  })
-
   describe('when provided a token via the Authorization header', () => {
     test('queries draft mmt using the Authorization header', async () => {
       nock(/example/, {
@@ -95,36 +66,6 @@ describe('draftMmtQuery', () => {
         headers: {
           'X-Request-Id': 'abcd-1234-efgh-5678',
           Authorization: 'test-token'
-        }
-      })
-
-      const { data } = response
-      expect(data).toEqual({
-        ShortName: 'Mock ShortName'
-      })
-    })
-  })
-
-  describe('when provided a token via the Authorization header and the Echo-Token header', () => {
-    test('queries draft mmt using the Authorization header', async () => {
-      nock(/example/, {
-        reqheaders: {
-          'X-Request-Id': 'abcd-1234-efgh-5678',
-          Authorization: 'authorization-token'
-        }
-      })
-        .get(/collection_draft_proposals/)
-        .reply(200, {
-          ShortName: 'Mock ShortName'
-        })
-
-      const response = await draftMmtQuery({
-        conceptType: 'collectionDraftProposal',
-        params: {},
-        headers: {
-          'X-Request-Id': 'abcd-1234-efgh-5678',
-          Authorization: 'authorization-token',
-          'Echo-Token': 'echo-token'
         }
       })
 

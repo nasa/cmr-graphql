@@ -47,8 +47,6 @@ type Collection {
   doi: JSON
   "The title of the collection described by the metadata."
   datasetId: String
-  "The title of the collection described by the metadata."
-  entryTitle: String
   "An array containing all of the different formats of the underlying data of a collection."
   nativeDataFormats: [String]
   "True if there are multiple supported formats for any services associated with the collection."

@@ -257,7 +257,6 @@ describe('Collection', () => {
               directDistributionInformation
               directoryNames
               doi
-              entryTitle
               hasFormats
               hasGranules
               hasSpatialSubsetting
@@ -387,7 +386,6 @@ describe('Collection', () => {
             },
             directoryNames: [],
             doi: {},
-            entryTitle: 'Condimentum Quam Mattis Cursus Pharetra',
             hasFormats: true,
             hasGranules: true,
             hasSpatialSubsetting: true,

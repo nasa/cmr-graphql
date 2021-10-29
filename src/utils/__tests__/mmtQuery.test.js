@@ -47,35 +47,6 @@ describe('mmtQuery', () => {
     )
   })
 
-  describe('when provided a token via the Echo-Token header', () => {
-    test('queries mmt using the Echo-Token header', async () => {
-      nock(/example/, {
-        reqheaders: {
-          'X-Request-Id': 'abcd-1234-efgh-5678',
-          'Echo-Token': 'test-token'
-        }
-      })
-        .get(/collection_drafts/)
-        .reply(200, {
-          ShortName: 'Mock ShortName'
-        })
-
-      const response = await mmtQuery({
-        conceptType: 'collectionDraft',
-        params: {},
-        headers: {
-          'X-Request-Id': 'abcd-1234-efgh-5678',
-          'Echo-Token': 'test-token'
-        }
-      })
-
-      const { data } = response
-      expect(data).toEqual({
-        ShortName: 'Mock ShortName'
-      })
-    })
-  })
-
   describe('when provided a token via the Authorization header', () => {
     test('queries mmt using the Authorization header', async () => {
       nock(/example/, {
@@ -95,36 +66,6 @@ describe('mmtQuery', () => {
         headers: {
           'X-Request-Id': 'abcd-1234-efgh-5678',
           Authorization: 'test-token'
-        }
-      })
-
-      const { data } = response
-      expect(data).toEqual({
-        ShortName: 'Mock ShortName'
-      })
-    })
-  })
-
-  describe('when provided a token via the Authorization header and the Echo-Token header', () => {
-    test('queries mmt using the Authorization header', async () => {
-      nock(/example/, {
-        reqheaders: {
-          'X-Request-Id': 'abcd-1234-efgh-5678',
-          Authorization: 'authorization-token'
-        }
-      })
-        .get(/collection_drafts/)
-        .reply(200, {
-          ShortName: 'Mock ShortName'
-        })
-
-      const response = await mmtQuery({
-        conceptType: 'collectionDraft',
-        params: {},
-        headers: {
-          'X-Request-Id': 'abcd-1234-efgh-5678',
-          Authorization: 'authorization-token',
-          'Echo-Token': 'echo-token'
         }
       })
 

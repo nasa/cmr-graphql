@@ -6,6 +6,7 @@ export default class Subscription extends Concept {
    * Instantiates a Subscription object
    * @param {Object} headers HTTP headers provided by the query
    * @param {Object} requestInfo Parsed data pertaining to the Graph query
+   * @param {Object} params GraphQL query parameters
    */
   constructor(headers, requestInfo, params) {
     super('subscriptions', headers, requestInfo, params)

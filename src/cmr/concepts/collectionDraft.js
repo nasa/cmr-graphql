@@ -14,6 +14,7 @@ export default class CollectionDraft extends Concept {
    * Instantiates a Collection object
    * @param {Object} headers HTTP headers provided by the query
    * @param {Object} requestInfo Parsed data pertaining to the Graph query
+   * @param {Object} params GraphQL query parameters
    */
   constructor(headers, requestInfo, params) {
     super('collectionDraft', headers, requestInfo, params)
@@ -43,7 +44,7 @@ export default class CollectionDraft extends Concept {
 
       // Loop through the requested umm keys
       ummKeys.forEach((ummKey) => {
-        // Use lodash.get to retrieve a value from the umm response given they
+        // Use lodash.get to retrieve a value from the umm response given the
         // path we've defined above
         const keyValue = get(data, ummKeyMappings[ummKey])
 

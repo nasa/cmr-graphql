@@ -10,7 +10,6 @@ import { prepKeysForCmr } from './prepKeysForCmr'
  * @param {Object} params
  * @param {Object} params.headers Headers to send to MMT
  * @param {Array} params.nonIndexedKeys Parameter names that should not be indexed before sending to MMT
- * @param {Object} params.options Additional Options (format)
  * @param {Object} params.params Parameters to send to MMT
  * @param {String} params.conceptType Concept type to search
  */
@@ -31,17 +30,8 @@ export const mmtQuery = ({
     'Accept',
     'Authorization',
     'Client-Id',
-    'X-Request-Id',
-    'Echo-Token'
+    'X-Request-Id'
   ])
-
-  // If both authentication headers are provided favor Authorization
-  if (
-    Object.keys(permittedHeaders).includes('Authorization')
-    && Object.keys(permittedHeaders).includes('Echo-Token')
-  ) {
-    delete permittedHeaders['Echo-Token']
-  }
 
   const cmrParameters = prepKeysForCmr(snakeCaseKeys(params), nonIndexedKeys)
 
