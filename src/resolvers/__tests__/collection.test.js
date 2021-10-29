@@ -172,17 +172,20 @@ describe('Collection', () => {
               ContactPersons: [],
               DataCenters: [],
               DataDates: [],
+              DataLanguage: 'English',
               DirectDistributionInformation: {
                 region: 'us-east-2',
                 s3BucketAndObjectPrefixNames: ['TestBucketOrObjectPrefix'],
                 s3CredentialsApiEndpoint: 'https://DAACCredentialEndpoint.org',
                 s3CredentialsApiDocumentationUrl: 'https://DAACCredentialDocumentation.org'
               },
+              DirectoryNames: [],
               DOI: {},
               ISOTopicCategories: [],
               LocationKeywords: [],
               MetadataAssociations: [],
               MetadataDates: [],
+              MetadataLanguage: 'English',
               PaleoTemporalCoverages: [],
               Platforms: [{
                 Type: 'Not Specified',
@@ -218,6 +221,7 @@ describe('Collection', () => {
               UseConstraints: [],
               EntryTitle: 'Condimentum Quam Mattis Cursus Pharetra',
               VersionDescription: 'The description of the version',
+              Version: '1.0.0',
               VersionId: '1.0.0'
             }
           }]
@@ -248,9 +252,12 @@ describe('Collection', () => {
               dataCenter
               dataCenters
               dataDates
+              dataLanguage
               datasetId
               directDistributionInformation
+              directoryNames
               doi
+              entryTitle
               hasFormats
               hasGranules
               hasSpatialSubsetting
@@ -258,11 +265,12 @@ describe('Collection', () => {
               hasTransforms
               hasVariables
               isoTopicCategories
-              locationKeywords
               lines
+              locationKeywords
               metadataAssociations
               metadataDates
               metadataFormat
+              metadataLanguage
               nativeDataFormats
               nativeId
               onlineAccessFlag
@@ -292,6 +300,7 @@ describe('Collection', () => {
               timeStart
               title
               useConstraints
+              version
               versionDescription
               versionId
             }
@@ -368,6 +377,7 @@ describe('Collection', () => {
             dataCenter: 'PORTA',
             dataCenters: [],
             dataDates: [],
+            dataLanguage: 'English',
             datasetId: 'Condimentum Quam Mattis Cursus Pharetra',
             directDistributionInformation: {
               region: 'us-east-2',
@@ -375,7 +385,9 @@ describe('Collection', () => {
               s3CredentialsApiEndpoint: 'https://DAACCredentialEndpoint.org',
               s3CredentialsApiDocumentationUrl: 'https://DAACCredentialDocumentation.org'
             },
+            directoryNames: [],
             doi: {},
+            entryTitle: 'Condimentum Quam Mattis Cursus Pharetra',
             hasFormats: true,
             hasGranules: true,
             hasSpatialSubsetting: true,
@@ -387,6 +399,7 @@ describe('Collection', () => {
             locationKeywords: [],
             metadataAssociations: [],
             metadataDates: [],
+            metadataLanguage: 'English',
             metadataFormat: 'RISUS',
             nativeId: 'test-guid',
             nativeDataFormats: ['ASCII'],
@@ -435,6 +448,7 @@ describe('Collection', () => {
             timeStart: '2016-04-04T17:00:00.000Z',
             title: 'Condimentum Quam Mattis Cursus Pharetra',
             useConstraints: [],
+            version: '1.0.0',
             versionId: '1.0.0',
             versionDescription: 'The description of the version'
           }]

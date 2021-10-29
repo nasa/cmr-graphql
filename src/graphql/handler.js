@@ -5,6 +5,8 @@ import resolvers from '../resolvers'
 import typeDefs from '../types'
 
 import collectionSource from '../datasources/collection'
+import collectionDraftSource from '../datasources/collectionDraft'
+import collectionDraftProposalSource from '../datasources/collectionDraftProposal'
 import granuleSource from '../datasources/granule'
 import graphDbSource from '../datasources/graphDb'
 import serviceSource from '../datasources/service'
@@ -55,6 +57,8 @@ const server = new ApolloServer({
   // An object that goes to the 'context' argument when executing resolvers
   dataSources: () => ({
     collectionSource,
+    collectionDraftSource,
+    collectionDraftProposalSource,
     granuleSource,
     graphDbSource,
     serviceSource,

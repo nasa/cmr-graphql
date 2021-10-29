@@ -8,7 +8,8 @@ import { ApolloError } from 'apollo-server-lambda'
 export const parseError = (errorObj, {
   shouldLog = true,
   asJSON = true,
-  reThrowError = false
+  reThrowError = false,
+  provider = 'CMR'
 } = {}) => {
   const {
     name = 'Error',
@@ -44,7 +45,7 @@ export const parseError = (errorObj, {
 
   // If the error needs to be thrown again, do so before returning
   if (reThrowError) {
-    throw new ApolloError(errorArray, 'CMR_ERROR')
+    throw new ApolloError(errorArray, `${provider}_ERROR`)
   }
 
   if (asJSON) {

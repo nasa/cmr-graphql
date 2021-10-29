@@ -1,0 +1,95 @@
+import camelcaseKeys from 'camelcase-keys'
+import {
+  get,
+  pick
+} from 'lodash'
+import snakecaseKeys from 'snakecase-keys'
+import { mmtQuery } from '../../utils/mmtQuery'
+import { parseError } from '../../utils/parseError'
+
+import Concept from './concept'
+
+export default class CollectionDraft extends Concept {
+  /**
+   * Instantiates a Collection object
+   * @param {Object} headers HTTP headers provided by the query
+   * @param {Object} requestInfo Parsed data pertaining to the Graph query
+   */
+  constructor(headers, requestInfo, params) {
+    super('collectionDraft', headers, requestInfo, params)
+  }
+
+  /**
+   * Returns an array of keys representing supported search params for the umm endpoint
+   */
+  getPermittedUmmSearchParams() {
+    return [
+      'id'
+    ]
+  }
+
+  async parse(requestInfo, params) {
+    const { id } = params
+
+    try {
+      const {
+        ummKeyMappings,
+        ummKeys
+      } = requestInfo
+
+      const [response] = await this.getResponse()
+
+      const { data } = response
+
+      // Loop through the requested umm keys
+      ummKeys.forEach((ummKey) => {
+        // Use lodash.get to retrieve a value from the umm response given they
+        // path we've defined above
+        const keyValue = get(data, ummKeyMappings[ummKey])
+
+        const camelCasedObject = camelcaseKeys({ [ummKey]: keyValue }, { deep: true })
+
+        const { [ummKey]: camelCasedValue } = camelCasedObject
+
+        // Camel case all of the keys of this object (ummKey is already camel cased)
+        this.setItemValue(
+          `${id}`,
+          ummKey,
+          camelCasedValue
+        )
+      })
+    } catch (e) {
+      parseError(e, { reThrowError: true, provider: 'MMT' })
+    }
+  }
+
+  fetchUmm(searchParams, requestedKeys, providedHeaders) {
+    this.logKeyRequest(requestedKeys, 'umm')
+
+    // Construct the promise that will request data from the umm endpoint
+    return mmtQuery({
+      conceptType: this.getConceptType(),
+      params: pick(snakecaseKeys(searchParams), this.getPermittedUmmSearchParams()),
+      nonIndexedKeys: this.getNonIndexedKeys(),
+      headers: providedHeaders
+    })
+  }
+
+  fetch(searchParams) {
+    // Default an array to hold the promises we need to make depending on the requested fields
+    const promises = []
+
+    const { ummKeys } = this.requestInfo
+
+    const ummHeaders = {
+      ...this.headers
+    }
+
+    // Construct the promise that will request data from the umm endpoint
+    promises.push(
+      this.fetchUmm(searchParams, ummKeys, ummHeaders)
+    )
+
+    this.response = Promise.all(promises)
+  }
+}

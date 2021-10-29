@@ -8,6 +8,7 @@
     "hasTransforms",
     "hasVariables",
     "processingLevelId",
+    "shortName",
     "title",
     "versionId"
   ],
@@ -25,8 +26,11 @@
     "contactPersons": "umm.ContactPersons",
     "dataCenters": "umm.DataCenters",
     "dataDates": "umm.DataDates",
+    "dataLanguage": "umm.DataLanguage",
     "directDistributionInformation": "umm.DirectDistributionInformation",
+    "directoryNames": "umm.DirectoryNames",
     "doi": "umm.DOI",
+    "entryTitle": "umm.EntryTitle",
     "locationKeywords": "umm.LocationKeywords",
     "hasFormats": "meta.has-formats",
     "hasSpatialSubsetting": "meta.has-spatial-subsetting",
@@ -36,6 +40,7 @@
     "isoTopicCategories": "umm.ISOTopicCategories",
     "metadataAssociations": "umm.MetadataAssociations",
     "metadataDates": "umm.MetadataDates",
+    "metadataLanguage": "umm.MetadataLanguage",
     "nativeDataFormats": "custom.NativeDataFormats",
     "nativeId": "meta.native-id",
     "paleoTemporalCoverages": "umm.PaleoTemporalCoverages",
@@ -48,6 +53,7 @@
     "quality": "umm.Quality",
     "relatedUrls": "umm.RelatedUrls",
     "scienceKeywords": "umm.ScienceKeywords",
+    "shortName": "umm.ShortName",
     "spatialExtent": "umm.SpatialExtent",
     "spatialInformation": "umm.SpatialInformation",
     "temporalExtents": "umm.TemporalExtents",
@@ -56,6 +62,7 @@
     "title": "umm.EntryTitle",
     "useConstraints": "umm.UseConstraints",
     "versionDescription": "umm.VersionDescription",
-    "versionId": "umm.Version"
+    "versionId": "umm.Version",
+    "version": "umm.Version"
   }
 }

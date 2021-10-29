@@ -37,12 +37,18 @@ type Collection {
   dataCenters: JSON
   "Dates related to activities involving the collection data."
   dataDates: JSON
+  "Describes the language used in the preparation, storage, and description of the collection. It is the language of the collection data themselves.   It does not refer to the language used in the metadata record (although this may be the same language)."
+  dataLanguage: String
   "This element allows end users to get direct access to data products that are stored in the Amazon Web Service (AWS) S3 buckets. The sub elements include S3 credentials end point and a documentation URL as well as bucket prefix names and an AWS region."
   directDistributionInformation: JSON
+  "Formerly called Internal Directory Name (IDN) Node (IDN_Node). This element has been used historically by the GCMD internally to identify association, responsibility and/or ownership of the dataset, service or supplemental information. Note: This field only occurs in the DIF. When a DIF record is retrieved in the ECHO10 or ISO 19115 formats, this element will not be translated. The controlled vocabulary for directory names is maintained in the Keyword Management System (KMS)."
+  directoryNames: JSON
   "This element stores the DOI (Digital Object Identifier) that identifies the collection. note: The values should start with the directory indicator which in ESDIS' case is 10.  If the DOI was registered through ESDIS, the beginning of the string should be 10.5067. The DOI URL is not stored here; it should be stored as a RelatedURL. The DOI organization that is responsible for creating the DOI is described in the Authority element. For ESDIS records the value of https://doi.org/ should be used. While this element is not required, NASA metadata providers are strongly encouraged to include DOI and DOI Authority for their collections."
   doi: JSON
   "The title of the collection described by the metadata."
   datasetId: String
+  "The title of the collection described by the metadata."
+  entryTitle: String
   "An array containing all of the different formats of the underlying data of a collection."
   nativeDataFormats: [String]
   "True if there are multiple supported formats for any services associated with the collection."
@@ -63,6 +69,8 @@ type Collection {
   metadataAssociations: JSON
   "Dates related to activities involving the metadata record itself."
   metadataDates: JSON
+  "The language used in the metadata record."
+  metadataLanguage: String
   "The format of original collection metadata (Known in CMR as original format)."
   metadataFormat: String
   "True if the data is available online."
@@ -130,7 +138,9 @@ type Collection {
   "The version description of the collection."
   versionDescription: String
   "Provider defined version id of the collection."
-  versionId: String
+  versionId: String @deprecated(reason: "Use `version`")
+  "The Version of the collection."
+  version: String
 
   relatedCollections (
     "The size of the range GraphDB searches on. Defaults to 5"
