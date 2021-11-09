@@ -41,7 +41,7 @@
     "tilingIdentificationSystems": "TilingIdentificationSystems",
     "title": "EntryTitle",
     "useConstraints": "UseConstraints",
-    "version": "Version",
-    "versionDescription": "VersionDescription"
+    "versionDescription": "VersionDescription",
+    "versionId": "Version"
   }
 }
