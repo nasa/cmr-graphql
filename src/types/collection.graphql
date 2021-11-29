@@ -161,7 +161,7 @@ type Collection {
     "Search granules by cloud cover min and max."
     cloudCover: JSON
     "The unique concept id assigned to the parent collection."
-    collectionConceptId: String,
+    collectionConceptId: String
     "The unique concept id assigned to the granule."
     conceptId: [String]
     "Cursor that points to the a specific position in a list of requested records."
@@ -316,6 +316,8 @@ type Query {
     boundingBox: [String]
     "Circle defines a circle area on the earth with a center point and a radius. The center parameters must be 3 comma-separated numbers: longitude of the center point, latitude of the center point, radius of the circle in meters. The circle center cannot be on North or South pole. The radius of the circle must be between 10 and 6,000,000."
     circle: [String]
+    "The cloud_hosted parameter can be set to 'true' or 'false'. When true, the results will be restricted to collections that have a DirectDistributionInformation element or have been tagged with gov.nasa.earthdatacloud.s3."
+    cloudHosted: Boolean
     "Type of the collection"
     collectionDataType: [String]
     "Data center assigned to the collection."
@@ -329,23 +331,23 @@ type Query {
     "The data format of the granules belonging to the collection, in facet form."
     granuleDataFormatH: [String]
     "When true, the results will be restricted to collections with granules or with the configured CWIC tag. When false, results will be restricted to collections without granules."
-    hasGranulesOrCwic: Boolean,
+    hasGranulesOrCwic: Boolean
     "When has_granules is set to 'true' or 'false', results will be restricted to collections with or without granules, respectively."
-    hasGranules: Boolean,
+    hasGranules: Boolean
     "The horizontal data resolution of the data belonging to the collection."
     horizontalDataResolutionRange: [String]
     """
     If this parameter is set (e.g. includeFacets=v2), the results will include a new top level key `facets` that contains the facets related to the collection results.
     **NOTE**: This only requests the facets be returned by CMR, you will need to include `facets` in your query to have the results returned in the query.
     """
-    includeFacets: String,
+    includeFacets: String
     "If this parameter is set to 'true' this will include a flag indicating true or false if the collection has any granules at all."
-    includeHasGranules: Boolean,
+    includeHasGranules: Boolean
     """
     If this parameter is set (e.g. includeTags=gov.nasa.earthdata.search.*,gov.nasa.echo.*), the collection results will contain an additional field 'tags' within each collection. The value of the tags field is a list of tag_keys that are associated with the collection. Only the tags with tag_key matching the values of include_tags parameter (with wildcard support) are included.
     **NOTE**: This only requests the tags be returned by CMR, you will need to include `tags` in your query to have the results returned in the query.
     """
-    includeTags: String,
+    includeTags: String
     "Instrument associated with the collection."
     instrument: String
     "Instrument associated with the collection, in facet form."
@@ -379,7 +381,7 @@ type Query {
     "The project associated with the collection, in facet form."
     projectH: [String]
     "The name of the provider associated with the collection."
-    provider: String,
+    provider: String
     "Science Keywords associated with the collection, in facet form."
     scienceKeywordsH: JSON
     "UMM Service concept id."
@@ -406,7 +408,7 @@ type Query {
     "The unique concept id assigned to the collection."
     conceptId: String!
     "If this parameter is set to 'true' this will include a flag indicating true or false if the collection has any granules at all."
-    includeHasGranules: Boolean,
+    includeHasGranules: Boolean
     "If this parameter is set (e.g. include_tags=gov.nasa.earthdata.search.*,gov.nasa.echo.*), the collection results will contain an additional field 'tags' within each collection. The value of the tags field is a list of tag_keys that are associated with the collection. Only the tags with tag_key matching the values of include_tags parameter (with wildcard support) are included in the results."
     includeTags: String
   ): Collection
