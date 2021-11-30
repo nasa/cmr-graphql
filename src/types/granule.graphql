@@ -79,7 +79,7 @@ type Query {
     "Search granules by cloud cover min and max."
     cloudCover: JSON
     "The unique concept id assigned to the parent collection."
-    collectionConceptId: String,
+    collectionConceptId: String
     "The unique concept id assigned to the granule."
     conceptId: [String]
     "Cursor that points to the a specific position in a list of requested records."
