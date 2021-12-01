@@ -1,7 +1,6 @@
 import nock from 'nock'
 
 import { ApolloServer } from 'apollo-server-lambda'
-import { createTestClient } from 'apollo-server-testing'
 
 import resolvers from '..'
 import typeDefs from '../../types'
@@ -60,8 +59,6 @@ describe('Collection', () => {
     describe('collectionDraftProposal', () => {
       describe('with results', () => {
         test('returns results', async () => {
-          const { query } = createTestClient(server)
-
           nock(/example/)
             .defaultReplyHeaders({
               'X-Request-Id': 'abcd-1234-efgh-5678'
@@ -71,10 +68,10 @@ describe('Collection', () => {
               ShortName: 'Mock ShortName'
             })
 
-          const response = await query({
+          const response = await server.executeOperation({
             variables: {},
             query: `{
-              collectionDraftProposal (id: 123) {
+              collectionDraftProposal (params: { id: 123 }) {
                 shortName
               }
             }`
@@ -92,8 +89,6 @@ describe('Collection', () => {
 
       describe('with no results', () => {
         test('returns no results', async () => {
-          const { query } = createTestClient(server)
-
           nock(/example/)
             .defaultReplyHeaders({
               'X-Request-Id': 'abcd-1234-efgh-5678'
@@ -101,10 +96,10 @@ describe('Collection', () => {
             .get(/collection_draft_proposals/)
             .reply(200, {})
 
-          const response = await query({
+          const response = await server.executeOperation({
             variables: {},
             query: `{
-              collectionDraftProposal (id: 123) {
+              collectionDraftProposal (params: { id: 123 }) {
                 shortName
               }
             }`

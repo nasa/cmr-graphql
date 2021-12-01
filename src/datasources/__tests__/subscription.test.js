@@ -290,7 +290,7 @@ describe('subscription#fetch', () => {
           }]
         })
 
-      const response = await subscriptionSourceFetch({ concept_id: 'SUB100000-EDSC' }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'subscription')
+      const response = await subscriptionSourceFetch({ params: { concept_id: 'SUB100000-EDSC' } }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'subscription')
 
       expect(response).toEqual({
         count: 84,
@@ -386,7 +386,7 @@ describe('subscription#fetch', () => {
           }]
         })
 
-      const response = await subscriptionSourceFetch({ concept_id: 'SUB100000-EDSC' }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'subscription')
+      const response = await subscriptionSourceFetch({ params: { concept_id: 'SUB100000-EDSC' } }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'subscription')
 
       expect(response).toEqual({
         count: 84,
@@ -408,7 +408,7 @@ describe('subscription#fetch', () => {
       })
 
     await expect(
-      subscriptionSourceFetch({ conceptId: 'SUB100000-EDSC' }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'subscription')
+      subscriptionSourceFetch({ params: { conceptId: 'SUB100000-EDSC' } }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'subscription')
     ).rejects.toThrow(Error)
   })
 })
@@ -471,10 +471,12 @@ describe('subscription#ingest', () => {
         })
 
       const response = await subscriptionSourceIngest({
-        collectionConceptId: 'C100000-EDSC',
-        name: 'Test Subscription',
-        query: 'polygon=-18,-78,-13,-74,-16,-73,-22,-77,-18,-78',
-        subscriberId: 'testuser'
+        params: {
+          collectionConceptId: 'C100000-EDSC',
+          name: 'Test Subscription',
+          query: 'polygon=-18,-78,-13,-74,-16,-73,-22,-77,-18,-78',
+          subscriberId: 'testuser'
+        }
       }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'subscription')
 
       expect(response).toEqual({
@@ -497,12 +499,14 @@ describe('subscription#ingest', () => {
         })
 
       const response = await subscriptionSourceIngest({
-        collectionConceptId: 'C100000-EDSC',
-        emailAddress: 'test@example.com',
-        name: 'Test Subscription',
-        nativeId: 'test-guid',
-        query: 'polygon=-18,-78,-13,-74,-16,-73,-22,-77,-18,-78',
-        subscriberId: 'testuser'
+        params: {
+          collectionConceptId: 'C100000-EDSC',
+          emailAddress: 'test@example.com',
+          name: 'Test Subscription',
+          nativeId: 'test-guid',
+          query: 'polygon=-18,-78,-13,-74,-16,-73,-22,-77,-18,-78',
+          subscriberId: 'testuser'
+        }
       }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'subscription')
 
       expect(response).toEqual({
@@ -523,11 +527,13 @@ describe('subscription#ingest', () => {
 
     await expect(
       subscriptionSourceIngest({
-        collectionConceptId: 'C100000-EDSC',
-        emailAddress: 'test@example.com',
-        name: 'Test Subscription',
-        query: 'polygon=-18,-78,-13,-74,-16,-73,-22,-77,-18,-78',
-        subscriberId: 'testuser'
+        params: {
+          collectionConceptId: 'C100000-EDSC',
+          emailAddress: 'test@example.com',
+          name: 'Test Subscription',
+          query: 'polygon=-18,-78,-13,-74,-16,-73,-22,-77,-18,-78',
+          subscriberId: 'testuser'
+        }
       }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'subscription')
     ).rejects.toThrow(Error)
   })
@@ -589,8 +595,10 @@ describe('subscription#delete', () => {
         })
 
       const response = await subscriptionSourceDelete({
-        conceptId: 'SUB100000-EDSC',
-        nativeId: 'test-guid'
+        params: {
+          conceptId: 'SUB100000-EDSC',
+          nativeId: 'test-guid'
+        }
       }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'subscription')
 
       expect(response).toEqual({
@@ -611,8 +619,10 @@ describe('subscription#delete', () => {
 
     await expect(
       subscriptionSourceDelete({
-        conceptId: 'C100000-EDSC',
-        nativeId: 'test-guid'
+        params: {
+          conceptId: 'C100000-EDSC',
+          nativeId: 'test-guid'
+        }
       }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'subscription')
     ).rejects.toThrow(Error)
   })

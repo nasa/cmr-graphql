@@ -30,64 +30,132 @@ type SubscriptionList {
   items: [Subscription]
 }
 
+input SubscriptionsInput {
+  "The concept id of the parent CMR collection."
+  collectionConceptId: String
+  "The unique concept id assigned to the subscription."
+  conceptId: [String]
+  "Cursor that points to the a specific position in a list of requested records."
+  cursor: String
+  "The number of subscriptions requested by the user."
+  limit: Int
+  "The name of a subscription."
+  name: String
+  "The provider associated with this subscription."
+  provider: String
+  "The userid of the subscriber."
+  subscriberId: String
+  "Zero based offset of individual results."
+  offset: Int
+}
+
+input SubscriptionInput {
+  "The unique concept id assigned to the subscription."
+  conceptId: String!
+}
+
 type Query {
   subscriptions (
+    "Subscriptions query parameters"
+    params: SubscriptionsInput
     "The concept id of the parent CMR collection."
-    collectionConceptId: String
+    collectionConceptId: String @deprecated(reason: "Use `params.collectionConceptId`")
     "The unique concept id assigned to the subscription."
-    conceptId: [String]
+    conceptId: [String] @deprecated(reason: "Use `params.conceptId`")
     "Cursor that points to the a specific position in a list of requested records."
-    cursor: String
+    cursor: String @deprecated(reason: "Use `params.cursor`")
     "The number of subscriptions requested by the user."
-    limit: Int
+    limit: Int @deprecated(reason: "Use `params.limit`")
     "The name of a subscription."
-    name: String
+    name: String @deprecated(reason: "Use `params.name`")
     "The provider associated with this subscription."
-    provider: String
+    provider: String @deprecated(reason: "Use `params.provider`")
     "The userid of the subscriber."
-    subscriberId: String
+    subscriberId: String @deprecated(reason: "Use `params.subscriberId`")
     "Zero based offset of individual results."
-    offset: Int
+    offset: Int @deprecated(reason: "Use `params.offset`")
   ): SubscriptionList!
 
   subscription (
+    "Subscription query parameters"
+    params: SubscriptionInput
     "The unique concept id assigned to the subscription."
-    conceptId: String!
+    conceptId: String @deprecated(reason: "Use `params.conceptId`")
   ): Subscription
 }
 
+input CreateSubscriptionInput {
+  "The concept id of the parent CMR collection."
+  collectionConceptId: String!
+  "The email address that notifications will be delivered to."
+  name: String!
+  "The native id to set on the subscription."
+  nativeId: String
+  "The EDL userid of the subscriber."
+  subscriberId: String!
+  "The query used to retrieve data for the subscription."
+  query: String!
+}
+
+input UpdateSubscriptionInput {
+  "The concept id of the parent CMR collection."
+  collectionConceptId: String!
+  "The email address that notifications will be delivered to."
+  name: String!
+  "The native id to set on the subscription."
+  nativeId: String!
+  "The EDL userid of the subscriber."
+  subscriberId: String!
+  "The query used to retrieve data for the subscription."
+  query: String!
+}
+
+input DeleteSubscriptionInput {
+  "The concept id of the subscription."
+  conceptId: String!
+  "The native id of the subscription."
+  nativeId: String!
+}
+
+# TODO mutation inputs
 type Mutation {
   createSubscription (
+    "Create Subscription mutation parameters"
+    params: CreateSubscriptionInput
     "The concept id of the parent CMR collection."
-    collectionConceptId: String!
+    collectionConceptId: String @deprecated(reason: "Use `params.collectionConceptId`")
     "The email address that notifications will be delivered to."
-    name: String!
+    name: String @deprecated(reason: "Use `params.name`")
     "The native id to set on the subscription."
-    nativeId: String
+    nativeId: String @deprecated(reason: "Use `params.nativeId`")
     "The EDL userid of the subscriber."
-    subscriberId: String!
+    subscriberId: String @deprecated(reason: "Use `params.subscriberId`")
     "The query used to retrieve data for the subscription."
-    query: String!
+    query: String @deprecated(reason: "Use `params.query`")
   ): SubscriptionMutationResponse
 
   updateSubscription (
+    "Update Subscription mutation parameters"
+    params: UpdateSubscriptionInput
     "The concept id of the parent CMR collection."
-    collectionConceptId: String!
+    collectionConceptId: String @deprecated(reason: "Use `params.collectionConceptId`")
     "The email address that notifications will be delivered to."
-    name: String!
+    name: String @deprecated(reason: "Use `params.name`")
     "The native id to set on the subscription."
-    nativeId: String!
+    nativeId: String @deprecated(reason: "Use `params.nativeId`")
     "The EDL userid of the subscriber."
-    subscriberId: String!
+    subscriberId: String @deprecated(reason: "Use `params.subscriberId`")
     "The query used to retrieve data for the subscription."
-    query: String!
+    query: String @deprecated(reason: "Use `params.query`")
   ): SubscriptionMutationResponse
 
   deleteSubscription (
+    "Delete Subscription mutation parameters"
+    params: DeleteSubscriptionInput
     "The concept id of the subscription."
-    conceptId: String!
+    conceptId: String @deprecated(reason: "Use `params.conceptId`")
     "The native id of the subscription."
-    nativeId: String!
+    nativeId: String @deprecated(reason: "Use `params.nativeId`")
   ): SubscriptionMutationResponse
 }
 

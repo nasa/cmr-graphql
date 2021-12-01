@@ -330,7 +330,7 @@ describe('granule', () => {
           }
         })
 
-      const response = await granuleDatasource({ concept_id: 'G100000-EDSC' }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'granule')
+      const response = await granuleDatasource({ params: { concept_id: 'G100000-EDSC' } }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'granule')
 
       expect(response).toEqual({
         count: 84,
@@ -508,7 +508,7 @@ describe('granule', () => {
           }]
         })
 
-      const response = await granuleDatasource({ concept_id: 'G100000-EDSC' }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'granule')
+      const response = await granuleDatasource({ params: { concept_id: 'G100000-EDSC' } }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'granule')
 
       expect(response).toEqual({
         count: 84,
@@ -576,7 +576,7 @@ describe('granule', () => {
           }]
         })
 
-      const response = await granuleDatasource({ concept_id: 'G100000-EDSC' }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'granule')
+      const response = await granuleDatasource({ params: { concept_id: 'G100000-EDSC' } }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'granule')
 
       expect(response).toEqual({
         count: 84,
@@ -598,7 +598,7 @@ describe('granule', () => {
       })
 
     await expect(
-      granuleDatasource({ conceptId: 'G100000-EDSC' }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'granule')
+      granuleDatasource({ params: { conceptId: 'G100000-EDSC' } }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'granule')
     ).rejects.toThrow(Error)
   })
 })

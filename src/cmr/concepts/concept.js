@@ -12,6 +12,7 @@ import { cmrDelete } from '../../utils/cmrDelete'
 import { cmrIngest } from '../../utils/cmrIngest'
 import { cmrQuery } from '../../utils/cmrQuery'
 import { parseError } from '../../utils/parseError'
+import { mergeParams } from '../../utils/mergeParams'
 
 export default class Concept {
   /**
@@ -304,6 +305,9 @@ export default class Concept {
    * @param {Object} providedHeaders Headers requested by the query
    */
   ingest(data, requestedKeys, providedHeaders) {
+    // eslint-disable-next-line no-param-reassign
+    data = mergeParams(data)
+
     this.logKeyRequest(requestedKeys, 'ingest')
 
     // Construct the promise that will ingest data into CMR
@@ -321,6 +325,9 @@ export default class Concept {
    * @param {Object} providedHeaders Headers requested by the query
    */
   delete(data, requestedKeys, providedHeaders) {
+    // eslint-disable-next-line no-param-reassign
+    data = mergeParams(data)
+
     this.logKeyRequest(requestedKeys, 'ingest')
 
     // Construct the promise that will delete data from CMR
@@ -389,6 +396,9 @@ export default class Concept {
    * @param {Object} searchParams Parameters provided by the query
    */
   fetch(searchParams) {
+    // eslint-disable-next-line no-param-reassign
+    searchParams = mergeParams(searchParams)
+
     // Default an array to hold the promises we need to make depending on the requested fields
     const promises = []
 

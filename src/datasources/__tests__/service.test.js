@@ -284,7 +284,7 @@ describe('service', () => {
           }]
         })
 
-      const response = await serviceDatasource({ concept_id: 'S100000-EDSC' }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'service')
+      const response = await serviceDatasource({ params: { concept_id: 'S100000-EDSC' } }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'service')
 
       expect(response).toEqual({
         count: 84,
@@ -386,7 +386,7 @@ describe('service', () => {
           }]
         })
 
-      const response = await serviceDatasource({ concept_id: 'S100000-EDSC' }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'service')
+      const response = await serviceDatasource({ params: { concept_id: 'S100000-EDSC' } }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'service')
 
       expect(response).toEqual({
         count: 84,
@@ -408,7 +408,7 @@ describe('service', () => {
       })
 
     await expect(
-      serviceDatasource({ conceptId: 'S100000-EDSC' }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'service')
+      serviceDatasource({ params: { conceptId: 'S100000-EDSC' } }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'service')
     ).rejects.toThrow(Error)
   })
 })

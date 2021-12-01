@@ -1,7 +1,6 @@
 import nock from 'nock'
 
 import { ApolloServer } from 'apollo-server-lambda'
-import { createTestClient } from 'apollo-server-testing'
 
 import resolvers from '..'
 import typeDefs from '../../types'
@@ -52,8 +51,6 @@ describe('Variable', () => {
 
   describe('Query', () => {
     test('all variable fields', async () => {
-      const { query } = createTestClient(server)
-
       nock(/example/)
         .defaultReplyHeaders({
           'CMR-Hits': 1,
@@ -83,7 +80,7 @@ describe('Variable', () => {
           }]
         })
 
-      const response = await query({
+      const response = await server.executeOperation({
         variables: {},
         query: `{
           variables {
@@ -132,8 +129,6 @@ describe('Variable', () => {
     })
 
     test('variables', async () => {
-      const { query } = createTestClient(server)
-
       nock(/example/)
         .defaultReplyHeaders({
           'CMR-Took': 7,
@@ -148,7 +143,7 @@ describe('Variable', () => {
           }]
         })
 
-      const response = await query({
+      const response = await server.executeOperation({
         variables: {},
         query: `{
           variables(limit:2) {
@@ -175,8 +170,6 @@ describe('Variable', () => {
     describe('variable', () => {
       describe('with results', () => {
         test('returns results', async () => {
-          const { query } = createTestClient(server)
-
           nock(/example/)
             .defaultReplyHeaders({
               'CMR-Took': 7,
@@ -191,7 +184,7 @@ describe('Variable', () => {
               }]
             })
 
-          const response = await query({
+          const response = await server.executeOperation({
             variables: {},
             query: `{
               variable(conceptId: "V100000-EDSC") {
@@ -216,8 +209,6 @@ describe('Variable', () => {
 
       describe('with no results', () => {
         test('returns results', async () => {
-          const { query } = createTestClient(server)
-
           nock(/example/)
             .defaultReplyHeaders({
               'CMR-Took': 0,
@@ -228,7 +219,7 @@ describe('Variable', () => {
               items: []
             })
 
-          const response = await query({
+          const response = await server.executeOperation({
             variables: {},
             query: `{
               variable(conceptId: "V100000-EDSC") {
@@ -251,8 +242,6 @@ describe('Variable', () => {
 
   describe('Variable', () => {
     test('collections', async () => {
-      const { query } = createTestClient(server)
-
       nock(/example/)
         .defaultReplyHeaders({
           'CMR-Took': 7,
@@ -299,7 +288,7 @@ describe('Variable', () => {
           }
         })
 
-      const response = await query({
+      const response = await server.executeOperation({
         variables: {},
         query: `{
           variables {

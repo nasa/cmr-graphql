@@ -55,12 +55,14 @@ type Tool {
   versionDescription: String
 
   collections (
+    "Collections query parameters"
+    params: CollectionsInput
     "The unique concept id assigned to the service."
-    conceptId: [String]
+    conceptId: [String] @deprecated(reason: "Use `params.conceptId`")
     "The number of collections requested by the user."
-    limit: Int
+    limit: Int @deprecated(reason: "Use `params.limit`")
     "Zero based offset of individual results."
-    offset: Int
+    offset: Int @deprecated(reason: "Use `params.offset`")
   ): CollectionList
 }
 
@@ -73,20 +75,40 @@ type ToolList {
   items: [Tool]
 }
 
+input ToolsInput {
+  "The unique concept id assigned to the tool."
+  conceptId: [String]
+  "Cursor that points to the a specific position in a list of requested records."
+  cursor: String
+  "The number of servies requested by the user."
+  limit: Int
+  "Zero based offset of individual results."
+  offset: Int
+}
+
+input ToolInput {
+  "The unique concept id assigned to the tool."
+  conceptId: String!
+}
+
 type Query {
   tools (
+    "Tools query parameters"
+    params: ToolsInput
     "The unique concept id assigned to the tool."
-    conceptId: [String]
+    conceptId: [String] @deprecated(reason: "Use `params.conceptId`")
     "Cursor that points to the a specific position in a list of requested records."
-    cursor: String
+    cursor: String @deprecated(reason: "Use `params.cursor`")
     "The number of servies requested by the user."
-    limit: Int
+    limit: Int @deprecated(reason: "Use `params.limit`")
     "Zero based offset of individual results."
-    offset: Int
+    offset: Int @deprecated(reason: "Use `params.offset`")
   ): ToolList!
 
   tool (
+    "Tool query parameters"
+    params: ToolInput
     "The unique concept id assigned to the tool."
-    conceptId: String!
+    conceptId: String @deprecated(reason: "Use `params.conceptId`")
   ): Tool
 }
