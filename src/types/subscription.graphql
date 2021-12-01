@@ -117,7 +117,6 @@ input DeleteSubscriptionInput {
   nativeId: String!
 }
 
-# TODO mutation inputs
 type Mutation {
   createSubscription (
     "Create Subscription mutation parameters"
