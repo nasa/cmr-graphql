@@ -31,12 +31,14 @@ type Variable {
   variableType: String
 
   collections (
+    "Collections query parameters"
+    params: CollectionsInput
     "The unique concept id assigned to the service."
-    conceptId: [String]
+    conceptId: [String] @deprecated(reason: "Use `params.conceptId`")
     "The number of collections requested by the user."
-    limit: Int
+    limit: Int @deprecated(reason: "Use `params.limit`")
     "Zero based offset of individual results."
-    offset: Int
+    offset: Int @deprecated(reason: "Use `params.offset`")
   ): CollectionList
 }
 
@@ -49,22 +51,44 @@ type VariableList {
   items: [Variable]
 }
 
+input VariablesInput {
+  "The unique concept id assigned to the variable."
+  conceptId: [String]
+  "Cursor that points to the a specific position in a list of requested records."
+  cursor: String
+  "The number of variables requested by the user."
+  limit: Int
+  "The name of a variable."
+  name: String
+  "Zero based offset of individual results."
+  offset: Int
+}
+
+input VariableInput {
+  "The unique concept id assigned to the variable."
+  conceptId: String!
+}
+
 type Query {
   variables (
+    "Variables query parameters"
+    params: VariablesInput
     "The unique concept id assigned to the variable."
-    conceptId: [String]
+    conceptId: [String] @deprecated(reason: "Use `params.conceptId`")
     "Cursor that points to the a specific position in a list of requested records."
-    cursor: String
+    cursor: String @deprecated(reason: "Use `params.cursor`")
     "The number of variables requested by the user."
-    limit: Int
+    limit: Int @deprecated(reason: "Use `params.limit`")
     "The name of a variable."
-    name: String
+    name: String @deprecated(reason: "Use `params.name`")
     "Zero based offset of individual results."
-    offset: Int
+    offset: Int @deprecated(reason: "Use `params.offset`")
   ): VariableList!
 
   variable (
+    "Variable query parameters"
+    params: VariableInput
     "The unique concept id assigned to the variable."
-    conceptId: String!
+    conceptId: String @deprecated(reason: "Use `params.conceptId`")
   ): Variable
 }

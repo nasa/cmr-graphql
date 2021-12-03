@@ -284,7 +284,7 @@ describe('variable', () => {
           }]
         })
 
-      const response = await variableDatasource({ concept_id: 'V100000-EDSC' }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'variable')
+      const response = await variableDatasource({ params: { concept_id: 'V100000-EDSC' } }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'variable')
 
       expect(response).toEqual({
         count: 84,
@@ -386,7 +386,7 @@ describe('variable', () => {
           }]
         })
 
-      const response = await variableDatasource({ conceptId: 'V100000-EDSC' }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'variable')
+      const response = await variableDatasource({ params: { conceptId: 'V100000-EDSC' } }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'variable')
 
       expect(response).toEqual({
         count: 84,
@@ -408,7 +408,7 @@ describe('variable', () => {
       })
 
     await expect(
-      variableDatasource({ conceptId: 'V100000-EDSC' }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'variable')
+      variableDatasource({ params: { conceptId: 'V100000-EDSC' } }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'variable')
     ).rejects.toThrow(Error)
   })
 })

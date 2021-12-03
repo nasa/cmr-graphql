@@ -284,7 +284,7 @@ describe('tool', () => {
           }]
         })
 
-      const response = await toolDatasource({ concept_id: 'T100000-EDSC' }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'tool')
+      const response = await toolDatasource({ params: { concept_id: 'T100000-EDSC' } }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'tool')
 
       expect(response).toEqual({
         count: 84,
@@ -386,7 +386,7 @@ describe('tool', () => {
           }]
         })
 
-      const response = await toolDatasource({ concept_id: 'T100000-EDSC' }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'tool')
+      const response = await toolDatasource({ params: { concept_id: 'T100000-EDSC' } }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'tool')
 
       expect(response).toEqual({
         count: 84,
@@ -408,7 +408,7 @@ describe('tool', () => {
       })
 
     await expect(
-      toolDatasource({ conceptId: 'T100000-EDSC' }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'tool')
+      toolDatasource({ params: { conceptId: 'T100000-EDSC' } }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'tool')
     ).rejects.toThrow(Error)
   })
 })

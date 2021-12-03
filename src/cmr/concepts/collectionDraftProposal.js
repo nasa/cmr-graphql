@@ -4,7 +4,9 @@ import {
   pick
 } from 'lodash'
 import snakecaseKeys from 'snakecase-keys'
+
 import { draftMmtQuery } from '../../utils/draftMmtQuery'
+import { mergeParams } from '../../utils/mergeParams'
 import { parseError } from '../../utils/parseError'
 
 import Concept from './concept'
@@ -77,6 +79,9 @@ export default class CollectionDraftProposal extends Concept {
   }
 
   fetch(searchParams) {
+    // eslint-disable-next-line no-param-reassign
+    searchParams = mergeParams(searchParams)
+
     // Default an array to hold the promises we need to make depending on the requested fields
     const promises = []
 

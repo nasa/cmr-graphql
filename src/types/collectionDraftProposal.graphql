@@ -81,8 +81,12 @@ type CollectionDraftProposal {
   versionId: String
 }
 
+input CollectionDraftProposalInput {
+  id: Int!
+}
+
 type Query {
   collectionDraftProposal (
-    id: Int!
+    params: CollectionDraftProposalInput
   ): CollectionDraftProposal
 }

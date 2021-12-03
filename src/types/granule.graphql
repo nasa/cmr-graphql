@@ -68,60 +68,120 @@ type GranuleList {
   items: [Granule]
 }
 
+input GranulesInput {
+  "Bounding boxes define an area on the earth aligned with longitude and latitude. The Bounding box parameters must be 4 comma-separated numbers: lower left longitude, lower left latitude, upper right longitude, upper right latitude."
+  boundingBox: [String]
+  "Search by the browse only flag of the granule."
+  browseOnly: Boolean
+  "Circle defines a circle area on the earth with a center point and a radius. The center parameters must be 3 comma-separated numbers: longitude of the center point, latitude of the center point, radius of the circle in meters. The circle center cannot be on North or South pole. The radius of the circle must be between 10 and 6,000,000."
+  circle: [String]
+  "Search granules by cloud cover min and max."
+  cloudCover: JSON
+  "The unique concept id assigned to the parent collection."
+  collectionConceptId: String
+  "The unique concept id assigned to the granule."
+  conceptId: [String]
+  "Cursor that points to the a specific position in a list of requested records."
+  cursor: String
+  "Search by the day/night flag of the granule."
+  dayNightFlag: String
+  "Search by the equator crossing date of the granule."
+  equatorCrossingDate: JSON
+  "Search by the equator crossing longitude of the granule."
+  equatorCrossingLongitude: JSON
+  "Exclude granules from results by echo_granule_id and/or concept_id."
+  exclude: JSON
+  "The number of granules requested by the user."
+  limit: Int
+  "Search for granules that intersect with provided lines."
+  line: [String]
+  "Filter the links based on these types."
+  linkTypes: [String]
+  "Zero based offset of individual results."
+  offset: Int
+  "Search by the online only flag of the granule."
+  onlineOnly: Boolean
+  "Options to provide to CMR pertaining to and, or, and wildcard searching."
+  options: JSON
+  "Search for granules by orbit number min and max"
+  orbitNumber: JSON
+  "Search using a point involves using a pair of values representing the point coordinates as parameters. The first value is the longitude and second value is the latitude."
+  point: [String]
+  "Polygon points are provided in counter-clockwise order. The last point should match the first point to close the polygon. The values are listed comma separated in longitude latitude order, i.e. lon1, lat1, lon2, lat2, lon3, lat3, and so on."
+  polygon: [String]
+  "Search for granules using the readable_granule_name parameter."
+  readableGranuleName: [String]
+  "One or more sort keys can be specified to impact searching. Fields can be prepended with a '-' to sort in descending order. Ascending order is the default but + can be used to explicitly request ascending."
+  sortKey: [String]
+  "The temporal datetime has to be in yyyy-MM-ddTHH:mm:ssZ format."
+  temporal: String
+  "The 2D coordinate system associated with the collection"
+  twoDCoordinateSystem: JSON
+}
+
+input GranuleInput {
+  "The unique concept id assigned to the granule."
+  conceptId: String!
+}
+
 type Query {
   granules (
+    "Granules query parameters"
+    params: GranulesInput
     "Bounding boxes define an area on the earth aligned with longitude and latitude. The Bounding box parameters must be 4 comma-separated numbers: lower left longitude, lower left latitude, upper right longitude, upper right latitude."
-    boundingBox: [String]
+    boundingBox: [String] @deprecated(reason: "Use `params.boundingBox`")
     "Search by the browse only flag of the granule."
-    browseOnly: Boolean
+    browseOnly: Boolean @deprecated(reason: "Use `params.browseOnly`")
     "Circle defines a circle area on the earth with a center point and a radius. The center parameters must be 3 comma-separated numbers: longitude of the center point, latitude of the center point, radius of the circle in meters. The circle center cannot be on North or South pole. The radius of the circle must be between 10 and 6,000,000."
-    circle: [String]
+    circle: [String] @deprecated(reason: "Use `params.circle`")
     "Search granules by cloud cover min and max."
-    cloudCover: JSON
+    cloudCover: JSON @deprecated(reason: "Use `params.cloudCover`")
     "The unique concept id assigned to the parent collection."
-    collectionConceptId: String
+    collectionConceptId: String @deprecated(reason: "Use `params.collectionConceptId`")
     "The unique concept id assigned to the granule."
-    conceptId: [String]
+    conceptId: [String] @deprecated(reason: "Use `params.conceptId`")
     "Cursor that points to the a specific position in a list of requested records."
-    cursor: String
+    cursor: String @deprecated(reason: "Use `params.cursor`")
     "Search by the day/night flag of the granule."
-    dayNightFlag: String
+    dayNightFlag: String @deprecated(reason: "Use `params.dayNightFlag`")
     "Search by the equator crossing date of the granule."
-    equatorCrossingDate: JSON
+    equatorCrossingDate: JSON @deprecated(reason: "Use `params.equatorCrossingDate`")
     "Search by the equator crossing longitude of the granule."
-    equatorCrossingLongitude: JSON
+    equatorCrossingLongitude: JSON @deprecated(reason: "Use `params.equatorCrossingLongitude`")
     "Exclude granules from results by echo_granule_id and/or concept_id."
-    exclude: JSON
+    exclude: JSON @deprecated(reason: "Use `params.exclude`")
     "The number of granules requested by the user."
-    limit: Int
+    limit: Int @deprecated(reason: "Use `params.limit`")
     "Search for granules that intersect with provided lines."
-    line: [String]
+    line: [String] @deprecated(reason: "Use `params.line`")
     "Filter the links based on these types."
-    linkTypes: [String]
+    linkTypes: [String] @deprecated(reason: "Use `params.linkTypes`")
     "Zero based offset of individual results."
-    offset: Int
+    offset: Int @deprecated(reason: "Use `params.offset`")
     "Search by the online only flag of the granule."
-    onlineOnly: Boolean
+    onlineOnly: Boolean @deprecated(reason: "Use `params.onlineOnly`")
     "Options to provide to CMR pertaining to and, or, and wildcard searching."
-    options: JSON
+    options: JSON @deprecated(reason: "Use `params.options`")
     "Search for granules by orbit number min and max"
-    orbitNumber: JSON
+    orbitNumber: JSON @deprecated(reason: "Use `params.orbitNumber`")
     "Search using a point involves using a pair of values representing the point coordinates as parameters. The first value is the longitude and second value is the latitude."
-    point: [String]
+    point: [String] @deprecated(reason: "Use `params.point`")
     "Polygon points are provided in counter-clockwise order. The last point should match the first point to close the polygon. The values are listed comma separated in longitude latitude order, i.e. lon1, lat1, lon2, lat2, lon3, lat3, and so on."
-    polygon: [String]
+    polygon: [String] @deprecated(reason: "Use `params.polygon`")
     "Search for granules using the readable_granule_name parameter."
-    readableGranuleName: [String]
+    readableGranuleName: [String] @deprecated(reason: "Use `params.readableGranuleName`")
     "One or more sort keys can be specified to impact searching. Fields can be prepended with a '-' to sort in descending order. Ascending order is the default but + can be used to explicitly request ascending."
-    sortKey: [String]
+    sortKey: [String] @deprecated(reason: "Use `params.sortKey`")
     "The temporal datetime has to be in yyyy-MM-ddTHH:mm:ssZ format."
-    temporal: String
+    temporal: String @deprecated(reason: "Use `params.temporal`")
     "The 2D coordinate system associated with the collection"
-    twoDCoordinateSystem: JSON
+    twoDCoordinateSystem: JSON @deprecated(reason: "Use `params.twoDCoordinateSystem`")
   ): GranuleList!
 
   granule (
+    "Granule query parameters"
+    params: GranuleInput
     "The unique concept id assigned to the granule."
-    conceptId: String!
+    conceptId: String @deprecated(reason: "Use `params.conceptId`")
   ): Granule
 }

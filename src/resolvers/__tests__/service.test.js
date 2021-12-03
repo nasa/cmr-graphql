@@ -1,7 +1,6 @@
 import nock from 'nock'
 
 import { ApolloServer } from 'apollo-server-lambda'
-import { createTestClient } from 'apollo-server-testing'
 
 import resolvers from '..'
 import typeDefs from '../../types'
@@ -52,8 +51,6 @@ describe('Service', () => {
 
   describe('Query', () => {
     test('all service fields', async () => {
-      const { query } = createTestClient(server)
-
       nock(/example/)
         .defaultReplyHeaders({
           'CMR-Hits': 1,
@@ -84,7 +81,7 @@ describe('Service', () => {
           }]
         })
 
-      const response = await query({
+      const response = await server.executeOperation({
         variables: {},
         query: `{
           services {
@@ -135,8 +132,6 @@ describe('Service', () => {
     })
 
     test('services', async () => {
-      const { query } = createTestClient(server)
-
       nock(/example/)
         .defaultReplyHeaders({
           'CMR-Took': 7,
@@ -151,10 +146,10 @@ describe('Service', () => {
           }]
         })
 
-      const response = await query({
+      const response = await server.executeOperation({
         variables: {},
         query: `{
-          services(limit:2) {
+          services(params: { limit: 2 }) {
             items {
               conceptId
             }
@@ -178,8 +173,6 @@ describe('Service', () => {
     describe('service', () => {
       describe('with results', () => {
         test('returns results', async () => {
-          const { query } = createTestClient(server)
-
           nock(/example/)
             .defaultReplyHeaders({
               'CMR-Took': 7,
@@ -192,10 +185,10 @@ describe('Service', () => {
               }]
             })
 
-          const response = await query({
+          const response = await server.executeOperation({
             variables: {},
             query: `{
-              service(conceptId: "S100000-EDSC") {
+              service(params: { conceptId: "S100000-EDSC" }) {
                 conceptId
               }
             }`
@@ -213,8 +206,6 @@ describe('Service', () => {
 
       describe('with no results', () => {
         test('returns no results', async () => {
-          const { query } = createTestClient(server)
-
           nock(/example/)
             .defaultReplyHeaders({
               'CMR-Took': 7,
@@ -225,10 +216,10 @@ describe('Service', () => {
               items: []
             })
 
-          const response = await query({
+          const response = await server.executeOperation({
             variables: {},
             query: `{
-              service(conceptId: "S100000-EDSC") {
+              service(params: { conceptId: "S100000-EDSC" }) {
                 conceptId
               }
             }`
@@ -246,8 +237,6 @@ describe('Service', () => {
 
   describe('Service', () => {
     test('collections', async () => {
-      const { query } = createTestClient(server)
-
       nock(/example/)
         .defaultReplyHeaders({
           'CMR-Took': 7,
@@ -294,7 +283,7 @@ describe('Service', () => {
           }
         })
 
-      const response = await query({
+      const response = await server.executeOperation({
         variables: {},
         query: `{
           services {

@@ -3,7 +3,6 @@ import nock from 'nock'
 jest.mock('uuid', () => ({ v4: () => '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed' }))
 
 import { ApolloServer } from 'apollo-server-lambda'
-import { createTestClient } from 'apollo-server-testing'
 
 import resolvers from '..'
 import typeDefs from '../../types'
@@ -54,8 +53,6 @@ describe('Subscription', () => {
 
   describe('Query', () => {
     test('all subscription fields', async () => {
-      const { query } = createTestClient(server)
-
       nock(/example/)
         .defaultReplyHeaders({
           'CMR-Hits': 1,
@@ -81,7 +78,7 @@ describe('Subscription', () => {
           }]
         })
 
-      const response = await query({
+      const response = await server.executeOperation({
         subscriptions: {},
         query: `{
           subscriptions {
@@ -122,8 +119,6 @@ describe('Subscription', () => {
     })
 
     test('subscriptions', async () => {
-      const { query } = createTestClient(server)
-
       nock(/example/)
         .defaultReplyHeaders({
           'CMR-Took': 7,
@@ -138,10 +133,10 @@ describe('Subscription', () => {
           }]
         })
 
-      const response = await query({
+      const response = await server.executeOperation({
         subscriptions: {},
         query: `{
-          subscriptions(limit:2) {
+          subscriptions(params: { limit:2 }) {
             items {
               conceptId
             }
@@ -165,8 +160,6 @@ describe('Subscription', () => {
     describe('subscription', () => {
       describe('with results', () => {
         test('returns results', async () => {
-          const { query } = createTestClient(server)
-
           nock(/example/)
             .defaultReplyHeaders({
               'CMR-Took': 7,
@@ -179,10 +172,10 @@ describe('Subscription', () => {
               }]
             })
 
-          const response = await query({
+          const response = await server.executeOperation({
             subscriptions: {},
             query: `{
-              subscription(conceptId: "SUB100000-EDSC") {
+              subscription(params: { conceptId: "SUB100000-EDSC" }) {
                 conceptId
               }
             }`
@@ -200,8 +193,6 @@ describe('Subscription', () => {
 
       describe('with no results', () => {
         test('returns no results', async () => {
-          const { query } = createTestClient(server)
-
           nock(/example/)
             .defaultReplyHeaders({
               'CMR-Took': 0,
@@ -212,10 +203,10 @@ describe('Subscription', () => {
               items: []
             })
 
-          const response = await query({
+          const response = await server.executeOperation({
             subscriptions: {},
             query: `{
-              subscription(conceptId: "SUB100000-EDSC") {
+              subscription(params: { conceptId: "SUB100000-EDSC" }) {
                 conceptId
               }
             }`
@@ -233,8 +224,6 @@ describe('Subscription', () => {
 
   describe('Subscription', () => {
     test('collection', async () => {
-      const { query } = createTestClient(server)
-
       nock(/example/)
         .defaultReplyHeaders({
           'CMR-Took': 7,
@@ -279,7 +268,7 @@ describe('Subscription', () => {
           }
         })
 
-      const response = await query({
+      const response = await server.executeOperation({
         variables: {},
         query: `{
           subscriptions {
@@ -315,8 +304,6 @@ describe('Subscription', () => {
 
   describe('Subscription', () => {
     test('createSubscription', async () => {
-      const { query } = createTestClient(server)
-
       nock(/example/)
         .defaultReplyHeaders({
           'CMR-Took': 7,
@@ -328,7 +315,7 @@ describe('Subscription', () => {
           'revision-id': '1'
         })
 
-      const response = await query({
+      const response = await server.executeOperation({
         variables: {
           collectionConceptId: 'C100000-EDSC',
           name: 'Test Subscription',
@@ -342,10 +329,12 @@ describe('Subscription', () => {
           $subscriberId: String!
         ) {
           createSubscription(
-            collectionConceptId: $collectionConceptId
-            name: $name
-            query: $query
-            subscriberId: $subscriberId
+            params: {
+              collectionConceptId: $collectionConceptId
+              name: $name
+              query: $query
+              subscriberId: $subscriberId
+            }
           ) {
               conceptId
               revisionId
@@ -364,8 +353,6 @@ describe('Subscription', () => {
     })
 
     test('updateSubscription', async () => {
-      const { query } = createTestClient(server)
-
       nock(/example/)
         .defaultReplyHeaders({
           'CMR-Took': 7,
@@ -377,7 +364,7 @@ describe('Subscription', () => {
           'revision-id': '2'
         })
 
-      const response = await query({
+      const response = await server.executeOperation({
         variables: {
           collectionConceptId: 'C100000-EDSC',
           name: 'Test Subscription',
@@ -393,11 +380,13 @@ describe('Subscription', () => {
           $subscriberId: String!
         ) {
           updateSubscription(
-            collectionConceptId: $collectionConceptId
-            name: $name
-            nativeId: $nativeId
-            query: $query
-            subscriberId: $subscriberId
+            params: {
+              collectionConceptId: $collectionConceptId
+              name: $name
+              nativeId: $nativeId
+              query: $query
+              subscriberId: $subscriberId
+            }
           ) {
               conceptId
               revisionId
@@ -416,8 +405,6 @@ describe('Subscription', () => {
     })
 
     test('deleteSubscription', async () => {
-      const { query } = createTestClient(server)
-
       nock(/example/)
         .defaultReplyHeaders({
           'CMR-Took': 7,
@@ -429,7 +416,7 @@ describe('Subscription', () => {
           'revision-id': '2'
         })
 
-      const response = await query({
+      const response = await server.executeOperation({
         variables: {
           conceptId: 'SUB100000-EDSC',
           nativeId: 'test-guid'
@@ -439,8 +426,10 @@ describe('Subscription', () => {
           $nativeId: String!
         ) {
           deleteSubscription(
-            conceptId: $conceptId
-            nativeId: $nativeId
+            params: {
+              conceptId: $conceptId
+              nativeId: $nativeId
+            }
           ) {
               conceptId
               revisionId

@@ -1,7 +1,6 @@
 import nock from 'nock'
 
 import { ApolloServer } from 'apollo-server-lambda'
-import { createTestClient } from 'apollo-server-testing'
 
 import resolvers from '..'
 import typeDefs from '../../types'
@@ -52,8 +51,6 @@ describe('Tool', () => {
 
   describe('Query', () => {
     test('all tool fields', async () => {
-      const { query } = createTestClient(server)
-
       nock(/example/)
         .defaultReplyHeaders({
           'CMR-Hits': 1,
@@ -97,7 +94,7 @@ describe('Tool', () => {
           }]
         })
 
-      const response = await query({
+      const response = await server.executeOperation({
         variables: {},
         query: `{
           tools {
@@ -174,8 +171,6 @@ describe('Tool', () => {
     })
 
     test('tools', async () => {
-      const { query } = createTestClient(server)
-
       nock(/example/)
         .defaultReplyHeaders({
           'CMR-Took': 7,
@@ -190,7 +185,7 @@ describe('Tool', () => {
           }]
         })
 
-      const response = await query({
+      const response = await server.executeOperation({
         variables: {},
         query: `{
           tools(limit:2) {
@@ -217,8 +212,6 @@ describe('Tool', () => {
     describe('tool', () => {
       describe('with results', () => {
         test('returns results', async () => {
-          const { query } = createTestClient(server)
-
           nock(/example/)
             .defaultReplyHeaders({
               'CMR-Took': 7,
@@ -231,7 +224,7 @@ describe('Tool', () => {
               }]
             })
 
-          const response = await query({
+          const response = await server.executeOperation({
             variables: {},
             query: `{
               tool(conceptId: "T100000-EDSC") {
@@ -252,8 +245,6 @@ describe('Tool', () => {
 
       describe('with no results', () => {
         test('returns no results', async () => {
-          const { query } = createTestClient(server)
-
           nock(/example/)
             .defaultReplyHeaders({
               'CMR-Took': 0,
@@ -264,7 +255,7 @@ describe('Tool', () => {
               items: []
             })
 
-          const response = await query({
+          const response = await server.executeOperation({
             variables: {},
             query: `{
               tool(conceptId: "T100000-EDSC") {
@@ -285,8 +276,6 @@ describe('Tool', () => {
 
   describe('Tool', () => {
     test('collections', async () => {
-      const { query } = createTestClient(server)
-
       nock(/example/)
         .defaultReplyHeaders({
           'CMR-Took': 7,
@@ -333,7 +322,7 @@ describe('Tool', () => {
           }
         })
 
-      const response = await query({
+      const response = await server.executeOperation({
         variables: {},
         query: `{
           tools {

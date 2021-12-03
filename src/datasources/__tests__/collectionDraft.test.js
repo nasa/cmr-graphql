@@ -55,7 +55,7 @@ describe('collectionDraft', () => {
         ShortName: 'Mock ShortName'
       })
 
-    const response = await collectionDraftDatasource({ id: '123' }, { 'X-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'collectionDraft')
+    const response = await collectionDraftDatasource({ params: { id: '123' } }, { 'X-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'collectionDraft')
 
     expect(response).toEqual([{
       abstract: 'Mock Abstract',
@@ -73,7 +73,7 @@ describe('collectionDraft', () => {
       })
 
     await expect(
-      collectionDraftDatasource({ id: '123' }, { 'X-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'collectionDraft')
+      collectionDraftDatasource({ params: { id: '123' } }, { 'X-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'collectionDraft')
     ).rejects.toThrow(Error)
   })
 })

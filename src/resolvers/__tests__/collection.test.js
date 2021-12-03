@@ -1,7 +1,6 @@
 import nock from 'nock'
 
 import { ApolloServer } from 'apollo-server-lambda'
-import { createTestClient } from 'apollo-server-testing'
 
 import resolvers from '..'
 import typeDefs from '../../types'
@@ -57,8 +56,6 @@ describe('Collection', () => {
 
   describe('Query', () => {
     test('all collection fields', async () => {
-      const { query } = createTestClient(server)
-
       nock(/example/)
         .defaultReplyHeaders({
           'CMR-Hits': 1,
@@ -227,7 +224,7 @@ describe('Collection', () => {
           }]
         })
 
-      const response = await query({
+      const response = await server.executeOperation({
         variables: {},
         query: `{
           collections {
@@ -455,8 +452,6 @@ describe('Collection', () => {
     })
 
     test('collections', async () => {
-      const { query } = createTestClient(server)
-
       nock(/example/)
         .defaultReplyHeaders({
           'CMR-Took': 7,
@@ -473,7 +468,7 @@ describe('Collection', () => {
           }
         })
 
-      const response = await query({
+      const response = await server.executeOperation({
         variables: {},
         query: `{
           collections(limit:2) {
@@ -500,8 +495,6 @@ describe('Collection', () => {
     describe('collection', () => {
       describe('with results', () => {
         test('returns results', async () => {
-          const { query } = createTestClient(server)
-
           nock(/example/)
             .defaultReplyHeaders({
               'CMR-Took': 7,
@@ -516,7 +509,7 @@ describe('Collection', () => {
               }
             })
 
-          const response = await query({
+          const response = await server.executeOperation({
             variables: {},
             query: `{
               collection(conceptId: "C100000-EDSC") {
@@ -537,8 +530,6 @@ describe('Collection', () => {
 
       describe('with no results', () => {
         test('returns no results', async () => {
-          const { query } = createTestClient(server)
-
           nock(/example/)
             .defaultReplyHeaders({
               'CMR-Took': 7,
@@ -551,7 +542,7 @@ describe('Collection', () => {
               }
             })
 
-          const response = await query({
+          const response = await server.executeOperation({
             variables: {},
             query: `{
               collection(conceptId: "C100000-EDSC") {
@@ -572,8 +563,6 @@ describe('Collection', () => {
 
   describe('Collection', () => {
     test('granules', async () => {
-      const { query } = createTestClient(server)
-
       nock(/example/)
         .defaultReplyHeaders({
           'CMR-Took': 7,
@@ -622,7 +611,7 @@ describe('Collection', () => {
           }
         })
 
-      const response = await query({
+      const response = await server.executeOperation({
         variables: {},
         query: `{
           collections {
@@ -666,8 +655,6 @@ describe('Collection', () => {
     })
 
     test('granules with arguments passed from the collection', async () => {
-      const { query } = createTestClient(server)
-
       nock(/example/)
         .defaultReplyHeaders({
           'CMR-Took': 7,
@@ -716,7 +703,7 @@ describe('Collection', () => {
           }
         })
 
-      const response = await query({
+      const response = await server.executeOperation({
         variables: {},
         query: `{
           collections(
@@ -765,8 +752,6 @@ describe('Collection', () => {
     describe('services', () => {
       describe('no associations are present in the metadata', () => {
         test('doesn\'t query for or return services', async () => {
-          const { query } = createTestClient(server)
-
           nock(/example/)
             .defaultReplyHeaders({
               'CMR-Took': 7,
@@ -783,7 +768,7 @@ describe('Collection', () => {
               }
             })
 
-          const response = await query({
+          const response = await server.executeOperation({
             variables: {},
             query: `{
               collections {
@@ -821,8 +806,6 @@ describe('Collection', () => {
 
       describe('association are present in the metadata but not service assocations', () => {
         test('doesn\'t query for or return services', async () => {
-          const { query } = createTestClient(server)
-
           nock(/example/)
             .defaultReplyHeaders({
               'CMR-Took': 7,
@@ -845,7 +828,7 @@ describe('Collection', () => {
               }
             })
 
-          const response = await query({
+          const response = await server.executeOperation({
             variables: {},
             query: `{
               collections {
@@ -883,8 +866,6 @@ describe('Collection', () => {
 
       describe('when service associations are present in the metadata', () => {
         test('queries for and returns services', async () => {
-          const { query } = createTestClient(server)
-
           nock(/example/)
             .defaultReplyHeaders({
               'CMR-Took': 7,
@@ -935,7 +916,7 @@ describe('Collection', () => {
               }]
             })
 
-          const response = await query({
+          const response = await server.executeOperation({
             variables: {},
             query: `{
               collections {
@@ -982,8 +963,6 @@ describe('Collection', () => {
 
     describe('subscriptions', () => {
       test('queries for and returns subscriptions', async () => {
-        const { query } = createTestClient(server)
-
         nock(/example/)
           .defaultReplyHeaders({
             'CMR-Took': 7,
@@ -1028,7 +1007,7 @@ describe('Collection', () => {
             }]
           })
 
-        const response = await query({
+        const response = await server.executeOperation({
           variables: {},
           query: `{
             collections {
@@ -1075,8 +1054,6 @@ describe('Collection', () => {
     describe('tools', () => {
       describe('no associations are present in the metadata', () => {
         test('doesn\'t query for or return tools', async () => {
-          const { query } = createTestClient(server)
-
           nock(/example/)
             .defaultReplyHeaders({
               'CMR-Took': 7,
@@ -1093,7 +1070,7 @@ describe('Collection', () => {
               }
             })
 
-          const response = await query({
+          const response = await server.executeOperation({
             variables: {},
             query: `{
               collections {
@@ -1131,8 +1108,6 @@ describe('Collection', () => {
 
       describe('association are present in the metadata but not tool assocations', () => {
         test('doesn\'t query for or return tools', async () => {
-          const { query } = createTestClient(server)
-
           nock(/example/)
             .defaultReplyHeaders({
               'CMR-Took': 7,
@@ -1155,7 +1130,7 @@ describe('Collection', () => {
               }
             })
 
-          const response = await query({
+          const response = await server.executeOperation({
             variables: {},
             query: `{
               collections {
@@ -1193,8 +1168,6 @@ describe('Collection', () => {
 
       describe('when tool associations are present in the metadata', () => {
         test('queries for and returns tools', async () => {
-          const { query } = createTestClient(server)
-
           nock(/example/)
             .defaultReplyHeaders({
               'CMR-Took': 7,
@@ -1245,7 +1218,7 @@ describe('Collection', () => {
               }]
             })
 
-          const response = await query({
+          const response = await server.executeOperation({
             variables: {},
             query: `{
               collections {
@@ -1293,8 +1266,6 @@ describe('Collection', () => {
     describe('variables', () => {
       describe('no associations are present in the metadata', () => {
         test('doesn\'t query for or return variables', async () => {
-          const { query } = createTestClient(server)
-
           nock(/example/)
             .defaultReplyHeaders({
               'CMR-Took': 7,
@@ -1311,7 +1282,7 @@ describe('Collection', () => {
               }
             })
 
-          const response = await query({
+          const response = await server.executeOperation({
             variables: {},
             query: `{
               collections {
@@ -1349,8 +1320,6 @@ describe('Collection', () => {
 
       describe('association are present in the metadata but not variable assocations', () => {
         test('doesn\'t query for or return variables', async () => {
-          const { query } = createTestClient(server)
-
           nock(/example/)
             .defaultReplyHeaders({
               'CMR-Took': 7,
@@ -1373,7 +1342,7 @@ describe('Collection', () => {
               }
             })
 
-          const response = await query({
+          const response = await server.executeOperation({
             variables: {},
             query: `{
               collections {
@@ -1411,8 +1380,6 @@ describe('Collection', () => {
 
       describe('when service associations are present in the metadata', () => {
         test('queries for and returns variables', async () => {
-          const { query } = createTestClient(server)
-
           nock(/example/)
             .defaultReplyHeaders({
               'CMR-Took': 7,
@@ -1463,7 +1430,7 @@ describe('Collection', () => {
               }]
             })
 
-          const response = await query({
+          const response = await server.executeOperation({
             variables: {},
             query: `{
               collections {
@@ -1510,8 +1477,6 @@ describe('Collection', () => {
 
     describe('relatedCollections', () => {
       test('queries CMR GraphDB for relationships', async () => {
-        const { query } = createTestClient(server)
-
         nock(/example/)
           .defaultReplyHeaders({
             'CMR-Took': 7,
@@ -1534,7 +1499,7 @@ describe('Collection', () => {
           .post('/graphdb')
           .reply(200, relatedCollectionsGraphdbResponseMocks)
 
-        const response = await query({
+        const response = await server.executeOperation({
           variables: {},
           query: `{
             collections (

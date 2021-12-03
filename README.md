@@ -27,7 +27,9 @@ GraphQL uses a few environment variables for configuring runtime options:
 
 |Variable Name|Default|Description|
 |-|:-:|-|
-|CMR_ROOT_URL||URL to ping when retrieving metadata e.g. https://cmr.earthdata.nasa.gov|
+|CMR_ROOT_URL||URL to ping when retrieving metadata from CMR e.g. https://cmr.earthdata.nasa.gov|
+|MMT_ROOT_URL||URL to ping when retrieving metadata from MMT e.g. https://mmt.earthdata.nasa.gov|
+|DRAFT_MMT_ROOT_URL||URL to ping when retrieving draft metadata from Draft MMT e.g. https://draftmmt.earthdata.nasa.gov|
 |LAMBDA_TIMEOUT|30|Number of seconds to set the Lambda timeout to.|
 
 ### Serverless Framework

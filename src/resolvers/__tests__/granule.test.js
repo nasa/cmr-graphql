@@ -1,7 +1,6 @@
 import nock from 'nock'
 
 import { ApolloServer } from 'apollo-server-lambda'
-import { createTestClient } from 'apollo-server-testing'
 
 import resolvers from '..'
 import typeDefs from '../../types'
@@ -52,8 +51,6 @@ describe('Collection', () => {
 
   describe('Query', () => {
     test('all granule fields', async () => {
-      const { query } = createTestClient(server)
-
       nock(/example/)
         .defaultReplyHeaders({
           'CMR-Hits': 1,
@@ -114,10 +111,10 @@ describe('Collection', () => {
           }]
         })
 
-      const response = await query({
+      const response = await server.executeOperation({
         variables: {},
         query: `{
-          granules(collectionConceptId: "C100000-EDSC") {
+          granules(params: { collectionConceptId: "C100000-EDSC" }) {
             count
             items {
               boxes
@@ -193,8 +190,6 @@ describe('Collection', () => {
     })
 
     test('granules', async () => {
-      const { query } = createTestClient(server)
-
       nock(/example/)
         .defaultReplyHeaders({
           'CMR-Took': 7,
@@ -211,10 +206,10 @@ describe('Collection', () => {
           }
         })
 
-      const response = await query({
+      const response = await server.executeOperation({
         variables: {},
         query: `{
-          granules(limit:2) {
+          granules(params: { limit:2 }) {
             items {
               conceptId
             }
@@ -238,8 +233,6 @@ describe('Collection', () => {
     describe('granule', () => {
       describe('with results', () => {
         test('returns results', async () => {
-          const { query } = createTestClient(server)
-
           nock(/example/)
             .defaultReplyHeaders({
               'CMR-Took': 7,
@@ -254,10 +247,10 @@ describe('Collection', () => {
               }
             })
 
-          const response = await query({
+          const response = await server.executeOperation({
             variables: {},
             query: `{
-              granule(conceptId: "G100000-EDSC") {
+              granule(params: { conceptId: "G100000-EDSC" }) {
                 conceptId
               }
             }`
@@ -275,8 +268,6 @@ describe('Collection', () => {
 
       describe('with no results', () => {
         test('returns no results', async () => {
-          const { query } = createTestClient(server)
-
           nock(/example/)
             .defaultReplyHeaders({
               'CMR-Took': 7,
@@ -289,10 +280,10 @@ describe('Collection', () => {
               }
             })
 
-          const response = await query({
+          const response = await server.executeOperation({
             variables: {},
             query: `{
-              granule(conceptId: "G100000-EDSC") {
+              granule(params: { conceptId: "G100000-EDSC" }) {
                 conceptId
               }
             }`

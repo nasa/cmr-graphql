@@ -35,12 +35,14 @@ type Service {
   url: JSON
 
   collections (
+    "Collections query parameters"
+    params: CollectionsInput
     "The unique concept id assigned to the service."
-    conceptId: [String]
+    conceptId: [String] @deprecated(reason: "Use `params.conceptId`")
     "The number of collections requested by the user."
-    limit: Int
+    limit: Int @deprecated(reason: "Use `params.limit`")
     "Zero based offset of individual results."
-    offset: Int
+    offset: Int @deprecated(reason: "Use `params.offset`")
   ): CollectionList
 }
 
@@ -53,22 +55,45 @@ type ServiceList {
   items: [Service]
 }
 
+input ServicesInput {
+  "The unique concept id assigned to the service."
+  conceptId: [String]
+  "Cursor that points to the a specific position in a list of requested records."
+  cursor: String
+  "The number of servies requested by the user."
+  limit: Int
+  "Zero based offset of individual results."
+  offset: Int
+  "The type of the service."
+  type: String
+}
+
+input ServiceInput {
+  "The unique concept id assigned to the service."
+  conceptId: String!
+
+}
+
 type Query {
   services (
+    "Services query parameters"
+    params: ServicesInput
     "The unique concept id assigned to the service."
-    conceptId: [String]
+    conceptId: [String] @deprecated(reason: "Use `params.conceptId`")
     "Cursor that points to the a specific position in a list of requested records."
-    cursor: String
+    cursor: String @deprecated(reason: "Use `params.cursor`")
     "The number of servies requested by the user."
-    limit: Int
+    limit: Int @deprecated(reason: "Use `params.limit`")
     "Zero based offset of individual results."
-    offset: Int
+    offset: Int @deprecated(reason: "Use `params.offset`")
     "The type of the service."
-    type: String
+    type: String @deprecated(reason: "Use `params.type`")
   ): ServiceList!
 
   service (
+    "Service query parameters"
+    params: ServiceInput
     "The unique concept id assigned to the service."
-    conceptId: String!
+    conceptId: String @deprecated(reason: "Use `params.conceptId`")
   ): Service
 }
