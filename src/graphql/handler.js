@@ -81,6 +81,7 @@ export default server.createHandler({
   cors: {
     origin: true,
     allowedHeaders: [
+      'Accept',
       'Client-Id',
       'Content-Type',
       'X-Request-Id'
