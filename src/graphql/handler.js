@@ -78,13 +78,16 @@ const server = new ApolloServer({
 })
 
 export default server.createHandler({
-  cors: {
-    origin: true,
-    allowedHeaders: [
-      'Accept',
-      'Client-Id',
-      'Content-Type',
-      'X-Request-Id'
-    ]
+  expressGetMiddlewareOptions: {
+    cors: {
+      origin: true,
+      credentials: true,
+      allowedHeaders: [
+        'Accept',
+        'Client-Id',
+        'Content-Type',
+        'X-Request-Id'
+      ]
+    }
   }
 })
