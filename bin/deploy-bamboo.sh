@@ -12,7 +12,7 @@ node_modules
 EOF
 
 cat <<EOF > Dockerfile
-FROM node:12.16.3
+FROM node:14.18
 COPY . /build
 WORKDIR /build
 RUN npm install && npm install -g serverless@1.55.1
