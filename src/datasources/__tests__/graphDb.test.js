@@ -12,6 +12,8 @@ import relatedCollectionsGraphDbRelatedUrlProjectResponseMocks from './__mocks__
 import relatedCollectionsGraphDbRelatedUrlRelationshipTypeGraphdbResponseMocks from './__mocks__/relatedCollections.graphDbRelatedUrlRelationshipType.graphdbResponse.mocks'
 import relatedCollectionsGraphDbRelatedUrlRelationshipTypeResponseMocks from './__mocks__/relatedCollections.graphDbRelatedUrlRelationshipType.response.mocks'
 import relatedCollectionsGraphDbRelatedUrlResponseMocks from './__mocks__/relatedCollections.graphDbRelatedUrl.response.mocks'
+import relatedCollectionsNoRelationshipsGraphDbResponseMock from './__mocks__/relatedCollections.noRelationships.graphdbResponse.mocks'
+import relatedCollectionsNoRelationshipsResponseMock from './__mocks__/relatedCollections.noRelationships.response.mocks'
 import relatedCollectionsRelatedUrlSubtypeGraphdbResponseMocks from './__mocks__/relatedCollections.relatedUrlSubtype.graphdbResponse.mocks'
 import relatedCollectionsRelatedUrlSubtypeResponseMocks from './__mocks__/relatedCollections.relatedUrlSubtype.response.mocks'
 import relatedCollectionsRelatedUrlTypeAndSubtypeGraphdbResponseMocks from './__mocks__/relatedCollections.relatedUrlTypeAndSubtype.graphdbResponse.mocks'
@@ -911,6 +913,69 @@ describe('graphDb', () => {
 
         expect(response).toEqual(relatedCollectionsRelationshipTypeResponseMocks)
       })
+    })
+  })
+
+  describe('When relationships aren\'t requested', () => {
+    beforeEach(() => {
+      parsedInfo = {
+        name: 'relatedCollections',
+        alias: 'relatedCollections',
+        args: {
+          limit: 1
+        },
+        fieldsByTypeName: {
+          RelatedCollectionsList: {
+            count: {
+              name: 'count',
+              alias: 'count',
+              args: {},
+              fieldsByTypeName: {}
+            },
+            items: {
+              name: 'items',
+              alias: 'items',
+              args: {},
+              fieldsByTypeName: {
+                RelatedCollection: {
+                  id: {
+                    name: 'id',
+                    alias: 'id',
+                    args: {},
+                    fieldsByTypeName: {}
+                  },
+                  title: {
+                    name: 'title',
+                    alias: 'title',
+                    args: {},
+                    fieldsByTypeName: {}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    })
+
+    test('returns a result with all relationship types', async () => {
+      nock(/example/)
+        .defaultReplyHeaders({
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .post(/graphdb/, /\.hasLabel\('project','platformInstrument','relatedUrl'\)/)
+        .reply(200, relatedCollectionsNoRelationshipsGraphDbResponseMock)
+
+      const response = await graphDbDatasource(
+        'C1200400842-GHRC',
+        {
+          limit: 1
+        },
+        { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
+        parsedInfo
+      )
+
+      expect(response).toEqual(relatedCollectionsNoRelationshipsResponseMock)
     })
   })
 

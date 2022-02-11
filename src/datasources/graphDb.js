@@ -24,9 +24,9 @@ export default async (
   const { items } = relatedCollectionsList
   const { fieldsByTypeName: relatedCollectionsListFields } = items
   const { RelatedCollection: relatedCollection } = relatedCollectionsListFields
-  const { relationships } = relatedCollection
-  const { fieldsByTypeName: relationshipsFields } = relationships
-  const { Relationship: relationshipFields } = relationshipsFields
+  const { relationships = {} } = relatedCollection
+  const { fieldsByTypeName: relationshipsFields = {} } = relationships
+  const { Relationship: relationshipFields = {} } = relationshipsFields
 
   const {
     limit = 20,
@@ -260,8 +260,13 @@ export default async (
     })
   })
 
-  return {
+  const returnObject = {
     count: totalRelatedCollectionsCount,
     items: collectionsList
   }
+
+  // Useful for debugging!
+  // console.log('graphDb.js response', JSON.stringify(returnObject, null, 2))
+
+  return returnObject
 }
