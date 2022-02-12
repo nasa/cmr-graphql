@@ -15,7 +15,7 @@ cat <<EOF > Dockerfile
 FROM node:14.18
 COPY . /build
 WORKDIR /build
-RUN npm install && npm install -g serverless@1.55.1
+RUN npm ci --production
 EOF
 
 dockerTag=edsc-$bamboo_STAGE_NAME
@@ -46,8 +46,8 @@ stageOpts="--stage $bamboo_STAGE_NAME"
 
 # Deploy AWS Infrastructure Resources
 echo 'Deploying AWS Infrastructure Resources...'
-dockerRun serverless deploy $stageOpts --config serverless-infrastructure.yml
+dockerRun npx serverless deploy $stageOpts --config serverless-infrastructure.yml
 
 # Deploy AWS Application Resources
 echo 'Deploying AWS Application Resources...'
-dockerRun serverless deploy $stageOpts
+dockerRun npx serverless deploy $stageOpts
