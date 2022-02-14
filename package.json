@@ -40,6 +40,7 @@
     "jest-transform-graphql": "^2.1.0",
     "jsdoc": "^3.6.7",
     "nock": "^12.0.3",
+    "serverless-offline": "^8.4.0",
     "snyk": "^1.782.0"
   },
   "dependencies": {
@@ -68,7 +69,6 @@
     "pascalcase-keys": "^1.0.1",
     "qs": "^6.9.4",
     "serverless": "^2.72.2",
-    "serverless-offline": "^6.8.0",
     "serverless-plugin-log-subscription": "^1.4.0",
     "serverless-webpack": "^5.3.5",
     "snakecase-keys": "^3.2.0",
