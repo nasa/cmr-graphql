@@ -33,7 +33,6 @@
     "lint": "eslint src"
   },
   "devDependencies": {
-    "aws-sdk": "^2.1041.0",
     "jest": "^25.3.0",
     "jest-junit": "^10.0.0",
     "jest-mock-axios": "^4.0.0",
@@ -50,6 +49,7 @@
     "apollo-server-core": "^3.5.0",
     "apollo-server-lambda": "^3.5.0",
     "array-foreach-async": "^1.0.1",
+    "aws-sdk": "^2.1073.0",
     "axios": "^0.21.4",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.2.3",
