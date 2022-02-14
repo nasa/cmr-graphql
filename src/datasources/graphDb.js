@@ -5,6 +5,7 @@ import {
 } from 'lodash'
 
 import { cmrGraphDb } from '../utils/cmrGraphDb'
+import { mergeParams } from '../utils/mergeParams'
 
 /**
  * Queries CMR GraphDB for related collections.
@@ -28,12 +29,15 @@ export default async (
   const { fieldsByTypeName: relationshipsFields = {} } = relationships
   const { Relationship: relationshipFields = {} } = relationshipsFields
 
+  // Merge nested 'params' object with existing parameters
+  const queryParams = mergeParams(params)
+
   const {
     limit = 20,
     offset = 0,
     relatedUrlSubtype,
     relatedUrlType
-  } = params
+  } = queryParams
 
   const relatedUrlFilters = []
   let filters = ''
