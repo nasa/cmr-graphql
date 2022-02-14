@@ -141,14 +141,16 @@ type Collection {
   version: String
 
   relatedCollections (
+    "Related Collections query parameters"
+    params: RelatedCollectionsInput
     "The size of the range GraphDB searches on. Defaults to 5"
-    limit: Int
+    limit: Int @deprecated(reason: "Use `params.limit`")
     "The beginning of the range GraphDB searches on"
-    offset: Int
+    offset: Int @deprecated(reason: "Use `params.offset`")
     "Filter the RelatedURL relationships by the Type property."
-    relatedUrlType: [String]
+    relatedUrlType: [String] @deprecated(reason: "Use `params.relatedUrlType`")
     "Filter the RelatedURL relationships by the subtype property."
-    relatedUrlSubtype: [String]
+    relatedUrlSubtype: [String] @deprecated(reason: "Use `params.relatedUrlSubtype`")
   ): RelatedCollectionsList
 
   granules (
@@ -251,6 +253,17 @@ type Collection {
     "The name of a variable."
     name: String @deprecated(reason: "Use `params.name`")
   ): VariableList
+}
+
+input RelatedCollectionsInput {
+  "The size of the range GraphDB searches on. Defaults to 5"
+  limit: Int
+  "The beginning of the range GraphDB searches on"
+  offset: Int
+  "Filter the RelatedURL relationships by the Type property."
+  relatedUrlType: [String]
+  "Filter the RelatedURL relationships by the subtype property."
+  relatedUrlSubtype: [String]
 }
 
 type RelatedCollection {
