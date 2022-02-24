@@ -36,6 +36,7 @@ dockerRun() {
         -e "SUBNET_ID_A=$bamboo_SUBNET_ID_A" \
         -e "SUBNET_ID_B=$bamboo_SUBNET_ID_B" \
         -e "VPC_ID=$bamboo_VPC_ID" \
+        -e "SSL_CERT_FILE=$bamboo_SSL_CERT_FILE" \
         $dockerTag "$@"
 }
 
