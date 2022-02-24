@@ -1,4 +1,6 @@
+import https from 'https'
 import axios from 'axios'
+import fs from 'fs'
 
 import snakeCaseKeys from 'snakecase-keys'
 
@@ -39,15 +41,22 @@ export const draftMmtQuery = ({
 
   const { 'X-Request-Id': requestId } = permittedHeaders
 
+  // Adds additional CA certificate for requests to Draft MMT
+  const certFile = fs.readFileSync(process.env.sslCertFile)
+  const httpsAgent = new https.Agent({
+    ca: certFile
+  })
+
   const requestConfiguration = {
     data: cmrParameters,
     headers: permittedHeaders,
     method: 'GET',
-    url: `${process.env.draftMmtRootUrl}/collection_draft_proposals/${id}/download_json`
+    url: `${process.env.draftMmtRootUrl}/collection_draft_proposals/${id}/download_json`,
+    httpsAgent
   }
 
   // Interceptors require an instance of axios
-  const instance = axios.create()
+  const instance = axios.create({ httpsAgent })
   const { interceptors } = instance
   const {
     request: requestInterceptor,
