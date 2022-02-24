@@ -2,13 +2,14 @@ import nock from 'nock'
 
 import { draftMmtQuery } from '../draftMmtQuery'
 
-describe.skip('draftMmtQuery', () => {
+describe('draftMmtQuery', () => {
   const OLD_ENV = process.env
 
   beforeEach(() => {
     process.env = { ...OLD_ENV }
 
     process.env.draftMmtRootUrl = 'http://example.com'
+    process.env.sslCertFile = 'certificates/fcpca_combined.pem'
   })
 
   afterEach(() => {

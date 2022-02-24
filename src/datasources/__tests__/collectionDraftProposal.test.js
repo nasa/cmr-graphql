@@ -4,7 +4,7 @@ import collectionDraftProposalDatasource from '../collectionDraftProposal'
 
 let requestInfo
 
-describe.skip('collectionDraftProposal', () => {
+describe('collectionDraftProposal', () => {
   const OLD_ENV = process.env
 
   beforeEach(() => {
@@ -15,6 +15,7 @@ describe.skip('collectionDraftProposal', () => {
     process.env = { ...OLD_ENV }
 
     process.env.draftMmtRootUrl = 'http://example.com'
+    process.env.sslCertFile = 'certificates/fcpca_combined.pem'
 
     // Default requestInfo
     requestInfo = {

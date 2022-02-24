@@ -41,18 +41,11 @@ export const draftMmtQuery = ({
 
   const { 'X-Request-Id': requestId } = permittedHeaders
 
-
-  console.log('🚀 ~ file: draftMmtQuery.js ~ line 49 ~ process.env.sslCertFile', process.env.sslCertFile)
+  // Adds additional CA certificate for requests to Draft MMT
   const certFile = fs.readFileSync(process.env.sslCertFile)
-  console.log('🚀 ~ file: draftMmtQuery.js ~ line 47 ~ certFile', certFile)
   const httpsAgent = new https.Agent({
-    // rejectUnauthorized: false, // (NOTE: this will disable client verification)
-    // cert: fs.readFileSync('./usercert.pem'),
     ca: certFile
-    // key: fs.readFileSync('./key.pem')
-    // passphrase: 'YYY'
   })
-  console.log('🚀 ~ file: draftMmtQuery.js ~ line 55 ~ httpsAgent', httpsAgent)
 
   const requestConfiguration = {
     data: cmrParameters,
