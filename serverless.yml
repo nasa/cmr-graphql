@@ -57,9 +57,9 @@ functions:
   graphql:
     handler: src/graphql/handler.default
     timeout: ${env:LAMBDA_TIMEOUT}
-    environment:
-      variables:
-        SSL_CERT_FILE: /opt/fcpca_combined.pem
+    # environment:
+    #   variables:
+    #     SSL_CERT_FILE: /opt/fcpca_combined.pem
     layers:
       - { Ref: CertificateLambdaLayer }
     events:
