@@ -1,4 +1,6 @@
+import https from 'https'
 import axios from 'axios'
+import fs from 'fs'
 
 import snakeCaseKeys from 'snakecase-keys'
 
@@ -39,15 +41,29 @@ export const draftMmtQuery = ({
 
   const { 'X-Request-Id': requestId } = permittedHeaders
 
+
+  console.log('🚀 ~ file: draftMmtQuery.js ~ line 49 ~ process.env.sslCertFile', process.env.sslCertFile)
+  const certFile = fs.readFileSync(process.env.sslCertFile)
+  console.log('🚀 ~ file: draftMmtQuery.js ~ line 47 ~ certFile', certFile)
+  const httpsAgent = new https.Agent({
+    rejectUnauthorized: false, // (NOTE: this will disable client verification)
+    // cert: fs.readFileSync('./usercert.pem'),
+    ca: certFile
+    // key: fs.readFileSync('./key.pem')
+    // passphrase: 'YYY'
+  })
+  console.log('🚀 ~ file: draftMmtQuery.js ~ line 55 ~ httpsAgent', httpsAgent)
+
   const requestConfiguration = {
     data: cmrParameters,
     headers: permittedHeaders,
     method: 'GET',
-    url: `${process.env.draftMmtRootUrl}/collection_draft_proposals/${id}/download_json`
+    url: `${process.env.draftMmtRootUrl}/collection_draft_proposals/${id}/download_json`,
+    httpsAgent
   }
 
   // Interceptors require an instance of axios
-  const instance = axios.create()
+  const instance = axios.create({ httpsAgent })
   const { interceptors } = instance
   const {
     request: requestInterceptor,

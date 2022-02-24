@@ -43,6 +43,24 @@ Resources:
                   - lambda:InvokeFunction
                 Resource: '*'
 
+  CertificateLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      CompatibleRuntimes:
+        - nodejs14.x
+      ContentUri: ./certificates/
+      Description: Layer containing additional certificates
+      RetentionPolicy: Retain
+
+  # LayerParameter:
+  #   Type: AWS::SSM::Parameter
+  #   Properties:
+  #     Description: ARN for latest Certificate Layer
+  #     Name: /Lambda/Layers/Certificate
+  #     Type: String
+  #     Value: !Ref CertificateLayer
+
+
 # Output the following resources so that other stacks can access the values
 Outputs:
   GraphQLLambdaSecurityGroup:
@@ -68,3 +86,9 @@ Outputs:
         - Arn
     Export:
       Name: ${self:provider.stage}-GraphQLApplicationRole
+
+  CertificateLayer:
+    Value:
+      Ref: CertificateLayer
+    Export:
+      Name: ${self:provider.stage}-CertificateLayer

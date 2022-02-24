@@ -12,6 +12,7 @@ provider:
     cmrRootUrl: ${self:custom.variables.cmrRootUrl}
     mmtRootUrl: ${self:custom.variables.mmtRootUrl}
     draftMmtRootUrl: ${self:custom.variables.draftMmtRootUrl}
+    sslCertFile: ${self:custom.variables.sslCertFile}
 
     # Timeout for lambda
     lambdaTimeout: ${env:LAMBDA_TIMEOUT}
@@ -48,6 +49,11 @@ functions:
   graphql:
     handler: src/graphql/handler.default
     timeout: ${env:LAMBDA_TIMEOUT}
+    environment:
+      variables:
+        SSL_CERT_FILE: /opt/fcpcag2.crt
+    layers:
+      - Fn::ImportValue: ${self:provider.stage}-CertificateLayer
     events:
     - http:
         path: api
@@ -141,6 +147,7 @@ custom:
     cmrRootUrl: ${env:CMR_ROOT_URL, 'https://cmr.earthdata.nasa.gov'}
     mmtRootUrl: ${env:MMT_ROOT_URL, 'https://mmt.earthdata.nasa.gov'}
     draftMmtRootUrl: ${env:DRAFT_MMT_ROOT_URL, 'https://draftmmt.earthdata.nasa.gov'}
+    sslCertFile: ${env:SSL_CERT_FILE, 'certificates/fcpca_combined.pem'}
 
   # Default is 3000 so to avoid conflicts with other applications we'll define a new port
   serverless-offline:
