@@ -43,6 +43,7 @@ export const draftMmtQuery = ({
 
 
   console.log('🚀 ~ file: draftMmtQuery.js ~ line 49 ~ process.env.sslCertFile', process.env.sslCertFile)
+  console.log('🚀 ~ file: draftMmtQuery.js ~ line 49 ~ process.env.SSL_CERT_FILE', process.env.SSL_CERT_FILE)
   const certFile = fs.readFileSync(process.env.sslCertFile)
   console.log('🚀 ~ file: draftMmtQuery.js ~ line 47 ~ certFile', certFile)
   const httpsAgent = new https.Agent({
