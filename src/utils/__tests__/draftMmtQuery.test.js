@@ -2,7 +2,7 @@ import nock from 'nock'
 
 import { draftMmtQuery } from '../draftMmtQuery'
 
-describe('draftMmtQuery', () => {
+describe.skip('draftMmtQuery', () => {
   const OLD_ENV = process.env
 
   beforeEach(() => {

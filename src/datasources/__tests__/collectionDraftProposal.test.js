@@ -4,7 +4,7 @@ import collectionDraftProposalDatasource from '../collectionDraftProposal'
 
 let requestInfo
 
-describe('collectionDraftProposal', () => {
+describe.skip('collectionDraftProposal', () => {
   const OLD_ENV = process.env
 
   beforeEach(() => {

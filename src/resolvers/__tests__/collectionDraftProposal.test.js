@@ -42,7 +42,7 @@ const server = new ApolloServer({
   })
 })
 
-describe('Collection', () => {
+describe.skip('Collection', () => {
   const OLD_ENV = process.env
 
   beforeEach(() => {

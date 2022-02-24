@@ -48,7 +48,7 @@ export const draftMmtQuery = ({
   const httpsAgent = new https.Agent({
     rejectUnauthorized: false, // (NOTE: this will disable client verification)
     // cert: fs.readFileSync('./usercert.pem'),
-    ca: certFile
+    cert: certFile
     // key: fs.readFileSync('./key.pem')
     // passphrase: 'YYY'
   })
