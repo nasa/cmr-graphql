@@ -43,13 +43,12 @@ export const draftMmtQuery = ({
 
 
   console.log('🚀 ~ file: draftMmtQuery.js ~ line 49 ~ process.env.sslCertFile', process.env.sslCertFile)
-  console.log('🚀 ~ file: draftMmtQuery.js ~ line 49 ~ process.env.SSL_CERT_FILE', process.env.SSL_CERT_FILE)
   const certFile = fs.readFileSync(process.env.sslCertFile)
   console.log('🚀 ~ file: draftMmtQuery.js ~ line 47 ~ certFile', certFile)
   const httpsAgent = new https.Agent({
-    rejectUnauthorized: false, // (NOTE: this will disable client verification)
+    // rejectUnauthorized: false, // (NOTE: this will disable client verification)
     // cert: fs.readFileSync('./usercert.pem'),
-    cert: certFile
+    ca: certFile
     // key: fs.readFileSync('./key.pem')
     // passphrase: 'YYY'
   })
