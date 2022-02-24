@@ -45,13 +45,13 @@ plugins:
   - serverless-offline
   - serverless-plugin-log-subscription
 
-layers:
-  certificate:
-    path: certificates
-    name: ${self:provider.stage}-CertificateLayer
-    description: Certificates for GraphQL
-    compatibleRuntimes:
-      - nodejs14.x
+# layers:
+#   certificate:
+#     path: certificates
+#     name: ${self:provider.stage}-CertificateLayer
+#     description: Certificates for GraphQL
+#     compatibleRuntimes:
+#       - nodejs14.x
 
 functions:
   graphql:
@@ -61,7 +61,7 @@ functions:
     #   variables:
     #     SSL_CERT_FILE: /opt/fcpca_combined.pem
     layers:
-      - { Ref: CertificateLambdaLayer }
+      - Fn::ImportValue: ${self:provider.stage}-CertificateLambdaLayer
     events:
     - http:
         path: api
