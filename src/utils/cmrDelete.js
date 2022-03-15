@@ -2,7 +2,7 @@ import axios from 'axios'
 
 import pascalCaseKeys from 'pascalcase-keys'
 
-import { pickIgnoreingCase } from './pickIgnoringCase'
+import { pickIgnoringCase } from './pickIgnoringCase'
 
 /**
  * Make a DELETE request to CMR and return the promise
@@ -18,7 +18,7 @@ export const cmrDelete = async (conceptType, data, headers) => {
   }
 
   // Merge default headers into the provided headers and then pick out only permitted values
-  const permittedHeaders = pickIgnoreingCase({
+  const permittedHeaders = pickIgnoringCase({
     ...defaultHeaders,
     ...headers
   }, [

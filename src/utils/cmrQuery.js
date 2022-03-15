@@ -3,7 +3,7 @@ import axios from 'axios'
 import snakeCaseKeys from 'snakecase-keys'
 
 import { downcaseKeys } from './downcaseKeys'
-import { pickIgnoreingCase } from './pickIgnoringCase'
+import { pickIgnoringCase } from './pickIgnoringCase'
 import { prepKeysForCmr } from './prepKeysForCmr'
 
 /**
@@ -30,7 +30,7 @@ export const cmrQuery = ({
   const defaultHeaders = {}
 
   // Merge default headers into the provided headers and then pick out only permitted values
-  const permittedHeaders = pickIgnoreingCase({
+  const permittedHeaders = pickIgnoringCase({
     ...defaultHeaders,
     ...headers
   }, [

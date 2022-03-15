@@ -1,4 +1,4 @@
-import { pickIgnoreingCase } from '../pickIgnoringCase'
+import { pickIgnoringCase } from '../pickIgnoringCase'
 
 const inputObject = {
   Accept: '*/*',
@@ -8,14 +8,14 @@ const inputObject = {
 
 describe('pickIgnoringCase', () => {
   test('returns an empty object when undefined is provided', () => {
-    const returnObject = pickIgnoreingCase(undefined, ['key'])
+    const returnObject = pickIgnoringCase(undefined, ['key'])
 
     expect(returnObject).toMatchObject({})
   })
 
   describe('when the requested keys do not exist', () => {
     test('returns an empty object', () => {
-      const returnObject = pickIgnoreingCase(inputObject, ['missingKey'])
+      const returnObject = pickIgnoringCase(inputObject, ['missingKey'])
 
       expect(returnObject).toMatchObject({})
     })
@@ -24,7 +24,7 @@ describe('pickIgnoringCase', () => {
   describe('when the requested key does exist', () => {
     describe('when the case matches', () => {
       test('it returns the object with the correct case', () => {
-        const returnObject = pickIgnoreingCase(inputObject, ['Authorization'])
+        const returnObject = pickIgnoringCase(inputObject, ['Authorization'])
 
         expect(returnObject).toMatchObject({
           Authorization: 'Bearer one.two.three'
@@ -34,7 +34,7 @@ describe('pickIgnoringCase', () => {
 
     describe('when the case does not match', () => {
       test('it returns the object with the correct case', () => {
-        const returnObject = pickIgnoreingCase(inputObject, ['authorization', 'CoNtenT-type'])
+        const returnObject = pickIgnoringCase(inputObject, ['authorization', 'CoNtenT-type'])
 
         expect(returnObject).toMatchObject({
           authorization: 'Bearer one.two.three',

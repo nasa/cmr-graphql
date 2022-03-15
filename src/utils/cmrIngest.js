@@ -4,7 +4,7 @@ import pascalCaseKeys from 'pascalcase-keys'
 
 import { v4 as uuidv4 } from 'uuid'
 
-import { pickIgnoreingCase } from './pickIgnoringCase'
+import { pickIgnoringCase } from './pickIgnoringCase'
 
 /**
  * Make a request to CMR and return the promise
@@ -20,7 +20,7 @@ export const cmrIngest = async (conceptType, data, headers) => {
   }
 
   // Merge default headers into the provided headers and then pick out only permitted values
-  const permittedHeaders = pickIgnoreingCase({
+  const permittedHeaders = pickIgnoringCase({
     ...defaultHeaders,
     ...headers
   }, [

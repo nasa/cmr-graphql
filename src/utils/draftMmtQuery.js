@@ -4,7 +4,7 @@ import fs from 'fs'
 
 import snakeCaseKeys from 'snakecase-keys'
 
-import { pickIgnoreingCase } from './pickIgnoringCase'
+import { pickIgnoringCase } from './pickIgnoringCase'
 import { prepKeysForCmr } from './prepKeysForCmr'
 
 /**
@@ -25,7 +25,7 @@ export const draftMmtQuery = ({
   const defaultHeaders = {}
 
   // Merge default headers into the provided headers and then pick out only permitted values
-  const permittedHeaders = pickIgnoreingCase({
+  const permittedHeaders = pickIgnoringCase({
     ...defaultHeaders,
     ...headers
   }, [

@@ -7,7 +7,7 @@ import { downcaseKeys } from './downcaseKeys'
  * @param {Object} input Object to pick from
  * @param {Array<String>} keys Array of strings matching the keys to pick out of the provided input
  */
-export const pickIgnoreingCase = (input = {}, keys) => {
+export const pickIgnoringCase = (input = {}, keys) => {
   // Object to fill and return
   const pickedByKeys = {}
 
