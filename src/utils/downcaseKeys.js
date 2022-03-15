@@ -1,12 +1,12 @@
-import { transform } from 'lodash'
-
 /**
  * Downcase all keys of an object
  * @param {*} obj Object to transform
  * @returns Object with all keys downcased
  */
-export const downcaseKeys = (obj = {}) => transform(
-  obj,
-  // eslint-disable-next-line no-return-assign, no-param-reassign
-  (result, value, key) => (result[key.toLowerCase()] = value)
-)
+export const downcaseKeys = (obj = {}) => {
+  const entries = Object.entries(obj)
+
+  return Object.fromEntries(
+    entries.map(([key, value]) => [key.toLowerCase(), value]),
+  )
+}
