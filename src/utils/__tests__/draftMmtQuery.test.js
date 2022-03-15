@@ -1,6 +1,7 @@
 import nock from 'nock'
 
 import { draftMmtQuery } from '../draftMmtQuery'
+import { downcaseKeys } from '../downcaseKeys'
 
 describe('draftMmtQuery', () => {
   const OLD_ENV = process.env
@@ -37,7 +38,7 @@ describe('draftMmtQuery', () => {
 
     const {
       'request-duration': requestDuration
-    } = headers
+    } = downcaseKeys(headers)
 
     expect(data).toEqual({
       ShortName: 'Mock ShortName'

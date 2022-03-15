@@ -1,5 +1,6 @@
 import nock from 'nock'
 
+import { downcaseKeys } from '../downcaseKeys'
 import { mmtQuery } from '../mmtQuery'
 
 describe('mmtQuery', () => {
@@ -36,7 +37,7 @@ describe('mmtQuery', () => {
 
     const {
       'request-duration': requestDuration
-    } = headers
+    } = downcaseKeys(headers)
 
     expect(data).toEqual({
       ShortName: 'Mock ShortName'

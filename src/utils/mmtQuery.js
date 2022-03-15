@@ -2,7 +2,8 @@ import axios from 'axios'
 
 import snakeCaseKeys from 'snakecase-keys'
 
-import { pick } from 'lodash'
+
+import { pickIgnoreingCase } from './pickIgnoringCase'
 import { prepKeysForCmr } from './prepKeysForCmr'
 
 /**
@@ -23,7 +24,7 @@ export const mmtQuery = ({
   const defaultHeaders = {}
 
   // Merge default headers into the provided headers and then pick out only permitted values
-  const permittedHeaders = pick({
+  const permittedHeaders = pickIgnoreingCase({
     ...defaultHeaders,
     ...headers
   }, [
