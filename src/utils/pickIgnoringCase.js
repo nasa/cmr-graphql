@@ -29,7 +29,6 @@ export const pickIgnoringCase = (input = {}, keys) => {
   })
 
   return pick(
-    // eslint-disable-next-line no-return-assign, no-param-reassign
     pickedByKeys,
     keys
   )
