@@ -3,6 +3,7 @@ import nock from 'nock'
 jest.mock('uuid', () => ({ v4: () => '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed' }))
 
 import { cmrIngest } from '../cmrIngest'
+import { downcaseKeys } from '../downcaseKeys'
 
 describe('cmrIngest', () => {
   const OLD_ENV = process.env
@@ -42,7 +43,7 @@ describe('cmrIngest', () => {
 
     const {
       'request-duration': requestDuration
-    } = headers
+    } = downcaseKeys(headers)
 
     expect(data).toEqual({
       'concept-id': 'SUB100000-EDSC',
@@ -83,7 +84,7 @@ describe('cmrIngest', () => {
 
       const {
         'request-duration': requestDuration
-      } = headers
+      } = downcaseKeys(headers)
 
       expect(data).toEqual({
         'concept-id': 'SUB100000-EDSC',
@@ -123,7 +124,7 @@ describe('cmrIngest', () => {
 
       const {
         'request-duration': requestDuration
-      } = headers
+      } = downcaseKeys(headers)
 
       expect(data).toEqual({
         'concept-id': 'SUB100000-EDSC',
@@ -166,7 +167,7 @@ describe('cmrIngest', () => {
 
       const {
         'request-duration': requestDuration
-      } = headers
+      } = downcaseKeys(headers)
 
       expect(data).toEqual({
         'concept-id': 'SUB100000-EDSC',
@@ -210,7 +211,7 @@ describe('cmrIngest', () => {
 
       const {
         'request-duration': requestDuration
-      } = headers
+      } = downcaseKeys(headers)
 
       expect(data).toEqual({
         'concept-id': 'SUB100000-EDSC',

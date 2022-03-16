@@ -1,6 +1,7 @@
 import nock from 'nock'
 
 import { cmrQuery } from '../cmrQuery'
+import { downcaseKeys } from '../downcaseKeys'
 
 describe('cmrQuery', () => {
   const OLD_ENV = process.env
@@ -46,7 +47,7 @@ describe('cmrQuery', () => {
     const {
       'request-duration': requestDuration,
       'cmr-took': cmrTook
-    } = headers
+    } = downcaseKeys(headers)
 
     expect(data).toEqual({
       feed: {

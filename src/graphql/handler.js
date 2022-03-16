@@ -19,6 +19,8 @@ import {
 import toolSource from '../datasources/tool'
 import variableSource from '../datasources/variable'
 
+import { downcaseKeys } from '../utils/downcaseKeys'
+
 // Creating the server
 const server = new ApolloServer({
   // Passing types and resolvers to the server
@@ -30,11 +32,11 @@ const server = new ApolloServer({
     const { headers } = event
 
     const {
-      Authorization: bearerToken,
-      'Client-Id': clientId,
-      'Echo-Token': echoToken,
-      'X-Request-Id': requestId
-    } = headers
+      authorization: bearerToken,
+      'client-id': clientId,
+      'echo-token': echoToken,
+      'x-request-id': requestId
+    } = downcaseKeys(headers)
 
     const requestHeaders = {
       'CMR-Request-Id': requestId || uuidv4()
@@ -84,6 +86,7 @@ export default server.createHandler({
       credentials: true,
       allowedHeaders: [
         'Accept',
+        'Authorization',
         'Client-Id',
         'Content-Type',
         'X-Request-Id'

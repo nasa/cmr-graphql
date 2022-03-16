@@ -11,8 +11,9 @@ import { CONCEPT_TYPES } from '../../constants'
 import { cmrDelete } from '../../utils/cmrDelete'
 import { cmrIngest } from '../../utils/cmrIngest'
 import { cmrQuery } from '../../utils/cmrQuery'
-import { parseError } from '../../utils/parseError'
+import { downcaseKeys } from '../../utils/downcaseKeys'
 import { mergeParams } from '../../utils/mergeParams'
+import { parseError } from '../../utils/parseError'
 
 export default class Concept {
   /**
@@ -534,7 +535,7 @@ export default class Concept {
     const {
       'cmr-hits': cmrHits,
       'cmr-scroll-id': jsonScrollId
-    } = headers
+    } = downcaseKeys(headers)
 
     this.setJsonItemCount(cmrHits)
 
@@ -577,7 +578,7 @@ export default class Concept {
     const {
       'cmr-hits': cmrHits,
       'cmr-scroll-id': ummScrollId
-    } = headers
+    } = downcaseKeys(headers)
 
     this.setUmmItemCount(cmrHits)
 

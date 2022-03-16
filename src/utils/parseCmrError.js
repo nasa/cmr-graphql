@@ -1,5 +1,7 @@
 import { ApolloError, AuthenticationError } from 'apollo-server-lambda'
 
+import { downcaseKeys } from './downcaseKeys'
+
 /**
  * Parse an error thrown from within a CMR datasource
  * @param {Object} error Error thrown
@@ -17,7 +19,7 @@ export const parseCmrError = (error, reThrow = true) => {
 
   const { errors } = data
 
-  const { 'cmr-request-id': requestId } = headers
+  const { 'cmr-request-id': requestId } = downcaseKeys(headers)
 
   errors.forEach((error) => {
     console.log(`Request ${requestId} experienced an error: ${error}`)

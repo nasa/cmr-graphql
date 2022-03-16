@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import { pick } from 'lodash'
+import { pickIgnoringCase } from './pickIgnoringCase'
 
 /**
  * Make a request to CMR and return the promise.
@@ -18,7 +18,7 @@ export const cmrGraphDb = ({
   const defaultHeaders = {}
 
   // Merge default headers into the provided headers and then pick out only permitted values
-  const permittedHeaders = pick({
+  const permittedHeaders = pickIgnoringCase({
     ...defaultHeaders,
     ...headers
   }, [

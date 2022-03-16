@@ -1,6 +1,7 @@
 import nock from 'nock'
 
 import { cmrGraphDb } from '../cmrGraphDb'
+import { downcaseKeys } from '../downcaseKeys'
 
 describe('cmrGraphDb', () => {
   const OLD_ENV = process.env
@@ -38,7 +39,7 @@ describe('cmrGraphDb', () => {
 
     const {
       'request-duration': requestDuration
-    } = headers
+    } = downcaseKeys(headers)
 
     expect(data).toEqual({
       mock: 'result'

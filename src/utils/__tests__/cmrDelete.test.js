@@ -1,6 +1,7 @@
 import nock from 'nock'
 
 import { cmrDelete } from '../cmrDelete'
+import { downcaseKeys } from '../downcaseKeys'
 
 describe('cmrDelete', () => {
   const OLD_ENV = process.env
@@ -43,7 +44,7 @@ describe('cmrDelete', () => {
 
     const {
       'request-duration': requestDuration
-    } = headers
+    } = downcaseKeys(headers)
 
     expect(data).toEqual({
       'concept-id': 'SUB100000-EDSC',
@@ -85,7 +86,7 @@ describe('cmrDelete', () => {
 
       const {
         'request-duration': requestDuration
-      } = headers
+      } = downcaseKeys(headers)
 
       expect(data).toEqual({
         'concept-id': 'SUB100000-EDSC',
@@ -131,7 +132,7 @@ describe('cmrDelete', () => {
 
       const {
         'request-duration': requestDuration
-      } = headers
+      } = downcaseKeys(headers)
 
       expect(data).toEqual({
         'concept-id': 'SUB100000-EDSC',
@@ -178,7 +179,7 @@ describe('cmrDelete', () => {
 
       const {
         'request-duration': requestDuration
-      } = headers
+      } = downcaseKeys(headers)
 
       expect(data).toEqual({
         'concept-id': 'SUB100000-EDSC',

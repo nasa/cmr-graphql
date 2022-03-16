@@ -2,7 +2,8 @@ import axios from 'axios'
 
 import snakeCaseKeys from 'snakecase-keys'
 
-import { pick } from 'lodash'
+import { downcaseKeys } from './downcaseKeys'
+import { pickIgnoringCase } from './pickIgnoringCase'
 import { prepKeysForCmr } from './prepKeysForCmr'
 
 /**
@@ -29,7 +30,7 @@ export const cmrQuery = ({
   const defaultHeaders = {}
 
   // Merge default headers into the provided headers and then pick out only permitted values
-  const permittedHeaders = pick({
+  const permittedHeaders = pickIgnoringCase({
     ...defaultHeaders,
     ...headers
   }, [
@@ -84,7 +85,7 @@ export const cmrQuery = ({
 
     // Retrieve the reported timing from CMR
     const { headers } = response
-    const { 'cmr-took': cmrTook } = headers
+    const { 'cmr-took': cmrTook } = downcaseKeys(headers)
     response.headers['request-duration'] = milliseconds
 
     console.log(`Request ${requestId} to [concept: ${conceptType}, format: ${format}] completed external request in [reported: ${cmrTook} ms, observed: ${milliseconds} ms]`)
