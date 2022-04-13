@@ -470,6 +470,108 @@ describe('collection', () => {
     })
   })
 
+  describe('with keys that support singular and plural values', () => {
+    beforeEach(() => {
+      // Overwrite default requestInfo
+      requestInfo = {
+        name: 'collections',
+        alias: 'collections',
+        args: {},
+        fieldsByTypeName: {
+          CollectionList: {
+            items: {
+              name: 'items',
+              alias: 'items',
+              args: {},
+              fieldsByTypeName: {
+                Collection: {
+                  conceptId: {
+                    name: 'conceptId',
+                    alias: 'conceptId',
+                    args: {},
+                    fieldsByTypeName: {}
+                  },
+                  dataCenter: {
+                    name: 'dataCenter',
+                    alias: 'dataCenter',
+                    args: {},
+                    fieldsByTypeName: {}
+                  },
+                  doi: {
+                    name: 'doi',
+                    alias: 'doi',
+                    args: {},
+                    fieldsByTypeName: {}
+                  },
+                  onlineAccessFlag: {
+                    name: 'onlineAccessFlag',
+                    alias: 'onlineAccessFlag',
+                    args: {},
+                    fieldsByTypeName: {}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    })
+
+    test('returns the parsed collection results', async () => {
+      nock(/example/)
+        .defaultReplyHeaders({
+          'CMR-Hits': 84,
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .post(/collections\.json/, 'data_center%5B%5D=EDSC')
+        .reply(200, {
+          feed: {
+            entry: [{
+              id: 'C100000-EDSC',
+              data_center: 'EDSC',
+              online_access_flag: false
+            }]
+          }
+        })
+
+      nock(/example/)
+        .defaultReplyHeaders({
+          'CMR-Hits': 84,
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .post(/collections\.umm_json/, 'data_center%5B%5D=EDSC')
+        .reply(200, {
+          items: [{
+            meta: {
+              'concept-id': 'C100000-EDSC'
+            },
+            umm: {
+              DOI: {
+                DOI: 'doi:10.4225/15/5747A30'
+              }
+            }
+          }]
+        })
+
+      const response = await collectionDatasource({ params: { dataCenters: ['EDSC'] } }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'collection')
+
+      expect(response).toEqual({
+        count: 84,
+        cursor: 'e30=',
+        items: [{
+          conceptId: 'C100000-EDSC',
+          dataCenter: 'EDSC',
+          doi: {
+            doi: 'doi:10.4225/15/5747A30'
+          },
+          onlineAccessFlag: false
+        }]
+      })
+    })
+  })
+
   describe('with only umm keys', () => {
     beforeEach(() => {
       // Overwrite default requestInfo

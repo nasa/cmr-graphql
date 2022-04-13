@@ -344,6 +344,8 @@ input CollectionsInput {
   collectionDataType: [String]
   "Data center assigned to the collection."
   dataCenter: String
+  "Data centers assigned to the collection."
+  dataCenters: [String]
   "Data center assigned to the collection, in facet form."
   dataCenterH: [String]
   "The number of facets to return in each category."
@@ -404,6 +406,8 @@ input CollectionsInput {
   projectH: [String]
   "The name of the provider associated with the collection."
   provider: String
+  "The name of the providers associated with the collections."
+  providers: [String]
   "Science Keywords associated with the collection, in facet form."
   scienceKeywordsH: JSON
   "UMM Service concept id."

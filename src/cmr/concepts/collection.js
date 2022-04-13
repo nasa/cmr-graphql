@@ -162,6 +162,7 @@ export default class Collection extends Concept {
       'circle',
       'collection_data_type',
       'concept_id',
+      'data_center',
       'data_center_h',
       'granule_data_format_h',
       'granule_data_format',
