@@ -54,21 +54,21 @@ export default class Concept {
    * @param {*} searchParams All provided search parameters requested
    */
   arrarifyParams(searchParams) {
-    const arraified = searchParams
+    const arrayified = searchParams
 
     Object.keys(this.arrayifiableKeys).forEach((pluralKey) => {
-      const { [pluralKey]: providedValues = [] } = arraified
+      const { [pluralKey]: providedValues = [] } = arrayified
 
       // If a value exists
       if (providedValues.length > 0) {
-        arraified[this.arrayifiableKeys[pluralKey]] = providedValues
+        arrayified[this.arrayifiableKeys[pluralKey]] = providedValues
       }
 
       // Delete the plural key because its not supoorted by CMR
-      delete arraified[pluralKey]
+      delete arrayified[pluralKey]
     })
 
-    return arraified
+    return arrayified
   }
 
   /**
