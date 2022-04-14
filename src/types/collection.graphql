@@ -153,6 +153,7 @@ type Collection {
     relatedUrlSubtype: [String] @deprecated(reason: "Use `params.relatedUrlSubtype`")
   ): RelatedCollectionsList
 
+  "Returns possible duplicate collections based on matching metadata"
   duplicateCollections: DuplicateCollectionList
 
   granules (
