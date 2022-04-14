@@ -3,7 +3,9 @@
  */
 export const CONCEPT_TYPES = [
   'collections',
+  'duplicateCollections',
   'granules',
+  'relatedCollections',
   'services',
   'subscriptions',
   'tools',

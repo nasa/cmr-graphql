@@ -10,6 +10,7 @@ import collectionDraftSource from '../datasources/collectionDraft'
 import collectionDraftProposalSource from '../datasources/collectionDraftProposal'
 import granuleSource from '../datasources/granule'
 import graphDbSource from '../datasources/graphDb'
+import graphDbDuplicateCollectionsSource from '../datasources/graphDbDuplicateCollections'
 import serviceSource from '../datasources/service'
 import {
   deleteSubscription as subscriptionSourceDelete,
@@ -64,6 +65,7 @@ const server = new ApolloServer({
     collectionDraftProposalSource,
     granuleSource,
     graphDbSource,
+    graphDbDuplicateCollectionsSource,
     serviceSource,
     subscriptionSourceDelete,
     subscriptionSourceFetch,

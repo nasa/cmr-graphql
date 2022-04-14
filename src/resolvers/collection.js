@@ -80,6 +80,11 @@ export default {
         parseResolveInfo(info)
       )
     },
+    duplicateCollections: async (source, args, { dataSources, headers }) => dataSources
+      .graphDbDuplicateCollectionsSource(
+        source,
+        headers
+      ),
     services: async (source, args, { dataSources, headers }, info) => {
       const {
         associations = {}

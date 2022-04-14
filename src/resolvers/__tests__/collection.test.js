@@ -8,6 +8,7 @@ import typeDefs from '../../types'
 import collectionSource from '../../datasources/collection'
 import granuleSource from '../../datasources/granule'
 import graphDbSource from '../../datasources/graphDb'
+import graphDbDuplicateCollectionsSource from '../../datasources/graphDbDuplicateCollections'
 import serviceSource from '../../datasources/service'
 import {
   deleteSubscription as subscriptionSourceDelete,
@@ -17,6 +18,8 @@ import {
 import toolSource from '../../datasources/tool'
 import variableSource from '../../datasources/variable'
 
+import duplicateCollectionsGraphdbResponseMocks from './__mocks__/duplicateCollections.graphdbResponse.mocks'
+import duplicateCollectionsResponseMocks from './__mocks__/duplicateCollections.response.mocks'
 import relatedCollectionsGraphdbResponseMocks from './__mocks__/relatedCollections.graphdbResponse.mocks'
 import relatedCollectionsResponseMocks from './__mocks__/relatedCollections.response.mocks'
 
@@ -32,6 +35,7 @@ const server = new ApolloServer({
     collectionSource,
     granuleSource,
     graphDbSource,
+    graphDbDuplicateCollectionsSource,
     serviceSource,
     subscriptionSourceDelete,
     subscriptionSourceFetch,
@@ -1539,6 +1543,65 @@ describe('Collection', () => {
         const { data } = response
 
         expect(data).toEqual(relatedCollectionsResponseMocks.data)
+      })
+    })
+
+    describe('duplicateCollections', () => {
+      test('queries CMR GraphDB for relationships', async () => {
+        nock(/example/)
+          .defaultReplyHeaders({
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .post(/collections\.umm_json/)
+          .reply(200, {
+            hits: 1,
+            items: [{
+              meta: {
+                'concept-id': 'C1200383041-CMR_ONLY'
+              },
+              umm: {
+                ShortName: '7333',
+                DOI: {
+                  DOI: '10.5067/MEASURES/DMSP-F16/SSMIS/DATA301'
+                }
+              }
+            }]
+          })
+
+        nock(/example/)
+          .defaultReplyHeaders({
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .post('/graphdb')
+          .reply(200, duplicateCollectionsGraphdbResponseMocks)
+
+        const response = await server.executeOperation({
+          variables: {},
+          query: `{
+            collections (
+              conceptId: "C1200383041-CMR_ONLY"
+            ) {
+              items {
+                conceptId
+                duplicateCollections {
+                  count
+                  items {
+                    id
+                    title
+                    shortName
+                    doi
+                  }
+                }
+              }
+            }
+          }`
+        })
+
+        const { data } = response
+
+        expect(data).toEqual(duplicateCollectionsResponseMocks.data)
       })
     })
   })
