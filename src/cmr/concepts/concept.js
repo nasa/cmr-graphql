@@ -469,7 +469,7 @@ export default class Concept {
       }
 
       promises.push(
-        this.fetchJson(this.arraryfiParams(searchParams), jsonKeys, jsonHeaders)
+        this.fetchJson(this.arrayifyParams(searchParams), jsonKeys, jsonHeaders)
       )
     } else {
       // Push a null promise to the array so that the umm promise always exists as
@@ -491,7 +491,7 @@ export default class Concept {
 
       // Construct the promise that will request data from the umm endpoint
       promises.push(
-        this.fetchUmm(this.arraryfiParams(searchParams), ummKeys, ummHeaders)
+        this.fetchUmm(this.arrayifyParams(searchParams), ummKeys, ummHeaders)
       )
     } else {
       promises.push(
