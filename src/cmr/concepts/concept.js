@@ -40,6 +40,35 @@ export default class Concept {
     this.ummScrollId = undefined
 
     this.params = params
+
+    this.arrayifiableKeys = {
+      dataCenters: 'dataCenter',
+      providers: 'provider'
+    }
+  }
+
+  /**
+   * If a plural key is provided it will take the value but 'convert' the key
+   * to singular but keep the array of values. This is done so that we can offer
+   * two different keys (singular and plural) within the schema.
+   * @param {*} searchParams All provided search parameters requested
+   */
+  arrayifyParams(searchParams) {
+    const arrayified = searchParams
+
+    Object.keys(this.arrayifiableKeys).forEach((pluralKey) => {
+      const { [pluralKey]: providedValues = [] } = arrayified
+
+      // If a value exists
+      if (providedValues.length > 0) {
+        arrayified[this.arrayifiableKeys[pluralKey]] = providedValues
+      }
+
+      // Delete the plural key because its not supoorted by CMR
+      delete arrayified[pluralKey]
+    })
+
+    return arrayified
   }
 
   /**
@@ -440,7 +469,7 @@ export default class Concept {
       }
 
       promises.push(
-        this.fetchJson(searchParams, jsonKeys, jsonHeaders)
+        this.fetchJson(this.arrayifyParams(searchParams), jsonKeys, jsonHeaders)
       )
     } else {
       // Push a null promise to the array so that the umm promise always exists as
@@ -462,7 +491,7 @@ export default class Concept {
 
       // Construct the promise that will request data from the umm endpoint
       promises.push(
-        this.fetchUmm(searchParams, ummKeys, ummHeaders)
+        this.fetchUmm(this.arrayifyParams(searchParams), ummKeys, ummHeaders)
       )
     } else {
       promises.push(
