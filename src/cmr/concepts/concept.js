@@ -53,7 +53,7 @@ export default class Concept {
    * two different keys (singular and plural) within the schema.
    * @param {*} searchParams All provided search parameters requested
    */
-  arrarifyParams(searchParams) {
+  arrayifyParams(searchParams) {
     const arrayified = searchParams
 
     Object.keys(this.arrayifiableKeys).forEach((pluralKey) => {
@@ -469,7 +469,7 @@ export default class Concept {
       }
 
       promises.push(
-        this.fetchJson(this.arrarifyParams(searchParams), jsonKeys, jsonHeaders)
+        this.fetchJson(this.arraryfiParams(searchParams), jsonKeys, jsonHeaders)
       )
     } else {
       // Push a null promise to the array so that the umm promise always exists as
@@ -491,7 +491,7 @@ export default class Concept {
 
       // Construct the promise that will request data from the umm endpoint
       promises.push(
-        this.fetchUmm(this.arrarifyParams(searchParams), ummKeys, ummHeaders)
+        this.fetchUmm(this.arraryfiParams(searchParams), ummKeys, ummHeaders)
       )
     } else {
       promises.push(
