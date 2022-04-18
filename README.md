@@ -1,6 +1,8 @@
 # [GraphQL](https://cmr.earthdata.nasa.gov/graphql)
 
 [![serverless](http://public.serverless.com/badges/v3.svg)](http://www.serverless.com)
+![Build Status](https://github.com/nasa/cmr-graphql/workflows/CI/badge.svg?branch=main)
+[![codecov](https://codecov.io/gh/nasa/cmr-graphql/branch/main/graph/badge.svg?token=VZiaLjxD2m)](https://codecov.io/gh/nasa/cmr-graphql)
 
 ## About
 GraphQL is an api developed by [NASA](http://nasa.gov) [EOSDIS](https://earthdata.nasa.gov) to search against [Common Metadata Repository (CMR)](https://cmr.earthdata.nasa.gov/search/) concept metadata using [GraphQL](https://graphql.org/).
