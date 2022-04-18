@@ -1,4 +1,4 @@
-# [GraphQL](https://cmr.earthdata.nasa.gov/graphql)
+# [GraphQL](https://graphql.earthdata.nasa.gov/api)
 
 [![serverless](http://public.serverless.com/badges/v3.svg)](http://www.serverless.com)
 ![Build Status](https://github.com/nasa/cmr-graphql/workflows/CI/badge.svg?branch=main)
