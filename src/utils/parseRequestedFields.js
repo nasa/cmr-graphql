@@ -91,7 +91,7 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
   }
 
   if (name === 'collections') {
-    // If a user has requested granules, subscriptions or relatedCollections, from
+    // If a user has requested granules, subscriptions, relatedCollections or duplicateCollections, from
     // within a collection request the resolver will pull the conceptId and provide
     // it to the granules request but if a user doesn't explicity ask for the
     // collection concept id we need to request it
@@ -100,9 +100,22 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
         requestedFields.includes('granules')
         || requestedFields.includes('subscriptions')
         || requestedFields.includes('relatedCollections')
+        || requestedFields.includes('duplicateCollections')
       )
        && !requestedFields.includes('conceptId')) {
       requestedFields.push('conceptId')
+    }
+
+    // If the user has requested duplicateCollections but hasn't requested shortName, add it to requestedFields
+    // to be used in the duplicateCollections graphDb call
+    if (requestedFields.includes('duplicateCollections') && !requestedFields.includes('shortName')) {
+      requestedFields.push('shortName')
+    }
+
+    // If the user has requested duplicateCollections but hasn't requested doi, add it to requestedFields
+    // to be used in the duplicateCollections graphDb call
+    if (requestedFields.includes('duplicateCollections') && !requestedFields.includes('doi')) {
+      requestedFields.push('doi')
     }
   }
 
@@ -133,8 +146,10 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
     }
   }
 
-  // Requested keys that are not UMM must be json
-  const jsonKeys = requestedFields.filter((x) => !ummKeys.includes(x))
+  // Requested keys that are not UMM and not CONCEPT_TYPES keys must be json
+  const jsonKeys = requestedFields.filter((x) => (
+    !ummKeys.includes(x) && !CONCEPT_TYPES.includes(x)
+  ))
 
   // If we already have to go to the json endpoint get as much info from there as possible
   if (jsonKeys.length > 0) {

@@ -153,6 +153,9 @@ type Collection {
     relatedUrlSubtype: [String] @deprecated(reason: "Use `params.relatedUrlSubtype`")
   ): RelatedCollectionsList
 
+  "Returns possible duplicate collections based on matching metadata"
+  duplicateCollections: DuplicateCollectionList
+
   granules (
     "Granules query parameters"
     params: GranulesInput
@@ -255,6 +258,24 @@ type Collection {
   ): VariableList
 }
 
+type DuplicateCollection {
+  "The unique concept id assigned to the collection."
+  id: String
+  "The DOI that identifies the collection."
+  doi: String
+  "The short name associated with the collection."
+  shortName: String
+  "The title of the collection described by the metadata."
+  title: String
+}
+
+type DuplicateCollectionList {
+  "The number of duplicate collections available."
+  count: Int
+  "The list of duplicate collections."
+  items: [DuplicateCollection]
+}
+
 input RelatedCollectionsInput {
   "The size of the range GraphDB searches on. Defaults to 5"
   limit: Int
@@ -271,6 +292,8 @@ type RelatedCollection {
   id: String
   "The DOI that identifies the collection."
   doi: String
+  "The short name associated with the collection."
+  shortName: String
   "The title of the collection described by the metadata."
   title: String
   "The list of relationships."

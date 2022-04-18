@@ -5,10 +5,11 @@ import { v4 as uuidv4 } from 'uuid'
 import resolvers from '../resolvers'
 import typeDefs from '../types'
 
-import collectionSource from '../datasources/collection'
-import collectionDraftSource from '../datasources/collectionDraft'
 import collectionDraftProposalSource from '../datasources/collectionDraftProposal'
+import collectionDraftSource from '../datasources/collectionDraft'
+import collectionSource from '../datasources/collection'
 import granuleSource from '../datasources/granule'
+import graphDbDuplicateCollectionsSource from '../datasources/graphDbDuplicateCollections'
 import graphDbSource from '../datasources/graphDb'
 import serviceSource from '../datasources/service'
 import {
@@ -59,10 +60,11 @@ const server = new ApolloServer({
 
   // An object that goes to the 'context' argument when executing resolvers
   dataSources: () => ({
-    collectionSource,
-    collectionDraftSource,
     collectionDraftProposalSource,
+    collectionDraftSource,
+    collectionSource,
     granuleSource,
+    graphDbDuplicateCollectionsSource,
     graphDbSource,
     serviceSource,
     subscriptionSourceDelete,
