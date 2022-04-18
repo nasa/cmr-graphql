@@ -34,8 +34,8 @@ const server = new ApolloServer({
   dataSources: () => ({
     collectionSource,
     granuleSource,
-    graphDbSource,
     graphDbDuplicateCollectionsSource,
+    graphDbSource,
     serviceSource,
     subscriptionSourceDelete,
     subscriptionSourceFetch,

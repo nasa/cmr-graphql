@@ -44,6 +44,22 @@ describe('graphDb', () => {
 
       expect(response).toEqual(duplicateCollectionsRelatedUrlTypeResponseMocks)
     })
+
+    test('returns 0 collections when doi doesn\'t exist', async () => {
+      const response = await graphDbDuplicateCollectionsDatasource(
+        {
+          conceptId: 'C1200383041-CMR_ONLY',
+          shortName: 'mock shortname',
+          doi: null
+        },
+        { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }
+      )
+
+      expect(response).toEqual({
+        count: 0,
+        items: []
+      })
+    })
   })
 
   test('catches errors received from queryCmrTools', async () => {

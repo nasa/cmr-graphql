@@ -20,7 +20,15 @@ export default async (
     shortName
   } = collection
 
-  const { doi: doiDescription } = doi
+  const { doi: doiDescription } = doi || {}
+
+  // If doi or shorName don't exist, return 0 duplicateCollections
+  if (!doiDescription || !shortName) {
+    return {
+      count: 0,
+      items: []
+    }
+  }
 
   const query = JSON.stringify({
     gremlin: `
