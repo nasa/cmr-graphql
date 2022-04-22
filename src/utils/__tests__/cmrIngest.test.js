@@ -24,6 +24,7 @@ describe('cmrIngest', () => {
     nock(/example/, {
       reqheaders: {
         Accept: 'application/json',
+        'Content-Type': 'application/vnd.nasa.cmr.umm+json; version=1.0',
         'CMR-Request-Id': 'abcd-1234-efgh-5678'
       }
     })
@@ -36,7 +37,8 @@ describe('cmrIngest', () => {
     const response = await cmrIngest(
       'subscriptions',
       { collectionConceptId: 'C100000-EDSC' },
-      { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }
+      { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
+      '1.0'
     )
 
     const { data, headers } = response

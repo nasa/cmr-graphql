@@ -11,12 +11,13 @@ import { pickIgnoringCase } from './pickIgnoringCase'
  * @param {String} conceptType Concept type to search
  * @param {Object} data Parameters to send to CMR
  * @param {Object} headers Headers to send to CMR
+ * @param {Object} ummVersion UMM Version of the conceptType to be ingested
  */
-export const cmrIngest = async (conceptType, data, headers) => {
+export const cmrIngest = async (conceptType, data, headers, ummVersion) => {
   // Default headers
   const defaultHeaders = {
     Accept: 'application/json',
-    'Content-Type': 'application/vnd.nasa.cmr.umm+json'
+    'Content-Type': `application/vnd.nasa.cmr.umm+json; version=${ummVersion}`
   }
 
   // Merge default headers into the provided headers and then pick out only permitted values
