@@ -233,10 +233,10 @@ describe('Subscription', () => {
         .reply(200, {
           items: [{
             concept_id: 'SUB100000-EDSC',
-            'collection-concept-id': 'C100000-EDSC'
+            collection_concept_id: 'C100000-EDSC'
           }, {
             concept_id: 'SUB100001-EDSC',
-            'collection-concept-id': 'C100003-EDSC'
+            collection_concept_id: 'C100003-EDSC'
           }]
         })
 

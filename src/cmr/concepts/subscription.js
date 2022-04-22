@@ -72,30 +72,4 @@ export default class Subscription extends Concept {
 
     return super.fetchUmm(searchParams, ummKeys, ummHeaders)
   }
-
-  /**
-   * Rename fields, add fields, modify fields, etc
-   * @param {Object} item The item returned from the CMR json endpoint
-   */
-  normalizeJsonItem(item) {
-    // Substitute hyphens for underscores for consistency
-    const {
-      'collection-concept-id': collectionConceptId,
-      'subscriber-id': subscriberId
-    } = item
-
-    // eslint-disable-next-line no-param-reassign
-    delete item['collection-concept-id']
-
-    // eslint-disable-next-line no-param-reassign
-    item.collection_concept_id = collectionConceptId
-
-    // eslint-disable-next-line no-param-reassign
-    delete item['subscriber-id']
-
-    // eslint-disable-next-line no-param-reassign
-    item.subscriber_id = subscriberId
-
-    return item
-  }
 }
