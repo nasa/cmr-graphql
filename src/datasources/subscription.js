@@ -29,12 +29,7 @@ export const ingestSubscription = async (params, headers, parsedInfo) => {
   const subscription = new Subscription(headers, requestInfo, params)
 
   // Contact CMR
-  await subscription.ingest(
-    params,
-    ingestKeys,
-    headers,
-    process.env.ummSubscriptionVersion
-  )
+  await subscription.ingest(params, ingestKeys, headers)
 
   // Parse the response from CMR
   await subscription.parseIngest(requestInfo)

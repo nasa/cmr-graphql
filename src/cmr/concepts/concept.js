@@ -333,9 +333,8 @@ export default class Concept {
    * @param {Object} data Parameters provided by the query
    * @param {Array} requestedKeys Keys requested by the query
    * @param {Object} providedHeaders Headers requested by the query
-   * @param {Object} ummVersion UMM Version of the conceptType to be ingested
    */
-  ingest(data, requestedKeys, providedHeaders, ummVersion) {
+  ingest(data, requestedKeys, providedHeaders) {
     // eslint-disable-next-line no-param-reassign
     data = mergeParams(data)
 
@@ -345,8 +344,7 @@ export default class Concept {
     this.response = cmrIngest(
       this.getConceptType(),
       data,
-      providedHeaders,
-      ummVersion
+      providedHeaders
     )
   }
 
