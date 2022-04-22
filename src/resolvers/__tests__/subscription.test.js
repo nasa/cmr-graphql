@@ -45,6 +45,7 @@ describe('Subscription', () => {
     process.env = { ...OLD_ENV }
 
     process.env.cmrRootUrl = 'http://example.com'
+    process.env.ummSubscriptionVersion = '1.0'
   })
 
   afterEach(() => {
@@ -304,7 +305,13 @@ describe('Subscription', () => {
 
   describe('Subscription', () => {
     test('createSubscription', async () => {
-      nock(/example/)
+      nock(/example/, {
+        reqheaders: {
+          accept: 'application/json',
+          'content-type': 'application/vnd.nasa.cmr.umm+json; version=1.0',
+          'cmr-request-id': 'abcd-1234-efgh-5678'
+        }
+      })
         .defaultReplyHeaders({
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'

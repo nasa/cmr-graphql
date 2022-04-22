@@ -1,4 +1,6 @@
 import { uniq } from 'lodash'
+
+import { pickIgnoringCase } from '../../utils/pickIgnoringCase'
 import Concept from './concept'
 
 export default class Subscription extends Concept {
@@ -71,5 +73,34 @@ export default class Subscription extends Concept {
     }
 
     return super.fetchUmm(searchParams, ummKeys, ummHeaders)
+  }
+
+  /**
+   * Ingest the provided object into the CMR
+   * @param {Object} data Parameters provided by the query
+   * @param {Array} requestedKeys Keys requested by the query
+   * @param {Object} providedHeaders Headers requested by the query
+   */
+  ingest(data, requestedKeys, providedHeaders) {
+    // Default headers
+    const defaultHeaders = {
+      Accept: 'application/json',
+      'Content-Type': `application/vnd.nasa.cmr.umm+json; version=${process.env.ummSubscriptionVersion}`
+    }
+
+    // Merge default headers into the provided headers and then pick out only permitted values
+    const permittedHeaders = pickIgnoringCase({
+      ...defaultHeaders,
+      ...providedHeaders
+    }, [
+      'Accept',
+      'Authorization',
+      'Client-Id',
+      'Content-Type',
+      'CMR-Request-Id',
+      'Echo-Token'
+    ])
+
+    super.ingest(data, requestedKeys, permittedHeaders)
   }
 }
