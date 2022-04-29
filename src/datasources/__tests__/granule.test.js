@@ -276,7 +276,6 @@ describe('granule', () => {
           .post('/search/clear-scroll', { scroll_id: '-98726357' })
           .reply(500)
 
-
         await expect(
           granuleDatasource({}, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'granule')
         ).rejects.toThrow(Error)

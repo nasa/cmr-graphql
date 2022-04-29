@@ -240,7 +240,6 @@ describe('subscription#fetch', () => {
           .post('/search/clear-scroll', { scroll_id: '-98726357' })
           .reply(500)
 
-
         await expect(
           subscriptionSourceFetch({}, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'subscription')
         ).rejects.toThrow(Error)
@@ -299,42 +298,6 @@ describe('subscription#fetch', () => {
           conceptId: 'SUB100000-EDSC'
         }]
       })
-    })
-  })
-
-  describe('with json and umm keys', () => {
-    beforeEach(() => {
-      // Overwrite default requestInfo
-      requestInfo = {
-        name: 'subscriptions',
-        alias: 'subscriptions',
-        args: {},
-        fieldsByTypeName: {
-          ToolList: {
-            items: {
-              name: 'items',
-              alias: 'items',
-              args: {},
-              fieldsByTypeName: {
-                Tool: {
-                  conceptId: {
-                    name: 'conceptId',
-                    alias: 'conceptId',
-                    args: {},
-                    fieldsByTypeName: {}
-                  },
-                  emailAddress: {
-                    name: 'emailAddress',
-                    alias: 'emailAddress',
-                    args: {},
-                    fieldsByTypeName: {}
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
     })
   })
 

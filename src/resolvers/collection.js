@@ -5,9 +5,7 @@ import { handlePagingParams } from '../utils/handlePagingParams'
 export default {
   Query: {
     collections: async (source, args, { dataSources, headers }, info) => (
-      dataSources.collectionSource(
-        handlePagingParams(args), headers, parseResolveInfo(info)
-      )
+      dataSources.collectionSource(handlePagingParams(args), headers, parseResolveInfo(info))
     ),
     collection: async (source, args, { dataSources, headers }, info) => {
       const result = await dataSources.collectionSource(args, headers, parseResolveInfo(info))

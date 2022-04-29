@@ -1,6 +1,7 @@
 const path = require('path')
 const slsw = require('serverless-webpack')
 const nodeExternals = require('webpack-node-externals')
+const ESLintPlugin = require('eslint-webpack-plugin')
 
 const WebpackConfig = {
   name: 'edsc-graphql',
@@ -16,6 +17,7 @@ const WebpackConfig = {
   externals: [
     nodeExternals()
   ],
+  plugins: [new ESLintPlugin()],
   module: {
     rules: [
       {
@@ -24,9 +26,6 @@ const WebpackConfig = {
         use: [
           {
             loader: 'babel-loader'
-          },
-          {
-            loader: 'eslint-loader'
           }
         ]
       },

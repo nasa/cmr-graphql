@@ -234,7 +234,6 @@ describe('tool', () => {
           .post('/search/clear-scroll', { scroll_id: '-98726357' })
           .reply(500)
 
-
         await expect(
           toolDatasource({}, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'tool')
         ).rejects.toThrow(Error)
@@ -293,42 +292,6 @@ describe('tool', () => {
           conceptId: 'T100000-EDSC'
         }]
       })
-    })
-  })
-
-  describe('with json and umm keys', () => {
-    beforeEach(() => {
-      // Overwrite default requestInfo
-      requestInfo = {
-        name: 'tools',
-        alias: 'tools',
-        args: {},
-        fieldsByTypeName: {
-          ToolList: {
-            items: {
-              name: 'items',
-              alias: 'items',
-              args: {},
-              fieldsByTypeName: {
-                Tool: {
-                  conceptId: {
-                    name: 'conceptId',
-                    alias: 'conceptId',
-                    args: {},
-                    fieldsByTypeName: {}
-                  },
-                  type: {
-                    name: 'type',
-                    alias: 'type',
-                    args: {},
-                    fieldsByTypeName: {}
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
     })
   })
 

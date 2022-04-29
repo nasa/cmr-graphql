@@ -144,8 +144,10 @@ describe('graphDb', () => {
           .defaultReplyHeaders({
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/graphdb/,
-            /\.or\(.+has\('relatedUrl', 'type', within\('VIEW RELATED INFORMATION'\)\),.+hasLabel\('project','platformInstrument'\)/)
+          .post(
+            /graphdb/,
+            /\.or\(.+has\('relatedUrl', 'type', within\('VIEW RELATED INFORMATION'\)\),.+hasLabel\('project','platformInstrument'\)/
+          )
           .reply(200, relatedCollectionsRelatedUrlTypeGraphdbResponseMocks)
 
         const response = await graphDbDatasource(
@@ -168,8 +170,10 @@ describe('graphDb', () => {
           .defaultReplyHeaders({
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/graphdb/,
-            /\.or\(.+has\('relatedUrl', 'subtype', within\(\\"USER'S GUIDE\\"\)\),.+hasLabel\('project','platformInstrument'\)/)
+          .post(
+            /graphdb/,
+            /\.or\(.+has\('relatedUrl', 'subtype', within\(\\"USER'S GUIDE\\"\)\),.+hasLabel\('project','platformInstrument'\)/
+          )
           .reply(200, relatedCollectionsRelatedUrlSubtypeGraphdbResponseMocks)
 
         const response = await graphDbDatasource(
@@ -192,8 +196,10 @@ describe('graphDb', () => {
           .defaultReplyHeaders({
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/graphdb/,
-            /\.or\(.+and\(.+has\('relatedUrl', 'type', within\('VIEW RELATED INFORMATION'\)\),.+has\('relatedUrl', 'subtype', within\(\\"USER'S GUIDE\\"\)\).+\).+hasLabel\('project','platformInstrument'\)/)
+          .post(
+            /graphdb/,
+            /\.or\(.+and\(.+has\('relatedUrl', 'type', within\('VIEW RELATED INFORMATION'\)\),.+has\('relatedUrl', 'subtype', within\(\\"USER'S GUIDE\\"\)\).+\).+hasLabel\('project','platformInstrument'\)/
+          )
           .reply(200, relatedCollectionsRelatedUrlTypeAndSubtypeGraphdbResponseMocks)
 
         const response = await graphDbDatasource(
@@ -582,8 +588,10 @@ describe('graphDb', () => {
           .defaultReplyHeaders({
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/graphdb/,
-            /\.has\('relatedUrl', 'type', within\('VIEW RELATED INFORMATION'\)\)/)
+          .post(
+            /graphdb/,
+            /\.has\('relatedUrl', 'type', within\('VIEW RELATED INFORMATION'\)\)/
+          )
           .reply(200, relatedCollectionsGraphDbRelatedUrlGraphdbResponseMocks)
 
         const response = await graphDbDatasource(
@@ -698,8 +706,10 @@ describe('graphDb', () => {
           .defaultReplyHeaders({
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/graphdb/,
-            /\.or\(.+has\('relatedUrl', 'type', within\('VIEW RELATED INFORMATION'\)\),.+hasLabel\('project'\)/)
+          .post(
+            /graphdb/,
+            /\.or\(.+has\('relatedUrl', 'type', within\('VIEW RELATED INFORMATION'\)\),.+hasLabel\('project'\)/
+          )
           .reply(200, relatedCollectionsGraphDbRelatedUrlProjectGraphdbResponseMocks)
 
         const response = await graphDbDatasource(
@@ -813,8 +823,10 @@ describe('graphDb', () => {
           .defaultReplyHeaders({
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/graphdb/,
-            /\.or\(.+has\('relatedUrl', 'type', within\('VIEW RELATED INFORMATION'\)\),.+hasLabel\('project','platformInstrument'\)/)
+          .post(
+            /graphdb/,
+            /\.or\(.+has\('relatedUrl', 'type', within\('VIEW RELATED INFORMATION'\)\),.+hasLabel\('project','platformInstrument'\)/
+          )
           .reply(200, relatedCollectionsGraphDbRelatedUrlRelationshipTypeGraphdbResponseMocks)
 
         const response = await graphDbDatasource(
