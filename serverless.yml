@@ -32,8 +32,9 @@ provider:
       - ${env:SUBNET_ID_A, 'subnetIdA'}
       - ${env:SUBNET_ID_B, 'subnetIdB'}
 
-  role:
-    Fn::ImportValue: ${self:provider.stage}-GraphQLApplicationRole
+  iam:
+    role:
+      Fn::ImportValue: ${self:provider.stage}-GraphQLApplicationRole
 
 # Package each lambda into individual zip files. This reduces the size of
 # each lambda but increases the complexity of the compilation process slightly
