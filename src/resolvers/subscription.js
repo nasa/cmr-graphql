@@ -5,13 +5,13 @@ import { handlePagingParams } from '../utils/handlePagingParams'
 export default {
   Query: {
     subscriptions: async (source, args, { dataSources, headers }, info) => (
-      dataSources.subscriptionSourceFetch(
-        handlePagingParams(args), headers, parseResolveInfo(info)
-      )
+      dataSources.subscriptionSourceFetch(handlePagingParams(args), headers, parseResolveInfo(info))
     ),
     subscription: async (source, args, { dataSources, headers }, info) => {
       const result = await dataSources.subscriptionSourceFetch(
-        args, headers, parseResolveInfo(info)
+        args,
+        headers,
+        parseResolveInfo(info)
       )
 
       const [firstResult] = result
@@ -33,7 +33,9 @@ export default {
       })
 
       const result = await dataSources.collectionSource(
-        requestedParams, headers, parseResolveInfo(info)
+        requestedParams,
+        headers,
+        parseResolveInfo(info)
       )
 
       const [firstResult] = result
@@ -45,21 +47,27 @@ export default {
   Mutation: {
     createSubscription: async (source, args, { dataSources, headers }, info) => {
       const result = await dataSources.subscriptionSourceIngest(
-        args, headers, parseResolveInfo(info)
+        args,
+        headers,
+        parseResolveInfo(info)
       )
 
       return result
     },
     updateSubscription: async (source, args, { dataSources, headers }, info) => {
       const result = await dataSources.subscriptionSourceIngest(
-        args, headers, parseResolveInfo(info)
+        args,
+        headers,
+        parseResolveInfo(info)
       )
 
       return result
     },
     deleteSubscription: async (source, args, { dataSources, headers }, info) => {
       const result = await dataSources.subscriptionSourceDelete(
-        args, headers, parseResolveInfo(info)
+        args,
+        headers,
+        parseResolveInfo(info)
       )
 
       return result

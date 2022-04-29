@@ -182,7 +182,6 @@ export default async (
     // The first value returned holds the total count
     ([{ '@value': totalRelatedCollectionsCount }] = totalRelatedCollectionsMap)
 
-
     // Parse the collection values
     const { '@value': relatedCollectionsList } = relatedCollectionsBulkSet
     const [{ '@value': relatedCollectionsMap }] = relatedCollectionsList

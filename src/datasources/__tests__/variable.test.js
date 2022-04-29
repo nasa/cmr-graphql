@@ -234,7 +234,6 @@ describe('variable', () => {
           .post('/search/clear-scroll', { scroll_id: '-98726357' })
           .reply(500)
 
-
         await expect(
           variableDatasource({}, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'variable')
         ).rejects.toThrow(Error)
@@ -293,42 +292,6 @@ describe('variable', () => {
           conceptId: 'V100000-EDSC'
         }]
       })
-    })
-  })
-
-  describe('with json and umm keys', () => {
-    beforeEach(() => {
-      // Overwrite default requestInfo
-      requestInfo = {
-        name: 'variables',
-        alias: 'variables',
-        args: {},
-        fieldsByTypeName: {
-          VariableList: {
-            items: {
-              name: 'items',
-              alias: 'items',
-              args: {},
-              fieldsByTypeName: {
-                Variable: {
-                  conceptId: {
-                    name: 'conceptId',
-                    alias: 'conceptId',
-                    args: {},
-                    fieldsByTypeName: {}
-                  },
-                  variableType: {
-                    name: 'variableType',
-                    alias: 'variableType',
-                    args: {},
-                    fieldsByTypeName: {}
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
     })
   })
 

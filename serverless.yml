@@ -15,7 +15,7 @@ provider:
     sslCertFile: ${self:custom.variables.sslCertFile}
 
     # Timeout for lambda
-    lambdaTimeout: ${env:LAMBDA_TIMEOUT}
+    lambdaTimeout: ${env:LAMBDA_TIMEOUT, '30'}
 
     # Pinned UMM versions
     ummCollectionVersion: '1.16.4'
@@ -29,8 +29,8 @@ provider:
     securityGroupIds:
       - Fn::ImportValue: ${self:provider.stage}-GraphQLLambdaSecurityGroup
     subnetIds:
-      - ${env:SUBNET_ID_A}
-      - ${env:SUBNET_ID_B}
+      - ${env:SUBNET_ID_A, 'subnetIdA'}
+      - ${env:SUBNET_ID_B, 'subnetIdB'}
 
   role:
     Fn::ImportValue: ${self:provider.stage}-GraphQLApplicationRole
@@ -48,7 +48,7 @@ plugins:
 functions:
   graphql:
     handler: src/graphql/handler.default
-    timeout: ${env:LAMBDA_TIMEOUT}
+    timeout: ${env:LAMBDA_TIMEOUT, '30'}
     layers:
       - Fn::ImportValue: ${self:provider.stage}-CertificateLambdaLayer
     events:
@@ -72,7 +72,7 @@ functions:
     role: IamRoleCustomResourcesLambdaExecution
     events:
       - s3:
-          bucket: ${env:CLOUDFRONT_BUCKET_NAME}
+          bucket: ${env:CLOUDFRONT_BUCKET_NAME, ''}
           event: s3:ObjectCreated:*
           existing: true
           rules:
@@ -136,6 +136,8 @@ resources:
         Roles:
           - Ref: IamRoleCustomResourcesLambdaExecution
 
+configValidationMode: error
+
 custom:
   siteName: graphql-${self:provider.stage}
 
@@ -160,4 +162,4 @@ custom:
   # Forward logs to Splunk
   logSubscription:
     enabled: true
-    destinationArn: ${env:LOG_DESTINATION_ARN}
+    destinationArn: ${env:LOG_DESTINATION_ARN, ''}

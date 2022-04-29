@@ -290,7 +290,6 @@ describe('collection', () => {
           .post('/search/clear-scroll', { scroll_id: '-98726357' })
           .reply(500)
 
-
         await expect(
           collectionDatasource({}, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'collection')
         ).rejects.toThrow(Error)
