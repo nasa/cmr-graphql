@@ -11,8 +11,7 @@ const WebpackConfig = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].js',
-    libraryTarget: 'commonjs2',
-    library: '[name]'
+    libraryTarget: 'commonjs2'
   },
   externals: [
     nodeExternals()
