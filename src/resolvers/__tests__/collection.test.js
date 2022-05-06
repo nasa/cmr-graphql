@@ -293,6 +293,7 @@ describe('Collection', () => {
               shortName
               spatialExtent
               spatialInformation
+              standardProduct
               tags
               temporalExtents
               temporalKeywords
