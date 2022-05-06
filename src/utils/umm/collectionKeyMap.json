@@ -55,6 +55,7 @@
     "shortName": "umm.ShortName",
     "spatialExtent": "umm.SpatialExtent",
     "spatialInformation": "umm.SpatialInformation",
+    "standardProduct": "umm.StandardProduct",
     "temporalExtents": "umm.TemporalExtents",
     "temporalKeywords": "umm.TemporalKeywords",
     "tilingIdentificationSystems": "umm.TilingIdentificationSystems",
