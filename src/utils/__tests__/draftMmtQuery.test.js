@@ -10,43 +10,94 @@ describe('draftMmtQuery', () => {
     process.env = { ...OLD_ENV }
 
     process.env.draftMmtRootUrl = 'http://example.com'
-    process.env.sslCertFile = 'certificates/fcpca_combined.pem'
   })
 
   afterEach(() => {
     process.env = OLD_ENV
   })
 
-  test('queries draft mmt', async () => {
-    const consoleMock = jest.spyOn(console, 'log').mockImplementation(() => jest.fn())
+  describe('with a custom CA cert file', () => {
+    beforeEach(() => {
+      process.env.sslCertFile = 'certificates/fcpca_combined.pem'
+    })
 
-    nock(/example/)
-      .get(/collection_draft_proposals/)
-      .reply(200, {
+    afterEach(() => {
+      process.env = OLD_ENV
+    })
+
+    test('queries draft mmt', async () => {
+      const consoleMock = jest.spyOn(console, 'log').mockImplementation(() => jest.fn())
+
+      nock(/example/)
+        .get(/collection_draft_proposals/)
+        .reply(200, {
+          ShortName: 'Mock ShortName'
+        })
+
+      const response = await draftMmtQuery({
+        conceptType: 'collectionDraftProposal',
+        params: {
+          id: 123
+        },
+        headers: { 'X-Request-Id': 'abcd-1234-efgh-5678' }
+      })
+
+      const { data, headers } = response
+
+      const {
+        'request-duration': requestDuration
+      } = downcaseKeys(headers)
+
+      expect(data).toEqual({
         ShortName: 'Mock ShortName'
       })
 
-    const response = await draftMmtQuery({
-      conceptType: 'collectionDraftProposal',
-      params: {
-        id: 123
-      },
-      headers: { 'X-Request-Id': 'abcd-1234-efgh-5678' }
+      expect(consoleMock).toBeCalledWith(
+        `Request abcd-1234-efgh-5678 to [concept: collectionDraftProposal] completed external request in [observed: ${requestDuration} ms]`
+      )
+    })
+  })
+
+  describe('without a custom CA cert file', () => {
+    beforeEach(() => {
+      process.env.sslCertFile = 'false'
     })
 
-    const { data, headers } = response
-
-    const {
-      'request-duration': requestDuration
-    } = downcaseKeys(headers)
-
-    expect(data).toEqual({
-      ShortName: 'Mock ShortName'
+    afterEach(() => {
+      process.env = OLD_ENV
     })
 
-    expect(consoleMock).toBeCalledWith(
-      `Request abcd-1234-efgh-5678 to [concept: collectionDraftProposal] completed external request in [observed: ${requestDuration} ms]`
-    )
+    test('queries draft mmt', async () => {
+      const consoleMock = jest.spyOn(console, 'log').mockImplementation(() => jest.fn())
+
+      nock(/example/)
+        .get(/collection_draft_proposals/)
+        .reply(200, {
+          ShortName: 'Mock ShortName'
+        })
+
+      const response = await draftMmtQuery({
+        conceptType: 'collectionDraftProposal',
+        params: {
+          id: 123
+        },
+        headers: { 'X-Request-Id': 'abcd-1234-efgh-5678' }
+      })
+
+      const { data, headers } = response
+
+      const {
+        'request-duration': requestDuration
+      } = downcaseKeys(headers)
+
+      expect(data).toEqual({
+        ShortName: 'Mock ShortName'
+      })
+
+      expect(consoleMock).toBeCalledWith(
+        `Request abcd-1234-efgh-5678 to [concept: collectionDraftProposal] completed external request in [observed: ${requestDuration} ms]`
+      )
+    })
   })
 
   describe('when provided a token via the Authorization header', () => {

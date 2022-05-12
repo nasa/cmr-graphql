@@ -45,6 +45,7 @@ plugins:
   - serverless-webpack
   - serverless-offline
   - serverless-plugin-log-subscription
+  - serverless-plugin-ifelse
 
 functions:
   graphql:
@@ -164,3 +165,9 @@ custom:
   logSubscription:
     enabled: true
     destinationArn: ${env:LOG_DESTINATION_ARN, ''}
+
+  # Exclude the lambda layer in if the SSL_CERT_FILE has not been defined
+  serverlessIfElse:
+      - If: '"${env:SSL_CERT_FILE, "false"}" == "false"'
+        Exclude:
+          - functions.graphql.layers
