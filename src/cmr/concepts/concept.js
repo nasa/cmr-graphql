@@ -635,7 +635,7 @@ export default class Concept {
         // path we've defined above
         const keyValue = get(item, ummKeyMappings[ummKey])
 
-        if (keyValue) {
+        if (keyValue != null) {
           const camelCasedObject = camelcaseKeys({ [ummKey]: keyValue }, { deep: true })
 
           const { [ummKey]: camelCasedValue } = camelCasedObject
