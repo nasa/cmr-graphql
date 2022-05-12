@@ -41,11 +41,16 @@ export const draftMmtQuery = ({
 
   const { 'X-Request-Id': requestId } = permittedHeaders
 
-  // Adds additional CA certificate for requests to Draft MMT
-  const certFile = fs.readFileSync(process.env.sslCertFile)
-  const httpsAgent = new https.Agent({
-    ca: certFile
-  })
+  let httpsAgent
+
+  // Only use the sslCertFile if it has been defined
+  if (process.env.sslCertFile && process.env.sslCertFile !== 'false') {
+    // Adds additional CA certificate for requests to Draft MMT
+    const certFile = fs.readFileSync(process.env.sslCertFile)
+    httpsAgent = new https.Agent({
+      ca: certFile
+    })
+  }
 
   const requestConfiguration = {
     data: cmrParameters,

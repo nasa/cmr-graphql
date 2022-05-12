@@ -71,6 +71,7 @@
     "qs": "^6.10.3",
     "serverless": "^3.16.0",
     "serverless-offline": "^8.7.0",
+    "serverless-plugin-ifelse": "^1.0.7",
     "serverless-plugin-log-subscription": "^2.1.1",
     "serverless-webpack": "^5.7.0",
     "snakecase-keys": "^3.2.1",
