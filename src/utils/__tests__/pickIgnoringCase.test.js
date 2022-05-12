@@ -8,7 +8,7 @@ const inputObject = {
 
 describe('pickIgnoringCase', () => {
   test('returns an empty object when undefined is provided', () => {
-    const returnObject = pickIgnoringCase(undefined, ['key'])
+    const returnObject = pickIgnoringCase(undefined)
 
     expect(returnObject).toMatchObject({})
   })
