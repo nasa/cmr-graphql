@@ -36,6 +36,7 @@
     "shortName": "ShortName",
     "spatialExtent": "SpatialExtent",
     "spatialInformation": "SpatialInformation",
+    "standardProduct": "StandardProduct",
     "temporalExtents": "TemporalExtents",
     "temporalKeywords": "TemporalKeywords",
     "tilingIdentificationSystems": "TilingIdentificationSystems",
