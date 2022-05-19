@@ -17,6 +17,8 @@ type Subscription {
   revisionId: String
   "The EDL userid of the subscriber."
   subscriberId: String
+  "The type of the subscription."
+  type: String
 
   collection: Collection
 }
@@ -47,6 +49,8 @@ input SubscriptionsInput {
   subscriberId: String
   "Zero based offset of individual results."
   offset: Int
+  "The type of the subscription."
+  type: String
 }
 
 input SubscriptionInput {
@@ -86,7 +90,7 @@ type Query {
 
 input CreateSubscriptionInput {
   "The concept id of the parent CMR collection."
-  collectionConceptId: String!
+  collectionConceptId: String
   "The email address that notifications will be delivered to."
   name: String!
   "The native id to set on the subscription."
@@ -95,11 +99,13 @@ input CreateSubscriptionInput {
   subscriberId: String!
   "The query used to retrieve data for the subscription."
   query: String!
+  "The type of the subscription."
+  type: String!
 }
 
 input UpdateSubscriptionInput {
   "The concept id of the parent CMR collection."
-  collectionConceptId: String!
+  collectionConceptId: String
   "The email address that notifications will be delivered to."
   name: String!
   "The native id to set on the subscription."
@@ -108,6 +114,8 @@ input UpdateSubscriptionInput {
   subscriberId: String!
   "The query used to retrieve data for the subscription."
   query: String!
+  "The type of the subscription."
+  type: String!
 }
 
 input DeleteSubscriptionInput {

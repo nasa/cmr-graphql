@@ -28,7 +28,7 @@ describe('cmrIngest', () => {
         'CMR-Request-Id': 'abcd-1234-efgh-5678'
       }
     })
-      .put(/ingest\/providers\/EDSC\/subscriptions\/1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed/)
+      .put(/ingest\/subscriptions\/1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed/)
       .reply(201, {
         'concept-id': 'SUB100000-EDSC',
         'revision-id': 1
@@ -40,7 +40,8 @@ describe('cmrIngest', () => {
       {
         'CMR-Request-Id': 'abcd-1234-efgh-5678',
         'Content-Type': 'application/vnd.nasa.cmr.umm+json; version=1.0'
-      }
+      },
+      'subscriptions'
     )
 
     const { data, headers } = response
@@ -69,7 +70,7 @@ describe('cmrIngest', () => {
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         }
       })
-        .put(/ingest\/providers\/EDSC\/subscriptions\/provided-native-id/)
+        .put(/ingest\/subscriptions\/provided-native-id/)
         .reply(201, {
           'concept-id': 'SUB100000-EDSC',
           'revision-id': 1
@@ -81,7 +82,8 @@ describe('cmrIngest', () => {
           collectionConceptId: 'C100000-EDSC',
           nativeId: 'provided-native-id'
         },
-        { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }
+        { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
+        'subscriptions'
       )
 
       const { data, headers } = response
@@ -112,7 +114,7 @@ describe('cmrIngest', () => {
           'Echo-Token': 'test-token'
         }
       })
-        .put(/ingest\/providers\/EDSC\/subscriptions\/1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed/)
+        .put(/ingest\/subscriptions\/1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed/)
         .reply(201, {
           'concept-id': 'SUB100000-EDSC',
           'revision-id': 1
@@ -121,7 +123,8 @@ describe('cmrIngest', () => {
       const response = await cmrIngest(
         'subscriptions',
         { collectionConceptId: 'C100000-EDSC' },
-        { 'CMR-Request-Id': 'abcd-1234-efgh-5678', 'Echo-Token': 'test-token' }
+        { 'CMR-Request-Id': 'abcd-1234-efgh-5678', 'Echo-Token': 'test-token' },
+        'subscriptions'
       )
 
       const { data, headers } = response
@@ -152,7 +155,7 @@ describe('cmrIngest', () => {
           Authorization: 'test-token'
         }
       })
-        .put(/ingest\/providers\/EDSC\/subscriptions\/1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed/)
+        .put(/ingest\/subscriptions\/1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed/)
         .reply(201, {
           'concept-id': 'SUB100000-EDSC',
           'revision-id': 1
@@ -164,7 +167,8 @@ describe('cmrIngest', () => {
         {
           'CMR-Request-Id': 'abcd-1234-efgh-5678',
           Authorization: 'test-token'
-        }
+        },
+        'subscriptions'
       )
 
       const { data, headers } = response
@@ -195,7 +199,7 @@ describe('cmrIngest', () => {
           Authorization: 'authorization-token'
         }
       })
-        .put(/ingest\/providers\/EDSC\/subscriptions\/1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed/)
+        .put(/ingest\/subscriptions\/1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed/)
         .reply(201, {
           'concept-id': 'SUB100000-EDSC',
           'revision-id': 1
@@ -208,7 +212,8 @@ describe('cmrIngest', () => {
           'CMR-Request-Id': 'abcd-1234-efgh-5678',
           Authorization: 'authorization-token',
           'Echo-Token': 'echo-token'
-        }
+        },
+        'subscriptions'
       )
 
       const { data, headers } = response
@@ -235,7 +240,7 @@ describe('cmrIngest', () => {
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         }
       })
-        .put(/ingest\/providers\/EDSC\/subscriptions\/1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed/)
+        .put(/ingest\/subscriptions\/1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed/)
         .reply(500, {
           errors: ['HTTP Error']
         })
@@ -243,7 +248,8 @@ describe('cmrIngest', () => {
       const response = cmrIngest(
         'subscriptions',
         { collectionConceptId: 'C100000-EDSC' },
-        { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }
+        { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
+        'subscriptions'
       )
 
       await expect(response).rejects.toThrow()

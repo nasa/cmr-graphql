@@ -344,7 +344,8 @@ export default class Concept {
     this.response = cmrIngest(
       this.getConceptType(),
       data,
-      providedHeaders
+      providedHeaders,
+      this.ingestPath
     )
   }
 
@@ -364,7 +365,8 @@ export default class Concept {
     this.response = cmrDelete(
       this.getConceptType(),
       data,
-      providedHeaders
+      providedHeaders,
+      this.ingestPath
     )
   }
 

@@ -45,7 +45,7 @@ describe('Subscription', () => {
     process.env = { ...OLD_ENV }
 
     process.env.cmrRootUrl = 'http://example.com'
-    process.env.ummSubscriptionVersion = '1.0'
+    process.env.ummSubscriptionVersion = '1.1'
   })
 
   afterEach(() => {
@@ -74,7 +74,8 @@ describe('Subscription', () => {
               EmailAddress: 'test@example.com',
               Name: 'Test Subscription',
               Query: 'polygon=-18,-78,-13,-74,-16,-73,-22,-77,-18,-78',
-              SubscriberId: 'testuser'
+              SubscriberId: 'testuser',
+              Type: 'granule'
             }
           }]
         })
@@ -94,6 +95,7 @@ describe('Subscription', () => {
               query
               revisionId
               subscriberId
+              type
             }
           }
         }`
@@ -113,7 +115,8 @@ describe('Subscription', () => {
             providerId: 'EDSC',
             query: 'polygon=-18,-78,-13,-74,-16,-73,-22,-77,-18,-78',
             revisionId: '1',
-            subscriberId: 'testuser'
+            subscriberId: 'testuser',
+            type: 'granule'
           }]
         }
       })
@@ -304,11 +307,11 @@ describe('Subscription', () => {
   })
 
   describe('Subscription', () => {
-    test('createSubscription', async () => {
+    test('createSubscription for a granule subscription', async () => {
       nock(/example/, {
         reqheaders: {
           accept: 'application/json',
-          'content-type': 'application/vnd.nasa.cmr.umm+json; version=1.0',
+          'content-type': 'application/vnd.nasa.cmr.umm+json; version=1.1',
           'cmr-request-id': 'abcd-1234-efgh-5678'
         }
       })
@@ -316,7 +319,7 @@ describe('Subscription', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .put(/ingest\/providers\/EDSC\/subscriptions\/1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed/)
+        .put(/ingest\/subscriptions\/1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed/)
         .reply(201, {
           'concept-id': 'SUB100000-EDSC',
           'revision-id': '1'
@@ -327,13 +330,15 @@ describe('Subscription', () => {
           collectionConceptId: 'C100000-EDSC',
           name: 'Test Subscription',
           query: 'polygon=-18,-78,-13,-74,-16,-73,-22,-77,-18,-78',
-          subscriberId: 'testuser'
+          subscriberId: 'testuser',
+          type: 'granule'
         },
         query: `mutation CreateSubscription (
-          $collectionConceptId: String!
+          $collectionConceptId: String
           $name: String!
           $query: String!
           $subscriberId: String!
+          $type: String!
         ) {
           createSubscription(
             params: {
@@ -341,6 +346,62 @@ describe('Subscription', () => {
               name: $name
               query: $query
               subscriberId: $subscriberId
+              type: $type
+            }
+          ) {
+              conceptId
+              revisionId
+            }
+          }`
+      })
+
+      const { data } = response
+
+      expect(data).toEqual({
+        createSubscription: {
+          conceptId: 'SUB100000-EDSC',
+          revisionId: '1'
+        }
+      })
+    })
+
+    test('createSubscription for a collection subscription', async () => {
+      nock(/example/, {
+        reqheaders: {
+          accept: 'application/json',
+          'content-type': 'application/vnd.nasa.cmr.umm+json; version=1.1',
+          'cmr-request-id': 'abcd-1234-efgh-5678'
+        }
+      })
+        .defaultReplyHeaders({
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .put(/ingest\/subscriptions\/1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed/)
+        .reply(201, {
+          'concept-id': 'SUB100000-EDSC',
+          'revision-id': '1'
+        })
+
+      const response = await server.executeOperation({
+        variables: {
+          name: 'Test Subscription',
+          query: 'polygon=-18,-78,-13,-74,-16,-73,-22,-77,-18,-78',
+          subscriberId: 'testuser',
+          type: 'collection'
+        },
+        query: `mutation CreateSubscription (
+          $name: String!
+          $query: String!
+          $subscriberId: String!
+          $type: String!
+        ) {
+          createSubscription(
+            params: {
+              name: $name
+              query: $query
+              subscriberId: $subscriberId
+              type: $type
             }
           ) {
               conceptId
@@ -365,7 +426,7 @@ describe('Subscription', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .put(/ingest\/providers\/EDSC\/subscriptions\/test-guid/)
+        .put(/ingest\/subscriptions\/test-guid/)
         .reply(201, {
           'concept-id': 'SUB100000-EDSC',
           'revision-id': '2'
@@ -377,14 +438,16 @@ describe('Subscription', () => {
           name: 'Test Subscription',
           nativeId: 'test-guid',
           query: 'polygon=-18,-78,-13,-74,-16,-73,-22,-77,-18,-78',
-          subscriberId: 'testuser'
+          subscriberId: 'testuser',
+          type: 'granule'
         },
         query: `mutation UpdateSubscription (
-          $collectionConceptId: String!
+          $collectionConceptId: String
           $name: String!
           $nativeId: String!
           $query: String!
           $subscriberId: String!
+          $type: String!
         ) {
           updateSubscription(
             params: {
@@ -393,6 +456,7 @@ describe('Subscription', () => {
               nativeId: $nativeId
               query: $query
               subscriberId: $subscriberId
+              type: $type
             }
           ) {
               conceptId
@@ -417,7 +481,7 @@ describe('Subscription', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .delete(/ingest\/providers\/EDSC\/subscriptions\/test-guid/)
+        .delete(/ingest\/subscriptions\/test-guid/)
         .reply(201, {
           'concept-id': 'SUB100000-EDSC',
           'revision-id': '2'
