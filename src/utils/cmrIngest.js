@@ -8,11 +8,12 @@ import { pickIgnoringCase } from './pickIgnoringCase'
 
 /**
  * Make a request to CMR and return the promise
- * @param {String} conceptType Concept type to search
+ * @param {String} conceptType Concept type to ingest
  * @param {Object} data Parameters to send to CMR
  * @param {Object} headers Headers to send to CMR
+ * @param {String} ingestPath CMR path to call to ingest concept
  */
-export const cmrIngest = async (conceptType, data, headers) => {
+export const cmrIngest = async (conceptType, data, headers, ingestPath) => {
   // Default headers
   const defaultHeaders = {
     Accept: 'application/json'
@@ -40,10 +41,7 @@ export const cmrIngest = async (conceptType, data, headers) => {
   }
 
   // Use the provided native id if one is provided, default to a guid
-  const { collectionConceptId, nativeId = uuidv4() } = data
-
-  // Use the string after '-' to determine the provider
-  const [, provider] = collectionConceptId.split('-')
+  const { nativeId = uuidv4() } = data
 
   // Remove native id as it is not a supported key in umm
   // eslint-disable-next-line no-param-reassign
@@ -57,7 +55,7 @@ export const cmrIngest = async (conceptType, data, headers) => {
     data: cmrParameters,
     headers: permittedHeaders,
     method: 'PUT',
-    url: `${process.env.cmrRootUrl}/ingest/providers/${provider}/${conceptType}/${nativeId}`
+    url: `${process.env.cmrRootUrl}/ingest/${ingestPath}/${nativeId}`
   }
 
   // Interceptors require an instance of axios

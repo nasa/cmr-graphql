@@ -25,7 +25,7 @@ describe('cmrDelete', () => {
         'CMR-Request-Id': 'abcd-1234-efgh-5678'
       }
     })
-      .delete(/ingest\/providers\/EDSC\/subscriptions\/1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed/)
+      .delete(/ingest\/subscriptions\/1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed/)
       .reply(201, {
         'concept-id': 'SUB100000-EDSC',
         'revision-id': 1
@@ -37,7 +37,8 @@ describe('cmrDelete', () => {
         conceptId: 'SUB100000-EDSC',
         nativeId: '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed'
       },
-      { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }
+      { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
+      'subscriptions'
     )
 
     const { data, headers } = response
@@ -67,7 +68,7 @@ describe('cmrDelete', () => {
           'Echo-Token': 'test-token'
         }
       })
-        .delete(/ingest\/providers\/EDSC\/subscriptions\/1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed/)
+        .delete(/ingest\/subscriptions\/1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed/)
         .reply(201, {
           'concept-id': 'SUB100000-EDSC',
           'revision-id': 1
@@ -79,7 +80,8 @@ describe('cmrDelete', () => {
           conceptId: 'SUB100000-EDSC',
           nativeId: '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed'
         },
-        { 'CMR-Request-Id': 'abcd-1234-efgh-5678', 'Echo-Token': 'test-token' }
+        { 'CMR-Request-Id': 'abcd-1234-efgh-5678', 'Echo-Token': 'test-token' },
+        'subscriptions'
       )
 
       const { data, headers } = response
@@ -110,7 +112,7 @@ describe('cmrDelete', () => {
           Authorization: 'test-token'
         }
       })
-        .delete(/ingest\/providers\/EDSC\/subscriptions\/1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed/)
+        .delete(/ingest\/subscriptions\/1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed/)
         .reply(201, {
           'concept-id': 'SUB100000-EDSC',
           'revision-id': 1
@@ -125,7 +127,8 @@ describe('cmrDelete', () => {
         {
           'CMR-Request-Id': 'abcd-1234-efgh-5678',
           Authorization: 'test-token'
-        }
+        },
+        'subscriptions'
       )
 
       const { data, headers } = response
@@ -156,7 +159,7 @@ describe('cmrDelete', () => {
           Authorization: 'authorization-token'
         }
       })
-        .delete(/ingest\/providers\/EDSC\/subscriptions\/1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed/)
+        .delete(/ingest\/subscriptions\/1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed/)
         .reply(201, {
           'concept-id': 'SUB100000-EDSC',
           'revision-id': 1
@@ -172,7 +175,8 @@ describe('cmrDelete', () => {
           'CMR-Request-Id': 'abcd-1234-efgh-5678',
           Authorization: 'authorization-token',
           'Echo-Token': 'echo-token'
-        }
+        },
+        'subscriptions'
       )
 
       const { data, headers } = response
@@ -199,7 +203,7 @@ describe('cmrDelete', () => {
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         }
       })
-        .delete(/ingest\/providers\/EDSC\/subscriptions\/1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed/)
+        .delete(/ingest\/subscriptions\/1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed/)
         .reply(500, {
           errors: ['HTTP Error']
         })
@@ -210,7 +214,8 @@ describe('cmrDelete', () => {
           conceptId: 'SUB100000-EDSC',
           nativeId: '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed'
         },
-        { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }
+        { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
+        'subscriptions'
       )
 
       await expect(response).rejects.toThrow()

@@ -5,8 +5,14 @@
 export const mergeParams = (fullParams) => {
   const { params = {} } = fullParams
 
-  return {
+  const returnParams = {
     ...fullParams,
     ...params
   }
+
+  // Delete the params key, those values have been moved to the top level
+  // This ensures ingest validation does not fail on a `params` key
+  delete returnParams.params
+
+  return returnParams
 }

@@ -12,6 +12,13 @@ export default class Subscription extends Concept {
    */
   constructor(headers, requestInfo, params) {
     super('subscriptions', headers, requestInfo, params)
+
+    this.ingestPath = 'subscriptions'
+    this.metadataSpecification = {
+      URL: `https://cdn.earthdata.nasa.gov/umm/subscription/v${process.env.ummSubscriptionVersion}`,
+      Name: 'UMM-Sub',
+      Version: process.env.ummSubscriptionVersion
+    }
   }
 
   /**
@@ -34,7 +41,8 @@ export default class Subscription extends Concept {
       ...super.getPermittedJsonSearchParams(),
       'collection_concept_id',
       'provider',
-      'subscriber_id'
+      'subscriber_id',
+      'type'
     ]
   }
 
@@ -46,7 +54,8 @@ export default class Subscription extends Concept {
       ...super.getPermittedUmmSearchParams(),
       'collection_concept_id',
       'provider',
-      'subscriber_id'
+      'subscriber_id',
+      'type'
     ]
   }
 
@@ -100,6 +109,10 @@ export default class Subscription extends Concept {
       'CMR-Request-Id',
       'Echo-Token'
     ])
+
+    // Add MetadataSpecification to the data
+    // eslint-disable-next-line no-param-reassign
+    data.metadataSpecification = this.metadataSpecification
 
     super.ingest(data, requestedKeys, permittedHeaders)
   }

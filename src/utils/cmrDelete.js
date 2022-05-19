@@ -6,11 +6,12 @@ import { pickIgnoringCase } from './pickIgnoringCase'
 
 /**
  * Make a DELETE request to CMR and return the promise
- * @param {String} conceptType Concept type to search
+ * @param {String} conceptType Concept type to delete
  * @param {Object} data Parameters to send to CMR
  * @param {Object} headers Headers to send to CMR
+ * @param {String} ingestPath CMR path to call to delete concept
  */
-export const cmrDelete = async (conceptType, data, headers) => {
+export const cmrDelete = async (conceptType, data, headers, ingestPath) => {
   // Default headers
   const defaultHeaders = {
     Accept: 'application/json',
@@ -39,10 +40,7 @@ export const cmrDelete = async (conceptType, data, headers) => {
   }
 
   // Use the provided native id
-  const { conceptId, nativeId } = data
-
-  // Use the string after '-' to determine the provider
-  const [, provider] = conceptId.split('-')
+  const { nativeId } = data
 
   // Remove native id as it is not a supported key in umm
   // eslint-disable-next-line no-param-reassign
@@ -56,7 +54,7 @@ export const cmrDelete = async (conceptType, data, headers) => {
     data: cmrParameters,
     headers: permittedHeaders,
     method: 'DELETE',
-    url: `${process.env.cmrRootUrl}/ingest/providers/${provider}/${conceptType}/${nativeId}`
+    url: `${process.env.cmrRootUrl}/ingest/${ingestPath}/${nativeId}`
   }
 
   // Interceptors require an instance of axios

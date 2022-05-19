@@ -16,6 +16,7 @@
     "providerId": "meta.provider-id",
     "query": "umm.Query",
     "revisionId": "meta.revision-id",
-    "subscriberId": "umm.SubscriberId"
+    "subscriberId": "umm.SubscriberId",
+    "type": "umm.Type"
   }
 }
