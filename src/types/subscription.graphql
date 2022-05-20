@@ -96,7 +96,7 @@ input CreateSubscriptionInput {
   "The native id to set on the subscription."
   nativeId: String
   "The EDL userid of the subscriber."
-  subscriberId: String!
+  subscriberId: String
   "The query used to retrieve data for the subscription."
   query: String!
   "The type of the subscription."
@@ -111,7 +111,7 @@ input UpdateSubscriptionInput {
   "The native id to set on the subscription."
   nativeId: String!
   "The EDL userid of the subscriber."
-  subscriberId: String!
+  subscriberId: String
   "The query used to retrieve data for the subscription."
   query: String!
   "The type of the subscription."
