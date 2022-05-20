@@ -337,7 +337,7 @@ describe('Subscription', () => {
           $collectionConceptId: String
           $name: String!
           $query: String!
-          $subscriberId: String!
+          $subscriberId: String
           $type: String!
         ) {
           createSubscription(
@@ -393,7 +393,7 @@ describe('Subscription', () => {
         query: `mutation CreateSubscription (
           $name: String!
           $query: String!
-          $subscriberId: String!
+          $subscriberId: String
           $type: String!
         ) {
           createSubscription(
@@ -446,7 +446,7 @@ describe('Subscription', () => {
           $name: String!
           $nativeId: String!
           $query: String!
-          $subscriberId: String!
+          $subscriberId: String
           $type: String!
         ) {
           updateSubscription(
