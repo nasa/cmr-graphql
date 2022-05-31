@@ -115,6 +115,7 @@ export default class Collection extends Concept {
       ...super.getPermittedUmmSearchParams(),
       'bounding_box',
       'circle',
+      'cloud_hosted',
       'collection_concept_id',
       'collection_data_type',
       'data_center',
