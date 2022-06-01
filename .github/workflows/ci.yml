@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
         matrix:
-          node-version: [14.18.1]
+          node-version: ['lts/gallium']
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
