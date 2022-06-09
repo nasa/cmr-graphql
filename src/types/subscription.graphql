@@ -3,6 +3,8 @@ type Subscription {
   collectionConceptId: String
   "The unique concept id assigned to the subscription."
   conceptId: String!
+  "The date the subscription was created."
+  creationDate: String
   "The email address that notifications will be delivered to."
   emailAddress: String
   "The name of a subscription."
@@ -13,6 +15,8 @@ type Subscription {
   providerId: String
   "The query used to retrieve data for the subscription."
   query: String
+  "The date the subscription was updated."
+  revisionDate: String
   "The revision associated with this subscription."
   revisionId: String
   "The EDL userid of the subscriber."

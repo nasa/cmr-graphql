@@ -65,8 +65,10 @@ describe('Subscription', () => {
           items: [{
             meta: {
               'concept-id': 'SUB100000-EDSC',
+              'creation-date': '2022-05-26T18:47:26.351Z',
               'native-id': 'test-guid',
               'provider-id': 'EDSC',
+              'revision-date': '2022-05-27T15:18:00.920Z',
               'revision-id': '1'
             },
             umm: {
@@ -88,11 +90,13 @@ describe('Subscription', () => {
             items {
               collectionConceptId
               conceptId
+              creationDate
               emailAddress
               name
               nativeId
               providerId
               query
+              revisionDate
               revisionId
               subscriberId
               type
@@ -109,11 +113,13 @@ describe('Subscription', () => {
           items: [{
             collectionConceptId: 'C100000-EDSC',
             conceptId: 'SUB100000-EDSC',
+            creationDate: '2022-05-26T18:47:26.351Z',
             emailAddress: 'test@example.com',
             name: 'Test Subscription',
             nativeId: 'test-guid',
             providerId: 'EDSC',
             query: 'polygon=-18,-78,-13,-74,-16,-73,-22,-77,-18,-78',
+            revisionDate: '2022-05-27T15:18:00.920Z',
             revisionId: '1',
             subscriberId: 'testuser',
             type: 'granule'
@@ -304,9 +310,47 @@ describe('Subscription', () => {
         }
       })
     })
-  })
 
-  describe('Subscription', () => {
+    test('collection when collectionConceptId does not exist', async () => {
+      nock(/example/)
+        .defaultReplyHeaders({
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .post(/subscriptions\.json/)
+        .reply(200, {
+          items: [{
+            concept_id: 'SUB100000-EDSC',
+            type: 'collection'
+          }]
+        })
+
+      const response = await server.executeOperation({
+        variables: {},
+        query: `{
+          subscriptions {
+            items {
+              conceptId
+              collection {
+                conceptId
+              }
+            }
+          }
+        }`
+      })
+
+      const { data } = response
+
+      expect(data).toEqual({
+        subscriptions: {
+          items: [{
+            conceptId: 'SUB100000-EDSC',
+            collection: null
+          }]
+        }
+      })
+    })
+
     test('createSubscription for a granule subscription', async () => {
       nock(/example/, {
         reqheaders: {

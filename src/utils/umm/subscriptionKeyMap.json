@@ -10,11 +10,13 @@
   "ummKeyMappings": {
     "collectionConceptId": "umm.CollectionConceptId",
     "conceptId": "meta.concept-id",
+    "creationDate": "meta.creation-date",
     "emailAddress": "umm.EmailAddress",
     "name": "umm.Name",
     "nativeId": "meta.native-id",
     "providerId": "meta.provider-id",
     "query": "umm.Query",
+    "revisionDate": "meta.revision-date",
     "revisionId": "meta.revision-id",
     "subscriberId": "umm.SubscriberId",
     "type": "umm.Type"

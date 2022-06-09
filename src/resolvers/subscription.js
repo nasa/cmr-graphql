@@ -27,6 +27,10 @@ export default {
         collectionConceptId
       } = source
 
+      // If the subscription doesn't have a collectionConceptId, like when the type requested was `collection`
+      // return null for the collection
+      if (!collectionConceptId) return null
+
       const requestedParams = handlePagingParams({
         conceptId: collectionConceptId,
         ...args
