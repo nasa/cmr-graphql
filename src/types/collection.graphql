@@ -17,6 +17,8 @@ type Collection {
   boxes: [String]
   "True if the metadata contains browse imagery."
   browseFlag: Boolean
+  "Data hosted in the cloud."
+  cloudHosted: Boolean
   "The unique concept id assigned to the collection."
   conceptId: String!
   "Information required to properly cite the collection in professional scientific literature."

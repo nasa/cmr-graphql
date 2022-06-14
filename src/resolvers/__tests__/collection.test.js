@@ -73,6 +73,7 @@ describe('Collection', () => {
               archive_center: 'CONDIMENTUM/TELLUS/PHARETRA',
               boxes: [],
               browse_flag: true,
+              cloud_hosted: false,
               coordinate_system: 'CARTESIAN',
               data_center: 'PORTA',
               dataset_id: 'Condimentum Quam Mattis Cursus Pharetra',
@@ -245,6 +246,7 @@ describe('Collection', () => {
               associatedDois
               boxes
               browseFlag
+              cloudHosted
               collectionCitations
               collectionProgress
               conceptId
@@ -370,6 +372,7 @@ describe('Collection', () => {
             }],
             boxes: [],
             browseFlag: true,
+            cloudHosted: false,
             collectionCitations: [],
             collectionProgress: 'ACTIVE',
             conceptId: 'C100000-EDSC',
