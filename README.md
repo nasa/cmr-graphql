@@ -52,7 +52,7 @@ GraphQL supports a few optional headers that can be used for various features an
 
 ##### Authentication
 
-GraphQL accepts [Earthdata Login (EDL)](https://urs.earthdata.nasa.gov/) tokens via the `Echo-Token` header or the `Authorization` header. If provided, these tokens will be provided to any CMR call made as part of the query. GraphQL will return errors if the token is invalid or expired in which case the client will need to handle the response accordingly.
+GraphQL accepts [Earthdata Login (EDL)](https://urs.earthdata.nasa.gov/) tokens via the `Authorization` header. If provided, this token will be provided to any CMR call made as part of the query. GraphQL will return errors if the token is invalid or expired in which case the client will need to handle the response accordingly.
 
 ##### Identification
 

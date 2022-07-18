@@ -106,8 +106,7 @@ export default class Subscription extends Concept {
       'Authorization',
       'Client-Id',
       'Content-Type',
-      'CMR-Request-Id',
-      'Echo-Token'
+      'CMR-Request-Id'
     ])
 
     // Add MetadataSpecification to the data

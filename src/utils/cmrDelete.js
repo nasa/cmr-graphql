@@ -27,17 +27,8 @@ export const cmrDelete = async (conceptType, data, headers, ingestPath) => {
     'Authorization',
     'Client-Id',
     'Content-Type',
-    'CMR-Request-Id',
-    'Echo-Token'
+    'CMR-Request-Id'
   ])
-
-  // If both authentication headers are provided favor Authorization
-  if (
-    Object.keys(permittedHeaders).includes('Authorization')
-    && Object.keys(permittedHeaders).includes('Echo-Token')
-  ) {
-    delete permittedHeaders['Echo-Token']
-  }
 
   // Use the provided native id
   const { nativeId } = data

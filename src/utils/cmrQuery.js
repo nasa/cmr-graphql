@@ -38,17 +38,8 @@ export const cmrQuery = ({
     'Authorization',
     'Client-Id',
     'CMR-Request-Id',
-    'CMR-Scroll-Id',
-    'Echo-Token'
+    'CMR-Scroll-Id'
   ])
-
-  // If both authentication headers are provided favor Authorization
-  if (
-    Object.keys(permittedHeaders).includes('Authorization')
-    && Object.keys(permittedHeaders).includes('Echo-Token')
-  ) {
-    delete permittedHeaders['Echo-Token']
-  }
 
   const cmrParameters = prepKeysForCmr(snakeCaseKeys(params), nonIndexedKeys)
 
