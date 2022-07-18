@@ -96,43 +96,6 @@ describe('cmrQuery', () => {
     })
   })
 
-  describe('when provided a token via the Echo-Token header', () => {
-    test('queries cmr using the Echo-Token header', async () => {
-      nock(/example/, {
-        reqheaders: {
-          'CMR-Request-Id': 'abcd-1234-efgh-5678',
-          'Echo-Token': 'test-token'
-        }
-      })
-        .post(/collections\.json/)
-        .reply(200, {
-          feed: {
-            entry: [{
-              id: 'C100000-EDSC'
-            }]
-          }
-        })
-
-      const response = await cmrQuery({
-        conceptType: 'collections',
-        params: {},
-        headers: {
-          'CMR-Request-Id': 'abcd-1234-efgh-5678',
-          'Echo-Token': 'test-token'
-        }
-      })
-
-      const { data } = response
-      expect(data).toEqual({
-        feed: {
-          entry: [{
-            id: 'C100000-EDSC'
-          }]
-        }
-      })
-    })
-  })
-
   describe('when provided a token via the Authorization header', () => {
     test('queries cmr using the Authorization header', async () => {
       nock(/example/, {
@@ -156,44 +119,6 @@ describe('cmrQuery', () => {
         headers: {
           'CMR-Request-Id': 'abcd-1234-efgh-5678',
           Authorization: 'test-token'
-        }
-      })
-
-      const { data } = response
-      expect(data).toEqual({
-        feed: {
-          entry: [{
-            id: 'C100000-EDSC'
-          }]
-        }
-      })
-    })
-  })
-
-  describe('when provided a token via the Authorization header and the Echo-Token header', () => {
-    test('queries cmr using the Authorization header', async () => {
-      nock(/example/, {
-        reqheaders: {
-          'CMR-Request-Id': 'abcd-1234-efgh-5678',
-          Authorization: 'authorization-token'
-        }
-      })
-        .post(/collections\.json/)
-        .reply(200, {
-          feed: {
-            entry: [{
-              id: 'C100000-EDSC'
-            }]
-          }
-        })
-
-      const response = await cmrQuery({
-        conceptType: 'collections',
-        params: {},
-        headers: {
-          'CMR-Request-Id': 'abcd-1234-efgh-5678',
-          Authorization: 'authorization-token',
-          'Echo-Token': 'echo-token'
         }
       })
 
