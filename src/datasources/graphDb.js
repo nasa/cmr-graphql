@@ -6,10 +6,10 @@ import {
 
 import { cmrGraphDb } from '../utils/cmrGraphDb'
 import { mergeParams } from '../utils/mergeParams'
-import { cmrAccessLists } from '../utils/cmrAccessLists'
-import { getAcl } from '../utils/getAcl'
-import { getGroups } from '../utils/getGroups'
-import { getGroup } from '../utils/getGroups'
+import { cmrAccessLists, getAcl } from '../utils/cmrAccessLists'
+// import { getAcl } from '../utils/cmrAccessLists'
+import { getGroups, getGroup } from '../utils/getGroups'
+// import { getGroup } from '../utils/getGroups'
 /**
  * Queries CMR GraphDB for related collections.
  * @param {String} conceptId ConceptID for the initial collection to find relationships on.
@@ -107,49 +107,57 @@ export default async (
       .hasLabel('${includedLabels.join("','")}')
      `
   }
-  const { data:aclListData } = await cmrAccessLists({ headers })
+  const { data: aclListData } = await cmrAccessLists({ headers })
   console.log(aclListData)
   const aclLocations = []
   const userAllowedAcls = []
-  for (let i = 0; i < aclListData.items.length; i+=1) {
+  // Gremlin PUT requires the form ['acl1', 'acl2'...]
+  const gremlinQueryAclList = []
+  for (let i = 0; i < aclListData.items.length; i += 1) {
     aclLocations.push(aclListData.items[i].location)
     userAllowedAcls.push(aclListData.items[i].concept_id)
+    let currAclConceptId = aclListData.items[i].concept_id
+    const quoteStrAclConceptId = "'" + aclListData.items[i].concept_id + "'"
+    gremlinQueryAclList.push(quoteStrAclConceptId)
   }
   console.log('All of the ACL locations', aclLocations)
   console.log('All of the ACL concept_ids', userAllowedAcls)
-  //For all of the ACL's return the specific ACLs
-  //let aclUrl = aclLocations[0] // TODO there may need to be a conditional here if there are NO acls initalize to the first URL
-  //const { data:aclData } = await getAcl({ headers, aclUrl})
-  //const { result: aclResult} = aclData
-  console.log('Reponse from the Simulated Acess control app: ', JSON.stringify(aclResult, null, 2))
-  for (let i = 0; i < aclLocations.length; i+=1) {
-    aclUrl = aclLocations[i]
+
+  // For all of the ACL's return the specific ACLs
+  let aclUrl = userAllowedAcls[0] // TODO there may need to be a conditional here if there are NO acls initalize to the first URL
+  const { data: aclData } = await getAcl({ headers, aclUrl })
+  // const { result: aclResult} = aclData
+  // console.log('Reponse from the Simulated Acess control app: ', JSON.stringify(aclResult, null, 2))
+  for (let i = 0; i < userAllowedAcls.length; i += 1) {
+    aclUrl = userAllowedAcls[i]
     console.log('Current acl-url', aclUrl)
-    const { data:aclData } = await getAcl({ headers, aclUrl})
-    const { catalog_item_identity} = aclData
+    const { data: aclData } = await getAcl({ headers, aclUrl })
+    const { catalog_item_identity: catelogItemIdentity } = aclData
     console.log('Reponse from getAcl, all data: ', JSON.stringify(aclData, null, 2))
-    console.log('Reponse from getAcl catelog item identity: ', JSON.stringify(catalog_item_identity, null, 2))
+    console.log('Reponse from getAcl catelog item identity: ', JSON.stringify(catelogItemIdentity, null, 2))
   }
   // Get the Group data for all groups user can access
-  const { data:groupsData } = await getGroups({ headers })
+  const { data: groupsData } = await getGroups({ headers })
   console.log('get groups response result: ', JSON.stringify(groupsData, null, 2))
   const groupConceptIds = []
-  for (let i = 0; i < groupsData.items.length; i+=1) {
+  for (let i = 0; i < groupsData.items.length; i += 1) {
     groupConceptIds.push(groupsData.items[i].concept_id)
   }
   console.log('These are the groups concept ids', groupConceptIds)
   let groupConceptId = groupConceptIds[0]
-  for (let i = 0; i < groupConceptIds.length; i++) {
+  for (let i = 0; i < groupConceptIds.length; i += 1) {
     groupConceptId = groupConceptIds[i]
     console.log('Group concept_id to be parsed', groupConceptId)
-    const { data:groupData } = await getGroup({ headers, groupConceptId})
-    const { provider_id} = groupData //Get provider Id form the group data
+    const { data: groupData } = await getGroup({ headers, groupConceptId })
+    // Get provider Id form the group data
+    const { provider_id: providerId } = groupData
     console.log('Reponse from get specific group data: ', JSON.stringify(groupData, null, 2))
-    if(provider_id){ //Some groups are not provider specific
-      console.log('the provider id of a specific group: ', JSON.stringify(provider_id, null, 2))
+    if (providerId) { // Some groups are not provider specific
+      console.log('the provider id of a specific group: ', JSON.stringify(providerId, null, 2))
     }
   }
-  const query = JSON.stringify({
+
+  let query = JSON.stringify({
     gremlin: `
     g
     .V()
@@ -194,6 +202,60 @@ export default async (
     .cap('totalRelatedCollections', 'relatedCollections')
     `
   })
+  // If acl feature use the acl based query
+  if (process.env.cmrRootUrlTest) {
+    console.log('These are the group ids', groupConceptId)
+    query = JSON.stringify({
+      gremlin: `
+      g
+      .V()
+      .has('acl','concept_id',within(${gremlinQueryAclList}))
+      .outE('controls')
+      .inV()
+      .store('a').by('id')
+      .has('collection', 'id', '${conceptId}')
+      .bothE()
+      .inV()
+      ${filters}
+      .bothE()
+      .outV()
+      .hasLabel('collection')
+      .filter(values('id').where(within('a')))
+      .group()
+      .by('id')
+      .by(
+        simplePath()
+        .path()
+        .by(valueMap(true))
+        .fold()
+        .as('pathValues')
+        .project('relationshipValues', 'relationshipCount')
+        .by(select('pathValues'))
+        .by(
+          unfold()
+          .count()
+        )
+      )
+      .order(local)
+      .by(
+        select(values)
+        .select('relationshipCount'), desc
+      )
+      .sideEffect(
+        unfold()
+        .count()
+        .aggregate('totalRelatedCollections')
+      )
+      .sideEffect(
+        unfold()
+        .range(${offset}, ${offset + limit})
+        .fold()
+        .aggregate('relatedCollections')
+      )
+      .cap('totalRelatedCollections', 'relatedCollections')
+      `
+    })
+  }
 
   const { data } = await cmrGraphDb({
     conceptId,
@@ -204,8 +266,8 @@ export default async (
   const { result } = data
 
   // Useful for debugging!
-   console.log('GraphDB query', JSON.parse(query))
-   console.log('GraphDB Response result: ', JSON.stringify(result, null, 2))
+  console.log('GraphDB query', JSON.parse(query))
+  console.log('GraphDB Response result: ', JSON.stringify(result, null, 2))
 
   const { data: resultData } = result
   const { '@value': dataValues } = resultData
@@ -313,7 +375,7 @@ export default async (
   }
 
   // Useful for debugging!
-  // console.log('graphDb.js response', JSON.stringify(returnObject, null, 2))
+  console.log('graphDb.js response the return object', JSON.stringify(returnObject, null, 2))
 
   return returnObject
 }

@@ -29,11 +29,15 @@ export const cmrGraphDb = ({
 
   const { 'CMR-Request-Id': requestId } = permittedHeaders
 
+  let gremlinPath = `${process.env.cmrRootUrl}/graphdb`
+  if (process.env.cmrRootUrlTest) {
+    gremlinPath = 'http://localhost:8182/gremlin'
+  }
   const requestConfiguration = {
     data: query,
     headers: permittedHeaders,
     method: 'POST',
-    url: 'http://localhost:8182/gremlin'
+    url: gremlinPath
   }
 
   // Interceptors require an instance of axios

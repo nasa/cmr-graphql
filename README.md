@@ -565,3 +565,10 @@ We use [GraphQL interfaces](https://graphql.org/learn/schema/#interfaces) in ord
         ]
       }
     }
+
+#### Working related Collections Locally:
+
+In order to Develop upon GraphQL locally; we will need: a running instance of CMR, a Docker gremlin server that has an HTTP endpoint.
+docker run -it -p 8182:8182 tinkerpop/gremlin-server conf gremlin-server-rest-modern.yam
+is at least one configuration of the docker-server that is able to handle http requests
+Browse https://studio.apollographql.com/sandbox/explorer on a browser such as firefox

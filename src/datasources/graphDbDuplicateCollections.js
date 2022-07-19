@@ -24,6 +24,7 @@ export default async (
 
   // If doi or shorName don't exist, return 0 duplicateCollections
   if (!doiDescription || !shortName) {
+    console.log('No doi or shortName was supplied exiting')
     return {
       count: 0,
       items: []
@@ -52,8 +53,8 @@ export default async (
   const { result } = data
 
   // Useful for debugging!
-  // console.log('GraphDB query', JSON.parse(query))
-  // console.log('GraphDB Response result: ', JSON.stringify(result, null, 2))
+  console.log('GraphDB from Duplicate Collections call query', JSON.parse(query))
+  console.log('GraphDB from Duplicate Collections call response result: ', JSON.stringify(result, null, 2))
 
   const duplicateCollections = []
 
@@ -90,7 +91,7 @@ export default async (
   }
 
   // Useful for debugging!
-  // console.log('graphDb.js response', JSON.stringify(returnObject, null, 2))
+  console.log('graphDb.js response', JSON.stringify(returnObject, null, 2))
 
   return returnObject
 }

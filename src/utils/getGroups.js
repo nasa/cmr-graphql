@@ -8,8 +8,7 @@ import { pickIgnoringCase } from './pickIgnoringCase'
  */
 export const getGroups = ({
   headers
-}
-) => {
+}) => {
   // Default headers
   const defaultHeaders = {}
   // Merge default headers into the provided headers and then pick out only permitted values
@@ -26,13 +25,13 @@ export const getGroups = ({
   // Useful for debugging
   // const response = axios.get('https://cmr.earthdata.nasa.gov/access-control/acls/')
   // const items = response
-  permittedHeaders['Authorization'] = 'mock-echo-system-token'
+  permittedHeaders.Authorization = process.env.localHeader
   console.log('Header after changing it to mock echo for local dev', permittedHeaders)
-  
+
   const requestConfiguration = {
     headers: permittedHeaders,
     method: 'GET',
-    url: `http://localhost:3011/groups`
+    url: `${process.env.cmrRootUrlTest}/groups`
   }
   // Interceptors require an instance of axios
   const instance = axios.create()
@@ -42,13 +41,11 @@ export const getGroups = ({
     response: responseInterceptor
   } = interceptors
   return instance.request(requestConfiguration)
-
 }
 export const getGroup = ({
   headers,
   groupConceptId
-}
-) => {
+}) => {
   // Default headers
   const defaultHeaders = {}
   // Merge default headers into the provided headers and then pick out only permitted values
@@ -64,13 +61,13 @@ export const getGroup = ({
   // Useful for debugging
   // console.log(headers)
   // const response = axios.get('https://cmr.earthdata.nasa.gov/access-control/acls/')
-  permittedHeaders['Authorization'] = 'mock-echo-system-token'
+  permittedHeaders.Authorization = process.env.localHeader
   console.log('Headers after changing it to mock-echo for local dev in GET groups', permittedHeaders)
   // Given a specific Concept Id return the page for that group
   const requestConfiguration = {
     headers: permittedHeaders,
     method: 'GET',
-    url: `http://localhost:3011/groups/${groupConceptId}`
+    url: `${process.env.cmrRootUrlTest}/groups/${groupConceptId}`
   }
   // Interceptors require an instance of axios
   const instance = axios.create()
@@ -81,5 +78,4 @@ export const getGroup = ({
   } = interceptors
   // return response
   return instance.request(requestConfiguration)
-
 }
