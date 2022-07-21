@@ -47,4 +47,19 @@ describe('Tests for getGroup getting a specifc group from Access-control', () =>
       }
     })
   })
+
+  describe('when an error is returned and getGroup errors out', () => {
+    test('throws an exception', async () => {
+      nock(/example/)
+        .get(/groups/)
+        .reply(500, {
+          errors: ['HTTP Error']
+        })
+      const response = getGroup({
+        headers: { 'Authorization': 'test-token' },
+        groupConceptId: 'AG100000000-PROV1'
+      })
+      await expect(response).rejects.toThrow()
+    })
+  })
 })

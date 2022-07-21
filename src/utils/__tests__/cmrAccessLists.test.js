@@ -63,4 +63,18 @@ describe('access control query', () => {
       }]
     })
   })
+
+  describe('when an error is returned and getAcls errors out', () => {
+    test('throws an exception', async () => {
+      nock(/example/)
+        .get(/acls/)
+        .reply(500, {
+          errors: ['HTTP Error']
+        })
+      const response = cmrAccessLists({
+        headers: { 'Authorization': 'test-token' }
+      })
+      await expect(response).rejects.toThrow()
+    })
+  })
 })

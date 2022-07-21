@@ -68,4 +68,18 @@ describe('Tests for getGroups getting all groups with a user-supplied-token from
       ]
     })
   })
+  
+  describe('when an error is returned and getAcls errors out', () => {
+    test('throws an exception', async () => {
+      nock(/example/)
+        .get(/groups/)
+        .reply(500, {
+          errors: ['HTTP Error']
+        })
+      const response = getGroups({
+        headers: { 'Authorization': 'test-token' }
+      })
+      await expect(response).rejects.toThrow()
+    })
+  })
 })

@@ -34,7 +34,6 @@ export default async (
 
   // Merge nested 'params' object with existing parameters
   const queryParams = mergeParams(params)
-
   const {
     limit = 20,
     offset = 0,
@@ -136,12 +135,15 @@ export default async (
     console.log('Reponse from getAcl, all data: ', JSON.stringify(aclData, null, 2))
     console.log('Reponse from getAcl catelog item identity: ', JSON.stringify(catelogItemIdentity, null, 2))
   }
+  const gremlinQueryGroupsList = []
   // Get the Group data for all groups user can access
   const { data: groupsData } = await getGroups({ headers })
   console.log('get groups response result: ', JSON.stringify(groupsData, null, 2))
   const groupConceptIds = []
   for (let i = 0; i < groupsData.items.length; i += 1) {
     groupConceptIds.push(groupsData.items[i].concept_id)
+    const quoteStrGroupId = "'" + groupsData.items[i].concept_id + "'"
+    gremlinQueryGroupsList.push(quoteStrGroupId)
   }
   console.log('These are the groups concept ids', groupConceptIds)
   let groupConceptId = groupConceptIds[0]
@@ -202,6 +204,7 @@ export default async (
     .cap('totalRelatedCollections', 'relatedCollections')
     `
   })
+
   // If acl feature use the acl based query
   if (process.env.cmrRootUrlTest) {
     console.log('These are the group ids', groupConceptId)
@@ -209,23 +212,31 @@ export default async (
       gremlin: `
       g
       .V()
+      .has('group','group_id',within(${gremlinQueryGroupsList}))
+      .outE('rightsGivenBy')
+      .inV()
       .has('acl','concept_id',within(${gremlinQueryAclList}))
       .outE('controls')
       .inV()
-      .store('a').by('id')
+      .aggregate('g').by('id')
       .has('collection', 'id', '${conceptId}')
+      .as('a')
       .bothE()
       .inV()
       ${filters}
       .bothE()
       .outV()
       .hasLabel('collection')
-      .filter(values('id').where(within('a')))
+      .has('id', where(within('g')))
+      .has('id',neq('${conceptId}'))
+      .as('b')
       .group()
       .by('id')
       .by(
         simplePath()
         .path()
+        .from('a')
+        .to('b')
         .by(valueMap(true))
         .fold()
         .as('pathValues')
@@ -281,7 +292,7 @@ export default async (
       relatedCollections: relatedCollectionsBulkSet,
       totalRelatedCollections: totalRelatedCollectionsBulkSet
     } = fromPairs(chunk(dataValueMap, 2))
-
+    console.log(relatedCollectionsBulkSet)
     // Parse the count object
     const { '@value': totalRelatedCollectionsMap } = totalRelatedCollectionsBulkSet;
 

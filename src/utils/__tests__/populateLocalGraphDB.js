@@ -1,6 +1,7 @@
 /**
- * Make a request to local Graph Database and return the promise.
- * @param {String} params.query GraphDB query to search with.
+ * This is a utility function used to create vertexes and edges for local dev
+ * relies on using the gremlin server docker image
+ * the gremlin docker image should be configued with the rest.modern.yaml to expose an HTTP endpoint
  */
  const axios = require('axios');
  
@@ -135,12 +136,12 @@ async function linkNodes(edgeLabel,subTypeLabel,collectionId){
   return lnkNodes
 }
 
-async function aclControl(collectionId){
+async function aclControl(collectionId,aclId){
   const query = JSON.stringify({
     gremlin: `
     g
     .addE('controls')
-    .from(__.V().hasLabel('acl'))
+    .from(__.V().has('acl','concept_id','${aclId}'))
     .to(__.V().has('collection','id','${collectionId}'))
     `
   })
@@ -149,13 +150,13 @@ async function aclControl(collectionId){
   return acControl
 }
 // Hardcoded for now at least there is only 1 grp and acl
-async function groupAclRights(){
+async function groupAclRights(groupId,aclId){
   const query = JSON.stringify({
     gremlin: `
     g
-    .addE('belongsTo')
-    .from(__.V().hasLabel('group'))
-    .to(__.V().hasLabel('acl'))
+    .addE('rightsGivenBy')
+    .from(__.V().has('group','group_id','${groupId}'))
+    .to(__.V().has('acl','concept_id','${aclId}'))
     `
   })
   //__.V().hasLabel('${subTypeLabel}'
@@ -182,32 +183,57 @@ function addEdges(){
   linkNodes('linkedBy','relatedUrl','C1214590112-SCIOPS')
   linkNodes('acquiredBy','platformInstrument','C1214590112-SCIOPS')
   linkNodes('acquiredBy','platformInstrument','C1214313574-AU_AADC')
-  aclControl('C1214590112-SCIOPS')
-  groupAclRights()
+  aclControl('C1214590112-SCIOPS','ACL1200000003-CMR')
+  groupAclRights('AG1200000005-PROV1','ACL1200000003-CMR')
 
 }
 
 function addVertexes(){
-  //Add the collections with real concept ids
+  // Add the collections with real concept ids
+  
   addCollections('C1214313574-AU_AADC')
   addCollections('C1214590112-SCIOPS')
   addCollections('C2089372282-NOAA_NCEI')
   addCollections('C1000000220-SEDAC')
-  //Add the groups
-  addGroups('group1')
-  //Add the Acls
-  addAcls('ACL1200000008-CMR')
-  //Add the Sub-Types
+  
+  // Add the groups
+  addGroups('AG1200000005-PROV1')
+  addGroups('AG1200000004-PROV1')
+  addGroups('AG1200000008-CMR')
+  
+  // Add the Acls
+  addAcls('ACL1200000003-CMR')
+  
+  // Add the Sub-Types
   addPlatformInstruments()
   addProjects()
-  addrelatedUrls() 
-
+  addrelatedUrls()
 }
 
-
-
 // Main:
-addVertexes()
+//addVertexes()
 //addEdges()
-//aclControl('C1214590112-SCIOPS')
-//aclControl('C1214313574-AU_AADC')
+// Testable links
+//aclControl('C1214313574-AU_AADC','ACL1200000003-CMR')
+//aclControl('C1000000220-SEDAC','ACL1200000003-CMR')
+//linkNodes('linkedBy','relatedUrl','C1000000220-SEDAC')
+//linkNodes('includedIn','project','C2089372282-NOAA_NCEI')
+//aclControl('C2089372282-NOAA_NCEI','ACL1200000003-CMR')
+
+
+//Test with another ACL in loop connect that node to this other acl and to a subtype
+//addAcls('ACL1200000004-CMR')
+//addCollections('C1214313573-SCIOPS')
+//aclControl('C1214313573-SCIOPS','ACL1200000004-CMR')
+//aclControl('C1214313574-AU_AADC','ACL1200000004-CMR')
+//linkNodes('includedIn','project','C1214313573-SCIOPS')
+
+// A second group connecting to another extra acl that is not in local so not retrivable
+//addGroups('AG11111111-PROV1')
+//groupAclRights('AG11111111-PROV1','ACL1200000004-CMR')
+
+//aclControl('C1214313574-AU_AADC','ACL1200000003-CMR')
+
+// Assign another seperate group and acl to a recource
+//groupAclRights('AG1200000008-CMR','ACL1200000004-CMR')
+//aclControl('C1214313574-AU_AADC','ACL1200000004-CMR')

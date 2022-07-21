@@ -62,4 +62,19 @@ describe('Tests getting a particular access control list', () => {
     }
   })
   })
+  
+  describe('when an error is returned and getAcl errors out', () => {
+    test('throws an exception', async () => {
+      nock(/example/)
+        .get(/acls/)
+        .reply(500, {
+          errors: ['HTTP Error']
+        })
+      const response = getAcl({
+        headers: { 'Authorization': 'test-token' },
+        aclUrl: 'aclUrl'
+      })
+      await expect(response).rejects.toThrow()
+    })
+  })
 })
