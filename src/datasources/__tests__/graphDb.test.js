@@ -22,6 +22,7 @@ import relatedCollectionsRelatedUrlTypeGraphdbResponseMocks from './__mocks__/re
 import relatedCollectionsRelatedUrlTypeResponseMocks from './__mocks__/relatedCollections.relatedUrlType.response.mocks'
 import relatedCollectionsRelationshipTypeGraphdbResponseMocks from './__mocks__/relatedCollections.relationshipType.graphdbResponse.mocks'
 import relatedCollectionsRelationshipTypeResponseMocks from './__mocks__/relatedCollections.relationshipType.response.mocks'
+import relatedCollectionsResponseEmptyMocks from './__mocks__/relatedCollections.response.empty.mocks'
 
 let parsedInfo
 
@@ -36,10 +37,15 @@ describe('graphDb', () => {
     process.env = { ...OLD_ENV }
 
     process.env.cmrRootUrl = 'http://example.com'
+
+    // TODO: put these in for testing against permitted user groups
+    process.env.ursRootUrl = 'http://example.com'
+    process.env.mockClientId = 'adfadsfagaehrgaergaergareg'
   })
 
   afterEach(() => {
     process.env = OLD_ENV
+    // should there be something here to clean this up
   })
 
   describe('relatedCollections with parameters', () => {
@@ -1010,5 +1016,99 @@ describe('graphDb', () => {
         parsedInfo
       )
     ).rejects.toThrow(Error)
+  })
+
+  describe('Testing permitted groups on related collections', () => {
+    test('Testing that permitted groups is in the post request', async () => {
+      nock(/example/)
+        .defaultReplyHeaders({
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .post(/graphdb/, (body) => {
+          console.log('The body of the graphdb request', body)
+          const { gremlin: gremlinQuery } = body
+          console.log('The germlin query itself', gremlinQuery)
+          const correctGremlin = gremlinQuery.includes('within(\'groupid1\',\'groupid2\',\'guest\')')
+          if (correctGremlin) {
+            console.log('We have the groups where we want them')
+            return true
+          }
+          return false
+        })
+        .reply(200, relatedCollectionsRelationshipTypeGraphdbResponseMocks)
+      // TODO: nock the groups getting returned
+      nock(/example/)
+        .get(/groups_for_user/)
+        .reply(200, {
+          user_groups: [
+            {
+              group_id: 'groupid1',
+              name: 'afageg',
+              tag: null,
+              shared_user_group: false,
+              created_by: 'bocntzm3asdfh54_o5haghjehx',
+              app_uid: 'bocntzm3h54ssdf_o5haghjehx',
+              client_id: 'asdfadfadfasdfwr'
+            },
+            {
+              group_id: 'groupid2',
+              name: 'qwerqwerqwerq-trert',
+              tag: 'qwerqwerqwfqrgqeg',
+              shared_user_group: false,
+              created_by: 'asdfwerqetqrhwr',
+              app_uid: 'asdfasdfasdfwerwe',
+              client_id: 'asdfadfadfasdfwr'
+            }
+          ]
+        })
+
+      const response = await graphDbDatasource(
+        'C1200400842-GHRC',
+        {
+          limit: 1
+        },
+        { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
+        parsedInfo,
+        'someUUID'
+      )
+      // TODO: still checking this value but, it may not be needed
+      expect(response).toEqual(relatedCollectionsRelationshipTypeResponseMocks)
+    })
+
+    test('Mocking the response for a client not being in any groups, and retrieving no related collections', async () => {
+      nock(/example/)
+        .defaultReplyHeaders({
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .post(/graphdb/, (body) => {
+          console.log('The body of the graphdb request', body)
+          const { gremlin: gremlinQuery } = body
+          console.log('The germlin query itself', gremlinQuery)
+          // All clients have at least guest access
+          const correctGremlin = gremlinQuery.includes('within(\'guest\')')
+          if (correctGremlin) {
+            console.log('We have the guest group access only')
+            return true
+          }
+          return false
+        })
+        .reply(200, relatedCollectionsResponseEmptyMocks)
+      // TODO: nock the groups getting returned
+      nock(/example/)
+        .get(/groups_for_user/)
+        .reply(200, {})
+
+      const response = await graphDbDatasource(
+        'C1200400842-GHRC',
+        {
+          limit: 1
+        },
+        { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
+        parsedInfo,
+        'someUUID'
+      )
+      // TODO: still checking this value but, it may not be needed
+      expect(response).toEqual({ count: 0, items: [] })
+    })
   })
 })

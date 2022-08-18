@@ -21,6 +21,10 @@ import toolSource from '../datasources/tool'
 import variableSource from '../datasources/variable'
 
 import { downcaseKeys } from '../utils/downcaseKeys'
+// import { verifyEDLJwt } from '../utils/verifyJwtWithPublicKey'
+
+// TODO: import for edl verifcation api call
+import { verifyEdlToken } from '../utils/verifyEdlToken'
 
 // Creating the server
 const server = new ApolloServer({
@@ -29,9 +33,11 @@ const server = new ApolloServer({
   resolvers,
 
   // Initial context state, will be available in resolvers
-  context: ({ event }) => {
+  // TODO: should this really be asynch
+  context: async ({ event }) => {
     const { headers } = event
-
+    // TODO: Give this uid a default value
+    let uid
     const {
       authorization: bearerToken,
       'client-id': clientId,
@@ -48,12 +54,15 @@ const server = new ApolloServer({
     // If the client has identified themselves using Client-Id supply it to CMR
     if (clientId) requestHeaders['Client-Id'] = clientId
 
-    // add the user to the context
+    if (bearerToken) {
+      // TODO: this may swtich to being verified localy instead of making a call to EDL for verification
+      uid = await verifyEdlToken(bearerToken)
+    }
     return {
-      headers: requestHeaders
+      headers: requestHeaders,
+      uid
     }
   },
-
   // An object that goes to the 'context' argument when executing resolvers
   dataSources: () => ({
     collectionDraftProposalSource,
