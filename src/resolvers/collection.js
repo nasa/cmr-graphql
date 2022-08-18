@@ -9,9 +9,7 @@ export default {
     ),
     collection: async (source, args, { dataSources, headers }, info) => {
       const result = await dataSources.collectionSource(args, headers, parseResolveInfo(info))
-
       const [firstResult] = result
-
       return firstResult
     }
   },
@@ -50,7 +48,6 @@ export default {
 
           const { value: argumentName } = name
 
-          // TODO: This will only work for string values, it will need to be updated if we need to support arrays
           const { value: argumentValue } = value
 
           if (passthroughParams.includes(argumentName)) {
@@ -59,7 +56,7 @@ export default {
         })
       })
 
-      // Splat granuleParams before args to allow for overwriting granuleParams
+      // Split granuleParams before args to allow for overwriting granuleParams
       const requestedParams = handlePagingParams({
         collectionConceptId: collectionId,
         ...granuleParams,
@@ -68,20 +65,21 @@ export default {
 
       return dataSources.granuleSource(requestedParams, headers, parseResolveInfo(info))
     },
-    relatedCollections: async (source, args, { dataSources, headers }, info) => {
+    relatedCollections: async (source, args, { dataSources, headers, uid }, info) => {
       const { conceptId } = source
-
       return dataSources.graphDbSource(
         conceptId,
         args,
         headers,
-        parseResolveInfo(info)
+        parseResolveInfo(info),
+        uid
       )
     },
-    duplicateCollections: async (source, args, { dataSources, headers }) => dataSources
+    duplicateCollections: async (source, args, { dataSources, headers, uid }) => dataSources
       .graphDbDuplicateCollectionsSource(
         source,
-        headers
+        headers,
+        uid
       ),
     services: async (source, args, { dataSources, headers }, info) => {
       const {

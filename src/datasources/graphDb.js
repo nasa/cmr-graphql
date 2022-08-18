@@ -6,6 +6,7 @@ import {
 
 import { cmrGraphDb } from '../utils/cmrGraphDb'
 import { mergeParams } from '../utils/mergeParams'
+import { getUserPermittedGroups } from '../utils/getUserPermittedGroups'
 
 /**
  * Queries CMR GraphDB for related collections.
@@ -17,8 +18,11 @@ export default async (
   conceptId,
   params,
   headers,
-  parsedInfo
+  parsedInfo,
+  uid
 ) => {
+  // TODO: remove this debug line
+  console.log('Here is the UID all the way in the graphDb data source', uid)
   // Parse the request info to find the requested types in the query
   const { fieldsByTypeName } = parsedInfo
   const { RelatedCollectionsList: relatedCollectionsList } = fieldsByTypeName
@@ -31,7 +35,6 @@ export default async (
 
   // Merge nested 'params' object with existing parameters
   const queryParams = mergeParams(params)
-
   const {
     limit = 20,
     offset = 0,
@@ -102,20 +105,26 @@ export default async (
     // Default to returning all values for those relationship labels that were requested
     filters = `
       .hasLabel('${includedLabels.join("','")}')
-    `
+     `
   }
+  // Retrieve the user groups from EDL to filter the query
+  const userGroups = await getUserPermittedGroups(headers, uid)
 
+  // TODO: Make sure that there are not more checks that need to be done
   const query = JSON.stringify({
     gremlin: `
-    g
+    g 
     .V()
     .has('collection', 'id', '${conceptId}')
+    .has('permittedGroups', within(${userGroups}))
     .bothE()
     .inV()
     ${filters}
     .bothE()
     .outV()
     .hasLabel('collection')
+    .has('permittedGroups', within(${userGroups}))
+    .has('id',neq('${conceptId}'))
     .group()
     .by('id')
     .by(
@@ -159,9 +168,9 @@ export default async (
 
   const { result } = data
 
-  // Useful for debugging!
+  // Useful for debugging! TODO: don't forget to comment these back out
   // console.log('GraphDB query', JSON.parse(query))
-  // console.log('GraphDB Response result: ', JSON.stringify(result, null, 2))
+  console.log('GraphDB Response result: ', JSON.stringify(result, null, 2))
 
   const { data: resultData } = result
   const { '@value': dataValues } = resultData
@@ -175,7 +184,7 @@ export default async (
       relatedCollections: relatedCollectionsBulkSet,
       totalRelatedCollections: totalRelatedCollectionsBulkSet
     } = fromPairs(chunk(dataValueMap, 2))
-
+    console.log(relatedCollectionsBulkSet)
     // Parse the count object
     const { '@value': totalRelatedCollectionsMap } = totalRelatedCollectionsBulkSet;
 
@@ -269,7 +278,7 @@ export default async (
   }
 
   // Useful for debugging!
-  // console.log('graphDb.js response', JSON.stringify(returnObject, null, 2))
+  console.log('graphDb.js response the return object', JSON.stringify(returnObject, null, 2))
 
   return returnObject
 }

@@ -4,7 +4,7 @@ import {
 } from 'lodash'
 
 import { cmrGraphDb } from '../utils/cmrGraphDb'
-
+import { getUserPermittedGroups } from '../utils/getUserPermittedGroups'
 /**
  * Queries CMR GraphDB for duplicate collections.
  * @param {String} collection Collection metadata for the initial collection to find duplicates.
@@ -12,24 +12,36 @@ import { cmrGraphDb } from '../utils/cmrGraphDb'
  */
 export default async (
   collection,
-  headers
+  headers,
+  uid
 ) => {
   const {
     conceptId,
     doi,
     shortName
   } = collection
-
+  // TODO: remove this was used for debugging
+  // TODO: don't forget to turn this doi back into a const
   const { doi: doiDescription } = doi || {}
 
+  // if (!doiDescription) {
+  //   doiDescription = 'Collection1Doi'
+  // }
+  // console.log('The shortname being supplied', shortName)
+  // console.log('The doi being supplied', doi)
+  console.log('The uid being supplied', uid) // TODO: removed doi is being supplied but, not the doi desc
   // If doi or shorName don't exist, return 0 duplicateCollections
   if (!doiDescription || !shortName) {
+    console.log('No doi or shortName was supplied exiting')
     return {
       count: 0,
       items: []
     }
   }
+  const userGroups = await getUserPermittedGroups(headers, uid)
 
+  // Search for collections with a different concept-id but, the same shortname and doi
+  // TODO: maybe this query could be simplified instead of doing an anoymous traversal just use .has(neq())
   const query = JSON.stringify({
     gremlin: `
     g
@@ -39,6 +51,7 @@ export default async (
     )
     .has('collection', 'shortName', '${shortName}')
     .has('collection', 'doi', '${doiDescription}')
+    .has('collection', 'permittedGroups', within(${userGroups}))
     .valueMap(true)
     `
   })
@@ -51,9 +64,9 @@ export default async (
 
   const { result } = data
 
-  // Useful for debugging!
-  // console.log('GraphDB query', JSON.parse(query))
-  // console.log('GraphDB Response result: ', JSON.stringify(result, null, 2))
+  // Useful for debugging! //TODO: don't forget to comment these back in
+  console.log('GraphDB from Duplicate Collections call query', JSON.parse(query))
+  console.log('GraphDB from Duplicate Collections call response result: ', JSON.stringify(result, null, 2))
 
   const duplicateCollections = []
 
@@ -88,9 +101,9 @@ export default async (
     count: duplicateCollectionsCount,
     items: duplicateCollections
   }
-
+  // TODO: don't forget to leave this commented in again.
   // Useful for debugging!
-  // console.log('graphDb.js response', JSON.stringify(returnObject, null, 2))
+  console.log('graphDb.js response', JSON.stringify(returnObject, null, 2))
 
   return returnObject
 }
