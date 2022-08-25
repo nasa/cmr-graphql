@@ -20,7 +20,7 @@ describe('graphDb', () => {
     process.env.graphdbPath = ''
 
     process.env.ursRootUrl = 'http://example.com'
-    process.env.mockClientId = 'adfadsfagaehrgaergaergareg'
+    process.env.edlClientId = 'adfadsfagaehrgaergaergareg'
   })
 
   afterEach(() => {
@@ -72,7 +72,7 @@ describe('graphDb', () => {
           }
         },
         { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
-        'someUid' // TODO: I put this uuid here since it is getting passed from the context
+        'someEdlUsername' // TODO: I put this uuid here since it is getting passed from the context
       )
 
       expect(response).toEqual(duplicateCollectionsRelatedUrlTypeResponseMocks)
@@ -86,7 +86,7 @@ describe('graphDb', () => {
           doi: null
         },
         { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
-        'someUid' // TODO: UUID from the context
+        'someEdlUsername' // TODO: UUID from the context
       )
 
       expect(response).toEqual({
@@ -104,7 +104,7 @@ describe('graphDb', () => {
       .post(/graphdb/, (body) => { // TODO: This gets out the body being sent out by the post request
         const { gremlin: gremlinQuery } = body
         console.log(gremlinQuery)
-        const correctGremlin = gremlinQuery.includes('within(\'groupid1\',\'groupid2\',\'guest\')')
+        const correctGremlin = gremlinQuery.includes('within(\'groupid1\',\'groupid2\',\'registered\',\'guest\')')
         if (correctGremlin) {
           console.log('We have the groups where we want them')
           return true
@@ -148,7 +148,7 @@ describe('graphDb', () => {
         }
       },
       { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
-      'someUid' // TODO: I put this uuid here since it is getting passed from the context
+      'someEdlUsername' // TODO: I put this uuid here since it is getting passed from the context
     )
 
     expect(response).toEqual(duplicateCollectionsRelatedUrlTypeResponseMocks)

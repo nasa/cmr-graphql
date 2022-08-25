@@ -19,10 +19,10 @@ export default async (
   params,
   headers,
   parsedInfo,
-  uid
+  edlUsername
 ) => {
   // TODO: remove this debug line
-  console.log('Here is the UID all the way in the graphDb data source', uid)
+  console.log('Here is the edlUsername all the way in the graphDb data source', edlUsername)
   // Parse the request info to find the requested types in the query
   const { fieldsByTypeName } = parsedInfo
   const { RelatedCollectionsList: relatedCollectionsList } = fieldsByTypeName
@@ -108,7 +108,7 @@ export default async (
      `
   }
   // Retrieve the user groups from EDL to filter the query
-  const userGroups = await getUserPermittedGroups(headers, uid)
+  const userGroups = await getUserPermittedGroups(headers, edlUsername)
 
   // TODO: Make sure that there are not more checks that need to be done
   const query = JSON.stringify({

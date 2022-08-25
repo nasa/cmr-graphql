@@ -56,7 +56,7 @@ export default {
         })
       })
 
-      // Split granuleParams before args to allow for overwriting granuleParams
+      // Splat granuleParams before args to allow for overwriting granuleParams
       const requestedParams = handlePagingParams({
         collectionConceptId: collectionId,
         ...granuleParams,
@@ -65,21 +65,21 @@ export default {
 
       return dataSources.granuleSource(requestedParams, headers, parseResolveInfo(info))
     },
-    relatedCollections: async (source, args, { dataSources, headers, uid }, info) => {
+    relatedCollections: async (source, args, { dataSources, headers, edlUsername }, info) => {
       const { conceptId } = source
       return dataSources.graphDbSource(
         conceptId,
         args,
         headers,
         parseResolveInfo(info),
-        uid
+        edlUsername
       )
     },
-    duplicateCollections: async (source, args, { dataSources, headers, uid }) => dataSources
+    duplicateCollections: async (source, args, { dataSources, headers, edlUsername }) => dataSources
       .graphDbDuplicateCollectionsSource(
         source,
         headers,
-        uid
+        edlUsername
       ),
     services: async (source, args, { dataSources, headers }, info) => {
       const {
