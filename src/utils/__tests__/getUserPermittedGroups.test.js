@@ -10,7 +10,7 @@ describe('Retrieve data from EDL on the user groups', () => {
     process.env = { ...OLD_ENV }
     process.env.rsaKey = '' // TODO: how can I mock this part of the system up
     process.env.ursRootUrl = 'http://example.com'
-    process.env.mockClientId = 'clientIdOfSomeApplication'
+    process.env.edlClientId = 'clientIdOfSomeApplication'
   })
 
   afterEach(() => {
@@ -46,11 +46,11 @@ describe('Retrieve data from EDL on the user groups', () => {
     const returnObject = await getUserPermittedGroups('headers', 'SomeUid')
 
     // This single quote inside of string is how graphDb parses http requests
-    const testGroupIds = ["'groupid1'", "'groupid2'", "'guest'"]
+    const testGroupIds = ["'groupid1'", "'groupid2'", "'registered'", "'guest'"]
     expect(returnObject).toEqual(testGroupIds)
   })
 
-  test('If the user has no groups they would still have guest privillages', async () => {
+  test('If the user has no groups they would still have guest and registered privillages', async () => {
     nock(/example/)
       .get(/user_groups/)
       .reply(200, {
@@ -59,11 +59,10 @@ describe('Retrieve data from EDL on the user groups', () => {
     const returnObject = await getUserPermittedGroups('headers', 'SomeUid')
 
     // This single quote inside of string is how graphDb parses http requests
-    const testGroupIds = ["'guest'"]
+    const testGroupIds = ["'registered'", "'guest'"]
     expect(returnObject).toEqual(testGroupIds)
   })
-  // TODO: What should we do if there is a connection error how should we handle it? Should user still have group?
-  test('If the response has an issue and returns null ', async () => {
+  test('If the response has an issue and returns null the client should still have guest privillages ', async () => {
     nock(/example/)
       .get(/user_groups/)
       .reply(400, null)

@@ -8,7 +8,7 @@ describe('Verify an edl token and retrieve a uid', () => {
   beforeEach(() => {
     process.env = { ...OLD_ENV }
     process.env.ursRootUrl = 'http://example.com'
-    process.env.mockClientId = 'clientIdOfSomeApplication'
+    process.env.edlClientId = 'clientIdOfSomeApplication'
   })
 
   afterEach(() => {
@@ -33,7 +33,7 @@ describe('Verify an edl token and retrieve a uid', () => {
 
     const returnObject = await verifyEdlToken('Bearer aBadToken')
 
-    expect(returnObject).toEqual({})
+    expect(returnObject).toEqual('')
 
     expect(consoleMock).toBeCalledWith('Could not complete request due to error: Error: Request failed with status code 403')
   })

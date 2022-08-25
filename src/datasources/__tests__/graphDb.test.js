@@ -40,7 +40,7 @@ describe('graphDb', () => {
 
     // TODO: put these in for testing against permitted user groups
     process.env.ursRootUrl = 'http://example.com'
-    process.env.mockClientId = 'adfadsfagaehrgaergaergareg'
+    process.env.edlClientId = 'adfadsfagaehrgaergaergareg'
   })
 
   afterEach(() => {
@@ -1028,7 +1028,7 @@ describe('graphDb', () => {
           console.log('The body of the graphdb request', body)
           const { gremlin: gremlinQuery } = body
           console.log('The germlin query itself', gremlinQuery)
-          const correctGremlin = gremlinQuery.includes('within(\'groupid1\',\'groupid2\',\'guest\')')
+          const correctGremlin = gremlinQuery.includes('within(\'groupid1\',\'groupid2\',\'registered\',\'guest\')')
           if (correctGremlin) {
             console.log('We have the groups where we want them')
             return true
@@ -1069,7 +1069,7 @@ describe('graphDb', () => {
         },
         { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
         parsedInfo,
-        'someUUID'
+        'someEdlUsername'
       )
       // TODO: still checking this value but, it may not be needed
       expect(response).toEqual(relatedCollectionsRelationshipTypeResponseMocks)
@@ -1085,7 +1085,7 @@ describe('graphDb', () => {
           const { gremlin: gremlinQuery } = body
           console.log('The germlin query itself', gremlinQuery)
           // All clients have at least guest access
-          const correctGremlin = gremlinQuery.includes('within(\'guest\')')
+          const correctGremlin = gremlinQuery.includes('within(\'registered\',\'guest\')')
           if (correctGremlin) {
             console.log('We have the guest group access only')
             return true
@@ -1105,7 +1105,7 @@ describe('graphDb', () => {
         },
         { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
         parsedInfo,
-        'someUUID'
+        'someEdlUsername'
       )
       // TODO: still checking this value but, it may not be needed
       expect(response).toEqual({ count: 0, items: [] })

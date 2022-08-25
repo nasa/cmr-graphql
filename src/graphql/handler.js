@@ -33,11 +33,9 @@ const server = new ApolloServer({
   resolvers,
 
   // Initial context state, will be available in resolvers
-  // TODO: should this really be asynch
   context: async ({ event }) => {
     const { headers } = event
-    // TODO: Give this uid a default value
-    let uid
+    let edlUsername
     const {
       authorization: bearerToken,
       'client-id': clientId,
@@ -54,13 +52,23 @@ const server = new ApolloServer({
     // If the client has identified themselves using Client-Id supply it to CMR
     if (clientId) requestHeaders['Client-Id'] = clientId
 
-    if (bearerToken) {
+    // regex to match JWT token structures
+    const regex = /^Bearer [A-Za-z0-9-_]*\.[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*/
+
+    // Match the expected JWT token verify the token is from EDL and reteive the earth data login username
+    if (regex.test(bearerToken)) {
+      // const regex = /^Bearer [A-Za-z0-9-_]*\.[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*/
+      // const result = JSON.stringify(edlToken)
+      // console.log('stringified', result)
+      // const match = regex.test(bearerToken)
+      // console.log('result of regex ', match)
       // TODO: this may swtich to being verified localy instead of making a call to EDL for verification
-      uid = await verifyEdlToken(bearerToken)
+      // console.log('Matching the regex for JWT tokens ', bearerToken.match(regex))
+      edlUsername = await verifyEdlToken(bearerToken)
     }
     return {
       headers: requestHeaders,
-      uid
+      edlUsername
     }
   },
   // An object that goes to the 'context' argument when executing resolvers
