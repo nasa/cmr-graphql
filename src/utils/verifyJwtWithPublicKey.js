@@ -3,21 +3,20 @@ const jwt = require('jsonwebtoken')
 
 const client = jwksClient({
   getKeysInterceptor: () => {
-    const rsaEnv = process.env.rsaKey
-    // console.log('The clients rsa env', rsaEnv)
-    const output = JSON.parse(rsaEnv)
-    // console.log('The parsed rsa Env that was working at least before \n ', output)
-    // console.log('Here are the output keys', output.keys)
-    return output.keys
+    const rsaEnv = JSON.parse(process.env.rsaKey)
+    return rsaEnv.keys
   }
 })
 
-const pubKey = async () => {
-  const rsaEnv = process.env.rsaKey
-  const output = JSON.parse(rsaEnv)
-
-  // Destructure the kid value from the RSA token default to empty string
-  const [{ kid = '' }] = output.keys
+const pubKey = async (rsaEnv) => {
+  // Destructure JWK assign default value where applicable
+  const {
+    keys: [
+      {
+        kid = ''
+      }
+    ]
+  } = rsaEnv
 
   const key = await client.getSigningKey(kid)
   return key.getPublicKey()
@@ -25,27 +24,24 @@ const pubKey = async () => {
 
 export const verifyEDLJwt = async (header) => {
   // Edl token is in the form of Bearer <Token> retrieve <token>
+  const rsaEnv = JSON.parse(process.env.rsaKey)
   const bearerHeader = header.split(' ')
   const [, token] = bearerHeader
 
-  const key = await pubKey()
+  const key = await pubKey(rsaEnv)
 
   // Grab RSA key from env variable
   const decodedToken = jwt.verify(token, key, { algorithms: ['RS256'] }, (err, decoded) => {
     if (err) {
-      if (err.name === 'TokenExpiredError') {
-        console.log('JWT Token Expired, Invalid token')
-      } else if (err.name === 'JsonWebTokenError') {
-        console.log('Error Decoding JWT Token, Invalid token')
-      }
+      console.log('Error Decoding JWT Token, Invalid token')
       return {}
     }
     console.log('JWT Token validated successfully')
-    console.log(decoded)
     return decoded
   })
 
+  // destructure uid from the decoded token
   const { uid: userId = '' } = decodedToken
-  // console.log('UserId returned from the decoded token', userId)
+
   return userId
 }
