@@ -21,10 +21,12 @@ import toolSource from '../datasources/tool'
 import variableSource from '../datasources/variable'
 
 import { downcaseKeys } from '../utils/downcaseKeys'
-// import { verifyEDLJwt } from '../utils/verifyJwtWithPublicKey'
 
-// TODO: import for edl verifcation api call
-import { verifyEdlToken } from '../utils/verifyEdlToken'
+// TODO: import for edl verifcation api call, delete; if local verification is approved
+// import { verifyEdlToken } from '../utils/verifyEdlToken'
+
+// TODO: imoprt for locally verifying the edl jwt token
+import { verifyEDLJwt } from '../utils/verifyJwtWithPublicKey'
 
 // Creating the server
 const server = new ApolloServer({
@@ -45,7 +47,6 @@ const server = new ApolloServer({
     const requestHeaders = {
       'CMR-Request-Id': requestId || uuidv4()
     }
-
     // If the client has provided an EDL token supply it to CMR
     if (bearerToken) requestHeaders.Authorization = bearerToken
 
@@ -57,14 +58,10 @@ const server = new ApolloServer({
 
     // Match the expected JWT token verify the token is from EDL and reteive the earth data login username
     if (regex.test(bearerToken)) {
-      // const regex = /^Bearer [A-Za-z0-9-_]*\.[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*/
-      // const result = JSON.stringify(edlToken)
-      // console.log('stringified', result)
-      // const match = regex.test(bearerToken)
-      // console.log('result of regex ', match)
-      // TODO: this may swtich to being verified localy instead of making a call to EDL for verification
-      // console.log('Matching the regex for JWT tokens ', bearerToken.match(regex))
-      edlUsername = await verifyEdlToken(bearerToken)
+      // TODO: remove the old call to edl API if lcoal verification is approved
+
+      // edlUsername = await verifyEdlToken(bearerToken)
+      edlUsername = await verifyEDLJwt(bearerToken)
     }
     return {
       headers: requestHeaders,
