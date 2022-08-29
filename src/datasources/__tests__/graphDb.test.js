@@ -1030,7 +1030,7 @@ describe('graphDb', () => {
           console.log('The germlin query itself', gremlinQuery)
           const correctGremlin = gremlinQuery.includes('within(\'groupid1\',\'groupid2\',\'registered\',\'guest\')')
           if (correctGremlin) {
-            console.log('We have the groups where we want them')
+            console.log('Correct group filtering was applied to search query')
             return true
           }
           return false

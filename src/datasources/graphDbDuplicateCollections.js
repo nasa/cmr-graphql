@@ -13,23 +13,20 @@ import { getUserPermittedGroups } from '../utils/getUserPermittedGroups'
 export default async (
   collection,
   headers,
-  uid
+  edlUsername
 ) => {
   const {
     conceptId,
     doi,
     shortName
   } = collection
-  // TODO: remove this was used for debugging
+  // TODO: remove all debug statements in this area was used for debugging
   // TODO: don't forget to turn this doi back into a const
   const { doi: doiDescription } = doi || {}
 
-  // if (!doiDescription) {
-  //   doiDescription = 'Collection1Doi'
-  // }
   // console.log('The shortname being supplied', shortName)
   // console.log('The doi being supplied', doi)
-  console.log('The uid being supplied', uid) // TODO: removed doi is being supplied but, not the doi desc
+  console.log('The edlUsername being supplied', edlUsername) // TODO: removed doi is being supplied but, not the doi desc
   // If doi or shorName don't exist, return 0 duplicateCollections
   if (!doiDescription || !shortName) {
     console.log('No doi or shortName was supplied exiting')
@@ -38,7 +35,7 @@ export default async (
       items: []
     }
   }
-  const userGroups = await getUserPermittedGroups(headers, uid)
+  const userGroups = await getUserPermittedGroups(headers, edlUsername)
 
   // Search for collections with a different concept-id but, the same shortname and doi
   // TODO: maybe this query could be simplified instead of doing an anoymous traversal just use .has(neq())

@@ -9,11 +9,11 @@ const client = jwksClient({
 })
 
 const pubKey = async (rsaEnv) => {
-  // Destructure JWK assign default value where applicable
+  // Destructure JWK
   const {
     keys: [
       {
-        kid = ''
+        kid
       }
     ]
   } = rsaEnv
@@ -42,6 +42,9 @@ export const verifyEDLJwt = async (header) => {
 
   // destructure uid from the decoded token
   const { uid: userId = '' } = decodedToken
+
+  // TODO: remove but, useful for debugging
+  // console.log('Edl user id', userId)
 
   return userId
 }
