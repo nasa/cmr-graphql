@@ -4,7 +4,7 @@ import graphDbDuplicateCollectionsDatasource from '../graphDbDuplicateCollection
 
 import duplicatedCollectionsGraphdbResponseMocks from './__mocks__/duplicateCollections.graphdbResponse.mocks'
 import duplicateCollectionsRelatedUrlTypeResponseMocks from './__mocks__/duplicateCollections.response.mocks'
-// TODO: I need to add a uuid that gets passed to all of these tests
+
 describe('graphDb', () => {
   const OLD_ENV = process.env
 
@@ -35,8 +35,7 @@ describe('graphDb', () => {
         })
         .post(() => true)
         .reply(200, duplicatedCollectionsGraphdbResponseMocks)
-        // TODO: how can I grab this value that is being posted out and parse it
-        // TODO: delete this later
+
       // Mock the EDL call to retrieve the client's permitted groups
       nock(/example/)
         .get(/groups_for_user/)
@@ -72,7 +71,7 @@ describe('graphDb', () => {
           }
         },
         { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
-        'someEdlUsername' // TODO: I put this uuid here since it is getting passed from the context
+        'someEdlUsername'
       )
 
       expect(response).toEqual(duplicateCollectionsRelatedUrlTypeResponseMocks)
@@ -86,7 +85,7 @@ describe('graphDb', () => {
           doi: null
         },
         { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
-        'someEdlUsername' // TODO: UUID from the context
+        'someEdlUsername'
       )
 
       expect(response).toEqual({
@@ -148,7 +147,7 @@ describe('graphDb', () => {
         }
       },
       { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
-      'someEdlUsername' // TODO: I put this uuid here since it is getting passed from the context
+      'someEdlUsername'
     )
 
     expect(response).toEqual(duplicateCollectionsRelatedUrlTypeResponseMocks)
@@ -161,7 +160,7 @@ describe('graphDb', () => {
         errors: ['HTTP Error']
       }, {
         'cmr-request-id': 'abcd-1234-efgh-5678'
-      }) // TODO: I put this uuid here since it is getting passed from the context
+      })
 
     await expect(
       graphDbDuplicateCollectionsDatasource(
@@ -172,7 +171,8 @@ describe('graphDb', () => {
             doi: 'mock doi'
           }
         },
-        { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }
+        { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
+        'someEdlUsername'
       )
     ).rejects.toThrow(Error)
   })
