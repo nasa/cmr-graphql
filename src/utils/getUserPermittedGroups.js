@@ -19,16 +19,7 @@ export const getUserPermittedGroups = async (headers, edlUsername) => {
     'CMR-Request-Id',
     'Authorization'
   ])
-  // process.env.cmrRootUrlTest
-  // const { 'Authorization': authorization } = permittedHeaders
-  // const clientId = process.env.edlClientId
-  // const ursUrl = process.env.ursRootUrl
-  // TODO: remove this debugging code
-  // console.log('Client id being passed into http', clientId)
-  // console.log('URs url being sent to the http ', ursUrl)
-  // console.log('The edlUsername passing to the http', edlUsername)
-  // console.log('The authorization passing to the http', permittedHeaders)
-  // console.log('The client_id passing to the http', clientId)
+
   let response = {}
   try {
     response = await axios({
@@ -37,15 +28,14 @@ export const getUserPermittedGroups = async (headers, edlUsername) => {
       url: `${process.env.ursRootUrl}/api/user_groups/groups_for_user/${edlUsername}?client_id=${process.env.edlClientId}`
     })
     const { data } = response
+
     const { user_groups: userGroups = [] } = data
-    // console.log('The data from the response', data)
-    // console.log('The data from the response', userGroups)
+
     userGroups.forEach((userGroup) => {
-      // console.log('Current group ', userGroup.group_id)
       // Gremlin requires that the entries be surrounded by strings to be interpreted by the graphDb server
-      const formatedUsrGroupId = `'${userGroup.group_id}'`
-      // console.log('current userGroup', userGroup.group_id)
-      permittedUserGroups.push(formatedUsrGroupId)
+      const formattedUserGroupId = `'${userGroup.group_id}'`
+
+      permittedUserGroups.push(formattedUserGroupId)
     })
     // If edl returns without problems client is granted registered access to collections as well
     const registeredGroup = '\'registered\''
@@ -58,8 +48,8 @@ export const getUserPermittedGroups = async (headers, edlUsername) => {
   const guestGroup = '\'guest\''
   permittedUserGroups.push(guestGroup)
 
-  // TODO: remove comment from final PR
-  console.log('The permitted groups for this user', permittedUserGroups)
+  // Useful for Debugging!
+  // console.log('The permitted groups for this user', permittedUserGroups)
 
   return permittedUserGroups
 }

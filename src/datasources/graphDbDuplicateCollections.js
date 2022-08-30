@@ -20,13 +20,9 @@ export default async (
     doi,
     shortName
   } = collection
-  // TODO: remove all debug statements in this area was used for debugging
-  // TODO: don't forget to turn this doi back into a const
+
   const { doi: doiDescription } = doi || {}
 
-  // console.log('The shortname being supplied', shortName)
-  // console.log('The doi being supplied', doi)
-  console.log('The edlUsername being supplied', edlUsername) // TODO: removed doi is being supplied but, not the doi desc
   // If doi or shorName don't exist, return 0 duplicateCollections
   if (!doiDescription || !shortName) {
     console.log('No doi or shortName was supplied exiting')
@@ -38,7 +34,6 @@ export default async (
   const userGroups = await getUserPermittedGroups(headers, edlUsername)
 
   // Search for collections with a different concept-id but, the same shortname and doi
-  // TODO: maybe this query could be simplified instead of doing an anoymous traversal just use .has(neq())
   const query = JSON.stringify({
     gremlin: `
     g
@@ -61,9 +56,9 @@ export default async (
 
   const { result } = data
 
-  // Useful for debugging! //TODO: don't forget to comment these back in
-  console.log('GraphDB from Duplicate Collections call query', JSON.parse(query))
-  console.log('GraphDB from Duplicate Collections call response result: ', JSON.stringify(result, null, 2))
+  // Useful for debugging!
+  // console.log('GraphDB from Duplicate Collections call query', JSON.parse(query))
+  // console.log('GraphDB from Duplicate Collections call response result: ', JSON.stringify(result, null, 2))
 
   const duplicateCollections = []
 
@@ -98,9 +93,9 @@ export default async (
     count: duplicateCollectionsCount,
     items: duplicateCollections
   }
-  // TODO: don't forget to leave this commented in again.
+
   // Useful for debugging!
-  console.log('graphDb.js response', JSON.stringify(returnObject, null, 2))
+  // console.log('graphDb.js response', JSON.stringify(returnObject, null, 2))
 
   return returnObject
 }

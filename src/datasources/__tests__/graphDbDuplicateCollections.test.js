@@ -100,7 +100,7 @@ describe('graphDb', () => {
       .defaultReplyHeaders({
         'CMR-Request-Id': 'abcd-1234-efgh-5678'
       })
-      .post(/graphdb/, (body) => { // TODO: This gets out the body being sent out by the post request
+      .post(/graphdb/, (body) => {
         const { gremlin: gremlinQuery } = body
         console.log(gremlinQuery)
         const correctGremlin = gremlinQuery.includes('within(\'groupid1\',\'groupid2\',\'registered\',\'guest\')')
@@ -111,7 +111,7 @@ describe('graphDb', () => {
         return false
       })
       .reply(200, duplicatedCollectionsGraphdbResponseMocks)
-      // TODO: delete this later
+
     // Mock the EDL call to retrieve the client's permitted groups
     nock(/example/)
       .get(/groups_for_user/)

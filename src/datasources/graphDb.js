@@ -21,8 +21,6 @@ export default async (
   parsedInfo,
   edlUsername
 ) => {
-  // TODO: remove this debug line
-  console.log('Here is the edlUsername all the way in the graphDb data source', edlUsername)
   // Parse the request info to find the requested types in the query
   const { fieldsByTypeName } = parsedInfo
   const { RelatedCollectionsList: relatedCollectionsList } = fieldsByTypeName
@@ -110,7 +108,6 @@ export default async (
   // Retrieve the user groups from EDL to filter the query
   const userGroups = await getUserPermittedGroups(headers, edlUsername)
 
-  // TODO: Make sure that there are not more checks that need to be done
   const query = JSON.stringify({
     gremlin: `
     g 
@@ -168,9 +165,9 @@ export default async (
 
   const { result } = data
 
-  // Useful for debugging! TODO: don't forget to comment these back out
+  // Useful for debugging!
   // console.log('GraphDB query', JSON.parse(query))
-  console.log('GraphDB Response result: ', JSON.stringify(result, null, 2))
+  // console.log('GraphDB Response result: ', JSON.stringify(result, null, 2))
 
   const { data: resultData } = result
   const { '@value': dataValues } = resultData
@@ -278,7 +275,7 @@ export default async (
   }
 
   // Useful for debugging!
-  console.log('graphDb.js response the return object', JSON.stringify(returnObject, null, 2))
+  // console.log('graphDb.js response the return object', JSON.stringify(returnObject, null, 2))
 
   return returnObject
 }
