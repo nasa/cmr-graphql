@@ -3,11 +3,12 @@ const jwt = require('jsonwebtoken')
 
 /**
  * Verify and decode a JWT token
- * @param {String} header - The JWT token in the form "Beareer <TOKEN>"
+ * @param {String} header - The JWT token in the form "Bearer <TOKEN>"
  * @return {String} The User Id of the edl user if it has been verified, otherwise an empty string
  * @see https://urs.earthdata.nasa.gov/documentation/for_integrators/verify_edl_jwt_token
  */
 
+// Retrieve all of the keysValue pairs from the JWKS env var
 const client = jwksClient({
   getKeysInterceptor: () => {
     const rsaEnv = JSON.parse(process.env.rsaKey)
@@ -15,29 +16,23 @@ const client = jwksClient({
   }
 })
 
-const pubKey = async (rsaEnv) => {
-  // Destructure JWK
-  const {
-    keys: [
-      {
-        kid
-      }
-    ]
-  } = rsaEnv
+const pubKey = async () => {
+  // Retrieve the key id from the env
+  const kid = process.env.edlKeyId
 
-  // Using the getSigningKey, retrieve the signing key that matches a specific kid
+  // getSigningKey retreives the signing key obj which can access the public key
   const key = await client.getSigningKey(kid)
+
+  // Decrypt the 'n' key in the JWK to get the public key used for verification of JWT token
   return key.getPublicKey()
 }
 
 export const verifyEDLJwt = async (header) => {
-  const rsaEnv = JSON.parse(process.env.rsaKey)
-
   // Edl token is in the form of Bearer <Token> retrieve <token>
   const bearerHeader = header.split(' ')
   const [, token] = bearerHeader
 
-  const key = await pubKey(rsaEnv)
+  const key = await pubKey()
 
   const decodedToken = jwt.verify(token, key, { algorithms: ['RS256'] }, (err, decoded) => {
     if (err) {
