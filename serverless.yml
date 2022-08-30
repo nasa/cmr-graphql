@@ -12,6 +12,8 @@ provider:
     cmrRootUrl: ${self:custom.variables.cmrRootUrl}
     mmtRootUrl: ${self:custom.variables.mmtRootUrl}
     draftMmtRootUrl: ${self:custom.variables.draftMmtRootUrl}
+    ursRootUrl: ${self:custom.variables.ursRootUrl}
+    edlClientId: ${self:custom.variables.edlClientId}
     sslCertFile: ${self:custom.variables.sslCertFile}
 
     # Timeout for lambda
@@ -148,6 +150,8 @@ custom:
     cmrRootUrl: ${env:CMR_ROOT_URL, 'https://cmr.earthdata.nasa.gov'}
     mmtRootUrl: ${env:MMT_ROOT_URL, 'https://mmt.earthdata.nasa.gov'}
     draftMmtRootUrl: ${env:DRAFT_MMT_ROOT_URL, 'https://draftmmt.earthdata.nasa.gov'}
+    ursRootUrl: ${env:URS_ROOT_URL, 'https://urs.earthdata.nasa.gov'}
+    edlClientId: ${env:EDL_CLIENT_ID, ''}
     sslCertFile: ${env:SSL_CERT_FILE, 'certificates/fcpca_combined.pem'}
 
   # Default is 3000 so to avoid conflicts with other applications we'll define a new port

@@ -12,20 +12,18 @@ import granuleSource from '../datasources/granule'
 import graphDbDuplicateCollectionsSource from '../datasources/graphDbDuplicateCollections'
 import graphDbSource from '../datasources/graphDb'
 import serviceSource from '../datasources/service'
+
 import {
   deleteSubscription as subscriptionSourceDelete,
   fetchSubscription as subscriptionSourceFetch,
   ingestSubscription as subscriptionSourceIngest
 } from '../datasources/subscription'
+
 import toolSource from '../datasources/tool'
 import variableSource from '../datasources/variable'
 
 import { downcaseKeys } from '../utils/downcaseKeys'
 
-// TODO: import for edl verifcation api call, delete; if local verification is approved
-// import { verifyEdlToken } from '../utils/verifyEdlToken'
-
-// TODO: imoprt for locally verifying the edl jwt token
 import { verifyEDLJwt } from '../utils/verifyJwtWithPublicKey'
 
 // Creating the server
@@ -58,9 +56,6 @@ const server = new ApolloServer({
 
     // Match the expected JWT token verify the token is from EDL and reteive the earth data login username
     if (regex.test(bearerToken)) {
-      // TODO: remove the old call to edl API if lcoal verification is approved
-
-      // edlUsername = await verifyEdlToken(bearerToken)
       edlUsername = await verifyEDLJwt(bearerToken)
     }
     return {

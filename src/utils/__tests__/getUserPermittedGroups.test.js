@@ -4,11 +4,9 @@ import { getUserPermittedGroups } from '../getUserPermittedGroups'
 
 describe('Retrieve data from EDL on the user groups', () => {
   const OLD_ENV = process.env
-  // We don't need to mock up CMR since this function never actually makes a call to it
-  // TODO: What does this comment accomplish?
   beforeEach(() => {
     process.env = { ...OLD_ENV }
-    process.env.rsaKey = '' // TODO: how can I mock this part of the system up
+    process.env.rsaKey = ''
     process.env.ursRootUrl = 'http://example.com'
     process.env.edlClientId = 'clientIdOfSomeApplication'
   })
@@ -17,7 +15,6 @@ describe('Retrieve data from EDL on the user groups', () => {
     process.env = OLD_ENV
   })
 
-  // TODO: mock up the response
   test('Retrieving correct data from the permitted groups', async () => {
     nock(/example/)
       .get(/user_groups/)
@@ -67,7 +64,8 @@ describe('Retrieve data from EDL on the user groups', () => {
       .get(/user_groups/)
       .reply(400, null)
     const returnObject = await getUserPermittedGroups('headers', 'SomeUid')
-    // TODO: This is supposed to equal some array of groups
+
+    // Only guest group is added
     const testGroupIds = ["'guest'"]
     expect(returnObject).toEqual(testGroupIds)
   })

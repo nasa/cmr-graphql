@@ -28,7 +28,7 @@ export const cmrGraphDb = ({
   ])
 
   const { 'CMR-Request-Id': requestId } = permittedHeaders
-  // TODO: this is searching off of the grphDb endpoint which we will need to change later
+
   const requestConfiguration = {
     data: query,
     headers: permittedHeaders,

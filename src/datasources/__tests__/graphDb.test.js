@@ -38,7 +38,6 @@ describe('graphDb', () => {
 
     process.env.cmrRootUrl = 'http://example.com'
 
-    // TODO: put these in for testing against permitted user groups
     process.env.ursRootUrl = 'http://example.com'
     process.env.edlClientId = 'adfadsfagaehrgaergaergareg'
   })
@@ -1036,7 +1035,6 @@ describe('graphDb', () => {
           return false
         })
         .reply(200, relatedCollectionsRelationshipTypeGraphdbResponseMocks)
-      // TODO: nock the groups getting returned
       nock(/example/)
         .get(/groups_for_user/)
         .reply(200, {
@@ -1071,7 +1069,6 @@ describe('graphDb', () => {
         parsedInfo,
         'someEdlUsername'
       )
-      // TODO: still checking this value but, it may not be needed
       expect(response).toEqual(relatedCollectionsRelationshipTypeResponseMocks)
     })
 
@@ -1093,7 +1090,7 @@ describe('graphDb', () => {
           return false
         })
         .reply(200, relatedCollectionsResponseEmptyMocks)
-      // TODO: nock the groups getting returned
+
       nock(/example/)
         .get(/groups_for_user/)
         .reply(200, {})
@@ -1107,7 +1104,6 @@ describe('graphDb', () => {
         parsedInfo,
         'someEdlUsername'
       )
-      // TODO: still checking this value but, it may not be needed
       expect(response).toEqual({ count: 0, items: [] })
     })
   })
