@@ -1,5 +1,5 @@
 import createJWKSMock from 'mock-jwks'
-import { verifyEDLJwt } from '../verifyJwtWithPublicKey'
+import { verifyEDLJwt } from '../verifyEDLJwt'
 
 const OLD_ENV = process.env
 
