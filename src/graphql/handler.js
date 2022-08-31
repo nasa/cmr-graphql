@@ -24,7 +24,7 @@ import variableSource from '../datasources/variable'
 
 import { downcaseKeys } from '../utils/downcaseKeys'
 
-import { verifyEDLJwt } from '../utils/verifyJwtWithPublicKey'
+import { verifyEDLJwt } from '../utils/verifyEDLJwt'
 
 // Creating the server
 const server = new ApolloServer({
