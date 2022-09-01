@@ -28,6 +28,8 @@ dockerRun() {
         -e "AWS_SECRET_ACCESS_KEY=$bamboo_AWS_SECRET_ACCESS_KEY" \
         -e "CLOUDFRONT_BUCKET_NAME=$bamboo_CLOUDFRONT_BUCKET_NAME" \
         -e "CMR_ROOT_URL=$bamboo_CMR_ROOT_URL" \
+        -e "GRAPHDB_HOST=$bamboo_GRAPHDB_HOST" \
+        -e "GRAPHDB_PORT=$bamboo_GRAPHDB_PORT" \
         -e "DRAFT_MMT_ROOT_URL=$bamboo_DRAFT_MMT_ROOT_URL" \
         -e "LAMBDA_TIMEOUT=$bamboo_LAMBDA_TIMEOUT" \
         -e "LOG_DESTINATION_ARN=$bamboo_LOG_DESTINATION_ARN" \

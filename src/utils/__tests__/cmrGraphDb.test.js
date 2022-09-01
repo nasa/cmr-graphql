@@ -9,7 +9,8 @@ describe('cmrGraphDb', () => {
   beforeEach(() => {
     process.env = { ...OLD_ENV }
 
-    process.env.cmrRootUrl = 'http://example.com'
+    process.env.graphdbHost = 'http://example.com'
+    process.env.graphdbPort = '8182'
   })
 
   afterEach(() => {
@@ -24,7 +25,7 @@ describe('cmrGraphDb', () => {
         'CMR-Request-Id': 'abcd-1234-efgh-5678'
       }
     })
-      .post(/graphdb/)
+      .post(() => true)
       .reply(200, {
         mock: 'result'
       })
@@ -57,7 +58,7 @@ describe('cmrGraphDb', () => {
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         }
       })
-        .post(/graphdb/)
+        .post(() => true)
         .reply(500, {
           errors: ['HTTP Error']
         })
