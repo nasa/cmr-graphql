@@ -68,7 +68,6 @@
     "jsonwebtoken": "^8.5.1",
     "jwks-rsa": "^2.1.4",
     "lodash": "^4.17.21",
-    "mock-jwks": "^1.0.3",
     "pascalcase-keys": "^1.0.1",
     "qs": "^6.10.3",
     "serverless": "^3.18.2",

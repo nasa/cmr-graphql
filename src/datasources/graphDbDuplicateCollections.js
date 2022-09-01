@@ -25,12 +25,13 @@ export default async (
 
   // If doi or shorName don't exist, return 0 duplicateCollections
   if (!doiDescription || !shortName) {
-    console.log('No doi or shortName was supplied exiting')
+    console.log('Collection was missing a doi or a shortName')
     return {
       count: 0,
       items: []
     }
   }
+
   const userGroups = await getUserPermittedGroups(headers, edlUsername)
 
   // Search for collections with a different concept-id but, the same shortname and doi
@@ -40,6 +41,7 @@ export default async (
     .V()
     .not(
       __.has('collection', 'id', '${conceptId}')
+      .has('collection', 'permittedGroups', within(${userGroups}))
     )
     .has('collection', 'shortName', '${shortName}')
     .has('collection', 'doi', '${doiDescription}')

@@ -50,6 +50,7 @@ export default {
 
           const { value: argumentValue } = value
 
+          // TODO: This will only work for string values, it will need to be updated if we need to support arrays
           if (passthroughParams.includes(argumentName)) {
             granuleParams[argumentName] = argumentValue
           }
@@ -67,6 +68,7 @@ export default {
     },
     relatedCollections: async (source, args, { dataSources, headers, edlUsername }, info) => {
       const { conceptId } = source
+
       return dataSources.graphDbSource(
         conceptId,
         args,

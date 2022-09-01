@@ -44,7 +44,6 @@ describe('graphDb', () => {
 
   afterEach(() => {
     process.env = OLD_ENV
-    // should there be something here to clean this up
   })
 
   describe('relatedCollections with parameters', () => {
@@ -1024,12 +1023,9 @@ describe('graphDb', () => {
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
         .post(/graphdb/, (body) => {
-          console.log('The body of the graphdb request', body)
           const { gremlin: gremlinQuery } = body
-          console.log('The germlin query itself', gremlinQuery)
           const correctGremlin = gremlinQuery.includes('within(\'groupid1\',\'groupid2\',\'registered\',\'guest\')')
           if (correctGremlin) {
-            console.log('Correct group filtering was applied to search query')
             return true
           }
           return false
@@ -1078,13 +1074,11 @@ describe('graphDb', () => {
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
         .post(/graphdb/, (body) => {
-          console.log('The body of the graphdb request', body)
           const { gremlin: gremlinQuery } = body
-          console.log('The germlin query itself', gremlinQuery)
-          // All clients have at least guest access
+
           const correctGremlin = gremlinQuery.includes('within(\'registered\',\'guest\')')
+
           if (correctGremlin) {
-            console.log('We have the guest group access only')
             return true
           }
           return false
