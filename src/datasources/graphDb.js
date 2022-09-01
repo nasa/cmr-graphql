@@ -103,14 +103,14 @@ export default async (
     // Default to returning all values for those relationship labels that were requested
     filters = `
       .hasLabel('${includedLabels.join("','")}')
-     `
+    `
   }
   // Retrieve the user groups from EDL to filter the query
   const userGroups = await getUserPermittedGroups(headers, edlUsername)
 
   const query = JSON.stringify({
     gremlin: `
-    g 
+    g
     .V()
     .has('collection', 'id', '${conceptId}')
     .has('permittedGroups', within(${userGroups}))
@@ -181,7 +181,7 @@ export default async (
       relatedCollections: relatedCollectionsBulkSet,
       totalRelatedCollections: totalRelatedCollectionsBulkSet
     } = fromPairs(chunk(dataValueMap, 2))
-    console.log(relatedCollectionsBulkSet)
+
     // Parse the count object
     const { '@value': totalRelatedCollectionsMap } = totalRelatedCollectionsBulkSet;
 
@@ -275,7 +275,7 @@ export default async (
   }
 
   // Useful for debugging!
-  // console.log('graphDb.js response the return object', JSON.stringify(returnObject, null, 2))
+  // console.log('graphDb.js response', JSON.stringify(returnObject, null, 2))
 
   return returnObject
 }

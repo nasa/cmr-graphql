@@ -77,7 +77,7 @@ describe('graphDb', () => {
       expect(response).toEqual(duplicateCollectionsRelatedUrlTypeResponseMocks)
     })
 
-    test('returns 0 collections when doi does not exist', async () => {
+    test('returns 0 collections when doi doesn\'t exist', async () => {
       const response = await graphDbDuplicateCollectionsDatasource(
         {
           conceptId: 'C1200383041-CMR_ONLY',
@@ -102,10 +102,8 @@ describe('graphDb', () => {
       })
       .post(/graphdb/, (body) => {
         const { gremlin: gremlinQuery } = body
-        console.log(gremlinQuery)
         const correctGremlin = gremlinQuery.includes('within(\'groupid1\',\'groupid2\',\'registered\',\'guest\')')
         if (correctGremlin) {
-          console.log('We have the groups where we want them')
           return true
         }
         return false

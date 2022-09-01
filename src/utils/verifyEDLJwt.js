@@ -1,5 +1,5 @@
-const jwksClient = require('jwks-rsa')
-const jwt = require('jsonwebtoken')
+import jwt from 'jsonwebtoken'
+import jwksClient from 'jwks-rsa'
 
 /**
  * Verify and decode a JWT token
@@ -12,13 +12,14 @@ const jwt = require('jsonwebtoken')
 export const verifyEDLJwt = async (header) => {
   // Edl token is in the form of Bearer <Token> retrieve <token>
   const kid = process.env.edlKeyId
+
   const bearerHeader = header.split(' ')
   const [, token] = bearerHeader
 
   // Retrieve all of the keysValue pairs from the JWKS env var return jwksClient obj
   const client = jwksClient({
     getKeysInterceptor: () => {
-      const rsaEnv = JSON.parse(process.env.rsaKey)
+      const rsaEnv = JSON.parse(process.env.edlJwk)
       return rsaEnv.keys
     }
   })
@@ -29,14 +30,20 @@ export const verifyEDLJwt = async (header) => {
   // Decrypt the 'n' key in the JWK to get the public key used for verification of JWT token
   const pubKey = signKey.getPublicKey()
 
-  const decodedToken = jwt.verify(token, pubKey, { algorithms: ['RS256'] }, (err, decoded) => {
-    if (err) {
-      console.log('Error Decoding JWT Token, Invalid token')
-      return {}
-    }
+  let decodedToken = {}
+
+  try {
+    decodedToken = jwt.verify(token, pubKey, { algorithms: ['RS256'] })
     console.log('JWT Token validated successfully')
-    return decoded
-  })
+  } catch (err) {
+    if (err.name === 'TokenExpiredError') {
+      console.log('JWT Token Expired, Invalid token')
+    } else if (err.name === 'JsonWebTokenError') {
+      console.log('Error Decoding JWT Token, Invalid token')
+    } else {
+      console.log('Unknown error')
+    }
+  }
 
   // Destructure uid from the decoded token
   const { uid: userId = '' } = decodedToken
