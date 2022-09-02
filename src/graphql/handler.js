@@ -35,7 +35,7 @@ const server = new ApolloServer({
   // Initial context state, will be available in resolvers
   context: async ({ event }) => {
     const { headers } = event
-    let edlUsername
+    let edlUsername = ''
     const {
       authorization: bearerToken,
       'client-id': clientId,

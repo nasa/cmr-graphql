@@ -69,4 +69,15 @@ describe('Retrieve data from EDL on the user groups', () => {
     const testGroupIds = ["'guest'"]
     expect(returnObject).toEqual(testGroupIds)
   })
+
+  test('If the response has an issue and returns null the client should still have guest privillages ', async () => {
+    nock(/example/)
+      .get(/user_groups/)
+      .reply(400, null)
+    const returnObject = await getUserPermittedGroups('headers', '')
+
+    // Only guest group is added
+    const testGroupIds = ["'guest'"]
+    expect(returnObject).toEqual(testGroupIds)
+  })
 })

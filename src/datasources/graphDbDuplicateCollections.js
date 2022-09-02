@@ -25,7 +25,6 @@ export default async (
 
   // If doi or shorName don't exist, return 0 duplicateCollections
   if (!doiDescription || !shortName) {
-    console.log('Collection was missing a doi or a shortName')
     return {
       count: 0,
       items: []

@@ -19,8 +19,8 @@ export const verifyEDLJwt = async (header) => {
   // Retrieve all of the keysValue pairs from the JWKS env var return jwksClient obj
   const client = jwksClient({
     getKeysInterceptor: () => {
-      const rsaEnv = JSON.parse(process.env.edlJwk)
-      return rsaEnv.keys
+      const edlJwk = JSON.parse(process.env.edlJwk)
+      return edlJwk.keys
     }
   })
 
@@ -34,14 +34,13 @@ export const verifyEDLJwt = async (header) => {
 
   try {
     decodedToken = jwt.verify(token, pubKey, { algorithms: ['RS256'] })
-    console.log('JWT Token validated successfully')
   } catch (err) {
     if (err.name === 'TokenExpiredError') {
-      console.log('JWT Token Expired, Invalid token')
+      console.log('JWT Token Expired, Invalid token', JSON.stringify(err))
     } else if (err.name === 'JsonWebTokenError') {
-      console.log('Error Decoding JWT Token, Invalid token')
+      console.log('Error Decoding JWT Token, Invalid token', JSON.stringify(err))
     } else {
-      console.log('Unknown error')
+      console.log('Unknown error', JSON.stringify(err))
     }
   }
 
