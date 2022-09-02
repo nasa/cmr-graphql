@@ -54,7 +54,7 @@ describe('Collection', () => {
     process.env.cmrRootUrl = 'http://example.com'
     process.env.graphdbHost = 'http://example.com'
     process.env.graphdbPort = '8182'
-    process.env.graphdbPath = ' '
+    process.env.graphdbPath = ''
   })
 
   afterEach(() => {

@@ -11,7 +11,7 @@ describe('cmrGraphDb', () => {
 
     process.env.graphdbHost = 'http://example.com'
     process.env.graphdbPort = '8182'
-    process.env.graphdbPath = ' '
+    process.env.graphdbPath = ''
   })
 
   afterEach(() => {
@@ -20,7 +20,7 @@ describe('cmrGraphDb', () => {
 
   describe('when a graphdbPath is not used', () => {
     beforeEach(() => {
-      process.env.graphdbPath = ' '
+      process.env.graphdbPath = ''
     })
 
     test('queries cmr graphdb', async () => {
