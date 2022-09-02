@@ -17,6 +17,7 @@ describe('graphDb', () => {
 
     process.env.graphdbHost = 'http://example.com'
     process.env.graphdbPort = '8182'
+    process.env.graphdbPath = ' '
   })
 
   afterEach(() => {
