@@ -41,6 +41,9 @@ describe('graphDb', () => {
     process.env.graphdbHost = 'http://example.com'
     process.env.graphdbPort = '8182'
     process.env.graphdbPath = ''
+
+    process.env.ursRootUrl = 'http://example.com'
+    process.env.edlClientId = 'adfadsfagaehrgaergaergareg'
   })
 
   afterEach(() => {
