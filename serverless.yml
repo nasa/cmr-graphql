@@ -12,6 +12,7 @@ provider:
     cmrRootUrl: ${self:custom.variables.cmrRootUrl}
     graphdbHost: ${self:custom.variables.graphdbHost}
     graphdbPort: ${self:custom.variables.graphdbPort}
+    graphdbPath: ${self:custom.variables.graphdbPath}
     mmtRootUrl: ${self:custom.variables.mmtRootUrl}
     draftMmtRootUrl: ${self:custom.variables.draftMmtRootUrl}
     sslCertFile: ${self:custom.variables.sslCertFile}
@@ -150,6 +151,7 @@ custom:
     cmrRootUrl: ${env:CMR_ROOT_URL, 'https://cmr.earthdata.nasa.gov'}
     graphdbHost: ${env:GRAPHDB_HOST, 'http://localhost'}
     graphdbPort: ${env:GRAPHDB_PORT, '8182'}
+    graphdbPath: ${env:GRAPHDB_PATH, 'gremlin'}
     mmtRootUrl: ${env:MMT_ROOT_URL, 'https://mmt.earthdata.nasa.gov'}
     draftMmtRootUrl: ${env:DRAFT_MMT_ROOT_URL, 'https://draftmmt.earthdata.nasa.gov'}
     sslCertFile: ${env:SSL_CERT_FILE, 'certificates/fcpca_combined.pem'}
