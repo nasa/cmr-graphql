@@ -15,15 +15,11 @@ describe('graphDb', () => {
 
     process.env = { ...OLD_ENV }
 
-    process.env.cmrRootUrl = 'http://example.com'
-    process.env.ursRootUrl = 'http://example.com'
-    process.env.edlClientId = 'adfadsfagaehrgaergaergareg'
-    process.env.graphdbHost = 'http://example.com'
+    process.env.ursRootUrl = 'http://example-urs.com'
+    process.env.edlClientId = 'edl-client-id'
+    process.env.graphdbHost = 'http://example-graphdb.com'
     process.env.graphdbPort = '8182'
     process.env.graphdbPath = ''
-
-    process.env.ursRootUrl = 'http://example.com'
-    process.env.edlClientId = 'adfadsfagaehrgaergaergareg'
   })
 
   afterEach(() => {
@@ -32,15 +28,12 @@ describe('graphDb', () => {
 
   describe('duplicate collections', () => {
     test('returns the parsed graphDb response', async () => {
-      nock(/example/)
-        .defaultReplyHeaders({
-          'CMR-Request-Id': 'abcd-1234-efgh-5678'
-        })
+      nock(/example-graphdb/)
         .post(() => true)
         .reply(200, duplicatedCollectionsGraphdbResponseMocks)
 
       // Mock the EDL call to retrieve the client's permitted groups
-      nock(/example/)
+      nock(/example-urs/)
         .get(/groups_for_user/)
         .reply(200, {
           user_groups: [
@@ -98,11 +91,8 @@ describe('graphDb', () => {
     })
   })
 
-  test('Test that the returned groups as what they are supposed to be', async () => {
-    nock(/example/)
-      .defaultReplyHeaders({
-        'CMR-Request-Id': 'abcd-1234-efgh-5678'
-      })
+  test('Test that the returned groups are what they are supposed to be', async () => {
+    nock(/example-graphdb/)
       .post(() => true, (body) => {
         const { gremlin: gremlinQuery } = body
         const correctGremlin = gremlinQuery.includes('within(\'groupid1\',\'groupid2\',\'registered\',\'guest\')')
@@ -114,7 +104,7 @@ describe('graphDb', () => {
       .reply(200, duplicatedCollectionsGraphdbResponseMocks)
 
     // Mock the EDL call to retrieve the client's permitted groups
-    nock(/example/)
+    nock(/example-urs/)
       .get(/groups_for_user/)
       .reply(200, {
         user_groups: [
@@ -152,29 +142,5 @@ describe('graphDb', () => {
     )
 
     expect(response).toEqual(duplicateCollectionsRelatedUrlTypeResponseMocks)
-  })
-
-  test('catches errors received from queryCmrTools', async () => {
-    nock(/example/)
-      .post(/tools/)
-      .reply(500, {
-        errors: ['HTTP Error']
-      }, {
-        'cmr-request-id': 'abcd-1234-efgh-5678'
-      })
-
-    await expect(
-      graphDbDuplicateCollectionsDatasource(
-        {
-          conceptId: 'C1200383041-CMR_ONLY',
-          shortName: 'mock shortname',
-          doi: {
-            doi: 'mock doi'
-          }
-        },
-        { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
-        'someEdlUsername'
-      )
-    ).rejects.toThrow(Error)
   })
 })

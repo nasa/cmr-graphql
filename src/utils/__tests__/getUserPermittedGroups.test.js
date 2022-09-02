@@ -59,6 +59,7 @@ describe('Retrieve data from EDL on the user groups', () => {
     const testGroupIds = ["'registered'", "'guest'"]
     expect(returnObject).toEqual(testGroupIds)
   })
+
   test('If the response has an issue and returns null the client should still have guest privillages ', async () => {
     nock(/example/)
       .get(/user_groups/)

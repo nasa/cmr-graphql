@@ -23,6 +23,7 @@ import relatedCollectionsRelatedUrlTypeResponseMocks from './__mocks__/relatedCo
 import relatedCollectionsRelationshipTypeGraphdbResponseMocks from './__mocks__/relatedCollections.relationshipType.graphdbResponse.mocks'
 import relatedCollectionsRelationshipTypeResponseMocks from './__mocks__/relatedCollections.relationshipType.response.mocks'
 import relatedCollectionsResponseEmptyMocks from './__mocks__/relatedCollections.response.empty.mocks'
+import * as getUserPermittedGroups from '../../utils/getUserPermittedGroups'
 
 let parsedInfo
 
@@ -35,15 +36,11 @@ describe('graphDb', () => {
     jest.restoreAllMocks()
 
     process.env = { ...OLD_ENV }
-    process.env.cmrRootUrl = 'http://example.com'
-    process.env.ursRootUrl = 'http://example.com'
-    process.env.edlClientId = 'adfadsfagaehrgaergaergareg'
-    process.env.graphdbHost = 'http://example.com'
+    process.env.ursRootUrl = 'http://example-urs.com'
+    process.env.edlClientId = 'edl-client-id'
+    process.env.graphdbHost = 'http://example-graphdb.com'
     process.env.graphdbPort = '8182'
     process.env.graphdbPath = ''
-
-    process.env.ursRootUrl = 'http://example.com'
-    process.env.edlClientId = 'adfadsfagaehrgaergaergareg'
   })
 
   afterEach(() => {
@@ -148,10 +145,10 @@ describe('graphDb', () => {
 
     describe('When the relatedUrlType parameter is used', () => {
       test('returns the parsed graphDb response', async () => {
-        nock(/example/)
-          .defaultReplyHeaders({
-            'CMR-Request-Id': 'abcd-1234-efgh-5678'
-          })
+        const getUserGroups = jest.spyOn(getUserPermittedGroups, 'getUserPermittedGroups')
+        getUserGroups.mockImplementationOnce(() => (''))
+
+        nock(/example-graphdb/)
           .post(
             () => true,
             /\.or\(.+has\('relatedUrl', 'type', within\('VIEW RELATED INFORMATION'\)\),.+hasLabel\('project','platformInstrument'\)/
@@ -175,10 +172,10 @@ describe('graphDb', () => {
 
     describe('When the relatedUrlSubtype parameter is used', () => {
       test('returns the parsed graphDb response', async () => {
-        nock(/example/)
-          .defaultReplyHeaders({
-            'CMR-Request-Id': 'abcd-1234-efgh-5678'
-          })
+        const getUserGroups = jest.spyOn(getUserPermittedGroups, 'getUserPermittedGroups')
+        getUserGroups.mockImplementationOnce(() => (''))
+
+        nock(/example-graphdb/)
           .post(
             () => true,
             /\.or\(.+has\('relatedUrl', 'subtype', within\(\\"USER'S GUIDE\\"\)\),.+hasLabel\('project','platformInstrument'\)/
@@ -202,10 +199,10 @@ describe('graphDb', () => {
 
     describe('When the relatedUrlType and relatedUrlSubtype parameters are used', () => {
       test('returns the parsed graphDb response', async () => {
-        nock(/example/)
-          .defaultReplyHeaders({
-            'CMR-Request-Id': 'abcd-1234-efgh-5678'
-          })
+        const getUserGroups = jest.spyOn(getUserPermittedGroups, 'getUserPermittedGroups')
+        getUserGroups.mockImplementationOnce(() => (''))
+
+        nock(/example-graphdb/)
           .post(
             () => true,
             /\.or\(.+and\(.+has\('relatedUrl', 'type', within\('VIEW RELATED INFORMATION'\)\),.+has\('relatedUrl', 'subtype', within\(\\"USER'S GUIDE\\"\)\).+\).+hasLabel\('project','platformInstrument'\)/
@@ -295,10 +292,10 @@ describe('graphDb', () => {
       })
 
       test('returns a result with only project types', async () => {
-        nock(/example/)
-          .defaultReplyHeaders({
-            'CMR-Request-Id': 'abcd-1234-efgh-5678'
-          })
+        const getUserGroups = jest.spyOn(getUserPermittedGroups, 'getUserPermittedGroups')
+        getUserGroups.mockImplementationOnce(() => (''))
+
+        nock(/example-graphdb/)
           .post(() => true, /\.hasLabel\('project'\)/)
           .reply(200, relatedCollectionsGraphDbProjectGraphdbResponseMocks)
 
@@ -387,10 +384,10 @@ describe('graphDb', () => {
       })
 
       test('returns a result with only platformInstrument types', async () => {
-        nock(/example/)
-          .defaultReplyHeaders({
-            'CMR-Request-Id': 'abcd-1234-efgh-5678'
-          })
+        const getUserGroups = jest.spyOn(getUserPermittedGroups, 'getUserPermittedGroups')
+        getUserGroups.mockImplementationOnce(() => (''))
+
+        nock(/example-graphdb/)
           .post(() => true, /\.hasLabel\('platformInstrument'\)/)
           .reply(200, relatedCollectionsGraphDbPlatformInstrumentGraphdbResponseMocks)
 
@@ -491,10 +488,10 @@ describe('graphDb', () => {
       })
 
       test('returns a result with only relatedUrl types', async () => {
-        nock(/example/)
-          .defaultReplyHeaders({
-            'CMR-Request-Id': 'abcd-1234-efgh-5678'
-          })
+        const getUserGroups = jest.spyOn(getUserPermittedGroups, 'getUserPermittedGroups')
+        getUserGroups.mockImplementationOnce(() => (''))
+
+        nock(/example-graphdb/)
           .post(() => true, /\.hasLabel\('relatedUrl'\)/)
           .reply(200, relatedCollectionsGraphDbRelatedUrlGraphdbResponseMocks)
 
@@ -598,10 +595,10 @@ describe('graphDb', () => {
       })
 
       test('returns a result with only relatedUrl types', async () => {
-        nock(/example/)
-          .defaultReplyHeaders({
-            'CMR-Request-Id': 'abcd-1234-efgh-5678'
-          })
+        const getUserGroups = jest.spyOn(getUserPermittedGroups, 'getUserPermittedGroups')
+        getUserGroups.mockImplementationOnce(() => (''))
+
+        nock(/example-graphdb/)
           .post(
             () => true,
             /\.has\('relatedUrl', 'type', within\('VIEW RELATED INFORMATION'\)\)/
@@ -717,10 +714,10 @@ describe('graphDb', () => {
       })
 
       test('returns a result with only relatedUrl and project types', async () => {
-        nock(/example/)
-          .defaultReplyHeaders({
-            'CMR-Request-Id': 'abcd-1234-efgh-5678'
-          })
+        const getUserGroups = jest.spyOn(getUserPermittedGroups, 'getUserPermittedGroups')
+        getUserGroups.mockImplementationOnce(() => (''))
+
+        nock(/example-graphdb/)
           .post(
             () => true,
             /\.or\(.+has\('relatedUrl', 'type', within\('VIEW RELATED INFORMATION'\)\),.+hasLabel\('project'\)/
@@ -835,10 +832,10 @@ describe('graphDb', () => {
       })
 
       test('returns a result with only all types', async () => {
-        nock(/example/)
-          .defaultReplyHeaders({
-            'CMR-Request-Id': 'abcd-1234-efgh-5678'
-          })
+        const getUserGroups = jest.spyOn(getUserPermittedGroups, 'getUserPermittedGroups')
+        getUserGroups.mockImplementationOnce(() => (''))
+
+        nock(/example-graphdb/)
           .post(
             () => true,
             /\.or\(.+has\('relatedUrl', 'type', within\('VIEW RELATED INFORMATION'\)\),.+hasLabel\('project','platformInstrument'\)/
@@ -924,10 +921,10 @@ describe('graphDb', () => {
       })
 
       test('returns a result with only all relationship types', async () => {
-        nock(/example/)
-          .defaultReplyHeaders({
-            'CMR-Request-Id': 'abcd-1234-efgh-5678'
-          })
+        const getUserGroups = jest.spyOn(getUserPermittedGroups, 'getUserPermittedGroups')
+        getUserGroups.mockImplementationOnce(() => (''))
+
+        nock(/example-graphdb/)
           .post(() => true, /\.hasLabel\('project','platformInstrument','relatedUrl'\)/)
           .reply(200, relatedCollectionsRelationshipTypeGraphdbResponseMocks)
 
@@ -989,10 +986,10 @@ describe('graphDb', () => {
     })
 
     test('returns a result with all relationship types', async () => {
-      nock(/example/)
-        .defaultReplyHeaders({
-          'CMR-Request-Id': 'abcd-1234-efgh-5678'
-        })
+      const getUserGroups = jest.spyOn(getUserPermittedGroups, 'getUserPermittedGroups')
+      getUserGroups.mockImplementationOnce(() => (''))
+
+      nock(/example-graphdb/)
         .post(() => true, /\.hasLabel\('project','platformInstrument','relatedUrl'\)/)
         .reply(200, relatedCollectionsNoRelationshipsGraphDbResponseMock)
 
@@ -1010,34 +1007,9 @@ describe('graphDb', () => {
     })
   })
 
-  test('catches errors received from queryCmrTools', async () => {
-    nock(/example/)
-      .post(/tools/)
-      .reply(500, {
-        errors: ['HTTP Error']
-      }, {
-        'cmr-request-id': 'abcd-1234-efgh-5678'
-      })
-
-    await expect(
-      graphDbDatasource(
-        'C1200400842-GHRC',
-        {
-          limit: 1
-        },
-        { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
-        parsedInfo,
-        ' edlUsername'
-      )
-    ).rejects.toThrow(Error)
-  })
-
   describe('Testing permitted groups on related collections', () => {
     test('Testing that permitted groups is in the post request', async () => {
-      nock(/example/)
-        .defaultReplyHeaders({
-          'CMR-Request-Id': 'abcd-1234-efgh-5678'
-        })
+      nock(/example-graphdb/)
         .post(() => true, (body) => {
           const { gremlin: gremlinQuery } = body
           const correctGremlin = gremlinQuery.includes('within(\'groupid1\',\'groupid2\',\'registered\',\'guest\')')
@@ -1047,7 +1019,7 @@ describe('graphDb', () => {
           return false
         })
         .reply(200, relatedCollectionsRelationshipTypeGraphdbResponseMocks)
-      nock(/example/)
+      nock(/example-urs/)
         .get(/groups_for_user/)
         .reply(200, {
           user_groups: [
@@ -1085,10 +1057,7 @@ describe('graphDb', () => {
     })
 
     test('Mocking the response for a client not being in any groups, and retrieving no related collections', async () => {
-      nock(/example/)
-        .defaultReplyHeaders({
-          'CMR-Request-Id': 'abcd-1234-efgh-5678'
-        })
+      nock(/example-graphdb/)
         .post(() => true, (body) => {
           const { gremlin: gremlinQuery } = body
 
@@ -1101,7 +1070,7 @@ describe('graphDb', () => {
         })
         .reply(200, relatedCollectionsResponseEmptyMocks)
 
-      nock(/example/)
+      nock(/example-urs/)
         .get(/groups_for_user/)
         .reply(200, {})
 

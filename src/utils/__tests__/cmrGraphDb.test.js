@@ -2,6 +2,7 @@ import nock from 'nock'
 
 import { cmrGraphDb } from '../cmrGraphDb'
 import { downcaseKeys } from '../downcaseKeys'
+import * as getUserPermittedGroups from '../getUserPermittedGroups'
 
 describe('cmrGraphDb', () => {
   const OLD_ENV = process.env
@@ -9,9 +10,11 @@ describe('cmrGraphDb', () => {
   beforeEach(() => {
     process.env = { ...OLD_ENV }
 
-    process.env.graphdbHost = 'http://example.com'
+    process.env.graphdbHost = 'http://example-graphdb.com'
     process.env.graphdbPort = '8182'
     process.env.graphdbPath = ''
+    const getUserGroups = jest.spyOn(getUserPermittedGroups, 'getUserPermittedGroups')
+    getUserGroups.mockImplementationOnce(() => (''))
   })
 
   afterEach(() => {
@@ -26,11 +29,7 @@ describe('cmrGraphDb', () => {
     test('queries cmr graphdb', async () => {
       const consoleMock = jest.spyOn(console, 'log').mockImplementation(() => jest.fn())
 
-      nock(/example/, {
-        reqheaders: {
-          'CMR-Request-Id': 'abcd-1234-efgh-5678'
-        }
-      })
+      nock(/example-graphdb/)
         .post(() => true)
         .reply(200, {
           mock: 'result'
@@ -66,12 +65,8 @@ describe('cmrGraphDb', () => {
     test('queries cmr graphdb', async () => {
       const consoleMock = jest.spyOn(console, 'log').mockImplementation(() => jest.fn())
 
-      nock(/example/, {
-        reqheaders: {
-          'CMR-Request-Id': 'abcd-1234-efgh-5678'
-        }
-      })
-        .post(/gremlin/)
+      nock(/example-graphdb/)
+        .post(() => true)
         .reply(200, {
           mock: 'result'
         })
@@ -100,7 +95,7 @@ describe('cmrGraphDb', () => {
 
   describe('when an error is returned', () => {
     test('throws an exception', async () => {
-      nock(/example/, {
+      nock(/example-graphdb/, {
         reqheaders: {
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         }

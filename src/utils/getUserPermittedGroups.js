@@ -21,7 +21,7 @@ export const getUserPermittedGroups = async (headers, edlUsername) => {
   ])
 
   let response = {}
-  if (edlUsername.length > 0) {
+  if (edlUsername) {
     try {
       response = await axios({
         headers: permittedHeaders,
