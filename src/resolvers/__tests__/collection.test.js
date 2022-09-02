@@ -22,7 +22,6 @@ import duplicateCollectionsGraphdbResponseMocks from './__mocks__/duplicateColle
 import duplicateCollectionsResponseMocks from './__mocks__/duplicateCollections.response.mocks'
 import relatedCollectionsGraphdbResponseMocks from './__mocks__/relatedCollections.graphdbResponse.mocks'
 import relatedCollectionsResponseMocks from './__mocks__/relatedCollections.response.mocks'
-import * as getUserPermittedGroups from '../../utils/getUserPermittedGroups'
 
 const server = new ApolloServer({
   typeDefs,
@@ -30,8 +29,7 @@ const server = new ApolloServer({
   context: () => ({
     headers: {
       'CMR-Request-Id': 'abcd-1234-efgh-5678'
-    },
-    edlUsername: 'edusername'
+    }
   }),
   dataSources: () => ({
     collectionSource,
@@ -58,8 +56,6 @@ describe('Collection', () => {
     process.env.graphdbPort = '8182'
     process.env.graphdbPath = ''
     process.env.ursRootUrl = 'http://example-urs.com'
-    const getUserGroups = jest.spyOn(getUserPermittedGroups, 'getUserPermittedGroups')
-    getUserGroups.mockImplementationOnce(() => (''))
   })
 
   afterEach(() => {

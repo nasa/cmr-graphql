@@ -5,8 +5,8 @@ import {
 } from 'lodash'
 
 import { cmrGraphDb } from '../utils/cmrGraphDb'
-import { mergeParams } from '../utils/mergeParams'
 import { getUserPermittedGroups } from '../utils/getUserPermittedGroups'
+import { mergeParams } from '../utils/mergeParams'
 
 /**
  * Queries CMR GraphDB for related collections.

@@ -1,6 +1,8 @@
 import jwt from 'jsonwebtoken'
 import jwksClient from 'jwks-rsa'
 
+import { parseError } from './parseError'
+
 /**
  * Verify and decode a JWT token
  * @param {String} header - The JWT token in the form "Bearer <TOKEN>"
@@ -8,10 +10,9 @@ import jwksClient from 'jwks-rsa'
  * @see https://urs.earthdata.nasa.gov/documentation/for_integrators/verify_edl_jwt_token
  * @see https://github.com/auth0/node-jwks-rsa
  */
-
 export const verifyEDLJwt = async (header) => {
   // Edl token is in the form of Bearer <Token> retrieve <token>
-  const kid = process.env.edlKeyId
+  const keyId = process.env.edlKeyId
 
   const bearerHeader = header.split(' ')
   const [, token] = bearerHeader
@@ -25,27 +26,23 @@ export const verifyEDLJwt = async (header) => {
   })
 
   // getSigningKey retrieves the signing key obj which can access the public key
-  const signKey = await client.getSigningKey(kid)
+  const signKey = await client.getSigningKey(keyId)
 
   // Decrypt the 'n' key in the JWK to get the public key used for verification of JWT token
   const pubKey = signKey.getPublicKey()
 
-  let decodedToken = {}
-
   try {
-    decodedToken = jwt.verify(token, pubKey, { algorithms: ['RS256'] })
-  } catch (err) {
-    if (err.name === 'TokenExpiredError') {
-      console.log('JWT Token Expired, Invalid token', JSON.stringify(err))
-    } else if (err.name === 'JsonWebTokenError') {
-      console.log('Error Decoding JWT Token, Invalid token', JSON.stringify(err))
-    } else {
-      console.log('Unknown error', JSON.stringify(err))
-    }
+    // Attempt to verify the token using the public key
+    const decodedToken = jwt.verify(token, pubKey, { algorithms: ['RS256'] })
+
+    // Destructure uid from the decoded token
+    const { uid } = decodedToken
+
+    // Return the value provided by the token
+    return uid
+  } catch (e) {
+    parseError(e, { reThrowError: true, provider: 'EDL' })
+
+    return false
   }
-
-  // Destructure uid from the decoded token
-  const { uid: userId = '' } = decodedToken
-
-  return userId
 }

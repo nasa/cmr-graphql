@@ -20,13 +20,11 @@ afterEach(() => {
 describe('Correct JWT token', () => {
   test('Verifies a correct jwt token', async () => {
     // Mock the output of the jwt.verification function to return a valid value
-    const verify = jest.spyOn(jwt, 'verify')
-    verify.mockImplementationOnce(() => ({ uid: 'someUserId' }))
+    const mockJwtVerify = jest.spyOn(jwt, 'verify')
+    mockJwtVerify.mockImplementationOnce(() => ({ uid: 'someUserId' }))
 
     // Run the function, verify that the uid matches the input
-    const token = 'someToken'
-    const passToken = `Bearer ${token}`
-    const returnObject = await verifyEDLJwt(passToken)
+    const returnObject = await verifyEDLJwt('Bearer asdf.qwer.hjkl')
 
     expect(returnObject).toEqual('someUserId')
   })
@@ -35,44 +33,46 @@ describe('Correct JWT token', () => {
 describe('Thowing an error', () => {
   test('Verifies an expired jwt token', async () => {
     // Mock the output of the jwt.verification function to return a valid value
-    const verify = jest.spyOn(jwt, 'verify')
-    verify.mockImplementationOnce(() => { throw new TokenExpiredError() })
+    const mockJwtVerify = jest.spyOn(jwt, 'verify')
+    mockJwtVerify.mockImplementationOnce(() => { throw new TokenExpiredError() })
+
     const consoleMock = jest.spyOn(console, 'log').mockImplementation(() => jest.fn())
 
     // Run the function, verify that the uid matches the input
-    const token = ''
-    const passToken = `Bearer ${token}`
-    const returnObject = await verifyEDLJwt(passToken)
+    await expect(
+      verifyEDLJwt('Bearer asdf.qwer.hjkl')
+    ).rejects.toThrow(Error)
 
-    expect(returnObject).toEqual('')
-    expect(consoleMock).toBeCalledWith('JWT Token Expired, Invalid token', '{"name":"TokenExpiredError"}')
+    expect(consoleMock).toBeCalledWith('TokenExpiredError')
   })
 
   test('Checks against a malformed or invalid bearer token', async () => {
     // Mock the output of the jwt.verification function to return a valid value
-    const verify = jest.spyOn(jwt, 'verify')
-    verify.mockImplementationOnce(() => { throw new JsonWebTokenError() })
+    const mockJwtVerify = jest.spyOn(jwt, 'verify')
+    mockJwtVerify.mockImplementationOnce(() => { throw new JsonWebTokenError() })
+
     const consoleMock = jest.spyOn(console, 'log').mockImplementation(() => jest.fn())
 
     // Run the function, verify that the uid matches the input
-    const token = ''
-    const passToken = `Bearer ${token}`
-    const returnObject = await verifyEDLJwt(passToken)
+    await expect(
+      verifyEDLJwt('Bearer asdf.qwer.hjkl')
+    ).rejects.toThrow(Error)
 
-    expect(returnObject).toEqual('')
-    expect(consoleMock).toBeCalledWith('Error Decoding JWT Token, Invalid token', '{"name":"JsonWebTokenError"}')
+    expect(consoleMock).toBeCalledWith('JsonWebTokenError')
   })
 
   test('checking against an unknown error jwt token', async () => {
     // Mock the output of the jwt.verification function to return a valid value
-    const verify = jest.spyOn(jwt, 'verify')
-    verify.mockImplementationOnce(() => { throw new Error() })
+    const mockJwtVerify = jest.spyOn(jwt, 'verify')
+    mockJwtVerify.mockImplementationOnce(() => { throw new Error('Unknown Error') })
+
+    const consoleMock = jest.spyOn(console, 'log').mockImplementation(() => jest.fn())
 
     // Run the function, verify that the uid matches the input
-    const token = ''
-    const passToken = `Bearer ${token}`
-    const returnObject = await verifyEDLJwt(passToken)
+    await expect(
+      verifyEDLJwt('Bearer asdf.qwer.hjkl')
+    ).rejects.toThrow(Error)
 
-    expect(returnObject).toEqual('')
+    expect(consoleMock).toBeCalledWith('Error: Unknown Error')
   })
 })

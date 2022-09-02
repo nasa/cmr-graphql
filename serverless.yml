@@ -152,13 +152,13 @@ custom:
 
   variables:
     # Default values for environment variables used to set environment variables
-    cmrRootUrl: ${env:CMR_ROOT_URL, 'https://cmr.earthdata.nasa.gov'}
+    cmrRootUrl: ${env:CMR_ROOT_URL, 'https://cmr.sit.earthdata.nasa.gov'}
     graphdbHost: ${env:GRAPHDB_HOST, 'http://localhost'}
     graphdbPort: ${env:GRAPHDB_PORT, '8182'}
     graphdbPath: ${env:GRAPHDB_PATH, 'gremlin'}
-    mmtRootUrl: ${env:MMT_ROOT_URL, 'https://mmt.earthdata.nasa.gov'}
-    draftMmtRootUrl: ${env:DRAFT_MMT_ROOT_URL, 'https://draftmmt.earthdata.nasa.gov'}
-    ursRootUrl: ${env:URS_ROOT_URL, 'https://urs.earthdata.nasa.gov'}
+    mmtRootUrl: ${env:MMT_ROOT_URL, 'https://mmt.sit.earthdata.nasa.gov'}
+    draftMmtRootUrl: ${env:DRAFT_MMT_ROOT_URL, 'https://draftmmt.sit.earthdata.nasa.gov'}
+    ursRootUrl: ${env:URS_ROOT_URL, 'https://sit.urs.earthdata.nasa.gov'}
     edlClientId: ${env:EDL_CLIENT_ID, ''}
     edlKeyId: ${env:EDL_KEY_ID, ''}
     edlJwk: ${env:EDL_JWK, ''}

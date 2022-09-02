@@ -23,7 +23,6 @@ import toolSource from '../datasources/tool'
 import variableSource from '../datasources/variable'
 
 import { downcaseKeys } from '../utils/downcaseKeys'
-
 import { verifyEDLJwt } from '../utils/verifyEDLJwt'
 
 // Creating the server
@@ -36,14 +35,16 @@ const server = new ApolloServer({
   context: async ({ event }) => {
     const { headers } = event
 
-    const context = {}
-
     const {
       authorization: bearerToken,
       'client-id': clientId,
       'x-request-id': requestId
     } = downcaseKeys(headers)
 
+    // Context object that we'll provide to each resolver
+    const context = {}
+
+    // Default headers to be sent with every external request
     const requestHeaders = {
       'CMR-Request-Id': requestId || uuidv4()
     }
@@ -54,9 +55,14 @@ const server = new ApolloServer({
       // regex to match JWT token structures
       const regex = /^Bearer [A-Za-z0-9-_]*\.[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*/
 
-      // Match the expected JWT token verify the token is from EDL and reteive the earth data login username
+      // If this is a JWT token verify that the token is from EDL and retrieve the earthdata login username
       if (regex.test(bearerToken)) {
-        context.edlUsername = await verifyEDLJwt(bearerToken)
+        const edlUsername = await verifyEDLJwt(bearerToken)
+
+        // Check to ensure edlUsername has a value, and doesn't evaluate to false (indicating a failed token validation)
+        if (edlUsername) {
+          context.edlUsername = edlUsername
+        }
       }
     }
 

@@ -1,4 +1,5 @@
 import axios from 'axios'
+
 import { pickIgnoringCase } from './pickIgnoringCase'
 /**
  * Make a request to EDL to retrieve the user groups that a client is apart of
@@ -15,8 +16,6 @@ export const getUserPermittedGroups = async (headers, edlUsername) => {
     ...headers
   }, [
     'Accept',
-    'Client-Id',
-    'CMR-Request-Id',
     'Authorization'
   ])
 
@@ -28,17 +27,18 @@ export const getUserPermittedGroups = async (headers, edlUsername) => {
         method: 'GET',
         url: `${process.env.ursRootUrl}/api/user_groups/groups_for_user/${edlUsername}?client_id=${process.env.edlClientId}`
       })
-      const { data } = response
 
+      const { data } = response
       const { user_groups: userGroups = [] } = data
 
       userGroups.forEach((userGroup) => {
-      // Gremlin requires that the entries be surrounded by strings to be interpreted by the graphDb server
+        // Gremlin requires that the entries be surrounded by strings to be interpreted by the graphDb server
         const formattedUserGroupId = `'${userGroup.group_id}'`
 
         permittedUserGroups.push(formattedUserGroupId)
       })
-      // If edl returns without problems client is granted registered access to collections as well
+
+      // If EDL returns without problems client is granted registered access to collections as well
       const registeredGroup = '\'registered\''
       permittedUserGroups.push(registeredGroup)
     } catch (error) {

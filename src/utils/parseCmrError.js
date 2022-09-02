@@ -32,7 +32,7 @@ export const parseCmrError = (error, reThrow = true) => {
       throw new AuthenticationError(firstMessage)
     }
 
-    // If not one of Apollo's predifined errors throw our own
+    // If not one of Apollo's predefined errors throw our own
     // https://www.apollographql.com/docs/apollo-server/data/errors/
     throw new ApolloError(firstMessage, 'CMR_ERROR')
   }
