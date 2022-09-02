@@ -35,8 +35,6 @@ describe('graphDb', () => {
     jest.restoreAllMocks()
 
     process.env = { ...OLD_ENV }
-
-
     process.env.cmrRootUrl = 'http://example.com'
     process.env.ursRootUrl = 'http://example.com'
     process.env.edlClientId = 'adfadsfagaehrgaergaergareg'
@@ -1037,7 +1035,7 @@ describe('graphDb', () => {
         .defaultReplyHeaders({
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/graphdb/, (body) => {
+        .post(() => true, (body) => {
           const { gremlin: gremlinQuery } = body
           const correctGremlin = gremlinQuery.includes('within(\'groupid1\',\'groupid2\',\'registered\',\'guest\')')
           if (correctGremlin) {
@@ -1088,7 +1086,7 @@ describe('graphDb', () => {
         .defaultReplyHeaders({
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/graphdb/, (body) => {
+        .post(() => true, (body) => {
           const { gremlin: gremlinQuery } = body
 
           const correctGremlin = gremlinQuery.includes('within(\'registered\',\'guest\')')

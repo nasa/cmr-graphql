@@ -100,7 +100,7 @@ describe('graphDb', () => {
       .defaultReplyHeaders({
         'CMR-Request-Id': 'abcd-1234-efgh-5678'
       })
-      .post(/graphdb/, (body) => {
+      .post(() => true, (body) => {
         const { gremlin: gremlinQuery } = body
         const correctGremlin = gremlinQuery.includes('within(\'groupid1\',\'groupid2\',\'registered\',\'guest\')')
         if (correctGremlin) {
