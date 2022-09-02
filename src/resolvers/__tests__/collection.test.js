@@ -29,7 +29,8 @@ const server = new ApolloServer({
   context: () => ({
     headers: {
       'CMR-Request-Id': 'abcd-1234-efgh-5678'
-    }
+    },
+    edlUsername: 'edusername'
   }),
   dataSources: () => ({
     collectionSource,

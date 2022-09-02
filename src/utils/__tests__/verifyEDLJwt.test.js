@@ -22,13 +22,11 @@ describe('Correct JWT token', () => {
     // Mock the output of the jwt.verification function to return a valid value
     const verify = jest.spyOn(jwt, 'verify')
     verify.mockImplementationOnce(() => ({ uid: 'someUserId' }))
-    const consoleMock = jest.spyOn(console, 'log').mockImplementation(() => jest.fn())
 
     // Run the function, verify that the uid matches the input
     const token = 'someToken'
     const passToken = `Bearer ${token}`
     const returnObject = await verifyEDLJwt(passToken)
-    expect(consoleMock).toBeCalledWith('JWT Token validated successfully')
 
     expect(returnObject).toEqual('someUserId')
   })
@@ -47,7 +45,7 @@ describe('Thowing an error', () => {
     const returnObject = await verifyEDLJwt(passToken)
 
     expect(returnObject).toEqual('')
-    expect(consoleMock).toBeCalledWith('JWT Token Expired, Invalid token')
+    expect(consoleMock).toBeCalledWith('JWT Token Expired, Invalid token', '{"name":"TokenExpiredError"}')
   })
 
   test('Checks against a malformed or invalid bearer token', async () => {
@@ -62,14 +60,13 @@ describe('Thowing an error', () => {
     const returnObject = await verifyEDLJwt(passToken)
 
     expect(returnObject).toEqual('')
-    expect(consoleMock).toBeCalledWith('Error Decoding JWT Token, Invalid token')
+    expect(consoleMock).toBeCalledWith('Error Decoding JWT Token, Invalid token', '{"name":"JsonWebTokenError"}')
   })
 
   test('checking against an unknown error jwt token', async () => {
     // Mock the output of the jwt.verification function to return a valid value
     const verify = jest.spyOn(jwt, 'verify')
     verify.mockImplementationOnce(() => { throw new Error() })
-    const consoleMock = jest.spyOn(console, 'log').mockImplementation(() => jest.fn())
 
     // Run the function, verify that the uid matches the input
     const token = ''
@@ -77,6 +74,5 @@ describe('Thowing an error', () => {
     const returnObject = await verifyEDLJwt(passToken)
 
     expect(returnObject).toEqual('')
-    expect(consoleMock).toBeCalledWith('Unknown error')
   })
 })

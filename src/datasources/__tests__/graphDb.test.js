@@ -161,7 +161,8 @@ describe('graphDb', () => {
             relatedUrlType: ['VIEW RELATED INFORMATION']
           },
           { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
-          parsedInfo
+          parsedInfo,
+          ' edlUsername'
         )
 
         expect(response).toEqual(relatedCollectionsRelatedUrlTypeResponseMocks)
@@ -187,7 +188,8 @@ describe('graphDb', () => {
             relatedUrlSubtype: ["USER'S GUIDE"]
           },
           { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
-          parsedInfo
+          parsedInfo,
+          ' edlUsername'
         )
 
         expect(response).toEqual(relatedCollectionsRelatedUrlSubtypeResponseMocks)
@@ -214,7 +216,8 @@ describe('graphDb', () => {
             relatedUrlSubtype: ["USER'S GUIDE"]
           },
           { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
-          parsedInfo
+          parsedInfo,
+          ' edlUsername'
         )
 
         expect(response).toEqual(relatedCollectionsRelatedUrlTypeAndSubtypeResponseMocks)
@@ -301,7 +304,8 @@ describe('graphDb', () => {
             limit: 1
           },
           { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
-          parsedInfo
+          parsedInfo,
+          ' edlUsername'
         )
 
         expect(response).toEqual(relatedCollectionsGraphDbProjectResponseMocks)
@@ -392,7 +396,8 @@ describe('graphDb', () => {
             limit: 1
           },
           { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
-          parsedInfo
+          parsedInfo,
+          ' edlUsername'
         )
 
         expect(response).toEqual(relatedCollectionsGraphDbPlatformInstrumentResponseMocks)
@@ -495,7 +500,8 @@ describe('graphDb', () => {
             limit: 1
           },
           { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
-          parsedInfo
+          parsedInfo,
+          ' edlUsername'
         )
 
         expect(response).toEqual(relatedCollectionsGraphDbRelatedUrlResponseMocks)
@@ -605,7 +611,8 @@ describe('graphDb', () => {
             relatedUrlType: ['VIEW RELATED INFORMATION']
           },
           { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
-          parsedInfo
+          parsedInfo,
+          ' edlUsername'
         )
 
         expect(response).toEqual(relatedCollectionsGraphDbRelatedUrlResponseMocks)
@@ -723,7 +730,8 @@ describe('graphDb', () => {
             relatedUrlType: ['VIEW RELATED INFORMATION']
           },
           { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
-          parsedInfo
+          parsedInfo,
+          ' edlUsername'
         )
 
         expect(response).toEqual(relatedCollectionsGraphDbRelatedUrlProjectResponseMocks)
@@ -840,7 +848,8 @@ describe('graphDb', () => {
             relatedUrlType: ['VIEW RELATED INFORMATION']
           },
           { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
-          parsedInfo
+          parsedInfo,
+          ' edlUsername'
         )
 
         expect(response).toEqual(relatedCollectionsGraphDbRelatedUrlRelationshipTypeResponseMocks)
@@ -924,7 +933,8 @@ describe('graphDb', () => {
             limit: 1
           },
           { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
-          parsedInfo
+          parsedInfo,
+          ' edlUsername'
         )
 
         expect(response).toEqual(relatedCollectionsRelationshipTypeResponseMocks)
@@ -988,7 +998,8 @@ describe('graphDb', () => {
           limit: 1
         },
         { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
-        parsedInfo
+        parsedInfo,
+        ' edlUsername'
       )
 
       expect(response).toEqual(relatedCollectionsNoRelationshipsResponseMock)
@@ -1011,7 +1022,8 @@ describe('graphDb', () => {
           limit: 1
         },
         { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
-        parsedInfo
+        parsedInfo,
+        ' edlUsername'
       )
     ).rejects.toThrow(Error)
   })

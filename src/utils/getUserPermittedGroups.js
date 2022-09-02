@@ -21,27 +21,29 @@ export const getUserPermittedGroups = async (headers, edlUsername) => {
   ])
 
   let response = {}
-  try {
-    response = await axios({
-      headers: permittedHeaders,
-      method: 'GET',
-      url: `${process.env.ursRootUrl}/api/user_groups/groups_for_user/${edlUsername}?client_id=${process.env.edlClientId}`
-    })
-    const { data } = response
+  if (edlUsername.length > 0) {
+    try {
+      response = await axios({
+        headers: permittedHeaders,
+        method: 'GET',
+        url: `${process.env.ursRootUrl}/api/user_groups/groups_for_user/${edlUsername}?client_id=${process.env.edlClientId}`
+      })
+      const { data } = response
 
-    const { user_groups: userGroups = [] } = data
+      const { user_groups: userGroups = [] } = data
 
-    userGroups.forEach((userGroup) => {
+      userGroups.forEach((userGroup) => {
       // Gremlin requires that the entries be surrounded by strings to be interpreted by the graphDb server
-      const formattedUserGroupId = `'${userGroup.group_id}'`
+        const formattedUserGroupId = `'${userGroup.group_id}'`
 
-      permittedUserGroups.push(formattedUserGroupId)
-    })
-    // If edl returns without problems client is granted registered access to collections as well
-    const registeredGroup = '\'registered\''
-    permittedUserGroups.push(registeredGroup)
-  } catch (error) {
-    console.log(`Could not complete request due to error: ${error}`)
+        permittedUserGroups.push(formattedUserGroupId)
+      })
+      // If edl returns without problems client is granted registered access to collections as well
+      const registeredGroup = '\'registered\''
+      permittedUserGroups.push(registeredGroup)
+    } catch (error) {
+      console.log(`Could not complete request due to error: ${error}`)
+    }
   }
 
   // All clients have access to the guest group; including those who are not validated by EDL
