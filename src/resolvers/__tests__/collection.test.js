@@ -53,6 +53,9 @@ describe('Collection', () => {
     process.env = { ...OLD_ENV }
 
     process.env.cmrRootUrl = 'http://example.com'
+    process.env.graphdbHost = 'http://example.com'
+    process.env.graphdbPort = '8182'
+    process.env.graphdbPath = ''
   })
 
   afterEach(() => {
@@ -1507,7 +1510,7 @@ describe('Collection', () => {
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post('/graphdb')
+          .post(() => true)
           .reply(200, relatedCollectionsGraphdbResponseMocks)
 
         const response = await server.executeOperation({
@@ -1581,7 +1584,7 @@ describe('Collection', () => {
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post('/graphdb')
+          .post(() => true)
           .reply(200, duplicateCollectionsGraphdbResponseMocks)
 
         const response = await server.executeOperation({

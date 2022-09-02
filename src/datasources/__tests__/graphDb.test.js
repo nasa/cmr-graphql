@@ -36,10 +36,13 @@ describe('graphDb', () => {
 
     process.env = { ...OLD_ENV }
 
-    process.env.cmrRootUrl = 'http://example.com'
 
+    process.env.cmrRootUrl = 'http://example.com'
     process.env.ursRootUrl = 'http://example.com'
     process.env.edlClientId = 'adfadsfagaehrgaergaergareg'
+    process.env.graphdbHost = 'http://example.com'
+    process.env.graphdbPort = '8182'
+    process.env.graphdbPath = ''
   })
 
   afterEach(() => {
@@ -149,7 +152,7 @@ describe('graphDb', () => {
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
           .post(
-            /graphdb/,
+            () => true,
             /\.or\(.+has\('relatedUrl', 'type', within\('VIEW RELATED INFORMATION'\)\),.+hasLabel\('project','platformInstrument'\)/
           )
           .reply(200, relatedCollectionsRelatedUrlTypeGraphdbResponseMocks)
@@ -176,7 +179,7 @@ describe('graphDb', () => {
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
           .post(
-            /graphdb/,
+            () => true,
             /\.or\(.+has\('relatedUrl', 'subtype', within\(\\"USER'S GUIDE\\"\)\),.+hasLabel\('project','platformInstrument'\)/
           )
           .reply(200, relatedCollectionsRelatedUrlSubtypeGraphdbResponseMocks)
@@ -203,7 +206,7 @@ describe('graphDb', () => {
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
           .post(
-            /graphdb/,
+            () => true,
             /\.or\(.+and\(.+has\('relatedUrl', 'type', within\('VIEW RELATED INFORMATION'\)\),.+has\('relatedUrl', 'subtype', within\(\\"USER'S GUIDE\\"\)\).+\).+hasLabel\('project','platformInstrument'\)/
           )
           .reply(200, relatedCollectionsRelatedUrlTypeAndSubtypeGraphdbResponseMocks)
@@ -295,7 +298,7 @@ describe('graphDb', () => {
           .defaultReplyHeaders({
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/graphdb/, /\.hasLabel\('project'\)/)
+          .post(() => true, /\.hasLabel\('project'\)/)
           .reply(200, relatedCollectionsGraphDbProjectGraphdbResponseMocks)
 
         const response = await graphDbDatasource(
@@ -387,7 +390,7 @@ describe('graphDb', () => {
           .defaultReplyHeaders({
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/graphdb/, /\.hasLabel\('platformInstrument'\)/)
+          .post(() => true, /\.hasLabel\('platformInstrument'\)/)
           .reply(200, relatedCollectionsGraphDbPlatformInstrumentGraphdbResponseMocks)
 
         const response = await graphDbDatasource(
@@ -491,7 +494,7 @@ describe('graphDb', () => {
           .defaultReplyHeaders({
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/graphdb/, /\.hasLabel\('relatedUrl'\)/)
+          .post(() => true, /\.hasLabel\('relatedUrl'\)/)
           .reply(200, relatedCollectionsGraphDbRelatedUrlGraphdbResponseMocks)
 
         const response = await graphDbDatasource(
@@ -599,7 +602,7 @@ describe('graphDb', () => {
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
           .post(
-            /graphdb/,
+            () => true,
             /\.has\('relatedUrl', 'type', within\('VIEW RELATED INFORMATION'\)\)/
           )
           .reply(200, relatedCollectionsGraphDbRelatedUrlGraphdbResponseMocks)
@@ -718,7 +721,7 @@ describe('graphDb', () => {
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
           .post(
-            /graphdb/,
+            () => true,
             /\.or\(.+has\('relatedUrl', 'type', within\('VIEW RELATED INFORMATION'\)\),.+hasLabel\('project'\)/
           )
           .reply(200, relatedCollectionsGraphDbRelatedUrlProjectGraphdbResponseMocks)
@@ -836,7 +839,7 @@ describe('graphDb', () => {
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
           .post(
-            /graphdb/,
+            () => true,
             /\.or\(.+has\('relatedUrl', 'type', within\('VIEW RELATED INFORMATION'\)\),.+hasLabel\('project','platformInstrument'\)/
           )
           .reply(200, relatedCollectionsGraphDbRelatedUrlRelationshipTypeGraphdbResponseMocks)
@@ -924,7 +927,7 @@ describe('graphDb', () => {
           .defaultReplyHeaders({
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/graphdb/, /\.hasLabel\('project','platformInstrument','relatedUrl'\)/)
+          .post(() => true, /\.hasLabel\('project','platformInstrument','relatedUrl'\)/)
           .reply(200, relatedCollectionsRelationshipTypeGraphdbResponseMocks)
 
         const response = await graphDbDatasource(
@@ -989,7 +992,7 @@ describe('graphDb', () => {
         .defaultReplyHeaders({
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/graphdb/, /\.hasLabel\('project','platformInstrument','relatedUrl'\)/)
+        .post(() => true, /\.hasLabel\('project','platformInstrument','relatedUrl'\)/)
         .reply(200, relatedCollectionsNoRelationshipsGraphDbResponseMock)
 
       const response = await graphDbDatasource(

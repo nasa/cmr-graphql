@@ -18,6 +18,9 @@ describe('graphDb', () => {
     process.env.cmrRootUrl = 'http://example.com'
     process.env.ursRootUrl = 'http://example.com'
     process.env.edlClientId = 'adfadsfagaehrgaergaergareg'
+    process.env.graphdbHost = 'http://example.com'
+    process.env.graphdbPort = '8182'
+    process.env.graphdbPath = ''
   })
 
   afterEach(() => {
@@ -30,7 +33,7 @@ describe('graphDb', () => {
         .defaultReplyHeaders({
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/graphdb/)
+        .post(() => true)
         .reply(200, duplicatedCollectionsGraphdbResponseMocks)
 
       // Mock the EDL call to retrieve the client's permitted groups
