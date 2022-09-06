@@ -40,6 +40,7 @@ describe('Retrieve data from EDL on the user groups', () => {
           }
         ]
       })
+
     const returnObject = await getUserPermittedGroups('headers', 'SomeUid')
 
     // This single quote inside of string is how graphDb parses http requests
@@ -53,6 +54,7 @@ describe('Retrieve data from EDL on the user groups', () => {
       .reply(200, {
         user_groups: []
       })
+
     const returnObject = await getUserPermittedGroups('headers', 'SomeUid')
 
     // This single quote inside of string is how graphDb parses http requests
@@ -64,6 +66,7 @@ describe('Retrieve data from EDL on the user groups', () => {
     nock(/example/)
       .get(/user_groups/)
       .reply(400, null)
+
     const returnObject = await getUserPermittedGroups('headers', 'SomeUid')
 
     // Only guest group is added
@@ -75,6 +78,7 @@ describe('Retrieve data from EDL on the user groups', () => {
     nock(/example/)
       .get(/user_groups/)
       .reply(400, null)
+
     const returnObject = await getUserPermittedGroups('headers', '')
 
     // Only guest group is added
