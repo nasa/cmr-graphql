@@ -14,24 +14,24 @@ export const verifyEDLJwt = async (header) => {
   // Edl token is in the form of Bearer <Token> retrieve <token>
   const keyId = process.env.edlKeyId
 
-  const bearerHeader = header.split(' ')
-  const [, token] = bearerHeader
-
-  // Retrieve all of the keysValue pairs from the JWKS env var return jwksClient obj
-  const client = jwksClient({
-    getKeysInterceptor: () => {
-      const edlJwk = JSON.parse(process.env.edlJwk)
-      return edlJwk.keys
-    }
-  })
-
-  // getSigningKey retrieves the signing key obj which can access the public key
-  const signKey = await client.getSigningKey(keyId)
-
-  // Decrypt the 'n' key in the JWK to get the public key used for verification of JWT token
-  const pubKey = signKey.getPublicKey()
-
   try {
+    const bearerHeader = header.split(' ')
+    const [, token] = bearerHeader
+
+    // Retrieve all of the keysValue pairs from the JWKS env var return jwksClient obj
+    const client = jwksClient({
+      getKeysInterceptor: () => {
+        const edlJwk = JSON.parse(process.env.edlJwk)
+        return edlJwk.keys
+      }
+    })
+
+    // getSigningKey retrieves the signing key obj which can access the public key
+    const signKey = await client.getSigningKey(keyId)
+
+    // Decrypt the 'n' key in the JWK to get the public key used for verification of JWT token
+    const pubKey = signKey.getPublicKey()
+
     // Attempt to verify the token using the public key
     const decodedToken = jwt.verify(token, pubKey, { algorithms: ['RS256'] })
 
