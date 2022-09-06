@@ -41,8 +41,6 @@ export const verifyEDLJwt = async (header) => {
     // Return the value provided by the token
     return uid
   } catch (e) {
-    parseError(e, { reThrowError: true, provider: 'EDL' })
-
-    return false
+    return parseError(e, { reThrowError: true, provider: 'EDL' })
   }
 }

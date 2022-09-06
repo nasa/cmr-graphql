@@ -1,20 +1,22 @@
 import jwt, { JsonWebTokenError, TokenExpiredError } from 'jsonwebtoken'
+
 import { verifyEDLJwt } from '../verifyEDLJwt'
 
 const OLD_ENV = process.env
+
 beforeEach(() => {
+  jest.resetAllMocks()
+
+  jest.restoreAllMocks()
+
   process.env = { ...OLD_ENV }
 
-  // A Mock JWK
   process.env.edlJwk = '{"keys":[{"kty":"RSA","n":"some_cryptographic_hash","e":"AQAB","kid":"fakeKeyId"}]}'
-
-  // a mock key id
   process.env.edlKeyId = 'fakeKeyId'
 })
 
 afterEach(() => {
   process.env = OLD_ENV
-  jest.resetAllMocks()
 })
 
 describe('Correct JWT token', () => {
