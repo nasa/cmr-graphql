@@ -12,15 +12,18 @@ import granuleSource from '../datasources/granule'
 import graphDbDuplicateCollectionsSource from '../datasources/graphDbDuplicateCollections'
 import graphDbSource from '../datasources/graphDb'
 import serviceSource from '../datasources/service'
+
 import {
   deleteSubscription as subscriptionSourceDelete,
   fetchSubscription as subscriptionSourceFetch,
   ingestSubscription as subscriptionSourceIngest
 } from '../datasources/subscription'
+
 import toolSource from '../datasources/tool'
 import variableSource from '../datasources/variable'
 
 import { downcaseKeys } from '../utils/downcaseKeys'
+import { verifyEDLJwt } from '../utils/verifyEDLJwt'
 
 // Creating the server
 const server = new ApolloServer({
@@ -29,7 +32,7 @@ const server = new ApolloServer({
   resolvers,
 
   // Initial context state, will be available in resolvers
-  context: ({ event }) => {
+  context: async ({ event }) => {
     const { headers } = event
 
     const {
@@ -38,22 +41,39 @@ const server = new ApolloServer({
       'x-request-id': requestId
     } = downcaseKeys(headers)
 
+    // Context object that we'll provide to each resolver
+    const context = {}
+
+    // Default headers to be sent with every external request
     const requestHeaders = {
       'CMR-Request-Id': requestId || uuidv4()
     }
 
     // If the client has provided an EDL token supply it to CMR
-    if (bearerToken) requestHeaders.Authorization = bearerToken
+    if (bearerToken) {
+      requestHeaders.Authorization = bearerToken
+      // regex to match JWT token structures
+      const regex = /^Bearer [A-Za-z0-9-_]*\.[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*/
+
+      // If this is a JWT token verify that the token is from EDL and retrieve the earthdata login username
+      if (regex.test(bearerToken)) {
+        const edlUsername = await verifyEDLJwt(bearerToken)
+
+        // Check to ensure edlUsername has a value, and doesn't evaluate to false (indicating a failed token validation)
+        if (edlUsername) {
+          context.edlUsername = edlUsername
+        }
+      }
+    }
 
     // If the client has identified themselves using Client-Id supply it to CMR
     if (clientId) requestHeaders['Client-Id'] = clientId
 
-    // add the user to the context
     return {
+      ...context,
       headers: requestHeaders
     }
   },
-
   // An object that goes to the 'context' argument when executing resolvers
   dataSources: () => ({
     collectionDraftProposalSource,

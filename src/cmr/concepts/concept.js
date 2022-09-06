@@ -730,8 +730,8 @@ export default class Concept {
           'Content-Type': 'application/json'
         }
       })
-    } catch (error) {
-      parseError(error, { reThrowError: true })
+    } catch (e) {
+      parseError(e, { reThrowError: true })
     }
   }
 }

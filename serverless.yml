@@ -15,6 +15,10 @@ provider:
     graphdbPath: ${self:custom.variables.graphdbPath}
     mmtRootUrl: ${self:custom.variables.mmtRootUrl}
     draftMmtRootUrl: ${self:custom.variables.draftMmtRootUrl}
+    ursRootUrl: ${self:custom.variables.ursRootUrl}
+    edlClientId: ${self:custom.variables.edlClientId}
+    edlKeyId: ${self:custom.variables.edlKeyId}
+    edlJwk: ${self:custom.variables.edlJwk}
     sslCertFile: ${self:custom.variables.sslCertFile}
 
     # Timeout for lambda
@@ -154,6 +158,10 @@ custom:
     graphdbPath: ${env:GRAPHDB_PATH, 'gremlin'}
     mmtRootUrl: ${env:MMT_ROOT_URL, 'https://mmt.earthdata.nasa.gov'}
     draftMmtRootUrl: ${env:DRAFT_MMT_ROOT_URL, 'https://draftmmt.earthdata.nasa.gov'}
+    ursRootUrl: ${env:URS_ROOT_URL, 'https://urs.earthdata.nasa.gov'}
+    edlClientId: ${env:EDL_CLIENT_ID, ''}
+    edlKeyId: ${env:EDL_KEY_ID, ''}
+    edlJwk: ${env:EDL_JWK, ''}
     sslCertFile: ${env:SSL_CERT_FILE, 'certificates/fcpca_combined.pem'}
 
   # Default is 3000 so to avoid conflicts with other applications we'll define a new port

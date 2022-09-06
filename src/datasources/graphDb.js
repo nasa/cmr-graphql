@@ -5,6 +5,7 @@ import {
 } from 'lodash'
 
 import { cmrGraphDb } from '../utils/cmrGraphDb'
+import { getUserPermittedGroups } from '../utils/getUserPermittedGroups'
 import { mergeParams } from '../utils/mergeParams'
 
 /**
@@ -17,7 +18,8 @@ export default async (
   conceptId,
   params,
   headers,
-  parsedInfo
+  parsedInfo,
+  edlUsername
 ) => {
   // Parse the request info to find the requested types in the query
   const { fieldsByTypeName } = parsedInfo
@@ -31,7 +33,6 @@ export default async (
 
   // Merge nested 'params' object with existing parameters
   const queryParams = mergeParams(params)
-
   const {
     limit = 20,
     offset = 0,
@@ -104,18 +105,23 @@ export default async (
       .hasLabel('${includedLabels.join("','")}')
     `
   }
+  // Retrieve the user groups from EDL to filter the query
+  const userGroups = await getUserPermittedGroups(headers, edlUsername)
 
   const query = JSON.stringify({
     gremlin: `
     g
     .V()
     .has('collection', 'id', '${conceptId}')
+    .has('permittedGroups', within(${userGroups}))
     .bothE()
     .inV()
     ${filters}
     .bothE()
     .outV()
     .hasLabel('collection')
+    .has('permittedGroups', within(${userGroups}))
+    .has('id',neq('${conceptId}'))
     .group()
     .by('id')
     .by(

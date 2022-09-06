@@ -4,7 +4,7 @@ import {
 } from 'lodash'
 
 import { cmrGraphDb } from '../utils/cmrGraphDb'
-
+import { getUserPermittedGroups } from '../utils/getUserPermittedGroups'
 /**
  * Queries CMR GraphDB for duplicate collections.
  * @param {String} collection Collection metadata for the initial collection to find duplicates.
@@ -12,7 +12,8 @@ import { cmrGraphDb } from '../utils/cmrGraphDb'
  */
 export default async (
   collection,
-  headers
+  headers,
+  edlUsername
 ) => {
   const {
     conceptId,
@@ -30,15 +31,20 @@ export default async (
     }
   }
 
+  const userGroups = await getUserPermittedGroups(headers, edlUsername)
+
+  // Search for collections with a different concept-id but, the same shortname and doi
   const query = JSON.stringify({
     gremlin: `
     g
     .V()
     .not(
       __.has('collection', 'id', '${conceptId}')
+      .has('collection', 'permittedGroups', within(${userGroups}))
     )
     .has('collection', 'shortName', '${shortName}')
     .has('collection', 'doi', '${doiDescription}')
+    .has('collection', 'permittedGroups', within(${userGroups}))
     .valueMap(true)
     `
   })
@@ -52,8 +58,8 @@ export default async (
   const { result } = data
 
   // Useful for debugging!
-  // console.log('GraphDB query', JSON.parse(query))
-  // console.log('GraphDB Response result: ', JSON.stringify(result, null, 2))
+  // console.log('GraphDB from Duplicate Collections call query', JSON.parse(query))
+  // console.log('GraphDB from Duplicate Collections call response result: ', JSON.stringify(result, null, 2))
 
   const duplicateCollections = []
 

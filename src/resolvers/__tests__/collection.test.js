@@ -51,10 +51,11 @@ describe('Collection', () => {
   beforeEach(() => {
     process.env = { ...OLD_ENV }
 
-    process.env.cmrRootUrl = 'http://example.com'
-    process.env.graphdbHost = 'http://example.com'
+    process.env.cmrRootUrl = 'http://example-cmr.com'
+    process.env.graphdbHost = 'http://example-graphdb.com'
     process.env.graphdbPort = '8182'
     process.env.graphdbPath = ''
+    process.env.ursRootUrl = 'http://example-urs.com'
   })
 
   afterEach(() => {
@@ -63,7 +64,7 @@ describe('Collection', () => {
 
   describe('Query', () => {
     test('all collection fields', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Hits': 1,
           'CMR-Took': 7,
@@ -131,7 +132,7 @@ describe('Collection', () => {
           }
         })
 
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Hits': 1,
           'CMR-Took': 7,
@@ -465,7 +466,7 @@ describe('Collection', () => {
     })
 
     test('collections', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -508,7 +509,7 @@ describe('Collection', () => {
     describe('collection', () => {
       describe('with results', () => {
         test('returns results', async () => {
-          nock(/example/)
+          nock(/example-cmr/)
             .defaultReplyHeaders({
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -543,7 +544,7 @@ describe('Collection', () => {
 
       describe('with no results', () => {
         test('returns no results', async () => {
-          nock(/example/)
+          nock(/example-cmr/)
             .defaultReplyHeaders({
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -576,7 +577,7 @@ describe('Collection', () => {
 
   describe('Collection', () => {
     test('granules', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -592,7 +593,7 @@ describe('Collection', () => {
           }
         })
 
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -608,7 +609,7 @@ describe('Collection', () => {
           }
         })
 
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -668,7 +669,7 @@ describe('Collection', () => {
     })
 
     test('granules with arguments passed from the collection', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -684,7 +685,7 @@ describe('Collection', () => {
           }
         })
 
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -700,7 +701,7 @@ describe('Collection', () => {
           }
         })
 
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -765,7 +766,7 @@ describe('Collection', () => {
     describe('services', () => {
       describe('no associations are present in the metadata', () => {
         test('doesn\'t query for or return services', async () => {
-          nock(/example/)
+          nock(/example-cmr/)
             .defaultReplyHeaders({
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -819,7 +820,7 @@ describe('Collection', () => {
 
       describe('association are present in the metadata but not service assocations', () => {
         test('doesn\'t query for or return services', async () => {
-          nock(/example/)
+          nock(/example-cmr/)
             .defaultReplyHeaders({
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -879,7 +880,7 @@ describe('Collection', () => {
 
       describe('when service associations are present in the metadata', () => {
         test('queries for and returns services', async () => {
-          nock(/example/)
+          nock(/example-cmr/)
             .defaultReplyHeaders({
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -901,7 +902,7 @@ describe('Collection', () => {
               }
             })
 
-          nock(/example/)
+          nock(/example-cmr/)
             .defaultReplyHeaders({
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -915,7 +916,7 @@ describe('Collection', () => {
               }]
             })
 
-          nock(/example/)
+          nock(/example-cmr/)
             .defaultReplyHeaders({
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -976,7 +977,7 @@ describe('Collection', () => {
 
     describe('subscriptions', () => {
       test('queries for and returns subscriptions', async () => {
-        nock(/example/)
+        nock(/example-cmr/)
           .defaultReplyHeaders({
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -992,7 +993,7 @@ describe('Collection', () => {
             }
           })
 
-        nock(/example/)
+        nock(/example-cmr/)
           .defaultReplyHeaders({
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -1006,7 +1007,7 @@ describe('Collection', () => {
             }]
           })
 
-        nock(/example/)
+        nock(/example-cmr/)
           .defaultReplyHeaders({
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -1067,7 +1068,7 @@ describe('Collection', () => {
     describe('tools', () => {
       describe('no associations are present in the metadata', () => {
         test('doesn\'t query for or return tools', async () => {
-          nock(/example/)
+          nock(/example-cmr/)
             .defaultReplyHeaders({
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -1121,7 +1122,7 @@ describe('Collection', () => {
 
       describe('association are present in the metadata but not tool assocations', () => {
         test('doesn\'t query for or return tools', async () => {
-          nock(/example/)
+          nock(/example-cmr/)
             .defaultReplyHeaders({
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -1181,7 +1182,7 @@ describe('Collection', () => {
 
       describe('when tool associations are present in the metadata', () => {
         test('queries for and returns tools', async () => {
-          nock(/example/)
+          nock(/example-cmr/)
             .defaultReplyHeaders({
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -1203,7 +1204,7 @@ describe('Collection', () => {
               }
             })
 
-          nock(/example/)
+          nock(/example-cmr/)
             .defaultReplyHeaders({
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -1217,7 +1218,7 @@ describe('Collection', () => {
               }]
             })
 
-          nock(/example/)
+          nock(/example-cmr/)
             .defaultReplyHeaders({
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -1279,7 +1280,7 @@ describe('Collection', () => {
     describe('variables', () => {
       describe('no associations are present in the metadata', () => {
         test('doesn\'t query for or return variables', async () => {
-          nock(/example/)
+          nock(/example-cmr/)
             .defaultReplyHeaders({
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -1333,7 +1334,7 @@ describe('Collection', () => {
 
       describe('association are present in the metadata but not variable assocations', () => {
         test('doesn\'t query for or return variables', async () => {
-          nock(/example/)
+          nock(/example-cmr/)
             .defaultReplyHeaders({
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -1391,9 +1392,9 @@ describe('Collection', () => {
         })
       })
 
-      describe('when service associations are present in the metadata', () => {
+      describe('when variable associations are present in the metadata', () => {
         test('queries for and returns variables', async () => {
-          nock(/example/)
+          nock(/example-cmr/)
             .defaultReplyHeaders({
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -1415,7 +1416,7 @@ describe('Collection', () => {
               }
             })
 
-          nock(/example/)
+          nock(/example-cmr/)
             .defaultReplyHeaders({
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -1429,7 +1430,7 @@ describe('Collection', () => {
               }]
             })
 
-          nock(/example/)
+          nock(/example-cmr/)
             .defaultReplyHeaders({
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -1490,7 +1491,7 @@ describe('Collection', () => {
 
     describe('relatedCollections', () => {
       test('queries CMR GraphDB for relationships', async () => {
-        nock(/example/)
+        nock(/example-cmr/)
           .defaultReplyHeaders({
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -1504,11 +1505,7 @@ describe('Collection', () => {
             }
           })
 
-        nock(/example/)
-          .defaultReplyHeaders({
-            'CMR-Took': 7,
-            'CMR-Request-Id': 'abcd-1234-efgh-5678'
-          })
+        nock(/example-graphdb/)
           .post(() => true)
           .reply(200, relatedCollectionsGraphdbResponseMocks)
 
@@ -1557,7 +1554,7 @@ describe('Collection', () => {
 
     describe('duplicateCollections', () => {
       test('queries CMR GraphDB for relationships', async () => {
-        nock(/example/)
+        nock(/example-cmr/)
           .defaultReplyHeaders({
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -1578,11 +1575,7 @@ describe('Collection', () => {
             }]
           })
 
-        nock(/example/)
-          .defaultReplyHeaders({
-            'CMR-Took': 7,
-            'CMR-Request-Id': 'abcd-1234-efgh-5678'
-          })
+        nock(/example-graphdb/)
           .post(() => true)
           .reply(200, duplicateCollectionsGraphdbResponseMocks)
 

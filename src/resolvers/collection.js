@@ -9,9 +9,7 @@ export default {
     ),
     collection: async (source, args, { dataSources, headers }, info) => {
       const result = await dataSources.collectionSource(args, headers, parseResolveInfo(info))
-
       const [firstResult] = result
-
       return firstResult
     }
   },
@@ -50,9 +48,9 @@ export default {
 
           const { value: argumentName } = name
 
-          // TODO: This will only work for string values, it will need to be updated if we need to support arrays
           const { value: argumentValue } = value
 
+          // TODO: This will only work for string values, it will need to be updated if we need to support arrays
           if (passthroughParams.includes(argumentName)) {
             granuleParams[argumentName] = argumentValue
           }
@@ -68,20 +66,22 @@ export default {
 
       return dataSources.granuleSource(requestedParams, headers, parseResolveInfo(info))
     },
-    relatedCollections: async (source, args, { dataSources, headers }, info) => {
+    relatedCollections: async (source, args, { dataSources, headers, edlUsername }, info) => {
       const { conceptId } = source
 
       return dataSources.graphDbSource(
         conceptId,
         args,
         headers,
-        parseResolveInfo(info)
+        parseResolveInfo(info),
+        edlUsername
       )
     },
-    duplicateCollections: async (source, args, { dataSources, headers }) => dataSources
+    duplicateCollections: async (source, args, { dataSources, headers, edlUsername }) => dataSources
       .graphDbDuplicateCollectionsSource(
         source,
-        headers
+        headers,
+        edlUsername
       ),
     services: async (source, args, { dataSources, headers }, info) => {
       const {
