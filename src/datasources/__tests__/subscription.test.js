@@ -180,7 +180,7 @@ describe('subscription#fetch', () => {
 
       expect(response).toEqual({
         count: 84,
-        cursor: 'e30=',
+        cursor: null,
         items: [{
           conceptId: 'SUB100000-EDSC'
         }]
@@ -207,7 +207,7 @@ describe('subscription#fetch', () => {
 
       expect(response).toEqual({
         count: 84,
-        cursor: 'e30=',
+        cursor: null,
         items: [{
           conceptId: 'SUB100000-EDSC'
         }]
@@ -267,7 +267,7 @@ describe('subscription#fetch', () => {
 
       expect(response).toEqual({
         count: 84,
-        cursor: 'e30=',
+        cursor: null,
         items: [{
           emailAddress: 'test@example.com'
         }]

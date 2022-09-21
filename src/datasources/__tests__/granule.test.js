@@ -218,7 +218,7 @@ describe('granule', () => {
 
       expect(response).toEqual({
         count: 84,
-        cursor: 'e30=',
+        cursor: null,
         items: [{
           conceptId: 'G100000-EDSC'
         }]
@@ -247,7 +247,7 @@ describe('granule', () => {
 
       expect(response).toEqual({
         count: 84,
-        cursor: 'e30=',
+        cursor: null,
         items: [{
           conceptId: 'G100000-EDSC'
         }]
@@ -327,7 +327,7 @@ describe('granule', () => {
 
       expect(response).toEqual({
         count: 84,
-        cursor: 'e30=',
+        cursor: null,
         items: [{
           links: [{
             href: 'https://example.com/data_link',
@@ -425,7 +425,7 @@ describe('granule', () => {
 
       expect(response).toEqual({
         count: 84,
-        cursor: 'e30=',
+        cursor: null,
         items: [{
           conceptId: 'G100000-EDSC',
           browseFlag: true,
@@ -493,7 +493,7 @@ describe('granule', () => {
 
       expect(response).toEqual({
         count: 84,
-        cursor: 'e30=',
+        cursor: null,
         items: [{
           granuleUr: 'GLDAS_CLSM025_D.2.0:GLDAS_CLSM025_D.A19480101.020.nc4'
         }]

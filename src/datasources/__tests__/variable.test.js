@@ -174,7 +174,7 @@ describe('variable', () => {
 
       expect(response).toEqual({
         count: 84,
-        cursor: 'e30=',
+        cursor: null,
         items: [{
           conceptId: 'V100000-EDSC'
         }]
@@ -201,7 +201,7 @@ describe('variable', () => {
 
       expect(response).toEqual({
         count: 84,
-        cursor: 'e30=',
+        cursor: null,
         items: [{
           conceptId: 'V100000-EDSC'
         }]
@@ -267,7 +267,7 @@ describe('variable', () => {
 
       expect(response).toEqual({
         count: 84,
-        cursor: 'e30=',
+        cursor: null,
         items: [{
           variableType: 'SCIENCE_VARIABLE'
         }]
