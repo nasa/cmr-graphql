@@ -38,7 +38,7 @@ export const cmrQuery = ({
     'Authorization',
     'Client-Id',
     'CMR-Request-Id',
-    'CMR-Scroll-Id'
+    'CMR-Search-After'
   ])
 
   const cmrParameters = prepKeysForCmr(snakeCaseKeys(params), nonIndexedKeys)

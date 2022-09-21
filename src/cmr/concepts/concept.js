@@ -34,10 +34,10 @@ export default class Concept {
 
     // Initialize format specific properties
     this.jsonItemCount = 0
-    this.jsonScrollId = undefined
+    this.jsonSearchAfterIdentifier = undefined
 
     this.ummItemCount = 0
-    this.ummScrollId = undefined
+    this.ummSearchAfterIdentifier = undefined
 
     this.params = params
 
@@ -111,19 +111,19 @@ export default class Concept {
   }
 
   /**
-   * Set the scroll session id for a search against against the json endpoint
-   * @param {Float} scrollId The scroll session identifier provided by CMR
+   * Set the search after identifier for a search against against the json endpoint
+   * @param {Float} searchAfterIdentifier The search after identifier provided by CMR
    */
-  setJsonScrollId(scrollId) {
-    this.jsonScrollId = scrollId
+  setJsonSearchAfter(searchAfterIdentifier) {
+    this.jsonSearchAfterIdentifier = searchAfterIdentifier
   }
 
   /**
-   * Set the scroll session id for a search against against the umm endpoint
-   * @param {Float} scrollId The scroll session identifier provided by CMR
+   * Set the search after identifier for a search against against the umm endpoint
+   * @param {Float} searchAfterIdentifier The search after identifier provided by CMR
    */
-  setUmmScrollId(scrollId) {
-    this.ummScrollId = scrollId
+  setUmmSearchAfter(searchAfterIdentifier) {
+    this.ummSearchAfterIdentifier = searchAfterIdentifier
   }
 
   /**
@@ -256,7 +256,6 @@ export default class Concept {
       'concept_id',
       'offset',
       'page_size',
-      'scroll',
       'sort_key'
     ]
   }
@@ -269,7 +268,6 @@ export default class Concept {
       'concept_id',
       'offset',
       'page_size',
-      'scroll',
       'sort_key'
     ]
   }
@@ -282,7 +280,6 @@ export default class Concept {
       'concept_id',
       'offset',
       'page_size',
-      'scroll',
       'sort_key'
     ]
   }
@@ -307,8 +304,8 @@ export default class Concept {
   }
 
   /**
-   * Decodes and returns a base64 hashed version of the json and umm scroll ids
-   * @param {String} cursor A base64 hashed object containing scroll ids from CMR
+   * Decodes and returns a base64 hashed version of the json and umm search after identifier
+   * @param {String} cursor A base64 hashed object containing search after identifier from CMR
    */
   decodeCursor(cursor) {
     if (cursor) return JSON.parse(Buffer.from(cursor, 'base64').toString())
@@ -317,15 +314,19 @@ export default class Concept {
   }
 
   /**
-   * Encode and return a base64 hashed version of the json and umm scroll ids
+   * Encode and return a base64 hashed version of the json and umm search after identifier
    */
   encodeCursor() {
-    return Buffer.from(
-      JSON.stringify({
-        json: this.jsonScrollId,
-        umm: this.ummScrollId
-      })
-    ).toString('base64')
+    if (this.jsonSearchAfterIdentifier || this.ummSearchAfterIdentifier) {
+      return Buffer.from(
+        JSON.stringify({
+          json: this.jsonSearchAfterIdentifier,
+          umm: this.ummSearchAfterIdentifier
+        })
+      ).toString('base64')
+    }
+
+    return null
   }
 
   /**
@@ -450,14 +451,9 @@ export default class Concept {
     }
 
     const {
-      json: jsonScrollId,
-      umm: ummScrollId
+      json: jsonSearchAfterIdentifier,
+      umm: ummSearchAfterIdentifier
     } = this.decodeCursor(cursor)
-
-    if (metaKeys.some((key) => key.toLowerCase().includes('cursor')) && !cursor) {
-      // eslint-disable-next-line no-param-reassign
-      searchParams.scroll = true
-    }
 
     this.logKeyRequest(metaKeys, 'meta')
 
@@ -466,8 +462,8 @@ export default class Concept {
         ...this.headers
       }
 
-      if (jsonScrollId) {
-        jsonHeaders['CMR-Scroll-Id'] = parseFloat(jsonScrollId)
+      if (jsonSearchAfterIdentifier) {
+        jsonHeaders['CMR-Search-After'] = jsonSearchAfterIdentifier
       }
 
       promises.push(
@@ -488,8 +484,8 @@ export default class Concept {
         ...this.headers
       }
 
-      if (ummScrollId) {
-        ummHeaders['CMR-Scroll-Id'] = parseFloat(ummScrollId)
+      if (ummSearchAfterIdentifier) {
+        ummHeaders['CMR-Search-After'] = ummSearchAfterIdentifier
       }
 
       // Construct the promise that will request data from the umm endpoint
@@ -567,18 +563,14 @@ export default class Concept {
     const { headers } = jsonResponse
     const {
       'cmr-hits': cmrHits,
-      'cmr-scroll-id': jsonScrollId
+      'cmr-search-after': jsonSearchAfterIdentifier
     } = downcaseKeys(headers)
 
     this.setJsonItemCount(cmrHits)
 
-    this.setJsonScrollId(jsonScrollId)
+    this.setJsonSearchAfter(jsonSearchAfterIdentifier)
 
     const items = this.parseJsonBody(jsonResponse)
-
-    if (jsonScrollId && !items.length) {
-      await this.clearScrollSession(jsonScrollId)
-    }
 
     items.forEach((item) => {
       const normalizedItem = this.normalizeJsonItem(item)
@@ -610,18 +602,14 @@ export default class Concept {
     const { headers } = ummResponse
     const {
       'cmr-hits': cmrHits,
-      'cmr-scroll-id': ummScrollId
+      'cmr-search-after': ummSearchAfterIdentifier
     } = downcaseKeys(headers)
 
     this.setUmmItemCount(cmrHits)
 
-    this.setUmmScrollId(ummScrollId)
+    this.setUmmSearchAfter(ummSearchAfterIdentifier)
 
     const items = this.parseUmmBody(ummResponse)
-
-    if (ummScrollId && !items.length) {
-      await this.clearScrollSession(ummScrollId)
-    }
 
     items.forEach((item) => {
       const normalizedItem = this.normalizeUmmItem(item)
@@ -709,27 +697,6 @@ export default class Concept {
       if (ummResponse) {
         await this.parseUmm(ummResponse, ummKeys)
       }
-    } catch (e) {
-      parseError(e, { reThrowError: true })
-    }
-  }
-
-  /**
-   * Clears a CMR Scroll Session
-   * @param {String} scrollId A CMR Scroll ID
-   */
-  async clearScrollSession(scrollId) {
-    try {
-      await axios({
-        method: 'post',
-        url: `${process.env.cmrRootUrl}/search/clear-scroll`,
-        data: {
-          scroll_id: scrollId
-        },
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
     } catch (e) {
       parseError(e, { reThrowError: true })
     }
