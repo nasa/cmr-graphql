@@ -73,7 +73,7 @@ When querying for multiple items there are three high level parameters that can 
 
 ##### Cursor
 
-`cursor` tells CMR that you'd like to initiate a scroll session with the intent of harvesting data. If you request this key without providing cursor as a search parameter GraphQL will ask CMR to start a new scroll session and return the value as a cursor in the response. To take advantage of the cursor you can then include it in subsequent queries until no data is returned.
+`cursor` tells CMR that you'd like to fetch the search after identifier out of the header with the intent of harvesting data. If you request this key without providing cursor as a search parameter GraphQL will ask CMR to start a new search after search and return the value as a cursor in the response. To take advantage of the cursor you can then include it in subsequent queries until no data is returned.
 
 ###### First Request:
 

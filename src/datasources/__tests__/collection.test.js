@@ -106,7 +106,7 @@ describe('collection', () => {
           'CMR-Hits': 84,
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678',
-          'CMR-Scroll-Id': '-29834750'
+          'CMR-Search-After': '["abc", 123, 444]'
         })
         .post(/collections\.json/)
         .reply(200, {
@@ -123,7 +123,7 @@ describe('collection', () => {
           'CMR-Hits': 84,
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678',
-          'CMR-Scroll-Id': '-98726357'
+          'CMR-Search-After': '["xyz", 789, 999]'
         })
         .post(/collections\.umm_json/)
         .reply(200, {
@@ -143,7 +143,7 @@ describe('collection', () => {
 
       expect(response).toEqual({
         count: 84,
-        cursor: 'eyJqc29uIjoiLTI5ODM0NzUwIiwidW1tIjoiLTk4NzI2MzU3In0=',
+        cursor: 'eyJqc29uIjoiW1wiYWJjXCIsIDEyMywgNDQ0XSIsInVtbSI6IltcInh5elwiLCA3ODksIDk5OV0ifQ==',
         items: [{
           conceptId: 'C100000-EDSC',
           doi: {
@@ -161,9 +161,9 @@ describe('collection', () => {
             'CMR-Hits': 84,
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678',
-            'CMR-Scroll-Id': '-29834750'
+            'CMR-Search-After': '["abc", 123, 444]'
           })
-          .post(/collections\.json/, 'scroll=true')
+          .post(/collections\.json/)
           .reply(200, {
             feed: {
               entry: [{
@@ -178,9 +178,9 @@ describe('collection', () => {
             'CMR-Hits': 84,
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678',
-            'CMR-Scroll-Id': '-98726357'
+            'CMR-Search-After': '["xyz", 789, 999]'
           })
-          .post(/collections\.umm_json/, 'scroll=true')
+          .post(/collections\.umm_json/)
           .reply(200, {
             items: [{
               meta: {
@@ -198,7 +198,7 @@ describe('collection', () => {
 
         expect(response).toEqual({
           count: 84,
-          cursor: 'eyJqc29uIjoiLTI5ODM0NzUwIiwidW1tIjoiLTk4NzI2MzU3In0=',
+          cursor: 'eyJqc29uIjoiW1wiYWJjXCIsIDEyMywgNDQ0XSIsInVtbSI6IltcInh5elwiLCA3ODksIDk5OV0ifQ==',
           items: [{
             conceptId: 'C100000-EDSC',
             doi: {
@@ -207,92 +207,6 @@ describe('collection', () => {
             onlineAccessFlag: false
           }]
         })
-      })
-    })
-
-    describe('when a cursor returns no results', () => {
-      test('calls CMR to clear the scroll session', async () => {
-        nock(/example/)
-          .defaultReplyHeaders({
-            'CMR-Hits': 0,
-            'CMR-Took': 7,
-            'CMR-Request-Id': 'abcd-1234-efgh-5678',
-            'CMR-Scroll-Id': '-29834750'
-          })
-          .post(/collections\.json/, 'scroll=true')
-          .reply(200, {
-            feed: {
-              entry: []
-            }
-          })
-
-        nock(/example/)
-          .defaultReplyHeaders({
-            'CMR-Hits': 0,
-            'CMR-Took': 7,
-            'CMR-Request-Id': 'abcd-1234-efgh-5678',
-            'CMR-Scroll-Id': '-98726357'
-          })
-          .post(/collections\.umm_json/, 'scroll=true')
-          .reply(200, {
-            items: []
-          })
-
-        nock(/example/)
-          .post('/search/clear-scroll', { scroll_id: '-29834750' })
-          .reply(204)
-
-        nock(/example/)
-          .post('/search/clear-scroll', { scroll_id: '-98726357' })
-          .reply(204)
-
-        const response = await collectionDatasource({}, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'collection')
-
-        expect(response).toEqual({
-          count: 0,
-          cursor: 'eyJqc29uIjoiLTI5ODM0NzUwIiwidW1tIjoiLTk4NzI2MzU3In0=',
-          items: []
-        })
-      })
-
-      test('catches errors received from CMR', async () => {
-        nock(/example/)
-          .defaultReplyHeaders({
-            'CMR-Hits': 0,
-            'CMR-Took': 7,
-            'CMR-Request-Id': 'abcd-1234-efgh-5678',
-            'CMR-Scroll-Id': '-29834750'
-          })
-          .post(/collections\.json/, 'scroll=true')
-          .reply(200, {
-            feed: {
-              entry: []
-            }
-          })
-
-        nock(/example/)
-          .defaultReplyHeaders({
-            'CMR-Hits': 0,
-            'CMR-Took': 7,
-            'CMR-Request-Id': 'abcd-1234-efgh-5678',
-            'CMR-Scroll-Id': '-98726357'
-          })
-          .post(/collections\.umm_json/, 'scroll=true')
-          .reply(200, {
-            items: []
-          })
-
-        nock(/example/)
-          .post('/search/clear-scroll', { scroll_id: '-29834750' })
-          .reply(500)
-
-        nock(/example/)
-          .post('/search/clear-scroll', { scroll_id: '-98726357' })
-          .reply(500)
-
-        await expect(
-          collectionDatasource({}, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'collection')
-        ).rejects.toThrow(Error)
       })
     })
   })
