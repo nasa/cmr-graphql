@@ -174,7 +174,7 @@ describe('tool', () => {
 
       expect(response).toEqual({
         count: 84,
-        cursor: 'e30=',
+        cursor: null,
         items: [{
           conceptId: 'T100000-EDSC'
         }]
@@ -201,7 +201,7 @@ describe('tool', () => {
 
       expect(response).toEqual({
         count: 84,
-        cursor: 'e30=',
+        cursor: null,
         items: [{
           conceptId: 'T100000-EDSC'
         }]
@@ -267,7 +267,7 @@ describe('tool', () => {
 
       expect(response).toEqual({
         count: 84,
-        cursor: 'e30=',
+        cursor: null,
         items: [{
           type: 'Downloadable Tool'
         }]

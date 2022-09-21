@@ -232,7 +232,7 @@ describe('collection', () => {
 
       expect(response).toEqual({
         count: 84,
-        cursor: 'e30=',
+        cursor: null,
         items: [{
           conceptId: 'C100000-EDSC'
         }]
@@ -271,7 +271,7 @@ describe('collection', () => {
 
       expect(response).toEqual({
         count: 84,
-        cursor: 'e30=',
+        cursor: null,
         items: [{
           conceptId: 'C100000-EDSC',
           tags: {
@@ -371,7 +371,7 @@ describe('collection', () => {
 
       expect(response).toEqual({
         count: 84,
-        cursor: 'e30=',
+        cursor: null,
         items: [{
           conceptId: 'C100000-EDSC',
           doi: {
@@ -472,7 +472,7 @@ describe('collection', () => {
 
       expect(response).toEqual({
         count: 84,
-        cursor: 'e30=',
+        cursor: null,
         items: [{
           conceptId: 'C100000-EDSC',
           dataCenter: 'EDSC',
@@ -549,7 +549,7 @@ describe('collection', () => {
 
       expect(response).toEqual({
         count: 84,
-        cursor: 'e30=',
+        cursor: null,
         items: [{
           abstract: 'Lorem ipsum dolor sit amet, consectetur adipiscing',
           associations: {
