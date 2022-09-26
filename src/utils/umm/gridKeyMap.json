@@ -1,6 +1,7 @@
 {
   "sharedKeys": [
-    "conceptId"
+    "conceptId",
+    "name"
   ],
   "ummKeyMappings": {
     "conceptId": "meta.concept-id",
