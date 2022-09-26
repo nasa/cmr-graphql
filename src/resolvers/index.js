@@ -8,6 +8,7 @@ import serviceResolver from './service'
 import subscriptionResolver from './subscription'
 import toolResolver from './tool'
 import variableResolver from './variable'
+import gridResolver from './grid'
 
 const resolvers = [
   collectionDraftResolver,
@@ -17,7 +18,8 @@ const resolvers = [
   serviceResolver,
   subscriptionResolver,
   toolResolver,
-  variableResolver
+  variableResolver,
+  gridResolver
 ]
 
 export default mergeResolvers(resolvers)

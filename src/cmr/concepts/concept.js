@@ -1,5 +1,3 @@
-import axios from 'axios'
-
 import camelcaseKeys from 'camelcase-keys'
 import dasherize from 'dasherize'
 import snakeCaseKeys from 'snakecase-keys'

@@ -9,5 +9,6 @@ export const CONCEPT_TYPES = [
   'services',
   'subscriptions',
   'tools',
-  'variables'
+  'variables',
+  'grids'
 ]

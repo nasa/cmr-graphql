@@ -12,6 +12,7 @@ import granuleSource from '../datasources/granule'
 import graphDbDuplicateCollectionsSource from '../datasources/graphDbDuplicateCollections'
 import graphDbSource from '../datasources/graphDb'
 import serviceSource from '../datasources/service'
+import gridSource from '../datasources/grid'
 
 import {
   deleteSubscription as subscriptionSourceDelete,
@@ -95,7 +96,8 @@ const server = new ApolloServer({
     subscriptionSourceFetch,
     subscriptionSourceIngest,
     toolSource,
-    variableSource
+    variableSource,
+    gridSource
   }),
 
   // Show the landing page (which has a link to Apollo Studio Sandbox) in all environments

@@ -9,6 +9,7 @@ import service from './service.graphql'
 import subscription from './subscription.graphql'
 import tool from './tool.graphql'
 import variable from './variable.graphql'
+import grid from './grid.graphql'
 
 export default mergeTypeDefs(
   [
@@ -20,7 +21,8 @@ export default mergeTypeDefs(
     service,
     subscription,
     tool,
-    variable
+    variable,
+    grid
   ],
   { all: true },
 )
