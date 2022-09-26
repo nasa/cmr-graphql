@@ -5,10 +5,10 @@ export const CONCEPT_TYPES = [
   'collections',
   'duplicateCollections',
   'granules',
+  'grids',
   'relatedCollections',
   'services',
   'subscriptions',
   'tools',
-  'variables',
-  'grids'
+  'variables'
 ]

@@ -74,7 +74,7 @@ describe('grid', () => {
                     args: {},
                     fieldsByTypeName: {}
                   },
-                  name: {
+                  longName: {
                     name: 'name',
                     alias: 'name',
                     args: {},
@@ -103,7 +103,7 @@ describe('grid', () => {
               'concept-id': 'GRD100000-EDSC'
             },
             umm: {
-              Name: 'grid_name'
+              LongName: 'grid_name'
             }
           }]
         })
@@ -114,7 +114,7 @@ describe('grid', () => {
         cursor: 'eyJ1bW0iOiJbXCJ4eXpcIiwgNzg5LCA5OTldIn0=',
         items: [{
           conceptId: 'GRD100000-EDSC',
-          name: 'grid_name'
+          longName: 'grid_name'
         }]
       })
     })
@@ -135,7 +135,7 @@ describe('grid', () => {
                 'concept-id': 'GRD100000-EDSC'
               },
               umm: {
-                Name: 'grid_name'
+                LongName: 'grid_name'
               }
             }]
           })
@@ -147,7 +147,7 @@ describe('grid', () => {
           cursor: 'eyJ1bW0iOiJbXCJ4eXpcIiwgNzg5LCA5OTldIn0=',
           items: [{
             conceptId: 'GRD100000-EDSC',
-            name: 'grid_name'
+            longName: 'grid_name'
           }]
         })
       })
@@ -223,7 +223,7 @@ describe('grid', () => {
               args: {},
               fieldsByTypeName: {
                 Grid: {
-                  name: {
+                  longName: {
                     name: 'grid_name',
                     alias: 'name',
                     args: {},
@@ -257,7 +257,7 @@ describe('grid', () => {
               'concept-id': 'GRD100000-EDSC'
             },
             umm: {
-              Name: 'grid_name'
+              LongName: 'grid_name'
             }
           }]
         })
@@ -268,7 +268,7 @@ describe('grid', () => {
         count: 84,
         cursor: null,
         items: [{
-          name: 'grid_name'
+          longName: 'grid_name'
         }]
       })
     })

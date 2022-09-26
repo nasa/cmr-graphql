@@ -11,8 +11,8 @@ import collectionSource from '../datasources/collection'
 import granuleSource from '../datasources/granule'
 import graphDbDuplicateCollectionsSource from '../datasources/graphDbDuplicateCollections'
 import graphDbSource from '../datasources/graphDb'
-import serviceSource from '../datasources/service'
 import gridSource from '../datasources/grid'
+import serviceSource from '../datasources/service'
 
 import {
   deleteSubscription as subscriptionSourceDelete,
