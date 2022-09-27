@@ -62,7 +62,6 @@ In order for us to best provide debugging, statistics, and to inform us of futur
 
 Logging is key to debugging, and to ensure that we can provide the best support to users' when issues may arise, GraphQL supports the `X-Request-Id` header. This header will be passed to any CMR call made as part of the query which will be prepended to any CMR logs that are generated as a result of a query. This value is also used in GraphQL logs so that we can associate our logs, CMR logs, and any logs you may have if debugging becomes necessary. We recommend setting this value with all requests in the event it is needed, it cannot be added retroactively.
 
-
 #### Queries
 
 When querying for multiple items there are three high level parameters that can be provided, `count`, `cursor`, `facets` and `items`.
@@ -73,7 +72,7 @@ When querying for multiple items there are three high level parameters that can 
 
 ##### Cursor
 
-`cursor` tells GraphQL that you'd like to fetch the search after identifier out of the response header with the intent of harvesting data. To take advantage of the cursor you can then include it in subsequent queries until no data is returned.
+`cursor` tells GraphQL that you'd like to fetch the search after identifier out of the response header with the intent of harvesting data (or fetching multiple pages of results). To take advantage of the cursor you can then include it in subsequent queries until no data is returned.
 
 ###### First Request:
 
@@ -117,8 +116,10 @@ Which will return something similar to the following:
 
 A couple of things to keep in mind when using a cursor
 
-1. Subsequent queries will **not** accept new parameters, the search parameters provided in this initial query are used for *all* subsequent queries using the returned cursor value.
+1. Subsequent queries **require** that the same search parameters are sent to ensure that the same query is performed.
 2. Subsequent queries must be made **sequentially** (as of August 21, 2020) as the version of Elastic Search CMR uses does not support parallel queries using the same cursor value.
+
+When all results have been returned, the response will be an empty array and the `cursor` will return a value of `null`.
 
 ##### Facets
 
