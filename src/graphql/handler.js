@@ -61,6 +61,7 @@ const server = new ApolloServer({
     // If the client has provided an EDL token supply it to CMR
     if (bearerToken) {
       requestHeaders.Authorization = bearerToken
+
       // regex to match JWT token structures
       const regex = /^Bearer [A-Za-z0-9-_]*\.[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*/
 

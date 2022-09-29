@@ -29,9 +29,17 @@ GraphQL uses a few environment variables for configuring runtime options:
 
 |Variable Name|Default|Description|
 |-|:-:|-|
-|CMR_ROOT_URL||URL to ping when retrieving metadata from CMR e.g. https://cmr.earthdata.nasa.gov|
-|MMT_ROOT_URL||URL to ping when retrieving metadata from MMT e.g. https://mmt.earthdata.nasa.gov|
-|DRAFT_MMT_ROOT_URL||URL to ping when retrieving draft metadata from Draft MMT e.g. https://draftmmt.earthdata.nasa.gov|
+|CMR_ROOT_URL|https://cmr.earthdata.nasa.gov|URL to ping when retrieving metadata from CMR e.g. https://cmr.earthdata.nasa.gov|
+|DRAFT_MMT_ROOT_URL|https://draftmmt.earthdata.nasa.gov|URL to ping when retrieving draft metadata from Draft MMT e.g. https://draftmmt.earthdata.nasa.gov|
+|EDL_CLIENT_ID||Client ID provided by EDL that specifies the EDL Application making a request|
+|EDL_JWK||JWK (JSON String) supplied by EDL for validating JWT tokens|
+|EDL_KEY_ID||String that represents the `sig` value in the token header|
+|GRAPHDB_HOST|http://localhost|Host where GraphDB is running|
+|GRAPHDB_PATH|gremlin|Path that points to GraphDB|
+|GRAPHDB_PORT|8182|Port that GraphDB is running on|
+|MMT_ROOT_URL|https://mmt.earthdata.nasa.gov|URL to ping when retrieving metadata from MMT e.g. https://mmt.earthdata.nasa.gov|
+|SSL_CERT_FILE|certificates/fcpca_combined.pem|Path to the SSL certificate if one is not provided in the deployed environment|
+|URS_ROOT_URL|https://urs.earthdata.nasa.gov|URL that points to URS (EDL).|
 |LAMBDA_TIMEOUT|30|Number of seconds to set the Lambda timeout to.|
 
 ### Serverless Framework
@@ -44,7 +52,7 @@ This will run the application at [http://localhost:3003/dev/api](http://localhos
 
 ## Usage
 
-Currently, this API supports searching and retrieving data for [Collections](#collections), [Granules](#granules), [Services](#services), [Subscriptions](#subscriptions), [Tools](#tools) and [Variables](#variables).
+Currently, this API supports searching and retrieving data for [Collections](#collections), [Granules](#granules), [Grids](#grids), [Services](#services), [Subscriptions](#subscriptions), [Tools](#tools) and [Variables](#variables) from CMR.
 
 #### Optional Headers
 
@@ -54,14 +62,15 @@ GraphQL supports a few optional headers that can be used for various features an
 
 GraphQL accepts [Earthdata Login (EDL)](https://urs.earthdata.nasa.gov/) tokens via the `Authorization` header. If provided, this token will be provided to any CMR call made as part of the query. GraphQL will return errors if the token is invalid or expired in which case the client will need to handle the response accordingly.
 
-##### Identification
+Additionally, this token is used to request information pertaining to the attached users' access to data being queried. 
+
+##### Request / Application Identification (Highly Recommended)
 
 In order for us to best provide debugging, statistics, and to inform us of future feature work GraphQL accepts the `Client-Id` header that allows all clients to identifiy themselves. If provided, this value is passed to any CMR call made as part of the query and is used to determine usage patterns, helps debug issues by filtering down logs, and also will help determine priority of feature requests.
 
-##### Request Tracking
+##### Request Tracking (Highly Recommended)
 
 Logging is key to debugging, and to ensure that we can provide the best support to users' when issues may arise, GraphQL supports the `X-Request-Id` header. This header will be passed to any CMR call made as part of the query which will be prepended to any CMR logs that are generated as a result of a query. This value is also used in GraphQL logs so that we can associate our logs, CMR logs, and any logs you may have if debugging becomes necessary. We recommend setting this value with all requests in the event it is needed, it cannot be added retroactively.
-
 
 #### Queries
 
@@ -73,7 +82,7 @@ When querying for multiple items there are three high level parameters that can 
 
 ##### Cursor
 
-`cursor` tells GraphQL that you'd like to fetch the search after identifier out of the response header with the intent of harvesting data. To take advantage of the cursor you can then include it in subsequent queries until no data is returned.
+`cursor` tells GraphQL that you'd like to fetch the search after identifier out of the response header with the intent of harvesting data (or fetching multiple pages of results). To take advantage of the cursor you can then include it in subsequent queries until no data is returned.
 
 ###### First Request:
 
@@ -117,8 +126,10 @@ Which will return something similar to the following:
 
 A couple of things to keep in mind when using a cursor
 
-1. Subsequent queries will **not** accept new parameters, the search parameters provided in this initial query are used for *all* subsequent queries using the returned cursor value.
+1. Subsequent queries **require** that the same search parameters are sent to ensure that the same query is performed.
 2. Subsequent queries must be made **sequentially** (as of August 21, 2020) as the version of Elastic Search CMR uses does not support parallel queries using the same cursor value.
+
+When all results have been returned, the response will be an empty array and the `cursor` will return a value of `null`.
 
 ##### Facets
 
@@ -255,7 +266,7 @@ A subset of the supported arguments for [Collections](#collections) will be pass
 - polygon
 - temporal
 
-For all supported arguments and columns, see [the schema](src/types/granules.graphql).
+For all supported arguments and columns, see [the schema](src/types/granule.graphql).
 
 ##### Example Queries
 
@@ -275,6 +286,34 @@ For all supported arguments and columns, see [the schema](src/types/granules.gra
         items {
           conceptId
           title
+        }
+      }
+    }
+
+#### Grids
+
+For all supported arguments and columns, see [the schema](src/types/grids.graphql).
+
+##### Example Queries
+
+###### Single
+
+    {
+      grid(conceptId:"GRD1000000001-EXAMPLE") {
+        conceptId
+        title
+      }
+    }
+
+###### Multiple
+
+    {
+      grids {
+        items {
+          conceptId
+          name
+          longName
+          description
         }
       }
     }
@@ -491,13 +530,50 @@ For all supported arguments and columns, see [the schema](src/types/variable.gra
       }
     }
 
-#### Related Collections
+#### Duplicate Collections
 
-For all supported arguments and columns, see [the schema](src/types/collection.graphql).
+GraphQL queries CMR's GraphDB in order to find duplicate collections on supported fields. These duplicate collections can be returned as part of the Collection type response.
+
+`duplicateCollections` will return collections that are deemed a duplicate of the parent collection, generally determined by one collection being available on-premisis and the other in the cloud.
+
+
+##### Example Queries
+
+    {
+      conceptId
+      duplicateCollections {
+        count
+        items {
+          id
+          doi
+          shortName
+          title
+        }
+      }
+    }
+
+##### Example Response
+
+    {
+      "conceptId": "C1000000001-EXAMPLE",
+      "duplicateCollections": {
+        "count": 2,
+        "items": [
+          {
+            "id": "C1000000002-EXAMPLE",
+            "doi": "10.5067954/SMP50-2NOCS",
+            "shortName": "SMAP_JPL_L2B_NRT_SSS_CAP_V5",
+            "title": "JPL SMAP Level 2B Near Real-time CAP Sea Surface Salinity V5.0 Validated Dataset"
+          }
+        ]
+      }
+    }
+
+#### Related Collections
 
 GraphQL queries CMR's GraphDB in order to find related collections on supported fields. These related collections can be returned as part of the Collection type response.
 
-`relatedCollections` will return related collections, with those collections that share the most relationships first
+`relatedCollections` will return related collections, with those collections that share the most relationships first.
 
 We use [GraphQL interfaces](https://graphql.org/learn/schema/#interfaces) in order to return the different relationship types as siblings in the return object.
 
@@ -535,12 +611,12 @@ We use [GraphQL interfaces](https://graphql.org/learn/schema/#interfaces) in ord
 ##### Example Response
 
     {
-      "conceptId": "C1200400842-GHRC",
+      "conceptId": "C1000000001-EXAMPLE",
       "relatedCollections": {
         "count": 18,
         "items": [
           {
-            "id": "C1200400792-GHRC",
+            "id": "C1000000002-EXAMPLE",
             "title": "Infrared Global Geostationary Composite Demo 4",
             "doi": "10.5067/GHRC/AMSU-A/DATA303",
             "relationships": [
@@ -566,12 +642,10 @@ We use [GraphQL interfaces](https://graphql.org/learn/schema/#interfaces) in ord
       }
     }
 
-#### Local graph database:
+#### Local Graph Database
 
-Normally running graphQl with `serverless offline` will utilize the `(cmr.earthdata.nasa.gov/graphdb)` endpoint, to query against related collections and duplicate collections in the graph database. To send queries to a locally running graph database 
+Normally running graphQl with `serverless offline` will utilize the `(cmr.earthdata.nasa.gov/graphdb)` endpoint to query against related collections and duplicate collections in the graph database. To send queries to a locally running graph database we can use gremlin-server running docker to expose an HTTP endpoint. This is launched by running
 
-We can use a docker gremlin-server that exposes an HTTP endpoint. This is launched by running
-docker run -it -p 8182:8182 tinkerpop/gremlin-server conf gremlin-server-rest-modern.yaml
-as well as altering the `gremlinPath` in `(src/utils/cmrGraphDb.js)` to the localhost address the gremlin server is running on.
+    docker run -it -p 8182:8182 tinkerpop/gremlin-server conf gremlin-server-rest-modern.yaml
 
-We may add data to this local graph database with http POST requests to the gremlin-server
+From there, you can add data to this local graph database using http POST requests to the gremlin-server or invoking the bootstrap lambda using `--local`
