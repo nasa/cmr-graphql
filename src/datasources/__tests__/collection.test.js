@@ -437,7 +437,7 @@ describe('collection', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/collections\.json/, 'data_center%5B%5D=EDSC')
+        .post(/collections\.json/, 'data_center[]=EDSC')
         .reply(200, {
           feed: {
             entry: [{
@@ -454,7 +454,7 @@ describe('collection', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/collections\.umm_json/, 'data_center%5B%5D=EDSC')
+        .post(/collections\.umm_json/, 'data_center[]=EDSC')
         .reply(200, {
           items: [{
             meta: {

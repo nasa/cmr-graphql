@@ -690,7 +690,7 @@ describe('Collection', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/granules\.json/, 'page_size=20&bounding_box=-90.08940124511719%2C41.746426050239336%2C-82.33992004394531%2C47.84755587105307&collection_concept_id=C100000-EDSC')
+        .post(/granules\.json/, 'page_size=20&bounding_box=-90.08940124511719,41.746426050239336,-82.33992004394531,47.84755587105307&collection_concept_id=C100000-EDSC')
         .reply(200, {
           feed: {
             entry: [{
@@ -706,7 +706,7 @@ describe('Collection', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/granules\.json/, 'page_size=20&bounding_box=-90.08940124511719%2C41.746426050239336%2C-82.33992004394531%2C47.84755587105307&collection_concept_id=C100001-EDSC')
+        .post(/granules\.json/, 'page_size=20&bounding_box=-90.08940124511719,41.746426050239336,-82.33992004394531,47.84755587105307&collection_concept_id=C100001-EDSC')
         .reply(200, {
           feed: {
             entry: [{
@@ -907,7 +907,7 @@ describe('Collection', () => {
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .post(/services\.json/, 'concept_id%5B%5D=S100000-EDSC&concept_id%5B%5D=S100001-EDSC&page_size=2')
+            .post(/services\.json/, 'concept_id[]=S100000-EDSC&concept_id[]=S100001-EDSC&page_size=2')
             .reply(200, {
               items: [{
                 concept_id: 'S100000-EDSC'
@@ -921,7 +921,7 @@ describe('Collection', () => {
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .post(/services\.json/, 'concept_id%5B%5D=S100002-EDSC&concept_id%5B%5D=S100003-EDSC&page_size=2')
+            .post(/services\.json/, 'concept_id[]=S100002-EDSC&concept_id[]=S100003-EDSC&page_size=2')
             .reply(200, {
               items: [{
                 concept_id: 'S100002-EDSC'
@@ -1209,7 +1209,7 @@ describe('Collection', () => {
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .post(/tools\.json/, 'concept_id%5B%5D=T100000-EDSC&concept_id%5B%5D=T100001-EDSC&page_size=2')
+            .post(/tools\.json/, 'concept_id[]=T100000-EDSC&concept_id[]=T100001-EDSC&page_size=2')
             .reply(200, {
               items: [{
                 concept_id: 'T100000-EDSC'
@@ -1223,7 +1223,7 @@ describe('Collection', () => {
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .post(/tools\.json/, 'concept_id%5B%5D=T100002-EDSC&concept_id%5B%5D=T100003-EDSC&page_size=2')
+            .post(/tools\.json/, 'concept_id[]=T100002-EDSC&concept_id[]=T100003-EDSC&page_size=2')
             .reply(200, {
               items: [{
                 concept_id: 'T100002-EDSC'
@@ -1421,7 +1421,7 @@ describe('Collection', () => {
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .post(/variables\.json/, 'concept_id%5B%5D=V100000-EDSC&concept_id%5B%5D=V100001-EDSC&page_size=2')
+            .post(/variables\.json/, 'concept_id[]=V100000-EDSC&concept_id[]=V100001-EDSC&page_size=2')
             .reply(200, {
               items: [{
                 concept_id: 'V100000-EDSC'
@@ -1435,7 +1435,7 @@ describe('Collection', () => {
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .post(/variables\.json/, 'concept_id%5B%5D=V100002-EDSC&concept_id%5B%5D=V100003-EDSC&page_size=2')
+            .post(/variables\.json/, 'concept_id[]=V100002-EDSC&concept_id[]=V100003-EDSC&page_size=2')
             .reply(200, {
               items: [{
                 concept_id: 'V100002-EDSC'

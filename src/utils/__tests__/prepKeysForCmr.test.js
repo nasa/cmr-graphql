@@ -7,7 +7,7 @@ describe('prepKeysForCmr', () => {
     }
     const nonIndexedKeys = ['a']
 
-    expect(prepKeysForCmr(params, nonIndexedKeys)).toEqual('a%5B%5D=a&a%5B%5D=b')
+    expect(prepKeysForCmr(params, nonIndexedKeys)).toEqual('a[]=a&a[]=b')
   })
 
   test('does not remove the index of parameters', () => {
@@ -15,6 +15,6 @@ describe('prepKeysForCmr', () => {
       a: ['a', 'b']
     }
 
-    expect(prepKeysForCmr(params)).toEqual('a%5B0%5D=a&a%5B1%5D=b')
+    expect(prepKeysForCmr(params)).toEqual('a[0]=a&a[1]=b')
   })
 })
