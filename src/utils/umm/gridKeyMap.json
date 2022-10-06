@@ -4,14 +4,9 @@
     "name"
   ],
   "ummKeyMappings": {
-    "conceptId": "meta.concept-id",
-    "nativeId": "meta.nativeid",
-    "relatedUrls": "umm.RelatedURLs",
-    "organization": "umm.Organization",
-    "contactMechanisms": "umm.Organization.ContactMechanisms",
     "additionalAttribute": "umm.AdditionalAttribute",
     "conceptId": "meta.concept-id",
-    "contactMechanisms": "umm.ContactMechanisms",
+    "contactMechanisms": "umm.Organization.ContactMechanisms",
     "description": "umm.Description",
     "dimensionSize": "umm.GridDefinition.DimensionSize",
     "gridDefinition": "umm.GridDefinition",
