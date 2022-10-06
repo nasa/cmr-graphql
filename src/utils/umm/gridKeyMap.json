@@ -10,16 +10,21 @@
     "organization": "umm.Organization",
     "contactMechanisms": "umm.Organization.ContactMechanisms",
     "additionalAttribute": "umm.AdditionalAttribute",
+    "conceptId": "meta.concept-id",
+    "contactMechanisms": "umm.ContactMechanisms",
     "description": "umm.Description",
-    "gridDefinition": "umm.GridDefinition",
     "dimensionSize": "umm.GridDefinition.DimensionSize",
-    "resolution": "umm.GridDefinition.Resolution",
-    "spatialExtent": "umm.GridDefinition.SpatialExtent",
-    "scaleExtent": "umm.GridDefinition.ScaleExtent",
-    "version": "umm.Version",
+    "gridDefinition": "umm.GridDefinition",
+    "longName": "umm.LongName",
     "metadataDate": "umm.MetadataDate",
-    "name": "umm.Name",
     "metadataSpecification": "umm.MetadataSpecification",
-    "longName": "umm.LongName"
+    "name": "umm.Name",
+    "nativeId": "meta.nativeid",
+    "organization": "umm.Organization",
+    "relatedUrls": "umm.RelatedURLs",
+    "resolution": "umm.GridDefinition.Resolution",
+    "scaleExtent": "umm.GridDefinition.ScaleExtent",
+    "spatialExtent": "umm.GridDefinition.SpatialExtent",
+    "version": "umm.Version"
   }
 }
