@@ -60,18 +60,14 @@ type Query {
   grids(
     "grids query parameters"
     params: GridsInput
-   "The unique concept id assigned to the grids."
-    conceptId: [String]
-   "Cursor that points to the a specific position in a list of requested records."
-    cursor: String @deprecated(reason: "Use `params.cursor`")
-    "The number of grids requested by the user."
-    limit: Int @deprecated(reason: "Use `params.limit`")
   ): GridList!
 
   grid(
     params: GridInput
     "The unique concept id assigned to the grid."
     conceptId: String
+    description: String
+    name: String
+    longName: String
   ): Grid
 }
-

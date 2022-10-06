@@ -8,7 +8,7 @@
     "nativeId": "meta.nativeid",
     "relatedUrls": "umm.RelatedURLs",
     "organization": "umm.Organization",
-    "contactMechanisms": "umm.ContactMechanisms",
+    "contactMechanisms": "umm.Organization.ContactMechanisms",
     "additionalAttribute": "umm.AdditionalAttribute",
     "description": "umm.Description",
     "gridDefinition": "umm.GridDefinition",

@@ -49,8 +49,9 @@ describe('Grid', () => {
             },
             umm: {
               RelatedURLs: {},
-              Organization: {},
-              ContactMechanisms: {},
+              Organization: {
+                ContactMechanisms: {}
+              },
               AdditionalAttribute: {},
               Description: 'grid_desc',
               GridDefinition: {
@@ -104,7 +105,9 @@ describe('Grid', () => {
           items: [{
             conceptId: 'GRD100000-EDSC',
             relatedUrls: {},
-            organization: {},
+            organization: {
+              contactMechanisms: {}
+            },
             contactMechanisms: {},
             additionalAttribute: {},
             description: 'grid_desc',
@@ -134,7 +137,7 @@ describe('Grid', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/grids\.json/, 'page_size=2')
+        .post(/grids\.json/)
         .reply(200, {
           items: [{
             concept_id: 'GRD100000-EDSC'
@@ -146,7 +149,7 @@ describe('Grid', () => {
       const response = await server.executeOperation({
         grids: {},
         query: `{
-          grids(limit:2) {
+          grids{
             items {
               conceptId
             }
