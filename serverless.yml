@@ -19,7 +19,7 @@ provider:
     edlClientId: ${self:custom.variables.edlClientId}
     edlKeyId: ${self:custom.variables.edlKeyId}
     edlJwk: ${self:custom.variables.edlJwk}
-    sslCertFile: ${self:custom.variables.sslCertFile}
+    dmmtSslCert: ${self:custom.variables.dmmtSslCert}
 
     # Timeout for lambda
     lambdaTimeout: ${env:LAMBDA_TIMEOUT, '30'}
@@ -162,7 +162,7 @@ custom:
     edlClientId: ${env:EDL_CLIENT_ID, ''}
     edlKeyId: ${env:EDL_KEY_ID, ''}
     edlJwk: ${env:EDL_JWK, ''}
-    sslCertFile: ${env:SSL_CERT_FILE, 'certificates/fcpca_combined.pem'}
+    dmmtSslCert: ${env:DMMT_SSL_CERT, ''}
 
   # Default is 3000 so to avoid conflicts with other applications we'll define a new port
   serverless-offline:
