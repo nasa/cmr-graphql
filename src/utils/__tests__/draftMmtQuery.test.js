@@ -18,7 +18,7 @@ describe('draftMmtQuery', () => {
 
   describe('with a custom CA cert file', () => {
     beforeEach(() => {
-      process.env.sslCertFile = 'certificates/fcpca_combined.pem'
+      process.env.dmmtSslCert = '-----BEGIN CERTIFICATE-----\nmock-certificate\n-----END CERTIFICATE-----'
     })
 
     afterEach(() => {
@@ -60,7 +60,7 @@ describe('draftMmtQuery', () => {
 
   describe('without a custom CA cert file', () => {
     beforeEach(() => {
-      process.env.sslCertFile = 'false'
+      process.env.dmmtSslCert = 'false'
     })
 
     afterEach(() => {

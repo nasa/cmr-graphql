@@ -1,6 +1,5 @@
 import https from 'https'
 import axios from 'axios'
-import fs from 'fs'
 
 import snakeCaseKeys from 'snakecase-keys'
 
@@ -43,12 +42,15 @@ export const draftMmtQuery = ({
 
   let httpsAgent
 
-  // Only use the sslCertFile if it has been defined
-  if (process.env.sslCertFile && process.env.sslCertFile !== 'false') {
+  // Only use the dmmtSslCert if it has been defined
+  if (process.env.dmmtSslCert && process.env.dmmtSslCert !== 'false') {
+    const { dmmtSslCert } = process.env
+
     // Adds additional CA certificate for requests to Draft MMT
-    const certFile = fs.readFileSync(process.env.sslCertFile)
     httpsAgent = new https.Agent({
-      ca: certFile
+      // In order to format the cert correctly when loading from a bamboo variable,
+      // we need to replace spaces with new lines, except when the space is followed by `CERTIFICATE`
+      ca: dmmtSslCert.replace(/[\s](?!CERTIFICATE)/g, '\n')
     })
   }
 

@@ -38,7 +38,7 @@ dockerRun() {
         -e "LOG_DESTINATION_ARN=$bamboo_LOG_DESTINATION_ARN" \
         -e "MMT_ROOT_URL=$bamboo_MMT_ROOT_URL" \
         -e "NODE_ENV=production" \
-        -e "SSL_CERT_FILE=$bamboo_SSL_CERT_FILE" \
+        -e "DMMT_SSL_CERT=$bamboo_DMMT_SSL_CERT" \
         -e "SUBNET_ID_A=$bamboo_SUBNET_ID_A" \
         -e "SUBNET_ID_B=$bamboo_SUBNET_ID_B" \
         -e "VPC_ID=$bamboo_VPC_ID" \
