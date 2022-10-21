@@ -1,5 +1,4 @@
 type Granule {
-  "Spatial coverage of the granule."
   boxes: [String]
   "Boolean value displaying whether or not a granule has browse imagery."
   browseFlag: Boolean
@@ -35,9 +34,7 @@ type Granule {
   orbitCalculatedSpatialDomains: JSON
   "Native format of the granule."
   originalFormat: String
-  "A list of associated lat/lon points."
   points: [String]
-  "Spatial coverage of the collection."
   polygons: [String]
   "Granule ID provided by the producer."
   producerGranuleId: String
@@ -109,6 +106,8 @@ input GranulesInput {
   point: [String]
   "Polygon points are provided in counter-clockwise order. The last point should match the first point to close the polygon. The values are listed comma separated in longitude latitude order, i.e. lon1, lat1, lon2, lat2, lon3, lat3, and so on."
   polygon: [String]
+  "Search for granules using the provider parameter."
+  provider: [String]
   "Search for granules using the readable_granule_name parameter."
   readableGranuleName: [String]
   "One or more sort keys can be specified to impact searching. Fields can be prepended with a '-' to sort in descending order. Ascending order is the default but + can be used to explicitly request ascending."
