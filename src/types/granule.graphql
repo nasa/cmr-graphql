@@ -1,4 +1,5 @@
 type Granule {
+  "A list of boxes representing spatial coverage."
   boxes: [String]
   "Boolean value displaying whether or not a granule has browse imagery."
   browseFlag: Boolean
@@ -22,6 +23,8 @@ type Granule {
   granuleSize: Float
   "The Universal Reference ID of the granule referred by the data provider. This ID is unique per data provider."
   granuleUr: String
+  "A list of lines representing spatial coverage."
+  lines: [String]
   "A list of any URLs in the granule."
   links: JSON
   "The name of the geophysical parameter expressed in the data as well as associated quality flags and quality statistics. The quality statistics element contains measures of quality for the granule. The parameters used to set these measures are not preset and will be determined by the data producer. Each set of measures can occur many times either for the granule as a whole or for individual parameters. The quality flags contain the science, operational and automatic quality flags which indicate the overall quality assurance levels of specific parameter values within a granule."
@@ -34,7 +37,9 @@ type Granule {
   orbitCalculatedSpatialDomains: JSON
   "Native format of the granule."
   originalFormat: String
+  "A list of lat/lng points representing spatial coverage."
   points: [String]
+  "A list of polygons representing spatial coverage."
   polygons: [String]
   "Granule ID provided by the producer."
   producerGranuleId: String
