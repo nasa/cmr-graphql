@@ -14,5 +14,28 @@ export default {
 
       return firstResult
     }
+  },
+  Granule: {
+    collection: async (source, args, { dataSources, headers }, info) => {
+      // If collection is requested, collectionConceptId will be included in the response
+      const { collectionConceptId } = source
+
+      const requestedParams = handlePagingParams({
+        conceptId: collectionConceptId,
+        ...args
+      })
+
+      // Request the collection information
+      const result = await dataSources.collectionSource(
+        requestedParams,
+        headers,
+        parseResolveInfo(info)
+      )
+
+      // The collection will be the first value in the array
+      const [firstResult] = result
+
+      return firstResult
+    }
   }
 }

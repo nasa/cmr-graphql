@@ -33,6 +33,7 @@ export default class Granule extends Concept {
       'orbit_number',
       'point',
       'polygon',
+      'provider',
       'readable_granule_name',
       'sort_key',
       'temporal',
@@ -61,6 +62,7 @@ export default class Granule extends Concept {
       'orbit_number',
       'point',
       'polygon',
+      'provider',
       'readable_granule_name',
       'sort_key',
       'temporal',
@@ -82,6 +84,7 @@ export default class Granule extends Concept {
       'line',
       'point',
       'polygon',
+      'provider',
       'readable_granule_name',
       'sort_key'
     ])

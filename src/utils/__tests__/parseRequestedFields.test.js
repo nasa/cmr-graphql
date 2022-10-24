@@ -409,4 +409,47 @@ describe('parseRequestedFields', () => {
       })
     })
   })
+
+  describe('when a collection is requested from within a granule without collectionConceptId', () => {
+    test('requestedFields includes conceptId', () => {
+      const requestInfo = {
+        name: 'granule',
+        alias: 'granule',
+        args: {
+          params: {
+            conceptId: 'G1000-TEST'
+          }
+        },
+        fieldsByTypeName: {
+          Granule: {
+            collection: {
+              name: 'collection',
+              alias: 'collection',
+              args: {},
+              fieldsByTypeName: {
+                Collection: {
+                  conceptId: {
+                    name: 'conceptId',
+                    alias: 'conceptId',
+                    args: {},
+                    fieldsByTypeName: {}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      const requestedFields = parseRequestedFields(requestInfo, keyMap, 'granule')
+
+      expect(requestedFields).toEqual({
+        jsonKeys: ['collection', 'collectionConceptId'],
+        metaKeys: [],
+        ummKeys: [],
+        ummKeyMappings,
+        isList: false
+      })
+    })
+  })
 })
