@@ -42,7 +42,7 @@ type Granule {
   "A list of lat/lng points representing spatial coverage."
   points: [String]
   "A list of polygons representing spatial coverage."
-  polygons: [String]
+  polygons: JSON
   "Granule ID provided by the producer."
   producerGranuleId: String
   "Dates related to activities involving the the granule and the data provider database with the exception for Delete. For Create, Update, and Insert the date is the date that the granule file is created, updated, or inserted into the provider database by the provider. Delete is the date that the CMR should delete the granule metadata record from its repository."
