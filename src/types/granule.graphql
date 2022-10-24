@@ -3,6 +3,8 @@ type Granule {
   boxes: [String]
   "Boolean value displaying whether or not a granule has browse imagery."
   browseFlag: Boolean
+  "The parent collection."
+  collection: Collection
   "The concept id of the parent CMR collection."
   collectionConceptId: String
   "A percentage value indicating how much of the area of a granule (the EOSDIS data unit) has been obscured by clouds. It is worth noting that there are many different measures of cloud cover within the EOSDIS data holdings and that the cloud cover parameter that is represented in the archive is dataset-specific."
