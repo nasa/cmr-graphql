@@ -90,7 +90,7 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
     ]
   }
 
-  if (name === 'granule') {
+  if (name === 'granule' || name === 'granules') {
     // If a user has requested the collection when making a granule query, but has not requested the
     // collectionConceptId, push the collection conceptId onto the requested fields.
     if (requestedFields.includes('collection') && !requestedFields.includes('collectionConceptId')) {
@@ -98,7 +98,7 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
     }
   }
 
-  if (name === 'collections') {
+  if (name === 'collection' || name === 'collections') {
     // If a user has requested granules, subscriptions, relatedCollections or duplicateCollections, from
     // within a collection request the resolver will pull the conceptId and provide
     // it to the granules request but if a user doesn't explicity ask for the
