@@ -24,6 +24,7 @@ import variableSource from '../datasources/variable'
 
 import { downcaseKeys } from '../utils/downcaseKeys'
 import { verifyEDLJwt } from '../utils/verifyEDLJwt'
+import { getRedisClient } from '../utils/getRedisClient'
 
 // Creating the server
 const server = new ApolloServer({
@@ -77,9 +78,12 @@ const server = new ApolloServer({
     // If the client has identified themselves using Client-Id supply it to CMR
     if (clientId) requestHeaders['Client-Id'] = clientId
 
+    const redisClient = getRedisClient()
+
     return {
       ...context,
-      headers: requestHeaders
+      headers: requestHeaders,
+      redisClient
     }
   },
   // An object that goes to the 'context' argument when executing resolvers
