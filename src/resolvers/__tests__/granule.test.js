@@ -16,13 +16,19 @@ import {
 import toolSource from '../../datasources/tool'
 import variableSource from '../../datasources/variable'
 
+const redisMock = {
+  get: jest.fn(),
+  set: jest.fn()
+}
+
 const server = new ApolloServer({
   typeDefs,
   resolvers,
   context: () => ({
     headers: {
       'CMR-Request-Id': 'abcd-1234-efgh-5678'
-    }
+    },
+    redisClient: redisMock
   }),
   dataSources: () => ({
     collectionSource,
@@ -36,13 +42,14 @@ const server = new ApolloServer({
   })
 })
 
-describe('Collection', () => {
+describe('Granule', () => {
   const OLD_ENV = process.env
 
   beforeEach(() => {
     process.env = { ...OLD_ENV }
 
     process.env.cmrRootUrl = 'http://example-cmr.com'
+    process.env.cacheKeyExpireSeconds = '3600'
   })
 
   afterEach(() => {
@@ -300,60 +307,106 @@ describe('Collection', () => {
   })
 
   describe('Granule', () => {
-    test('collection', async () => {
-      nock(/example-cmr/)
-        .defaultReplyHeaders({
-          'CMR-Took': 7,
-          'CMR-Request-Id': 'abcd-1234-efgh-5678'
-        })
-        .post(/granules\.json/)
-        .reply(200, {
-          feed: {
-            entry: [{
-              id: 'G1000-TEST',
-              collectionConceptId: 'C1000-TEST'
-            }, {
-              id: 'G1001-TEST',
-              collectionConceptId: 'C1000-TEST'
-            }]
-          }
+    describe('collection', () => {
+      test('returns the collection from CMR', async () => {
+        redisMock.get.mockImplementationOnce(() => null)
+
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .post(/granules\.json/)
+          .reply(200, {
+            feed: {
+              entry: [{
+                id: 'G1000-TEST',
+                collection_concept_id: 'C1000-TEST'
+              }]
+            }
+          })
+
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .post(/collections\.json/)
+          .reply(200, {
+            feed: {
+              entry: [{
+                id: 'C1000-TEST'
+              }]
+            }
+          })
+
+        const response = await server.executeOperation({
+          variables: {
+            conceptId: 'G1000-TEST'
+          },
+          query: `{
+            granule {
+              collection {
+                conceptId
+              }
+            }
+          }`
         })
 
-      nock(/example-cmr/)
-        .defaultReplyHeaders({
-          'CMR-Took': 7,
-          'CMR-Request-Id': 'abcd-1234-efgh-5678'
-        })
-        .post(/collections\.json/)
-        .reply(200, {
-          feed: {
-            entry: [{
-              id: 'C1000-TEST'
-            }]
-          }
-        })
+        const { data } = response
 
-      const response = await server.executeOperation({
-        variables: {
-          conceptId: 'G1000-TEST'
-        },
-        query: `{
-          granule {
-            collection {
-              conceptId
+        expect(data).toEqual({
+          granule: {
+            collection: {
+              conceptId: 'C1000-TEST'
             }
           }
-        }`
+        })
       })
 
-      const { data } = response
+      test('returns the collection from the cache', async () => {
+        redisMock.get.mockImplementationOnce(() => JSON.stringify({
+          conceptId: 'C1000-TEST'
+        }))
 
-      expect(data).toEqual({
-        granule: {
-          collection: {
-            conceptId: 'C1000-TEST'
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .post(/granules\.json/)
+          .reply(200, {
+            feed: {
+              entry: [{
+                id: 'G1000-TEST',
+                collection_concept_id: 'C1000-TEST'
+              }]
+            }
+          })
+
+        const response = await server.executeOperation({
+          variables: {},
+          query: `{
+            granule(params: { conceptId: "G1000-TEST" }) {
+              collection {
+                conceptId
+              }
+            }
+          }`
+        })
+
+        const { data } = response
+
+        expect(data).toEqual({
+          granule: {
+            collection: {
+              conceptId: 'C1000-TEST'
+            }
           }
-        }
+        })
+
+        expect(redisMock.set).toHaveBeenCalledTimes(1)
+        expect(redisMock.set).toHaveBeenCalledWith('C1000-TEST-undefined-eyJuYW1lIjoiY29sbGVjdGlvbiIsImFsaWFzIjoiY29sbGVjdGlvbiIsImFyZ3MiOnt9LCJmaWVsZHNCeVR5cGVOYW1lIjp7IkNvbGxlY3Rpb24iOnsiY29uY2VwdElkIjp7Im5hbWUiOiJjb25jZXB0SWQiLCJhbGlhcyI6ImNvbmNlcHRJZCIsImFyZ3MiOnt9LCJmaWVsZHNCeVR5cGVOYW1lIjp7fX19fX0=', '{"conceptId":"C1000-TEST"}', 'EX', 3600)
       })
     })
   })

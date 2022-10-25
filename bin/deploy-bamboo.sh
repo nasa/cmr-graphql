@@ -26,6 +26,8 @@ dockerRun() {
     docker run \
         -e "AWS_ACCESS_KEY_ID=$bamboo_AWS_ACCESS_KEY_ID" \
         -e "AWS_SECRET_ACCESS_KEY=$bamboo_AWS_SECRET_ACCESS_KEY" \
+        -e "CACHE_KEY_EXPIRE_SECONDS=$bamboo_CACHE_KEY_EXPIRE_SECONDS" \
+        -e "CACHE_INSTANCE_CLASS=$bamboo_CACHE_INSTANCE_CLASS" \
         -e "CLOUDFRONT_BUCKET_NAME=$bamboo_CLOUDFRONT_BUCKET_NAME" \
         -e "CMR_ROOT_URL=$bamboo_CMR_ROOT_URL" \
         -e "DRAFT_MMT_ROOT_URL=$bamboo_DRAFT_MMT_ROOT_URL" \
