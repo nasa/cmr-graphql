@@ -11,8 +11,6 @@ export const getRedisClient = () => {
     host = 'localhost'
     port = '6379'
   }
-  console.log('🚀 ~ file: getRedisClient.js ~ line 12 ~ getRedisClient ~ host', host)
-  console.log('🚀 ~ file: getRedisClient.js ~ line 12 ~ getRedisClient ~ port', port)
 
   let redis
 

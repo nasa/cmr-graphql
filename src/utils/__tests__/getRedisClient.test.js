@@ -41,4 +41,14 @@ describe('getRedisClient', () => {
       })
     })
   })
+
+  test('logs an error message', () => {
+    Redis.mockImplementation(() => { throw new Error('mock-error') })
+    const consoleMock = jest.spyOn(console, 'log')
+
+    getRedisClient()
+
+    expect(consoleMock).toHaveBeenCalledTimes(1)
+    expect(consoleMock).toHaveBeenCalledWith('Error connecting to Redis: Error: mock-error')
+  })
 })
