@@ -1,35 +1,4 @@
 Resources:
-  ElastiCacheCluster:
-    Type: 'AWS::ElastiCache::CacheCluster'
-    Properties:
-      AutoMinorVersionUpgrade: 'true'
-      Engine: redis
-      CacheNodeType: ${env:CACHE_INSTANCE_CLASS}
-      NumCacheNodes: 1
-      VpcSecurityGroupIds:
-        - Fn::GetAtt: ElastiCacheVpcSecurityGroup.GroupId
-      CacheSubnetGroupName:
-        Ref: ElastiCacheSubnetGroup
-
-  ElastiCacheSubnetGroup:
-    Type: 'AWS::ElastiCache::SubnetGroup'
-    Properties:
-      Description: GraphQL ElastiCache subnet group
-      SubnetIds:
-        - ${env:SUBNET_ID_A}
-        - ${env:SUBNET_ID_B}
-
-  ElastiCacheVpcSecurityGroup:
-    Type: 'AWS::EC2::SecurityGroup'
-    Properties:
-      GroupDescription: Allow Lambdas to access elasticache
-      SecurityGroupIngress:
-        - CidrIp: '0.0.0.0/0'
-          IpProtocol: tcp
-          FromPort: 6379
-          ToPort: 6379
-      VpcId: ${env:VPC_ID}
-
   LambdaSecurityGroup:
     Type: 'AWS::EC2::SecurityGroup'
     Properties:
@@ -73,40 +42,14 @@ Resources:
                 Action:
                   - lambda:InvokeFunction
                 Resource: '*'
-              - Effect: Allow
-                Action:
-                  - elasticache:*
-                Resource: '*'
 
 # Output the following resources so that other stacks can access the values
 Outputs:
-  ElastiCacheEndpoint:
-    Value:
-      Fn::GetAtt:
-        - ElastiCacheCluster
-        - RedisEndpoint.Address
-    Export:
-      Name: ${self:provider.stage}-GraphQLElastiCacheEndpoint
-
-  ElastiCachePort:
-    Value:
-      Fn::GetAtt:
-        - ElastiCacheCluster
-        - RedisEndpoint.Port
-    Export:
-      Name: ${self:provider.stage}-GraphQLElastiCachePort
-
   GraphQLLambdaSecurityGroup:
     Value:
       Ref: LambdaSecurityGroup
     Export:
       Name: ${self:provider.stage}-GraphQLLambdaSecurityGroup
-
-  GraphQLElastiCacheVpcSecurityGroup:
-    Value:
-      Ref: ElastiCacheVpcSecurityGroup
-    Export:
-      Name: ${self:provider.stage}-GraphQLElastiCacheVpcSecurityGroup
 
   GraphQLApplicationRoleDev:
     Description: Role used to execute commands across the application

@@ -8,7 +8,6 @@ provider:
   vpc:
     securityGroupIds:
       - Ref: GraphQLLambdaSecurityGroup
-      - Ref: ElastiCacheVpcSecurityGroup
     subnetIds:
       - ${env:SUBNET_ID_A}
       - ${env:SUBNET_ID_B}
