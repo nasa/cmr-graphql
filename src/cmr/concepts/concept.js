@@ -40,6 +40,7 @@ export default class Concept {
     this.params = params
 
     this.arrayifiableKeys = {
+      collectionConceptIds: 'collectionConceptId',
       dataCenters: 'dataCenter',
       providers: 'provider'
     }
