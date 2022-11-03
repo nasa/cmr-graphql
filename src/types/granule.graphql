@@ -83,6 +83,8 @@ input GranulesInput {
   cloudCover: JSON
   "The unique concept id assigned to the parent collection."
   collectionConceptId: String
+  "A list of unique concept ids assigned to the parent collection."
+  collectionConceptIds: [String]
   "The unique concept id assigned to the granule."
   conceptId: [String]
   "Cursor that points to the a specific position in a list of requested records."
