@@ -66,7 +66,6 @@
     "graphql-parse-resolve-info": "^4.12.0",
     "graphql-tag": "^2.12.6",
     "graphql-type-json": "^0.3.2",
-    "ioredis": "^5.2.3",
     "jsonwebtoken": "^8.5.1",
     "jwks-rsa": "^2.1.4",
     "lodash": "^4.17.21",

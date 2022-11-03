@@ -32,17 +32,9 @@ provider:
     ummToolVersion: '1.1'
     ummVariableVersion: '1.7'
 
-    # Redis configuration
-    cacheHost:
-      Fn::ImportValue: ${self:provider.stage}-GraphQLElastiCacheEndpoint
-    cachePort:
-      Fn::ImportValue: ${self:provider.stage}-GraphQLElastiCachePort
-    cacheKeyExpireSeconds: ${self:custom.variables.cacheKeyExpireSeconds}
-
   vpc:
     securityGroupIds:
       - Fn::ImportValue: ${self:provider.stage}-GraphQLLambdaSecurityGroup
-      - Fn::ImportValue: ${self:provider.stage}-GraphQLElastiCacheVpcSecurityGroup
     subnetIds:
       - ${env:SUBNET_ID_A, 'subnetIdA'}
       - ${env:SUBNET_ID_B, 'subnetIdB'}
@@ -171,7 +163,6 @@ custom:
     edlKeyId: ${env:EDL_KEY_ID, ''}
     edlJwk: ${env:EDL_JWK, ''}
     dmmtSslCert: ${env:DMMT_SSL_CERT, ''}
-    cacheKeyExpireSeconds: ${env:CACHE_KEY_EXPIRE_SECONDS, '3600'}
 
   # Default is 3000 so to avoid conflicts with other applications we'll define a new port
   serverless-offline:

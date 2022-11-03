@@ -35,10 +35,6 @@ CMR-GraphQL uses a few environment variables for configuring runtime options:
 |DRAFT_MMT_ROOT_URL||URL to ping when retrieving draft metadata from Draft MMT e.g. https://draftmmt.earthdata.nasa.gov|
 |LAMBDA_TIMEOUT|30|Number of seconds to set the Lambda timeout to.|
 
-### Redis
-
-CMR-GraphQL uses Redis to cache some queries to improve performance (like when performing nested collection queries). You need to [install Redis locally](https://redis.io/docs/getting-started/installation/) in order to run CMR-GraphQL.
-
 ### Serverless Framework
 
 The local development environment for the static assets can be started by executing the command below in the project root directory:
