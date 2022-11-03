@@ -11,15 +11,16 @@ import { getUserPermittedGroups } from '../utils/getUserPermittedGroups'
  * @param {String} headers Headers to be passed to CMR.
  */
 export default async (
-  collection,
-  headers,
-  edlUsername
+  source,
+  context
 ) => {
   const {
     conceptId,
     doi,
     shortName
-  } = collection
+  } = source
+
+  const { edlUsername, headers } = context
 
   const { doi: doiDescription } = doi || {}
 

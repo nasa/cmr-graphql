@@ -114,7 +114,7 @@ describe('subscription#fetch', () => {
           }]
         })
 
-      const response = await subscriptionSourceFetch({}, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo)
+      const response = await subscriptionSourceFetch({}, { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' } }, requestInfo)
 
       expect(response).toEqual({
         count: 84,
@@ -147,7 +147,7 @@ describe('subscription#fetch', () => {
             }]
           })
 
-        const response = await subscriptionSourceFetch({}, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo)
+        const response = await subscriptionSourceFetch({}, { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' } }, requestInfo)
 
         expect(response).toEqual({
           count: 84,
@@ -176,7 +176,7 @@ describe('subscription#fetch', () => {
           }]
         })
 
-      const response = await subscriptionSourceFetch({}, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo)
+      const response = await subscriptionSourceFetch({}, { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' } }, requestInfo)
 
       expect(response).toEqual({
         count: 84,
@@ -203,7 +203,7 @@ describe('subscription#fetch', () => {
           }]
         })
 
-      const response = await subscriptionSourceFetch({ params: { concept_id: 'SUB100000-EDSC' } }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo)
+      const response = await subscriptionSourceFetch({ params: { concept_id: 'SUB100000-EDSC' } }, { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' } }, requestInfo)
 
       expect(response).toEqual({
         count: 84,
@@ -263,7 +263,7 @@ describe('subscription#fetch', () => {
           }]
         })
 
-      const response = await subscriptionSourceFetch({ params: { concept_id: 'SUB100000-EDSC' } }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo)
+      const response = await subscriptionSourceFetch({ params: { concept_id: 'SUB100000-EDSC' } }, { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' } }, requestInfo)
 
       expect(response).toEqual({
         count: 84,
@@ -285,7 +285,7 @@ describe('subscription#fetch', () => {
       })
 
     await expect(
-      subscriptionSourceFetch({ params: { conceptId: 'SUB100000-EDSC' } }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo)
+      subscriptionSourceFetch({ params: { conceptId: 'SUB100000-EDSC' } }, { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' } }, requestInfo)
     ).rejects.toThrow(Error)
   })
 })
@@ -354,7 +354,7 @@ describe('subscription#ingest', () => {
           query: 'polygon=-18,-78,-13,-74,-16,-73,-22,-77,-18,-78',
           subscriberId: 'testuser'
         }
-      }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo)
+      }, { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' } }, requestInfo)
 
       expect(response).toEqual({
         conceptId: 'SUB100000-EDSC',
@@ -384,7 +384,7 @@ describe('subscription#ingest', () => {
           query: 'polygon=-18,-78,-13,-74,-16,-73,-22,-77,-18,-78',
           subscriberId: 'testuser'
         }
-      }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo)
+      }, { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' } }, requestInfo)
 
       expect(response).toEqual({
         conceptId: 'SUB100000-EDSC',
@@ -411,7 +411,7 @@ describe('subscription#ingest', () => {
           query: 'polygon=-18,-78,-13,-74,-16,-73,-22,-77,-18,-78',
           subscriberId: 'testuser'
         }
-      }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo)
+      }, { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' } }, requestInfo)
     ).rejects.toThrow(Error)
   })
 })
@@ -476,7 +476,7 @@ describe('subscription#delete', () => {
           conceptId: 'SUB100000-EDSC',
           nativeId: 'test-guid'
         }
-      }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo)
+      }, { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' } }, requestInfo)
 
       expect(response).toEqual({
         conceptId: 'SUB100000-EDSC',
@@ -500,7 +500,7 @@ describe('subscription#delete', () => {
           conceptId: 'C100000-EDSC',
           nativeId: 'test-guid'
         }
-      }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo)
+      }, { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' } }, requestInfo)
     ).rejects.toThrow(Error)
   })
 })

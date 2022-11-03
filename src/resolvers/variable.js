@@ -4,11 +4,15 @@ import { handlePagingParams } from '../utils/handlePagingParams'
 
 export default {
   Query: {
-    variables: async (source, args, { dataSources, headers }, info) => (
-      dataSources.variableSource(handlePagingParams(args), headers, parseResolveInfo(info))
-    ),
-    variable: async (source, args, { dataSources, headers }, info) => {
-      const result = await dataSources.variableSource(args, headers, parseResolveInfo(info))
+    variables: async (source, args, context, info) => {
+      const { dataSources } = context
+
+      return dataSources.variableSource(handlePagingParams(args), context, parseResolveInfo(info))
+    },
+    variable: async (source, args, context, info) => {
+      const { dataSources } = context
+
+      const result = await dataSources.variableSource(args, context, parseResolveInfo(info))
 
       const [firstResult] = result
 
@@ -17,7 +21,9 @@ export default {
   },
 
   Variable: {
-    collections: async (source, args, { dataSources, headers }, info) => {
+    collections: async (source, args, context, info) => {
+      const { dataSources } = context
+
       // Pull out parent collection id to provide to the granules endpoint because cmr requires it
       const {
         conceptId
@@ -28,7 +34,7 @@ export default {
         ...args
       })
 
-      return dataSources.collectionSource(requestedParams, headers, parseResolveInfo(info))
+      return dataSources.collectionSource(requestedParams, context, parseResolveInfo(info))
     }
   }
 }

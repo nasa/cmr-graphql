@@ -4,13 +4,21 @@ import { handlePagingParams } from '../utils/handlePagingParams'
 
 export default {
   Query: {
-    subscriptions: async (source, args, { dataSources, headers }, info) => (
-      dataSources.subscriptionSourceFetch(handlePagingParams(args), headers, parseResolveInfo(info))
-    ),
-    subscription: async (source, args, { dataSources, headers }, info) => {
+    subscriptions: async (source, args, context, info) => {
+      const { dataSources } = context
+
+      return dataSources.subscriptionSourceFetch(
+        handlePagingParams(args),
+        context,
+        parseResolveInfo(info)
+      )
+    },
+    subscription: async (source, args, context, info) => {
+      const { dataSources } = context
+
       const result = await dataSources.subscriptionSourceFetch(
         args,
-        headers,
+        context,
         parseResolveInfo(info)
       )
 
@@ -21,7 +29,9 @@ export default {
   },
 
   Subscription: {
-    collection: async (source, args, { dataSources, headers }, info) => {
+    collection: async (source, args, context, info) => {
+      const { dataSources } = context
+
       // Pull out parent collection id to provide to the granules endpoint because cmr requires it
       const {
         collectionConceptId
@@ -38,7 +48,7 @@ export default {
 
       const result = await dataSources.collectionSource(
         requestedParams,
-        headers,
+        context,
         parseResolveInfo(info)
       )
 
@@ -49,28 +59,34 @@ export default {
   },
 
   Mutation: {
-    createSubscription: async (source, args, { dataSources, headers }, info) => {
+    createSubscription: async (source, args, context, info) => {
+      const { dataSources } = context
+
       const result = await dataSources.subscriptionSourceIngest(
         args,
-        headers,
+        context,
         parseResolveInfo(info)
       )
 
       return result
     },
-    updateSubscription: async (source, args, { dataSources, headers }, info) => {
+    updateSubscription: async (source, args, context, info) => {
+      const { dataSources } = context
+
       const result = await dataSources.subscriptionSourceIngest(
         args,
-        headers,
+        context,
         parseResolveInfo(info)
       )
 
       return result
     },
-    deleteSubscription: async (source, args, { dataSources, headers }, info) => {
+    deleteSubscription: async (source, args, context, info) => {
+      const { dataSources } = context
+
       const result = await dataSources.subscriptionSourceDelete(
         args,
-        headers,
+        context,
         parseResolveInfo(info)
       )
 

@@ -15,12 +15,15 @@ import { mergeParams } from '../utils/mergeParams'
  * @param {String} headers Headers to be passed to CMR.
  */
 export default async (
-  conceptId,
+  source,
   params,
-  headers,
-  parsedInfo,
-  edlUsername
+  context,
+  parsedInfo
 ) => {
+  const { conceptId } = source
+
+  const { edlUsername, headers } = context
+
   // Parse the request info to find the requested types in the query
   const { fieldsByTypeName } = parsedInfo
   const { RelatedCollectionsList: relatedCollectionsList } = fieldsByTypeName
