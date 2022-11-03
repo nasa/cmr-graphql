@@ -4,7 +4,9 @@ import variableKeyMap from '../utils/umm/variableKeyMap.json'
 
 import Variable from '../cmr/concepts/variable'
 
-export default async (params, headers, parsedInfo) => {
+export default async (params, context, parsedInfo) => {
+  const { headers } = context
+
   const requestInfo = parseRequestedFields(parsedInfo, variableKeyMap, 'variable')
 
   const variable = new Variable(headers, requestInfo, params)

@@ -108,7 +108,7 @@ describe('service', () => {
           }]
         })
 
-      const response = await serviceDatasource({}, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'service')
+      const response = await serviceDatasource({}, { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' } }, requestInfo)
 
       expect(response).toEqual({
         count: 84,
@@ -141,7 +141,7 @@ describe('service', () => {
             }]
           })
 
-        const response = await serviceDatasource({}, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'service')
+        const response = await serviceDatasource({}, { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' } }, requestInfo)
 
         expect(response).toEqual({
           count: 84,
@@ -170,7 +170,7 @@ describe('service', () => {
           }]
         })
 
-      const response = await serviceDatasource({}, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'service')
+      const response = await serviceDatasource({}, { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' } }, requestInfo)
 
       expect(response).toEqual({
         count: 84,
@@ -197,7 +197,7 @@ describe('service', () => {
           }]
         })
 
-      const response = await serviceDatasource({ params: { concept_id: 'S100000-EDSC' } }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'service')
+      const response = await serviceDatasource({ params: { concept_id: 'S100000-EDSC' } }, { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' } }, requestInfo)
 
       expect(response).toEqual({
         count: 84,
@@ -263,7 +263,7 @@ describe('service', () => {
           }]
         })
 
-      const response = await serviceDatasource({ params: { concept_id: 'S100000-EDSC' } }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'service')
+      const response = await serviceDatasource({ params: { concept_id: 'S100000-EDSC' } }, { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' } }, requestInfo)
 
       expect(response).toEqual({
         count: 84,
@@ -285,7 +285,7 @@ describe('service', () => {
       })
 
     await expect(
-      serviceDatasource({ params: { conceptId: 'S100000-EDSC' } }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'service')
+      serviceDatasource({ params: { conceptId: 'S100000-EDSC' } }, { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' } }, requestInfo)
     ).rejects.toThrow(Error)
   })
 })

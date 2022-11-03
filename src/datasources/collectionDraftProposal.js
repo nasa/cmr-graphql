@@ -4,7 +4,9 @@ import collectionDraftProposalKeyMap from '../utils/umm/collectionDraftProposalK
 
 import CollectionDraftProposal from '../cmr/concepts/collectionDraftProposal'
 
-export default async (params, headers, parsedInfo) => {
+export default async (params, context, parsedInfo) => {
+  const { headers } = context
+
   const requestInfo = parseRequestedFields(parsedInfo, collectionDraftProposalKeyMap, 'collectionDraftProposal')
 
   const collectionDraftProposal = new CollectionDraftProposal(headers, requestInfo, params)
