@@ -3,11 +3,14 @@ import { handlePagingParams } from '../utils/handlePagingParams'
 
 export default {
   Query: {
-    grids: async (source, args, { dataSources, headers }, info) => (
-      dataSources.gridSource(handlePagingParams(args), headers, parseResolveInfo(info))
-    ),
-    grid: async (source, args, { dataSources, headers }, info) => {
-      const result = await dataSources.gridSource(args, headers, parseResolveInfo(info))
+    grids: async (source, args, context, info) => {
+      const { dataSources } = context
+
+      return dataSources.gridSource(handlePagingParams(args), context, parseResolveInfo(info))
+    },
+    grid: async (source, args, context, info) => {
+      const { dataSources } = context
+      const result = await dataSources.gridSource(args, context, parseResolveInfo(info))
 
       const [firstResult] = result
 

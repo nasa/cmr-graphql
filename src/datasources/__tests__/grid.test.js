@@ -107,7 +107,7 @@ describe('grid', () => {
             }
           }]
         })
-      const response = await gridDatasource({}, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'grid')
+      const response = await gridDatasource({}, { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' } }, requestInfo)
 
       expect(response).toEqual({
         count: 84,
@@ -140,7 +140,7 @@ describe('grid', () => {
             }]
           })
 
-        const response = await gridDatasource({}, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'grid')
+        const response = await gridDatasource({}, { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' } }, requestInfo)
 
         expect(response).toEqual({
           count: 84,
@@ -169,7 +169,7 @@ describe('grid', () => {
           }]
         })
 
-      const response = await gridDatasource({}, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'grid')
+      const response = await gridDatasource({}, { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' } }, requestInfo)
 
       expect(response).toEqual({
         count: 84,
@@ -196,7 +196,7 @@ describe('grid', () => {
           }]
         })
 
-      const response = await gridDatasource({ params: { concept_id: 'GRD100000-EDSC' } }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'grid')
+      const response = await gridDatasource({ params: { concept_id: 'GRD100000-EDSC' } }, { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' } }, requestInfo, 'grid')
 
       expect(response).toEqual({
         count: 84,
@@ -262,7 +262,7 @@ describe('grid', () => {
           }]
         })
 
-      const response = await gridDatasource({ params: { concept_id: 'GRD100000-EDSC' } }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'grid')
+      const response = await gridDatasource({ params: { concept_id: 'GRD100000-EDSC' } }, { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' } }, requestInfo)
 
       expect(response).toEqual({
         count: 84,
@@ -284,7 +284,7 @@ describe('grid', () => {
       })
 
     await expect(
-      gridDatasource({ params: { conceptId: 'GRD100000-EDSC' } }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'grid')
+      gridDatasource({ params: { conceptId: 'GRD100000-EDSC' } }, { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' } }, requestInfo)
     ).rejects.toThrow(Error)
   })
 })

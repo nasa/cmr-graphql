@@ -4,8 +4,9 @@ import gridKeyMap from '../utils/umm/gridKeyMap.json'
 
 import Grid from '../cmr/concepts/grid'
 
-export default async (params, headers, parsedInfo) => {
+export default async (params, context, parsedInfo) => {
   const requestInfo = parseRequestedFields(parsedInfo, gridKeyMap, 'grid')
+  const { headers } = context
 
   const grid = new Grid(headers, requestInfo, params)
 
