@@ -139,7 +139,7 @@ describe('collection', () => {
           }]
         })
 
-      const response = await collectionDatasource({ params: { cursor: 'eyJqc29uIjoiLTI5ODM0NzUwIiwidW1tIjoiLTk4NzI2MzU3In0=' } }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'collection')
+      const response = await collectionDatasource({ params: { cursor: 'eyJqc29uIjoiLTI5ODM0NzUwIiwidW1tIjoiLTk4NzI2MzU3In0=' } }, { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' } }, requestInfo)
 
       expect(response).toEqual({
         count: 84,
@@ -194,7 +194,7 @@ describe('collection', () => {
             }]
           })
 
-        const response = await collectionDatasource({}, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'collection')
+        const response = await collectionDatasource({}, { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' } }, requestInfo)
 
         expect(response).toEqual({
           count: 84,
@@ -228,7 +228,7 @@ describe('collection', () => {
           }
         })
 
-      const response = await collectionDatasource({}, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'collection')
+      const response = await collectionDatasource({}, { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' } }, requestInfo)
 
       expect(response).toEqual({
         count: 84,
@@ -267,7 +267,7 @@ describe('collection', () => {
           }
         })
 
-      const response = await collectionDatasource({ params: { conceptId: 'C100000-EDSC' } }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'collection')
+      const response = await collectionDatasource({ params: { conceptId: 'C100000-EDSC' } }, { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' } }, requestInfo)
 
       expect(response).toEqual({
         count: 84,
@@ -367,7 +367,7 @@ describe('collection', () => {
           }]
         })
 
-      const response = await collectionDatasource({ params: { conceptId: 'C100000-EDSC' } }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'collection')
+      const response = await collectionDatasource({ params: { conceptId: 'C100000-EDSC' } }, { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' } }, requestInfo)
 
       expect(response).toEqual({
         count: 84,
@@ -437,7 +437,7 @@ describe('collection', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/collections\.json/, 'data_center%5B%5D=EDSC')
+        .post(/collections\.json/, 'data_center[]=EDSC')
         .reply(200, {
           feed: {
             entry: [{
@@ -454,7 +454,7 @@ describe('collection', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/collections\.umm_json/, 'data_center%5B%5D=EDSC')
+        .post(/collections\.umm_json/, 'data_center[]=EDSC')
         .reply(200, {
           items: [{
             meta: {
@@ -468,7 +468,7 @@ describe('collection', () => {
           }]
         })
 
-      const response = await collectionDatasource({ params: { dataCenters: ['EDSC'] } }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'collection')
+      const response = await collectionDatasource({ params: { dataCenters: ['EDSC'] } }, { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' } }, requestInfo)
 
       expect(response).toEqual({
         count: 84,
@@ -545,7 +545,7 @@ describe('collection', () => {
           }]
         })
 
-      const response = await collectionDatasource({ params: { conceptId: 'C100000-EDSC' } }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'collection')
+      const response = await collectionDatasource({ params: { conceptId: 'C100000-EDSC' } }, { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' } }, requestInfo)
 
       expect(response).toEqual({
         count: 84,
@@ -573,7 +573,7 @@ describe('collection', () => {
       })
 
     await expect(
-      collectionDatasource({ params: { conceptId: 'C100000-EDSC' } }, { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, requestInfo, 'collection')
+      collectionDatasource({ params: { conceptId: 'C100000-EDSC' } }, { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' } }, requestInfo)
     ).rejects.toThrow(Error)
   })
 })

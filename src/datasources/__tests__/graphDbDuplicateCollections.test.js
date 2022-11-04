@@ -66,8 +66,7 @@ describe('graphDb', () => {
             doi: 'mock doi'
           }
         },
-        { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
-        'someEdlUsername'
+        { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, edlUsername: 'someEdlUsername' }
       )
 
       expect(response).toEqual(duplicateCollectionsRelatedUrlTypeResponseMocks)
@@ -80,8 +79,7 @@ describe('graphDb', () => {
           shortName: 'mock shortname',
           doi: null
         },
-        { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
-        'someEdlUsername'
+        { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, edlUsername: 'someEdlUsername' }
       )
 
       expect(response).toEqual({
@@ -137,8 +135,7 @@ describe('graphDb', () => {
           doi: 'mock doi'
         }
       },
-      { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
-      'someEdlUsername'
+      { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, edlUsername: 'someEdlUsername' }
     )
 
     expect(response).toEqual(duplicateCollectionsRelatedUrlTypeResponseMocks)

@@ -4,7 +4,9 @@ import collectionKeyMap from '../utils/umm/collectionKeyMap.json'
 
 import Collection from '../cmr/concepts/collection'
 
-export default async (params, headers, parsedInfo) => {
+export default async (params, context, parsedInfo) => {
+  const { headers } = context
+
   const requestInfo = parseRequestedFields(parsedInfo, collectionKeyMap, 'collection')
 
   const collection = new Collection(headers, requestInfo, params)

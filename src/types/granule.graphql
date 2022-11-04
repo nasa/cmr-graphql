@@ -1,8 +1,10 @@
 type Granule {
-  "Spatial coverage of the granule."
+  "A list of boxes representing spatial coverage."
   boxes: [String]
   "Boolean value displaying whether or not a granule has browse imagery."
   browseFlag: Boolean
+  "The parent collection."
+  collection: Collection
   "The concept id of the parent CMR collection."
   collectionConceptId: String
   "A percentage value indicating how much of the area of a granule (the EOSDIS data unit) has been obscured by clouds. It is worth noting that there are many different measures of cloud cover within the EOSDIS data holdings and that the cloud cover parameter that is represented in the archive is dataset-specific."
@@ -23,6 +25,8 @@ type Granule {
   granuleSize: Float
   "The Universal Reference ID of the granule referred by the data provider. This ID is unique per data provider."
   granuleUr: String
+  "A list of lines representing spatial coverage."
+  lines: [String]
   "A list of any URLs in the granule."
   links: JSON
   "The name of the geophysical parameter expressed in the data as well as associated quality flags and quality statistics. The quality statistics element contains measures of quality for the granule. The parameters used to set these measures are not preset and will be determined by the data producer. Each set of measures can occur many times either for the granule as a whole or for individual parameters. The quality flags contain the science, operational and automatic quality flags which indicate the overall quality assurance levels of specific parameter values within a granule."
@@ -35,10 +39,10 @@ type Granule {
   orbitCalculatedSpatialDomains: JSON
   "Native format of the granule."
   originalFormat: String
-  "A list of associated lat/lon points."
+  "A list of lat/lng points representing spatial coverage."
   points: [String]
-  "Spatial coverage of the collection."
-  polygons: [String]
+  "A list of polygons representing spatial coverage."
+  polygons: JSON
   "Granule ID provided by the producer."
   producerGranuleId: String
   "Dates related to activities involving the the granule and the data provider database with the exception for Delete. For Create, Update, and Insert the date is the date that the granule file is created, updated, or inserted into the provider database by the provider. Delete is the date that the CMR should delete the granule metadata record from its repository."
@@ -79,6 +83,8 @@ input GranulesInput {
   cloudCover: JSON
   "The unique concept id assigned to the parent collection."
   collectionConceptId: String
+  "A list of unique concept ids assigned to the parent collection."
+  collectionConceptIds: [String]
   "The unique concept id assigned to the granule."
   conceptId: [String]
   "Cursor that points to the a specific position in a list of requested records."
@@ -109,6 +115,8 @@ input GranulesInput {
   point: [String]
   "Polygon points are provided in counter-clockwise order. The last point should match the first point to close the polygon. The values are listed comma separated in longitude latitude order, i.e. lon1, lat1, lon2, lat2, lon3, lat3, and so on."
   polygon: [String]
+  "Search for granules using the provider parameter."
+  provider: [String]
   "Search for granules using the readable_granule_name parameter."
   readableGranuleName: [String]
   "One or more sort keys can be specified to impact searching. Fields can be prepended with a '-' to sort in descending order. Ascending order is the default but + can be used to explicitly request ascending."

@@ -2,6 +2,8 @@ import { ApolloServer } from 'apollo-server-lambda'
 import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core'
 import { v4 as uuidv4 } from 'uuid'
 
+import DataLoader from 'dataloader'
+
 import resolvers from '../resolvers'
 import typeDefs from '../types'
 
@@ -13,6 +15,8 @@ import graphDbDuplicateCollectionsSource from '../datasources/graphDbDuplicateCo
 import graphDbSource from '../datasources/graphDb'
 import gridSource from '../datasources/grid'
 import serviceSource from '../datasources/service'
+import toolSource from '../datasources/tool'
+import variableSource from '../datasources/variable'
 
 import {
   deleteSubscription as subscriptionSourceDelete,
@@ -20,11 +24,10 @@ import {
   ingestSubscription as subscriptionSourceIngest
 } from '../datasources/subscription'
 
-import toolSource from '../datasources/tool'
-import variableSource from '../datasources/variable'
-
 import { downcaseKeys } from '../utils/downcaseKeys'
 import { verifyEDLJwt } from '../utils/verifyEDLJwt'
+
+import { getCollectionsById } from '../dataloaders/getCollectionsById'
 
 // Creating the server
 const server = new ApolloServer({
@@ -81,9 +84,11 @@ const server = new ApolloServer({
 
     return {
       ...context,
-      headers: requestHeaders
+      headers: requestHeaders,
+      collectionLoader: new DataLoader(getCollectionsById, { cacheKeyFn: (obj) => obj.conceptId })
     }
   },
+
   // An object that goes to the 'context' argument when executing resolvers
   dataSources: () => ({
     collectionDraftProposalSource,
@@ -102,10 +107,12 @@ const server = new ApolloServer({
   }),
 
   // Show the landing page (which has a link to Apollo Studio Sandbox) in all environments
-  plugins: [ApolloServerPluginLandingPageLocalDefault({
-    // But hide the footer, it just shows a link to docs about the landing page
-    footer: false
-  })]
+  plugins: [
+    ApolloServerPluginLandingPageLocalDefault({
+      // But hide the footer, it just shows a link to docs about the landing page
+      footer: false
+    })
+  ]
 })
 
 export default server.createHandler({

@@ -4,7 +4,9 @@ import toolKeyMap from '../utils/umm/toolKeyMap.json'
 
 import Tool from '../cmr/concepts/tool'
 
-export default async (params, headers, parsedInfo) => {
+export default async (params, context, parsedInfo) => {
+  const { headers } = context
+
   const requestInfo = parseRequestedFields(parsedInfo, toolKeyMap, 'tool')
 
   const tool = new Tool(headers, requestInfo, params)

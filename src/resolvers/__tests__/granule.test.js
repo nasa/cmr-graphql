@@ -1,5 +1,7 @@
 import nock from 'nock'
 
+import DataLoader from 'dataloader'
+
 import { ApolloServer } from 'apollo-server-lambda'
 
 import resolvers from '..'
@@ -16,13 +18,16 @@ import {
 import toolSource from '../../datasources/tool'
 import variableSource from '../../datasources/variable'
 
+import { getCollectionsById } from '../../dataloaders/getCollectionsById'
+
 const server = new ApolloServer({
   typeDefs,
   resolvers,
   context: () => ({
     headers: {
       'CMR-Request-Id': 'abcd-1234-efgh-5678'
-    }
+    },
+    collectionLoader: new DataLoader(getCollectionsById, { cacheKeyFn: (obj) => obj.conceptId })
   }),
   dataSources: () => ({
     collectionSource,
@@ -36,13 +41,13 @@ const server = new ApolloServer({
   })
 })
 
-describe('Collection', () => {
+describe('Granule', () => {
   const OLD_ENV = process.env
 
   beforeEach(() => {
     process.env = { ...OLD_ENV }
 
-    process.env.cmrRootUrl = 'http://example.com'
+    process.env.cmrRootUrl = 'http://example-cmr.com'
   })
 
   afterEach(() => {
@@ -51,7 +56,7 @@ describe('Collection', () => {
 
   describe('Query', () => {
     test('all granule fields', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Hits': 1,
           'CMR-Took': 7,
@@ -84,7 +89,7 @@ describe('Collection', () => {
           }
         })
 
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Hits': 1,
           'CMR-Took': 7,
@@ -190,7 +195,7 @@ describe('Collection', () => {
     })
 
     test('granules', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -233,7 +238,7 @@ describe('Collection', () => {
     describe('granule', () => {
       describe('with results', () => {
         test('returns results', async () => {
-          nock(/example/)
+          nock(/example-cmr/)
             .defaultReplyHeaders({
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -268,7 +273,7 @@ describe('Collection', () => {
 
       describe('with no results', () => {
         test('returns no results', async () => {
-          nock(/example/)
+          nock(/example-cmr/)
             .defaultReplyHeaders({
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -295,6 +300,65 @@ describe('Collection', () => {
             granule: null
           })
         })
+      })
+    })
+  })
+
+  describe('Granule', () => {
+    test('collection', async () => {
+      nock(/example-cmr/)
+        .defaultReplyHeaders({
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .post(/granules\.json/)
+        .reply(200, {
+          feed: {
+            entry: [{
+              id: 'G1000-TEST',
+              collectionConceptId: 'C1000-TEST'
+            }, {
+              id: 'G1001-TEST',
+              collectionConceptId: 'C1000-TEST'
+            }]
+          }
+        })
+
+      nock(/example-cmr/)
+        .defaultReplyHeaders({
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .post(/collections\.json/)
+        .reply(200, {
+          feed: {
+            entry: [{
+              id: 'C1000-TEST'
+            }]
+          }
+        })
+
+      const response = await server.executeOperation({
+        variables: {
+          conceptId: 'G1000-TEST'
+        },
+        query: `{
+          granule {
+            collection {
+              conceptId
+            }
+          }
+        }`
+      })
+
+      const { data } = response
+
+      expect(data).toEqual({
+        granule: {
+          collection: {
+            conceptId: 'C1000-TEST'
+          }
+        }
       })
     })
   })

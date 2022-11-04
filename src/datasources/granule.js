@@ -4,7 +4,9 @@ import granuleKeyMap from '../utils/umm/granuleKeyMap.json'
 
 import Granule from '../cmr/concepts/granule'
 
-export default async (params, headers, parsedInfo) => {
+export default async (params, context, parsedInfo) => {
+  const { headers } = context
+
   const requestInfo = parseRequestedFields(parsedInfo, granuleKeyMap, 'granule')
 
   const granule = new Granule(headers, requestInfo, params)

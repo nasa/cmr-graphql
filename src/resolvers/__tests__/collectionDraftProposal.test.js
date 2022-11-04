@@ -49,7 +49,7 @@ describe('Collection', () => {
     process.env = { ...OLD_ENV }
 
     process.env.draftMmtRootUrl = 'http://example.com'
-    process.env.sslCertFile = 'certificates/fcpca_combined.pem'
+    process.env.dmmtSslCert = '-----BEGIN CERTIFICATE-----\nmock-certificate\n-----END CERTIFICATE-----'
   })
 
   afterEach(() => {

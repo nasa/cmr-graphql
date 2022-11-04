@@ -1,11 +1,12 @@
-# [GraphQL](https://graphql.earthdata.nasa.gov/api)
+# [CMR-GraphQL](https://graphql.earthdata.nasa.gov/api)
 
 [![serverless](http://public.serverless.com/badges/v3.svg)](http://www.serverless.com)
 ![Build Status](https://github.com/nasa/cmr-graphql/workflows/CI/badge.svg?branch=main)
 [![codecov](https://codecov.io/gh/nasa/cmr-graphql/branch/main/graph/badge.svg?token=VZiaLjxD2m)](https://codecov.io/gh/nasa/cmr-graphql)
 
 ## About
-GraphQL is an api developed by [NASA](http://nasa.gov) [EOSDIS](https://earthdata.nasa.gov) to search against [Common Metadata Repository (CMR)](https://cmr.earthdata.nasa.gov/search/) concept metadata using [GraphQL](https://graphql.org/).
+
+CMR-GraphQL is an API developed by [NASA](http://nasa.gov) [EOSDIS](https://earthdata.nasa.gov) to search against [Common Metadata Repository (CMR)](https://cmr.earthdata.nasa.gov/search/) concept metadata using [GraphQL](https://graphql.org/).
 
 ## License
 
@@ -25,7 +26,7 @@ Before running the application you'll want to ensure that all necessary packages
 
     npm install
 
-GraphQL uses a few environment variables for configuring runtime options:
+CMR-GraphQL uses a few environment variables for configuring runtime options:
 
 |Variable Name|Default|Description|
 |-|:-:|-|
@@ -56,21 +57,18 @@ Currently, this API supports searching and retrieving data for [Collections](#co
 
 #### Optional Headers
 
-GraphQL supports a few optional headers that can be used for various features and debugging purposes.
+CMR-GraphQL supports a few optional headers that can be used for various features and debugging purposes.
 
 ##### Authentication
 
 GraphQL accepts [Earthdata Login (EDL)](https://urs.earthdata.nasa.gov/) tokens via the `Authorization` header. If provided, this token will be provided to any CMR call made as part of the query. GraphQL will return errors if the token is invalid or expired in which case the client will need to handle the response accordingly.
 
-Additionally, this token is used to request information pertaining to the attached users' access to data being queried. 
-
-##### Request / Application Identification (Highly Recommended)
-
-In order for us to best provide debugging, statistics, and to inform us of future feature work GraphQL accepts the `Client-Id` header that allows all clients to identifiy themselves. If provided, this value is passed to any CMR call made as part of the query and is used to determine usage patterns, helps debug issues by filtering down logs, and also will help determine priority of feature requests.
+##### Identification
+In order for us to best provide debugging, statistics, and to inform us of future feature work CMR-GraphQL accepts the `Client-Id` header that allows all clients to identifiy themselves. If provided, this value is passed to any CMR call made as part of the query and is used to determine usage patterns, helps debug issues by filtering down logs, and also will help determine priority of feature requests.
 
 ##### Request Tracking (Highly Recommended)
 
-Logging is key to debugging, and to ensure that we can provide the best support to users' when issues may arise, GraphQL supports the `X-Request-Id` header. This header will be passed to any CMR call made as part of the query which will be prepended to any CMR logs that are generated as a result of a query. This value is also used in GraphQL logs so that we can associate our logs, CMR logs, and any logs you may have if debugging becomes necessary. We recommend setting this value with all requests in the event it is needed, it cannot be added retroactively.
+Logging is key to debugging, and to ensure that we can provide the best support to users' when issues may arise, CMR-GraphQL supports the `X-Request-Id` header. This header will be passed to any CMR call made as part of the query which will be prepended to any CMR logs that are generated as a result of a query. This value is also used in CMR-GraphQL logs so that we can associate our logs, CMR logs, and any logs you may have if debugging becomes necessary. We recommend setting this value with all requests in the event it is needed, it cannot be added retroactively.
 
 #### Queries
 
@@ -82,7 +80,7 @@ When querying for multiple items there are three high level parameters that can 
 
 ##### Cursor
 
-`cursor` tells GraphQL that you'd like to fetch the search after identifier out of the response header with the intent of harvesting data (or fetching multiple pages of results). To take advantage of the cursor you can then include it in subsequent queries until no data is returned.
+`cursor` tells CMR-GraphQL that you'd like to fetch the search after identifier out of the response header with the intent of harvesting data (or fetching multiple pages of results). To take advantage of the cursor you can then include it in subsequent queries until no data is returned.
 
 ###### First Request:
 
@@ -254,7 +252,7 @@ For all supported arguments and columns, see [the schema](src/types/collection.g
 
 #### Granules
 
-For performance reasons, CMR requires that a collection be provided in order to query granules. While CMR supports multiple aliases for the collection GraphQL requires that it be called `collectionConceptId`; if this is not provided CMR will return an error. We don't enforce this in the schema because you can also use `conceptId` if you're looking for specific granules and schemas don't offer a means of offering conditional validations.
+For performance reasons, CMR requires that a collection be provided in order to query granules. While CMR supports multiple aliases for the collection CMR-GraphQL requires that it be called `collectionConceptId`; if this is not provided CMR will return an error. We don't enforce this in the schema because you can also use `conceptId` if you're looking for specific granules and schemas don't offer a means of offering conditional validations.
 
 ##### Passthrough Arguments
 
@@ -408,7 +406,7 @@ For all supported arguments and columns, see [the schema](src/types/subscription
 
 ##### Creating a Subscription
 
-If no `nativeId` is provided, GraphQL will generate a GUID and supply it.
+If no `nativeId` is provided, CMR-GraphQL will generate a GUID and supply it.
 
     mutation {
       createSubscription(
@@ -571,7 +569,9 @@ GraphQL queries CMR's GraphDB in order to find duplicate collections on supporte
 
 #### Related Collections
 
-GraphQL queries CMR's GraphDB in order to find related collections on supported fields. These related collections can be returned as part of the Collection type response.
+For all supported arguments and columns, see [the schema](src/types/collection.graphql).
+
+CMR-GraphQL queries CMR's GraphDB in order to find related collections on supported fields. These related collections can be returned as part of the Collection type response.
 
 `relatedCollections` will return related collections, with those collections that share the most relationships first.
 
@@ -644,8 +644,8 @@ We use [GraphQL interfaces](https://graphql.org/learn/schema/#interfaces) in ord
 
 #### Local Graph Database
 
-Normally running graphQl with `serverless offline` will utilize the `(cmr.earthdata.nasa.gov/graphdb)` endpoint to query against related collections and duplicate collections in the graph database. To send queries to a locally running graph database we can use gremlin-server running docker to expose an HTTP endpoint. This is launched by running
+Normally running graphQl with `serverless offline` will utilize the `(cmr.earthdata.nasa.gov/graphdb)` endpoint, to query against related collections and duplicate collections in the graph database. To send queries to a locally running graph database
 
     docker run -it -p 8182:8182 tinkerpop/gremlin-server conf gremlin-server-rest-modern.yaml
 
-From there, you can add data to this local graph database using http POST requests to the gremlin-server or invoking the bootstrap lambda using `--local`
+We may add data to this local graph database with http POST requests to the gremlin-server

@@ -4,18 +4,26 @@ import { handlePagingParams } from '../utils/handlePagingParams'
 
 export default {
   Query: {
-    collections: async (source, args, { dataSources, headers }, info) => (
-      dataSources.collectionSource(handlePagingParams(args), headers, parseResolveInfo(info))
-    ),
-    collection: async (source, args, { dataSources, headers }, info) => {
-      const result = await dataSources.collectionSource(args, headers, parseResolveInfo(info))
+    collections: async (source, args, context, info) => {
+      const { dataSources } = context
+
+      return dataSources.collectionSource(handlePagingParams(args), context, parseResolveInfo(info))
+    },
+    collection: async (source, args, context, info) => {
+      const { dataSources } = context
+
+      const result = await dataSources.collectionSource(args, context, parseResolveInfo(info))
+
       const [firstResult] = result
+
       return firstResult
     }
   },
 
   Collection: {
-    granules: async (source, args, { dataSources, headers }, info) => {
+    granules: async (source, args, context, info) => {
+      const { dataSources, headers } = context
+
       // Pull out parent collection id to provide to the granules endpoint because cmr requires it
       const {
         conceptId: collectionId
@@ -66,27 +74,22 @@ export default {
 
       return dataSources.granuleSource(requestedParams, headers, parseResolveInfo(info))
     },
-    relatedCollections: async (source, args, { dataSources, headers, edlUsername }, info) => {
-      const { conceptId } = source
+    relatedCollections: async (source, args, context, info) => {
+      const { dataSources } = context
 
-      return dataSources.graphDbSource(
-        conceptId,
-        args,
-        headers,
-        parseResolveInfo(info),
-        edlUsername
-      )
+      return dataSources.graphDbSource(source, args, context, parseResolveInfo(info))
     },
-    duplicateCollections: async (source, args, { dataSources, headers, edlUsername }) => dataSources
-      .graphDbDuplicateCollectionsSource(
-        source,
-        headers,
-        edlUsername
-      ),
-    services: async (source, args, { dataSources, headers }, info) => {
+    duplicateCollections: async (source, args, context) => {
+      const { dataSources } = context
+
+      return dataSources.graphDbDuplicateCollectionsSource(source, context)
+    },
+    services: async (source, args, context, info) => {
       const {
         associations = {}
       } = source
+
+      const { dataSources } = context
 
       const { services = [] } = associations
 
@@ -100,23 +103,27 @@ export default {
       return dataSources.serviceSource({
         conceptId: services,
         ...handlePagingParams(args, services.length)
-      }, headers, parseResolveInfo(info))
+      }, context, parseResolveInfo(info))
     },
-    subscriptions: async (source, args, { dataSources, headers }, info) => {
+    subscriptions: async (source, args, context, info) => {
       // Pull out parent collection id
       const {
         conceptId: collectionId
       } = source
 
+      const { dataSources } = context
+
       return dataSources.subscriptionSourceFetch({
         collectionConceptId: collectionId,
         ...handlePagingParams(args)
-      }, headers, parseResolveInfo(info))
+      }, context, parseResolveInfo(info))
     },
-    tools: async (source, args, { dataSources, headers }, info) => {
+    tools: async (source, args, context, info) => {
       const {
         associations = {}
       } = source
+
+      const { dataSources } = context
 
       const { tools = [] } = associations
 
@@ -130,12 +137,14 @@ export default {
       return dataSources.toolSource({
         conceptId: tools,
         ...handlePagingParams(args, tools.length)
-      }, headers, parseResolveInfo(info))
+      }, context, parseResolveInfo(info))
     },
-    variables: async (source, args, { dataSources, headers }, info) => {
+    variables: async (source, args, context, info) => {
       const {
         associations = {}
       } = source
+
+      const { dataSources } = context
 
       const { variables = [] } = associations
 
@@ -149,7 +158,7 @@ export default {
       return dataSources.variableSource({
         conceptId: variables,
         ...handlePagingParams(args, variables.length)
-      }, headers, parseResolveInfo(info))
+      }, context, parseResolveInfo(info))
     }
   },
   Relationship: {

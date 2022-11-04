@@ -13,13 +13,7 @@ provider:
     draftMmtRootUrl: ${self:custom.variables.draftMmtRootUrl}
     edlClientId: ${self:custom.variables.edlClientId}
     edlJwk: ${self:custom.variables.edlJwk}
-    edlKeyId: ${self:custom.variables.edlKeyId}
-    graphdbHost: ${self:custom.variables.graphdbHost}
-    graphdbPath: ${self:custom.variables.graphdbPath}
-    graphdbPort: ${self:custom.variables.graphdbPort}
-    mmtRootUrl: ${self:custom.variables.mmtRootUrl}
-    sslCertFile: ${self:custom.variables.sslCertFile}
-    ursRootUrl: ${self:custom.variables.ursRootUrl}
+    dmmtSslCert: ${self:custom.variables.dmmtSslCert}
 
     # Timeout for lambda
     lambdaTimeout: ${env:LAMBDA_TIMEOUT, '30'}
@@ -156,18 +150,16 @@ custom:
     draftMmtRootUrl: ${env:DRAFT_MMT_ROOT_URL, 'https://draftmmt.earthdata.nasa.gov'}
     edlClientId: ${env:EDL_CLIENT_ID, ''}
     edlJwk: ${env:EDL_JWK, ''}
-    edlKeyId: ${env:EDL_KEY_ID, ''}
-    graphdbHost: ${env:GRAPHDB_HOST, 'http://localhost'}
-    graphdbPath: ${env:GRAPHDB_PATH, 'gremlin'}
-    graphdbPort: ${env:GRAPHDB_PORT, '8182'}
-    mmtRootUrl: ${env:MMT_ROOT_URL, 'https://mmt.earthdata.nasa.gov'}
-    sslCertFile: ${env:SSL_CERT_FILE, 'certificates/fcpca_combined.pem'}
-    ursRootUrl: ${env:URS_ROOT_URL, 'https://urs.earthdata.nasa.gov'}
+    dmmtSslCert: ${env:DMMT_SSL_CERT, ''}
 
   # Default is 3000 so to avoid conflicts with other applications we'll define a new port
   serverless-offline:
-    httpPort: 3003
-    lambdaPort: 3004
+    httpPort: 3013
+    lambdaPort: 3014
+    reloadHandler: true
+    # Uncomment useInProcess to enable in-process run mode
+    # https://github.com/dherault/serverless-offline#run-modes
+    # useInProcess: true
 
   # Serverless Webpack configurations
   webpack:

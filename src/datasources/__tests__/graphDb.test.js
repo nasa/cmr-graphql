@@ -156,14 +156,13 @@ describe('graphDb', () => {
           .reply(200, relatedCollectionsRelatedUrlTypeGraphdbResponseMocks)
 
         const response = await graphDbDatasource(
-          'C1200400842-GHRC',
+          { conceptId: 'C1200400842-GHRC' },
           {
             limit: 1,
             relatedUrlType: ['VIEW RELATED INFORMATION']
           },
-          { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
-          parsedInfo,
-          ' edlUsername'
+          { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, edlUsername: 'edlUsername' },
+          parsedInfo
         )
 
         expect(response).toEqual(relatedCollectionsRelatedUrlTypeResponseMocks)
@@ -183,14 +182,13 @@ describe('graphDb', () => {
           .reply(200, relatedCollectionsRelatedUrlSubtypeGraphdbResponseMocks)
 
         const response = await graphDbDatasource(
-          'C1200400842-GHRC',
+          { conceptId: 'C1200400842-GHRC' },
           {
             limit: 1,
             relatedUrlSubtype: ["USER'S GUIDE"]
           },
-          { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
-          parsedInfo,
-          ' edlUsername'
+          { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, edlUsername: 'edlUsername' },
+          parsedInfo
         )
 
         expect(response).toEqual(relatedCollectionsRelatedUrlSubtypeResponseMocks)
@@ -210,15 +208,14 @@ describe('graphDb', () => {
           .reply(200, relatedCollectionsRelatedUrlTypeAndSubtypeGraphdbResponseMocks)
 
         const response = await graphDbDatasource(
-          'C1200400842-GHRC',
+          { conceptId: 'C1200400842-GHRC' },
           {
             limit: 1,
             relatedUrlType: ['VIEW RELATED INFORMATION'],
             relatedUrlSubtype: ["USER'S GUIDE"]
           },
-          { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
-          parsedInfo,
-          ' edlUsername'
+          { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, edlUsername: 'edlUsername' },
+          parsedInfo
         )
 
         expect(response).toEqual(relatedCollectionsRelatedUrlTypeAndSubtypeResponseMocks)
@@ -300,13 +297,12 @@ describe('graphDb', () => {
           .reply(200, relatedCollectionsGraphDbProjectGraphdbResponseMocks)
 
         const response = await graphDbDatasource(
-          'C1200400842-GHRC',
+          { conceptId: 'C1200400842-GHRC' },
           {
             limit: 1
           },
-          { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
-          parsedInfo,
-          ' edlUsername'
+          { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, edlUsername: 'edlUsername' },
+          parsedInfo
         )
 
         expect(response).toEqual(relatedCollectionsGraphDbProjectResponseMocks)
@@ -392,13 +388,12 @@ describe('graphDb', () => {
           .reply(200, relatedCollectionsGraphDbPlatformInstrumentGraphdbResponseMocks)
 
         const response = await graphDbDatasource(
-          'C1200400842-GHRC',
+          { conceptId: 'C1200400842-GHRC' },
           {
             limit: 1
           },
-          { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
-          parsedInfo,
-          ' edlUsername'
+          { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, edlUsername: 'edlUsername' },
+          parsedInfo
         )
 
         expect(response).toEqual(relatedCollectionsGraphDbPlatformInstrumentResponseMocks)
@@ -496,13 +491,12 @@ describe('graphDb', () => {
           .reply(200, relatedCollectionsGraphDbRelatedUrlGraphdbResponseMocks)
 
         const response = await graphDbDatasource(
-          'C1200400842-GHRC',
+          { conceptId: 'C1200400842-GHRC' },
           {
             limit: 1
           },
-          { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
-          parsedInfo,
-          ' edlUsername'
+          { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, edlUsername: 'edlUsername' },
+          parsedInfo
         )
 
         expect(response).toEqual(relatedCollectionsGraphDbRelatedUrlResponseMocks)
@@ -606,14 +600,13 @@ describe('graphDb', () => {
           .reply(200, relatedCollectionsGraphDbRelatedUrlGraphdbResponseMocks)
 
         const response = await graphDbDatasource(
-          'C1200400842-GHRC',
+          { conceptId: 'C1200400842-GHRC' },
           {
             limit: 1,
             relatedUrlType: ['VIEW RELATED INFORMATION']
           },
-          { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
-          parsedInfo,
-          ' edlUsername'
+          { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, edlUsername: 'edlUsername' },
+          parsedInfo
         )
 
         expect(response).toEqual(relatedCollectionsGraphDbRelatedUrlResponseMocks)
@@ -725,14 +718,13 @@ describe('graphDb', () => {
           .reply(200, relatedCollectionsGraphDbRelatedUrlProjectGraphdbResponseMocks)
 
         const response = await graphDbDatasource(
-          'C1200400842-GHRC',
+          { conceptId: 'C1200400842-GHRC' },
           {
             limit: 1,
             relatedUrlType: ['VIEW RELATED INFORMATION']
           },
-          { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
-          parsedInfo,
-          ' edlUsername'
+          { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, edlUsername: 'edlUsername' },
+          parsedInfo
         )
 
         expect(response).toEqual(relatedCollectionsGraphDbRelatedUrlProjectResponseMocks)
@@ -843,14 +835,13 @@ describe('graphDb', () => {
           .reply(200, relatedCollectionsGraphDbRelatedUrlRelationshipTypeGraphdbResponseMocks)
 
         const response = await graphDbDatasource(
-          'C1200400842-GHRC',
+          { conceptId: 'C1200400842-GHRC' },
           {
             limit: 1,
             relatedUrlType: ['VIEW RELATED INFORMATION']
           },
-          { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
-          parsedInfo,
-          ' edlUsername'
+          { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, edlUsername: 'edlUsername' },
+          parsedInfo
         )
 
         expect(response).toEqual(relatedCollectionsGraphDbRelatedUrlRelationshipTypeResponseMocks)
@@ -929,13 +920,12 @@ describe('graphDb', () => {
           .reply(200, relatedCollectionsRelationshipTypeGraphdbResponseMocks)
 
         const response = await graphDbDatasource(
-          'C1200400842-GHRC',
+          { conceptId: 'C1200400842-GHRC' },
           {
             limit: 1
           },
-          { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
-          parsedInfo,
-          ' edlUsername'
+          { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, edlUsername: 'edlUsername' },
+          parsedInfo
         )
 
         expect(response).toEqual(relatedCollectionsRelationshipTypeResponseMocks)
@@ -994,13 +984,12 @@ describe('graphDb', () => {
         .reply(200, relatedCollectionsNoRelationshipsGraphDbResponseMock)
 
       const response = await graphDbDatasource(
-        'C1200400842-GHRC',
+        { conceptId: 'C1200400842-GHRC' },
         {
           limit: 1
         },
-        { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
-        parsedInfo,
-        ' edlUsername'
+        { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, edlUsername: 'edlUsername' },
+        parsedInfo
       )
 
       expect(response).toEqual(relatedCollectionsNoRelationshipsResponseMock)
@@ -1045,13 +1034,12 @@ describe('graphDb', () => {
         })
 
       const response = await graphDbDatasource(
-        'C1200400842-GHRC',
+        { conceptId: 'C1200400842-GHRC' },
         {
           limit: 1
         },
-        { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
-        parsedInfo,
-        'someEdlUsername'
+        { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, edlUsername: 'someEdlUsername' },
+        parsedInfo
       )
       expect(response).toEqual(relatedCollectionsRelationshipTypeResponseMocks)
     })
@@ -1075,13 +1063,12 @@ describe('graphDb', () => {
         .reply(200, {})
 
       const response = await graphDbDatasource(
-        'C1200400842-GHRC',
+        { conceptId: 'C1200400842-GHRC' },
         {
           limit: 1
         },
-        { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
-        parsedInfo,
-        'someEdlUsername'
+        { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, edlUsername: 'someEdlUsername' },
+        parsedInfo
       )
       expect(response).toEqual({ count: 0, items: [] })
     })
