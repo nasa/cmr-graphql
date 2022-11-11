@@ -14,12 +14,6 @@ provider:
 
   role: GraphQLApplicationRole
 
-layers:
-  certificate:
-    path: certificates
-    name: ${self:provider.stage}-CertificateLambdaLayer
-    description: Certificates for GraphQL
-
 #
 # AWS Infrastructure Resources
 #
