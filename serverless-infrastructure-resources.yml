@@ -68,9 +68,3 @@ Outputs:
         - Arn
     Export:
       Name: ${self:provider.stage}-GraphQLApplicationRole
-
-  CertificateLambdaLayer:
-    Value:
-      Ref: CertificateLambdaLayer
-    Export:
-      Name: ${self:provider.stage}-CertificateLambdaLayer
