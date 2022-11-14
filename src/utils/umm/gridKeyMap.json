@@ -14,7 +14,6 @@
     "metadataDate": "umm.MetadataDate",
     "metadataSpecification": "umm.MetadataSpecification",
     "name": "umm.Name",
-    "nativeId": "meta.nativeid",
     "organization": "umm.Organization",
     "relatedUrls": "umm.RelatedURLs",
     "resolution": "umm.GridDefinition.Resolution",

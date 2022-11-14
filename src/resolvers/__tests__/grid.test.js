@@ -60,7 +60,7 @@ describe('Grid', () => {
                 SpatialExtent: {},
                 ScaleExtent: {}
               },
-              Version: {},
+              Version: '0.0.1',
               MetadataDate: {},
               Name: 'grid_name',
               MetadataSpecification: {},
@@ -121,7 +121,7 @@ describe('Grid', () => {
             resolution: {},
             spatialExtent: {},
             scaleExtent: {},
-            version: {},
+            version: '0.0.1',
             metadataDate: {},
             name: 'grid_name',
             metadataSpecification: {},

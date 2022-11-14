@@ -196,7 +196,7 @@ describe('grid', () => {
           }]
         })
 
-      const response = await gridDatasource({ params: { concept_id: 'GRD100000-EDSC' } }, { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' } }, requestInfo, 'grid')
+      const response = await gridDatasource({ params: { concept_id: 'GRD100000-EDSC' } }, { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' } }, requestInfo)
 
       expect(response).toEqual({
         count: 84,
@@ -207,6 +207,96 @@ describe('grid', () => {
       })
     })
   })
+  // // One of the keys is concept-id which is shared, one is json, and the other is umm_json
+  // describe('with json and umm keys', () => {
+  //   beforeEach(() => {
+  //     // Overwrite default requestInfo
+  //     requestInfo = {
+  //       name: 'grids',
+  //       alias: 'grids',
+  //       args: {},
+  //       fieldsByTypeName: {
+  //         GridList: {
+  //           items: {
+  //             name: 'items',
+  //             alias: 'items',
+  //             args: {},
+  //             fieldsByTypeName: {
+  //               Grid: {
+  //                 conceptId: {
+  //                   name: 'conceptId',
+  //                   alias: 'conceptId',
+  //                   args: {},
+  //                   fieldsByTypeName: {}
+  //                 },
+  //                 browseFlag: {
+  //                   name: 'browseFlag',
+  //                   alias: 'browseFlag',
+  //                   args: {},
+  //                   fieldsByTypeName: {}
+  //                 },
+  //                 organization: {
+  //                   name: 'granuleUr',
+  //                   alias: 'granuleUr',
+  //                   args: {},
+  //                   fieldsByTypeName: {}
+  //                 }
+  //               }
+  //             }
+  //           }
+  //         }
+  //       }
+  //     }
+  //   })
+
+  //   test('returns the parsed grid results', async () => {
+  //     nock(/example/)
+  //       .defaultReplyHeaders({
+  //         'CMR-Hits': 84,
+  //         'CMR-Took': 7,
+  //         'CMR-Request-Id': 'abcd-1234-efgh-5678'
+  //       })
+  //       .post(/grids\.json/)
+  //       .reply(200, {
+  //         feed: {
+  //           entry: [{
+  //             id: 'G100000-EDSC',
+  //             browse_flag: true
+  //           }]
+  //         }
+  //       })
+
+  //     nock(/example/)
+  //       .defaultReplyHeaders({
+  //         'CMR-Hits': 84,
+  //         'CMR-Took': 7,
+  //         'CMR-Request-Id': 'abcd-1234-efgh-5678'
+  //       })
+  //       .post(/grids\.umm_json/)
+  //       .reply(200, {
+  //         items: [{
+  //           meta: {
+  //             'concept-id': 'G100000-EDSC'
+  //           },
+  //           umm: {
+  //             GranuleUR: 'GLDAS_CLSM025_D.2.0:GLDAS_CLSM025_D.A19480101.020.nc4'
+  //           }
+  //         }]
+  //       })
+
+  //     const response = await gridDatasource({ params: { concept_id: 'GRD100000-EDSC' } }, { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' } }, requestInfo)
+
+  //     expect(response).toEqual({
+  //       count: 84,
+  //       cursor: null,
+  //       items: [{
+  //         conceptId: 'G100000-EDSC',
+  //         browseFlag: true,
+  //         granuleUr: 'GLDAS_CLSM025_D.2.0:GLDAS_CLSM025_D.A19480101.020.nc4'
+  //       }]
+  //     })
+  //   })
+  // })
 
   describe('with only umm keys', () => {
     beforeEach(() => {

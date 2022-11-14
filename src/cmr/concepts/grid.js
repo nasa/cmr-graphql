@@ -12,6 +12,7 @@ export default class Grid extends Concept {
   }
 
   /**
+   * Parse and return the array of data from the nested response body
    * @param {Object} jsonResponse HTTP response from the CMR endpoint
    */
   parseJsonBody(jsonResponse) {
