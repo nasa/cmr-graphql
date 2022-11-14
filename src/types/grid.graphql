@@ -6,7 +6,7 @@ type Grid {
   "The contact mechanisms for this grid"
   contactMechanisms: JSON
   "The description for this grid"
-  description: JSON
+  description: String
   "The dimension size for this grid"
   dimensionSize: JSON
   "The definition of the grid"
