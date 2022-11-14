@@ -75,8 +75,8 @@ describe('grid', () => {
                     fieldsByTypeName: {}
                   },
                   longName: {
-                    name: 'name',
-                    alias: 'name',
+                    name: 'longName',
+                    alias: 'longName',
                     args: {},
                     fieldsByTypeName: {}
                   }
