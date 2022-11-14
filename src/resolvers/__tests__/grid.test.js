@@ -182,7 +182,6 @@ describe('Grid', () => {
             .reply(200, {
               items: [{
                 concept_id: 'GRD100000-EDSC',
-                long_name: 'Cras mattis consectetur purus sit amet fermentum.',
                 name: 'Lorem Ipsum'
               }]
             })
