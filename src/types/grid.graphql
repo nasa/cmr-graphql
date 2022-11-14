@@ -58,16 +58,14 @@ input GridInput {
 
 type Query {
   grids(
-    "grids query parameters"
+    "Grids query parameters"
     params: GridsInput
   ): GridList!
 
   grid(
+    "Grid query parameters"
     params: GridInput
     "The unique concept id assigned to the grid."
     conceptId: String
-    description: String
-    name: String
-    longName: String
   ): Grid
 }
