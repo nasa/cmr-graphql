@@ -57,8 +57,6 @@ functions:
   graphql:
     handler: src/graphql/handler.default
     timeout: ${env:LAMBDA_TIMEOUT, '30'}
-    layers:
-      - Fn::ImportValue: ${self:provider.stage}-CertificateLambdaLayer
     events:
     - http:
         path: api
