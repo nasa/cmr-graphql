@@ -1,0 +1,24 @@
+{
+  "sharedKeys": [
+    "conceptId",
+    "name"
+  ],
+  "ummKeyMappings": {
+    "additionalAttribute": "umm.AdditionalAttribute",
+    "conceptId": "meta.concept-id",
+    "contactMechanisms": "umm.Organization.ContactMechanisms",
+    "description": "umm.Description",
+    "dimensionSize": "umm.GridDefinition.DimensionSize",
+    "gridDefinition": "umm.GridDefinition",
+    "longName": "umm.LongName",
+    "metadataDate": "umm.MetadataDate",
+    "metadataSpecification": "umm.MetadataSpecification",
+    "name": "umm.Name",
+    "organization": "umm.Organization",
+    "relatedUrls": "umm.RelatedURLs",
+    "resolution": "umm.GridDefinition.Resolution",
+    "scaleExtent": "umm.GridDefinition.ScaleExtent",
+    "spatialExtent": "umm.GridDefinition.SpatialExtent",
+    "version": "umm.Version"
+  }
+}

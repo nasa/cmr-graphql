@@ -13,6 +13,7 @@ import collectionSource from '../datasources/collection'
 import granuleSource from '../datasources/granule'
 import graphDbDuplicateCollectionsSource from '../datasources/graphDbDuplicateCollections'
 import graphDbSource from '../datasources/graphDb'
+import gridSource from '../datasources/grid'
 import serviceSource from '../datasources/service'
 import toolSource from '../datasources/tool'
 import variableSource from '../datasources/variable'
@@ -63,6 +64,7 @@ const server = new ApolloServer({
     // If the client has provided an EDL token supply it to CMR
     if (bearerToken) {
       requestHeaders.Authorization = bearerToken
+
       // regex to match JWT token structures
       const regex = /^Bearer [A-Za-z0-9-_]*\.[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*/
 
@@ -100,7 +102,8 @@ const server = new ApolloServer({
     subscriptionSourceFetch,
     subscriptionSourceIngest,
     toolSource,
-    variableSource
+    variableSource,
+    gridSource
   }),
 
   // Show the landing page (which has a link to Apollo Studio Sandbox) in all environments

@@ -124,7 +124,7 @@ export default async (
     .outV()
     .hasLabel('collection')
     .has('permittedGroups', within(${userGroups}))
-    .has('id',neq('${conceptId}'))
+    .has('id', neq('${conceptId}'))
     .group()
     .by('id')
     .by(

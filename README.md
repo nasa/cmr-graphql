@@ -45,7 +45,7 @@ This will run the application at [http://localhost:3003/dev/api](http://localhos
 
 ## Usage
 
-Currently, this API supports searching and retrieving data for [Collections](#collections), [Granules](#granules), [Services](#services), [Subscriptions](#subscriptions), [Tools](#tools) and [Variables](#variables).
+Currently, this API supports searching and retrieving data for [Collections](#collections), [Granules](#granules), [Services](#services), [Subscriptions](#subscriptions), [Tools](#tools), [Variables](#variables), and [Grids](#grids).
 
 #### Optional Headers
 
@@ -257,7 +257,7 @@ A subset of the supported arguments for [Collections](#collections) will be pass
 - polygon
 - temporal
 
-For all supported arguments and columns, see [the schema](src/types/granules.graphql).
+For all supported arguments and columns, see [the schema](src/types/granule.graphql).
 
 ##### Example Queries
 
@@ -492,6 +492,35 @@ For all supported arguments and columns, see [the schema](src/types/variable.gra
         }
       }
     }
+
+#### Grids
+
+For all supported arguments and columns, see [the schema](src/types/grid.graphql).
+
+##### Example Queries
+
+###### Single
+
+    {
+      grid(conceptId:"GRD1000000001-EXAMPLE") {
+        conceptId
+        title
+      }
+    }
+
+###### Multiple
+
+    {
+      grids {
+        items {
+          conceptId
+          name
+          longName
+          description
+        }
+      }
+    }
+
 
 #### Related Collections
 

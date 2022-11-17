@@ -30,13 +30,13 @@
     "directDistributionInformation": "umm.DirectDistributionInformation",
     "directoryNames": "umm.DirectoryNames",
     "doi": "umm.DOI",
-    "locationKeywords": "umm.LocationKeywords",
     "hasFormats": "meta.has-formats",
     "hasSpatialSubsetting": "meta.has-spatial-subsetting",
     "hasTemporalSubsetting": "meta.has-temporal-subsetting",
     "hasTransforms": "meta.has-transforms",
     "hasVariables": "meta.has-variables",
     "isoTopicCategories": "umm.ISOTopicCategories",
+    "locationKeywords": "umm.LocationKeywords",
     "metadataAssociations": "umm.MetadataAssociations",
     "metadataDates": "umm.MetadataDates",
     "metadataLanguage": "umm.MetadataLanguage",
@@ -61,8 +61,8 @@
     "tilingIdentificationSystems": "umm.TilingIdentificationSystems",
     "title": "umm.EntryTitle",
     "useConstraints": "umm.UseConstraints",
+    "version": "umm.Version",
     "versionDescription": "umm.VersionDescription",
-    "versionId": "umm.Version",
-    "version": "umm.Version"
+    "versionId": "umm.Version"
   }
 }
