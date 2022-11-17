@@ -97,7 +97,6 @@ describe('Grid', () => {
       })
 
       const { data } = response
-      console.log(data)
 
       expect(data).toEqual({
         grids: {
