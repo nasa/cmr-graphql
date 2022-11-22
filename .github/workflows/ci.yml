@@ -36,7 +36,7 @@ jobs:
     - name: Run Jest tests
       run: npm run silent-test
     - name: Upload coverage to codecov
-      uses: codecov/codecov-action@v2
+      uses: codecov/codecov-action@v3
   deploy:
     if: success() && github.ref == 'refs/heads/main' # only run on main success
     needs: [jest] # only run after jest jobs complete
