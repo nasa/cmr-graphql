@@ -1,5 +1,6 @@
 import axios from 'axios'
 
+import { downcaseKeys } from './downcaseKeys'
 import { pickIgnoringCase } from './pickIgnoringCase'
 
 /**
@@ -27,7 +28,10 @@ export const cmrGraphDb = ({
     'CMR-Request-Id'
   ])
 
-  const { 'CMR-Request-Id': requestId } = permittedHeaders
+  const {
+    'client-id': clientId,
+    'cmr-request-id': requestId
+  } = downcaseKeys(permittedHeaders)
 
   const requestConfiguration = {
     data: query,
@@ -60,7 +64,7 @@ export const cmrGraphDb = ({
 
     response.headers['request-duration'] = milliseconds
 
-    console.log(`Request ${requestId} to [graphdb conceptId: ${conceptId}] completed external request in [observed: ${milliseconds} ms]`)
+    console.log(`Request ${requestId} from ${clientId} to [graphdb conceptId: ${conceptId}] completed external request in [observed: ${milliseconds} ms]`)
 
     return response
   })

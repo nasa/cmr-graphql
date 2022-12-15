@@ -79,8 +79,11 @@ const server = new ApolloServer({
       }
     }
 
-    // If the client has identified themselves using Client-Id supply it to CMR
-    if (clientId) requestHeaders['Client-Id'] = clientId
+    // Concatenate this applications client id with the user provided value, if one was provided
+    requestHeaders['Client-Id'] = [
+      clientId,
+      `eed-${process.env.stage}-graphql`
+    ].filter(Boolean).join('-')
 
     return {
       ...context,

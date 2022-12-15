@@ -43,7 +43,10 @@ export const cmrQuery = ({
 
   const cmrParameters = prepKeysForCmr(snakeCaseKeys(params), nonIndexedKeys)
 
-  const { 'CMR-Request-Id': requestId } = permittedHeaders
+  const {
+    'client-id': clientId,
+    'cmr-request-id': requestId
+  } = downcaseKeys(permittedHeaders)
 
   const requestConfiguration = {
     data: cmrParameters,
@@ -79,7 +82,7 @@ export const cmrQuery = ({
     const { 'cmr-took': cmrTook } = downcaseKeys(headers)
     response.headers['request-duration'] = milliseconds
 
-    console.log(`Request ${requestId} to [concept: ${conceptType}, format: ${format}] completed external request in [reported: ${cmrTook} ms, observed: ${milliseconds} ms]`)
+    console.log(`Request ${requestId} from ${clientId} to [concept: ${conceptType}, format: ${format}] completed external request in [reported: ${cmrTook} ms, observed: ${milliseconds} ms]`)
 
     return response
   })

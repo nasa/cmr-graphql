@@ -19,10 +19,13 @@ export const parseCmrError = (error, reThrow = true) => {
 
   const { errors } = data
 
-  const { 'cmr-request-id': requestId } = downcaseKeys(headers)
+  const {
+    'client-id': clientId,
+    'cmr-request-id': requestId
+  } = downcaseKeys(headers)
 
   errors.forEach((error) => {
-    console.log(`Request ${requestId} experienced an error: ${error}`)
+    console.log(`Request ${requestId} from ${clientId} experienced an error: ${error}`)
   })
 
   if (reThrow) {

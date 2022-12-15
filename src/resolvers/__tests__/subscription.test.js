@@ -23,6 +23,7 @@ const server = new ApolloServer({
   resolvers,
   context: () => ({
     headers: {
+      'Client-Id': 'eed-test-graphql',
       'CMR-Request-Id': 'abcd-1234-efgh-5678'
     }
   }),
@@ -355,6 +356,7 @@ describe('Subscription', () => {
       nock(/example/, {
         reqheaders: {
           accept: 'application/json',
+          'client-id': 'eed-test-graphql',
           'content-type': 'application/vnd.nasa.cmr.umm+json; version=1.1',
           'cmr-request-id': 'abcd-1234-efgh-5678'
         }
@@ -413,6 +415,7 @@ describe('Subscription', () => {
       nock(/example/, {
         reqheaders: {
           accept: 'application/json',
+          'client-id': 'eed-test-graphql',
           'content-type': 'application/vnd.nasa.cmr.umm+json; version=1.1',
           'cmr-request-id': 'abcd-1234-efgh-5678'
         }

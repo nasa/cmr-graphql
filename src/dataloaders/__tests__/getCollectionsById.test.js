@@ -61,7 +61,10 @@ describe('getCollectionsById', () => {
       })
 
     const context = {
-      headers: { 'CMR-Request-Id': '4a557d1a-d592-48fb-9833-685aecfb2501' }
+      headers: {
+        'Client-Id': 'eed-test-graphql',
+        'CMR-Request-Id': '4a557d1a-d592-48fb-9833-685aecfb2501'
+      }
     }
 
     const parsedInfo = {

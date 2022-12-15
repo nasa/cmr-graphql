@@ -4,6 +4,7 @@ import pascalCaseKeys from 'pascalcase-keys'
 
 import { v4 as uuidv4 } from 'uuid'
 
+import { downcaseKeys } from './downcaseKeys'
 import { pickIgnoringCase } from './pickIgnoringCase'
 
 /**
@@ -40,7 +41,10 @@ export const cmrIngest = async (conceptType, data, headers, ingestPath) => {
 
   const cmrParameters = pascalCaseKeys(data)
 
-  const { 'CMR-Request-Id': requestId } = permittedHeaders
+  const {
+    'client-id': clientId,
+    'cmr-request-id': requestId
+  } = downcaseKeys(permittedHeaders)
 
   const requestConfiguration = {
     data: cmrParameters,
@@ -73,7 +77,7 @@ export const cmrIngest = async (conceptType, data, headers, ingestPath) => {
 
     response.headers['request-duration'] = milliseconds
 
-    console.log(`Request ${requestId} to ingest [concept: ${conceptType}] completed external request in [observed: ${milliseconds} ms]`)
+    console.log(`Request ${requestId} from ${clientId} to ingest [concept: ${conceptType}] completed external request in [observed: ${milliseconds} ms]`)
 
     return response
   })

@@ -31,6 +31,18 @@ export default class CollectionDraft extends Concept {
     ]
   }
 
+  /**
+   * Retrieve the request id header from the request
+   * @param {Object} headers The provided headers from the query
+   */
+  getRequestId() {
+    const {
+      'X-Request-Id': requestId
+    } = this.headers
+
+    return requestId
+  }
+
   async parse(requestInfo, params) {
     const { id } = params
 
