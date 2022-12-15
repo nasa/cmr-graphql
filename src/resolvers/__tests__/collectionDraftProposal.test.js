@@ -24,6 +24,7 @@ const server = new ApolloServer({
   resolvers,
   context: () => ({
     headers: {
+      'Client-Id': 'eed-test-graphql',
       'X-Request-Id': 'abcd-1234-efgh-5678'
     }
   }),
@@ -62,6 +63,7 @@ describe('Collection', () => {
         test('returns results', async () => {
           nock(/example/)
             .defaultReplyHeaders({
+              'Client-Id': 'eed-test-graphql',
               'X-Request-Id': 'abcd-1234-efgh-5678'
             })
             .get(/collection_draft_proposals/)
@@ -92,6 +94,7 @@ describe('Collection', () => {
         test('returns no results', async () => {
           nock(/example/)
             .defaultReplyHeaders({
+              'Client-Id': 'eed-test-graphql',
               'X-Request-Id': 'abcd-1234-efgh-5678'
             })
             .get(/collection_draft_proposals/)

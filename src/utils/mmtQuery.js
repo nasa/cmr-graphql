@@ -2,6 +2,7 @@ import axios from 'axios'
 
 import snakeCaseKeys from 'snakecase-keys'
 
+import { downcaseKeys } from './downcaseKeys'
 import { pickIgnoringCase } from './pickIgnoringCase'
 import { prepKeysForCmr } from './prepKeysForCmr'
 
@@ -37,7 +38,10 @@ export const mmtQuery = ({
 
   const { id } = params
 
-  const { 'X-Request-Id': requestId } = permittedHeaders
+  const {
+    'client-id': clientId,
+    'x-request-id': requestId
+  } = downcaseKeys(permittedHeaders)
 
   const requestConfiguration = {
     data: cmrParameters,
@@ -70,7 +74,7 @@ export const mmtQuery = ({
 
     response.headers['request-duration'] = milliseconds
 
-    console.log(`Request ${requestId} to [concept: ${conceptType}] completed external request in [observed: ${milliseconds} ms]`)
+    console.log(`Request ${requestId} from ${clientId} to [concept: ${conceptType}] completed external request in [observed: ${milliseconds} ms]`)
 
     return response
   })

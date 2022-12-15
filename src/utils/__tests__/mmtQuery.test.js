@@ -30,7 +30,10 @@ describe('mmtQuery', () => {
       params: {
         id: 123
       },
-      headers: { 'X-Request-Id': 'abcd-1234-efgh-5678' }
+      headers: {
+        'Client-Id': 'eed-test-graphql',
+        'X-Request-Id': 'abcd-1234-efgh-5678'
+      }
     })
 
     const { data, headers } = response
@@ -44,7 +47,7 @@ describe('mmtQuery', () => {
     })
 
     expect(consoleMock).toBeCalledWith(
-      `Request abcd-1234-efgh-5678 to [concept: collectionDraft] completed external request in [observed: ${requestDuration} ms]`
+      `Request abcd-1234-efgh-5678 from eed-test-graphql to [concept: collectionDraft] completed external request in [observed: ${requestDuration} ms]`
     )
   })
 
@@ -52,8 +55,9 @@ describe('mmtQuery', () => {
     test('queries mmt using the Authorization header', async () => {
       nock(/example/, {
         reqheaders: {
-          'X-Request-Id': 'abcd-1234-efgh-5678',
-          Authorization: 'test-token'
+          Authorization: 'test-token',
+          'Client-Id': 'eed-test-graphql',
+          'X-Request-Id': 'abcd-1234-efgh-5678'
         }
       })
         .get(/collection_drafts/)
@@ -65,8 +69,9 @@ describe('mmtQuery', () => {
         conceptType: 'collectionDraft',
         params: {},
         headers: {
-          'X-Request-Id': 'abcd-1234-efgh-5678',
-          Authorization: 'test-token'
+          Authorization: 'test-token',
+          'Client-Id': 'eed-test-graphql',
+          'X-Request-Id': 'abcd-1234-efgh-5678'
         }
       })
 
@@ -89,6 +94,7 @@ describe('mmtQuery', () => {
         conceptType: 'collectionDraft',
         params: {},
         headers: {
+          'Client-Id': 'eed-test-graphql',
           'X-Request-Id': 'abcd-1234-efgh-5678'
         }
       })

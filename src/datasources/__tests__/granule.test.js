@@ -131,7 +131,14 @@ describe('granule', () => {
           }]
         })
 
-      const response = await granuleDatasource({ cursor: 'eyJqc29uIjoiLTI5ODM0NzUwIiwidW1tIjoiLTk4NzI2MzU3In0=' }, { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' } }, requestInfo)
+      const response = await granuleDatasource({
+        cursor: 'eyJqc29uIjoiLTI5ODM0NzUwIiwidW1tIjoiLTk4NzI2MzU3In0='
+      }, {
+        headers: {
+          'Client-Id': 'eed-test-graphql',
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        }
+      }, requestInfo)
 
       expect(response).toEqual({
         count: 84,
@@ -182,7 +189,12 @@ describe('granule', () => {
             }]
           })
 
-        const response = await granuleDatasource({}, { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' } }, requestInfo)
+        const response = await granuleDatasource({}, {
+          headers: {
+            'Client-Id': 'eed-test-graphql',
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          }
+        }, requestInfo)
 
         expect(response).toEqual({
           count: 84,
@@ -214,7 +226,12 @@ describe('granule', () => {
           }
         })
 
-      const response = await granuleDatasource({}, { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' } }, requestInfo)
+      const response = await granuleDatasource({}, {
+        headers: {
+          'Client-Id': 'eed-test-graphql',
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        }
+      }, requestInfo)
 
       expect(response).toEqual({
         count: 84,
@@ -243,7 +260,16 @@ describe('granule', () => {
           }
         })
 
-      const response = await granuleDatasource({ params: { concept_id: 'G100000-EDSC' } }, { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' } }, requestInfo)
+      const response = await granuleDatasource({
+        params: {
+          concept_id: 'G100000-EDSC'
+        }
+      }, {
+        headers: {
+          'Client-Id': 'eed-test-graphql',
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        }
+      }, requestInfo)
 
       expect(response).toEqual({
         count: 84,
@@ -320,7 +346,10 @@ describe('granule', () => {
           collectionConceptId: 'C100000-EDSC',
           linkTypes: ['data', 's3']
         },
-        { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
+        {
+          'Client-Id': 'eed-test-graphql',
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        },
         requestInfo,
         'granule'
       )
@@ -421,7 +450,16 @@ describe('granule', () => {
           }]
         })
 
-      const response = await granuleDatasource({ params: { concept_id: 'G100000-EDSC' } }, { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' } }, requestInfo)
+      const response = await granuleDatasource({
+        params: {
+          concept_id: 'G100000-EDSC'
+        }
+      }, {
+        headers: {
+          'Client-Id': 'eed-test-graphql',
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        }
+      }, requestInfo)
 
       expect(response).toEqual({
         count: 84,
@@ -489,7 +527,16 @@ describe('granule', () => {
           }]
         })
 
-      const response = await granuleDatasource({ params: { concept_id: 'G100000-EDSC' } }, { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' } }, requestInfo)
+      const response = await granuleDatasource({
+        params: {
+          concept_id: 'G100000-EDSC'
+        }
+      }, {
+        headers: {
+          'Client-Id': 'eed-test-graphql',
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        }
+      }, requestInfo)
 
       expect(response).toEqual({
         count: 84,
@@ -511,7 +558,16 @@ describe('granule', () => {
       })
 
     await expect(
-      granuleDatasource({ params: { conceptId: 'G100000-EDSC' } }, { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' } }, requestInfo)
+      granuleDatasource({
+        params: {
+          conceptId: 'G100000-EDSC'
+        }
+      }, {
+        headers: {
+          'Client-Id': 'eed-test-graphql',
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        }
+      }, requestInfo)
     ).rejects.toThrow(Error)
   })
 })

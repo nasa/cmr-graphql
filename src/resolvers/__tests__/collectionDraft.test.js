@@ -23,6 +23,7 @@ const server = new ApolloServer({
   resolvers,
   context: () => ({
     headers: {
+      'Client-Id': 'eed-test-graphql',
       'X-Request-Id': 'abcd-1234-efgh-5678'
     }
   }),

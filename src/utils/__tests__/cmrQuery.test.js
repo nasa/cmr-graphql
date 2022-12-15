@@ -21,6 +21,7 @@ describe('cmrQuery', () => {
 
     nock(/example/, {
       reqheaders: {
+        'Client-Id': 'eed-test-graphql',
         'CMR-Request-Id': 'abcd-1234-efgh-5678'
       }
     })
@@ -39,7 +40,10 @@ describe('cmrQuery', () => {
     const response = await cmrQuery({
       conceptType: 'collections',
       params: {},
-      headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }
+      headers: {
+        'Client-Id': 'eed-test-graphql',
+        'CMR-Request-Id': 'abcd-1234-efgh-5678'
+      }
     })
 
     const { data, headers } = response
@@ -58,7 +62,7 @@ describe('cmrQuery', () => {
     })
 
     expect(consoleMock).toBeCalledWith(
-      `Request abcd-1234-efgh-5678 to [concept: collections, format: json] completed external request in [reported: ${cmrTook} ms, observed: ${requestDuration} ms]`
+      `Request abcd-1234-efgh-5678 from eed-test-graphql to [concept: collections, format: json] completed external request in [reported: ${cmrTook} ms, observed: ${requestDuration} ms]`
     )
   })
 
@@ -66,6 +70,7 @@ describe('cmrQuery', () => {
     test('queries cmr', async () => {
       nock(/example/, {
         reqheaders: {
+          'Client-Id': 'eed-test-graphql',
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         }
       })
@@ -81,7 +86,10 @@ describe('cmrQuery', () => {
       const response = await cmrQuery({
         conceptType: 'collections',
         params: {},
-        headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
+        headers: {
+          'Client-Id': 'eed-test-graphql',
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        },
         options: { format: 'umm_json' }
       })
 
@@ -100,8 +108,9 @@ describe('cmrQuery', () => {
     test('queries cmr using the Authorization header', async () => {
       nock(/example/, {
         reqheaders: {
-          'CMR-Request-Id': 'abcd-1234-efgh-5678',
-          Authorization: 'test-token'
+          Authorization: 'test-token',
+          'Client-Id': 'eed-test-graphql',
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
         }
       })
         .post(/collections\.json/)
@@ -117,8 +126,9 @@ describe('cmrQuery', () => {
         conceptType: 'collections',
         params: {},
         headers: {
-          'CMR-Request-Id': 'abcd-1234-efgh-5678',
-          Authorization: 'test-token'
+          Authorization: 'test-token',
+          'Client-Id': 'eed-test-graphql',
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
         }
       })
 
@@ -137,6 +147,7 @@ describe('cmrQuery', () => {
     test('throws an exception', async () => {
       nock(/example/, {
         reqheaders: {
+          'Client-Id': 'eed-test-graphql',
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         }
       })
@@ -149,6 +160,7 @@ describe('cmrQuery', () => {
         conceptType: 'collections',
         params: {},
         headers: {
+          'Client-Id': 'eed-test-graphql',
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         }
       })

@@ -39,7 +39,10 @@ describe('draftMmtQuery', () => {
         params: {
           id: 123
         },
-        headers: { 'X-Request-Id': 'abcd-1234-efgh-5678' }
+        headers: {
+          'Client-Id': 'eed-test-graphql',
+          'X-Request-Id': 'abcd-1234-efgh-5678'
+        }
       })
 
       const { data, headers } = response
@@ -53,7 +56,7 @@ describe('draftMmtQuery', () => {
       })
 
       expect(consoleMock).toBeCalledWith(
-        `Request abcd-1234-efgh-5678 to [concept: collectionDraftProposal] completed external request in [observed: ${requestDuration} ms]`
+        `Request abcd-1234-efgh-5678 from eed-test-graphql to [concept: collectionDraftProposal] completed external request in [observed: ${requestDuration} ms]`
       )
     })
   })
@@ -81,7 +84,10 @@ describe('draftMmtQuery', () => {
         params: {
           id: 123
         },
-        headers: { 'X-Request-Id': 'abcd-1234-efgh-5678' }
+        headers: {
+          'Client-Id': 'eed-test-graphql',
+          'X-Request-Id': 'abcd-1234-efgh-5678'
+        }
       })
 
       const { data, headers } = response
@@ -95,7 +101,7 @@ describe('draftMmtQuery', () => {
       })
 
       expect(consoleMock).toBeCalledWith(
-        `Request abcd-1234-efgh-5678 to [concept: collectionDraftProposal] completed external request in [observed: ${requestDuration} ms]`
+        `Request abcd-1234-efgh-5678 from eed-test-graphql to [concept: collectionDraftProposal] completed external request in [observed: ${requestDuration} ms]`
       )
     })
   })
@@ -104,8 +110,9 @@ describe('draftMmtQuery', () => {
     test('queries draft mmt using the Authorization header', async () => {
       nock(/example/, {
         reqheaders: {
-          'X-Request-Id': 'abcd-1234-efgh-5678',
-          Authorization: 'test-token'
+          Authorization: 'test-token',
+          'Client-Id': 'eed-test-graphql',
+          'X-Request-Id': 'abcd-1234-efgh-5678'
         }
       })
         .get(/collection_draft_proposals/)
@@ -117,8 +124,9 @@ describe('draftMmtQuery', () => {
         conceptType: 'collectionDraftProposal',
         params: {},
         headers: {
-          'X-Request-Id': 'abcd-1234-efgh-5678',
-          Authorization: 'test-token'
+          Authorization: 'test-token',
+          'Client-Id': 'eed-test-graphql',
+          'X-Request-Id': 'abcd-1234-efgh-5678'
         }
       })
 
@@ -141,6 +149,7 @@ describe('draftMmtQuery', () => {
         conceptType: 'collectionDraftProposal',
         params: {},
         headers: {
+          'Client-Id': 'eed-test-graphql',
           'X-Request-Id': 'abcd-1234-efgh-5678'
         }
       })

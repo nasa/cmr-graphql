@@ -3,6 +3,7 @@ import axios from 'axios'
 
 import snakeCaseKeys from 'snakecase-keys'
 
+import { downcaseKeys } from './downcaseKeys'
 import { pickIgnoringCase } from './pickIgnoringCase'
 import { prepKeysForCmr } from './prepKeysForCmr'
 
@@ -38,7 +39,10 @@ export const draftMmtQuery = ({
 
   const { id } = params
 
-  const { 'X-Request-Id': requestId } = permittedHeaders
+  const {
+    'client-id': clientId,
+    'x-request-id': requestId
+  } = downcaseKeys(permittedHeaders)
 
   let httpsAgent
 
@@ -86,7 +90,7 @@ export const draftMmtQuery = ({
 
     response.headers['request-duration'] = milliseconds
 
-    console.log(`Request ${requestId} to [concept: ${conceptType}] completed external request in [observed: ${milliseconds} ms]`)
+    console.log(`Request ${requestId} from ${clientId} to [concept: ${conceptType}] completed external request in [observed: ${milliseconds} ms]`)
 
     return response
   })

@@ -22,6 +22,7 @@ describe('parseCmrError', () => {
           errors: ['HTTP Error']
         },
         headers: {
+          'client-id': 'eed-test-graphql',
           'cmr-request-id': 'abcd-1234-efgh-5678'
         }
       }
@@ -30,7 +31,7 @@ describe('parseCmrError', () => {
     expect(() => parseCmrError(error)).toThrow()
 
     expect(consoleMock).toBeCalledTimes(1)
-    expect(consoleMock).toBeCalledWith('Request abcd-1234-efgh-5678 experienced an error: HTTP Error')
+    expect(consoleMock).toBeCalledWith('Request abcd-1234-efgh-5678 from eed-test-graphql experienced an error: HTTP Error')
   })
 
   test('logs the error and re throws the exception by default', () => {
@@ -42,6 +43,7 @@ describe('parseCmrError', () => {
           errors: ['Token does not exist']
         },
         headers: {
+          'client-id': 'eed-test-graphql',
           'cmr-request-id': 'abcd-1234-efgh-5678'
         },
         status: 401
@@ -51,7 +53,7 @@ describe('parseCmrError', () => {
     expect(() => parseCmrError(error)).toThrow()
 
     expect(consoleMock).toBeCalledTimes(1)
-    expect(consoleMock).toBeCalledWith('Request abcd-1234-efgh-5678 experienced an error: Token does not exist')
+    expect(consoleMock).toBeCalledWith('Request abcd-1234-efgh-5678 from eed-test-graphql experienced an error: Token does not exist')
   })
 
   test('logs the error and returns the response when reThrow is false', () => {
@@ -63,6 +65,7 @@ describe('parseCmrError', () => {
           errors: ['HTTP Error']
         },
         headers: {
+          'client-id': 'eed-test-graphql',
           'cmr-request-id': 'abcd-1234-efgh-5678'
         }
       }
@@ -71,7 +74,7 @@ describe('parseCmrError', () => {
     const response = parseCmrError(error, false)
 
     expect(consoleMock).toBeCalledTimes(1)
-    expect(consoleMock).toBeCalledWith('Request abcd-1234-efgh-5678 experienced an error: HTTP Error')
+    expect(consoleMock).toBeCalledWith('Request abcd-1234-efgh-5678 from eed-test-graphql experienced an error: HTTP Error')
 
     expect(response).toEqual({
       errors: ['HTTP Error']

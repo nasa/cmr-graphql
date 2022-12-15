@@ -108,7 +108,12 @@ describe('tool', () => {
           }]
         })
 
-      const response = await toolDatasource({}, { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' } }, requestInfo)
+      const response = await toolDatasource({}, {
+        headers: {
+          'Client-Id': 'eed-test-graphql',
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        }
+      }, requestInfo)
 
       expect(response).toEqual({
         count: 84,
@@ -141,7 +146,12 @@ describe('tool', () => {
             }]
           })
 
-        const response = await toolDatasource({}, { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' } }, requestInfo)
+        const response = await toolDatasource({}, {
+          headers: {
+            'Client-Id': 'eed-test-graphql',
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          }
+        }, requestInfo)
 
         expect(response).toEqual({
           count: 84,
@@ -170,7 +180,12 @@ describe('tool', () => {
           }]
         })
 
-      const response = await toolDatasource({}, { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' } }, requestInfo)
+      const response = await toolDatasource({}, {
+        headers: {
+          'Client-Id': 'eed-test-graphql',
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        }
+      }, requestInfo)
 
       expect(response).toEqual({
         count: 84,
@@ -197,7 +212,16 @@ describe('tool', () => {
           }]
         })
 
-      const response = await toolDatasource({ params: { concept_id: 'T100000-EDSC' } }, { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' } }, requestInfo)
+      const response = await toolDatasource({
+        params: {
+          concept_id: 'T100000-EDSC'
+        }
+      }, {
+        headers: {
+          'Client-Id': 'eed-test-graphql',
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        }
+      }, requestInfo)
 
       expect(response).toEqual({
         count: 84,
@@ -263,7 +287,16 @@ describe('tool', () => {
           }]
         })
 
-      const response = await toolDatasource({ params: { concept_id: 'T100000-EDSC' } }, { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' } }, requestInfo)
+      const response = await toolDatasource({
+        params: {
+          concept_id: 'T100000-EDSC'
+        }
+      }, {
+        headers: {
+          'Client-Id': 'eed-test-graphql',
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        }
+      }, requestInfo)
 
       expect(response).toEqual({
         count: 84,
@@ -285,7 +318,16 @@ describe('tool', () => {
       })
 
     await expect(
-      toolDatasource({ params: { conceptId: 'T100000-EDSC' } }, { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' } }, requestInfo)
+      toolDatasource({
+        params: {
+          conceptId: 'T100000-EDSC'
+        }
+      }, {
+        headers: {
+          'Client-Id': 'eed-test-graphql',
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        }
+      }, requestInfo)
     ).rejects.toThrow(Error)
   })
 })

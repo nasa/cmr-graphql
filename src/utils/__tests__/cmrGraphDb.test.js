@@ -37,7 +37,10 @@ describe('cmrGraphDb', () => {
 
       const response = await cmrGraphDb({
         conceptId: 'C100000-EDSC',
-        headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
+        headers: {
+          'Client-Id': 'eed-test-graphql',
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        },
         query: 'mock query'
       })
 
@@ -52,7 +55,7 @@ describe('cmrGraphDb', () => {
       })
 
       expect(consoleMock).toBeCalledWith(
-        `Request abcd-1234-efgh-5678 to [graphdb conceptId: C100000-EDSC] completed external request in [observed: ${requestDuration} ms]`
+        `Request abcd-1234-efgh-5678 from eed-test-graphql to [graphdb conceptId: C100000-EDSC] completed external request in [observed: ${requestDuration} ms]`
       )
     })
   })
@@ -73,7 +76,10 @@ describe('cmrGraphDb', () => {
 
       const response = await cmrGraphDb({
         conceptId: 'C100000-EDSC',
-        headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
+        headers: {
+          'Client-Id': 'eed-test-graphql',
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        },
         query: 'mock query'
       })
 
@@ -88,7 +94,7 @@ describe('cmrGraphDb', () => {
       })
 
       expect(consoleMock).toBeCalledWith(
-        `Request abcd-1234-efgh-5678 to [graphdb conceptId: C100000-EDSC] completed external request in [observed: ${requestDuration} ms]`
+        `Request abcd-1234-efgh-5678 from eed-test-graphql to [graphdb conceptId: C100000-EDSC] completed external request in [observed: ${requestDuration} ms]`
       )
     })
   })
@@ -97,6 +103,7 @@ describe('cmrGraphDb', () => {
     test('throws an exception', async () => {
       nock(/example-graphdb/, {
         reqheaders: {
+          'Client-Id': 'eed-test-graphql',
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         }
       })
@@ -108,6 +115,7 @@ describe('cmrGraphDb', () => {
       const response = cmrGraphDb({
         conceptId: 'C100000-EDSC',
         headers: {
+          'Client-Id': 'eed-test-graphql',
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         },
         query: 'mock query'

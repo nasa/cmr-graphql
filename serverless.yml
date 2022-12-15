@@ -20,6 +20,7 @@ provider:
     edlKeyId: ${self:custom.variables.edlKeyId}
     edlJwk: ${self:custom.variables.edlJwk}
     dmmtSslCert: ${self:custom.variables.dmmtSslCert}
+    stage: ${self:provider.stage}
 
     # Timeout for lambda
     lambdaTimeout: ${env:LAMBDA_TIMEOUT, '30'}

@@ -161,7 +161,13 @@ describe('graphDb', () => {
             limit: 1,
             relatedUrlType: ['VIEW RELATED INFORMATION']
           },
-          { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, edlUsername: 'edlUsername' },
+          {
+            headers: {
+              'Client-Id': 'eed-test-graphql',
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            },
+            edlUsername: 'edlUsername'
+          },
           parsedInfo
         )
 
@@ -187,7 +193,13 @@ describe('graphDb', () => {
             limit: 1,
             relatedUrlSubtype: ["USER'S GUIDE"]
           },
-          { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, edlUsername: 'edlUsername' },
+          {
+            headers: {
+              'Client-Id': 'eed-test-graphql',
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            },
+            edlUsername: 'edlUsername'
+          },
           parsedInfo
         )
 
@@ -214,7 +226,13 @@ describe('graphDb', () => {
             relatedUrlType: ['VIEW RELATED INFORMATION'],
             relatedUrlSubtype: ["USER'S GUIDE"]
           },
-          { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, edlUsername: 'edlUsername' },
+          {
+            headers: {
+              'Client-Id': 'eed-test-graphql',
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            },
+            edlUsername: 'edlUsername'
+          },
           parsedInfo
         )
 
@@ -301,7 +319,13 @@ describe('graphDb', () => {
           {
             limit: 1
           },
-          { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, edlUsername: 'edlUsername' },
+          {
+            headers: {
+              'Client-Id': 'eed-test-graphql',
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            },
+            edlUsername: 'edlUsername'
+          },
           parsedInfo
         )
 
@@ -392,7 +416,13 @@ describe('graphDb', () => {
           {
             limit: 1
           },
-          { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, edlUsername: 'edlUsername' },
+          {
+            headers: {
+              'Client-Id': 'eed-test-graphql',
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            },
+            edlUsername: 'edlUsername'
+          },
           parsedInfo
         )
 
@@ -495,7 +525,13 @@ describe('graphDb', () => {
           {
             limit: 1
           },
-          { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, edlUsername: 'edlUsername' },
+          {
+            headers: {
+              'Client-Id': 'eed-test-graphql',
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            },
+            edlUsername: 'edlUsername'
+          },
           parsedInfo
         )
 
@@ -605,7 +641,13 @@ describe('graphDb', () => {
             limit: 1,
             relatedUrlType: ['VIEW RELATED INFORMATION']
           },
-          { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, edlUsername: 'edlUsername' },
+          {
+            headers: {
+              'Client-Id': 'eed-test-graphql',
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            },
+            edlUsername: 'edlUsername'
+          },
           parsedInfo
         )
 
@@ -723,7 +765,13 @@ describe('graphDb', () => {
             limit: 1,
             relatedUrlType: ['VIEW RELATED INFORMATION']
           },
-          { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, edlUsername: 'edlUsername' },
+          {
+            headers: {
+              'Client-Id': 'eed-test-graphql',
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            },
+            edlUsername: 'edlUsername'
+          },
           parsedInfo
         )
 
@@ -840,7 +888,13 @@ describe('graphDb', () => {
             limit: 1,
             relatedUrlType: ['VIEW RELATED INFORMATION']
           },
-          { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, edlUsername: 'edlUsername' },
+          {
+            headers: {
+              'Client-Id': 'eed-test-graphql',
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            },
+            edlUsername: 'edlUsername'
+          },
           parsedInfo
         )
 
@@ -924,7 +978,13 @@ describe('graphDb', () => {
           {
             limit: 1
           },
-          { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, edlUsername: 'edlUsername' },
+          {
+            headers: {
+              'Client-Id': 'eed-test-graphql',
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            },
+            edlUsername: 'edlUsername'
+          },
           parsedInfo
         )
 
@@ -988,7 +1048,13 @@ describe('graphDb', () => {
         {
           limit: 1
         },
-        { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, edlUsername: 'edlUsername' },
+        {
+          headers: {
+            'Client-Id': 'eed-test-graphql',
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          },
+          edlUsername: 'edlUsername'
+        },
         parsedInfo
       )
 
@@ -1001,10 +1067,12 @@ describe('graphDb', () => {
       nock(/example-graphdb/)
         .post(() => true, (body) => {
           const { gremlin: gremlinQuery } = body
+
           const correctGremlin = gremlinQuery.includes('within(\'groupid1\',\'groupid2\',\'registered\',\'guest\')')
           if (correctGremlin) {
             return true
           }
+
           return false
         })
         .reply(200, relatedCollectionsRelationshipTypeGraphdbResponseMocks)
@@ -1038,7 +1106,13 @@ describe('graphDb', () => {
         {
           limit: 1
         },
-        { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, edlUsername: 'someEdlUsername' },
+        {
+          headers: {
+            'Client-Id': 'eed-test-graphql',
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          },
+          edlUsername: 'someEdlUsername'
+        },
         parsedInfo
       )
       expect(response).toEqual(relatedCollectionsRelationshipTypeResponseMocks)
@@ -1067,7 +1141,13 @@ describe('graphDb', () => {
         {
           limit: 1
         },
-        { headers: { 'CMR-Request-Id': 'abcd-1234-efgh-5678' }, edlUsername: 'someEdlUsername' },
+        {
+          headers: {
+            'Client-Id': 'eed-test-graphql',
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          },
+          edlUsername: 'someEdlUsername'
+        },
         parsedInfo
       )
       expect(response).toEqual({ count: 0, items: [] })

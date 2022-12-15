@@ -296,6 +296,18 @@ export default class Concept {
   }
 
   /**
+   * Retrieve the client id header from the request
+   * @param {Object} headers The provided headers from the query
+   */
+  getClientId() {
+    const {
+      'Client-Id': clientId
+    } = this.headers
+
+    return clientId
+  }
+
+  /**
    * Return the response from the query to CMR
    */
   async getResponse() {
@@ -380,7 +392,7 @@ export default class Concept {
     const filteredKeys = keys.filter((field) => CONCEPT_TYPES.indexOf(field) === -1)
 
     filteredKeys.forEach((key) => {
-      console.log(`Request ${this.getRequestId()} to [concept: ${this.getConceptType()}] requested [format: ${format}, key: ${key}]`)
+      console.log(`Request ${this.getRequestId()} from ${this.getClientId()} to [concept: ${this.getConceptType()}] requested [format: ${format}, key: ${key}]`)
     })
   }
 

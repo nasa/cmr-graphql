@@ -24,8 +24,9 @@ describe('cmrIngest', () => {
     nock(/example/, {
       reqheaders: {
         Accept: 'application/json',
-        'Content-Type': 'application/vnd.nasa.cmr.umm+json; version=1.0',
-        'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        'Client-Id': 'eed-test-graphql',
+        'CMR-Request-Id': 'abcd-1234-efgh-5678',
+        'Content-Type': 'application/vnd.nasa.cmr.umm+json; version=1.0'
       }
     })
       .put(/ingest\/subscriptions\/1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed/)
@@ -39,6 +40,7 @@ describe('cmrIngest', () => {
       { collectionConceptId: 'C100000-EDSC' },
       {
         'CMR-Request-Id': 'abcd-1234-efgh-5678',
+        'Client-Id': 'eed-test-graphql',
         'Content-Type': 'application/vnd.nasa.cmr.umm+json; version=1.0'
       },
       'subscriptions'
@@ -56,7 +58,7 @@ describe('cmrIngest', () => {
     })
 
     expect(consoleMock).toBeCalledWith(
-      `Request abcd-1234-efgh-5678 to ingest [concept: subscriptions] completed external request in [observed: ${requestDuration} ms]`
+      `Request abcd-1234-efgh-5678 from eed-test-graphql to ingest [concept: subscriptions] completed external request in [observed: ${requestDuration} ms]`
     )
   })
 
@@ -67,6 +69,7 @@ describe('cmrIngest', () => {
       nock(/example/, {
         reqheaders: {
           Accept: 'application/json',
+          'Client-Id': 'eed-test-graphql',
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         }
       })
@@ -82,50 +85,9 @@ describe('cmrIngest', () => {
           collectionConceptId: 'C100000-EDSC',
           nativeId: 'provided-native-id'
         },
-        { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
-        'subscriptions'
-      )
-
-      const { data, headers } = response
-
-      const {
-        'request-duration': requestDuration
-      } = downcaseKeys(headers)
-
-      expect(data).toEqual({
-        'concept-id': 'SUB100000-EDSC',
-        'revision-id': 1
-      })
-
-      expect(consoleMock).toBeCalledWith(
-        `Request abcd-1234-efgh-5678 to ingest [concept: subscriptions] completed external request in [observed: ${requestDuration} ms]`
-      )
-    })
-  })
-
-  describe('when provided a token via the Authorization header', () => {
-    test('queries cmr using the Authorization header', async () => {
-      const consoleMock = jest.spyOn(console, 'log').mockImplementation(() => jest.fn())
-
-      nock(/example/, {
-        reqheaders: {
-          Accept: 'application/json',
-          'CMR-Request-Id': 'abcd-1234-efgh-5678',
-          Authorization: 'test-token'
-        }
-      })
-        .put(/ingest\/subscriptions\/1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed/)
-        .reply(201, {
-          'concept-id': 'SUB100000-EDSC',
-          'revision-id': 1
-        })
-
-      const response = await cmrIngest(
-        'subscriptions',
-        { collectionConceptId: 'C100000-EDSC' },
         {
-          'CMR-Request-Id': 'abcd-1234-efgh-5678',
-          Authorization: 'test-token'
+          'Client-Id': 'eed-test-graphql',
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
         },
         'subscriptions'
       )
@@ -142,7 +104,53 @@ describe('cmrIngest', () => {
       })
 
       expect(consoleMock).toBeCalledWith(
-        `Request abcd-1234-efgh-5678 to ingest [concept: subscriptions] completed external request in [observed: ${requestDuration} ms]`
+        `Request abcd-1234-efgh-5678 from eed-test-graphql to ingest [concept: subscriptions] completed external request in [observed: ${requestDuration} ms]`
+      )
+    })
+  })
+
+  describe('when provided a token via the Authorization header', () => {
+    test('queries cmr using the Authorization header', async () => {
+      const consoleMock = jest.spyOn(console, 'log').mockImplementation(() => jest.fn())
+
+      nock(/example/, {
+        reqheaders: {
+          Accept: 'application/json',
+          'Client-Id': 'eed-test-graphql',
+          'CMR-Request-Id': 'abcd-1234-efgh-5678',
+          Authorization: 'test-token'
+        }
+      })
+        .put(/ingest\/subscriptions\/1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed/)
+        .reply(201, {
+          'concept-id': 'SUB100000-EDSC',
+          'revision-id': 1
+        })
+
+      const response = await cmrIngest(
+        'subscriptions',
+        { collectionConceptId: 'C100000-EDSC' },
+        {
+          Authorization: 'test-token',
+          'Client-Id': 'eed-test-graphql',
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        },
+        'subscriptions'
+      )
+
+      const { data, headers } = response
+
+      const {
+        'request-duration': requestDuration
+      } = downcaseKeys(headers)
+
+      expect(data).toEqual({
+        'concept-id': 'SUB100000-EDSC',
+        'revision-id': 1
+      })
+
+      expect(consoleMock).toBeCalledWith(
+        `Request abcd-1234-efgh-5678 from eed-test-graphql to ingest [concept: subscriptions] completed external request in [observed: ${requestDuration} ms]`
       )
     })
   })
@@ -151,6 +159,7 @@ describe('cmrIngest', () => {
     test('throws an exception', async () => {
       nock(/example/, {
         reqheaders: {
+          'Client-Id': 'eed-test-graphql',
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         }
       })
@@ -162,7 +171,10 @@ describe('cmrIngest', () => {
       const response = cmrIngest(
         'subscriptions',
         { collectionConceptId: 'C100000-EDSC' },
-        { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
+        {
+          'Client-Id': 'eed-test-graphql',
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        },
         'subscriptions'
       )
 

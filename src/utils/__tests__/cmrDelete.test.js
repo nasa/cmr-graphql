@@ -22,6 +22,7 @@ describe('cmrDelete', () => {
     nock(/example/, {
       reqheaders: {
         Accept: 'application/json',
+        'Client-Id': 'eed-test-graphql',
         'CMR-Request-Id': 'abcd-1234-efgh-5678'
       }
     })
@@ -37,7 +38,10 @@ describe('cmrDelete', () => {
         conceptId: 'SUB100000-EDSC',
         nativeId: '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed'
       },
-      { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
+      {
+        'Client-Id': 'eed-test-graphql',
+        'CMR-Request-Id': 'abcd-1234-efgh-5678'
+      },
       'subscriptions'
     )
 
@@ -53,7 +57,7 @@ describe('cmrDelete', () => {
     })
 
     expect(consoleMock).toBeCalledWith(
-      `Request abcd-1234-efgh-5678 to delete [concept: subscriptions] completed external request in [observed: ${requestDuration} ms]`
+      `Request abcd-1234-efgh-5678 from eed-test-graphql to delete [concept: subscriptions] completed external request in [observed: ${requestDuration} ms]`
     )
   })
 
@@ -64,8 +68,9 @@ describe('cmrDelete', () => {
       nock(/example/, {
         reqheaders: {
           Accept: 'application/json',
-          'CMR-Request-Id': 'abcd-1234-efgh-5678',
-          Authorization: 'test-token'
+          Authorization: 'test-token',
+          'Client-Id': 'eed-test-graphql',
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
         }
       })
         .delete(/ingest\/subscriptions\/1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed/)
@@ -81,8 +86,9 @@ describe('cmrDelete', () => {
           nativeId: '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed'
         },
         {
-          'CMR-Request-Id': 'abcd-1234-efgh-5678',
-          Authorization: 'test-token'
+          Authorization: 'test-token',
+          'Client-Id': 'eed-test-graphql',
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
         },
         'subscriptions'
       )
@@ -99,7 +105,7 @@ describe('cmrDelete', () => {
       })
 
       expect(consoleMock).toBeCalledWith(
-        `Request abcd-1234-efgh-5678 to delete [concept: subscriptions] completed external request in [observed: ${requestDuration} ms]`
+        `Request abcd-1234-efgh-5678 from eed-test-graphql to delete [concept: subscriptions] completed external request in [observed: ${requestDuration} ms]`
       )
     })
   })
@@ -108,6 +114,7 @@ describe('cmrDelete', () => {
     test('throws an exception', async () => {
       nock(/example/, {
         reqheaders: {
+          'Client-Id': 'eed-test-graphql',
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         }
       })
@@ -122,7 +129,10 @@ describe('cmrDelete', () => {
           conceptId: 'SUB100000-EDSC',
           nativeId: '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed'
         },
-        { 'CMR-Request-Id': 'abcd-1234-efgh-5678' },
+        {
+          'Client-Id': 'eed-test-graphql',
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        },
         'subscriptions'
       )
 

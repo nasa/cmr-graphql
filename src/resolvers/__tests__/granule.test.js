@@ -25,6 +25,7 @@ const server = new ApolloServer({
   resolvers,
   context: () => ({
     headers: {
+      'Client-Id': 'eed-test-graphql',
       'CMR-Request-Id': 'abcd-1234-efgh-5678'
     },
     collectionLoader: new DataLoader(getCollectionsById, { cacheKeyFn: (obj) => obj.conceptId })

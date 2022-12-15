@@ -2,10 +2,12 @@ import { parseResolveInfo } from 'graphql-parse-resolve-info'
 
 export default {
   Query: {
-    collectionDraftProposal: async (source, args, { dataSources, headers }, info) => {
+    collectionDraftProposal: async (source, args, context, info) => {
+      const { dataSources } = context
+
       const result = await dataSources.collectionDraftProposalSource(
         args,
-        headers,
+        context,
         parseResolveInfo(info)
       )
 
