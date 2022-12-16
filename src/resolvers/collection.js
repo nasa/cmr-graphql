@@ -22,7 +22,7 @@ export default {
 
   Collection: {
     granules: async (source, args, context, info) => {
-      const { dataSources, headers } = context
+      const { dataSources } = context
 
       // Pull out parent collection id to provide to the granules endpoint because cmr requires it
       const {
@@ -72,7 +72,7 @@ export default {
         ...args
       })
 
-      return dataSources.granuleSource(requestedParams, headers, parseResolveInfo(info))
+      return dataSources.granuleSource(requestedParams, context, parseResolveInfo(info))
     },
     relatedCollections: async (source, args, context, info) => {
       const { dataSources } = context
