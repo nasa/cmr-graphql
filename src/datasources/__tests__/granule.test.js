@@ -347,8 +347,10 @@ describe('granule', () => {
           linkTypes: ['data', 's3']
         },
         {
-          'Client-Id': 'eed-test-graphql',
-          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          headers: {
+            'Client-Id': 'eed-test-graphql',
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          }
         },
         requestInfo,
         'granule'
