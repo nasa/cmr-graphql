@@ -286,6 +286,7 @@ export default class Concept {
   /**
    * Retrieve the request id header from the request
    * @param {Object} headers The provided headers from the query
+   * @return {String} Request ID defined in the headers
    */
   getRequestId() {
     const {
@@ -298,6 +299,7 @@ export default class Concept {
   /**
    * Retrieve the client id header from the request
    * @param {Object} headers The provided headers from the query
+   * @return {String} Client ID defined in the headers
    */
   getClientId() {
     const {
