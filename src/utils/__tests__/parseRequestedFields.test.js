@@ -58,49 +58,47 @@ describe('parseRequestedFields', () => {
         isList: true
       })
     })
-
-    describe('field-level alias is used in request', () => {
-      test('requestedFields includes a field-level alias', () => {
-        const requestInfo = {
-          name: 'collections',
-          alias: 'collections',
-          args: {},
-          fieldsByTypeName: {
-            CollectionList: {
-              items: {
-                name: 'items',
-                alias: 'items',
-                args: {},
-                fieldsByTypeName: {
-                  Collection: {
-                    conceptId: {
-                      name: 'conceptId',
-                      alias: 'conceptId',
-                      args: {},
-                      fieldsByTypeName: {}
-                    },
-                    titleAlias: {
-                      name: 'title',
-                      alias: 'titleAlias',
-                      args: {},
-                      fieldsByTypeName: {}
-                    }
+    
+    test('requestedFields includes a field-level alias', () => {
+      const requestInfo = {
+        name: 'collections',
+        alias: 'collections',
+        args: {},
+        fieldsByTypeName: {
+          CollectionList: {
+            items: {
+              name: 'items',
+              alias: 'items',
+              args: {},
+              fieldsByTypeName: {
+                Collection: {
+                  conceptId: {
+                    name: 'conceptId',
+                    alias: 'conceptId',
+                    args: {},
+                    fieldsByTypeName: {}
+                  },
+                  titleAlias: {
+                    name: 'title',
+                    alias: 'titleAlias',
+                    args: {},
+                    fieldsByTypeName: {}
                   }
                 }
               }
             }
           }
         }
-  
-        const requestedFields = parseRequestedFields(requestInfo, keyMap, 'collection')
-  
-        expect(requestedFields).toEqual({
-          jsonKeys: ['conceptId', 'title'],
-          metaKeys: [],
-          ummKeys: [],
-          ummKeyMappings,
-          isList: true
-        })
+      }
+
+      const requestedFields = parseRequestedFields(requestInfo, keyMap, 'collection')
+
+      expect(requestedFields).toEqual({
+        jsonKeys: ['conceptId', 'title'],
+        metaKeys: [],
+        ummKeys: [],
+        ummKeyMappings,
+        isList: true
       })
     })
   })
