@@ -58,7 +58,7 @@ describe('parseRequestedFields', () => {
         isList: true
       })
     })
-    
+
     test('requestedFields includes a field-level alias', () => {
       const requestInfo = {
         name: 'collections',

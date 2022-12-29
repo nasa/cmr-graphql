@@ -1,6 +1,6 @@
-import { 
-  difference, 
-  isEmpty, 
+import {
+  difference,
+  isEmpty,
   map,
   upperFirst
 } from 'lodash'
