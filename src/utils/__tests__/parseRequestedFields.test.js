@@ -58,6 +58,49 @@ describe('parseRequestedFields', () => {
         isList: true
       })
     })
+
+    test('requestedFields includes a field-level alias', () => {
+      const requestInfo = {
+        name: 'collections',
+        alias: 'collections',
+        args: {},
+        fieldsByTypeName: {
+          CollectionList: {
+            items: {
+              name: 'items',
+              alias: 'items',
+              args: {},
+              fieldsByTypeName: {
+                Collection: {
+                  conceptId: {
+                    name: 'conceptId',
+                    alias: 'conceptId',
+                    args: {},
+                    fieldsByTypeName: {}
+                  },
+                  titleAlias: {
+                    name: 'title',
+                    alias: 'titleAlias',
+                    args: {},
+                    fieldsByTypeName: {}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      const requestedFields = parseRequestedFields(requestInfo, keyMap, 'collection')
+
+      expect(requestedFields).toEqual({
+        jsonKeys: ['conceptId', 'title'],
+        metaKeys: [],
+        ummKeys: [],
+        ummKeyMappings,
+        isList: true
+      })
+    })
   })
 
   describe('only umm keys requested', () => {

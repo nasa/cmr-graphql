@@ -1,4 +1,9 @@
-import { difference, isEmpty, upperFirst } from 'lodash'
+import {
+  difference,
+  isEmpty,
+  map,
+  upperFirst
+} from 'lodash'
 
 import { CONCEPT_TYPES } from '../constants'
 
@@ -61,7 +66,8 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
     } = fieldsByTypeName
 
     if (conceptKeysRequested) {
-      requestedFields = Object.keys(conceptKeysRequested)
+      // Match by name field to allow field-level aliases
+      requestedFields = map(conceptKeysRequested, 'name')
     }
 
     const {
