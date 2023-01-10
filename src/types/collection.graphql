@@ -57,6 +57,8 @@ type Collection {
   hasFormats: Boolean
   "True if there are granules associated with the collection."
   hasGranules: Boolean
+  "True if there is an OPeNDAP service RelatedURL associated with the collection."
+  hasOpendap: Boolean
   "True if any of its associated services support spatial subsetting."
   hasSpatialSubsetting: Boolean
   "True if any of its associated services support temporal subsetting."
@@ -387,6 +389,8 @@ input CollectionsInput {
   hasGranulesOrCwic: Boolean
   "When has_granules is set to 'true' or 'false', results will be restricted to collections with or without granules, respectively."
   hasGranules: Boolean
+  "When has_opendap_url is set to 'true' or 'false', results will be restricted to collections with or without OPeNDAP service RelatedURLs, respectively."
+  hasOpendap: Boolean
   "The horizontal data resolution of the data belonging to the collection."
   horizontalDataResolutionRange: [String]
   """
