@@ -183,13 +183,23 @@ export default {
       }, context, parseResolveInfo(info))
     },
     variables: async (source, args, context, info) => {
+      // const {
+      //   associations = {}
+      // } = source
       const {
-        associations = {}
+        association_details: associationDetails = {}
       } = source
+
+      const variableConceptIds = []
 
       const { dataSources } = context
 
-      const { variables = [] } = associations
+      const { variables = [] } = associationDetails
+
+      variables.forEach((variable) => {
+        const { concept_id: variableConceptId } = variable
+        variableConceptIds.push(variableConceptId)
+      })
 
       if (!variables.length) {
         return {
@@ -199,7 +209,7 @@ export default {
       }
 
       return dataSources.variableSource({
-        conceptId: variables,
+        conceptId: variableConceptIds,
         ...handlePagingParams(args, variables.length)
       }, context, parseResolveInfo(info))
     }
