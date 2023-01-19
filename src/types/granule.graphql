@@ -154,7 +154,7 @@ type Query {
     conceptId: [String] @deprecated(reason: "Use `params.conceptId`")
     "Cursor that points to the a specific position in a list of requested records."
     cursor: String @deprecated(reason: "Use `params.cursor`")
-    "Search by cycle which is part of the track information of a granule."
+    "Search by the day/night flag of the granule."
     dayNightFlag: String @deprecated(reason: "Use `params.dayNightFlag`")
     "Search by the equator crossing date of the granule."
     equatorCrossingDate: JSON @deprecated(reason: "Use `params.equatorCrossingDate`")
@@ -176,7 +176,7 @@ type Query {
     options: JSON @deprecated(reason: "Use `params.options`")
     "Search for granules by orbit number min and max"
     orbitNumber: JSON @deprecated(reason: "Use `params.orbitNumber`")
-    "Search by passes which is part of the track information of a granule."
+    "Search using a point involves using a pair of values representing the point coordinates as parameters. The first value is the longitude and second value is the latitude."
     point: [String] @deprecated(reason: "Use `params.point`")
     "Polygon points are provided in counter-clockwise order. The last point should match the first point to close the polygon. The values are listed comma separated in longitude latitude order, i.e. lon1, lat1, lon2, lat2, lon3, lat3, and so on."
     polygon: [String] @deprecated(reason: "Use `params.polygon`")
