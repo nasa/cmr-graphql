@@ -140,7 +140,7 @@ export default class Concept {
   setEssentialUmmValues() {}
 
   /**
-   * Get the total number of records avaiable for a given search across all endpoints. Also
+   * Get the total number of records available for a given search across all endpoints. Also
    * ensure that the value is the same if a given search spans multiple endpoints
    */
   getItemCount() {

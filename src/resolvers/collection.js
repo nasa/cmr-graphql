@@ -89,7 +89,40 @@ export default {
         associations = {}
       } = source
 
+      console.warn('The source for this particular collections', source)
+
+      const {
+        association_details = {}
+      } = source
+
+      console.log("The association details", association_details)
+
       const { dataSources } = context
+
+      const { services: services2 = [] } = association_details
+      console.log('This is services from the association details', services2)
+      // Since they are embeded you need to collect al of them
+
+      let serviceConceptIds = []
+
+      // For each concept_id in each of the services add it to the array
+      // services2.forEach('concept_id'){
+      //   serviceConceptIds.push()
+      // }
+      const conceptIdKey = 'concept_id'
+
+      // const keyToINput = services2[0]
+
+      services2.forEach((service) => {
+        const { concept_id: conIds } = service
+        serviceConceptIds.push(conIds)
+      })
+
+      console.log('the list of serviceConceptIds', serviceConceptIds)
+
+      // const { 'concept_id': serviceConceptIds} = services2
+
+      // console.log('This is the service concept-ids from services2', serviceConceptIds)
 
       const { services = [] } = associations
 
@@ -101,7 +134,7 @@ export default {
       }
 
       return dataSources.serviceSource({
-        conceptId: services,
+        conceptId: serviceConceptIds,
         ...handlePagingParams(args, services.length)
       }, context, parseResolveInfo(info))
     },

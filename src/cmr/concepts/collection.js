@@ -17,7 +17,7 @@ export default class Collection extends Concept {
   }
 
   /**
-   * Set a value in the result set that a query has not requested but is neccessary for other functionality
+   * Set a value in the result set that a query has not requested but is necessary for other functionality
    * @param {String} id Concept ID to set a value for within the result set
    * @param {Object} item The item returned from the CMR json endpoint
    */
@@ -27,6 +27,17 @@ export default class Collection extends Concept {
     // Associations are used by services and variables, its required to correctly
     // retrieve those objects and shouldn't need to be provided by the client
     const { associations } = item
+    const { 'association_details': associationDetails } = item // This is the association_details
+    console.log('The association details on the collections', associationDetails)
+    console.log('The regular associations on the collections', associations)
+
+    const { 'concept-id': associatedConceptId } = associationDetails
+
+    console.log('The concept-id for the particular association', associatedConceptId)
+    // concept_id is to get the concept_id for the particular association
+    if (associationDetails) {
+      this.setItemValue(id, 'association_details', associationDetails)
+    }
 
     if (associations) {
       this.setItemValue(id, 'associations', associations)
@@ -34,7 +45,7 @@ export default class Collection extends Concept {
   }
 
   /**
-   * Set a value in the result set that a query has not requested but is neccessary for other functionality
+   * Set a value in the result set that a query has not requested but is necessary for other functionality
    * @param {String} id Concept ID to set a value for within the result set
    * @param {Object} item The item returned from the CMR json endpoint
    */
@@ -204,7 +215,7 @@ export default class Collection extends Concept {
     // search endpoint, we dont support it in the response so we'll only return facets when
     // when the user has requested the list response
     if (isList && metaKeys.includes('collectionFacets')) {
-      // Incuded the facets in the metakeys returned
+      // Included the facets in the metakeys returned
       return {
         facets: this.getFacets(),
         ...super.getFormattedResponse()
