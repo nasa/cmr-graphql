@@ -85,37 +85,36 @@ export default {
       return dataSources.graphDbDuplicateCollectionsSource(source, context)
     },
     services: async (source, args, context, info) => {
-      const {
-        associations = {}
-      } = source
+      // const {
+      //   associations = {}
+      // } = source
 
       console.warn('The source for this particular collections', source)
 
       const {
-        association_details = {}
+        association_details: associationDetails = {}
       } = source
 
-      console.log("The association details", association_details)
+      console.log('The association details', associationDetails)
 
       const { dataSources } = context
 
-      const { services: services2 = [] } = association_details
-      console.log('This is services from the association details', services2)
+      const { services = [] } = associationDetails
+      // console.log('This is services from the association details', services2)
       // Since they are embeded you need to collect al of them
 
-      let serviceConceptIds = []
+      const serviceConceptIds = []
 
       // For each concept_id in each of the services add it to the array
       // services2.forEach('concept_id'){
       //   serviceConceptIds.push()
       // }
-      const conceptIdKey = 'concept_id'
 
       // const keyToINput = services2[0]
 
-      services2.forEach((service) => {
-        const { concept_id: conIds } = service
-        serviceConceptIds.push(conIds)
+      services.forEach((service) => {
+        const { concept_id: serviceConceptId } = service
+        serviceConceptIds.push(serviceConceptId)
       })
 
       console.log('the list of serviceConceptIds', serviceConceptIds)
@@ -124,7 +123,7 @@ export default {
 
       // console.log('This is the service concept-ids from services2', serviceConceptIds)
 
-      const { services = [] } = associations
+      // const { services = [] } = associations
 
       if (!services.length) {
         return {
@@ -152,13 +151,24 @@ export default {
       }, context, parseResolveInfo(info))
     },
     tools: async (source, args, context, info) => {
+      // const {
+      //   associations = {}
+      // } = source
+
       const {
-        associations = {}
+        association_details: associationDetails = {}
       } = source
+
+      const toolConceptIds = []
 
       const { dataSources } = context
 
-      const { tools = [] } = associations
+      const { tools = [] } = associationDetails
+
+      tools.forEach((tool) => {
+        const { concept_id: toolConceptId } = tool
+        toolConceptIds.push(toolConceptId)
+      })
 
       if (!tools.length) {
         return {
@@ -168,7 +178,7 @@ export default {
       }
 
       return dataSources.toolSource({
-        conceptId: tools,
+        conceptId: toolConceptIds,
         ...handlePagingParams(args, tools.length)
       }, context, parseResolveInfo(info))
     },
