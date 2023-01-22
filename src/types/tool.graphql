@@ -3,6 +3,8 @@ type Tool {
   accessConstraints: String
   "Words or phrases to further describe the downloadable tool or web user interface."
   ancillaryKeywords: JSON
+  "The data on the association between this collection"
+  associationDetails: JSON
   "The unique concept id assigned to the tool."
   conceptId: String!
   "Group(s) to contact at an organization to get information about the web user interface or downloadable tool, including how the group may be contacted."
@@ -53,6 +55,7 @@ type Tool {
   version: String
   "This field provides users with information on what changes were included in the most recent version."
   versionDescription: String
+  
 
   collections (
     "Collections query parameters"

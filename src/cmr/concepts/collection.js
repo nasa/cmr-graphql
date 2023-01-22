@@ -24,24 +24,24 @@ export default class Collection extends Concept {
   setEssentialJsonValues(id, item) {
     super.setEssentialJsonValues(id, item)
 
-    // Associations are used by services and variables, its required to correctly
+    // Associations are used by services, tools, and variables, it required to correctly
     // retrieve those objects and shouldn't need to be provided by the client
-    const { associations } = item
-    const { 'association_details': associationDetails } = item // This is the association_details
+    // const { associations } = item
+    const { association_details: associationDetails } = item // This is the association_details
     console.log('The association details on the collections', associationDetails)
-    console.log('The regular associations on the collections', associations)
 
-    const { 'concept-id': associatedConceptId } = associationDetails
+    // const { 'concept-id': associatedConceptIds = [] } = associationDetails
 
-    console.log('The concept-id for the particular association', associatedConceptId)
+    // console.log('The concept-id for the particular association', associatedConceptIds)
     // concept_id is to get the concept_id for the particular association
     if (associationDetails) {
+      console.log('Enter teh logic guard')
       this.setItemValue(id, 'association_details', associationDetails)
     }
 
-    if (associations) {
-      this.setItemValue(id, 'associations', associations)
-    }
+    // if (associations) {
+    //   this.setItemValue(id, 'associations', associationDetails)
+    // }
   }
 
   /**
@@ -53,12 +53,12 @@ export default class Collection extends Concept {
     super.setEssentialUmmValues(id, item)
 
     const { meta } = item
-    const { associations } = meta
+    const { 'association-details': associationDetails = {} } = meta
 
     // Associations are used by services and variables, its required to correctly
     // retrieve those objects and shouldn't need to be provided by the client
-    if (associations) {
-      this.setItemValue(id, 'associations', associations)
+    if (associationDetails) {
+      this.setItemValue(id, 'association_details', associationDetails)
     }
   }
 
@@ -75,6 +75,7 @@ export default class Collection extends Concept {
   getPermittedJsonSearchParams() {
     return [
       ...super.getPermittedJsonSearchParams(),
+      'association_details',
       'bounding_box',
       'circle',
       'cloud_hosted',
@@ -124,6 +125,7 @@ export default class Collection extends Concept {
   getPermittedUmmSearchParams() {
     return [
       ...super.getPermittedUmmSearchParams(),
+      'association_details',
       'bounding_box',
       'circle',
       'cloud_hosted',

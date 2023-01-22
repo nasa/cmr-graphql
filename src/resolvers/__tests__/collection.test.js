@@ -891,13 +891,13 @@ describe('Collection', () => {
               feed: {
                 entry: [{
                   id: 'C100000-EDSC',
-                  associations: {
-                    services: ['S100000-EDSC', 'S100001-EDSC']
+                  association_details: {
+                    services: [{ concept_id: 'S100000-EDSC' }, { concept_id: 'S100001-EDSC' }]
                   }
                 }, {
                   id: 'C100001-EDSC',
-                  associations: {
-                    services: ['S100002-EDSC', 'S100003-EDSC']
+                  association_details: {
+                    services: [{ concept_id: 'S100002-EDSC' }, { concept_id: 'S100003-EDSC' }]
                   }
                 }]
               }
@@ -1121,7 +1121,7 @@ describe('Collection', () => {
         })
       })
 
-      describe('association are present in the metadata but not tool assocations', () => {
+      describe('association are present in the metadata but not tool associations', () => {
         test('doesn\'t query for or return tools', async () => {
           nock(/example-cmr/)
             .defaultReplyHeaders({
@@ -1193,13 +1193,13 @@ describe('Collection', () => {
               feed: {
                 entry: [{
                   id: 'C100000-EDSC',
-                  associations: {
-                    tools: ['T100000-EDSC', 'T100001-EDSC']
+                  association_details: {
+                    tools: [{ concept_id: 'T100000-EDSC' }, { concept_id: 'T100001-EDSC' }]
                   }
                 }, {
                   id: 'C100001-EDSC',
-                  associations: {
-                    tools: ['T100002-EDSC', 'T100003-EDSC']
+                  association_details: {
+                    tools: [{ concept_id: 'T100002-EDSC' }, { concept_id: 'T100003-EDSC' }]
                   }
                 }]
               }
@@ -1333,7 +1333,7 @@ describe('Collection', () => {
         })
       })
 
-      describe('association are present in the metadata but not variable assocations', () => {
+      describe('association are present in the metadata but not variable associations', () => {
         test('doesn\'t query for or return variables', async () => {
           nock(/example-cmr/)
             .defaultReplyHeaders({
@@ -1405,13 +1405,13 @@ describe('Collection', () => {
               feed: {
                 entry: [{
                   id: 'C100000-EDSC',
-                  associations: {
-                    variables: ['V100000-EDSC', 'V100001-EDSC']
+                  association_details: {
+                    variables: [{ concept_id: 'V100000-EDSC' }, { concept_id: 'V100001-EDSC' }]
                   }
                 }, {
                   id: 'C100001-EDSC',
-                  associations: {
-                    variables: ['V100002-EDSC', 'V100003-EDSC']
+                  association_details: {
+                    variables: [{ concept_id: 'V100002-EDSC' }, { concept_id: 'V100003-EDSC' }]
                   }
                 }]
               }

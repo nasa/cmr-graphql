@@ -14,7 +14,7 @@ export default async (params, context, parsedInfo) => {
   // Query CMR
   service.fetch(params)
 
-  console.log('Response from CMR for search', service.fetch(params))
+  // console.log('Response from CMR for search', service.fetch(params))
 
   // Parse the response from CMR
   await service.parse(requestInfo)

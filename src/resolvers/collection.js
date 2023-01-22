@@ -104,6 +104,7 @@ export default {
       // Since they are embeded you need to collect al of them
 
       const serviceConceptIds = []
+      // const serviceAssociationData = []
 
       // For each concept_id in each of the services add it to the array
       // services2.forEach('concept_id'){
@@ -111,10 +112,12 @@ export default {
       // }
 
       // const keyToINput = services2[0]
-
+      // TODO: Put default values for these desttructure
       services.forEach((service) => {
         const { concept_id: serviceConceptId } = service
+        // const { data: associationData } = service
         serviceConceptIds.push(serviceConceptId)
+        // serviceAssociationData.push(associationData)
       })
 
       console.log('the list of serviceConceptIds', serviceConceptIds)
@@ -131,7 +134,7 @@ export default {
           items: null
         }
       }
-
+      // TODO: Do we need to pass the payload here?
       return dataSources.serviceSource({
         conceptId: serviceConceptIds,
         ...handlePagingParams(args, services.length)

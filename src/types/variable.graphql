@@ -1,6 +1,8 @@
 type Variable {
   "The alias for the name of a variable."
   alias: String @deprecated(reason: "Removed as of 1.7")
+  "The data on the association between this collection"
+  associationDetails: JSON
   "The characteristics of a variable."
   characteristics: JSON @deprecated(reason: "Removed as of 1.7")
   "The unique concept id assigned to the variable."

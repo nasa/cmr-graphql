@@ -1,6 +1,8 @@
 type Service {
   "Words or phrases to further describe the service."
   ancillaryKeywords: [String]
+  "The data on the association between this collection"
+  associationDetails: JSON
   "The unique concept id assigned to the service."
   conceptId: String!
   "This is the contact groups of the service."

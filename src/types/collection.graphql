@@ -143,6 +143,8 @@ type Collection {
   versionId: String @deprecated(reason: "Use `version`")
   "The Version of the collection."
   version: String
+  "The data on the association between this collection"
+  associationDetails: JSON
 
   relatedCollections (
     "Related Collections query parameters"
