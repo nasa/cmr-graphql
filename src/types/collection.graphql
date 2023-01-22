@@ -5,6 +5,8 @@ type Collection {
   accessConstraints: JSON
   "The data’s distinctive attributes of the collection (i.e. attributes used to describe the unique characteristics of the collection which extend beyond those defined)."
   additionalAttributes: JSON
+  "The data on the association between this collection"
+  associationDetails: JSON
   "This element stores DOIs that are associated with the collection such as from campaigns and other related sources."
   associatedDois: JSON
   "Find collections matching 'archive_center' param value."
@@ -143,8 +145,6 @@ type Collection {
   versionId: String @deprecated(reason: "Use `version`")
   "The Version of the collection."
   version: String
-  "The data on the association between this collection"
-  associationDetails: JSON
 
   relatedCollections (
     "Related Collections query parameters"
@@ -417,9 +417,9 @@ input CollectionsInput {
   options: JSON
   "Which page to request from the current collection results."
   pageSize: Int
-  "Platform assocaited with the collection."
+  "Platform associated with the collection."
   platform: String
-  "Platform assocaited with the collection, in facet form."
+  "Platform associated with the collection, in facet form."
   platformH: [String]
   "Search using a point involves using a pair of values representing the point coordinates as parameters. The first value is the longitude and second value is the latitude."
   point: [String]
@@ -528,9 +528,9 @@ type Query {
     options: JSON @deprecated(reason: "Use `params.options`")
     "Which page to request from the current collection results."
     pageSize: Int @deprecated(reason: "Use `params.pageSize`")
-    "Platform assocaited with the collection."
+    "Platform associated with the collection."
     platform: String @deprecated(reason: "Use `params.platform`")
-    "Platform assocaited with the collection, in facet form."
+    "Platform associated with the collection, in facet form."
     platformH: [String] @deprecated(reason: "Use `params.platformH`")
     "Search using a point involves using a pair of values representing the point coordinates as parameters. The first value is the longitude and second value is the latitude."
     point: [String] @deprecated(reason: "Use `params.point`")

@@ -23,19 +23,17 @@ export default class Collection extends Concept {
    */
   setEssentialJsonValues(id, item) {
     super.setEssentialJsonValues(id, item)
-
     // Associations are used by services, tools, and variables, it required to correctly
     // retrieve those objects and shouldn't need to be provided by the client
     // const { associations } = item
     const { association_details: associationDetails } = item // This is the association_details
-    console.log('The association details on the collections', associationDetails)
+    // console.log('The association details on the collections', associationDetails)
 
     // const { 'concept-id': associatedConceptIds = [] } = associationDetails
 
     // console.log('The concept-id for the particular association', associatedConceptIds)
     // concept_id is to get the concept_id for the particular association
     if (associationDetails) {
-      console.log('Enter teh logic guard')
       this.setItemValue(id, 'association_details', associationDetails)
     }
 
@@ -53,7 +51,9 @@ export default class Collection extends Concept {
     super.setEssentialUmmValues(id, item)
 
     const { meta } = item
-    const { 'association-details': associationDetails = {} } = meta
+    const { 'association-details': associationDetails } = meta
+
+    // const { 'concept-id': associatedConceptIds = [] } = associationDetails
 
     // Associations are used by services and variables, its required to correctly
     // retrieve those objects and shouldn't need to be provided by the client
@@ -75,7 +75,6 @@ export default class Collection extends Concept {
   getPermittedJsonSearchParams() {
     return [
       ...super.getPermittedJsonSearchParams(),
-      'association_details',
       'bounding_box',
       'circle',
       'cloud_hosted',
@@ -125,7 +124,6 @@ export default class Collection extends Concept {
   getPermittedUmmSearchParams() {
     return [
       ...super.getPermittedUmmSearchParams(),
-      'association_details',
       'bounding_box',
       'circle',
       'cloud_hosted',
@@ -214,7 +212,7 @@ export default class Collection extends Concept {
     } = this.requestInfo
 
     // While technically the facets are available with a single collection because we use the
-    // search endpoint, we dont support it in the response so we'll only return facets when
+    // search endpoint, we don't support it in the response so we'll only return facets when
     // when the user has requested the list response
     if (isList && metaKeys.includes('collectionFacets')) {
       // Included the facets in the metakeys returned

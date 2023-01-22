@@ -578,9 +578,9 @@ describe('collection', () => {
           items: [{
             meta: {
               'concept-id': 'C100000-EDSC',
-              associations: {
+              'association-details': {
                 services: [
-                  'S100000-EDSC'
+                  { 'concept-id': 'S100000-EDSC' }
                 ]
               }
             },
@@ -607,9 +607,11 @@ describe('collection', () => {
         cursor: null,
         items: [{
           abstract: 'Lorem ipsum dolor sit amet, consectetur adipiscing',
-          associations: {
+          // TODO: Why is this returning blank? this needs to be "_" because we make it that way in the resolver
+          // So that we can simplify the reponse consistently between the json and umm formats
+          association_details: {
             services: [
-              'S100000-EDSC'
+              { 'concept-id': 'S100000-EDSC' }
             ]
           },
           spatialExtent: {}
