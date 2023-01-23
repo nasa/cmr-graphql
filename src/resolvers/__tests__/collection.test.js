@@ -76,6 +76,14 @@ describe('Collection', () => {
           feed: {
             entry: [{
               archive_center: 'CONDIMENTUM/TELLUS/PHARETRA',
+              association_details: {
+                variables: [
+                  {
+                    data: '{"XYZ": "XYZ", "allow-regridding": true}',
+                    'concept-id': 'V100000-EDSC'
+                  }
+                ]
+              },
               boxes: [],
               browse_flag: true,
               cloud_hosted: false,
@@ -144,7 +152,15 @@ describe('Collection', () => {
           items: [{
             meta: {
               'concept-id': 'C100000-EDSC',
-              'native-id': 'test-guid'
+              'native-id': 'test-guid',
+              'association-details': {
+                variables: [
+                  {
+                    data: '{"XYZ": "XYZ", "allow-regridding": true}',
+                    'concept-id': 'V100000-EDSC'
+                  }
+                ]
+              }
             },
             umm: {
               Abstract: 'Cras mattis consectetur purus sit amet fermentum.',
@@ -242,6 +258,7 @@ describe('Collection', () => {
             count
             facets
             items {
+              associationDetails
               abstract
               accessConstraints
               additionalAttributes
@@ -348,6 +365,13 @@ describe('Collection', () => {
             type: 'group'
           },
           items: [{
+            associationDetails: {
+              variables: [
+                {
+                  data: '{"XYZ": "XYZ", "allow-regridding": true}',
+                  conceptId: 'V100000-EDSC'
+                }]
+            },
             abstract: 'Cras mattis consectetur purus sit amet fermentum.',
             accessConstraints: [],
             additionalAttributes: [],
