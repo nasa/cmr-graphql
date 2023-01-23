@@ -3,7 +3,7 @@ type Tool {
   accessConstraints: String
   "Words or phrases to further describe the downloadable tool or web user interface."
   ancillaryKeywords: JSON
-  "The data on the association between this collection"
+  "The list of concepts and any data on the relationship on between this tool and other permitted concepts"
   associationDetails: JSON
   "The unique concept id assigned to the tool."
   conceptId: String!

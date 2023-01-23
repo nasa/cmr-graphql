@@ -63,7 +63,15 @@ describe('Service', () => {
           items: [{
             meta: {
               'concept-id': 'S100000-EDSC',
-              'native-id': 'test-guid'
+              'native-id': 'test-guid',
+              'association-details': {
+                collections: [
+                  {
+                    data: '{"XYZ": "XYZ", "allow-regridding": true}',
+                    'concept-id': 'C100000-EDSC'
+                  }
+                ]
+              }
             },
             umm: {
               Description: 'Parturient Dolor Cras Aenean Dapibus',
@@ -88,6 +96,7 @@ describe('Service', () => {
           services {
             count
             items {
+              associationDetails
               conceptId
               description
               longName
@@ -109,6 +118,13 @@ describe('Service', () => {
         services: {
           count: 1,
           items: [{
+            associationDetails: {
+              collections: [
+                {
+                  data: '{"XYZ": "XYZ", "allow-regridding": true}',
+                  conceptId: 'C100000-EDSC'
+                }]
+            },
             conceptId: 'S100000-EDSC',
             description: 'Parturient Dolor Cras Aenean Dapibus',
             longName: 'Parturient Egestas Lorem',

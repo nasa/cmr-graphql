@@ -15,10 +15,10 @@
   "ummKeyMappings": {
     "abstract": "umm.Abstract",
     "accessConstraints": "umm.AccessConstraints",
-    "associationDetails": "meta.association-details",
     "additionalAttributes": "umm.AdditionalAttributes",
     "ancillaryKeywords": "umm.AncillaryKeywords",
     "archiveAndDistributionInformation": "umm.ArchiveAndDistributionInformation",
+    "associationDetails": "meta.association-details",
     "associatedDois": "umm.AssociatedDOIs",
     "collectionCitations": "umm.CollectionCitations",
     "collectionProgress": "umm.CollectionProgress",

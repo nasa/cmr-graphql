@@ -258,13 +258,13 @@ describe('Collection', () => {
             count
             facets
             items {
-              associationDetails
               abstract
               accessConstraints
               additionalAttributes
               ancillaryKeywords
               archiveAndDistributionInformation
               archiveCenter
+              associationDetails
               associatedDois
               boxes
               browseFlag

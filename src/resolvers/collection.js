@@ -85,12 +85,6 @@ export default {
       return dataSources.graphDbDuplicateCollectionsSource(source, context)
     },
     services: async (source, args, context, info) => {
-      // const {
-      //   associations = {}
-      // } = source
-
-      // console.warn('The source for this particular collections', source)
-
       const {
         association_details: associationDetails = {}
       } = source
@@ -100,33 +94,13 @@ export default {
       const { dataSources } = context
 
       const { services = [] } = associationDetails
-      // console.log('This is services from the association details', services2)
-      // Since they are embeded you need to collect al of them
 
       const serviceConceptIds = []
-      // const serviceAssociationData = []
 
-      // For each concept_id in each of the services add it to the array
-      // services2.forEach('concept_id'){
-      //   serviceConceptIds.push()
-      // }
-
-      // const keyToINput = services2[0]
-      // TODO: Put default values for these desttructure
       services.forEach((service) => {
         const { concept_id: serviceConceptId } = service
-        // const { data: associationData } = service
         serviceConceptIds.push(serviceConceptId)
-        // serviceAssociationData.push(associationData)
       })
-
-      console.log('the list of serviceConceptIds', serviceConceptIds)
-
-      // const { 'concept_id': serviceConceptIds} = services2
-
-      // console.log('This is the service concept-ids from services2', serviceConceptIds)
-
-      // const { services = [] } = associations
 
       if (!services.length) {
         return {
@@ -134,7 +108,6 @@ export default {
           items: null
         }
       }
-      // TODO: Do we need to pass the payload here?
       return dataSources.serviceSource({
         conceptId: serviceConceptIds,
         ...handlePagingParams(args, services.length)
@@ -154,10 +127,6 @@ export default {
       }, context, parseResolveInfo(info))
     },
     tools: async (source, args, context, info) => {
-      // const {
-      //   associations = {}
-      // } = source
-
       const {
         association_details: associationDetails = {}
       } = source
@@ -186,9 +155,6 @@ export default {
       }, context, parseResolveInfo(info))
     },
     variables: async (source, args, context, info) => {
-      // const {
-      //   associations = {}
-      // } = source
       const {
         association_details: associationDetails = {}
       } = source

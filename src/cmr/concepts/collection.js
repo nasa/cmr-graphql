@@ -23,23 +23,14 @@ export default class Collection extends Concept {
    */
   setEssentialJsonValues(id, item) {
     super.setEssentialJsonValues(id, item)
+
     // Associations are used by services, tools, and variables, it required to correctly
     // retrieve those objects and shouldn't need to be provided by the client
-    // const { associations } = item
-    const { association_details: associationDetails } = item // This is the association_details
-    // console.log('The association details on the collections', associationDetails)
+    const { association_details: associationDetails } = item
 
-    // const { 'concept-id': associatedConceptIds = [] } = associationDetails
-
-    // console.log('The concept-id for the particular association', associatedConceptIds)
-    // concept_id is to get the concept_id for the particular association
     if (associationDetails) {
       this.setItemValue(id, 'association_details', associationDetails)
     }
-
-    // if (associations) {
-    //   this.setItemValue(id, 'associations', associationDetails)
-    // }
   }
 
   /**
@@ -52,8 +43,6 @@ export default class Collection extends Concept {
 
     const { meta } = item
     const { 'association-details': associationDetails } = meta
-
-    // const { 'concept-id': associatedConceptIds = [] } = associationDetails
 
     // Associations are used by services and variables, its required to correctly
     // retrieve those objects and shouldn't need to be provided by the client
