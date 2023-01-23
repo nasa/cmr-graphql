@@ -63,7 +63,15 @@ describe('Variable', () => {
           items: [{
             meta: {
               'concept-id': 'V100000-EDSC',
-              'native-id': 'test-guid'
+              'native-id': 'test-guid',
+              'association-details': {
+                collections: [
+                  {
+                    data: '{"XYZ": "XYZ", "allow-regridding": true}',
+                    'concept-id': 'C100000-EDSC'
+                  }
+                ]
+              }
             },
             umm: {
               DataType: 'Dolor Nullam Venenatis',
@@ -87,6 +95,7 @@ describe('Variable', () => {
           variables {
             count
             items {
+              associationDetails
               conceptId
               dataType
               definition
@@ -111,6 +120,13 @@ describe('Variable', () => {
         variables: {
           count: 1,
           items: [{
+            associationDetails: {
+              collections: [
+                {
+                  data: '{"XYZ": "XYZ", "allow-regridding": true}',
+                  conceptId: 'C100000-EDSC'
+                }]
+            },
             conceptId: 'V100000-EDSC',
             dataType: 'Dolor Nullam Venenatis',
             definition: 'Cras mattis consectetur purus sit amet fermentum.',
