@@ -607,8 +607,6 @@ describe('collection', () => {
         cursor: null,
         items: [{
           abstract: 'Lorem ipsum dolor sit amet, consectetur adipiscing',
-          // TODO: Why is this returning blank? this needs to be "_" because we make it that way in the resolver
-          // So that we can simplify the reponse consistently between the json and umm formats
           association_details: {
             services: [
               { 'concept-id': 'S100000-EDSC' }

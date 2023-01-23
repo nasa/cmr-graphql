@@ -55,7 +55,6 @@ type Tool {
   version: String
   "This field provides users with information on what changes were included in the most recent version."
   versionDescription: String
-  
 
   collections (
     "Collections query parameters"
@@ -83,7 +82,7 @@ input ToolsInput {
   conceptId: [String]
   "Cursor that points to the a specific position in a list of requested records."
   cursor: String
-  "The number of servies requested by the user."
+  "The number of tools requested by the user."
   limit: Int
   "Zero based offset of individual results."
   offset: Int

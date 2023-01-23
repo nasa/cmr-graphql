@@ -89,8 +89,6 @@ export default {
         association_details: associationDetails = {}
       } = source
 
-      console.log('The association details', associationDetails)
-
       const { dataSources } = context
 
       const { services = [] } = associationDetails
