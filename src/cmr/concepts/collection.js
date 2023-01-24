@@ -17,24 +17,26 @@ export default class Collection extends Concept {
   }
 
   /**
-   * Set a value in the result set that a query has not requested but is neccessary for other functionality
+   * Set a value in the result set that a query has not requested but is necessary for other functionality
    * @param {String} id Concept ID to set a value for within the result set
    * @param {Object} item The item returned from the CMR json endpoint
    */
   setEssentialJsonValues(id, item) {
     super.setEssentialJsonValues(id, item)
 
-    // Associations are used by services and variables, its required to correctly
-    // retrieve those objects and shouldn't need to be provided by the client
-    const { associations } = item
+    const { association_details: associationDetails } = item
 
-    if (associations) {
-      this.setItemValue(id, 'associations', associations)
+    const formattedAssociationDetails = camelcaseKeys(associationDetails, { deep: true })
+
+    // Associations are used by services, tools, and variables, it's required to correctly
+    // retrieve those objects and shouldn't need to be provided by the client
+    if (associationDetails) {
+      this.setItemValue(id, 'associationDetails', formattedAssociationDetails)
     }
   }
 
   /**
-   * Set a value in the result set that a query has not requested but is neccessary for other functionality
+   * Set a value in the result set that a query has not requested but is necessary for other functionality
    * @param {String} id Concept ID to set a value for within the result set
    * @param {Object} item The item returned from the CMR json endpoint
    */
@@ -42,12 +44,14 @@ export default class Collection extends Concept {
     super.setEssentialUmmValues(id, item)
 
     const { meta } = item
-    const { associations } = meta
+    const { 'association-details': associationDetails } = meta
 
-    // Associations are used by services and variables, its required to correctly
+    const formattedAssociationDetails = camelcaseKeys(associationDetails, { deep: true })
+
+    // Associations are used by services, tools, and variables, it's required to correctly
     // retrieve those objects and shouldn't need to be provided by the client
-    if (associations) {
-      this.setItemValue(id, 'associations', associations)
+    if (associationDetails) {
+      this.setItemValue(id, 'associationDetails', formattedAssociationDetails)
     }
   }
 
@@ -201,10 +205,10 @@ export default class Collection extends Concept {
     } = this.requestInfo
 
     // While technically the facets are available with a single collection because we use the
-    // search endpoint, we dont support it in the response so we'll only return facets when
+    // search endpoint, we don't support it in the response so we'll only return facets when
     // when the user has requested the list response
     if (isList && metaKeys.includes('collectionFacets')) {
-      // Incuded the facets in the metakeys returned
+      // Included the facets in the metakeys returned
       return {
         facets: this.getFacets(),
         ...super.getFormattedResponse()

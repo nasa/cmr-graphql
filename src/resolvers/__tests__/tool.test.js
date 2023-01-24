@@ -63,7 +63,15 @@ describe('Tool', () => {
           items: [{
             meta: {
               'concept-id': 'T100000-EDSC',
-              'native-id': 'test-guid'
+              'native-id': 'test-guid',
+              'association-details': {
+                collections: [
+                  {
+                    data: '{"XYZ": "XYZ", "allow-regridding": true}',
+                    'concept-id': 'C100000-EDSC'
+                  }
+                ]
+              }
             },
             umm: {
               AccessConstraints: 'NONE',
@@ -101,6 +109,7 @@ describe('Tool', () => {
           tools {
             count
             items {
+              associationDetails
               accessConstraints
               ancillaryKeywords
               conceptId
@@ -141,6 +150,13 @@ describe('Tool', () => {
           items: [{
             accessConstraints: 'NONE',
             ancillaryKeywords: [],
+            associationDetails: {
+              collections: [
+                {
+                  data: '{"XYZ": "XYZ", "allow-regridding": true}',
+                  conceptId: 'C100000-EDSC'
+                }]
+            },
             conceptId: 'T100000-EDSC',
             contactGroups: [],
             contactPersons: [],

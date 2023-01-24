@@ -47,7 +47,7 @@ input GridsInput {
   conceptId: [String]
   "Cursor that points to the a specific position in a list of requested records."
   cursor: String
-  "The number of variables requested by the user."
+  "The number of grids requested by the user."
   limit: Int
 }
 

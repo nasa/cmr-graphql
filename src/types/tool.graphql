@@ -3,6 +3,8 @@ type Tool {
   accessConstraints: String
   "Words or phrases to further describe the downloadable tool or web user interface."
   ancillaryKeywords: JSON
+  "The list of concepts and any data on the relationship between this tool and other permitted concepts"
+  associationDetails: JSON
   "The unique concept id assigned to the tool."
   conceptId: String!
   "Group(s) to contact at an organization to get information about the web user interface or downloadable tool, including how the group may be contacted."
@@ -80,7 +82,7 @@ input ToolsInput {
   conceptId: [String]
   "Cursor that points to the a specific position in a list of requested records."
   cursor: String
-  "The number of servies requested by the user."
+  "The number of tools requested by the user."
   limit: Int
   "Zero based offset of individual results."
   offset: Int

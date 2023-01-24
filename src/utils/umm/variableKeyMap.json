@@ -5,6 +5,7 @@
     "name"
   ],
   "ummKeyMappings": {
+    "associationDetails": "meta.association-details",
     "conceptId": "meta.concept-id",
     "dataType": "umm.DataType",
     "definition": "umm.Definition",

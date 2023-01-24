@@ -578,9 +578,9 @@ describe('collection', () => {
           items: [{
             meta: {
               'concept-id': 'C100000-EDSC',
-              associations: {
+              'association-details': {
                 services: [
-                  'S100000-EDSC'
+                  { 'concept-id': 'S100000-EDSC' }
                 ]
               }
             },
@@ -607,9 +607,9 @@ describe('collection', () => {
         cursor: null,
         items: [{
           abstract: 'Lorem ipsum dolor sit amet, consectetur adipiscing',
-          associations: {
+          associationDetails: {
             services: [
-              'S100000-EDSC'
+              { conceptId: 'S100000-EDSC' }
             ]
           },
           spatialExtent: {}

@@ -6,6 +6,7 @@
   ],
   "ummKeyMappings": {
     "ancillaryKeywords": "umm.AncillaryKeywords",
+    "associationDetails": "meta.association-details",
     "conceptId": "meta.concept-id",
     "contactGroups": "umm.ContactGroups",
     "contactPersons": "umm.ContactPersons",

@@ -86,12 +86,14 @@ export default {
     },
     services: async (source, args, context, info) => {
       const {
-        associations = {}
+        associationDetails = {}
       } = source
 
       const { dataSources } = context
 
-      const { services = [] } = associations
+      const { services = [] } = associationDetails
+
+      const serviceConceptIds = services.map(({ conceptId }) => conceptId)
 
       if (!services.length) {
         return {
@@ -101,7 +103,7 @@ export default {
       }
 
       return dataSources.serviceSource({
-        conceptId: services,
+        conceptId: serviceConceptIds,
         ...handlePagingParams(args, services.length)
       }, context, parseResolveInfo(info))
     },
@@ -120,12 +122,14 @@ export default {
     },
     tools: async (source, args, context, info) => {
       const {
-        associations = {}
+        associationDetails = {}
       } = source
 
       const { dataSources } = context
 
-      const { tools = [] } = associations
+      const { tools = [] } = associationDetails
+
+      const toolConceptIds = tools.map(({ conceptId }) => conceptId)
 
       if (!tools.length) {
         return {
@@ -135,18 +139,20 @@ export default {
       }
 
       return dataSources.toolSource({
-        conceptId: tools,
+        conceptId: toolConceptIds,
         ...handlePagingParams(args, tools.length)
       }, context, parseResolveInfo(info))
     },
     variables: async (source, args, context, info) => {
       const {
-        associations = {}
+        associationDetails = {}
       } = source
 
       const { dataSources } = context
 
-      const { variables = [] } = associations
+      const { variables = [] } = associationDetails
+
+      const variableConceptIds = variables.map(({ conceptId }) => conceptId)
 
       if (!variables.length) {
         return {
@@ -156,7 +162,7 @@ export default {
       }
 
       return dataSources.variableSource({
-        conceptId: variables,
+        conceptId: variableConceptIds,
         ...handlePagingParams(args, variables.length)
       }, context, parseResolveInfo(info))
     }

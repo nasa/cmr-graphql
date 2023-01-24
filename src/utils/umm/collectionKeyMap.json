@@ -18,6 +18,7 @@
     "additionalAttributes": "umm.AdditionalAttributes",
     "ancillaryKeywords": "umm.AncillaryKeywords",
     "archiveAndDistributionInformation": "umm.ArchiveAndDistributionInformation",
+    "associationDetails": "meta.association-details",
     "associatedDois": "umm.AssociatedDOIs",
     "collectionCitations": "umm.CollectionCitations",
     "collectionProgress": "umm.CollectionProgress",
