@@ -129,7 +129,7 @@ export default class Collection extends Concept {
       'granule_data_format_h',
       'has_granules_or_cwic',
       'has_granules',
-      'has_opendap_url', 
+      'has_opendap_url',
       'horizontal_data_resolution_range',
       'include_has_granules',
       'instrument',
