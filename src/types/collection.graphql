@@ -262,6 +262,11 @@ type Collection {
     "The name of a variable."
     name: String @deprecated(reason: "Use `params.name`")
   ): VariableList
+
+    orderOptions (
+    "order option's query parameters"
+    params: OrderOptionsInput
+  ): OrderOptionList
 }
 
 type DuplicateCollection {

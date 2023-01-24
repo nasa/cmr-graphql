@@ -10,7 +10,7 @@ import { CONCEPT_TYPES } from '../constants'
 /**
  * Construct an object defining UMM key information
  * @param {Array} requestedFields Fields requested
- * @param {Object} keyMap Mappings of UMM fields to requestable fields
+ * @param {Object} keyMap Mappings of UMM fields to rerequestable fields
  * @param {String} conceptName Name of the concept () to lookup requested fields in the query
  */
 export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
@@ -24,13 +24,22 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
 
   let requestedFields = []
 
+  // CMR concepts which are multiple words i.e. order-option, data-quality-summary etc
+  const camelCasedConcepts = ['orderOption']
+
+  let formattedConceptName = conceptName
+
   // Name will match the query, if the query is plural we have a slightly different
   // response and we need to handle it
   if (name.slice(-1) === 's') {
-    isList = true
+    if (!camelCasedConcepts.includes(conceptName)) {
+      formattedConceptName = conceptName.toLowerCase()
+    }
 
+    isList = true
+    // TODO: this might have an exception for the '-' chars in the middle
     const {
-      [`${upperFirst(conceptName.toLowerCase())}List`]: conceptListKeysRequested
+      [`${upperFirst(formattedConceptName)}List`]: conceptListKeysRequested
     } = fieldsByTypeName
 
     const {
@@ -49,13 +58,13 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
     }
 
     // Track meta keys for analytics on how often they are requested
-    if (cursor) metaKeys.push(`${conceptName.toLowerCase()}Cursor`)
+    if (cursor) metaKeys.push(`${formattedConceptName}Cursor`)
 
     // If count was requested, append the specific concept for logging specificity
-    if (count) metaKeys.push(`${conceptName.toLowerCase()}Count`)
+    if (count) metaKeys.push(`${formattedConceptName}Count`)
 
     // If facets were included append the facet metakey
-    if (facets) metaKeys.push(`${conceptName.toLowerCase()}Facets`)
+    if (facets) metaKeys.push(`${formattedConceptName}Facets`)
   }
 
   // If a plural query is being performed, and the user has not requested any
@@ -69,13 +78,13 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
       // Match by name field to allow field-level aliases
       requestedFields = map(conceptKeysRequested, 'name')
     }
-
+    // TODO: This may be an issue here
     const {
-      [`${upperFirst(conceptName.toLowerCase())}MutationResponse`]: ingestKeysRequested
+      [`${upperFirst(formattedConceptName)}MutationResponse`]: ingestKeysRequested
     } = fieldsByTypeName
 
     if (ingestKeysRequested) {
-      // If the type is a mutation response we onlh need to return the ingest keys
+      // If the type is a mutation response we only need to return the ingest keys
       return {
         ingestKeys: Object.keys(ingestKeysRequested)
       }
@@ -179,7 +188,7 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
   }
 
   // If facets were requested, we need to ensure we have at least 1 json key
-  // some dabecause facets are not available from the umm endpoint
+  // some do because facets are not available from the umm endpoint
   if (metaKeys.includes('collectionFacets') && jsonKeys.length === 0) {
     jsonKeys.push('conceptId')
 

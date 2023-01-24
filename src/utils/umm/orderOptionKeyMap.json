@@ -1,0 +1,15 @@
+{
+    "sharedKeys": [
+      "conceptId",
+      "name"
+    ],
+    "ummKeyMappings": {
+      "description": "umm.Description",
+      "conceptId": "meta.concept-id",
+      "name": "umm.Name",
+      "scope": "umm.Scope",
+      "sortKey": "umm.SortKey",
+      "form": "umm.Form"
+    }
+  }
+  
