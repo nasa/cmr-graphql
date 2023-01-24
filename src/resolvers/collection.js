@@ -86,14 +86,14 @@ export default {
     },
     services: async (source, args, context, info) => {
       const {
-        association_details: associationDetails = {}
+        associationDetails = {}
       } = source
 
       const { dataSources } = context
 
       const { services = [] } = associationDetails
 
-      const serviceConceptIds = services.map((service) => service.concept_id)
+      const serviceConceptIds = services.map(({ conceptId }) => conceptId)
 
       if (!services.length) {
         return {
@@ -122,14 +122,14 @@ export default {
     },
     tools: async (source, args, context, info) => {
       const {
-        association_details: associationDetails = {}
+        associationDetails = {}
       } = source
 
       const { dataSources } = context
 
       const { tools = [] } = associationDetails
 
-      const toolConceptIds = tools.map((tool) => tool.concept_id)
+      const toolConceptIds = tools.map(({ conceptId }) => conceptId)
 
       if (!tools.length) {
         return {
@@ -145,14 +145,14 @@ export default {
     },
     variables: async (source, args, context, info) => {
       const {
-        association_details: associationDetails = {}
+        associationDetails = {}
       } = source
 
       const { dataSources } = context
 
       const { variables = [] } = associationDetails
 
-      const variableConceptIds = variables.map((variable) => variable.concept_id)
+      const variableConceptIds = variables.map(({ conceptId }) => conceptId)
 
       if (!variables.length) {
         return {

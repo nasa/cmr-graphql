@@ -843,7 +843,7 @@ describe('Collection', () => {
         })
       })
 
-      describe('association are present in the metadata but not service assocations', () => {
+      describe('association are present in the metadata but not service associations', () => {
         test('doesn\'t query for or return services', async () => {
           nock(/example-cmr/)
             .defaultReplyHeaders({
@@ -855,13 +855,13 @@ describe('Collection', () => {
               feed: {
                 entry: [{
                   id: 'C100000-EDSC',
-                  associations: {
-                    variables: ['V100000-EDSC']
+                  association_details: {
+                    variables: [{ concept_id: 'V100000-EDSC' }]
                   }
                 }, {
                   id: 'C100001-EDSC',
-                  associations: {
-                    variables: ['V100000-EDSC']
+                  association_details: {
+                    variables: [{ concept_id: 'V100000-EDSC' }]
                   }
                 }]
               }
@@ -1157,13 +1157,13 @@ describe('Collection', () => {
               feed: {
                 entry: [{
                   id: 'C100000-EDSC',
-                  associations: {
-                    variables: ['V100000-EDSC']
+                  association_details: {
+                    variables: [{ concept_id: 'V100000-EDSC' }]
                   }
                 }, {
                   id: 'C100001-EDSC',
-                  associations: {
-                    variables: ['V100000-EDSC']
+                  association_details: {
+                    variables: [{ concept_id: 'V100000-EDSC' }]
                   }
                 }]
               }
@@ -1369,13 +1369,13 @@ describe('Collection', () => {
               feed: {
                 entry: [{
                   id: 'C100000-EDSC',
-                  associations: {
-                    services: ['S100000-EDSC']
+                  association_details: {
+                    services: [{ concept_id: 'S100000-EDSC' }]
                   }
                 }, {
                   id: 'C100001-EDSC',
-                  associations: {
-                    services: ['S100000-EDSC']
+                  association_details: {
+                    services: [{ concept_id: 'S100000-EDSC' }]
                   }
                 }]
               }

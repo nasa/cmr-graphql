@@ -607,9 +607,9 @@ describe('collection', () => {
         cursor: null,
         items: [{
           abstract: 'Lorem ipsum dolor sit amet, consectetur adipiscing',
-          association_details: {
+          associationDetails: {
             services: [
-              { 'concept-id': 'S100000-EDSC' }
+              { conceptId: 'S100000-EDSC' }
             ]
           },
           spatialExtent: {}
