@@ -93,12 +93,7 @@ export default {
 
       const { services = [] } = associationDetails
 
-      const serviceConceptIds = []
-
-      services.forEach((service) => {
-        const { concept_id: serviceConceptId } = service
-        serviceConceptIds.push(serviceConceptId)
-      })
+      const serviceConceptIds = services.map((service) => service.concept_id)
 
       if (!services.length) {
         return {
@@ -106,6 +101,7 @@ export default {
           items: null
         }
       }
+
       return dataSources.serviceSource({
         conceptId: serviceConceptIds,
         ...handlePagingParams(args, services.length)
@@ -129,16 +125,11 @@ export default {
         association_details: associationDetails = {}
       } = source
 
-      const toolConceptIds = []
-
       const { dataSources } = context
 
       const { tools = [] } = associationDetails
 
-      tools.forEach((tool) => {
-        const { concept_id: toolConceptId } = tool
-        toolConceptIds.push(toolConceptId)
-      })
+      const toolConceptIds = tools.map((tool) => tool.concept_id)
 
       if (!tools.length) {
         return {
@@ -157,16 +148,11 @@ export default {
         association_details: associationDetails = {}
       } = source
 
-      const variableConceptIds = []
-
       const { dataSources } = context
 
       const { variables = [] } = associationDetails
 
-      variables.forEach((variable) => {
-        const { concept_id: variableConceptId } = variable
-        variableConceptIds.push(variableConceptId)
-      })
+      const variableConceptIds = variables.map((variable) => variable.concept_id)
 
       if (!variables.length) {
         return {
