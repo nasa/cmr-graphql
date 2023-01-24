@@ -28,7 +28,7 @@ export default class Collection extends Concept {
 
     const formattedAssociationDetails = camelcaseKeys(associationDetails, { deep: true })
 
-    // Associations are used by services, tools, and variables, its required to correctly
+    // Associations are used by services, tools, and variables, it's required to correctly
     // retrieve those objects and shouldn't need to be provided by the client
     if (associationDetails) {
       this.setItemValue(id, 'associationDetails', formattedAssociationDetails)
@@ -48,7 +48,7 @@ export default class Collection extends Concept {
 
     const formattedAssociationDetails = camelcaseKeys(associationDetails, { deep: true })
 
-    // Associations are used by services, tools, and variables, its required to correctly
+    // Associations are used by services, tools, and variables, it's required to correctly
     // retrieve those objects and shouldn't need to be provided by the client
     if (associationDetails) {
       this.setItemValue(id, 'associationDetails', formattedAssociationDetails)

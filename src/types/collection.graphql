@@ -5,7 +5,7 @@ type Collection {
   accessConstraints: JSON
   "The data’s distinctive attributes of the collection (i.e. attributes used to describe the unique characteristics of the collection which extend beyond those defined)."
   additionalAttributes: JSON
-  "The list of concepts and any data on the relationship on between this collection and other permitted concepts"
+  "The list of concepts and any data on the relationship between this collection and other permitted concepts"
   associationDetails: JSON
   "This element stores DOIs that are associated with the collection such as from campaigns and other related sources."
   associatedDois: JSON

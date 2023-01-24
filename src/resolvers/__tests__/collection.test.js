@@ -843,7 +843,7 @@ describe('Collection', () => {
         })
       })
 
-      describe('association are present in the metadata but not service associations', () => {
+      describe('associations are present in the metadata but not service associations', () => {
         test('doesn\'t query for or return services', async () => {
           nock(/example-cmr/)
             .defaultReplyHeaders({
@@ -1145,7 +1145,7 @@ describe('Collection', () => {
         })
       })
 
-      describe('association are present in the metadata but not tool associations', () => {
+      describe('associations are present in the metadata but not tool associations', () => {
         test('doesn\'t query for or return tools', async () => {
           nock(/example-cmr/)
             .defaultReplyHeaders({
@@ -1357,7 +1357,7 @@ describe('Collection', () => {
         })
       })
 
-      describe('association are present in the metadata but not variable associations', () => {
+      describe('associations are present in the metadata but not variable associations', () => {
         test('doesn\'t query for or return variables', async () => {
           nock(/example-cmr/)
             .defaultReplyHeaders({
