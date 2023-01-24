@@ -1,4 +1,6 @@
 type OrderOption {
+  "The list of concepts and any data on the relationship between this order option and other permitted concepts"
+  associationDetails: JSON
   "The concept id created by CMR for this orderOption"
   conceptId: String!
   "The orderOption name."
