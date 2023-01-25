@@ -167,6 +167,8 @@ export default {
       }, context, parseResolveInfo(info))
     },
     orderOptions: async (source, args, context, info) => {
+      console.log('The source for the collection', source)
+
       const {
         associationDetails = {}
       } = source

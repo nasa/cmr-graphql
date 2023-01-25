@@ -1,3 +1,5 @@
+import camelcaseKeys from 'camelcase-keys'
+
 import Concept from './concept'
 
 export default class Service extends Concept {
@@ -9,6 +11,45 @@ export default class Service extends Concept {
    */
   constructor(headers, requestInfo, params) {
     super('services', headers, requestInfo, params)
+  }
+
+  /**
+   * Set a value in the result set that a query has not requested but is necessary for other functionality
+   * @param {String} id Concept ID to set a value for within the result set
+   * @param {Object} item The item returned from the CMR json endpoint
+   */
+  setEssentialJsonValues(id, item) {
+    super.setEssentialJsonValues(id, item)
+
+    const { association_details: associationDetails } = item
+
+    const formattedAssociationDetails = camelcaseKeys(associationDetails, { deep: true })
+
+    // Associations are used by services, tools, and variables, it's required to correctly
+    // retrieve those objects and shouldn't need to be provided by the client
+    if (associationDetails) {
+      this.setItemValue(id, 'associationDetails', formattedAssociationDetails)
+    }
+  }
+
+  /**
+     * Set a value in the result set that a query has not requested but is necessary for other functionality
+     * @param {String} id Concept ID to set a value for within the result set
+     * @param {Object} item The item returned from the CMR json endpoint
+     */
+  setEssentialUmmValues(id, item) {
+    super.setEssentialUmmValues(id, item)
+
+    const { meta } = item
+    const { 'association-details': associationDetails } = meta
+
+    const formattedAssociationDetails = camelcaseKeys(associationDetails, { deep: true })
+
+    // Associations are used by services, tools, and variables, it's required to correctly
+    // retrieve those objects and shouldn't need to be provided by the client
+    if (associationDetails) {
+      this.setItemValue(id, 'associationDetails', formattedAssociationDetails)
+    }
   }
 
   /**

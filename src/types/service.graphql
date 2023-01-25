@@ -46,6 +46,11 @@ type Service {
     "Zero based offset of individual results."
     offset: Int @deprecated(reason: "Use `params.offset`")
   ): CollectionList
+
+  orderOptions (
+    "order option's query parameters"
+    params: OrderOptionsInput
+  ): OrderOptionList
 }
 
 type ServiceList {
