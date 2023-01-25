@@ -3,16 +3,16 @@ type OrderOption {
   associationDetails: JSON
   "The concept id created by CMR for this orderOption"
   conceptId: String!
-  "The orderOption name."
-  name: String
-  "The ECHO Forms schema for this order option"
-  form: String
-  "The native id to set on the order option."  
-  nativeId: String
-  "The guid-id for this order option"
-  id: String!
   "The description for this order option"
   description: String
+  "The ECHO Forms schema for this order option"
+  form: String
+  "The guid-id for this order option"
+  id: String!
+  "The orderOption name."
+  name: String
+  "The native id to set on the order option."  
+  nativeId: String
   "The two levels of order options, provider or system"
   scope: String
   "The sort key is used to indicate the preferred display order among other definitions"
@@ -29,7 +29,7 @@ type OrderOptionList {
 }
 
 input OrderOptionsInput {
-  "The unique concept-id assigned to the orderOption."
+  "The unique concept-id assigned to the order-option."
   conceptId: [String]
   "Cursor that points to the a specific position in a list of requested records."
   cursor: String
@@ -38,20 +38,20 @@ input OrderOptionsInput {
 }
 
 input OrderOptionInput {
-  "The unique concept id assigned to the orderOption."
+  "The unique concept id assigned to the order-option."
   conceptId: String!
 }
 
 type Query {
   orderOptions(
-    "orderOptions query parameters"
+    "order option's query parameters"
     params: OrderOptionsInput
   ): OrderOptionList!
 
   orderOption(
-    "orderOption query parameters"
+    "order option's query parameters"
     params: OrderOptionInput
-    "The unique concept id assigned to the orderOption."
+    "The unique concept id assigned to the order-option"
     conceptId: String
   ): OrderOption
 }

@@ -92,7 +92,6 @@ describe('OrderOption', () => {
       console.log('mock response', response)
 
       expect(data).toEqual({
-        // TODO: alphabetize
         orderOptions: {
           count: 1,
           items: [{
@@ -170,7 +169,7 @@ describe('OrderOption', () => {
                 name: 'Lorem Ipsum'
               }]
             })
-            // TODO: We should be using the params not the old test style
+            // TODO: We should be using the params not the old test style?
           const response = await server.executeOperation({
             orderOption: {},
             query: `{

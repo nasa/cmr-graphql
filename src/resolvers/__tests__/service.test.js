@@ -344,9 +344,6 @@ describe('Service', () => {
         }
       })
     })
-    // TODO: Test the order options retrieval
-    // TODO: Also test retrieving it from the umm format
-    // TODO: Test case if it returns "null" without any association
     test('order-option associations are returned', async () => {
       nock(/example/)
         .defaultReplyHeaders({
@@ -370,7 +367,6 @@ describe('Service', () => {
         })
         .post(/order-options\.json/)
         .reply(200, {
-          // is this supposed to be items?
           items: [
             { concept_id: 'OO100000-EDSC' }]
         })
@@ -391,7 +387,6 @@ describe('Service', () => {
       })
 
       const { data } = response
-      // console.log('the data', JSON.parse(data))
       expect(data).toEqual({
         services: {
           items: [{
@@ -405,7 +400,7 @@ describe('Service', () => {
         }
       })
     })
-    test('tool assoc but, no order option assoc', async () => {
+    test('tool association but, no order option association', async () => {
       nock(/example/)
         .defaultReplyHeaders({
           'CMR-Took': 7,
@@ -428,7 +423,6 @@ describe('Service', () => {
         })
         .post(/order-options\.json/)
         .reply(200, {
-          // is this supposed to be items?
           items: [
             { concept_id: 'OO100000-EDSC' }]
         })
@@ -449,7 +443,6 @@ describe('Service', () => {
       })
 
       const { data } = response
-      // console.log('the data', JSON.parse(data))
       expect(data).toEqual({
         services: {
           items: [{
@@ -461,7 +454,7 @@ describe('Service', () => {
         }
       })
     })
-    test('service has no assoc', async () => {
+    test('service has no associations', async () => {
       nock(/example/)
         .defaultReplyHeaders({
           'CMR-Took': 7,
@@ -481,7 +474,6 @@ describe('Service', () => {
         })
         .post(/order-options\.json/)
         .reply(200, {
-          // is this supposed to be items?
           items: [
             { concept_id: 'OO100000-EDSC' }]
         })
@@ -502,7 +494,6 @@ describe('Service', () => {
       })
 
       const { data } = response
-      // console.log('the data', JSON.parse(data))
       expect(data).toEqual({
         services: {
           items: [{
