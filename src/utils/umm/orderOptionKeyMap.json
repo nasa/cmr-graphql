@@ -3,15 +3,14 @@
       "conceptId"
     ],
     "ummKeyMappings": {
-      "id": "umm.Id",
       "associationDetails": "meta.association-details",
-      "description": "umm.Description",
       "conceptId": "meta.concept-id",
+      "description": "umm.Description",
+      "form": "umm.Form",
+      "id": "umm.Id",
       "name": "umm.Name",
       "nativeId": "meta.native-id",
       "scope": "umm.Scope",
-      "sortKey": "umm.SortKey",
-      "form": "umm.Form"
+      "sortKey": "umm.SortKey"
     }
   }
-  

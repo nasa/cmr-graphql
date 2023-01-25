@@ -23,7 +23,6 @@ export default {
   Service: {
     collections: async (source, args, context, info) => {
       const { dataSources } = context
-      console.log('The source for the service', source)
 
       // Pull out parent collection id to provide to the granules endpoint because cmr requires it
       const {
@@ -41,11 +40,6 @@ export default {
       const {
         associationDetails = {}
       } = source
-
-      console.log('The source for the service', source)
-      // console.log('The context for the service', context)
-      // console.log('The info for the service', info)
-      // console.log('The args for the service', args)
 
       const { dataSources } = context
 

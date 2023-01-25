@@ -272,7 +272,7 @@ describe('grid', () => {
         .reply(200, {
           items: [{
             meta: {
-              'concept-id': 'GRD1200445311-CMR_ONLY'
+              'concept-id': 'GRD100000-EDSC'
             },
             umm: {
               Version: 'v1.0'
@@ -282,7 +282,7 @@ describe('grid', () => {
 
       const response = await gridDatasource({
         params: {
-          concept_id: 'GRD1200445311-CMR_ONLY'
+          concept_id: 'GRD100000-EDSC'
         }
       }, {
         headers: {

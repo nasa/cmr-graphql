@@ -10,7 +10,7 @@ import { CONCEPT_TYPES } from '../constants'
 /**
  * Construct an object defining UMM key information
  * @param {Array} requestedFields Fields requested
- * @param {Object} keyMap Mappings of UMM fields to rerequestable fields
+ * @param {Object} keyMap Mappings of UMM fields to requestable fields
  * @param {String} conceptName Name of the concept () to lookup requested fields in the query
  */
 export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
@@ -37,7 +37,6 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
     }
 
     isList = true
-    // TODO: this might have an exception for the '-' chars in the middle
     const {
       [`${upperFirst(formattedConceptName)}List`]: conceptListKeysRequested
     } = fieldsByTypeName
@@ -78,7 +77,6 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
       // Match by name field to allow field-level aliases
       requestedFields = map(conceptKeysRequested, 'name')
     }
-    // TODO: This may be an issue here
     const {
       [`${upperFirst(formattedConceptName)}MutationResponse`]: ingestKeysRequested
     } = fieldsByTypeName
