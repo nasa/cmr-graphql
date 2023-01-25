@@ -165,31 +165,6 @@ export default {
         conceptId: variableConceptIds,
         ...handlePagingParams(args, variables.length)
       }, context, parseResolveInfo(info))
-    },
-    orderOptions: async (source, args, context, info) => {
-      console.log('The source for the collection', source)
-
-      const {
-        associationDetails = {}
-      } = source
-
-      const { dataSources } = context
-
-      const { orderOptions = [] } = associationDetails
-
-      const orderOptionConceptIds = orderOptions.map(({ conceptId }) => conceptId)
-
-      if (!orderOptions.length) {
-        return {
-          count: 0,
-          items: null
-        }
-      }
-
-      return dataSources.orderOptionSource({
-        conceptId: orderOptionConceptIds,
-        ...handlePagingParams(args, orderOptions.length)
-      }, context, parseResolveInfo(info))
     }
   },
   Relationship: {
