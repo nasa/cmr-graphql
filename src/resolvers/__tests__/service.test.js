@@ -7,6 +7,7 @@ import typeDefs from '../../types'
 
 import collectionSource from '../../datasources/collection'
 import granuleSource from '../../datasources/granule'
+import orderOptionSource from '../../datasources/orderOption'
 import serviceSource from '../../datasources/service'
 import {
   deleteSubscription as subscriptionSourceDelete,
@@ -28,6 +29,7 @@ const server = new ApolloServer({
   dataSources: () => ({
     collectionSource,
     granuleSource,
+    orderOptionSource,
     serviceSource,
     subscriptionSourceDelete,
     subscriptionSourceFetch,
@@ -337,6 +339,176 @@ describe('Service', () => {
               }, {
                 conceptId: 'C100003-EDSC'
               }]
+            }
+          }]
+        }
+      })
+    })
+    // TODO: Test the order options retrieval
+    // TODO: Also test retrieving it from the umm format
+    // TODO: Test case if it returns "null" without any association
+    test('order-option associations are returned', async () => {
+      nock(/example/)
+        .defaultReplyHeaders({
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .post(/services\.json/)
+        .reply(200, {
+          items: [{
+            concept_id: 'S100000-EDSC',
+            association_details: {
+              'order-options': [{ concept_id: 'OO100000-EDSC' }]
+            }
+          }]
+        })
+      // Mock the order option
+      nock(/example/)
+        .defaultReplyHeaders({
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .post(/order-options\.json/)
+        .reply(200, {
+          // is this supposed to be items?
+          items: [
+            { concept_id: 'OO100000-EDSC' }]
+        })
+      const response = await server.executeOperation({
+        variables: {},
+        query: `{
+          services {
+            items {
+              conceptId
+              orderOptions {
+                items {
+                  conceptId
+                }
+              }
+            }
+          }
+        }`
+      })
+
+      const { data } = response
+      // console.log('the data', JSON.parse(data))
+      expect(data).toEqual({
+        services: {
+          items: [{
+            conceptId: 'S100000-EDSC',
+            orderOptions: {
+              items: [{
+                conceptId: 'OO100000-EDSC'
+              }]
+            }
+          }]
+        }
+      })
+    })
+    test('tool assoc but, no order option assoc', async () => {
+      nock(/example/)
+        .defaultReplyHeaders({
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .post(/services\.json/)
+        .reply(200, {
+          items: [{
+            concept_id: 'S100000-EDSC',
+            association_details: {
+              tools: [{ concept_id: 'TL100000-EDSC' }]
+            }
+          }]
+        })
+      // Mock the order option
+      nock(/example/)
+        .defaultReplyHeaders({
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .post(/order-options\.json/)
+        .reply(200, {
+          // is this supposed to be items?
+          items: [
+            { concept_id: 'OO100000-EDSC' }]
+        })
+      const response = await server.executeOperation({
+        variables: {},
+        query: `{
+          services {
+            items {
+              conceptId
+              orderOptions {
+                items {
+                  conceptId
+                }
+              }
+            }
+          }
+        }`
+      })
+
+      const { data } = response
+      // console.log('the data', JSON.parse(data))
+      expect(data).toEqual({
+        services: {
+          items: [{
+            conceptId: 'S100000-EDSC',
+            orderOptions: {
+              items: null
+            }
+          }]
+        }
+      })
+    })
+    test('service has no assoc', async () => {
+      nock(/example/)
+        .defaultReplyHeaders({
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .post(/services\.json/)
+        .reply(200, {
+          items: [{
+            concept_id: 'S100000-EDSC'
+          }]
+        })
+      // Mock the order option
+      nock(/example/)
+        .defaultReplyHeaders({
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .post(/order-options\.json/)
+        .reply(200, {
+          // is this supposed to be items?
+          items: [
+            { concept_id: 'OO100000-EDSC' }]
+        })
+      const response = await server.executeOperation({
+        variables: {},
+        query: `{
+          services {
+            items {
+              conceptId
+              orderOptions {
+                items {
+                  conceptId
+                }
+              }
+            }
+          }
+        }`
+      })
+
+      const { data } = response
+      // console.log('the data', JSON.parse(data))
+      expect(data).toEqual({
+        services: {
+          items: [{
+            conceptId: 'S100000-EDSC',
+            orderOptions: {
+              items: null
             }
           }]
         }
