@@ -8,7 +8,8 @@ export default class OrderOption extends Concept {
    * @param {Object} params GraphQL query parameters
    */
   constructor(headers, requestInfo, params) {
-    // This concept uses the "-" character to delineate spaces in CMR
+    // This concept uses the "-" character to delineate spaces in CMR we must pass it
+    // in this form to fetch order option concepts from CMR
     super('order-options', headers, requestInfo, params)
   }
 

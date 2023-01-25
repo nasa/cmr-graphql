@@ -7,7 +7,7 @@ import OrderOption from '../cmr/concepts/orderOption'
 export default async (params, context, parsedInfo) => {
 // TOOD: Which is this using?
   console.log('parsed info for the oderOption', parsedInfo)
-  // This passes orderOption and will transform to OrderOption
+  // This passes orderOption and will transform to OrderOption graphql type
   const requestInfo = parseRequestedFields(parsedInfo, orderOptionKeyMap, 'orderOption')
   const { headers } = context
   console.log('the request info for the orderOption', requestInfo)
