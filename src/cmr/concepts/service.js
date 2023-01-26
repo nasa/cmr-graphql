@@ -25,7 +25,7 @@ export default class Service extends Concept {
 
     const formattedAssociationDetails = camelcaseKeys(associationDetails, { deep: true })
 
-    // Associations on services are used to retrieve order Options
+    // Associations on services are used to retrieve order-options
     if (associationDetails) {
       this.setItemValue(id, 'associationDetails', formattedAssociationDetails)
     }
@@ -44,7 +44,7 @@ export default class Service extends Concept {
 
     const formattedAssociationDetails = camelcaseKeys(associationDetails, { deep: true })
 
-    //  Associations on services are used to retrieve order Options
+    //  Associations on services are used to retrieve order-options
     if (associationDetails) {
       this.setItemValue(id, 'associationDetails', formattedAssociationDetails)
     }

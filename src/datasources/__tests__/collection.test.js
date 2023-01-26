@@ -288,8 +288,7 @@ describe('collection', () => {
 
       const response = await collectionDatasource({
         params: {
-          conceptId: 'C100000-EDSC',
-          hasOpendapUrl: true
+          conceptId: 'C100000-EDSC'
         }
       }, {
         headers: {
