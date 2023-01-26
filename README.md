@@ -521,6 +521,50 @@ For all supported arguments and columns, see [the schema](src/types/grid.graphql
       }
     }
 
+#### Order-options
+
+For all supported arguments and columns, see [the schema](src/types/orderOption.graphql).
+
+##### Example Queries
+
+###### Single
+
+query ($params: OrderOptionInput) {
+  orderOption(params: $params) {
+    associationDetails
+    conceptId
+    id
+    name
+    nativeId
+    description
+    form
+  }
+}
+
+variables:
+{
+  "params": {
+    "conceptId": "OO1000000001-EXAMPLE"
+  }
+}
+
+###### Multiple
+
+{
+  orderOptions {
+    count
+    items {
+      conceptId
+      name
+      nativeId
+      id
+      description
+      scope
+      form
+      sortKey
+    }
+  }
+}
 
 #### Related Collections
 
