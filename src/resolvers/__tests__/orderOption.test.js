@@ -169,11 +169,10 @@ describe('OrderOption', () => {
                 name: 'Lorem Ipsum'
               }]
             })
-            // TODO: We should be using the params not the old test style?
           const response = await server.executeOperation({
             orderOption: {},
             query: `{
-                orderOption(conceptId: "OO100000-EDSC") {
+                orderOption(params: { conceptId: "OO100000-EDSC" }) {
                   conceptId
                 }
               }`
@@ -204,7 +203,7 @@ describe('OrderOption', () => {
           const response = await server.executeOperation({
             orderOption: {},
             query: `{
-                orderOption(conceptId: "OO100000-EDSC") {
+                orderOption(params: { conceptId: "OO100000-EDSC" }) {
                   conceptId
                   name
                 }

@@ -4,6 +4,7 @@ import { ApolloServer } from 'apollo-server-lambda'
 
 import resolvers from '..'
 import typeDefs from '../../types'
+
 import collectionSource from '../../datasources/collection'
 import granuleSource from '../../datasources/granule'
 import graphDbSource from '../../datasources/graphDb'

@@ -51,7 +51,5 @@ type Query {
   orderOption(
     "order option's query parameters"
     params: OrderOptionInput
-    "The unique concept id assigned to the order-option"
-    conceptId: String
   ): OrderOption
 }

@@ -185,7 +185,7 @@ describe('Grid', () => {
                 name: 'Lorem Ipsum'
               }]
             })
-
+            // TODO remove this parameter search from grids in favor of params
           const response = await server.executeOperation({
             grids: {},
             query: `{
