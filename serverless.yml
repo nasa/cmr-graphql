@@ -26,7 +26,7 @@ provider:
     lambdaTimeout: ${env:LAMBDA_TIMEOUT, '30'}
 
     # Pinned UMM versions
-    ummCollectionVersion: '1.17.0'
+    ummCollectionVersion: '1.17.2'
     ummGranuleVersion: '1.5'
     ummServiceVersion: '1.3.4'
     ummSubscriptionVersion: '1.1'
