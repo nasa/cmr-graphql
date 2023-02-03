@@ -262,6 +262,12 @@ type Collection {
     "The name of a variable."
     name: String @deprecated(reason: "Use `params.name`")
   ): VariableList
+
+  relatedOrderOptions (
+    "The query parameters for the order option associated services associated to this collection"
+    params: OrderOptionsInput
+  ): OrderOptionList
+
 }
 
 type DuplicateCollection {

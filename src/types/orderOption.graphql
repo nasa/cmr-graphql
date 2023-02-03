@@ -17,6 +17,18 @@ type OrderOption {
   scope: String
   "The sort key is used to indicate the preferred display order among other definitions"
   sortKey: String
+
+#   services (
+#   "service's query parameters"
+#   params: ServiceInput
+# ): ServiceList
+
+
+#   associatedService (
+#   "service's query parameters"
+#   params: ServiceInput
+# ): Service
+
 }
 
 type OrderOptionList {
@@ -35,11 +47,15 @@ input OrderOptionsInput {
   cursor: String
   "The number of variables requested by the user."
   limit: Int
+  "The collection's concept-id"
+  collectionConceptId: String
 }
 
 input OrderOptionInput {
   "The unique concept id assigned to the order-option."
   conceptId: String!
+  "The collection's concept-id"
+  collectionConceptId: String
 }
 
 type Query {
@@ -52,4 +68,10 @@ type Query {
     "order option's query parameters"
     params: OrderOptionInput
   ): OrderOption
+
+  # orderOptionsAssociatedToServicesOfTheCollection(
+  #   "order option's query parameters"
+  #   params: OrderOptionsInput
+  # ): OrderOptionList!
+
 }

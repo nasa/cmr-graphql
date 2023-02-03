@@ -58,6 +58,56 @@ export default {
         conceptId: orderOptionConceptIds,
         ...handlePagingParams(args, orderOptions.length)
       }, context, parseResolveInfo(info))
+    },
+    // Filter the returned order-options by the concept-id passed into the service's query parent collection
+    associatedOrderOptions: async (source, args, context, info) => {
+      const {
+        associationDetails = {}
+      } = source
+      console.log('these are the current association details', associationDetails)
+      const { dataSources } = context
+
+      const { collections = [] } = associationDetails
+      // Retrieve any collection-concept-id that may be being passed as a parameter
+      const { variableValues } = info
+
+      const { params: { conceptId: collectionConceptId } = {} } = variableValues
+
+      let assocCollections = collections
+      // TODO: don't filter if there is not a collection being passed as a parameter
+      if (collectionConceptId) {
+        console.log('a collection concept-id was passed down it was', collectionConceptId)
+        // eslint-disable-next-line max-len
+        assocCollections = collections.filter((assoc) => collectionConceptId.includes(assoc.conceptId))
+      }
+      console.log('these are the current collections after they are filtered', assocCollections)
+      // eslint-disable-next-line max-len
+      // assocCollections = collections.filter((assoc) => collectionConceptId.includes(assoc.conceptId))
+
+      const associationPayloads = assocCollections.map(({ data = {} }) => data)
+      // if there are no associations there will not be any order-top
+      // if (!associationPayloads.length) {
+      //   return {
+      //     count: 0,
+      //     items: null
+      //   }
+      // }
+
+      const orderOptionConceptIds = associationPayloads.map(({ orderOption }) => orderOption)
+      console.log('these are the current order-options', orderOptionConceptIds)
+      console.log(orderOptionConceptIds.length)
+
+      if (orderOptionConceptIds[0] === undefined) {
+        return {
+          count: 0,
+          items: null
+        }
+      }
+
+      return dataSources.orderOptionSource({
+        conceptId: orderOptionConceptIds,
+        ...handlePagingParams(args, orderOptionConceptIds.length)
+      }, context, parseResolveInfo(info))
     }
   }
 }
