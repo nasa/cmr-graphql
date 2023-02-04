@@ -346,63 +346,8 @@ describe('Service', () => {
         }
       })
     })
-    test('order-option associations are returned', async () => {
-      nock(/example/)
-        .defaultReplyHeaders({
-          'CMR-Took': 7,
-          'CMR-Request-Id': 'abcd-1234-efgh-5678'
-        })
-        .post(/services\.json/)
-        .reply(200, {
-          items: [{
-            concept_id: 'S100000-EDSC',
-            association_details: {
-              'order-options': [{ concept_id: 'OO100000-EDSC' }]
-            }
-          }]
-        })
-      // Mock the order option
-      nock(/example/)
-        .defaultReplyHeaders({
-          'CMR-Took': 7,
-          'CMR-Request-Id': 'abcd-1234-efgh-5678'
-        })
-        .post(/order-options\.json/)
-        .reply(200, {
-          items: [
-            { concept_id: 'OO100000-EDSC' }]
-        })
-      const response = await server.executeOperation({
-        variables: {},
-        query: `{
-          services {
-            items {
-              conceptId
-              orderOptions {
-                items {
-                  conceptId
-                }
-              }
-            }
-          }
-        }`
-      })
 
-      const { data } = response
-      expect(data).toEqual({
-        services: {
-          items: [{
-            conceptId: 'S100000-EDSC',
-            orderOptions: {
-              items: [{
-                conceptId: 'OO100000-EDSC'
-              }]
-            }
-          }]
-        }
-      })
-    })
-
+    // Tests for the associated legacy services order-options
     test('only retrieve one OO filtered from assoc details', async () => {
       nock(/example/)
         .defaultReplyHeaders({
@@ -452,18 +397,11 @@ describe('Service', () => {
             }
           }]
         })
-      // Mock the order option
-      // nock(/example/)
-      //   .defaultReplyHeaders({
-      //     'CMR-Took': 7,
-      //     'CMR-Request-Id': 'abcd-1234-efgh-5678'
-      //   })
         .post(/order-options\.json/)
         .reply(200, {
           items: [
             { concept_id: 'OO100000-EDSC' }]
         })
-      // Pass the collection into the query
       const response = await server.executeOperation({
         variables: { params: { conceptId: 'C100000-EDSC' } },
         query: `
@@ -474,7 +412,7 @@ describe('Service', () => {
             services {
               items {
                 conceptId
-                associatedOrderOptions{
+                orderOptions{
                   items {
                     conceptId
                   }
@@ -485,7 +423,7 @@ describe('Service', () => {
         }
         }`
       })
-      // The expected result of the query
+      // The expected result of the query only one OO is returned
       const { data } = response
       console.log(data)
       expect(data).toEqual({
@@ -497,7 +435,7 @@ describe('Service', () => {
                 items: [
                   {
                     conceptId: 'S100000-EDSC',
-                    associatedOrderOptions: {
+                    orderOptions: {
                       items: [
                         {
                           conceptId: 'OO100000-EDSC'
@@ -513,174 +451,7 @@ describe('Service', () => {
       })
     })
 
-    test('legacy services order-option retrieved on association for service only one collection between them', async () => {
-      nock(/example/)
-        .defaultReplyHeaders({
-          'CMR-Took': 7,
-          'CMR-Request-Id': 'abcd-1234-efgh-5678'
-        })
-        .post(/collections\.json/)
-        .reply(200, {
-          feed: {
-            entry: [{
-              id: 'C100000-EDSC',
-              association_details: {
-                services: [{ concept_id: 'S100000-EDSC' }]
-              }
-            }]
-          }
-        })
-        // The association between the collection and the service contains the order-option in the payload
-        .post(/services\.json/)
-        .reply(200, {
-          items: [{
-            concept_id: 'S100000-EDSC',
-            association_details: {
-              collections: [{
-                data: {
-                  order_option: 'OO100000-EDSC'
-                },
-                concept_id: 'C100000-EDSC'
-              }]
-            }
-          }]
-        })
-      // Mock the order option
-      // nock(/example/)
-      //   .defaultReplyHeaders({
-      //     'CMR-Took': 7,
-      //     'CMR-Request-Id': 'abcd-1234-efgh-5678'
-      //   })
-        .post(/order-options\.json/)
-        .reply(200, {
-          items: [
-            { concept_id: 'OO100000-EDSC' }]
-        })
-      // Pass the collection into the query
-      const response = await server.executeOperation({
-        variables: { params: { conceptId: 'C100000-EDSC' } },
-        query: `
-        query ($params: CollectionsInput) {
-          collections(params: $params) {
-          items {
-            conceptId
-            services {
-              items {
-                conceptId
-                associatedOrderOptions{
-                  items {
-                    conceptId
-                  }
-                }
-              }
-            }
-          }
-        }
-        }`
-      })
-      // The expected result of the query
-      const { data } = response
-      console.log(data)
-      expect(data).toEqual({
-        collections: {
-          items: [
-            {
-              conceptId: 'C100000-EDSC',
-              services: {
-                items: [
-                  {
-                    conceptId: 'S100000-EDSC',
-                    associatedOrderOptions: {
-                      items: [
-                        {
-                          conceptId: 'OO100000-EDSC'
-                        }
-                      ]
-                    }
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      })
-    })
-
-    test('legacy services order-option cant retrieved no collection association tool instead', async () => {
-      nock(/example/)
-        .defaultReplyHeaders({
-          'CMR-Took': 7,
-          'CMR-Request-Id': 'abcd-1234-efgh-5678'
-        })
-        .post(/collections\.json/)
-        .reply(200, {
-          feed: {
-            entry: [{
-              id: 'C100000-EDSC',
-              association_details: {
-                tools: [{ concept_id: 'T100000-EDSC' }]
-              }
-            }]
-          }
-        })
-        // The association between the collection and the service contains the order-option in the payload
-        // .post(/services\.json/)
-        // .reply(200, {
-        //   items: [{
-        //     concept_id: 'S100000-EDSC',
-        //     association_details: {
-        //       variables: [{
-        //         concept_id: 'V100000-EDSC'
-        //       }]
-        //     }
-        //   }]
-        // })
-      // Mock the order option
-      // nock(/example/)
-      //   .defaultReplyHeaders({
-      //     'CMR-Took': 7,
-      //     'CMR-Request-Id': 'abcd-1234-efgh-5678'
-      //   })
-      // Pass the collection into the query
-      const response = await server.executeOperation({
-        variables: { params: { conceptId: 'C100000-EDSC' } },
-        query: `
-        query ($params: CollectionsInput) {
-          collections(params: $params) {
-          items {
-            conceptId
-            services {
-              items {
-                conceptId
-                associatedOrderOptions{
-                  items {
-                    conceptId
-                  }
-                }
-              }
-            }
-          }
-        }
-        }`
-      })
-      // The expected result of the query
-      const { data } = response
-      // console.log(data)
-      expect(data).toEqual({
-        collections: {
-          items: [
-            {
-              conceptId: 'C100000-EDSC',
-              services: {
-                items: null
-              }
-            }
-          ]
-        }
-      })
-    })
-
-    test('legacy services order-option retrieved but, there were no order options in th payload', async () => {
+    test.only('No order options ine th payload', async () => {
       nock(/example/)
         .defaultReplyHeaders({
           'CMR-Took': 7,
@@ -709,17 +480,6 @@ describe('Service', () => {
             }
           }]
         })
-      // Mock the order option
-      // nock(/example/)
-      //   .defaultReplyHeaders({
-      //     'CMR-Took': 7,
-      //     'CMR-Request-Id': 'abcd-1234-efgh-5678'
-      //   })
-        // No order-options were returned
-        // .post(/order-options\.json/)
-        // .reply(200, {
-        //   items: []
-        // })
       // Pass the collection into the query
       const response = await server.executeOperation({
         variables: { params: { conceptId: 'C100000-EDSC' } },
@@ -731,7 +491,7 @@ describe('Service', () => {
             services {
               items {
                 conceptId
-                associatedOrderOptions{
+                orderOptions{
                   items {
                     conceptId
                   }
@@ -946,165 +706,5 @@ describe('Service', () => {
         })
       })
     })
-    // This is in case there is no associations at all
-
-    test('tool association but, no order option association', async () => {
-      nock(/example/)
-        .defaultReplyHeaders({
-          'CMR-Took': 7,
-          'CMR-Request-Id': 'abcd-1234-efgh-5678'
-        })
-        .post(/services\.json/)
-        .reply(200, {
-          items: [{
-            concept_id: 'S100000-EDSC',
-            association_details: {
-              tools: [{ concept_id: 'TL100000-EDSC' }]
-            }
-          }]
-        })
-      // Mock the order option
-      // nock(/example/)
-      //   .defaultReplyHeaders({
-      //     'CMR-Took': 7,
-      //     'CMR-Request-Id': 'abcd-1234-efgh-5678'
-      //   })
-        .post(/order-options\.json/)
-        .reply(200, {
-          items: [
-            { concept_id: 'OO100000-EDSC' }]
-        })
-      const response = await server.executeOperation({
-        variables: {},
-        query: `{
-          services {
-            items {
-              conceptId
-              orderOptions {
-                items {
-                  conceptId
-                }
-              }
-            }
-          }
-        }`
-      })
-
-      const { data } = response
-      expect(data).toEqual({
-        services: {
-          items: [{
-            conceptId: 'S100000-EDSC',
-            orderOptions: {
-              items: null
-            }
-          }]
-        }
-      })
-    })
-    test('service has no associations', async () => {
-      nock(/example/)
-        .defaultReplyHeaders({
-          'CMR-Took': 7,
-          'CMR-Request-Id': 'abcd-1234-efgh-5678'
-        })
-        .post(/services\.json/)
-        .reply(200, {
-          items: [{
-            concept_id: 'S100000-EDSC'
-          }]
-        })
-      // // Mock the order option
-      // nock(/example/)
-      //   .defaultReplyHeaders({
-      //     'CMR-Took': 7,
-      //     'CMR-Request-Id': 'abcd-1234-efgh-5678'
-      //   })
-        .post(/order-options\.json/)
-        .reply(200, {
-          items: [
-            { concept_id: 'OO100000-EDSC' }]
-        })
-      const response = await server.executeOperation({
-        variables: {},
-        query: `{
-          services {
-            items {
-              conceptId
-              orderOptions {
-                items {
-                  conceptId
-                }
-              }
-            }
-          }
-        }`
-      })
-
-      const { data } = response
-      expect(data).toEqual({
-        services: {
-          items: [{
-            conceptId: 'S100000-EDSC',
-            orderOptions: {
-              items: null
-            }
-          }]
-        }
-      })
-    })
   })
-  // THIS IS NOW it's own thing
-  // test('legacy services order-option no association details at all on the concepts', async () => {
-  //   nock(/example/)
-  //     .defaultReplyHeaders({
-  //       'CMR-Took': 7,
-  //       'CMR-Request-Id': 'abcd-1234-efgh-5678'
-  //     })
-  //     // The association between the collection and the service contains the order-option in the payload
-  //     .post(/services\.json/, 'conceptId=S100006-EDSC')
-  //     .reply(200, {
-  //       items: [{
-  //         concept_id: 'S100006-EDSC'
-  //       }]
-  //     })
-  //     // Mock the order option
-  //     // nock(/example/)
-  //     //   .defaultReplyHeaders({
-  //     //     'CMR-Took': 7,
-  //     //     'CMR-Request-Id': 'abcd-1234-efgh-5678'
-  //     //   })
-  //     // Pass the collection into the query
-  //   const response = await server.executeOperation({
-  //     variables: { params: { conceptId: 'S100006-EDSC' } },
-  //     query: `
-  //     query ($params: ServicesInput) {
-  //       services(params: $params) {
-  //         items {
-  //           conceptId
-  //           associatedOrderOptions{
-  //               items {
-  //                 conceptId
-  //               }
-  //             }
-  //           }
-  //         }
-  //     }`
-  //   })
-  //   // The expected result of the query
-  //   const { data } = response
-  //   // console.log(data)
-  //   expect(data).toEqual({
-  //     services: {
-  //       items: [
-  //         {
-  //           conceptId: 'S100000-EDSC',
-  //           associatedOrderOptions: {
-  //             items: null
-  //           }
-  //         }
-  //       ]
-  //     }
-  //   })
-  // })
 })

@@ -36,68 +36,59 @@ export default {
 
       return dataSources.collectionSource(requestedParams, context, parseResolveInfo(info))
     },
+    // Filter the returned order-options by the concept-id passed into the service's query parent collection
     orderOptions: async (source, args, context, info) => {
       const {
-        associationDetails = {}
+        associationDetails = {},
+        parentCollectionConceptId
       } = source
-
+      // The parent collection of the service search
       const { dataSources } = context
 
-      const { orderOptions = [] } = associationDetails
+      // const { parentCollectionConceptId } = source
+      // console.log('The entire source object in the orderOption/Service', source)
 
-      const orderOptionConceptIds = orderOptions.map(({ conceptId }) => conceptId)
+      console.log('This is the collection in its final destination', parentCollectionConceptId)
 
-      if (!orderOptions.length) {
+      // order-options on the payload are only in the context of the collection to service association
+      if (!parentCollectionConceptId) {
         return {
           count: 0,
           items: null
         }
       }
-
-      return dataSources.orderOptionSource({
-        conceptId: orderOptionConceptIds,
-        ...handlePagingParams(args, orderOptions.length)
-      }, context, parseResolveInfo(info))
-    },
-    // Filter the returned order-options by the concept-id passed into the service's query parent collection
-    associatedOrderOptions: async (source, args, context, info) => {
-      const {
-        associationDetails = {}
-      } = source
-      console.log('these are the current association details', associationDetails)
-      const { dataSources } = context
 
       const { collections = [] } = associationDetails
-      // Retrieve any collection-concept-id that may be being passed as a parameter
-      const { variableValues } = info
-
-      const { params: { conceptId: collectionConceptId } = {} } = variableValues
-
-      let assocCollections = collections
-      // TODO: don't filter if there is not a collection being passed as a parameter
-      if (collectionConceptId) {
-        console.log('a collection concept-id was passed down it was', collectionConceptId)
-        // eslint-disable-next-line max-len
-        assocCollections = collections.filter((assoc) => collectionConceptId.includes(assoc.conceptId))
+      // If there are no associations to collections for this service
+      if (!collections.length) {
+        return {
+          count: 0,
+          items: null
+        }
       }
-      console.log('these are the current collections after they are filtered', assocCollections)
+      // console.log('collections list BEFORE filter', collections)
       // eslint-disable-next-line max-len
-      // assocCollections = collections.filter((assoc) => collectionConceptId.includes(assoc.conceptId))
+      const filteredCollections = collections.find((col) => col.conceptId === parentCollectionConceptId)
 
-      const associationPayloads = assocCollections.map(({ data = {} }) => data)
-      // if there are no associations there will not be any order-top
-      // if (!associationPayloads.length) {
-      //   return {
-      //     count: 0,
-      //     items: null
-      //   }
-      // }
+      // console.log('collections list AFTER filter', collections)
+      // sometimes this is passing cannot read properties of undefined
 
-      const orderOptionConceptIds = associationPayloads.map(({ orderOption }) => orderOption)
-      console.log('these are the current order-options', orderOptionConceptIds)
-      console.log(orderOptionConceptIds.length)
+      const { data = {} } = filteredCollections
 
-      if (orderOptionConceptIds[0] === undefined) {
+      if (!data) {
+        return {
+          count: 0,
+          items: null
+        }
+      }
+      // TODO: This should need to be "order_option" that is what the response gives
+      // There can be one, and only one order_option in the association payload due to valid JSON rules regarding duplicate keys
+      // This key is being changed from order_option in the CMR response
+      // console.log('This is the data payload', data)
+      const { orderOption: orderOptionConceptId } = data
+
+      if (!orderOptionConceptId) {
+        // console.log('the concept id of the parent with the messed up payload', parentCollectionConceptId)
         return {
           count: 0,
           items: null
@@ -105,8 +96,8 @@ export default {
       }
 
       return dataSources.orderOptionSource({
-        conceptId: orderOptionConceptIds,
-        ...handlePagingParams(args, orderOptionConceptIds.length)
+        conceptId: orderOptionConceptId,
+        ...handlePagingParams(args, orderOptionConceptId.length)
       }, context, parseResolveInfo(info))
     }
   }

@@ -86,11 +86,14 @@ export default {
     },
     services: async (source, args, context, info) => {
       const {
-        associationDetails = {}
+        associationDetails = {},
+        conceptId: collectionConceptId
       } = source
+      console.log('Here is the collection concept-id in the source of the collection', collectionConceptId)
 
-      // const { conceptId: collectionConceptId = {} } = source
-      // console.log('the collection concept-id from the service', collectionConceptId)
+      // Pass the collection's concept-id to child queries over associated services
+      // eslint-disable-next-line no-param-reassign
+      // context.collectionConceptId = collectionConceptId
 
       const { dataSources } = context
 
@@ -98,24 +101,24 @@ export default {
 
       const serviceConceptIds = services.map(({ conceptId }) => conceptId)
 
-      // const associationPayloads = services.map(({ data }) => data)
-      // Pull the order-options out of this
-      // TODO: I don't understand how this is getting pared as a
-      // const orderOptionConceptIds = associationPayloads.map(({ orderOption }) => orderOption)
-
       if (!services.length) {
         return {
           count: 0,
           items: null
         }
       }
-
+      // I'm going to pass the coll concept-id through the data source it may end up on the params
       return dataSources.serviceSource({
         conceptId: serviceConceptIds,
         ...handlePagingParams(args, services.length)
-      }, context, parseResolveInfo(info))
+      }, context, parseResolveInfo(info), collectionConceptId)
 
-      // Put in the order-option
+      // serviceDataSource.collectionConceptId = collectionConceptId
+      // does this add the key
+      // dataSources[collectionConceptId] = collectionConceptId
+
+      // console.log('this is the service datasource from the collection resolver', serviceDataSource)
+      // return serviceDataSource
     },
     subscriptions: async (source, args, context, info) => {
       // Pull out parent collection id
@@ -174,45 +177,6 @@ export default {
       return dataSources.variableSource({
         conceptId: variableConceptIds,
         ...handlePagingParams(args, variables.length)
-      }, context, parseResolveInfo(info))
-    },
-    // These are going to be the order-options which are associated to the service associated to the collection
-    relatedOrderOptions: async (source, args, context, info) => {
-      const {
-        associationDetails = {}
-      } = source
-
-      const { dataSources } = context
-
-      const { services = [] } = associationDetails
-      // TODO: rename this var
-      // const { data = {} } = services
-      // TODO: for all of the order_options in this association we grab the
-      // one in the payload
-      // then we just pass that to the datasource for order-options to get those back
-
-      const serviceConceptIds = services.map(({ conceptId }) => conceptId)
-      console.log('the services', serviceConceptIds)
-      // TODO: This needs to have a null case
-      const associationPayloads = services.map(({ data }) => data)
-
-      console.log('payloads for col to service', associationPayloads)
-      // Pull the order-options out of this
-      // TODO: I don't understand how this is getting pared as a
-      const orderOptionConceptIds = associationPayloads.map(({ orderOption }) => orderOption)
-
-      // const { orderOptions = [] } = associationDetails
-
-      if (!orderOptionConceptIds.length) {
-        return {
-          count: 0,
-          items: null
-        }
-      }
-
-      return dataSources.orderOptionSource({
-        conceptId: orderOptionConceptIds,
-        ...handlePagingParams(args, orderOptionConceptIds.length)
       }, context, parseResolveInfo(info))
     }
   },
