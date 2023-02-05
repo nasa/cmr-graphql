@@ -1,4 +1,3 @@
-// import camelcaseKeys from 'camelcase-keys'
 import Concept from './concept'
 
 export default class OrderOption extends Concept {
@@ -13,43 +12,6 @@ export default class OrderOption extends Concept {
     // in this form to fetch order option concepts from CMR
     super('order-options', headers, requestInfo, params)
   }
-
-  // /**
-  //  * Set a value in the result set that a query has not requested but is necessary for other functionality
-  //  * @param {String} id Concept ID to set a value for within the result set
-  //  * @param {Object} item The item returned from the CMR json endpoint
-  //  */
-  // setEssentialJsonValues(id, item) {
-  //   super.setEssentialJsonValues(id, item)
-
-  //   const { association_details: associationDetails } = item
-
-  //   const formattedAssociationDetails = camelcaseKeys(associationDetails, { deep: true })
-
-  //   // Associations on services are used to retrieve order-options
-  //   if (associationDetails) {
-  //     this.setItemValue(id, 'associationDetails', formattedAssociationDetails)
-  //   }
-  // }
-
-  // /**
-  //      * Set a value in the result set that a query has not requested but is necessary for other functionality
-  //      * @param {String} id Concept ID to set a value for within the result set
-  //      * @param {Object} item The item returned from the CMR json endpoint
-  //      */
-  // setEssentialUmmValues(id, item) {
-  //   super.setEssentialUmmValues(id, item)
-
-  //   const { meta } = item
-  //   const { 'association-details': associationDetails } = meta
-
-  //   const formattedAssociationDetails = camelcaseKeys(associationDetails, { deep: true })
-
-  //   //  Associations on services are used to retrieve order-options
-  //   if (associationDetails) {
-  //     this.setItemValue(id, 'associationDetails', formattedAssociationDetails)
-  //   }
-  // }
 
   /**
    * Parse and return the array of data from the nested response body

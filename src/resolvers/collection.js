@@ -89,11 +89,8 @@ export default {
         associationDetails = {},
         conceptId: collectionConceptId
       } = source
-      console.log('Here is the collection concept-id in the source of the collection', collectionConceptId)
 
       // Pass the collection's concept-id to child queries over associated services
-      // eslint-disable-next-line no-param-reassign
-      // context.collectionConceptId = collectionConceptId
 
       const { dataSources } = context
 
@@ -107,18 +104,10 @@ export default {
           items: null
         }
       }
-      // I'm going to pass the coll concept-id through the data source it may end up on the params
       return dataSources.serviceSource({
         conceptId: serviceConceptIds,
         ...handlePagingParams(args, services.length)
       }, context, parseResolveInfo(info), collectionConceptId)
-
-      // serviceDataSource.collectionConceptId = collectionConceptId
-      // does this add the key
-      // dataSources[collectionConceptId] = collectionConceptId
-
-      // console.log('this is the service datasource from the collection resolver', serviceDataSource)
-      // return serviceDataSource
     },
     subscriptions: async (source, args, context, info) => {
       // Pull out parent collection id
