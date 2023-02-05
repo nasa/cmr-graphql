@@ -46,11 +46,6 @@ export default {
         parentCollectionConceptId
       } = source
 
-      // const { parentCollectionConceptId } = source
-      // console.log('The entire source object in the orderOption/Service', source)
-
-      console.log('This is the collection in its final destination', parentCollectionConceptId)
-
       // order-options on the payload are only in the context of the collection to service association
       if (!parentCollectionConceptId) {
         return {
@@ -67,29 +62,15 @@ export default {
           items: null
         }
       }
-      // console.log('collections list BEFORE filter', collections)
+
       // eslint-disable-next-line max-len
       const filteredCollections = collections.find((col) => col.conceptId === parentCollectionConceptId)
 
-      // console.log('collections list AFTER filter', collections)
-      // sometimes this is passing cannot read properties of undefined
-
       const { data = {} } = filteredCollections
-      // TODO: is this check necessary
-      // if (!data) {
-      //   return {
-      //     count: 0,
-      //     items: null
-      //   }
-      // }
-      // TODO: This should need to be "order_option" that is what the response gives
-      // There can be one, and only one order_option in the association payload due to valid JSON rules regarding duplicate keys
-      // This key is being changed from order_option in the CMR response
-      // console.log('This is the data payload', data)
+
       const { orderOption: orderOptionConceptId } = data
 
       if (!orderOptionConceptId) {
-        // console.log('the concept id of the parent with the messed up payload', parentCollectionConceptId)
         return {
           count: 0,
           items: null

@@ -17,18 +17,6 @@ type OrderOption {
   scope: String
   "The sort key is used to indicate the preferred display order among other definitions"
   sortKey: String
-
-#   services (
-#   "service's query parameters"
-#   params: ServiceInput
-# ): ServiceList
-
-
-#   associatedService (
-#   "service's query parameters"
-#   params: ServiceInput
-# ): Service
-
 }
 
 type OrderOptionList {
@@ -68,10 +56,4 @@ type Query {
     "order option's query parameters"
     params: OrderOptionInput
   ): OrderOption
-
-  # orderOptionsAssociatedToServicesOfTheCollection(
-  #   "order option's query parameters"
-  #   params: OrderOptionsInput
-  # ): OrderOptionList!
-
 }

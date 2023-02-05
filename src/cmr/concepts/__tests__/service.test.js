@@ -1,6 +1,6 @@
 import Service from '../service'
 
-describe('service concept', () => {
+describe('Service concept', () => {
   const OLD_ENV = process.env
 
   beforeEach(() => {
@@ -17,7 +17,7 @@ describe('service concept', () => {
     process.env = OLD_ENV
   })
 
-  describe('service concept', () => {
+  describe('Service concept', () => {
     describe('retrieve the parent collection', () => {
       describe('if a parent collection is passed into the service', () => {
         test('returns 84', () => {

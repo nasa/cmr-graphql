@@ -41,8 +41,6 @@ const server = new ApolloServer({
 
 describe('Service', () => {
   const OLD_ENV = process.env
-  // jest.resetAllMocks()
-  // jest.restoreAllMocks()
 
   beforeEach(() => {
     process.env = { ...OLD_ENV }
@@ -421,6 +419,7 @@ describe('Service', () => {
             concept_id: 'OO100000-EDSC'
           }]
         })
+        // The second oderOption list being retrieved by the second service assoc to the coll
         .post(/order-options\.json/)
         .reply(200, {
           items: [{ concept_id: 'OO200000-EDSC' }]
@@ -560,7 +559,6 @@ describe('Service', () => {
       })
       // The expected result of the query only one OO is returned
       const { data } = response
-      console.log(data)
       expect(data).toEqual({
         collections: {
           items: [
@@ -639,7 +637,6 @@ describe('Service', () => {
       })
       // The expected result of the query
       const { data } = response
-      console.log(data)
       expect(data).toEqual({
         collections: {
           items: [
@@ -716,7 +713,6 @@ describe('Service', () => {
       })
       // The expected result of the query
       const { data } = response
-      console.log(data)
       expect(data).toEqual({
         collections: {
           items: [
@@ -791,7 +787,6 @@ describe('Service', () => {
       })
       // The expected result of the query
       const { data } = response
-      console.log(data)
       expect(data).toEqual({
         collections: {
           items: [
@@ -851,7 +846,6 @@ describe('Service', () => {
       })
       // The expected result of the query
       const { data } = response
-      console.log(data)
       expect(data).toEqual({
         collections: {
           items: [

@@ -51,17 +51,6 @@ type Service {
     "order option's query parameters"
     params: OrderOptionsInput
   ): OrderOptionList
-
-  # orderOptionsOfCollection (
-  #   "order option's query parameters"
-  #   params: OrderOptionsInput
-  # ): OrderOptionList
-
-    associatedOrderOptions (
-    "order option's query parameters"
-    params: OrderOptionsInput
-  ): OrderOptionList
-
 }
 
 type ServiceList {
