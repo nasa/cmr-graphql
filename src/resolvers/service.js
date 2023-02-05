@@ -36,14 +36,15 @@ export default {
 
       return dataSources.collectionSource(requestedParams, context, parseResolveInfo(info))
     },
-    // Filter the returned order-options by the concept-id passed into the service's query parent collection
     orderOptions: async (source, args, context, info) => {
+      const { dataSources } = context
+
+      // Pull out the service's parent collection id to filter the associated orderOptions only to those collections
+
       const {
         associationDetails = {},
         parentCollectionConceptId
       } = source
-      // The parent collection of the service search
-      const { dataSources } = context
 
       // const { parentCollectionConceptId } = source
       // console.log('The entire source object in the orderOption/Service', source)
@@ -74,13 +75,13 @@ export default {
       // sometimes this is passing cannot read properties of undefined
 
       const { data = {} } = filteredCollections
-
-      if (!data) {
-        return {
-          count: 0,
-          items: null
-        }
-      }
+      // TODO: is this check necessary
+      // if (!data) {
+      //   return {
+      //     count: 0,
+      //     items: null
+      //   }
+      // }
       // TODO: This should need to be "order_option" that is what the response gives
       // There can be one, and only one order_option in the association payload due to valid JSON rules regarding duplicate keys
       // This key is being changed from order_option in the CMR response

@@ -13,6 +13,7 @@ export default class Service extends Concept {
     super('services', headers, requestInfo, params)
     console.log('grandparent in the constructor ', parentCollectionConceptId)
     this.parentCollectionConceptId = parentCollectionConceptId
+    console.log('instance objs parent col ', this.parentCollectionConceptId)
   }
 
   /**
@@ -62,6 +63,7 @@ export default class Service extends Concept {
     }
 
     if (this.parentCollectionConceptId) {
+      console.log('umm_json passing the parent collection to source', this.parentCollectionConceptId)
       this.setItemValue(id, 'parentCollectionConceptId', this.parentCollectionConceptId)
     }
   }

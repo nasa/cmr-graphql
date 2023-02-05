@@ -63,7 +63,7 @@ export default class Concept {
         arrayified[this.arrayifiableKeys[pluralKey]] = providedValues
       }
 
-      // Delete the plural key because its not supoorted by CMR
+      // Delete the plural key because its not supported by CMR
       delete arrayified[pluralKey]
     })
 
@@ -94,7 +94,7 @@ export default class Concept {
   }
 
   /**
-   * Set the total number of records avaiable for a given search to the json endpoint
+   * Set the total number of records available for a given search to the json endpoint
    * @param {Integer} itemCount The total number of records available for a given search
    */
   setJsonItemCount(itemCount) {
@@ -102,7 +102,7 @@ export default class Concept {
   }
 
   /**
-   * Set the total number of records avaiable for a given search to the json endpoint
+   * Set the total number of records available for a given search to the json endpoint
    * @param {Integer} itemCount The total number of records available for a given search
    */
   setUmmItemCount(itemCount) {
@@ -126,14 +126,14 @@ export default class Concept {
   }
 
   /**
-   * Set a value in the result set that a query has not requested but is neccessary for other functionality
+   * Set a value in the result set that a query has not requested but is necessary for other functionality
    * @param {String} id Concept ID to set a value for within the result set
    * @param {Object} item The item returned from the CMR json endpoint
    */
   setEssentialJsonValues() {}
 
   /**
-   * Set a value in the result set that a query has not requested but is neccessary for other functionality
+   * Set a value in the result set that a query has not requested but is necessary for other functionality
    * @param {String} id Concept ID to set a value for within the result set
    * @param {Object} item The item returned from the CMR json endpoint
    */
