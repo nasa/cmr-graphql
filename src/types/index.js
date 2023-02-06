@@ -3,6 +3,7 @@ import { mergeTypeDefs } from '@graphql-tools/merge'
 import collection from './collection.graphql'
 import collectionDraft from './collectionDraft.graphql'
 import collectionDraftProposal from './collectionDraftProposal.graphql'
+import dataQualitySummary from './dataQualitySummary.graphql'
 import granule from './granule.graphql'
 import grid from './grid.graphql'
 import json from './json.graphql'
@@ -17,6 +18,7 @@ export default mergeTypeDefs(
     collection,
     collectionDraft,
     collectionDraftProposal,
+    dataQualitySummary,
     granule,
     grid,
     json,

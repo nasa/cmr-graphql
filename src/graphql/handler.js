@@ -10,6 +10,7 @@ import typeDefs from '../types'
 import collectionDraftProposalSource from '../datasources/collectionDraftProposal'
 import collectionDraftSource from '../datasources/collectionDraft'
 import collectionSource from '../datasources/collection'
+import dataQualitySummarySource from '../datasources/dataQualitySummary'
 import granuleSource from '../datasources/granule'
 import graphDbDuplicateCollectionsSource from '../datasources/graphDbDuplicateCollections'
 import graphDbSource from '../datasources/graphDb'
@@ -98,6 +99,7 @@ const server = new ApolloServer({
     collectionDraftProposalSource,
     collectionDraftSource,
     collectionSource,
+    dataQualitySummarySource,
     granuleSource,
     graphDbDuplicateCollectionsSource,
     graphDbSource,

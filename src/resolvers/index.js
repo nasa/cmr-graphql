@@ -10,11 +10,13 @@ import subscriptionResolver from './subscription'
 import toolResolver from './tool'
 import variableResolver from './variable'
 import orderOptionResolver from './orderOption'
+import dataQualitySummaryResolver from './dataQualitySummary'
 
 const resolvers = [
   collectionDraftResolver,
   collectionDraftProposalResolver,
   collectionResolver,
+  dataQualitySummaryResolver,
   granuleResolver,
   gridResolver,
   orderOptionResolver,

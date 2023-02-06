@@ -1,0 +1,49 @@
+type DataQualitySummary {
+  "The list of concepts and any data on the relationship between this DQS and other permitted concepts"
+  associationDetails: JSON
+  "The unique concept id assigned to the DQS."
+  conceptId: String!
+  "The legacy services identifier that was assigned to this DQS"
+  id: String!
+  "The name associated with the quality summary of the data set"
+  name: String!
+  "contains the human readable summary of the quality of the data set"
+  summary: String!
+}
+
+type DataQualitySummaryList {
+  "The number of hits for a given search."
+  count: Int
+  "Cursor that points to the a specific position in a list of requested records."
+  cursor: String
+  "The list of DataQualitySummary search results."
+  items: [DataQualitySummary]
+}
+
+input DataQualitySummariesInput {
+  "The unique concept-id assigned to the DQS."
+  conceptId: [String]
+  "Cursor that points to the a specific position in a list of requested records."
+  cursor: String
+  "The number of variables requested by the user."
+  limit: Int
+}
+
+input DataQualitySummaryInput {
+  "The unique concept id assigned to the DQS."
+  conceptId: String!
+}
+
+type Query {
+  dataQualitySummaries(
+    "DataQualitySummary query parameters"
+    params: DataQualitySummariesInput
+  ): DataQualitySummaryList!
+
+  dataQualitySummary(
+    "DataQualitySummary query parameters"
+    params: DataQualitySummaryInput
+    "The unique concept id assigned to the DataQualitySummary."
+    conceptId: String
+  ): DataQualitySummary
+}
