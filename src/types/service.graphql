@@ -48,7 +48,7 @@ type Service {
   ): CollectionList
 
   orderOptions (
-    "order option's query parameters"
+    "Order option's query parameters"
     params: OrderOptionsInput
   ): OrderOptionList
 }

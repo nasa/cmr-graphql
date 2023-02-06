@@ -46,14 +46,6 @@ export default {
         parentCollectionConceptId
       } = source
 
-      // order-options on the payload are only in the context of the collection to service association
-      if (!parentCollectionConceptId) {
-        return {
-          count: 0,
-          items: null
-        }
-      }
-
       const { collections = [] } = associationDetails
       // If there are no associations to collections for this service
       if (!collections.length) {
@@ -63,15 +55,27 @@ export default {
         }
       }
 
-      const filteredCollections = collections.find(
-        (col) => col.conceptId === parentCollectionConceptId
+      let filteredCollections = collections
+
+      // Order-options on the payload may be in under context of a specific collection to service association if a parent col was provided
+      if (parentCollectionConceptId) {
+        filteredCollections = collections.filter(
+          (assoc) => assoc.conceptId.includes(parentCollectionConceptId)
+        )
+      }
+
+      // Grab the data field for each collection association
+      const associationPayloads = filteredCollections.map(({ data = {} }) => data)
+
+      // Only add the data payloads to the list if they have an orderOption field
+      const filteredPayloads = associationPayloads.filter(
+        (payload) => payload.orderOption
       )
 
-      const { data = {} } = filteredCollections
+      // Pull out all the orderOption concept-ds to pass to the dataSource
+      const orderOptionConceptIds = filteredPayloads.map(({ orderOption }) => orderOption)
 
-      const { orderOption: orderOptionConceptId } = data
-
-      if (!orderOptionConceptId) {
+      if (!orderOptionConceptIds.length) {
         return {
           count: 0,
           items: null
@@ -79,8 +83,8 @@ export default {
       }
 
       return dataSources.orderOptionSource({
-        conceptId: orderOptionConceptId,
-        ...handlePagingParams(args, orderOptionConceptId.length)
+        conceptId: orderOptionConceptIds,
+        ...handlePagingParams(args, orderOptionConceptIds.length)
       }, context, parseResolveInfo(info))
     }
   }

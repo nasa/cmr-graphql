@@ -48,12 +48,12 @@ input OrderOptionInput {
 
 type Query {
   orderOptions(
-    "order option's query parameters"
+    "Order option's query parameters"
     params: OrderOptionsInput
   ): OrderOptionList!
 
   orderOption(
-    "order option's query parameters"
+    "Order option's query parameters"
     params: OrderOptionInput
   ): OrderOption
 }

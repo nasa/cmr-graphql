@@ -584,7 +584,7 @@ describe('Service', () => {
       })
     })
 
-    test('No order options ine the payload', async () => {
+    test('No order options in the payload', async () => {
       nock(/example/)
         .defaultReplyHeaders({
           'CMR-Took': 7,
@@ -860,7 +860,7 @@ describe('Service', () => {
       })
     })
 
-    test('order options from service no collection parent', async () => {
+    test('order options from service no collection parent retrieves all order-options in the collection assoc', async () => {
       nock(/example/)
         .defaultReplyHeaders({
           'CMR-Took': 7,
@@ -869,7 +869,44 @@ describe('Service', () => {
         .post(/services\.json/)
         .reply(200, {
           items: [{
-            concept_id: 'S100000-EDSC'
+            concept_id: 'S100000-EDSC',
+            association_details: {
+              collections: [{
+                data: {
+                  order_option: 'OO100000-EDSC'
+                },
+                concept_id: 'C100000-EDSC'
+              },
+              {
+                data: {
+                  order_option: 'OO100001-EDSC'
+                },
+                concept_id: 'C100001-EDSC'
+              }, {
+                data: {
+                  order_option: 'OO100002-EDSC'
+                },
+                concept_id: 'C100002-EDSC'
+              },
+              {
+                data: {
+                  order_option: 'OO1000003-EDSC'
+                },
+                concept_id: 'C100003-EDSC'
+              }]
+            }
+          }]
+        })
+        .post(/order-options\.json/)
+        .reply(200, {
+          items: [{
+            concept_id: 'OO100000-EDSC'
+          }, {
+            concept_id: 'OO100001-EDSC'
+          }, {
+            concept_id: 'OO100002-EDSC'
+          }, {
+            concept_id: 'OO100003-EDSC'
           }]
         })
       const response = await server.executeOperation({
@@ -887,6 +924,59 @@ describe('Service', () => {
           }
         }`
       })
+      const { data } = response
+      expect(data).toEqual({
+        services: {
+          items: [{
+            conceptId: 'S100000-EDSC',
+            orderOptions: {
+              items: [{
+                conceptId: 'OO100000-EDSC'
+              },
+              {
+                conceptId: 'OO100001-EDSC'
+              },
+              {
+                conceptId: 'OO100002-EDSC'
+              },
+              {
+                conceptId: 'OO100003-EDSC'
+              }]
+            }
+          }]
+        }
+      })
+    })
+
+    test('Default no association details for orderOption query off of services', async () => {
+      nock(/example/)
+        .defaultReplyHeaders({
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .post(/services\.json/)
+        .reply(200, {
+          items: [{
+            concept_id: 'S100000-EDSC'
+          }]
+        })
+
+      const response = await server.executeOperation({
+        variables: {},
+        query: `{
+          services {
+            items {
+              conceptId
+              orderOptions {
+                items {
+                  conceptId
+                }
+              }
+            }
+          }
+        }`
+      })
+
       const { data } = response
       expect(data).toEqual({
         services: {
