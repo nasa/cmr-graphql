@@ -32,6 +32,7 @@ export default class OrderOption extends Concept {
    * @param {Object} providedHeaders Headers requested by the query
    */
   fetchUmm(searchParams, ummKeys, headers) {
+    // TODO: When generics support versioning we need to update this concept
     const ummHeaders = {
       ...headers,
       Accept: 'application/vnd.nasa.cmr.umm_results+json'
