@@ -10,6 +10,7 @@ import service from './service.graphql'
 import subscription from './subscription.graphql'
 import tool from './tool.graphql'
 import variable from './variable.graphql'
+import orderOption from './orderOption.graphql'
 
 export default mergeTypeDefs(
   [
@@ -19,6 +20,7 @@ export default mergeTypeDefs(
     granule,
     grid,
     json,
+    orderOption,
     service,
     subscription,
     tool,

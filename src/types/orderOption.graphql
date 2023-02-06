@@ -1,0 +1,59 @@
+type OrderOption {
+  "The list of concepts and any data on the relationship between this order option and other permitted concepts"
+  associationDetails: JSON
+  "The concept id created by CMR for this orderOption"
+  conceptId: String!
+  "The description for this order option"
+  description: String
+  "The ECHO Forms schema for this order option"
+  form: String
+  "The guid-id for this order option"
+  id: String!
+  "The orderOption name."
+  name: String
+  "The native id to set on the order option."  
+  nativeId: String
+  "The two levels of order options, provider or system"
+  scope: String
+  "The sort key is used to indicate the preferred display order among other definitions"
+  sortKey: String
+}
+
+type OrderOptionList {
+  "The number of hits for a given search."
+  count: Int
+  "Cursor that points to the a specific position in a list of requested records."
+  cursor: String
+  "The list of orderOption search results."
+  items: [OrderOption]
+}
+
+input OrderOptionsInput {
+  "The unique concept-id assigned to the order-option."
+  conceptId: [String]
+  "Cursor that points to the a specific position in a list of requested records."
+  cursor: String
+  "The number of variables requested by the user."
+  limit: Int
+  "The collection's concept-id"
+  collectionConceptId: String
+}
+
+input OrderOptionInput {
+  "The unique concept id assigned to the order-option."
+  conceptId: String!
+  "The collection's concept-id"
+  collectionConceptId: String
+}
+
+type Query {
+  orderOptions(
+    "Order option's query parameters"
+    params: OrderOptionsInput
+  ): OrderOptionList!
+
+  orderOption(
+    "Order option's query parameters"
+    params: OrderOptionInput
+  ): OrderOption
+}

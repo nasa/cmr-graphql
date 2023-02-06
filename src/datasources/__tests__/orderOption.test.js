@@ -1,10 +1,10 @@
 import nock from 'nock'
 
-import gridDatasource from '../grid'
+import orderOptionDatasource from '../orderOption'
 
 let requestInfo
 
-describe('grid', () => {
+describe('Order Option', () => {
   const OLD_ENV = process.env
 
   beforeEach(() => {
@@ -18,17 +18,17 @@ describe('grid', () => {
 
     // Default requestInfo
     requestInfo = {
-      name: 'grids',
-      alias: 'grids',
+      name: 'orderOptions',
+      alias: 'orderOptions',
       args: {},
       fieldsByTypeName: {
-        GridList: {
+        OrderOptionList: {
           items: {
             name: 'items',
             alias: 'items',
             args: {},
             fieldsByTypeName: {
-              Grid: {
+              OrderOption: {
                 conceptId: {
                   name: 'conceptId',
                   alias: 'conceptId',
@@ -51,11 +51,11 @@ describe('grid', () => {
     beforeEach(() => {
     // Overwrite default requestInfo
       requestInfo = {
-        name: 'grids',
-        alias: 'grids',
+        name: 'orderOptions',
+        alias: 'orderOptions',
         args: {},
         fieldsByTypeName: {
-          GridList: {
+          OrderOptionList: {
             cursor: {
               name: 'cursor',
               alias: 'cursor',
@@ -67,16 +67,16 @@ describe('grid', () => {
               alias: 'items',
               args: {},
               fieldsByTypeName: {
-                Grid: {
+                OrderOption: {
                   conceptId: {
                     name: 'conceptId',
                     alias: 'conceptId',
                     args: {},
                     fieldsByTypeName: {}
                   },
-                  longName: {
-                    name: 'longName',
-                    alias: 'longName',
+                  description: {
+                    name: 'description',
+                    alias: 'description',
                     args: {},
                     fieldsByTypeName: {}
                   }
@@ -96,18 +96,18 @@ describe('grid', () => {
           'CMR-Request-Id': 'abcd-1234-efgh-5678',
           'CMR-Search-After': '["xyz", 789, 999]'
         })
-        .post(/grids\.umm_json/)
+        .post(/order-options\.umm_json/)
         .reply(200, {
           items: [{
             meta: {
-              'concept-id': 'GRD100000-EDSC'
+              'concept-id': 'OO100000-EDSC'
             },
             umm: {
-              LongName: 'grid_name'
+              Description: 'Parturient Dolor Cras Aenean Dapibus'
             }
           }]
         })
-      const response = await gridDatasource({}, {
+      const response = await orderOptionDatasource({}, {
         headers: {
           'Client-Id': 'eed-test-graphql',
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -118,8 +118,8 @@ describe('grid', () => {
         count: 84,
         cursor: 'eyJ1bW0iOiJbXCJ4eXpcIiwgNzg5LCA5OTldIn0=',
         items: [{
-          conceptId: 'GRD100000-EDSC',
-          longName: 'grid_name'
+          conceptId: 'OO100000-EDSC',
+          description: 'Parturient Dolor Cras Aenean Dapibus'
         }]
       })
     })
@@ -133,19 +133,19 @@ describe('grid', () => {
             'CMR-Request-Id': 'abcd-1234-efgh-5678',
             'CMR-Search-After': '["xyz", 789, 999]'
           })
-          .post(/grids\.umm_json/)
+          .post(/order-options\.umm_json/)
           .reply(200, {
             items: [{
               meta: {
-                'concept-id': 'GRD100000-EDSC'
+                'concept-id': 'OO100000-EDSC'
               },
               umm: {
-                LongName: 'grid_name'
+                Description: 'Parturient Dolor Cras Aenean Dapibus'
               }
             }]
           })
 
-        const response = await gridDatasource({}, {
+        const response = await orderOptionDatasource({}, {
           headers: {
             'Client-Id': 'eed-test-graphql',
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -156,8 +156,8 @@ describe('grid', () => {
           count: 84,
           cursor: 'eyJ1bW0iOiJbXCJ4eXpcIiwgNzg5LCA5OTldIn0=',
           items: [{
-            conceptId: 'GRD100000-EDSC',
-            longName: 'grid_name'
+            conceptId: 'OO100000-EDSC',
+            description: 'Parturient Dolor Cras Aenean Dapibus'
           }]
         })
       })
@@ -165,21 +165,21 @@ describe('grid', () => {
   })
 
   describe('without params', () => {
-    test('returns the parsed grid results', async () => {
+    test('returns the parsed orderOption results', async () => {
       nock(/example/)
         .defaultReplyHeaders({
           'CMR-Hits': 84,
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/grids\.json/)
+        .post(/order-options\.json/)
         .reply(200, {
           items: [{
-            concept_id: 'GRD100000-EDSC'
+            concept_id: 'OO100000-EDSC'
           }]
         })
 
-      const response = await gridDatasource({}, {
+      const response = await orderOptionDatasource({}, {
         headers: {
           'Client-Id': 'eed-test-graphql',
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -190,30 +190,30 @@ describe('grid', () => {
         count: 84,
         cursor: null,
         items: [{
-          conceptId: 'GRD100000-EDSC'
+          conceptId: 'OO100000-EDSC'
         }]
       })
     })
   })
 
   describe('with params', () => {
-    test('returns the parsed grid results', async () => {
+    test('returns the parsed orderOption results', async () => {
       nock(/example/)
         .defaultReplyHeaders({
           'CMR-Hits': 84,
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/grids\.json/, 'concept_id=GRD100000-EDSC')
+        .post(/order-options\.json/, 'concept_id=OO100000-EDSC')
         .reply(200, {
           items: [{
-            concept_id: 'GRD100000-EDSC'
+            concept_id: 'OO100000-EDSC'
           }]
         })
 
-      const response = await gridDatasource({
+      const response = await orderOptionDatasource({
         params: {
-          concept_id: 'GRD100000-EDSC'
+          concept_id: 'OO100000-EDSC'
         }
       }, {
         headers: {
@@ -226,7 +226,7 @@ describe('grid', () => {
         count: 84,
         cursor: null,
         items: [{
-          conceptId: 'GRD100000-EDSC'
+          conceptId: 'OO100000-EDSC'
         }]
       })
     })
@@ -236,20 +236,20 @@ describe('grid', () => {
     beforeEach(() => {
       // Overwrite default requestInfo
       requestInfo = {
-        name: 'grids',
-        alias: 'grids',
+        name: 'orderOptions',
+        alias: 'orderOptions',
         args: {},
         fieldsByTypeName: {
-          GridList: {
+          OrderOptionList: {
             items: {
               name: 'items',
               alias: 'items',
               args: {},
               fieldsByTypeName: {
-                Grid: {
-                  version: {
-                    name: 'version',
-                    alias: 'version',
+                OrderOption: {
+                  description: {
+                    name: 'description',
+                    alias: 'description',
                     args: {},
                     fieldsByTypeName: {}
                   }
@@ -261,28 +261,28 @@ describe('grid', () => {
       }
     })
 
-    test('returns the parsed grid results', async () => {
+    test('returns the parsed orderOption results', async () => {
       nock(/example/)
         .defaultReplyHeaders({
           'CMR-Hits': 84,
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/grids\.umm_json/)
+        .post(/order-options\.umm_json/)
         .reply(200, {
           items: [{
             meta: {
-              'concept-id': 'GRD100000-EDSC'
+              'concept-id': 'OO100000-EDSC'
             },
             umm: {
-              Version: 'v1.0'
+              Description: 'Parturient Dolor Cras Aenean Dapibus'
             }
           }]
         })
 
-      const response = await gridDatasource({
+      const response = await orderOptionDatasource({
         params: {
-          concept_id: 'GRD100000-EDSC'
+          concept_id: 'OO100000-EDSC'
         }
       }, {
         headers: {
@@ -295,7 +295,7 @@ describe('grid', () => {
         count: 84,
         cursor: null,
         items: [{
-          version: 'v1.0'
+          description: 'Parturient Dolor Cras Aenean Dapibus'
         }]
       })
     })
@@ -303,7 +303,7 @@ describe('grid', () => {
 
   test('Catches errors received from queryCmr', async () => {
     nock(/example/)
-      .post(/grids/)
+      .post(/order-options/)
       .reply(500, {
         errors: ['HTTP Error']
       }, {
@@ -311,9 +311,9 @@ describe('grid', () => {
       })
 
     await expect(
-      gridDatasource({
+      orderOptionDatasource({
         params: {
-          conceptId: 'GRD100000-EDSC'
+          conceptId: 'OO100000-EDSC'
         }
       }, {
         headers: {

@@ -21,6 +21,7 @@ export default class Collection extends Concept {
    * @param {String} id Concept ID to set a value for within the result set
    * @param {Object} item The item returned from the CMR json endpoint
    */
+  // TODO: Since all concepts now support associations we should refactor this on the parent class
   setEssentialJsonValues(id, item) {
     super.setEssentialJsonValues(id, item)
 

@@ -17,6 +17,7 @@ import gridSource from '../datasources/grid'
 import serviceSource from '../datasources/service'
 import toolSource from '../datasources/tool'
 import variableSource from '../datasources/variable'
+import orderOptionSource from '../datasources/orderOption'
 
 import {
   deleteSubscription as subscriptionSourceDelete,
@@ -100,6 +101,7 @@ const server = new ApolloServer({
     granuleSource,
     graphDbDuplicateCollectionsSource,
     graphDbSource,
+    orderOptionSource,
     serviceSource,
     subscriptionSourceDelete,
     subscriptionSourceFetch,

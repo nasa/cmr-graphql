@@ -6,6 +6,7 @@ export const CONCEPT_TYPES = [
   'duplicateCollections',
   'granules',
   'grids',
+  'orderOptions',
   'relatedCollections',
   'services',
   'subscriptions',
