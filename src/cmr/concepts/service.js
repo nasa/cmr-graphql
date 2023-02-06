@@ -30,7 +30,7 @@ export default class Service extends Concept {
     if (associationDetails) {
       this.setItemValue(id, 'associationDetails', formattedAssociationDetails)
     }
-    // add the parent collection concept-id and pass it to the child queries from this service
+    // Add the parent collection concept-id and pass it to the child queries from this service
     if (this.parentCollectionConceptId) {
       this.setItemValue(id, 'parentCollectionConceptId', this.parentCollectionConceptId)
     }
@@ -54,7 +54,7 @@ export default class Service extends Concept {
       this.setItemValue(id, 'associationDetails', formattedAssociationDetails)
     }
 
-    // add the parent collection concept-id and pass it to the child queries from this service
+    // Add the parent collection concept-id and pass it to the child queries from this service
     if (this.parentCollectionConceptId) {
       this.setItemValue(id, 'parentCollectionConceptId', this.parentCollectionConceptId)
     }

@@ -63,8 +63,9 @@ export default {
         }
       }
 
-      // eslint-disable-next-line max-len
-      const filteredCollections = collections.find((col) => col.conceptId === parentCollectionConceptId)
+      const filteredCollections = collections.find(
+        (col) => col.conceptId === parentCollectionConceptId
+      )
 
       const { data = {} } = filteredCollections
 

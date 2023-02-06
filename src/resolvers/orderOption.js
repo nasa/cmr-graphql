@@ -6,8 +6,11 @@ export default {
     orderOptions: async (source, args, context, info) => {
       const { dataSources } = context
 
-      // eslint-disable-next-line max-len
-      return dataSources.orderOptionSource(handlePagingParams(args), context, parseResolveInfo(info))
+      return dataSources.orderOptionSource(
+        handlePagingParams(args),
+        context,
+        parseResolveInfo(info)
+      )
     },
     orderOption: async (source, args, context, info) => {
       const { dataSources } = context

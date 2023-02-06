@@ -90,8 +90,6 @@ export default {
         conceptId: collectionConceptId
       } = source
 
-      // Pass the collection's concept-id to child queries over associated services
-
       const { dataSources } = context
 
       const { services = [] } = associationDetails
@@ -104,10 +102,16 @@ export default {
           items: null
         }
       }
-      return dataSources.serviceSource({
-        conceptId: serviceConceptIds,
-        ...handlePagingParams(args, services.length)
-      }, context, parseResolveInfo(info), collectionConceptId)
+      return dataSources.serviceSource(
+        {
+          conceptId: serviceConceptIds,
+          ...handlePagingParams(args, services.length)
+        },
+        context,
+        parseResolveInfo(info),
+        // Pass the collection's concept-id to child queries over associated services
+        collectionConceptId
+      )
     },
     subscriptions: async (source, args, context, info) => {
       // Pull out parent collection id

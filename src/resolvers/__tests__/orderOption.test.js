@@ -89,7 +89,6 @@ describe('OrderOption', () => {
       })
 
       const { data } = response
-      console.log('mock response', response)
 
       expect(data).toEqual({
         orderOptions: {
