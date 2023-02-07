@@ -262,6 +262,12 @@ type Collection {
     "The name of a variable."
     name: String @deprecated(reason: "Use `params.name`")
   ): VariableList
+
+
+  dataQualitySummaries (
+    "dataQualitySummary query parameters"
+    params: DataQualitySummariesInput
+  ): DataQualitySummaryList
 }
 
 type DuplicateCollection {

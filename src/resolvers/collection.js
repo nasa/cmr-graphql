@@ -79,6 +79,29 @@ export default {
 
       return dataSources.graphDbSource(source, args, context, parseResolveInfo(info))
     },
+    dataQualitySummaries: async (source, args, context, info) => {
+      const {
+        associationDetails = {}
+      } = source
+
+      const { dataSources } = context
+
+      const { dataQualitySummaries = [] } = associationDetails
+
+      const dataQualitySummaryConceptIds = dataQualitySummaries.map(({ conceptId }) => conceptId)
+
+      if (!dataQualitySummaryConceptIds.length) {
+        return {
+          count: 0,
+          items: null
+        }
+      }
+
+      return dataSources.dataQualitySummarySource({
+        conceptId: dataQualitySummaryConceptIds,
+        ...handlePagingParams(args, dataQualitySummaryConceptIds.length)
+      }, context, parseResolveInfo(info))
+    },
     duplicateCollections: async (source, args, context) => {
       const { dataSources } = context
 
