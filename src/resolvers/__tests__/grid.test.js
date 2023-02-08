@@ -71,7 +71,7 @@ describe('Grid', () => {
         })
 
       const response = await server.executeOperation({
-        grids: {},
+        variables: {},
         query: `{
           grids {
             count
@@ -147,7 +147,7 @@ describe('Grid', () => {
         })
 
       const response = await server.executeOperation({
-        grids: {},
+        variables: {},
         query: `{
           grids{
             items {
@@ -187,7 +187,7 @@ describe('Grid', () => {
             })
 
           const response = await server.executeOperation({
-            grids: {},
+            variables: {},
             query: `{
               grid(conceptId: "GRD100000-EDSC") {
                 conceptId
@@ -218,7 +218,7 @@ describe('Grid', () => {
             })
 
           const response = await server.executeOperation({
-            grids: {},
+            variables: {},
             query: `{
               grid(conceptId: "GRD100000-EDSC") {
                 conceptId
