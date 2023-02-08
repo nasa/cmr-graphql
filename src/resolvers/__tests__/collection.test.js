@@ -1638,7 +1638,6 @@ describe('Collection', () => {
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
             })
             .post(/collections\.json/)
-            // How is this working??
             .reply(200, {
               feed: {
                 entry: [{
@@ -1654,12 +1653,6 @@ describe('Collection', () => {
                 }]
               }
             })
-            // TODO: This shouldn't need this extra nock declare
-          // nock(/example-cmr/)
-          //   .defaultReplyHeaders({
-          //     'CMR-Took': 7,
-          //     'CMR-Request-Id': 'abcd-1234-efgh-5678'
-          //   })
             .post(/data-quality-summaries\.json/, 'concept_id[]=DQS100000-EDSC&concept_id[]=DQS100001-EDSC&page_size=2')
             .reply(200, {
               items: [{
@@ -1693,11 +1686,7 @@ describe('Collection', () => {
               }
             }`
           })
-          // data-quality-summary is returning null as if there are none
           const { data } = response
-          // TODO: remove me
-          console.log(JSON.stringify(data))
-
           expect(data).toEqual({
             collections: {
               items: [{

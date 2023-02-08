@@ -4,7 +4,7 @@ import dataQualitySummarySource from '../dataQualitySummary'
 
 let requestInfo
 
-describe('tool', () => {
+describe('dataQualitySummary', () => {
   const OLD_ENV = process.env
 
   beforeEach(() => {
@@ -51,8 +51,8 @@ describe('tool', () => {
     beforeEach(() => {
       // Overwrite default requestInfo
       requestInfo = {
-        name: 'tools',
-        alias: 'tools',
+        name: 'dataQualitySummaries',
+        alias: 'dataQualitySummaries',
         args: {},
         fieldsByTypeName: {
           DataQualitySummaryList: {
@@ -214,9 +214,7 @@ describe('tool', () => {
 
       const response = await dataQualitySummarySource({
         params: {
-            // TODO: No use the new way to do this after they are passing
-            // TODO: is this conceptId or concept_id
-          conceptId: 'DQS100000-EDSC'
+          concept_id: 'DQS100000-EDSC'
         }
       }, {
         headers: {
@@ -250,23 +248,12 @@ describe('tool', () => {
               args: {},
               fieldsByTypeName: {
                 DataQualitySummary: {
-                // TODO is this supposed to be type??
-                // This should be something else this is off right now and in a few other
-                // tests as well
-                  something: {
+                  summary: {
                     name: 'summary',
                     alias: 'summary',
                     args: {},
                     fieldsByTypeName: {}
                   }
-                //   ,
-                  // TODO does this actually do anything??? Yes but, why does it make us use .json responses
-                //   dataQualitySummaryKeywords: {
-                //     name: 'dataQualitySummaryKeywords',
-                //     alias: 'dataQualitySummaryKeywords',
-                //     args: {},
-                //     fieldsByTypeName: {}
-                //   }
                 }
               }
             }
@@ -295,7 +282,6 @@ describe('tool', () => {
         })
 
       const response = await dataQualitySummarySource({
-        // TOOD: use the new search params
         params: {
           concept_id: 'DQS100000-EDSC'
         }
@@ -316,7 +302,7 @@ describe('tool', () => {
     })
   })
 
-  test('catches errors received from querying Cmr for dataQualitySummaries', async () => {
+  test('catches errors received from querying CMR for dataQualitySummaries', async () => {
     nock(/example/)
       .post(/data-quality-summaries/)
       .reply(500, {
