@@ -84,7 +84,6 @@ describe('Subscription', () => {
         })
 
       const response = await server.executeOperation({
-        // TODO: Does this need to be fixed to use variables?
         variables: {},
         query: `{
           subscriptions {

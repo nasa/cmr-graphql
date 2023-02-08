@@ -198,7 +198,6 @@ describe('OrderOption', () => {
             .reply(200, {
               items: []
             })
-            // TODO: switch this to using the params
           const response = await server.executeOperation({
             variables: {},
             query: `{
