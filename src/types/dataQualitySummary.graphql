@@ -16,7 +16,7 @@ type DataQualitySummary {
 type DataQualitySummaryList {
   "The number of hits for a given search."
   count: Int
-  "Cursor that points to the a specific position in a list of requested records."
+  "Cursor that points to the/a specific position in a list of requested records."
   cursor: String
   "The list of DataQualitySummary search results."
   items: [DataQualitySummary]
@@ -25,7 +25,7 @@ type DataQualitySummaryList {
 input DataQualitySummariesInput {
   "The unique concept-id assigned to the DQS."
   conceptId: [String]
-  "Cursor that points to the a specific position in a list of requested records."
+  "Cursor that points to the/a specific position in a list of requested records."
   cursor: String
   "The number of data-quality-summaries requested by the user."
   limit: Int

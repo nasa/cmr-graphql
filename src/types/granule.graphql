@@ -66,7 +66,7 @@ type Granule {
 type GranuleList {
   "The number of hits for a given search."
   count: Int
-  "Cursor that points to the a specific position in a list of requested records."
+  "Cursor that points to the/a specific position in a list of requested records."
   cursor: String
   "The list of granule search results."
   items: [Granule]
@@ -87,7 +87,7 @@ input GranulesInput {
   collectionConceptIds: [String]
   "The unique concept id assigned to the granule."
   conceptId: [String]
-  "Cursor that points to the a specific position in a list of requested records."
+  "Cursor that points to the/a specific position in a list of requested records."
   cursor: String
   "Search by cycle which is part of the track information of a granule."
   cycle: Int

@@ -22,7 +22,7 @@ type OrderOption {
 type OrderOptionList {
   "The number of hits for a given search."
   count: Int
-  "Cursor that points to the a specific position in a list of requested records."
+  "Cursor that points to the/a specific position in a list of requested records."
   cursor: String
   "The list of orderOption search results."
   items: [OrderOption]
@@ -31,7 +31,7 @@ type OrderOptionList {
 input OrderOptionsInput {
   "The unique concept-id assigned to the order-option."
   conceptId: [String]
-  "Cursor that points to the a specific position in a list of requested records."
+  "Cursor that points to the/a specific position in a list of requested records."
   cursor: String
   "The number of variables requested by the user."
   limit: Int

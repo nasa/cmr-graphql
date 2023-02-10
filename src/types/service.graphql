@@ -65,7 +65,7 @@ type ServiceList {
 input ServicesInput {
   "The unique concept id assigned to the service."
   conceptId: [String]
-  "Cursor that points to the a specific position in a list of requested records."
+  "Cursor that points to the/a specific position in a list of requested records."
   cursor: String
   "The number of services requested by the user."
   limit: Int

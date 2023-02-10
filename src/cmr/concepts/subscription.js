@@ -72,8 +72,8 @@ export default class Subscription extends Concept {
   /**
    * Query the CMR UMM API endpoint to retrieve requested data
    * @param {Object} searchParams Parameters provided by the query
-   * @param {Array} requestedKeys Keys requested by the query
-   * @param {Object} providedHeaders Headers requested by the query
+   * @param {Array} ummKeys Keys requested by the query
+   * @param {Object} headers Headers requested by the query
    */
   fetchUmm(searchParams, ummKeys, headers) {
     const ummHeaders = {

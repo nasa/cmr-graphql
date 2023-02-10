@@ -36,7 +36,7 @@ type Grid {
 type GridList {
   "The number of hits for a given search."
   count: Int
-  "Cursor that points to the a specific position in a list of requested records."
+  "Cursor that points to the/a specific position in a list of requested records."
   cursor: String
   "The list of grid search results."
   items: [Grid]
@@ -45,7 +45,7 @@ type GridList {
 input GridsInput {
   "The unique concept id assigned to the grid."
   conceptId: [String]
-  "Cursor that points to the a specific position in a list of requested records."
+  "Cursor that points to the/a specific position in a list of requested records."
   cursor: String
   "The number of grids requested by the user."
   limit: Int
