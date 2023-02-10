@@ -1518,7 +1518,7 @@ describe('Collection', () => {
 
     describe('data-quality-summaries', () => {
       describe('no associations are present in the metadata', () => {
-        test('doesn\'t query for or return variables', async () => {
+        test('doesn\'t query for or return data-quality-summaries', async () => {
           nock(/example-cmr/)
             .defaultReplyHeaders({
               'CMR-Took': 7,

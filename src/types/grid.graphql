@@ -49,6 +49,8 @@ input GridsInput {
   cursor: String
   "The number of grids requested by the user."
   limit: Int
+  "Zero based offset of individual results."
+  offset: Int
 }
 
 input GridInput {

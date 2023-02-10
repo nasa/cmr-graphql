@@ -27,8 +27,10 @@ input DataQualitySummariesInput {
   conceptId: [String]
   "Cursor that points to the a specific position in a list of requested records."
   cursor: String
-  "The number of variables requested by the user."
+  "The number of data-quality-summaries requested by the user."
   limit: Int
+  "Zero based offset of individual results."
+  offset: Int
 }
 
 input DataQualitySummaryInput {

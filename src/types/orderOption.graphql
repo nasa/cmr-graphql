@@ -35,15 +35,13 @@ input OrderOptionsInput {
   cursor: String
   "The number of variables requested by the user."
   limit: Int
-  "The collection's concept-id"
-  collectionConceptId: String
+  "Zero based offset of individual results."
+  offset: Int
 }
 
 input OrderOptionInput {
   "The unique concept id assigned to the order-option."
   conceptId: String!
-  "The collection's concept-id"
-  collectionConceptId: String
 }
 
 type Query {
