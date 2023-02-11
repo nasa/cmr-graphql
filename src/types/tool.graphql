@@ -71,7 +71,7 @@ type Tool {
 type ToolList {
   "The number of hits for a given search."
   count: Int
-  "Cursor that points to the a specific position in a list of requested records."
+  "Cursor that points to the/a specific position in a list of requested records."
   cursor: String
   "The list of service search results."
   items: [Tool]
@@ -80,7 +80,7 @@ type ToolList {
 input ToolsInput {
   "The unique concept id assigned to the tool."
   conceptId: [String]
-  "Cursor that points to the a specific position in a list of requested records."
+  "Cursor that points to the/a specific position in a list of requested records."
   cursor: String
   "The number of tools requested by the user."
   limit: Int

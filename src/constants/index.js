@@ -4,6 +4,7 @@
 export const CONCEPT_TYPES = [
   'collections',
   'duplicateCollections',
+  'dataQualitySummaries',
   'granules',
   'grids',
   'orderOptions',

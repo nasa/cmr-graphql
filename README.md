@@ -566,6 +566,46 @@ variables:
   }
 }
 
+#### Data-Quality-Summaries
+
+For all supported arguments and columns, see [the schema](src/types/dataQualitySummary.graphql).
+
+##### Example Queries
+
+###### Single
+
+query ($params: DataQualitySummaryInput) {
+  dataQualitySummary(params: $params) {
+    associationDetails
+    conceptId
+    id
+    name
+    nativeId
+    summary
+  }
+}
+
+variables:
+{
+  "params": {
+    "conceptId": "DQS1000000001-EXAMPLE"
+  }
+}
+
+###### Multiple
+
+{
+  dataQualitySummaries {
+    items {
+      conceptId
+      associationDetails
+      name
+      summary
+      id 
+    }
+  }
+}
+
 #### Related Collections
 
 For all supported arguments and columns, see [the schema](src/types/collection.graphql).

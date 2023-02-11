@@ -69,7 +69,7 @@ describe('OrderOption', () => {
         })
 
       const response = await server.executeOperation({
-        orderOptions: {},
+        variables: {},
         query: `{
             orderOptions {
                 count
@@ -130,7 +130,7 @@ describe('OrderOption', () => {
         })
 
       const response = await server.executeOperation({
-        orderOptions: {},
+        variables: {},
         query: `{
             orderOptions{
               items {
@@ -169,7 +169,7 @@ describe('OrderOption', () => {
               }]
             })
           const response = await server.executeOperation({
-            orderOption: {},
+            variables: {},
             query: `{
                 orderOption(params: { conceptId: "OO100000-EDSC" }) {
                   conceptId
@@ -198,9 +198,8 @@ describe('OrderOption', () => {
             .reply(200, {
               items: []
             })
-
           const response = await server.executeOperation({
-            orderOption: {},
+            variables: {},
             query: `{
                 orderOption(params: { conceptId: "OO100000-EDSC" }) {
                   conceptId

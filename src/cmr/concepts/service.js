@@ -8,6 +8,7 @@ export default class Service extends Concept {
    * @param {Object} headers HTTP headers provided by the query
    * @param {Object} requestInfo Parsed data pertaining to the Graph query
    * @param {Object} params GraphQL query parameters
+   * @param {String} parentCollectionConceptId Optional collection-id passed for some child queries of search
    */
   constructor(headers, requestInfo, params, parentCollectionConceptId) {
     super('services', headers, requestInfo, params)
@@ -95,8 +96,8 @@ export default class Service extends Concept {
   /**
    * Query the CMR UMM API endpoint to retrieve requested data
    * @param {Object} searchParams Parameters provided by the query
-   * @param {Array} requestedKeys Keys requested by the query
-   * @param {Object} providedHeaders Headers requested by the query
+   * @param {Array} ummKeys Keys requested by the query
+   * @param {Object} headers Headers requested by the query
    */
   fetchUmm(searchParams, ummKeys, headers) {
     const ummHeaders = {

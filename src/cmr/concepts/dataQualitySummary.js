@@ -1,14 +1,16 @@
 import Concept from './concept'
 
-export default class Variable extends Concept {
+export default class DataQualitySummary extends Concept {
   /**
-   * Instantiates a Variable object
+   * Instantiates a DataQualitySummary object
    * @param {Object} headers HTTP headers provided by the query
    * @param {Object} requestInfo Parsed data pertaining to the Graph query
    * @param {Object} params GraphQL query parameters
    */
   constructor(headers, requestInfo, params) {
-    super('variables', headers, requestInfo, params)
+    // This concept uses the "-" character to delineate spaces in CMR we must pass it
+    // in this form to fetch data=quality-summary concepts from CMR
+    super('data-quality-summaries', headers, requestInfo, params)
   }
 
   /**
@@ -27,14 +29,15 @@ export default class Variable extends Concept {
    * Query the CMR UMM API endpoint to retrieve requested data
    * @param {Object} searchParams Parameters provided by the query
    * @param {Array} ummKeys Keys requested by the query
-   * @param {Object} headers Headers requested by the query
+   * @param {Object} ummKeys Headers requested by the query
    */
   fetchUmm(searchParams, ummKeys, headers) {
+    // TODO: When generics support versioning we need to update this concept
     const ummHeaders = {
       ...headers,
-      Accept: `application/vnd.nasa.cmr.umm_results+json; version=${process.env.ummVariableVersion}`
+      Accept: 'application/vnd.nasa.cmr.umm_results+json'
     }
-
-    return super.fetchUmm(searchParams, ummKeys, ummHeaders)
+    const ummResponse = super.fetchUmm(searchParams, ummKeys, ummHeaders)
+    return ummResponse
   }
 }

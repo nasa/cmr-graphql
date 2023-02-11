@@ -84,7 +84,7 @@ describe('Subscription', () => {
         })
 
       const response = await server.executeOperation({
-        subscriptions: {},
+        variables: {},
         query: `{
           subscriptions {
             count
@@ -145,7 +145,7 @@ describe('Subscription', () => {
         })
 
       const response = await server.executeOperation({
-        subscriptions: {},
+        variables: {},
         query: `{
           subscriptions(params: { limit:2 }) {
             items {
@@ -184,7 +184,7 @@ describe('Subscription', () => {
             })
 
           const response = await server.executeOperation({
-            subscriptions: {},
+            variables: {},
             query: `{
               subscription(params: { conceptId: "SUB100000-EDSC" }) {
                 conceptId
@@ -215,7 +215,7 @@ describe('Subscription', () => {
             })
 
           const response = await server.executeOperation({
-            subscriptions: {},
+            variables: {},
             query: `{
               subscription(params: { conceptId: "SUB100000-EDSC" }) {
                 conceptId

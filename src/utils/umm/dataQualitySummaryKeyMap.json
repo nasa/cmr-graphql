@@ -1,0 +1,17 @@
+{
+    "sharedKeys": [
+      "conceptId",
+      "id",
+      "name",
+      "nativeId"
+    ],
+    "ummKeyMappings": {
+      "associationDetails": "meta.association-details",
+      "conceptId": "meta.concept-id",
+      "form": "umm.Form",
+      "id": "umm.Id",
+      "name": "umm.Name",
+      "nativeId": "meta.native-id",
+      "summary": "umm.Summary"
+    }
+  }

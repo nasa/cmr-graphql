@@ -56,7 +56,7 @@ type VariableList {
 input VariablesInput {
   "The unique concept id assigned to the variable."
   conceptId: [String]
-  "Cursor that points to the a specific position in a list of requested records."
+  "Cursor that points to the/a specific position in a list of requested records."
   cursor: String
   "The number of variables requested by the user."
   limit: Int

@@ -6,6 +6,7 @@ import resolvers from '..'
 import typeDefs from '../../types'
 
 import collectionSource from '../../datasources/collection'
+import dataQualitySummarySource from '../../datasources/dataQualitySummary'
 import granuleSource from '../../datasources/granule'
 import graphDbSource from '../../datasources/graphDb'
 import graphDbDuplicateCollectionsSource from '../../datasources/graphDbDuplicateCollections'
@@ -34,6 +35,7 @@ const server = new ApolloServer({
   }),
   dataSources: () => ({
     collectionSource,
+    dataQualitySummarySource,
     granuleSource,
     graphDbDuplicateCollectionsSource,
     graphDbSource,
@@ -1505,6 +1507,205 @@ describe('Collection', () => {
                     conceptId: 'V100002-EDSC'
                   }, {
                     conceptId: 'V100003-EDSC'
+                  }]
+                }
+              }]
+            }
+          })
+        })
+      })
+    })
+
+    describe('data-quality-summaries', () => {
+      describe('no associations are present in the metadata', () => {
+        test('doesn\'t query for or return data-quality-summaries', async () => {
+          nock(/example-cmr/)
+            .defaultReplyHeaders({
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .post(/collections\.json/)
+            .reply(200, {
+              feed: {
+                entry: [{
+                  id: 'C100000-EDSC'
+                }, {
+                  id: 'C100001-EDSC'
+                }]
+              }
+            })
+          const response = await server.executeOperation({
+            variables: {},
+            query: `{
+              collections {
+                items {
+                  conceptId
+                  dataQualitySummaries {
+                    items {
+                      conceptId
+                    }
+                  }
+                }
+              }
+            }`
+          })
+
+          const { data } = response
+
+          expect(data).toEqual({
+            collections: {
+              items: [{
+                conceptId: 'C100000-EDSC',
+                dataQualitySummaries: {
+                  items: null
+                }
+              }, {
+                conceptId: 'C100001-EDSC',
+                dataQualitySummaries: {
+                  items: null
+                }
+              }]
+            }
+          })
+        })
+      })
+
+      describe('associations are present in the metadata but not data-quality-summary summary associations', () => {
+        test('doesn\'t query for or return data-quality-summaries', async () => {
+          nock(/example-cmr/)
+            .defaultReplyHeaders({
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .post(/collections\.json/)
+            .reply(200, {
+              feed: {
+                entry: [{
+                  id: 'C100000-EDSC',
+                  association_details: {
+                    services: [{ concept_id: 'S100000-EDSC' }]
+                  }
+                }, {
+                  id: 'C100001-EDSC',
+                  association_details: {
+                    services: [{ concept_id: 'S100000-EDSC' }]
+                  }
+                }]
+              }
+            })
+
+          const response = await server.executeOperation({
+            variables: {},
+            query: `{
+              collections {
+                items {
+                  conceptId
+                  dataQualitySummaries {
+                    items {
+                      conceptId
+                    }
+                  }
+                }
+              }
+            }`
+          })
+
+          const { data } = response
+
+          expect(data).toEqual({
+            collections: {
+              items: [{
+                conceptId: 'C100000-EDSC',
+                dataQualitySummaries: {
+                  items: null
+                }
+              }, {
+                conceptId: 'C100001-EDSC',
+                dataQualitySummaries: {
+                  items: null
+                }
+              }]
+            }
+          })
+        })
+      })
+
+      describe('when data-quality-summary associations are present in the metadata', () => {
+        test('queries for and returns data-quality-summaries', async () => {
+          nock(/example-cmr/)
+            .defaultReplyHeaders({
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .post(/collections\.json/)
+            .reply(200, {
+              feed: {
+                entry: [{
+                  id: 'C100000-EDSC',
+                  association_details: {
+                    dataQualitySummaries: [{ concept_id: 'DQS100000-EDSC' }, { concept_id: 'DQS100001-EDSC' }]
+                  }
+                }, {
+                  id: 'C100001-EDSC',
+                  association_details: {
+                    dataQualitySummaries: [{ concept_id: 'DQS100002-EDSC' }, { concept_id: 'DQS100003-EDSC' }]
+                  }
+                }]
+              }
+            })
+            .post(/data-quality-summaries\.json/, 'concept_id[]=DQS100000-EDSC&concept_id[]=DQS100001-EDSC&page_size=2')
+            .reply(200, {
+              items: [{
+                concept_id: 'DQS100000-EDSC'
+              }, {
+                concept_id: 'DQS100001-EDSC'
+              }]
+            })
+            // Second call is needed for the other collection's DQS call
+            .post(/data-quality-summaries\.json/, 'concept_id[]=DQS100002-EDSC&concept_id[]=DQS100003-EDSC&page_size=2')
+            .reply(200, {
+              items: [{
+                concept_id: 'DQS100002-EDSC'
+              }, {
+                concept_id: 'DQS100003-EDSC'
+              }]
+            })
+
+          const response = await server.executeOperation({
+            variables: {},
+            query: `{
+              collections {
+                items {
+                  conceptId
+                  dataQualitySummaries {
+                    items {
+                      conceptId
+                    }
+                  }
+                }
+              }
+            }`
+          })
+          const { data } = response
+          expect(data).toEqual({
+            collections: {
+              items: [{
+                conceptId: 'C100000-EDSC',
+                dataQualitySummaries: {
+                  items: [{
+                    conceptId: 'DQS100000-EDSC'
+                  }, {
+                    conceptId: 'DQS100001-EDSC'
+                  }]
+                }
+              },
+              {
+                conceptId: 'C100001-EDSC',
+                dataQualitySummaries: {
+                  items: [{
+                    conceptId: 'DQS100002-EDSC'
+                  }, {
+                    conceptId: 'DQS100003-EDSC'
                   }]
                 }
               }]

@@ -26,8 +26,8 @@ export default class Grid extends Concept {
   /**
    * Query the CMR UMM API endpoint to retrieve requested data
    * @param {Object} searchParams Parameters provided by the query
-   * @param {Array} requestedKeys Keys requested by the query
-   * @param {Object} providedHeaders Headers requested by the query
+   * @param {Array} ummKeys Keys requested by the query
+   * @param {Object} headers Headers requested by the query
    */
   fetchUmm(searchParams, ummKeys, headers) {
     // TODO: When generics support versioning we need to update this concept
