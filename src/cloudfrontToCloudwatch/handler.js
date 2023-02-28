@@ -3,14 +3,12 @@ import zlib from 'zlib'
 
 import 'array-foreach-async'
 
-import AWS from 'aws-sdk'
-
-import { parseError } from '../utils/parseError'
+import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3'
 
 // Promisify node method
 const gunzip = util.promisify(zlib.gunzip)
 
-let s3
+let s3Client
 
 /**
  * Process provided Cloudwatch logs triggered by S3
@@ -23,7 +21,9 @@ const cloudfrontToCloudwatch = async (event) => {
 
   console.log(`Processing ${s3Records.length} files(s)`)
 
-  s3 = new AWS.S3()
+  if (s3Client == null) {
+    s3Client = new S3Client()
+  }
 
   await s3Records.forEachAsync(async (record) => {
     const { s3: s3Record } = record
@@ -33,11 +33,14 @@ const cloudfrontToCloudwatch = async (event) => {
     const { key: objectKey } = object
 
     try {
-      // Fetch the object from S3
-      const s3Object = await s3.getObject({
+      // Construct the command to fetch the object from S3
+      const s3ObjectCommand = new GetObjectCommand({
         Bucket: bucketName,
         Key: objectKey
-      }).promise()
+      })
+
+      // Send the command
+      const s3Object = await s3Client.send(s3ObjectCommand)
 
       // Extract the body of the object
       const { Body: s3ObjectBody } = s3Object
@@ -58,7 +61,7 @@ const cloudfrontToCloudwatch = async (event) => {
         }
       })
     } catch (e) {
-      parseError(e)
+      console.log(e)
     }
   })
 }

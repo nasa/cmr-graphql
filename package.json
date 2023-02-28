@@ -34,6 +34,7 @@
     "lint": "eslint src"
   },
   "devDependencies": {
+    "aws-sdk-client-mock": "^2.0.1",
     "jest": "^27.5.1",
     "jest-junit": "^15.0.0",
     "jest-transform-graphql": "^2.1.0",
@@ -41,6 +42,7 @@
     "snyk": "^1.1109.0"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.279.0",
     "@babel/core": "^7.21.0",
     "@babel/eslint-parser": "^7.19.1",
     "@babel/preset-env": "^7.20.2",
@@ -49,7 +51,6 @@
     "apollo-server-core": "^3.11.1",
     "apollo-server-lambda": "^3.11.1",
     "array-foreach-async": "^1.0.1",
-    "aws-sdk": "^2.1324.0",
     "axios": "^0.21.4",
     "babel-loader": "^8.3.0",
     "camelcase-keys": "^7.0.2",
