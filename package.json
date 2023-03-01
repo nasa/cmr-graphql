@@ -31,7 +31,7 @@
     "test:watch": "jest --watchAll",
     "silent-test": "jest --silent",
     "test:bamboo": "jest --ci --reporters=default --reporters=jest-junit",
-    "lint": "eslint src"
+    "lint": "eslint ."
   },
   "devDependencies": {
     "aws-sdk-client-mock": "^2.0.1",

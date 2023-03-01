@@ -8,6 +8,7 @@
   "parserOptions": {
     "ecmaVersion": 6
   },
+  "ignorePatterns": ["dist"],
   "rules": {
     // Setting a max line-length
     "max-len": [1, 100, 2, {
