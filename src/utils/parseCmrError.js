@@ -1,4 +1,4 @@
-import { ApolloError, AuthenticationError } from 'apollo-server-lambda'
+import { GraphQLError } from 'graphql'
 
 import { downcaseKeys } from './downcaseKeys'
 
@@ -32,12 +32,20 @@ export const parseCmrError = (error, reThrow = true) => {
     const [firstMessage] = errors
 
     if (status === 401) {
-      throw new AuthenticationError(firstMessage)
+      throw new GraphQLError(firstMessage, {
+        extensions: {
+          code: 'UNAUTHENTICATED'
+        }
+      })
     }
 
     // If not one of Apollo's predefined errors throw our own
     // https://www.apollographql.com/docs/apollo-server/data/errors/
-    throw new ApolloError(firstMessage, 'CMR_ERROR')
+    throw new GraphQLError(firstMessage, {
+      extensions: {
+        code: 'CMR_ERROR'
+      }
+    })
   }
 
   return data

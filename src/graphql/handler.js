@@ -1,5 +1,8 @@
-import { ApolloServer } from 'apollo-server-lambda'
-import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core'
+import { ApolloServer } from '@apollo/server'
+import {
+  ApolloServerPluginLandingPageLocalDefault
+} from '@apollo/server/plugin/landingPage/default'
+import { handlers, startServerAndCreateLambdaHandler } from '@as-integrations/aws-lambda'
 import { v4 as uuidv4 } from 'uuid'
 
 import DataLoader from 'dataloader'
@@ -31,109 +34,214 @@ import { verifyEDLJwt } from '../utils/verifyEDLJwt'
 
 import { getCollectionsById } from '../dataloaders/getCollectionsById'
 
-// Creating the server
 const server = new ApolloServer({
   // Passing types and resolvers to the server
   typeDefs,
   resolvers,
+  plugins: [ApolloServerPluginLandingPageLocalDefault({ embed: false, footer: false })]
+})
 
-  // Initial context state, will be available in resolvers
-  context: async ({ event }) => {
-    const { body, headers } = event
+export default startServerAndCreateLambdaHandler(
+  server,
+  handlers.createAPIGatewayProxyEventRequestHandler(),
+  {
+    context: async ({ event }) => {
+      const { body, headers } = event
 
-    const { operationName } = JSON.parse(body)
+      const { operationName } = JSON.parse(body)
 
-    // If the query is the IntrospectionQuery, return out of this method
-    // The IntrospectionQuery is used when the playground has schema polling
-    // enabled. Returning out of this method for those calls saves API
-    // requests to URS and database calls
-    if (operationName === 'IntrospectionQuery') return null
+      // If the query is the IntrospectionQuery, return out of this method
+      // The IntrospectionQuery is used when the playground has schema polling
+      // enabled. Returning out of this method for those calls saves API
+      // requests to URS and database calls
+      if (operationName === 'IntrospectionQuery') return null
 
-    const {
-      authorization: bearerToken,
-      'client-id': clientId,
-      'x-request-id': requestId
-    } = downcaseKeys(headers)
+      const {
+        authorization: bearerToken,
+        'client-id': clientId,
+        'x-request-id': requestId
+      } = downcaseKeys(headers)
 
-    // Context object that we'll provide to each resolver
-    const context = {}
+      // Context object that we'll provide to each resolver
+      const context = {}
 
-    // Default headers to be sent with every external request
-    const requestHeaders = {
-      'CMR-Request-Id': requestId || uuidv4()
-    }
+      // Default headers to be sent with every external request
+      const requestHeaders = {
+        'CMR-Request-Id': requestId || uuidv4()
+      }
 
-    // If the client has provided an EDL token supply it to CMR
-    if (bearerToken) {
-      requestHeaders.Authorization = bearerToken
+      // If the client has provided an EDL token supply it to CMR
+      if (bearerToken) {
+        requestHeaders.Authorization = bearerToken
 
-      // regex to match JWT token structures
-      const regex = /^Bearer [A-Za-z0-9-_]*\.[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*/
+        // regex to match JWT token structures
+        const regex = /^Bearer [A-Za-z0-9-_]*\.[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*/
 
-      // If this is a JWT token verify that the token is from EDL and retrieve the earthdata login username
-      if (regex.test(bearerToken)) {
-        const edlUsername = await verifyEDLJwt(bearerToken)
+        // If this is a JWT token verify that the token is from EDL and retrieve the earthdata login username
+        if (regex.test(bearerToken)) {
+          const edlUsername = await verifyEDLJwt(bearerToken)
 
-        // Check to ensure edlUsername has a value, and doesn't evaluate to false (indicating a failed token validation)
-        if (edlUsername) {
-          context.edlUsername = edlUsername
+          // Check to ensure edlUsername has a value, and doesn't evaluate to false (indicating a failed token validation)
+          if (edlUsername) {
+            context.edlUsername = edlUsername
+          }
         }
       }
-    }
 
-    // Concatenate this applications client id with the user provided value, if one was provided
-    requestHeaders['Client-Id'] = [
-      clientId,
-      `eed-${process.env.stage}-graphql`
-    ].filter(Boolean).join('-')
+      // Concatenate this applications client id with the user provided value, if one was provided
+      requestHeaders['Client-Id'] = [
+        clientId,
+        `eed-${process.env.stage}-graphql`
+      ].filter(Boolean).join('-')
 
-    return {
-      ...context,
-      headers: requestHeaders,
-      collectionLoader: new DataLoader(getCollectionsById, { cacheKeyFn: (obj) => obj.conceptId })
-    }
-  },
-
-  // An object that goes to the 'context' argument when executing resolvers
-  dataSources: () => ({
-    collectionDraftProposalSource,
-    collectionDraftSource,
-    collectionSource,
-    dataQualitySummarySource,
-    granuleSource,
-    graphDbDuplicateCollectionsSource,
-    graphDbSource,
-    orderOptionSource,
-    serviceSource,
-    subscriptionSourceDelete,
-    subscriptionSourceFetch,
-    subscriptionSourceIngest,
-    toolSource,
-    variableSource,
-    gridSource
-  }),
-
-  // Show the landing page (which has a link to Apollo Studio Sandbox) in all environments
-  plugins: [
-    ApolloServerPluginLandingPageLocalDefault({
-      // But hide the footer, it just shows a link to docs about the landing page
-      footer: false
-    })
-  ]
-})
-
-export default server.createHandler({
-  expressGetMiddlewareOptions: {
-    cors: {
-      origin: true,
-      credentials: true,
-      allowedHeaders: [
-        'Accept',
-        'Authorization',
-        'Client-Id',
-        'Content-Type',
-        'X-Request-Id'
-      ]
-    }
+      return {
+        ...context,
+        dataSources: {
+          collectionDraftProposalSource,
+          collectionDraftSource,
+          collectionSource,
+          dataQualitySummarySource,
+          granuleSource,
+          graphDbDuplicateCollectionsSource,
+          graphDbSource,
+          orderOptionSource,
+          serviceSource,
+          subscriptionSourceDelete,
+          subscriptionSourceFetch,
+          subscriptionSourceIngest,
+          toolSource,
+          variableSource,
+          gridSource
+        },
+        headers: requestHeaders,
+        collectionLoader: new DataLoader(getCollectionsById, { cacheKeyFn: (obj) => obj.conceptId })
+      }
+    },
+    middleware: [
+      () => async (result) => {
+        // Set CORS options
+        const { headers } = result
+        // eslint-disable-next-line no-param-reassign
+        result.headers = {
+          ...headers,
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Credentials': true,
+          'Access-Control-Allow-Headers': [
+            'Accept',
+            'Authorization',
+            'Client-Id',
+            'Content-Type',
+            'X-Request-Id'
+          ].join(', ')
+        }
+      }
+    ]
   }
-})
+)
+
+// // Creating the server
+// const server = new ApolloServer({
+//   // Passing types and resolvers to the server
+//   typeDefs,
+//   resolvers,
+
+//   // Initial context state, will be available in resolvers
+//   context: async ({ event }) => {
+//     const { body, headers } = event
+
+//     const { operationName } = JSON.parse(body)
+
+//     // If the query is the IntrospectionQuery, return out of this method
+//     // The IntrospectionQuery is used when the playground has schema polling
+//     // enabled. Returning out of this method for those calls saves API
+//     // requests to URS and database calls
+//     if (operationName === 'IntrospectionQuery') return null
+
+//     const {
+//       authorization: bearerToken,
+//       'client-id': clientId,
+//       'x-request-id': requestId
+//     } = downcaseKeys(headers)
+
+//     // Context object that we'll provide to each resolver
+//     const context = {}
+
+//     // Default headers to be sent with every external request
+//     const requestHeaders = {
+//       'CMR-Request-Id': requestId || uuidv4()
+//     }
+
+//     // If the client has provided an EDL token supply it to CMR
+//     if (bearerToken) {
+//       requestHeaders.Authorization = bearerToken
+
+//       // regex to match JWT token structures
+//       const regex = /^Bearer [A-Za-z0-9-_]*\.[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*/
+
+//       // If this is a JWT token verify that the token is from EDL and retrieve the earthdata login username
+//       if (regex.test(bearerToken)) {
+//         const edlUsername = await verifyEDLJwt(bearerToken)
+
+//         // Check to ensure edlUsername has a value, and doesn't evaluate to false (indicating a failed token validation)
+//         if (edlUsername) {
+//           context.edlUsername = edlUsername
+//         }
+//       }
+//     }
+
+//     // Concatenate this applications client id with the user provided value, if one was provided
+//     requestHeaders['Client-Id'] = [
+//       clientId,
+//       `eed-${process.env.stage}-graphql`
+//     ].filter(Boolean).join('-')
+
+//     return {
+//       ...context,
+//       headers: requestHeaders,
+//       collectionLoader: new DataLoader(getCollectionsById, { cacheKeyFn: (obj) => obj.conceptId })
+//     }
+//   },
+
+//   // An object that goes to the 'context' argument when executing resolvers
+//   dataSources: () => ({
+//     collectionDraftProposalSource,
+//     collectionDraftSource,
+//     collectionSource,
+//     dataQualitySummarySource,
+//     granuleSource,
+//     graphDbDuplicateCollectionsSource,
+//     graphDbSource,
+//     orderOptionSource,
+//     serviceSource,
+//     subscriptionSourceDelete,
+//     subscriptionSourceFetch,
+//     subscriptionSourceIngest,
+//     toolSource,
+//     variableSource,
+//     gridSource
+//   }),
+
+//   // Show the landing page (which has a link to Apollo Studio Sandbox) in all environments
+//   plugins: [
+//     ApolloServerPluginLandingPageLocalDefault({
+//       // But hide the footer, it just shows a link to docs about the landing page
+//       footer: false
+//     })
+//   ]
+// })
+
+// export default server.createHandler({
+//   expressGetMiddlewareOptions: {
+//     cors: {
+//       origin: true,
+//       credentials: true,
+//       allowedHeaders: [
+//         'Accept',
+//         'Authorization',
+//         'Client-Id',
+//         'Content-Type',
+//         'X-Request-Id'
+//       ]
+//     }
+//   }
+// })
