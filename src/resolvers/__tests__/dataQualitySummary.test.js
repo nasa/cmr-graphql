@@ -1,25 +1,11 @@
 import nock from 'nock'
 
-import { ApolloServer } from 'apollo-server-lambda'
+import {
+  buildContextValue,
+  server
+} from './__mocks__/mockServer'
 
-import resolvers from '..'
-import typeDefs from '../../types'
-
-import dataQualitySummarySource from '../../datasources/dataQualitySummary'
-
-const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-  context: () => ({
-    headers: {
-      'Client-Id': 'eed-test-graphql',
-      'CMR-Request-Id': 'abcd-1234-efgh-5678'
-    }
-  }),
-  dataSources: () => ({
-    dataQualitySummarySource
-  })
-})
+const contextValue = buildContextValue()
 
 describe('DataQualitySummary', () => {
   const OLD_ENV = process.env
@@ -66,21 +52,23 @@ describe('DataQualitySummary', () => {
       const response = await server.executeOperation({
         variables: {},
         query: `{
-            dataQualitySummaries {
-                count
-                items {
-                  associationDetails
-                  conceptId
-                  id
-                  name
-                  nativeId
-                  summary
-                }
+          dataQualitySummaries {
+            count
+            items {
+              associationDetails
+              conceptId
+              id
+              name
+              nativeId
+              summary
             }
-          }`
+          }
+        }`
+      }, {
+        contextValue
       })
 
-      const { data } = response
+      const { data } = response.body.singleResult
 
       expect(data).toEqual({
         dataQualitySummaries: {
@@ -120,17 +108,19 @@ describe('DataQualitySummary', () => {
 
       const response = await server.executeOperation({
         variables: { params: { limit: 2 } },
-        query: `query($params: DataQualitySummariesInput) 
-            {
-                dataQualitySummaries(params: $params) {
-                    items {
-                        conceptId
-                    }
-                }
-          }`
+        query: `
+        query ($params: DataQualitySummariesInput) {
+          dataQualitySummaries(params: $params) {
+            items {
+              conceptId
+            }
+          }
+        }`
+      }, {
+        contextValue
       })
 
-      const { data } = response
+      const { data } = response.body.singleResult
 
       expect(data).toEqual({
         dataQualitySummaries: {
@@ -164,13 +154,15 @@ describe('DataQualitySummary', () => {
             variables: { params: { conceptId: 'DQS100000-EDSC' } },
             query: `
             query ($params: DataQualitySummaryInput) {
-                dataQualitySummary(params: $params) {
-                    conceptId
-                }
-              }`
+              dataQualitySummary(params: $params) {
+                conceptId
+              }
+            }`
+          }, {
+            contextValue
           })
 
-          const { data } = response
+          const { data } = response.body.singleResult
 
           expect(data).toEqual({
             dataQualitySummary: {
@@ -196,13 +188,15 @@ describe('DataQualitySummary', () => {
             variables: { params: { conceptId: 'DQS100001-EDSC' } },
             query: `
             query ($params: DataQualitySummaryInput) {
-                dataQualitySummary(params: $params) {
-                    conceptId
-                }
-              }`
+              dataQualitySummary(params: $params) {
+                conceptId
+              }
+            }`
+          }, {
+            contextValue
           })
 
-          const { data } = response
+          const { data } = response.body.singleResult
 
           expect(data).toEqual({
             dataQualitySummary: null

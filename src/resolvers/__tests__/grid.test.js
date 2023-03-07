@@ -1,25 +1,11 @@
 import nock from 'nock'
 
-import { ApolloServer } from 'apollo-server-lambda'
+import {
+  buildContextValue,
+  server
+} from './__mocks__/mockServer'
 
-import resolvers from '..'
-import typeDefs from '../../types'
-
-import gridSource from '../../datasources/grid'
-
-const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-  context: () => ({
-    headers: {
-      'Client-Id': 'eed-test-graphql',
-      'CMR-Request-Id': 'abcd-1234-efgh-5678'
-    }
-  }),
-  dataSources: () => ({
-    gridSource
-  })
-})
+const contextValue = buildContextValue()
 
 describe('Grid', () => {
   const OLD_ENV = process.env
@@ -95,9 +81,11 @@ describe('Grid', () => {
             }
           }
         }`
+      }, {
+        contextValue
       })
 
-      const { data } = response
+      const { data } = response.body.singleResult
 
       expect(data).toEqual({
         grids: {
@@ -155,9 +143,11 @@ describe('Grid', () => {
             }
           }
         }`
+      }, {
+        contextValue
       })
 
-      const { data } = response
+      const { data } = response.body.singleResult
 
       expect(data).toEqual({
         grids: {
@@ -193,9 +183,11 @@ describe('Grid', () => {
                 conceptId
               }
             }`
+          }, {
+            contextValue
           })
 
-          const { data } = response
+          const { data } = response.body.singleResult
 
           expect(data).toEqual({
             grid: {
@@ -225,9 +217,11 @@ describe('Grid', () => {
                 name
               }
             }`
+          }, {
+            contextValue
           })
 
-          const { data } = response
+          const { data } = response.body.singleResult
 
           expect(data).toEqual({
             grid: null

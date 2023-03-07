@@ -1,43 +1,11 @@
 import nock from 'nock'
 
-import { ApolloServer } from 'apollo-server-lambda'
-
-import resolvers from '..'
-import typeDefs from '../../types'
-
-import collectionSource from '../../datasources/collection'
-import granuleSource from '../../datasources/granule'
-import orderOptionSource from '../../datasources/orderOption'
-import serviceSource from '../../datasources/service'
 import {
-  deleteSubscription as subscriptionSourceDelete,
-  fetchSubscription as subscriptionSourceFetch,
-  ingestSubscription as subscriptionSourceIngest
-} from '../../datasources/subscription'
-import toolSource from '../../datasources/tool'
-import variableSource from '../../datasources/variable'
+  buildContextValue,
+  server
+} from './__mocks__/mockServer'
 
-const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-  context: () => ({
-    headers: {
-      'Client-Id': 'eed-test-graphql',
-      'CMR-Request-Id': 'abcd-1234-efgh-5678'
-    }
-  }),
-  dataSources: () => ({
-    collectionSource,
-    granuleSource,
-    orderOptionSource,
-    serviceSource,
-    subscriptionSourceDelete,
-    subscriptionSourceFetch,
-    subscriptionSourceIngest,
-    toolSource,
-    variableSource
-  })
-})
+const contextValue = buildContextValue()
 
 describe('Service', () => {
   const OLD_ENV = process.env
@@ -112,9 +80,11 @@ describe('Service', () => {
             }
           }
         }`
+      }, {
+        contextValue
       })
 
-      const { data } = response
+      const { data } = response.body.singleResult
 
       expect(data).toEqual({
         services: {
@@ -174,9 +144,11 @@ describe('Service', () => {
             }
           }
         }`
+      }, {
+        contextValue
       })
 
-      const { data } = response
+      const { data } = response.body.singleResult
 
       expect(data).toEqual({
         services: {
@@ -211,9 +183,11 @@ describe('Service', () => {
                 conceptId
               }
             }`
+          }, {
+            contextValue
           })
 
-          const { data } = response
+          const { data } = response.body.singleResult
 
           expect(data).toEqual({
             service: {
@@ -242,9 +216,11 @@ describe('Service', () => {
                 conceptId
               }
             }`
+          }, {
+            contextValue
           })
 
-          const { data } = response
+          const { data } = response.body.singleResult
 
           expect(data).toEqual({
             service: null
@@ -316,9 +292,11 @@ describe('Service', () => {
             }
           }
         }`
+      }, {
+        contextValue
       })
 
-      const { data } = response
+      const { data } = response.body.singleResult
 
       expect(data).toEqual({
         services: {
@@ -346,7 +324,7 @@ describe('Service', () => {
     })
 
     describe('orderOptions query WITH parent collection', () => {
-    // Tests for the associated legacy services order-options
+      // Tests for the associated legacy services order-options
       test('only retrieve one OO filtered from assoc details', async () => {
         nock(/example/)
           .defaultReplyHeaders({
@@ -364,7 +342,7 @@ describe('Service', () => {
               }]
             }
           })
-        // The association between the collection and the service contains the order-option in the payload
+          // The association between the collection and the service contains the order-option in the payload
           .post(/services\.json/)
           .reply(200, {
             items: [{
@@ -420,34 +398,43 @@ describe('Service', () => {
               concept_id: 'OO100000-EDSC'
             }]
           })
-        // The second oderOption list being retrieved by the second service assoc to the coll
+          // The second oderOption list being retrieved by the second service assoc to the coll
           .post(/order-options\.json/)
           .reply(200, {
             items: [{ concept_id: 'OO200000-EDSC' }]
           })
+
         const response = await server.executeOperation({
-          variables: { params: { conceptId: ['C100000-EDSC'] } },
+          variables: {
+            params: {
+              conceptId: ['C100000-EDSC']
+            }
+          },
           query: `
-        query ($params: CollectionsInput) {
-          collections(params: $params) {
-          items {
-            conceptId
-            services {
+            query ($params: CollectionsInput) {
+              collections(params: $params) {
               items {
                 conceptId
-                orderOptions{
+                services {
                   items {
                     conceptId
+                    orderOptions{
+                      items {
+                        conceptId
+                      }
+                    }
                   }
                 }
               }
             }
-          }
-        }
-        }`
+          }`
+        }, {
+          contextValue
         })
+
+        const { data } = response.body.singleResult
+
         // The expected result of the query only one OO is returned
-        const { data } = response
         expect(data).toEqual({
           collections: {
             items: [
@@ -500,7 +487,7 @@ describe('Service', () => {
               }]
             }
           })
-        // The association between the collection and the service contains the order-option in the payload
+          // The association between the collection and the service contains the order-option in the payload
           .post(/services\.json/)
           .reply(200, {
             items: [{
@@ -537,29 +524,38 @@ describe('Service', () => {
             items: [
               { concept_id: 'OO100000-EDSC' }]
           })
+
         const response = await server.executeOperation({
-          variables: { params: { conceptId: 'C100000-EDSC' } },
+          variables: {
+            params: {
+              conceptId: 'C100000-EDSC'
+            }
+          },
           query: `
-        query ($params: CollectionsInput) {
-          collections(params: $params) {
-          items {
-            conceptId
-            services {
+            query ($params: CollectionsInput) {
+              collections(params: $params) {
               items {
                 conceptId
-                orderOptions{
+                services {
                   items {
                     conceptId
+                    orderOptions{
+                      items {
+                        conceptId
+                      }
+                    }
                   }
                 }
               }
             }
-          }
-        }
-        }`
+          }`
+        }, {
+          contextValue
         })
+
+        const { data } = response.body.singleResult
+
         // The expected result of the query only one OO is returned
-        const { data } = response
         expect(data).toEqual({
           collections: {
             items: [
@@ -602,7 +598,7 @@ describe('Service', () => {
               }]
             }
           })
-        // The association between the collection and the service contains the order-option in the payload
+          // The association between the collection and the service contains the order-option in the payload
           .post(/services\.json/)
           .reply(200, {
             items: [{
@@ -614,30 +610,39 @@ describe('Service', () => {
               }
             }]
           })
+
         // Pass the collection into the query
         const response = await server.executeOperation({
-          variables: { params: { conceptId: 'C100000-EDSC' } },
+          variables: {
+            params: {
+              conceptId: 'C100000-EDSC'
+            }
+          },
           query: `
-        query ($params: CollectionsInput) {
-          collections(params: $params) {
-          items {
-            conceptId
-            services {
+            query ($params: CollectionsInput) {
+              collections(params: $params) {
               items {
                 conceptId
-                orderOptions{
+                services {
                   items {
                     conceptId
+                    orderOptions{
+                      items {
+                        conceptId
+                      }
+                    }
                   }
                 }
               }
             }
-          }
-        }
-        }`
+          }`
+        }, {
+          contextValue
         })
+
+        const { data } = response.body.singleResult
+
         // The expected result of the query
-        const { data } = response
         expect(data).toEqual({
           collections: {
             items: [
@@ -677,7 +682,7 @@ describe('Service', () => {
               }]
             }
           })
-        // The association between the collection and the service contains the order-option in the payload
+          // The association between the collection and the service contains the order-option in the payload
           .post(/services\.json/)
           .reply(200, {
             items: [{
@@ -690,30 +695,39 @@ describe('Service', () => {
               }
             }]
           })
+
         // Pass the collection into the query
         const response = await server.executeOperation({
-          variables: { params: { conceptId: 'C100000-EDSC' } },
+          variables: {
+            params: {
+              conceptId: 'C100000-EDSC'
+            }
+          },
           query: `
-        query ($params: CollectionsInput) {
-          collections(params: $params) {
-          items {
-            conceptId
-            services {
+            query ($params: CollectionsInput) {
+              collections(params: $params) {
               items {
                 conceptId
-                orderOptions{
+                services {
                   items {
                     conceptId
+                    orderOptions{
+                      items {
+                        conceptId
+                      }
+                    }
                   }
                 }
               }
             }
-          }
-        }
-        }`
+          }`
+        }, {
+          contextValue
         })
+
+        const { data } = response.body.singleResult
+
         // The expected result of the query
-        const { data } = response
         expect(data).toEqual({
           collections: {
             items: [
@@ -752,7 +766,7 @@ describe('Service', () => {
               }]
             }
           })
-        // The association between the collection and the service contains the order-option in the payload
+          // The association between the collection and the service contains the order-option in the payload
           .post(/services\.json/)
           .reply(200, {
             items: [{
@@ -764,30 +778,39 @@ describe('Service', () => {
               }
             }]
           })
+
         // Pass the collection into the query
         const response = await server.executeOperation({
-          variables: { params: { conceptId: 'C100000-EDSC' } },
+          variables: {
+            params: {
+              conceptId: 'C100000-EDSC'
+            }
+          },
           query: `
-        query ($params: CollectionsInput) {
-          collections(params: $params) {
-          items {
-            conceptId
-            services {
+            query ($params: CollectionsInput) {
+              collections(params: $params) {
               items {
                 conceptId
-                orderOptions{
+                services {
                   items {
                     conceptId
+                    orderOptions{
+                      items {
+                        conceptId
+                      }
+                    }
                   }
                 }
               }
             }
-          }
-        }
-        }`
+          }`
+        }, {
+          contextValue
         })
+
+        const { data } = response.body.singleResult
+
         // The expected result of the query
-        const { data } = response
         expect(data).toEqual({
           collections: {
             items: [
@@ -823,30 +846,39 @@ describe('Service', () => {
               }]
             }
           })
+
         // Pass the collection into the query
         const response = await server.executeOperation({
-          variables: { params: { conceptId: 'C100000-EDSC' } },
+          variables: {
+            params: {
+              conceptId: 'C100000-EDSC'
+            }
+          },
           query: `
-        query ($params: CollectionsInput) {
-          collections(params: $params) {
-          items {
-            conceptId
-            services {
+            query ($params: CollectionsInput) {
+              collections(params: $params) {
               items {
                 conceptId
-                orderOptions{
+                services {
                   items {
                     conceptId
+                    orderOptions{
+                      items {
+                        conceptId
+                      }
+                    }
                   }
                 }
               }
             }
-          }
-        }
-        }`
+          }`
+        }, {
+          contextValue
         })
+
+        const { data } = response.body.singleResult
+
         // The expected result of the query
-        const { data } = response
         expect(data).toEqual({
           collections: {
             items: [
@@ -912,22 +944,27 @@ describe('Service', () => {
               concept_id: 'OO100003-EDSC'
             }]
           })
+
         const response = await server.executeOperation({
           variables: {},
           query: `{
-          services {
-            items {
-              conceptId
-              orderOptions {
-                items {
-                  conceptId
+            services {
+              items {
+                conceptId
+                orderOptions {
+                  items {
+                    conceptId
+                  }
                 }
               }
             }
-          }
-        }`
+          }`
+        }, {
+          contextValue
         })
-        const { data } = response
+
+        const { data } = response.body.singleResult
+
         expect(data).toEqual({
           services: {
             items: [{
@@ -967,20 +1004,23 @@ describe('Service', () => {
         const response = await server.executeOperation({
           variables: {},
           query: `{
-          services {
-            items {
-              conceptId
-              orderOptions {
-                items {
-                  conceptId
+            services {
+              items {
+                conceptId
+                orderOptions {
+                  items {
+                    conceptId
+                  }
                 }
               }
             }
-          }
-        }`
+          }`
+        }, {
+          contextValue
         })
 
-        const { data } = response
+        const { data } = response.body.singleResult
+
         expect(data).toEqual({
           services: {
             items: [{

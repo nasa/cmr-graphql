@@ -1,25 +1,11 @@
 import nock from 'nock'
 
-import { ApolloServer } from 'apollo-server-lambda'
+import {
+  buildContextValue,
+  server
+} from './__mocks__/mockServer'
 
-import resolvers from '..'
-import typeDefs from '../../types'
-
-import orderOptionSource from '../../datasources/orderOption'
-
-const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-  context: () => ({
-    headers: {
-      'Client-Id': 'eed-test-graphql',
-      'CMR-Request-Id': 'abcd-1234-efgh-5678'
-    }
-  }),
-  dataSources: () => ({
-    orderOptionSource
-  })
-})
+const contextValue = buildContextValue()
 
 describe('OrderOption', () => {
   const OLD_ENV = process.env
@@ -71,24 +57,26 @@ describe('OrderOption', () => {
       const response = await server.executeOperation({
         variables: {},
         query: `{
-            orderOptions {
-                count
-                items {
-                  associationDetails
-                  conceptId
-                  description
-                  form
-                  id
-                  name
-                  nativeId
-                  scope
-                  sortKey
-                }
+          orderOptions {
+            count
+            items {
+              associationDetails
+              conceptId
+              description
+              form
+              id
+              name
+              nativeId
+              scope
+              sortKey
             }
-          }`
+          }
+        }`
+      }, {
+        contextValue
       })
 
-      const { data } = response
+      const { data } = response.body.singleResult
 
       expect(data).toEqual({
         orderOptions: {
@@ -132,15 +120,17 @@ describe('OrderOption', () => {
       const response = await server.executeOperation({
         variables: {},
         query: `{
-            orderOptions{
-              items {
-                conceptId
-              }
+          orderOptions{
+            items {
+              conceptId
             }
-          }`
+          }
+        }`
+      }, {
+        contextValue
       })
 
-      const { data } = response
+      const { data } = response.body.singleResult
 
       expect(data).toEqual({
         orderOptions: {
@@ -171,13 +161,15 @@ describe('OrderOption', () => {
           const response = await server.executeOperation({
             variables: {},
             query: `{
-                orderOption(params: { conceptId: "OO100000-EDSC" }) {
-                  conceptId
-                }
-              }`
+              orderOption(params: { conceptId: "OO100000-EDSC" }) {
+                conceptId
+              }
+            }`
+          }, {
+            contextValue
           })
 
-          const { data } = response
+          const { data } = response.body.singleResult
 
           expect(data).toEqual({
             orderOption: {
@@ -201,14 +193,16 @@ describe('OrderOption', () => {
           const response = await server.executeOperation({
             variables: {},
             query: `{
-                orderOption(params: { conceptId: "OO100000-EDSC" }) {
-                  conceptId
-                  name
-                }
-              }`
+              orderOption(params: { conceptId: "OO100000-EDSC" }) {
+                conceptId
+                name
+              }
+            }`
+          }, {
+            contextValue
           })
 
-          const { data } = response
+          const { data } = response.body.singleResult
 
           expect(data).toEqual({
             orderOption: null

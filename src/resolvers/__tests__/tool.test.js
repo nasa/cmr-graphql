@@ -1,41 +1,11 @@
 import nock from 'nock'
 
-import { ApolloServer } from 'apollo-server-lambda'
-
-import resolvers from '..'
-import typeDefs from '../../types'
-
-import collectionSource from '../../datasources/collection'
-import granuleSource from '../../datasources/granule'
-import serviceSource from '../../datasources/service'
 import {
-  deleteSubscription as subscriptionSourceDelete,
-  fetchSubscription as subscriptionSourceFetch,
-  ingestSubscription as subscriptionSourceIngest
-} from '../../datasources/subscription'
-import toolSource from '../../datasources/tool'
-import variableSource from '../../datasources/variable'
+  buildContextValue,
+  server
+} from './__mocks__/mockServer'
 
-const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-  context: () => ({
-    headers: {
-      'Client-Id': 'eed-test-graphql',
-      'CMR-Request-Id': 'abcd-1234-efgh-5678'
-    }
-  }),
-  dataSources: () => ({
-    collectionSource,
-    granuleSource,
-    serviceSource,
-    subscriptionSourceDelete,
-    subscriptionSourceFetch,
-    subscriptionSourceIngest,
-    toolSource,
-    variableSource
-  })
-})
+const contextValue = buildContextValue()
 
 describe('Tool', () => {
   const OLD_ENV = process.env
@@ -140,9 +110,11 @@ describe('Tool', () => {
             }
           }
         }`
+      }, {
+        contextValue
       })
 
-      const { data } = response
+      const { data } = response.body.singleResult
 
       expect(data).toEqual({
         tools: {
@@ -205,15 +177,17 @@ describe('Tool', () => {
       const response = await server.executeOperation({
         variables: {},
         query: `{
-          tools(limit:2) {
+          tools (limit:2) {
             items {
               conceptId
             }
           }
         }`
+      }, {
+        contextValue
       })
 
-      const { data } = response
+      const { data } = response.body.singleResult
 
       expect(data).toEqual({
         tools: {
@@ -244,13 +218,15 @@ describe('Tool', () => {
           const response = await server.executeOperation({
             variables: {},
             query: `{
-              tool(conceptId: "T100000-EDSC") {
+              tool (conceptId: "T100000-EDSC") {
                 conceptId
               }
             }`
+          }, {
+            contextValue
           })
 
-          const { data } = response
+          const { data } = response.body.singleResult
 
           expect(data).toEqual({
             tool: {
@@ -275,13 +251,15 @@ describe('Tool', () => {
           const response = await server.executeOperation({
             variables: {},
             query: `{
-              tool(conceptId: "T100000-EDSC") {
+              tool (conceptId: "T100000-EDSC") {
                 conceptId
               }
             }`
+          }, {
+            contextValue
           })
 
-          const { data } = response
+          const { data } = response.body.singleResult
 
           expect(data).toEqual({
             tool: null
@@ -353,9 +331,11 @@ describe('Tool', () => {
             }
           }
         }`
+      }, {
+        contextValue
       })
 
-      const { data } = response
+      const { data } = response.body.singleResult
 
       expect(data).toEqual({
         tools: {

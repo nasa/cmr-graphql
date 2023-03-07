@@ -1,52 +1,17 @@
 import nock from 'nock'
 
-import { ApolloServer } from 'apollo-server-lambda'
-
 import resolvers from '..'
-import typeDefs from '../../types'
-
-import collectionSource from '../../datasources/collection'
-import dataQualitySummarySource from '../../datasources/dataQualitySummary'
-import granuleSource from '../../datasources/granule'
-import graphDbSource from '../../datasources/graphDb'
-import graphDbDuplicateCollectionsSource from '../../datasources/graphDbDuplicateCollections'
-import serviceSource from '../../datasources/service'
 import {
-  deleteSubscription as subscriptionSourceDelete,
-  fetchSubscription as subscriptionSourceFetch,
-  ingestSubscription as subscriptionSourceIngest
-} from '../../datasources/subscription'
-import toolSource from '../../datasources/tool'
-import variableSource from '../../datasources/variable'
+  buildContextValue,
+  server
+} from './__mocks__/mockServer'
 
 import duplicateCollectionsGraphdbResponseMocks from './__mocks__/duplicateCollections.graphdbResponse.mocks'
 import duplicateCollectionsResponseMocks from './__mocks__/duplicateCollections.response.mocks'
 import relatedCollectionsGraphdbResponseMocks from './__mocks__/relatedCollections.graphdbResponse.mocks'
 import relatedCollectionsResponseMocks from './__mocks__/relatedCollections.response.mocks'
 
-const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-  context: () => ({
-    headers: {
-      'Client-Id': 'eed-test-graphql',
-      'CMR-Request-Id': 'abcd-1234-efgh-5678'
-    }
-  }),
-  dataSources: () => ({
-    collectionSource,
-    dataQualitySummarySource,
-    granuleSource,
-    graphDbDuplicateCollectionsSource,
-    graphDbSource,
-    serviceSource,
-    subscriptionSourceDelete,
-    subscriptionSourceFetch,
-    subscriptionSourceIngest,
-    toolSource,
-    variableSource
-  })
-})
+const contextValue = buildContextValue()
 
 describe('Collection', () => {
   const OLD_ENV = process.env
@@ -334,9 +299,11 @@ describe('Collection', () => {
             }
           }
         }`
+      }, {
+        contextValue
       })
 
-      const { data } = response
+      const { data } = response.body.singleResult
 
       expect(data).toEqual({
         collections: {
@@ -518,9 +485,11 @@ describe('Collection', () => {
             }
           }
         }`
+      }, {
+        contextValue
       })
 
-      const { data } = response
+      const { data } = response.body.singleResult
 
       expect(data).toEqual({
         collections: {
@@ -557,9 +526,11 @@ describe('Collection', () => {
                 conceptId
               }
             }`
+          }, {
+            contextValue
           })
 
-          const { data } = response
+          const { data } = response.body.singleResult
 
           expect(data).toEqual({
             collection: {
@@ -590,9 +561,11 @@ describe('Collection', () => {
                 conceptId
               }
             }`
+          }, {
+            contextValue
           })
 
-          const { data } = response
+          const { data } = response.body.singleResult
 
           expect(data).toEqual({
             collection: null
@@ -666,9 +639,11 @@ describe('Collection', () => {
             }
           }
         }`
+      }, {
+        contextValue
       })
 
-      const { data } = response
+      const { data } = response.body.singleResult
 
       expect(data).toEqual({
         collections: {
@@ -761,9 +736,11 @@ describe('Collection', () => {
             }
           }
         }`
+      }, {
+        contextValue
       })
 
-      const { data } = response
+      const { data } = response.body.singleResult
 
       expect(data).toEqual({
         collections: {
@@ -823,9 +800,11 @@ describe('Collection', () => {
                 }
               }
             }`
+          }, {
+            contextValue
           })
 
-          const { data } = response
+          const { data } = response.body.singleResult
 
           expect(data).toEqual({
             collections: {
@@ -883,9 +862,11 @@ describe('Collection', () => {
                 }
               }
             }`
+          }, {
+            contextValue
           })
 
-          const { data } = response
+          const { data } = response.body.singleResult
 
           expect(data).toEqual({
             collections: {
@@ -971,9 +952,11 @@ describe('Collection', () => {
                 }
               }
             }`
+          }, {
+            contextValue
           })
 
-          const { data } = response
+          const { data } = response.body.singleResult
 
           expect(data).toEqual({
             collections: {
@@ -1062,9 +1045,11 @@ describe('Collection', () => {
               }
             }
           }`
+        }, {
+          contextValue
         })
 
-        const { data } = response
+        const { data } = response.body.singleResult
 
         expect(data).toEqual({
           collections: {
@@ -1125,9 +1110,11 @@ describe('Collection', () => {
                 }
               }
             }`
+          }, {
+            contextValue
           })
 
-          const { data } = response
+          const { data } = response.body.singleResult
 
           expect(data).toEqual({
             collections: {
@@ -1185,9 +1172,11 @@ describe('Collection', () => {
                 }
               }
             }`
+          }, {
+            contextValue
           })
 
-          const { data } = response
+          const { data } = response.body.singleResult
 
           expect(data).toEqual({
             collections: {
@@ -1273,9 +1262,11 @@ describe('Collection', () => {
                 }
               }
             }`
+          }, {
+            contextValue
           })
 
-          const { data } = response
+          const { data } = response.body.singleResult
 
           expect(data).toEqual({
             collections: {
@@ -1337,9 +1328,11 @@ describe('Collection', () => {
                 }
               }
             }`
+          }, {
+            contextValue
           })
 
-          const { data } = response
+          const { data } = response.body.singleResult
 
           expect(data).toEqual({
             collections: {
@@ -1397,9 +1390,11 @@ describe('Collection', () => {
                 }
               }
             }`
+          }, {
+            contextValue
           })
 
-          const { data } = response
+          const { data } = response.body.singleResult
 
           expect(data).toEqual({
             collections: {
@@ -1485,9 +1480,11 @@ describe('Collection', () => {
                 }
               }
             }`
+          }, {
+            contextValue
           })
 
-          const { data } = response
+          const { data } = response.body.singleResult
 
           expect(data).toEqual({
             collections: {
@@ -1548,9 +1545,11 @@ describe('Collection', () => {
                 }
               }
             }`
+          }, {
+            contextValue
           })
 
-          const { data } = response
+          const { data } = response.body.singleResult
 
           expect(data).toEqual({
             collections: {
@@ -1608,9 +1607,11 @@ describe('Collection', () => {
                 }
               }
             }`
+          }, {
+            contextValue
           })
 
-          const { data } = response
+          const { data } = response.body.singleResult
 
           expect(data).toEqual({
             collections: {
@@ -1685,8 +1686,12 @@ describe('Collection', () => {
                 }
               }
             }`
+          }, {
+            contextValue
           })
-          const { data } = response
+
+          const { data } = response.body.singleResult
+
           expect(data).toEqual({
             collections: {
               items: [{
@@ -1770,9 +1775,11 @@ describe('Collection', () => {
               }
             }
           }`
+        }, {
+          contextValue
         })
 
-        const { data } = response
+        const { data } = response.body.singleResult
 
         expect(data).toEqual(relatedCollectionsResponseMocks.data)
       })
@@ -1825,9 +1832,11 @@ describe('Collection', () => {
               }
             }
           }`
+        }, {
+          contextValue
         })
 
-        const { data } = response
+        const { data } = response.body.singleResult
 
         expect(data).toEqual(duplicateCollectionsResponseMocks.data)
       })

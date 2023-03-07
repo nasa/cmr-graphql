@@ -1,4 +1,4 @@
-import { ApolloError } from 'apollo-server-lambda'
+import { GraphQLError } from 'graphql'
 
 /**
  * Parse and return a lambda friendly response to errors
@@ -45,7 +45,11 @@ export const parseError = (errorObj, {
 
   // If the error needs to be thrown again, do so before returning
   if (reThrowError) {
-    throw new ApolloError(errorArray, `${provider}_ERROR`)
+    throw new GraphQLError(errorArray, {
+      extensions: {
+        code: `${provider}_ERROR`
+      }
+    })
   }
 
   if (asJSON) {

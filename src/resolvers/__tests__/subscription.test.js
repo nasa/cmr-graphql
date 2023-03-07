@@ -1,43 +1,13 @@
 import nock from 'nock'
 
-jest.mock('uuid', () => ({ v4: () => '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed' }))
-
-import { ApolloServer } from 'apollo-server-lambda'
-
-import resolvers from '..'
-import typeDefs from '../../types'
-
-import collectionSource from '../../datasources/collection'
-import granuleSource from '../../datasources/granule'
-import serviceSource from '../../datasources/service'
 import {
-  deleteSubscription as subscriptionSourceDelete,
-  fetchSubscription as subscriptionSourceFetch,
-  ingestSubscription as subscriptionSourceIngest
-} from '../../datasources/subscription'
-import toolSource from '../../datasources/tool'
-import variableSource from '../../datasources/variable'
+  buildContextValue,
+  server
+} from './__mocks__/mockServer'
 
-const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-  context: () => ({
-    headers: {
-      'Client-Id': 'eed-test-graphql',
-      'CMR-Request-Id': 'abcd-1234-efgh-5678'
-    }
-  }),
-  dataSources: () => ({
-    collectionSource,
-    granuleSource,
-    serviceSource,
-    subscriptionSourceDelete,
-    subscriptionSourceFetch,
-    subscriptionSourceIngest,
-    toolSource,
-    variableSource
-  })
-})
+const contextValue = buildContextValue()
+
+jest.mock('uuid', () => ({ v4: () => '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed' }))
 
 describe('Subscription', () => {
   const OLD_ENV = process.env
@@ -104,9 +74,11 @@ describe('Subscription', () => {
             }
           }
         }`
+      }, {
+        contextValue
       })
 
-      const { data } = response
+      const { data } = response.body.singleResult
 
       expect(data).toEqual({
         subscriptions: {
@@ -153,9 +125,11 @@ describe('Subscription', () => {
             }
           }
         }`
+      }, {
+        contextValue
       })
 
-      const { data } = response
+      const { data } = response.body.singleResult
 
       expect(data).toEqual({
         subscriptions: {
@@ -190,9 +164,11 @@ describe('Subscription', () => {
                 conceptId
               }
             }`
+          }, {
+            contextValue
           })
 
-          const { data } = response
+          const { data } = response.body.singleResult
 
           expect(data).toEqual({
             subscription: {
@@ -221,9 +197,11 @@ describe('Subscription', () => {
                 conceptId
               }
             }`
+          }, {
+            contextValue
           })
 
-          const { data } = response
+          const { data } = response.body.singleResult
 
           expect(data).toEqual({
             subscription: null
@@ -291,9 +269,11 @@ describe('Subscription', () => {
             }
           }
         }`
+      }, {
+        contextValue
       })
 
-      const { data } = response
+      const { data } = response.body.singleResult
 
       expect(data).toEqual({
         subscriptions: {
@@ -338,9 +318,11 @@ describe('Subscription', () => {
             }
           }
         }`
+      }, {
+        contextValue
       })
 
-      const { data } = response
+      const { data } = response.body.singleResult
 
       expect(data).toEqual({
         subscriptions: {
@@ -386,7 +368,7 @@ describe('Subscription', () => {
           $subscriberId: String
           $type: String!
         ) {
-          createSubscription(
+          createSubscription (
             params: {
               collectionConceptId: $collectionConceptId
               name: $name
@@ -399,9 +381,11 @@ describe('Subscription', () => {
               revisionId
             }
           }`
+      }, {
+        contextValue
       })
 
-      const { data } = response
+      const { data } = response.body.singleResult
 
       expect(data).toEqual({
         createSubscription: {
@@ -443,7 +427,7 @@ describe('Subscription', () => {
           $subscriberId: String
           $type: String!
         ) {
-          createSubscription(
+          createSubscription (
             params: {
               name: $name
               query: $query
@@ -455,9 +439,11 @@ describe('Subscription', () => {
               revisionId
             }
           }`
+      }, {
+        contextValue
       })
 
-      const { data } = response
+      const { data } = response.body.singleResult
 
       expect(data).toEqual({
         createSubscription: {
@@ -496,7 +482,7 @@ describe('Subscription', () => {
           $subscriberId: String
           $type: String!
         ) {
-          updateSubscription(
+          updateSubscription (
             params: {
               collectionConceptId: $collectionConceptId
               name: $name
@@ -510,9 +496,11 @@ describe('Subscription', () => {
               revisionId
             }
           }`
+      }, {
+        contextValue
       })
 
-      const { data } = response
+      const { data } = response.body.singleResult
 
       expect(data).toEqual({
         updateSubscription: {
@@ -543,7 +531,7 @@ describe('Subscription', () => {
           $conceptId: String!
           $nativeId: String!
         ) {
-          deleteSubscription(
+          deleteSubscription (
             params: {
               conceptId: $conceptId
               nativeId: $nativeId
@@ -553,9 +541,11 @@ describe('Subscription', () => {
               revisionId
             }
           }`
+      }, {
+        contextValue
       })
 
-      const { data } = response
+      const { data } = response.body.singleResult
 
       expect(data).toEqual({
         deleteSubscription: {
