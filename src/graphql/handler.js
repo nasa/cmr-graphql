@@ -38,6 +38,7 @@ const server = new ApolloServer({
   // Passing types and resolvers to the server
   typeDefs,
   resolvers,
+  introspection: true,
   plugins: [ApolloServerPluginLandingPageLocalDefault({ embed: false, footer: false })]
 })
 
