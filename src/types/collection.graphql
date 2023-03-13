@@ -415,6 +415,8 @@ input CollectionsInput {
   instrumentH: [String]
   "Keyword search value."
   keyword: String
+  "The latency facet value of the collection."
+  latency: [String]
   "The number of collections requested by the user."
   limit: Int
   "Search for collections that intersect with provided lines."
@@ -428,7 +430,7 @@ input CollectionsInput {
   "Platform associated with the collection."
   platform: String
   "Platform associated with the collection, in facet form."
-  platformH: [String]
+  platformsH: JSON
   "Search using a point involves using a pair of values representing the point coordinates as parameters. The first value is the longitude and second value is the latitude."
   point: [String]
   "Polygon points are provided in counter-clockwise order. The last point should match the first point to close the polygon. The values are listed comma separated in longitude latitude order, i.e. lon1, lat1, lon2, lat2, lon3, lat3, and so on."
@@ -539,7 +541,7 @@ type Query {
     "Platform associated with the collection."
     platform: String @deprecated(reason: "Use `params.platform`")
     "Platform associated with the collection, in facet form."
-    platformH: [String] @deprecated(reason: "Use `params.platformH`")
+    platformsH: JSON @deprecated(reason: "Use `params.platformsH`")
     "Search using a point involves using a pair of values representing the point coordinates as parameters. The first value is the longitude and second value is the latitude."
     point: [String] @deprecated(reason: "Use `params.point`")
     "Polygon points are provided in counter-clockwise order. The last point should match the first point to close the polygon. The values are listed comma separated in longitude latitude order, i.e. lon1, lat1, lon2, lat2, lon3, lat3, and so on."
