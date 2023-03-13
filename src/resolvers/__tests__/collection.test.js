@@ -54,6 +54,7 @@ describe('Collection', () => {
               boxes: [],
               browse_flag: true,
               cloud_hosted: false,
+              consortiums: ['GEOSS'],
               coordinate_system: 'CARTESIAN',
               data_center: 'PORTA',
               dataset_id: 'Condimentum Quam Mattis Cursus Pharetra',
@@ -239,6 +240,7 @@ describe('Collection', () => {
               collectionCitations
               collectionProgress
               conceptId
+              consortiums
               contactGroups
               contactPersons
               coordinateSystem
@@ -374,6 +376,7 @@ describe('Collection', () => {
             collectionCitations: [],
             collectionProgress: 'ACTIVE',
             conceptId: 'C100000-EDSC',
+            consortiums: ['GEOSS'],
             contactGroups: [],
             contactPersons: [],
             coordinateSystem: 'CARTESIAN',
