@@ -181,7 +181,6 @@ export default class Collection extends Concept {
       'instrument',
       'latency',
       'line',
-      'platforms_h',
       'platform',
       'point',
       'polygon',
