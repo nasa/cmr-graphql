@@ -93,6 +93,8 @@ input GranulesInput {
   cycle: Int
   "Search by the day/night flag of the granule."
   dayNightFlag: String
+  "Search by entry id of the parent collection."
+  entryId: [String]
   "Search by the equator crossing date of the granule."
   equatorCrossingDate: JSON
   "Search by the equator crossing longitude of the granule."
