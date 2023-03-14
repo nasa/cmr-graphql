@@ -387,6 +387,8 @@ input CollectionsInput {
   dataCenters: [String]
   "Data center assigned to the collection, in facet form."
   dataCenterH: [String]
+  "Entry ID of the collection."
+  entryId: [String]
   "The number of facets to return in each category."
   facetsSize: Int
   "The data format of the granules belonging to the collection."
