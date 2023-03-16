@@ -10,6 +10,8 @@ export default class Granule extends Concept {
    */
   constructor(headers, requestInfo, params) {
     super('granules', headers, requestInfo, params)
+    // Granules do not support associations
+    delete this.setEssentialJsonValues
   }
 
   /**

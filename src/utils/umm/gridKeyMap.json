@@ -4,6 +4,7 @@
     "name"
   ],
   "ummKeyMappings": {
+    "associationDetails": "meta.association-details",
     "additionalAttribute": "umm.AdditionalAttribute",
     "conceptId": "meta.concept-id",
     "contactMechanisms": "umm.Organization.ContactMechanisms",

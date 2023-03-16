@@ -23,14 +23,6 @@ export default class Service extends Concept {
   setEssentialJsonValues(id, item) {
     super.setEssentialJsonValues(id, item)
 
-    const { association_details: associationDetails } = item
-
-    const formattedAssociationDetails = camelcaseKeys(associationDetails, { deep: true })
-
-    // Associations on services are used to retrieve order-options
-    if (associationDetails) {
-      this.setItemValue(id, 'associationDetails', formattedAssociationDetails)
-    }
     // Add the parent collection concept-id and pass it to the child queries from this service
     if (this.parentCollectionConceptId) {
       this.setItemValue(id, 'parentCollectionConceptId', this.parentCollectionConceptId)

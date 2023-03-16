@@ -20,6 +20,8 @@ export default class CollectionDraft extends Concept {
    */
   constructor(headers, requestInfo, params) {
     super('collectionDraft', headers, requestInfo, params)
+    // Collection drafts do not support associations
+    delete this.setEssentialJsonValues
   }
 
   /**

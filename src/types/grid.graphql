@@ -1,4 +1,6 @@
 type Grid {
+  "The list of concepts and any data on the relationship between this DQS and other permitted concepts."
+  associationDetails: JSON
   "The additional attribute to the grid."
   additionalAttribute: JSON
   "The unique concept id assigned to the grid."
