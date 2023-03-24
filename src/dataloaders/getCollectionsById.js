@@ -56,7 +56,6 @@ export const getCollectionsById = async (collections) => {
   const returnedCollections = collection.getFormattedResponse()
 
   // Fix the resulting collections return order to match incoming list
-  console.debug('Sorting returned to match requested', collections, conceptIds, returnedCollections)
   return conceptIds.reduce((orderedCollections, conceptId) => {
     const sortedCollection = returnedCollections.find(
       (returnedCollection) => returnedCollection.conceptId === conceptId
