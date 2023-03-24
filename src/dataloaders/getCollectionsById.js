@@ -28,12 +28,14 @@ export const getCollectionsById = async (collections) => {
   // Parse the client query for information that will help make decisions about what to request
   const requestInfo = parseRequestedFields(parsedInfo, collectionKeyMap, 'collection')
 
+  const conceptIds = collections.map((collection) => collection.conceptId)
+
   // Instantiate a Collection concept to perform our request
   const collection = new Collection(
     headers,
     requestInfo,
     handlePagingParams({
-      conceptId: collections.map((collection) => collection.conceptId),
+      conceptId: conceptIds,
       limit: collections.length
     })
   )
@@ -41,7 +43,7 @@ export const getCollectionsById = async (collections) => {
   // Query CMR
   collection.fetch(
     handlePagingParams({
-      conceptId: collections.map((collection) => collection.conceptId),
+      conceptId: conceptIds,
       limit: collections.length
     }),
     context
@@ -51,5 +53,19 @@ export const getCollectionsById = async (collections) => {
   await collection.parse(requestInfo)
 
   // Return a formatted JSON response
-  return collection.getFormattedResponse()
+  const returnedCollections = collection.getFormattedResponse()
+
+  // Fix the resulting collections return order to match incoming list
+  console.debug("Sorting returned to match requested", collections, conceptIds, returnedCollections)
+  return conceptIds.reduce((orderedCollections, conceptId) => {
+    const sortedCollection = returnedCollections.find(
+      (returnedCollection) => returnedCollection.conceptId === conceptId
+    )
+
+    if (!sortedCollection) {
+      throw new Error(`No collection returned with conceptId [${conceptId}]`)
+    }
+
+    return  [...orderedCollections, sortedCollection];
+  }, [])
 }
