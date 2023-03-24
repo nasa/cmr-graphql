@@ -684,7 +684,7 @@ We use [GraphQL interfaces](https://graphql.org/learn/schema/#interfaces) in ord
 
 #### Local graph database:
 
-Normally running graphQl with `serverless offline` will utilize the `(cmr.earthdata.nasa.gov/graphdb)` endpoint, to query against related collections and duplicate collections in the graph database. To send queries to a locally running graph database, we can use a docker gremlin-server that exposes an HTTP endpoint. This is launched by running
+Normally running GraphQl with `serverless offline` will utilize the `(cmr.earthdata.nasa.gov/graphdb)` endpoint, to query against related collections and duplicate collections in the graph database. To send queries to a locally running graph database, we can use a docker gremlin-server that exposes an HTTP endpoint. This is launched by running
 
 `docker run -it -p 8182:8182 tinkerpop/gremlin-server conf gremlin-server-rest-modern.yaml`
 
