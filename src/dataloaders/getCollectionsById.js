@@ -55,14 +55,14 @@ export const getCollectionsById = async (collections) => {
   // Return a formatted JSON response
   const returnedCollections = collection.getFormattedResponse()
 
-  // Fix the resulting collections return order to match incoming list
+  // Sort the returned collections to match incoming list
   return conceptIds.reduce((orderedCollections, conceptId) => {
     const sortedCollection = returnedCollections.find(
       (returnedCollection) => returnedCollection.conceptId === conceptId
     )
 
     if (!sortedCollection) {
-      throw new Error(`No collection returned with conceptId [${conceptId}]`)
+      throw new Error(`No collections returned with conceptId [${conceptId}]`)
     }
 
     return [...orderedCollections, sortedCollection]
