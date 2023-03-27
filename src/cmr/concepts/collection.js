@@ -21,26 +21,6 @@ export default class Collection extends Concept {
    * @param {String} id Concept ID to set a value for within the result set
    * @param {Object} item The item returned from the CMR json endpoint
    */
-  // TODO: Since all concepts now support associations we should refactor this on the parent class
-  setEssentialJsonValues(id, item) {
-    super.setEssentialJsonValues(id, item)
-
-    const { association_details: associationDetails } = item
-
-    const formattedAssociationDetails = camelcaseKeys(associationDetails, { deep: true })
-
-    // Associations are used by services, tools, and variables, it's required to correctly
-    // retrieve those objects and shouldn't need to be provided by the client
-    if (associationDetails) {
-      this.setItemValue(id, 'associationDetails', formattedAssociationDetails)
-    }
-  }
-
-  /**
-   * Set a value in the result set that a query has not requested but is necessary for other functionality
-   * @param {String} id Concept ID to set a value for within the result set
-   * @param {Object} item The item returned from the CMR json endpoint
-   */
   setEssentialUmmValues(id, item) {
     super.setEssentialUmmValues(id, item)
 

@@ -12,6 +12,9 @@ export default class Granule extends Concept {
     super('granules', headers, requestInfo, params)
   }
 
+  // Granules do not support associations
+  setEssentialJsonValues() {}
+
   /**
    * Returns an array of keys representing supported search params for the json endpoint
    */

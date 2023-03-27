@@ -32,7 +32,15 @@ describe('Grid', () => {
         .reply(200, {
           items: [{
             meta: {
-              'concept-id': 'GRD100000-EDSC'
+              'concept-id': 'GRD100000-EDSC',
+              'association-details': {
+                tools: [
+                  {
+                    data: '{"key": "value", "bool": true}',
+                    'concept-id': 'T100000-EDSC'
+                  }
+                ]
+              }
             },
             umm: {
               RelatedURLs: {},
@@ -62,6 +70,7 @@ describe('Grid', () => {
           grids {
             count
             items {
+              associationDetails
               conceptId
               relatedUrls
               organization
@@ -91,6 +100,13 @@ describe('Grid', () => {
         grids: {
           count: 1,
           items: [{
+            associationDetails: {
+              tools: [
+                {
+                  data: '{"key": "value", "bool": true}',
+                  conceptId: 'T100000-EDSC'
+                }]
+            },
             conceptId: 'GRD100000-EDSC',
             relatedUrls: {},
             organization: {

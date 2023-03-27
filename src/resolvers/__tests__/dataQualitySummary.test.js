@@ -18,6 +18,7 @@ describe('DataQualitySummary', () => {
   afterEach(() => {
     process.env = OLD_ENV
   })
+
   describe('Query', () => {
     test('All dataQualitySummary fields', async () => {
       nock(/example/)

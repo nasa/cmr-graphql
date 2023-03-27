@@ -130,7 +130,15 @@ export default class Concept {
    * @param {String} id Concept ID to set a value for within the result set
    * @param {Object} item The item returned from the CMR json endpoint
    */
-  setEssentialJsonValues() {}
+  setEssentialJsonValues(id, item) {
+    const { association_details: associationDetails } = item
+
+    const formattedAssociationDetails = camelcaseKeys(associationDetails, { deep: true })
+
+    if (associationDetails) {
+      this.setItemValue(id, 'associationDetails', formattedAssociationDetails)
+    }
+  }
 
   /**
    * Set a value in the result set that a query has not requested but is necessary for other functionality
