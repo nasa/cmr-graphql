@@ -295,10 +295,10 @@ describe('Granule', () => {
           feed: {
             entry: [{
               id: 'G1000-TEST',
-              collectionConceptId: 'C1000-TEST'
+              collection_concept_id: 'C1000-TEST'
             }, {
               id: 'G1001-TEST',
-              collectionConceptId: 'C1000-TEST'
+              collection_concept_id: 'C1000-TEST'
             }]
           }
         })
