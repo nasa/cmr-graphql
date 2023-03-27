@@ -6,7 +6,7 @@ import { parseError } from './parseError'
 /**
  * Verify and decode a JWT token
  * @param {String} header - The JWT token in the form "Bearer <TOKEN>"
- * @return {String} The User Id of the edl user if it has been verified, otherwise an empty string if verification fails
+ * @return {Promise<string>} The User Id of the edl user if it has been verified, otherwise an empty string if verification fails
  * @see https://urs.earthdata.nasa.gov/documentation/for_integrators/verify_edl_jwt_token
  * @see https://github.com/auth0/node-jwks-rsa
  */
