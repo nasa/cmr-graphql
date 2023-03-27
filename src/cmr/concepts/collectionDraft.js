@@ -20,9 +20,10 @@ export default class CollectionDraft extends Concept {
    */
   constructor(headers, requestInfo, params) {
     super('collectionDraft', headers, requestInfo, params)
-    // Collection drafts do not support associations
-    delete this.setEssentialJsonValues
   }
+
+  // Collection drafts do not support associations
+  setEssentialJsonValues() {}
 
   /**
    * Returns an array of keys representing supported search params for the umm endpoint
