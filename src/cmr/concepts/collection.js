@@ -1,5 +1,7 @@
 import camelcaseKeys from 'camelcase-keys'
 import { uniq } from 'lodash'
+import { mergeParams } from '../../utils/mergeParams'
+import { parseError } from '../../utils/parseError'
 
 import Concept from './concept'
 
@@ -240,6 +242,89 @@ export default class Collection extends Concept {
     }
 
     return super.fetchUmm(searchParams, ummKeys, ummHeaders)
+  }
+
+  /**
+   * Query the CMR API
+   * @param {Object} searchParams Parameters provided by the query
+   */
+  fetch(searchParams) {
+    // eslint-disable-next-line no-param-reassign
+    searchParams = mergeParams(searchParams)
+
+    // Default an array to hold the promises we need to make depending on the requested fields
+    const promises = []
+
+    const {
+      jsonKeys,
+      metaKeys,
+      ummKeys
+    } = this.requestInfo
+
+    this.logKeyRequest(metaKeys, 'meta')
+
+    if (jsonKeys.length > 0) {
+      const { shortNames } = searchParams
+
+      if (shortNames) {
+        // Make CMR requests for each shortName included in the params
+        shortNames.forEach((shortName) => {
+          const newParams = {
+            ...searchParams,
+            shortName
+          }
+          delete newParams.shortNames
+
+          promises.push(
+            this.fetchJson(this.arrayifyParams(newParams), jsonKeys, this.headers)
+          )
+        })
+      } else {
+        promises.push(
+          this.fetchJson(this.arrayifyParams(searchParams), jsonKeys, this.headers)
+        )
+      }
+    }
+
+    // If any requested keys are umm keys, we need to make an additional request to cmr
+    if (ummKeys.length > 0) {
+      // Construct the promise that will request data from the umm endpoint
+      promises.push(
+        this.fetchUmm(this.arrayifyParams(searchParams), ummKeys, this.headers)
+      )
+    }
+
+    this.response = Promise.all(promises)
+  }
+
+  /**
+   * Parses the response from each endpoint after a request is made
+   * @param {Object} requestInfo Parsed data pertaining to the Graph query
+   */
+  async parse(requestInfo) {
+    try {
+      const {
+        jsonKeys,
+        ummKeys
+      } = requestInfo
+
+      const response = await this.getResponse()
+
+      const promises = []
+
+      response.forEach((res) => {
+        const { config } = res
+        const { url } = config
+        if (url.includes('umm')) {
+          promises.push(this.parseUmm(res, ummKeys))
+        } else {
+          promises.push(this.parseJson(res, jsonKeys))
+        }
+      })
+      await Promise.all(promises)
+    } catch (e) {
+      parseError(e, { reThrowError: true })
+    }
   }
 
   /**
