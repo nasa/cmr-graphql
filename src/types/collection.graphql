@@ -461,6 +461,8 @@ input CollectionsInput {
   serviceType: [String]
   "The short name associated with the collection."
   shortName: String
+  "An array of 'shortName' param values."
+  shortNames: [String]
   "One or more sort keys can be specified to impact searching. Fields can be prepended with a '-' to sort in descending order. Ascending order is the default but + can be used to explicitly request ascending."
   sortKey: [String]
   "Keywords relating to spatial aspects of the collection."
