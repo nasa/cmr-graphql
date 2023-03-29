@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request: {}
 
 jobs:
@@ -86,4 +86,4 @@ jobs:
 
         git fetch --unshallow || true
         echo "GITHUB_COMMIT=$GITHUB_SHA"
-        git push ecc $GITHUB_SHA:refs/heads/master
+        git push ecc $GITHUB_SHA:refs/heads/main
