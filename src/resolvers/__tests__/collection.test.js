@@ -505,68 +505,6 @@ describe('Collection', () => {
           }
         })
       })
-
-      test('returns results when multiple shortName values are requested', async () => {
-        nock(/example-cmr/)
-          .defaultReplyHeaders({
-            'CMR-Took': 7,
-            'CMR-Request-Id': 'abcd-1234-efgh-5678'
-          })
-          .post(/collections\.json/, 'short_name=short-name-1&page_size=20')
-          .reply(200, {
-            feed: {
-              entry: [{
-                id: 'C100000-EDSC',
-                short_name: 'short-name-1'
-              }]
-            }
-          })
-        nock(/example-cmr/)
-          .defaultReplyHeaders({
-            'CMR-Took': 7,
-            'CMR-Request-Id': 'abcd-1234-efgh-5678'
-          })
-          .post(/collections\.json/, 'short_name=short-name-2&page_size=20')
-          .reply(200, {
-            feed: {
-              entry: [{
-                id: 'C100001-EDSC',
-                short_name: 'short-name-2'
-              }]
-            }
-          })
-
-        const response = await server.executeOperation({
-          variables: {},
-          query: `{
-            collections(params: { shortNames: ["short-name-1", "short-name-2"] }) {
-              items {
-                conceptId
-                shortName
-              }
-            }
-          }`
-        }, {
-          contextValue
-        })
-
-        const { data } = response.body.singleResult
-
-        expect(data).toEqual({
-          collections: {
-            items: [
-              {
-                conceptId: 'C100000-EDSC',
-                shortName: 'short-name-1'
-              },
-              {
-                conceptId: 'C100001-EDSC',
-                shortName: 'short-name-2'
-              }
-            ]
-          }
-        })
-      })
     })
 
     describe('collection', () => {

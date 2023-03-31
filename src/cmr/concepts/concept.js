@@ -42,7 +42,8 @@ export default class Concept {
     this.arrayifiableKeys = {
       collectionConceptIds: 'collectionConceptId',
       dataCenters: 'dataCenter',
-      providers: 'provider'
+      providers: 'provider',
+      shortNames: 'shortName'
     }
   }
 
