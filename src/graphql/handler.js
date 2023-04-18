@@ -21,6 +21,7 @@ import gridSource from '../datasources/grid'
 import maxItemsPerOrderSource from '../datasources/maxItemsPerOrder'
 import orderOptionSource from '../datasources/orderOption'
 import serviceSource from '../datasources/service'
+import toolDraftSource from '../datasources/toolDraft'
 import toolSource from '../datasources/tool'
 import variableSource from '../datasources/variable'
 
@@ -112,6 +113,7 @@ export default startServerAndCreateLambdaHandler(
           subscriptionSourceDelete,
           subscriptionSourceFetch,
           subscriptionSourceIngest,
+          toolDraftSource,
           toolSource,
           variableSource,
           gridSource
