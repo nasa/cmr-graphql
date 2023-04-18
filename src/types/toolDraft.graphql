@@ -1,4 +1,4 @@
-type Tool {
+type ToolDraft {
   "Information about any constraints for accessing the downloadable tool or web user interface."
   accessConstraints: String
   "Words or phrases to further describe the downloadable tool or web user interface."
@@ -57,62 +57,12 @@ type Tool {
   version: String
   "This field provides users with information on what changes were included in the most recent version."
   versionDescription: String
-
-  collections (
-    "Collections query parameters"
-    params: CollectionsInput
-    "The unique concept id assigned to the service."
-    conceptId: [String] @deprecated(reason: "Use `params.conceptId`")
-    "The number of collections requested by the user."
-    limit: Int @deprecated(reason: "Use `params.limit`")
-    "Zero based offset of individual results."
-    offset: Int @deprecated(reason: "Use `params.offset`")
-  ): CollectionList
 }
-
-type ToolList {
-  "The number of hits for a given search."
-  count: Int
-  "Cursor that points to the/a specific position in a list of requested records."
-  cursor: String
-  "The list of service search results."
-  items: [Tool]
+input ToolDraftInput {
+  id: Int!
 }
-
-input ToolsInput {
-  "The unique concept id assigned to the tool."
-  conceptId: [String]
-  "Cursor that points to the/a specific position in a list of requested records."
-  cursor: String
-  "The number of tools requested by the user."
-  limit: Int
-  "Zero based offset of individual results."
-  offset: Int
-}
-
-input ToolInput {
-  "The unique concept id assigned to the tool."
-  conceptId: String!
-}
-
 type Query {
-  tools (
-    "Tools query parameters"
-    params: ToolsInput
-    "The unique concept id assigned to the tool."
-    conceptId: [String] @deprecated(reason: "Use `params.conceptId`")
-    "Cursor that points to the a specific position in a list of requested records."
-    cursor: String @deprecated(reason: "Use `params.cursor`")
-    "The number of servies requested by the user."
-    limit: Int @deprecated(reason: "Use `params.limit`")
-    "Zero based offset of individual results."
-    offset: Int @deprecated(reason: "Use `params.offset`")
-  ): ToolList!
-
-  tool (
-    "Tool query parameters"
-    params: ToolInput
-    "The unique concept id assigned to the tool."
-    conceptId: String @deprecated(reason: "Use `params.conceptId`")
-  ): Tool
+  toolDraft (
+    params: ToolDraftInput
+  ): ToolDraft
 }

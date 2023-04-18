@@ -9,6 +9,7 @@ import grid from './grid.graphql'
 import json from './json.graphql'
 import service from './service.graphql'
 import subscription from './subscription.graphql'
+import toolDraft from './toolDraft.graphql'
 import tool from './tool.graphql'
 import variable from './variable.graphql'
 import orderOption from './orderOption.graphql'
@@ -26,6 +27,7 @@ export default mergeTypeDefs(
     service,
     subscription,
     tool,
+    toolDraft,
     variable
   ],
   { all: true },
