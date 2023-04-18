@@ -1,0 +1,37 @@
+{
+  "sharedKeys": [
+    "conceptId",
+    "longName",
+    "name"
+  ],
+  "ummKeyMappings": {
+    "accessConstraints": "AccessConstraints",
+    "ancillaryKeywords": "AncillaryKeywords",
+    "associationDetails": "meta.association-details",
+    "conceptId": "meta.concept-id",
+    "contactGroups": "ContactGroups",
+    "contactPersons": "ContactPersons",
+    "description": "Description",
+    "doi": "DOI",
+    "longName": "LongName",
+    "metadataSpecification": "MetadataSpecification",
+    "name": "Name",
+    "nativeId": "meta.native-id",
+    "organizations": "Organizations",
+    "potentialAction": "PotentialAction",
+    "quality": "Quality",
+    "relatedUrls": "RelatedURLs",
+    "searchAction": "SearchAction",
+    "supportedBrowsers": "SupportedBrowsers",
+    "supportedInputFormats": "SupportedInputFormats",
+    "supportedOperatingSystems": "SupportedOperatingSystems",
+    "supportedOutputFormats": "SupportedOutputFormats",
+    "supportedSoftwareLanguages": "SupportedSoftwareLanguages",
+    "toolKeywords": "ToolKeywords",
+    "type": "Type",
+    "url": "URL",
+    "useConstraints": "UseConstraints",
+    "version": "Version",
+    "versionDescription": "VersionDescription"
+  }
+}
