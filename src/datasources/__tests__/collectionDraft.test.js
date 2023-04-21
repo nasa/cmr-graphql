@@ -49,7 +49,7 @@ describe('collectionDraft', () => {
       .defaultReplyHeaders({
         'X-Request-Id': 'abcd-1234-efgh-5678'
       })
-      .get(/api/)
+      .get(/api\/drafts/)
       .reply(200, {
         draft: {
           Abstract: 'Mock Abstract',
@@ -63,7 +63,7 @@ describe('collectionDraft', () => {
       }
     }, {
       headers: {
-        'Client-Id': 'mmt-react-ui',
+        'Client-Id': 'eed-test-graphql',
         'X-Request-Id': 'abcd-1234-efgh-5678'
       }
     }, requestInfo)
@@ -76,7 +76,7 @@ describe('collectionDraft', () => {
 
   test('catches errors received from mmtQuery', async () => {
     nock(/example/)
-      .get(/api/)
+      .get(/api\/drafts/)
       .reply(500, {
         errors: ['HTTP Error']
       }, {
@@ -90,7 +90,7 @@ describe('collectionDraft', () => {
         }
       }, {
         headers: {
-          'Client-Id': 'mmt-react-ui',
+          'Client-Id': 'eed-test-graphql',
           'X-Request-Id': 'abcd-1234-efgh-5678'
         }
       }, requestInfo)
