@@ -85,7 +85,7 @@ export default class CollectionDraft extends Concept {
 
     // Construct the promise that will request data from the umm endpoint
     return mmtQuery({
-      draftType: 'CollectionDraft',
+      draftType: this.getConceptType(),
       params: pick(snakecaseKeys(searchParams), this.getPermittedUmmSearchParams()),
       nonIndexedKeys: this.getNonIndexedKeys(),
       headers: providedHeaders
@@ -102,7 +102,6 @@ export default class CollectionDraft extends Concept {
     const { ummKeys } = this.requestInfo
 
     const ummHeaders = {
-      'Client-Id': 'mmt-react-ui',
       ...this.headers
     }
 

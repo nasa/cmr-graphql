@@ -74,7 +74,7 @@ export default class ToolDraft extends Concept {
   fetchUmm(searchParams, requestedKeys, providedHeaders) {
     this.logKeyRequest(requestedKeys, 'umm')
     return mmtQuery({
-      draftType: 'ToolDraft',
+      draftType: this.getConceptType(),
       params: pick(snakecaseKeys(searchParams), this.getPermittedUmmSearchParams()),
       nonIndexedKeys: this.getNonIndexedKeys(),
       headers: providedHeaders
@@ -91,7 +91,6 @@ export default class ToolDraft extends Concept {
     const { ummKeys } = this.requestInfo
 
     const ummHeaders = {
-      'Client-Id': 'mmt-react-ui',
       ...this.headers
     }
     // Construct the promise that will request data from the umm endpoint
