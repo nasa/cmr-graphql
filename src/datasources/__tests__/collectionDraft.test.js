@@ -49,10 +49,12 @@ describe('collectionDraft', () => {
       .defaultReplyHeaders({
         'X-Request-Id': 'abcd-1234-efgh-5678'
       })
-      .get(/collection_drafts/)
+      .get(/api/)
       .reply(200, {
-        Abstract: 'Mock Abstract',
-        ShortName: 'Mock ShortName'
+        draft: {
+          Abstract: 'Mock Abstract',
+          ShortName: 'Mock ShortName'
+        }
       })
 
     const response = await collectionDraftDatasource({
@@ -61,7 +63,7 @@ describe('collectionDraft', () => {
       }
     }, {
       headers: {
-        'Client-Id': 'eed-test-graphql',
+        'Client-Id': 'mmt-react-ui',
         'X-Request-Id': 'abcd-1234-efgh-5678'
       }
     }, requestInfo)
@@ -74,7 +76,7 @@ describe('collectionDraft', () => {
 
   test('catches errors received from mmtQuery', async () => {
     nock(/example/)
-      .get(/collection_drafts/)
+      .get(/api/)
       .reply(500, {
         errors: ['HTTP Error']
       }, {
@@ -88,7 +90,7 @@ describe('collectionDraft', () => {
         }
       }, {
         headers: {
-          'Client-Id': 'eed-test-graphql',
+          'Client-Id': 'mmt-react-ui',
           'X-Request-Id': 'abcd-1234-efgh-5678'
         }
       }, requestInfo)

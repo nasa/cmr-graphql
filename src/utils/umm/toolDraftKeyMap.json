@@ -5,7 +5,7 @@
     "name"
   ],
   "ummKeyMappings": {
-    "accessConstraints": "AccessConstraints",
+    "accessConstraints": "umm.AccessConstraints",
     "ancillaryKeywords": "AncillaryKeywords",
     "associationDetails": "meta.association-details",
     "conceptId": "meta.concept-id",

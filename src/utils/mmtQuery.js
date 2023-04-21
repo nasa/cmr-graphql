@@ -10,12 +10,12 @@ import { prepKeysForCmr } from './prepKeysForCmr'
  * Make a request to MMT and return the promise
  * @param {Object} params
  * @param {Object} params.headers Headers to send to MMT
+ * @param {Object} param.draftType Parameter draftType sends draft type (Ex: CollectionDraft, ToolDraft)
  * @param {Array} params.nonIndexedKeys Parameter names that should not be indexed before sending to MMT
  * @param {Object} params.params Parameters to send to MMT
- * @param {String} params.conceptType Concept type to search
  */
 export const mmtQuery = ({
-  conceptType,
+  draftType,
   headers,
   nonIndexedKeys = [],
   params
@@ -47,7 +47,7 @@ export const mmtQuery = ({
     data: cmrParameters,
     headers: permittedHeaders,
     method: 'GET',
-    url: `${process.env.mmtRootUrl}/collection_drafts/${id}/download_json`
+    url: `${process.env.mmtRootUrl}/api/drafts/${id}?draft_type=${draftType}`
   }
 
   // Interceptors require an instance of axios
@@ -74,8 +74,7 @@ export const mmtQuery = ({
 
     response.headers['request-duration'] = milliseconds
 
-    console.log(`Request ${requestId} from ${clientId} to [concept: ${conceptType}] completed external request in [observed: ${milliseconds} ms]`)
-
+    console.log(`Request ${requestId} from ${clientId} to MMT [Draft Type: ${draftType}] completed external request in [observed: ${milliseconds} ms]`)
     return response
   })
 
