@@ -28,9 +28,11 @@ describe('Collection', () => {
             .defaultReplyHeaders({
               'X-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .get(/collection_drafts/)
+            .get(/api/)
             .reply(200, {
-              ShortName: 'Mock ShortName'
+              draft: {
+                ShortName: 'Mock ShortName'
+              }
             })
 
           const response = await server.executeOperation({
@@ -60,7 +62,7 @@ describe('Collection', () => {
             .defaultReplyHeaders({
               'X-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .get(/collection_drafts/)
+            .get(/api/)
             .reply(200, {})
 
           const response = await server.executeOperation({

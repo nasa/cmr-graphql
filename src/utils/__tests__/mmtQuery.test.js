@@ -20,18 +20,18 @@ describe('mmtQuery', () => {
     const consoleMock = jest.spyOn(console, 'log').mockImplementation(() => jest.fn())
 
     nock(/example/)
-      .get(/collection_drafts/)
+      .get(/api/)
       .reply(200, {
         ShortName: 'Mock ShortName'
       })
 
     const response = await mmtQuery({
-      conceptType: 'collectionDraft',
+      draftType: 'collectionDraft',
       params: {
         id: 123
       },
       headers: {
-        'Client-Id': 'eed-test-graphql',
+        'Client-Id': 'mmt-react-ui',
         'X-Request-Id': 'abcd-1234-efgh-5678'
       }
     })
@@ -47,7 +47,7 @@ describe('mmtQuery', () => {
     })
 
     expect(consoleMock).toBeCalledWith(
-      `Request abcd-1234-efgh-5678 from eed-test-graphql to [concept: collectionDraft] completed external request in [observed: ${requestDuration} ms]`
+      `Request abcd-1234-efgh-5678 from mmt-react-ui to MMT [Draft Type: collectionDraft] completed external request in [observed: ${requestDuration} ms]`
     )
   })
 
@@ -56,21 +56,21 @@ describe('mmtQuery', () => {
       nock(/example/, {
         reqheaders: {
           Authorization: 'test-token',
-          'Client-Id': 'eed-test-graphql',
+          'Client-Id': 'mmt-react-ui',
           'X-Request-Id': 'abcd-1234-efgh-5678'
         }
       })
-        .get(/collection_drafts/)
+        .get(/api/)
         .reply(200, {
           ShortName: 'Mock ShortName'
         })
 
       const response = await mmtQuery({
-        conceptType: 'collectionDraft',
+        draftType: 'collectionDraft',
         params: {},
         headers: {
           Authorization: 'test-token',
-          'Client-Id': 'eed-test-graphql',
+          'Client-Id': 'mmt-react-ui',
           'X-Request-Id': 'abcd-1234-efgh-5678'
         }
       })
@@ -85,16 +85,16 @@ describe('mmtQuery', () => {
   describe('when an error is returned', () => {
     test('throws an exception', async () => {
       nock(/example/)
-        .get(/collection_drafts/)
+        .get(/api/)
         .reply(500, {
           errors: ['HTTP Error']
         })
 
       const response = mmtQuery({
-        conceptType: 'collectionDraft',
+        draftType: 'collectionDraft',
         params: {},
         headers: {
-          'Client-Id': 'eed-test-graphql',
+          'Client-Id': 'mmt-react-ui',
           'X-Request-Id': 'abcd-1234-efgh-5678'
         }
       })
