@@ -39,13 +39,16 @@ export default class ToolDraft extends Concept {
         ummKeys
       } = requestInfo
       const [response] = await this.getResponse()
+
       const { data } = response
+
+      const { draft } = data
 
       // Loop through the requested umm keys
       ummKeys.forEach((ummKey) => {
         // Use lodash.get to retrieve a value from the umm response given the
         // path we've defined above
-        const keyValue = get(data, ummKeyMappings[ummKey])
+        const keyValue = get(draft, ummKeyMappings[ummKey])
         const camelCasedObject = camelcaseKeys({ [ummKey]: keyValue }, { deep: true })
 
         const { [ummKey]: camelCasedValue } = camelCasedObject

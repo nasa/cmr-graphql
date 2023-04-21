@@ -20,6 +20,7 @@ import {
   ingestSubscription as subscriptionSourceIngest
 } from '../../../datasources/subscription'
 import toolSource from '../../../datasources/tool'
+import toolDraftSource from '../../../datasources/toolDraft'
 import variableSource from '../../../datasources/variable'
 
 export const server = new ApolloServer({
@@ -44,6 +45,7 @@ export const buildContextValue = (extraContext) => ({
     subscriptionSourceFetch,
     subscriptionSourceIngest,
     toolSource,
+    toolDraftSource,
     variableSource
   },
   headers: {
