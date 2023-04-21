@@ -6,7 +6,7 @@ import {
 import snakecaseKeys from 'snakecase-keys'
 
 import { mergeParams } from '../../utils/mergeParams'
-import { mmtAPI } from '../../utils/mmtAPI'
+import { mmtQuery } from '../../utils/mmtQuery'
 import { parseError } from '../../utils/parseError'
 import Concept from './concept'
 
@@ -40,13 +40,12 @@ export default class ToolDraft extends Concept {
       } = requestInfo
       const [response] = await this.getResponse()
       const { data } = response
-      const { draft } = data
 
       // Loop through the requested umm keys
       ummKeys.forEach((ummKey) => {
         // Use lodash.get to retrieve a value from the umm response given the
         // path we've defined above
-        const keyValue = get(draft, ummKeyMappings[ummKey])
+        const keyValue = get(data, ummKeyMappings[ummKey])
         const camelCasedObject = camelcaseKeys({ [ummKey]: keyValue }, { deep: true })
 
         const { [ummKey]: camelCasedValue } = camelCasedObject
@@ -69,13 +68,13 @@ export default class ToolDraft extends Concept {
    * @param {Array} ummKeys Keys requested by the query
    * @param {Object} headers Headers requested by the query
    */
-  fetchUmm(searchParams) {
-    return mmtAPI({
+  fetchUmm(searchParams, requestedKeys, providedHeaders) {
+    this.logKeyRequest(requestedKeys, 'umm')
+    return mmtQuery({
       draftType: 'ToolDraft',
       params: pick(snakecaseKeys(searchParams), this.getPermittedUmmSearchParams()),
-      headers: {
-        'Client-Id': 'mmt-react-ui'
-      }
+      nonIndexedKeys: this.getNonIndexedKeys(),
+      headers: providedHeaders
     })
   }
 
@@ -86,9 +85,15 @@ export default class ToolDraft extends Concept {
     // Default an array to hold the promises we need to make depending on the requested fields
     const promises = []
 
+    const { ummKeys } = this.requestInfo
+
+    const ummHeaders = {
+      'Client-Id': 'mmt-react-ui',
+      ...this.headers
+    }
     // Construct the promise that will request data from the umm endpoint
     promises.push(
-      this.fetchUmm(searchParams)
+      this.fetchUmm(searchParams, ummKeys, ummHeaders)
     )
     this.response = Promise.all(promises)
   }
