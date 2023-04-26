@@ -1,10 +1,12 @@
 type Variable {
-  "The alias for the name of a variable."
-  alias: String @deprecated(reason: "Removed as of 1.7")
+  # "The alias for the name of a variable."
+  # alias: String @deprecated(reason: "Removed as of 1.7")
+  "Any additional identifiers of a variable."
+  additionalIdentifiers: JSON
   "The list of concepts and any data on the relationship between this variable and other permitted concepts"
   associationDetails: JSON
-  "The characteristics of a variable."
-  characteristics: JSON @deprecated(reason: "Removed as of 1.7")
+  # "The characteristics of a variable."
+  # characteristics: JSON @deprecated(reason: "Removed as of 1.7")
   "The unique concept id assigned to the variable."
   conceptId: String!
   "Specify data type of a variable. These types can be either: uint8, uint16, etc."
@@ -13,8 +15,14 @@ type Variable {
   definition: String
   "A variable consists of one or more dimensions. An example of a dimension name is 'XDim'. An example of a dimension size is '1200'. Variables are rarely one dimensional."
   dimensions: JSON
+  "The fill value of the variable in the data file. It is generally a value which falls outside the valid range. For example, if the valid range is '0, 360', the fill value may be '-1'. The fill value type is data provider-defined. For example, 'Out of Valid Range'."
+  fillValue: JSON
+  "The LatRange consists of an index range for latitude."
+  latRange: JSON
   "The expanded or long name related to the variable Name."
   longName: String
+  "The LonRange consists of an index range for longitude."
+  lonRange: JSON
   "The measurement information of a variable."
   measurementIdentifiers: JSON
   "The name of a variable."
@@ -23,14 +31,24 @@ type Variable {
   nativeId: String
   "The offset is the value which is either added to or subtracted from all values in the stored data field in order to obtain the original values. May be used together with Scale. An example of an offset is '0.49'."
   offset: Float
+  "A described URL associated with the a web resource, or interface. e.g., the home page for the variable provider."
+  relatedUrls: JSON
+  "The sampling information of a variable."
+  SamplingIdentifiers: JSON
   "The scale is the numerical factor by which all values in the stored data field are multiplied in order to obtain the original values. May be used together with Offset. An example of a scale factor is '0.002'."
   scale: Float
   "Controlled Science Keywords describing the collection. The controlled vocabulary for Science Keywords is maintained in the Keyword Management System (KMS)."
   scienceKeywords: JSON
+  "This is the more formal or scientific name, .e.g., the CF Standard Name."
+  standardName: String
   "The units associated with a variable."
   units: String
-  "This element is used to classify the variable as a Science Variable, Quality Variable or Ancillary Variable. If a variable does not contain this field, it will be assumed to be a science variable."
+  "Valid ranges of variable data values."
+  validRange: JSON
+  "Specify basic type of a variable."
   variableType: String
+  "Specifies the sub type of a variable."
+  variableSubType: String
 
   collections (
     "Collections query parameters"
