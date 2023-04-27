@@ -24,6 +24,7 @@ import serviceSource from '../datasources/service'
 import toolDraftSource from '../datasources/toolDraft'
 import toolSource from '../datasources/tool'
 import variableSource from '../datasources/variable'
+import variableDraftSource from '../datasources/variableDraft'
 
 import {
   deleteSubscription as subscriptionSourceDelete,
@@ -116,6 +117,7 @@ export default startServerAndCreateLambdaHandler(
           toolDraftSource,
           toolSource,
           variableSource,
+          variableDraftSource,
           gridSource
         },
         headers: requestHeaders,
