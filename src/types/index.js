@@ -11,6 +11,7 @@ import service from './service.graphql'
 import subscription from './subscription.graphql'
 import toolDraft from './toolDraft.graphql'
 import tool from './tool.graphql'
+import variableDraft from './variableDraft.graphql'
 import variable from './variable.graphql'
 import orderOption from './orderOption.graphql'
 
@@ -28,7 +29,8 @@ export default mergeTypeDefs(
     subscription,
     tool,
     toolDraft,
-    variable
+    variable,
+    variableDraft
   ],
   { all: true },
 )

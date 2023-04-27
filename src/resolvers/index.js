@@ -10,6 +10,7 @@ import subscriptionResolver from './subscription'
 import toolDraftResolver from './toolDraft'
 import toolResolver from './tool'
 import variableResolver from './variable'
+import variableDraftResolver from './variableDraft'
 import orderOptionResolver from './orderOption'
 import dataQualitySummaryResolver from './dataQualitySummary'
 
@@ -25,7 +26,8 @@ const resolvers = [
   subscriptionResolver,
   toolDraftResolver,
   toolResolver,
-  variableResolver
+  variableResolver,
+  variableDraftResolver
 ]
 
 export default mergeResolvers(resolvers)

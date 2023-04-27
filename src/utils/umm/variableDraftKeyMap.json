@@ -1,0 +1,27 @@
+{
+  "ummKeyMappings": {
+    "additionalIdentifiers": "AdditionalIdentifiers",
+    "associationDetails": "meta.association-details",
+    "conceptId": "meta.concept-id",
+    "dataType": "DataType",
+    "definition": "Definition",
+    "dimensions": "Dimensions",
+    "indexRanges": "IndexRanges",
+    "fillValues": "FillValues",
+    "longName": "LongName",
+    "measurementIdentifiers": "MeasurementIdentifiers",
+    "name": "Name",
+    "nativeId": "meta.native-id",
+    "offset": "Offset",
+    "relatedUrls": "RelatedURLs",
+    "samplingIdentifiers": "SamplingIdentifiers",
+    "sets": "Sets",
+    "scale": "Scale",
+    "standardName": "StandardName",
+    "scienceKeywords": "ScienceKeywords",
+    "units": "Units",
+    "validRanges": "ValidRanges",
+    "variableType": "VariableType",
+    "variableSubType": "VariableSubType"
+  }
+}
