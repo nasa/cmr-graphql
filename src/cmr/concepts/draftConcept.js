@@ -11,15 +11,17 @@ import { parseError } from '../../utils/parseError'
 
 import Concept from './concept'
 
-export default class CollectionDraft extends Concept {
+export default class DraftConcept extends Concept {
   /**
    * Instantiates a Collection object
    * @param {Object} headers HTTP headers provided by the query
    * @param {Object} requestInfo Parsed data pertaining to the Graph query
    * @param {Object} params GraphQL query parameters
+   * @param {Object} conceptType Passed in conceptType from DataSource
    */
-  constructor(headers, requestInfo, params) {
-    super('collectionDraft', headers, requestInfo, params)
+
+  constructor(headers, requestInfo, params, conceptType) {
+    super(conceptType, headers, requestInfo, params)
   }
 
   /**
@@ -54,14 +56,15 @@ export default class CollectionDraft extends Concept {
       } = requestInfo
 
       const [response] = await this.getResponse()
-
       const { data } = response
+
+      const { draft } = data
 
       // Loop through the requested umm keys
       ummKeys.forEach((ummKey) => {
         // Use lodash.get to retrieve a value from the umm response given the
         // path we've defined above
-        const keyValue = get(data, ummKeyMappings[ummKey])
+        const keyValue = get(draft, ummKeyMappings[ummKey])
 
         const camelCasedObject = camelcaseKeys({ [ummKey]: keyValue }, { deep: true })
 
@@ -84,7 +87,7 @@ export default class CollectionDraft extends Concept {
 
     // Construct the promise that will request data from the umm endpoint
     return mmtQuery({
-      conceptType: this.getConceptType(),
+      draftType: this.getConceptType(),
       params: pick(snakecaseKeys(searchParams), this.getPermittedUmmSearchParams()),
       nonIndexedKeys: this.getNonIndexedKeys(),
       headers: providedHeaders

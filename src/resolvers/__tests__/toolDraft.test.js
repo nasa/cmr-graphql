@@ -21,7 +21,7 @@ describe('Collection', () => {
   })
 
   describe('Query', () => {
-    describe('collectionDraft', () => {
+    describe('toolDraft', () => {
       describe('with results', () => {
         test('returns results', async () => {
           nock(/example/)
@@ -31,15 +31,15 @@ describe('Collection', () => {
             .get(/api\/drafts/)
             .reply(200, {
               draft: {
-                ShortName: 'Mock ShortName'
+                DOI: 'Mock doi'
               }
             })
 
           const response = await server.executeOperation({
             variables: {},
             query: `{
-              collectionDraft (params: { id: 123 }) {
-                shortName
+              toolDraft (params: { id: 123 }) {
+                doi
               }
             }`
           }, {
@@ -49,8 +49,8 @@ describe('Collection', () => {
           const { data } = response.body.singleResult
 
           expect(data).toEqual({
-            collectionDraft: {
-              shortName: 'Mock ShortName'
+            toolDraft: {
+              doi: 'Mock doi'
             }
           })
         })
@@ -68,8 +68,8 @@ describe('Collection', () => {
           const response = await server.executeOperation({
             variables: {},
             query: `{
-              collectionDraft (params: { id: 123 }) {
-                shortName
+              toolDraft (params: { id: 123 }) {
+                doi
               }
             }`
           }, {
@@ -79,8 +79,8 @@ describe('Collection', () => {
           const { data } = response.body.singleResult
 
           expect(data).toEqual({
-            collectionDraft: {
-              shortName: null
+            toolDraft: {
+              doi: null
             }
           })
         })

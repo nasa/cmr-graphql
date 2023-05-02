@@ -1,12 +1,8 @@
-type Tool {
+type ToolDraft {
   "Information about any constraints for accessing the downloadable tool or web user interface."
   accessConstraints: String
   "Words or phrases to further describe the downloadable tool or web user interface."
   ancillaryKeywords: JSON
-  "The list of concepts and any data on the relationship between this tool and other permitted concepts"
-  associationDetails: JSON
-  "The unique concept id assigned to the tool."
-  conceptId: String!
   "Group(s) to contact at an organization to get information about the web user interface or downloadable tool, including how the group may be contacted."
   contactGroups: JSON
   "This is the contact persons of the downloadable tool or web user interface."
@@ -15,8 +11,6 @@ type Tool {
   description: String
   "The Digital Object Identifier (DOI) of the web user interface or downloadable tool."
   doi: String
-  "The native id of a tool."
-  nativeId: String
   "This element describes the latest date when the tool was most recently pushed to production for support and maintenance. "
   lastUpdatedDate: String
   "The long name of the downloadable tool or web user interface."
@@ -57,62 +51,14 @@ type Tool {
   version: String
   "This field provides users with information on what changes were included in the most recent version."
   versionDescription: String
-
-  collections (
-    "Collections query parameters"
-    params: CollectionsInput
-    "The unique concept id assigned to the service."
-    conceptId: [String] @deprecated(reason: "Use `params.conceptId`")
-    "The number of collections requested by the user."
-    limit: Int @deprecated(reason: "Use `params.limit`")
-    "Zero based offset of individual results."
-    offset: Int @deprecated(reason: "Use `params.offset`")
-  ): CollectionList
 }
 
-type ToolList {
-  "The number of hits for a given search."
-  count: Int
-  "Cursor that points to the/a specific position in a list of requested records."
-  cursor: String
-  "The list of service search results."
-  items: [Tool]
-}
-
-input ToolsInput {
-  "The unique concept id assigned to the tool."
-  conceptId: [String]
-  "Cursor that points to the/a specific position in a list of requested records."
-  cursor: String
-  "The number of tools requested by the user."
-  limit: Int
-  "Zero based offset of individual results."
-  offset: Int
-}
-
-input ToolInput {
-  "The unique concept id assigned to the tool."
-  conceptId: String!
+input ToolDraftInput {
+  id: Int!
 }
 
 type Query {
-  tools (
-    "Tools query parameters"
-    params: ToolsInput
-    "The unique concept id assigned to the tool."
-    conceptId: [String] @deprecated(reason: "Use `params.conceptId`")
-    "Cursor that points to the a specific position in a list of requested records."
-    cursor: String @deprecated(reason: "Use `params.cursor`")
-    "The number of servies requested by the user."
-    limit: Int @deprecated(reason: "Use `params.limit`")
-    "Zero based offset of individual results."
-    offset: Int @deprecated(reason: "Use `params.offset`")
-  ): ToolList!
-
-  tool (
-    "Tool query parameters"
-    params: ToolInput
-    "The unique concept id assigned to the tool."
-    conceptId: String @deprecated(reason: "Use `params.conceptId`")
-  ): Tool
+  toolDraft (
+    params: ToolDraftInput
+  ): ToolDraft
 }

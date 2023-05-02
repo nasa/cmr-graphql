@@ -19,6 +19,7 @@ import graphDbDuplicateCollectionsSource from '../datasources/graphDbDuplicateCo
 import graphDbSource from '../datasources/graphDb'
 import gridSource from '../datasources/grid'
 import serviceSource from '../datasources/service'
+import toolDraftSource from '../datasources/toolDraft'
 import toolSource from '../datasources/tool'
 import variableSource from '../datasources/variable'
 import orderOptionSource from '../datasources/orderOption'
@@ -110,6 +111,7 @@ export default startServerAndCreateLambdaHandler(
           subscriptionSourceDelete,
           subscriptionSourceFetch,
           subscriptionSourceIngest,
+          toolDraftSource,
           toolSource,
           variableSource,
           gridSource

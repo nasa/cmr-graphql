@@ -1,10 +1,10 @@
 import nock from 'nock'
 
-import collectionDraftDatasource from '../collectionDraft'
+import toolDraftDataSource from '../toolDraft'
 
 let requestInfo
 
-describe('collectionDraft', () => {
+describe('toolDraft', () => {
   const OLD_ENV = process.env
 
   beforeEach(() => {
@@ -18,20 +18,20 @@ describe('collectionDraft', () => {
 
     // Default requestInfo
     requestInfo = {
-      name: 'collectionDraft',
-      alias: 'collectionDraft',
+      name: 'toolDraft',
+      alis: 'toolDraft',
       args: {},
       fieldsByTypeName: {
-        CollectionDraft: {
-          abstract: {
-            name: 'abstract',
-            alias: 'abstract',
+        ToolDraft: {
+          longName: {
+            name: 'longName',
+            alis: 'longName',
             args: {},
             fieldsByTypeName: {}
           },
-          shortName: {
-            name: 'shortName',
-            alias: 'shortName',
+          description: {
+            name: 'description',
+            alis: 'description',
             args: {},
             fieldsByTypeName: {}
           }
@@ -44,7 +44,7 @@ describe('collectionDraft', () => {
     process.env = OLD_ENV
   })
 
-  test('returns the collection draft results', async () => {
+  test('return the tool draft results', async () => {
     nock(/example/)
       .defaultReplyHeaders({
         'X-Request-Id': 'abcd-1234-efgh-5678'
@@ -52,12 +52,12 @@ describe('collectionDraft', () => {
       .get(/api\/drafts/)
       .reply(200, {
         draft: {
-          Abstract: 'Mock Abstract',
-          ShortName: 'Mock ShortName'
+          LongName: 'Mock Long Name',
+          Description: 'Mock Description'
         }
       })
 
-    const response = await collectionDraftDatasource({
+    const response = await toolDraftDataSource({
       params: {
         id: '123'
       }
@@ -69,8 +69,8 @@ describe('collectionDraft', () => {
     }, requestInfo)
 
     expect(response).toEqual([{
-      abstract: 'Mock Abstract',
-      shortName: 'Mock ShortName'
+      longName: 'Mock Long Name',
+      description: 'Mock Description'
     }])
   })
 
@@ -84,7 +84,7 @@ describe('collectionDraft', () => {
       })
 
     await expect(
-      collectionDraftDatasource({
+      toolDraftDataSource({
         params: {
           id: '123'
         }

@@ -2,14 +2,14 @@ import { parseRequestedFields } from '../utils/parseRequestedFields'
 
 import collectionDraftKeyMap from '../utils/umm/collectionDraftKeyMap.json'
 
-import CollectionDraft from '../cmr/concepts/collectionDraft'
+import DraftConcept from '../cmr/concepts/draftConcept'
 
 export default async (params, context, parsedInfo) => {
   const { headers } = context
 
   const requestInfo = parseRequestedFields(parsedInfo, collectionDraftKeyMap, 'collectionDraft')
 
-  const collectionDraft = new CollectionDraft(headers, requestInfo, params)
+  const collectionDraft = new DraftConcept(headers, requestInfo, params, 'collectionDraft')
 
   // Query MMT
   collectionDraft.fetch(params)

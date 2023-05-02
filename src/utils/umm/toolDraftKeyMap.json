@@ -1,0 +1,34 @@
+{
+  "sharedKeys": [
+    "longName",
+    "name"
+  ],
+  "ummKeyMappings": {
+    "accessConstraints": "AccessConstraints",
+    "ancillaryKeywords": "AncillaryKeywords",
+    "contactGroups": "ContactGroups",
+    "contactPersons": "ContactPersons",
+    "description": "Description",
+    "doi": "DOI",
+    "lastUpdatedDate": "LastUpdatedDate",
+    "longName": "LongName",
+    "metadataSpecification": "MetadataSpecification",
+    "name": "Name",
+    "organizations": "Organizations",
+    "potentialAction": "PotentialAction",
+    "quality": "Quality",
+    "relatedUrls": "RelatedURLs",
+    "searchAction": "SearchAction",
+    "supportedBrowsers": "SupportedBrowsers",
+    "supportedInputFormats": "SupportedInputFormats",
+    "supportedOperatingSystems": "SupportedOperatingSystems",
+    "supportedOutputFormats": "SupportedOutputFormats",
+    "supportedSoftwareLanguages": "SupportedSoftwareLanguages",
+    "toolKeywords": "ToolKeywords",
+    "type": "Type",
+    "url": "URL",
+    "useConstraints": "UseConstraints",
+    "version": "Version",
+    "versionDescription": "VersionDescription"
+  }
+}
