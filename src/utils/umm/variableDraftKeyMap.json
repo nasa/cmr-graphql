@@ -1,7 +1,6 @@
 {
   "ummKeyMappings": {
     "additionalIdentifiers": "AdditionalIdentifiers",
-    "conceptId": "meta.concept-id",
     "dataType": "DataType",
     "definition": "Definition",
     "dimensions": "Dimensions",
