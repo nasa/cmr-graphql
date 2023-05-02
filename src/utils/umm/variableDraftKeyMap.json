@@ -1,7 +1,6 @@
 {
   "ummKeyMappings": {
     "additionalIdentifiers": "AdditionalIdentifiers",
-    "associationDetails": "meta.association-details",
     "conceptId": "meta.concept-id",
     "dataType": "DataType",
     "definition": "Definition",
@@ -11,7 +10,6 @@
     "longName": "LongName",
     "measurementIdentifiers": "MeasurementIdentifiers",
     "name": "Name",
-    "nativeId": "meta.native-id",
     "offset": "Offset",
     "relatedUrls": "RelatedURLs",
     "samplingIdentifiers": "SamplingIdentifiers",
