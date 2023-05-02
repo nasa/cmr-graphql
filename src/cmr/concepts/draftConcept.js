@@ -11,15 +11,17 @@ import { parseError } from '../../utils/parseError'
 
 import Concept from './concept'
 
-export default class CollectionDraft extends Concept {
+export default class DraftConecpt extends Concept {
   /**
    * Instantiates a Collection object
    * @param {Object} headers HTTP headers provided by the query
    * @param {Object} requestInfo Parsed data pertaining to the Graph query
    * @param {Object} params GraphQL query parameters
+   * @param {Object} conceptType Passed in conceptType from DataSoruce
    */
-  constructor(headers, requestInfo, params) {
-    super('collectionDraft', headers, requestInfo, params)
+
+  constructor(headers, requestInfo, params, conceptType) {
+    super(conceptType, headers, requestInfo, params)
   }
 
   /**

@@ -13,6 +13,7 @@
     "contactPersons": "umm.ContactPersons",
     "description": "umm.Description",
     "doi": "umm.DOI",
+    "lastUpdatedDate": "umm.LastUpdatedDate",
     "longName": "umm.LongName",
     "metadataSpecification": "umm.MetadataSpecification",
     "name": "umm.Name",

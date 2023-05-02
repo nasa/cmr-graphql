@@ -1,22 +1,19 @@
 {
   "sharedKeys": [
-    "conceptId",
     "longName",
     "name"
   ],
   "ummKeyMappings": {
     "accessConstraints": "AccessConstraints",
     "ancillaryKeywords": "AncillaryKeywords",
-    "associationDetails": "meta.association-details",
-    "conceptId": "meta.concept-id",
     "contactGroups": "ContactGroups",
     "contactPersons": "ContactPersons",
     "description": "Description",
     "doi": "DOI",
+    "lastUpdatedDate": "LastUpdatedDate",
     "longName": "LongName",
     "metadataSpecification": "MetadataSpecification",
     "name": "Name",
-    "nativeId": "meta.native-id",
     "organizations": "Organizations",
     "potentialAction": "PotentialAction",
     "quality": "Quality",
