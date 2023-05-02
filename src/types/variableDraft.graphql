@@ -1,8 +1,6 @@
 type VariableDraft {
   "Any additional identifiers of a variable."
   additionalIdentifiers: JSON
-  "The list of concepts and any data on the relationship between this variable and other permitted concepts"
-  associationDetails: JSON
   "Specify data type of a variable. These types can be either: uint8, uint16, etc."
   dataType: String
   "The definition of the variable."
@@ -19,8 +17,6 @@ type VariableDraft {
   measurementIdentifiers: JSON
   "The name of a variable."
   name: String
-  "The native id of a variable."
-  nativeId: String
   "The offset is the value which is either added to or subtracted from all values in the stored data field in order to obtain the original values. May be used together with Scale. An example of an offset is '0.49'."
   offset: Float
   "A described URL associated with the a web resource, or interface. e.g., the home page for the variable provider."
