@@ -11,13 +11,13 @@ import { parseError } from '../../utils/parseError'
 
 import Concept from './concept'
 
-export default class DraftConecpt extends Concept {
+export default class DraftConcept extends Concept {
   /**
    * Instantiates a Collection object
    * @param {Object} headers HTTP headers provided by the query
    * @param {Object} requestInfo Parsed data pertaining to the Graph query
    * @param {Object} params GraphQL query parameters
-   * @param {Object} conceptType Passed in conceptType from DataSoruce
+   * @param {Object} conceptType Passed in conceptType from DataSource
    */
 
   constructor(headers, requestInfo, params, conceptType) {
