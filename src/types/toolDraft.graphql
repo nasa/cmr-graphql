@@ -58,9 +58,11 @@ type ToolDraft {
   "This field provides users with information on what changes were included in the most recent version."
   versionDescription: String
 }
+
 input ToolDraftInput {
   id: Int!
 }
+
 type Query {
   toolDraft (
     params: ToolDraftInput
