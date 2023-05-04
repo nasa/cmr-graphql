@@ -7,7 +7,7 @@ import {
 
 const contextValue = buildContextValue()
 
-describe('Collection', () => {
+describe('Variable', () => {
   const OLD_ENV = process.env
 
   beforeEach(() => {

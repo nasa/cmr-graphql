@@ -54,6 +54,7 @@ type ToolDraft {
 }
 
 input ToolDraftInput {
+  "The id of the tool draft"
   id: Int!
 }
 

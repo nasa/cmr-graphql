@@ -4,21 +4,21 @@
     "dataType": "DataType",
     "definition": "Definition",
     "dimensions": "Dimensions",
-    "indexRanges": "IndexRanges",
     "fillValues": "FillValues",
+    "indexRanges": "IndexRanges",
     "longName": "LongName",
     "measurementIdentifiers": "MeasurementIdentifiers",
     "name": "Name",
     "offset": "Offset",
     "relatedUrls": "RelatedURLs",
     "samplingIdentifiers": "SamplingIdentifiers",
-    "sets": "Sets",
     "scale": "Scale",
-    "standardName": "StandardName",
     "scienceKeywords": "ScienceKeywords",
+    "sets": "Sets",
+    "standardName": "StandardName",
     "units": "Units",
     "validRanges": "ValidRanges",
-    "variableType": "VariableType",
-    "variableSubType": "VariableSubType"
+    "variableSubType": "VariableSubType",
+    "variableType": "VariableType"
   }
 }
