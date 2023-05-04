@@ -13,7 +13,7 @@ type VariableDraft {
   indexRanges: JSON
   "The expanded or long name related to the variable Name."
   longName: String
-  "The LonRange consists of an index range for longitude."
+  "The measurement information of a variable."
   measurementIdentifiers: JSON
   "The name of a variable."
   name: String
