@@ -116,15 +116,20 @@ export default class Granule extends Concept {
   }
 
   /**
+   * Rename fields, extract legacy locations of data, etc
+   * @param {Object} item The item returned from the CMR umm_json endpoint
+   */
+  normalizeUmmItem(item) {
+    return [legacyUmmCloudCover].reduce((normalized, fn) => ({ ...normalized, ...fn(item) }), item)
+  }
+
+  /**
    * Rename fields, add fields, modify fields, etc
    * @param {Object} item The item returned from the CMR json endpoint
    */
   normalizeJsonItem(item) {
     // Alias conceptId for consistency in responses
-    const {
-      id: conceptId,
-      links = []
-    } = item
+    const { id: conceptId, links = [] } = item
 
     // Rename (delete the id key and set the conceptId key) `id` for consistency
     // eslint-disable-next-line no-param-reassign
@@ -148,4 +153,28 @@ export default class Granule extends Concept {
 
     return item
   }
+}
+
+/**
+ * Return the CloudCover representation of CloudCover listed in `AdditionalAttributes`.
+ * @param {Object} item The item returned from the CMR umm_json endpoint
+ *
+ * @example
+ * { umm:
+ *   { AdditionalAttributes: [
+ *     { Name: "CLOUD_COVERAGE",
+ *       Values: [ "50.0" ]}]}}
+ */
+function legacyUmmCloudCover(item) {
+  const {
+    umm: { AdditionalAttributes: additionalAttributes = [] }
+  } = item
+
+  const cloudCoverAttr = additionalAttributes.find((attr) => attr.Name === 'CLOUD_COVERAGE')
+  if (!cloudCoverAttr) {
+    return {}
+  }
+
+  const cloudCoverValue = Number(cloudCoverAttr.Values[0])
+  return Number.isNaN(cloudCoverValue) ? {} : { CloudCover: cloudCoverValue }
 }
