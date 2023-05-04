@@ -1,6 +1,30 @@
 import { uniq } from 'lodash'
 import Concept from './concept'
 
+/**
+ * Return the CloudCover representation of CloudCover listed in `AdditionalAttributes`.
+ * @param {Object} item The item returned from the CMR umm_json endpoint
+ *
+ * @example
+ * { umm:
+ *   { AdditionalAttributes: [
+ *     { Name: "CLOUD_COVERAGE",
+ *       Values: [ "50.0" ]}]}}
+ */
+function legacyUmmCloudCover(item) {
+  const {
+    umm: { AdditionalAttributes: additionalAttributes = [] }
+  } = item
+
+  const cloudCoverAttr = additionalAttributes.find((attr) => attr.Name === 'CLOUD_COVERAGE')
+  if (!cloudCoverAttr) {
+    return {}
+  }
+
+  const cloudCoverValue = Number(cloudCoverAttr.Values[0])
+  return Number.isNaN(cloudCoverValue) ? {} : { CloudCover: cloudCoverValue }
+}
+
 export default class Granule extends Concept {
   /**
    * Instantiates a Granule object
@@ -153,28 +177,4 @@ export default class Granule extends Concept {
 
     return item
   }
-}
-
-/**
- * Return the CloudCover representation of CloudCover listed in `AdditionalAttributes`.
- * @param {Object} item The item returned from the CMR umm_json endpoint
- *
- * @example
- * { umm:
- *   { AdditionalAttributes: [
- *     { Name: "CLOUD_COVERAGE",
- *       Values: [ "50.0" ]}]}}
- */
-function legacyUmmCloudCover(item) {
-  const {
-    umm: { AdditionalAttributes: additionalAttributes = [] }
-  } = item
-
-  const cloudCoverAttr = additionalAttributes.find((attr) => attr.Name === 'CLOUD_COVERAGE')
-  if (!cloudCoverAttr) {
-    return {}
-  }
-
-  const cloudCoverValue = Number(cloudCoverAttr.Values[0])
-  return Number.isNaN(cloudCoverValue) ? {} : { CloudCover: cloudCoverValue }
 }
