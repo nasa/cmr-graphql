@@ -25,23 +25,24 @@ type VariableDraft {
   samplingIdentifiers: JSON
   "The scale is the numerical factor by which all values in the stored data field are multiplied in order to obtain the original values. May be used together with Offset. An example of a scale factor is '0.002'."
   scale: Float
-  "The set information of a variable. The variable is grouped within a set. The set is defined by the name, type, size and index. For example, Name: 'Data_Fields', Type: 'General', Size: '15', Index: '7' for the case of the variable named 'LST_Day_1km'."
-  sets: JSON
   "Controlled Science Keywords describing the collection. The controlled vocabulary for Science Keywords is maintained in the Keyword Management System (KMS)."
   scienceKeywords: JSON
+  "The set information of a variable. The variable is grouped within a set. The set is defined by the name, type, size and index. For example, Name: 'Data_Fields', Type: 'General', Size: '15', Index: '7' for the case of the variable named 'LST_Day_1km'."
+  sets: JSON
   "This is the more formal or scientific name, .e.g., the CF Standard Name."
   standardName: String
   "The units associated with a variable."
   units: String
   "Valid ranges of variable data values."
   validRanges: JSON
-  "Specify basic type of a variable."
-  variableType: String
   "Specifies the sub type of a variable."
   variableSubType: String
+  "Specify basic type of a variable."
+  variableType: String
 }
 
 input VariableDraftInput {
+  "The id of the variable draft"
   id: Int!
 }
 

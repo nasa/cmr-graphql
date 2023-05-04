@@ -86,6 +86,7 @@ type CollectionDraft {
 }
 
 input CollectionDraftInput {
+  "The id of the collection draft"
   id: Int!
 }
 
