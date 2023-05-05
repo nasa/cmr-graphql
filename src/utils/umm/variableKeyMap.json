@@ -5,19 +5,28 @@
     "name"
   ],
   "ummKeyMappings": {
+    "additionalIdentifiers": "umm.AdditionalIdentifiers",
     "associationDetails": "meta.association-details",
     "conceptId": "meta.concept-id",
     "dataType": "umm.DataType",
     "definition": "umm.Definition",
     "dimensions": "umm.Dimensions",
+    "fillValues": "umm.FillValues",
+    "indexRanges": "umm.indexRanges",
     "longName": "umm.LongName",
     "measurementIdentifiers": "umm.MeasurementIdentifiers",
     "name": "umm.Name",
     "nativeId": "meta.native-id",
     "offset": "umm.Offset",
+    "relatedUrls": "umm.RelatedURLs",
+    "samplingIdentifiers": "umm.SamplingIdentifiers",
     "scale": "umm.Scale",
     "scienceKeywords": "umm.ScienceKeywords",
+    "sets": "umm.Sets",
+    "standardName": "umm.StandardName",
     "units": "umm.Units",
+    "validRanges": "umm.ValidRanges",
+    "variableSubType": "umm.VariableSubType",
     "variableType": "umm.VariableType"
   }
 }

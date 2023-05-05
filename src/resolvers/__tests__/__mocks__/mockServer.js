@@ -20,6 +20,7 @@ import {
 } from '../../../datasources/subscription'
 import toolSource from '../../../datasources/tool'
 import toolDraftSource from '../../../datasources/toolDraft'
+import variableDraftSource from '../../../datasources/variableDraft'
 import variableSource from '../../../datasources/variable'
 
 export const server = new ApolloServer({
@@ -44,7 +45,8 @@ export const buildContextValue = (extraContext) => ({
     subscriptionSourceIngest,
     toolSource,
     toolDraftSource,
-    variableSource
+    variableSource,
+    variableDraftSource
   },
   headers: {
     'Client-Id': 'eed-test-graphql',

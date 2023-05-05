@@ -1,10 +1,6 @@
-type Variable {
+type VariableDraft {
   "Any additional identifiers of a variable."
   additionalIdentifiers: JSON
-  "The list of concepts and any data on the relationship between this variable and other permitted concepts"
-  associationDetails: JSON
-  "The unique concept id assigned to the variable."
-  conceptId: String!
   "Specify data type of a variable. These types can be either: uint8, uint16, etc."
   dataType: String
   "The definition of the variable."
@@ -21,8 +17,6 @@ type Variable {
   measurementIdentifiers: JSON
   "The name of a variable."
   name: String
-  "The native id of a variable."
-  nativeId: String
   "The offset is the value which is either added to or subtracted from all values in the stored data field in order to obtain the original values. May be used together with Scale. An example of an offset is '0.49'."
   offset: Float
   "A described URL associated with the a web resource, or interface. e.g., the home page for the variable provider."
@@ -45,66 +39,15 @@ type Variable {
   variableSubType: String
   "Specify basic type of a variable."
   variableType: String
-
-  collections (
-    "Collections query parameters"
-    params: CollectionsInput
-    "The unique concept id assigned to the service."
-    conceptId: [String] @deprecated(reason: "Use `params.conceptId`")
-    "The number of collections requested by the user."
-    limit: Int @deprecated(reason: "Use `params.limit`")
-    "Zero based offset of individual results."
-    offset: Int @deprecated(reason: "Use `params.offset`")
-  ): CollectionList
 }
 
-type VariableList {
-  "The number of hits for a given search."
-  count: Int
-  "Cursor that points to the a specific position in a list of requested records."
-  cursor: String
-  "The list of variable search results."
-  items: [Variable]
-}
-
-input VariablesInput {
-  "The unique concept id assigned to the variable."
-  conceptId: [String]
-  "Cursor that points to the/a specific position in a list of requested records."
-  cursor: String
-  "The number of variables requested by the user."
-  limit: Int
-  "The name of a variable."
-  name: String
-  "Zero based offset of individual results."
-  offset: Int
-}
-
-input VariableInput {
-  "The unique concept id assigned to the variable."
-  conceptId: String!
+input VariableDraftInput {
+  "The id of the variable draft"
+  id: Int!
 }
 
 type Query {
-  variables (
-    "Variables query parameters"
-    params: VariablesInput
-    "The unique concept id assigned to the variable."
-    conceptId: [String] @deprecated(reason: "Use `params.conceptId`")
-    "Cursor that points to the a specific position in a list of requested records."
-    cursor: String @deprecated(reason: "Use `params.cursor`")
-    "The number of variables requested by the user."
-    limit: Int @deprecated(reason: "Use `params.limit`")
-    "The name of a variable."
-    name: String @deprecated(reason: "Use `params.name`")
-    "Zero based offset of individual results."
-    offset: Int @deprecated(reason: "Use `params.offset`")
-  ): VariableList!
-
-  variable (
-    "Variable query parameters"
-    params: VariableInput
-    "The unique concept id assigned to the variable."
-    conceptId: String @deprecated(reason: "Use `params.conceptId`")
-  ): Variable
+  variableDraft (
+    params: VariableDraftInput
+  ): VariableDraft
 }

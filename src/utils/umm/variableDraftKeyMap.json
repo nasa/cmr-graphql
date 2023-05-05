@@ -1,0 +1,24 @@
+{
+  "ummKeyMappings": {
+    "additionalIdentifiers": "AdditionalIdentifiers",
+    "dataType": "DataType",
+    "definition": "Definition",
+    "dimensions": "Dimensions",
+    "fillValues": "FillValues",
+    "indexRanges": "IndexRanges",
+    "longName": "LongName",
+    "measurementIdentifiers": "MeasurementIdentifiers",
+    "name": "Name",
+    "offset": "Offset",
+    "relatedUrls": "RelatedURLs",
+    "samplingIdentifiers": "SamplingIdentifiers",
+    "scale": "Scale",
+    "scienceKeywords": "ScienceKeywords",
+    "sets": "Sets",
+    "standardName": "StandardName",
+    "units": "Units",
+    "validRanges": "ValidRanges",
+    "variableSubType": "VariableSubType",
+    "variableType": "VariableType"
+  }
+}
