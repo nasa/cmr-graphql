@@ -14,3 +14,10 @@ export const CONCEPT_TYPES = [
   'tools',
   'variables'
 ]
+
+/**
+ * List of supported pseudo fields, these fields aren't a real CMR concept, but are still supported by separate queries
+ */
+export const PSEUDO_FIELDS = [
+  'maxItemsPerOrder'
+]

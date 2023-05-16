@@ -5,7 +5,7 @@ import {
   upperFirst
 } from 'lodash'
 
-import { CONCEPT_TYPES } from '../constants'
+import { CONCEPT_TYPES, PSEUDO_FIELDS } from '../constants'
 
 /**
  * Construct an object defining UMM key information
@@ -149,6 +149,18 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
     }
   }
 
+  if (name === 'services') {
+    // If a user has requested collection, from within a subscriptions request the resolver
+    // will pull the collectionConceptId and provide it to the subscriptions request but if a user
+    // doesn't explicity ask for the collection concept id we need to request it
+    if (requestedFields.includes('maxItemsPerOrder') && !requestedFields.includes('providerId')) {
+      requestedFields.push('providerId')
+    }
+    if (requestedFields.includes('maxItemsPerOrder') && !requestedFields.includes('type')) {
+      requestedFields.push('type')
+    }
+  }
+
   const { sharedKeys = [], ummKeyMappings } = keyMap
 
   // Gather keys that the user requested that only exist in umm
@@ -168,8 +180,10 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
   }
 
   // Requested keys that are not UMM and not CONCEPT_TYPES keys must be json
-  const jsonKeys = requestedFields.filter((x) => (
-    !ummKeys.includes(x) && !CONCEPT_TYPES.includes(x)
+  const jsonKeys = requestedFields.filter((field) => (
+    !ummKeys.includes(field)
+    && !CONCEPT_TYPES.includes(field)
+    && !PSEUDO_FIELDS.includes(field)
   ))
 
   // If we already have to go to the json endpoint get as much info from there as possible
