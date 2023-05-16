@@ -150,9 +150,9 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
   }
 
   if (name === 'services') {
-    // If a user has requested collection, from within a subscriptions request the resolver
-    // will pull the collectionConceptId and provide it to the subscriptions request but if a user
-    // doesn't explicity ask for the collection concept id we need to request it
+    // If a user has requested maxItemsPerOrder, from within a service request the resolver
+    // will pull the providerId and type and provide it to the maxItemsPerOrder request but if a user
+    // doesn't explicity ask for those fields we need to request them
     if (requestedFields.includes('maxItemsPerOrder') && !requestedFields.includes('providerId')) {
       requestedFields.push('providerId')
     }
