@@ -47,7 +47,7 @@ export const mmtQuery = ({
     data: cmrParameters,
     headers: permittedHeaders,
     method: 'GET',
-    url: `${process.env.mmtRootUrl}/api/drafts/${id}?draft_type=${draftType}`
+    url: `${process.env.mmtRootUrl}/api/${draftType}/${id}`
   }
 
   // Interceptors require an instance of axios
