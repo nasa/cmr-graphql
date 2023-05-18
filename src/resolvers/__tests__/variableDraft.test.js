@@ -28,7 +28,7 @@ describe('Variable Draft', () => {
             .defaultReplyHeaders({
               'X-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .get(/api\/drafts/)
+            .get(/api\/variable_drafts/)
             .reply(200, {
               draft: {
                 StandardName: 'Mock Standard Name'

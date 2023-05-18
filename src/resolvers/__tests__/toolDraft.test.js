@@ -28,7 +28,7 @@ describe('Collection', () => {
             .defaultReplyHeaders({
               'X-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .get(/api\/drafts/)
+            .get(/api\/tool_drafts/)
             .reply(200, {
               draft: {
                 DOI: 'Mock doi'
@@ -62,7 +62,7 @@ describe('Collection', () => {
             .defaultReplyHeaders({
               'X-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .get(/api\/drafts/)
+            .get(/api\/tool_drafts/)
             .reply(200, {})
 
           const response = await server.executeOperation({
