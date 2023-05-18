@@ -91,10 +91,8 @@ export default class DraftConcept extends Concept {
       case 'variableDraft':
         draftType = 'variable_drafts'
         break
-      case 'collectionDraft':
-        draftType = 'collection_drafts'
-        break
       default:
+        draftType = 'collection_drafts'
         break
     }
     return draftType
