@@ -82,12 +82,29 @@ export default class DraftConcept extends Concept {
     }
   }
 
+  parseConceptType() {
+    let draftType
+    switch (this.getConceptType()) {
+      case 'toolDraft':
+        draftType = 'tool_drafts'
+        break
+      case 'variableDraft':
+        draftType = 'variable_drafts'
+        break
+      case 'collectionDraft':
+        draftType = 'collection_drafts'
+        break
+      default:
+        break
+    }
+    return draftType
+  }
+
   fetchUmm(searchParams, requestedKeys, providedHeaders) {
     this.logKeyRequest(requestedKeys, 'umm')
-
     // Construct the promise that will request data from the umm endpoint
     return mmtQuery({
-      draftType: this.getConceptType(),
+      draftType: this.parseConceptType(),
       params: pick(snakecaseKeys(searchParams), this.getPermittedUmmSearchParams()),
       nonIndexedKeys: this.getNonIndexedKeys(),
       headers: providedHeaders
