@@ -20,13 +20,13 @@ describe('mmtQuery', () => {
     const consoleMock = jest.spyOn(console, 'log').mockImplementation(() => jest.fn())
 
     nock(/example/)
-      .get(/api\/drafts/)
+      .get(/api\/collection_drafts/)
       .reply(200, {
         ShortName: 'Mock ShortName'
       })
 
     const response = await mmtQuery({
-      draftType: 'collectionDraft',
+      draftType: 'collection_drafts',
       params: {
         id: 123
       },
@@ -47,7 +47,7 @@ describe('mmtQuery', () => {
     })
 
     expect(consoleMock).toBeCalledWith(
-      `Request abcd-1234-efgh-5678 from eed-test-graphql to MMT [Draft Type: collectionDraft] completed external request in [observed: ${requestDuration} ms]`
+      `Request abcd-1234-efgh-5678 from eed-test-graphql to MMT [Draft Type: collection_drafts] completed external request in [observed: ${requestDuration} ms]`
     )
   })
 
@@ -60,13 +60,13 @@ describe('mmtQuery', () => {
           'X-Request-Id': 'abcd-1234-efgh-5678'
         }
       })
-        .get(/api\/drafts/)
+        .get(/api\/collection_drafts/)
         .reply(200, {
           ShortName: 'Mock ShortName'
         })
 
       const response = await mmtQuery({
-        draftType: 'collectionDraft',
+        draftType: 'collection_drafts',
         params: {},
         headers: {
           Authorization: 'test-token',
@@ -85,13 +85,13 @@ describe('mmtQuery', () => {
   describe('when an error is returned', () => {
     test('throws an exception', async () => {
       nock(/example/)
-        .get(/api\/drafts/)
+        .get(/api\/collection_drafts/)
         .reply(500, {
           errors: ['HTTP Error']
         })
 
       const response = mmtQuery({
-        draftType: 'collectionDraft',
+        draftType: 'collection_drafts',
         params: {},
         headers: {
           'Client-Id': 'eed-test-graphql',
