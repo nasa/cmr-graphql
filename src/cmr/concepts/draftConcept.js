@@ -84,7 +84,6 @@ export default class DraftConcept extends Concept {
 
   fetchUmm(searchParams, requestedKeys, providedHeaders) {
     this.logKeyRequest(requestedKeys, 'umm')
-
     // Construct the promise that will request data from the umm endpoint
     return mmtQuery({
       draftType: this.getConceptType(),

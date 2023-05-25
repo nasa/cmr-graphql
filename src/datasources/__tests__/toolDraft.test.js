@@ -49,7 +49,7 @@ describe('toolDraft', () => {
       .defaultReplyHeaders({
         'X-Request-Id': 'abcd-1234-efgh-5678'
       })
-      .get(/api\/drafts/)
+      .get(/api\/tool_drafts/)
       .reply(200, {
         draft: {
           LongName: 'Mock Long Name',
@@ -76,7 +76,7 @@ describe('toolDraft', () => {
 
   test('catches errors received from mmtQuery', async () => {
     nock(/example/)
-      .get(/api\/drafts/)
+      .get(/api\/tool_drafts/)
       .reply(500, {
         errors: ['HTTP Error']
       }, {
