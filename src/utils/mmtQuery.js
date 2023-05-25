@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { snakeCase } from 'lodash'
 
 import snakeCaseKeys from 'snakecase-keys'
 
@@ -47,7 +48,7 @@ export const mmtQuery = ({
     data: cmrParameters,
     headers: permittedHeaders,
     method: 'GET',
-    url: `${process.env.mmtRootUrl}/api/${draftType}/${id}`
+    url: `${process.env.mmtRootUrl}/api/${snakeCase(draftType)}s/${id}`
   }
 
   // Interceptors require an instance of axios
