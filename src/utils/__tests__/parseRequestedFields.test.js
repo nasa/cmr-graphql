@@ -495,4 +495,43 @@ describe('parseRequestedFields', () => {
       })
     })
   })
+
+  describe('when maxItemsPerOrder are requested from within a service without providerId and type', () => {
+    test('requestedFields includes conceptId', () => {
+      const requestInfo = {
+        name: 'services',
+        alias: 'services',
+        args: {},
+        fieldsByTypeName: {
+          ServiceList: {
+            items: {
+              name: 'items',
+              alias: 'items',
+              args: {},
+              fieldsByTypeName: {
+                Service: {
+                  maxItemsPerOrder: {
+                    name: 'maxItemsPerOrder',
+                    alias: 'maxItemsPerOrder',
+                    args: {},
+                    fieldsByTypeName: {}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      const requestedFields = parseRequestedFields(requestInfo, keyMap, 'service')
+
+      expect(requestedFields).toEqual({
+        jsonKeys: ['maxItemsPerOrder', 'providerId', 'type'],
+        metaKeys: [],
+        ummKeys: [],
+        ummKeyMappings,
+        isList: true
+      })
+    })
+  })
 })

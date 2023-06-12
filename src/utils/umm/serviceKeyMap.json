@@ -2,7 +2,8 @@
   "sharedKeys": [
     "conceptId",
     "longName",
-    "name"
+    "name",
+    "providerId"
   ],
   "ummKeyMappings": {
     "ancillaryKeywords": "umm.AncillaryKeywords",
@@ -14,6 +15,7 @@
     "longName": "umm.LongName",
     "name": "umm.Name",
     "nativeId": "meta.native-id",
+    "providerId": "meta.provider-id",
     "relatedUrls": "umm.RelatedURLs",
     "serviceKeywords": "umm.ServiceKeywords",
     "serviceOptions": "umm.ServiceOptions",

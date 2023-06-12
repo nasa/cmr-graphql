@@ -1033,5 +1033,133 @@ describe('Service', () => {
         })
       })
     })
+
+    describe('maxItemsPerOrder', () => {
+      test('returns the maxItemsPerOrder for ECHO ORDERS service types', async () => {
+        nock(/example/)
+          .defaultReplyHeaders({
+            'CMR-Hits': 1,
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .post(/services\.json/)
+          .reply(200, {
+            items: [{
+              concept_id: 'S100000-EDSC',
+              provider_id: 'mockProvider',
+              association_details: {
+                collections: [{
+                  data: {
+                    order_option: 'OO100000-EDSC'
+                  },
+                  concept_id: 'C100000-EDSC'
+                }]
+              }
+            }]
+          })
+          .post(/services\.umm_json/)
+          .reply(200, {
+            items: [{
+              meta: {
+                'concept-id': 'S100000-EDSC'
+              },
+              umm: {
+                Type: 'ECHO ORDERS'
+              }
+            }]
+          })
+          .post(/ordering\/api/)
+          .reply(200, {
+            data: {
+              maxItemsPerOrder: 2000
+            }
+          })
+
+        const response = await server.executeOperation({
+          variables: {},
+          query: `{
+            services {
+              items {
+                conceptId
+                maxItemsPerOrder
+              }
+            }
+          }`
+        }, {
+          contextValue
+        })
+
+        const { data } = response.body.singleResult
+
+        expect(data).toEqual({
+          services: {
+            items: [{
+              conceptId: 'S100000-EDSC',
+              maxItemsPerOrder: 2000
+            }]
+          }
+        })
+      })
+
+      test('returns null for maxItemsPerOrder for non ECHO ORDERS service types', async () => {
+        nock(/example/)
+          .defaultReplyHeaders({
+            'CMR-Hits': 1,
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .post(/services\.json/)
+          .reply(200, {
+            items: [{
+              concept_id: 'S100000-EDSC',
+              provider_id: 'mockProvider',
+              association_details: {
+                collections: [{
+                  data: {
+                    order_option: 'OO100000-EDSC'
+                  },
+                  concept_id: 'C100000-EDSC'
+                }]
+              }
+            }]
+          })
+          .post(/services\.umm_json/)
+          .reply(200, {
+            items: [{
+              meta: {
+                'concept-id': 'S100000-EDSC'
+              },
+              umm: {
+                Type: 'ESI'
+              }
+            }]
+          })
+
+        const response = await server.executeOperation({
+          variables: {},
+          query: `{
+            services {
+              items {
+                conceptId
+                maxItemsPerOrder
+              }
+            }
+          }`
+        }, {
+          contextValue
+        })
+
+        const { data } = response.body.singleResult
+
+        expect(data).toEqual({
+          services: {
+            items: [{
+              conceptId: 'S100000-EDSC',
+              maxItemsPerOrder: null
+            }]
+          }
+        })
+      })
+    })
   })
 })

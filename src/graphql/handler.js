@@ -18,12 +18,13 @@ import granuleSource from '../datasources/granule'
 import graphDbDuplicateCollectionsSource from '../datasources/graphDbDuplicateCollections'
 import graphDbSource from '../datasources/graphDb'
 import gridSource from '../datasources/grid'
+import maxItemsPerOrderSource from '../datasources/maxItemsPerOrder'
+import orderOptionSource from '../datasources/orderOption'
 import serviceSource from '../datasources/service'
 import toolDraftSource from '../datasources/toolDraft'
 import toolSource from '../datasources/tool'
 import variableSource from '../datasources/variable'
 import variableDraftSource from '../datasources/variableDraft'
-import orderOptionSource from '../datasources/orderOption'
 
 import {
   deleteSubscription as subscriptionSourceDelete,
@@ -107,6 +108,7 @@ export default startServerAndCreateLambdaHandler(
           granuleSource,
           graphDbDuplicateCollectionsSource,
           graphDbSource,
+          maxItemsPerOrderSource,
           orderOptionSource,
           serviceSource,
           subscriptionSourceDelete,

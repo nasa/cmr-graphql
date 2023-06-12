@@ -86,6 +86,15 @@ export default {
         conceptId: orderOptionConceptIds,
         ...handlePagingParams(args, orderOptionConceptIds.length)
       }, context, parseResolveInfo(info))
+    },
+    maxItemsPerOrder: async (source, args, context) => {
+      const { providerId, type } = source
+
+      if (type !== 'ECHO ORDERS') return null
+
+      // Fetch the maxItemsPerOrder from cmr-ordering
+      const { dataSources } = context
+      return dataSources.maxItemsPerOrderSource({ providerId }, context)
     }
   }
 }

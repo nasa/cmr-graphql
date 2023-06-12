@@ -11,6 +11,7 @@ import granuleSource from '../../../datasources/granule'
 import graphDbSource from '../../../datasources/graphDb'
 import graphDbDuplicateCollectionsSource from '../../../datasources/graphDbDuplicateCollections'
 import gridSource from '../../../datasources/grid'
+import maxItemsPerOrderSource from '../../../datasources/maxItemsPerOrder'
 import orderOptionSource from '../../../datasources/orderOption'
 import serviceSource from '../../../datasources/service'
 import {
@@ -38,6 +39,7 @@ export const buildContextValue = (extraContext) => ({
     graphDbDuplicateCollectionsSource,
     graphDbSource,
     gridSource,
+    maxItemsPerOrderSource,
     orderOptionSource,
     serviceSource,
     subscriptionSourceDelete,
