@@ -32,7 +32,8 @@ export const mmtQuery = ({
     'Accept',
     'Authorization',
     'Client-Id',
-    'X-Request-Id'
+    'X-Request-Id',
+    'User'
   ])
 
   const cmrParameters = prepKeysForCmr(snakeCaseKeys(params), nonIndexedKeys)
