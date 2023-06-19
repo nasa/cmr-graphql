@@ -98,6 +98,8 @@ export default startServerAndCreateLambdaHandler(
         `eed-${process.env.stage}-graphql`
       ].filter(Boolean).join('-')
 
+      requestHeaders.User = context.edlUsername
+
       return {
         ...context,
         dataSources: {
