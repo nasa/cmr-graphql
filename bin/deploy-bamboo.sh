@@ -12,7 +12,7 @@ node_modules
 EOF
 
 cat <<EOF > Dockerfile
-FROM node:14.18
+FROM node:18
 COPY . /build
 WORKDIR /build
 RUN npm ci --production
