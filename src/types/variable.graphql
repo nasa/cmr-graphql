@@ -15,6 +15,8 @@ type Variable {
   fillValues: JSON
   "This element describes the x and y dimension ranges for this variable. Typically these values are 2 latitude and longitude ranges, but they don't necessarily have to be."
   indexRanges: JSON
+  "Describes a store (zarr) where a variable has been separated from its original data files and saved as its own entity."
+  instanceInformation: JSON
   "The expanded or long name related to the variable Name."
   longName: String
   "The measurement information of a variable."
