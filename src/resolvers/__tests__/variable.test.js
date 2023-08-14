@@ -44,16 +44,25 @@ describe('Variable', () => {
               }
             },
             umm: {
+              AdditionalIdentifiers: [],
               DataType: 'Dolor Nullam Venenatis',
               Definition: 'Cras mattis consectetur purus sit amet fermentum.',
               Dimensions: {},
+              FillValues: [],
+              IndexRanges: {},
+              InstanceInformation: {},
               LongName: 'Vehicula Aenean Lorem',
               MeasurementIdentifiers: [],
               Name: 'Vehicula',
               Offset: 1.234,
+              RelatedURLs: [],
               Scale: 1.234,
               ScienceKeywords: [],
+              Sets: [],
+              StandardName: 'all values standard name',
               Units: 'K',
+              ValidRanges: {},
+              VariableSubType: 'SCIENCE_SCALAR',
               VariableType: 'Malesuada'
             }
           }]
@@ -65,19 +74,28 @@ describe('Variable', () => {
           variables {
             count
             items {
+              additionalIdentifiers
               associationDetails
               conceptId
               dataType
               definition
               dimensions
+              fillValues
+              indexRanges
+              instanceInformation
               longName
               measurementIdentifiers
               name
               nativeId
               offset
+              relatedUrls
               scale
               scienceKeywords
+              sets
+              standardName
               units
+              validRanges
+              variableSubType
               variableType
             }
           }
@@ -92,6 +110,7 @@ describe('Variable', () => {
         variables: {
           count: 1,
           items: [{
+            additionalIdentifiers: [],
             associationDetails: {
               collections: [
                 {
@@ -103,14 +122,22 @@ describe('Variable', () => {
             dataType: 'Dolor Nullam Venenatis',
             definition: 'Cras mattis consectetur purus sit amet fermentum.',
             dimensions: {},
+            fillValues: [],
+            indexRanges: {},
+            instanceInformation: {},
             longName: 'Vehicula Aenean Lorem',
             measurementIdentifiers: [],
             name: 'Vehicula',
             nativeId: 'test-guid',
             offset: 1.234,
+            relatedUrls: [],
             scale: 1.234,
             scienceKeywords: [],
+            sets: [],
+            standardName: 'all values standard name',
             units: 'K',
+            validRanges: {},
+            variableSubType: 'SCIENCE_SCALAR',
             variableType: 'Malesuada'
           }]
         }
