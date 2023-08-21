@@ -14,6 +14,7 @@ import gridSource from '../../../datasources/grid'
 import maxItemsPerOrderSource from '../../../datasources/maxItemsPerOrder'
 import orderOptionSource from '../../../datasources/orderOption'
 import serviceSource from '../../../datasources/service'
+import serviceDraftSource from '../../../datasources/serviceDraft'
 import {
   deleteSubscription as subscriptionSourceDelete,
   fetchSubscription as subscriptionSourceFetch,
@@ -42,6 +43,7 @@ export const buildContextValue = (extraContext) => ({
     maxItemsPerOrderSource,
     orderOptionSource,
     serviceSource,
+    serviceDraftSource,
     subscriptionSourceDelete,
     subscriptionSourceFetch,
     subscriptionSourceIngest,
