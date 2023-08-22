@@ -10,7 +10,7 @@ export default async (params, context, parsedInfo) => {
 
   const serviceDraft = new DraftConcept(headers, requestInfo, params, 'serviceDraft')
 
-  // Query MMY
+  // Query MMT
   serviceDraft.fetch(params)
 
   // Parse the response from MMT
