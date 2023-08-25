@@ -13,6 +13,7 @@
     "dimensions": "umm.Dimensions",
     "fillValues": "umm.FillValues",
     "indexRanges": "umm.IndexRanges",
+    "instanceInformation": "umm.InstanceInformation",
     "longName": "umm.LongName",
     "measurementIdentifiers": "umm.MeasurementIdentifiers",
     "name": "umm.Name",

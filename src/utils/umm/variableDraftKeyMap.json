@@ -6,6 +6,7 @@
     "dimensions": "Dimensions",
     "fillValues": "FillValues",
     "indexRanges": "IndexRanges",
+    "instanceInformation": "InstanceInformation",
     "longName": "LongName",
     "measurementIdentifiers": "MeasurementIdentifiers",
     "name": "Name",

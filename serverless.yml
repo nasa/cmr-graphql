@@ -31,7 +31,7 @@ provider:
     ummServiceVersion: '1.5.1'
     ummSubscriptionVersion: '1.1'
     ummToolVersion: '1.1'
-    ummVariableVersion: '1.8.1'
+    ummVariableVersion: '1.9.0'
 
   vpc:
     securityGroupIds:
