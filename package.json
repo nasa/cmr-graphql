@@ -40,6 +40,7 @@
     "jest-junit": "^15.0.0",
     "jest-transform-graphql": "^2.1.0",
     "nock": "^13.3.0",
+    "serverless-python-requirements": "^6.0.0",
     "snyk": "^1.1109.0"
   },
   "dependencies": {
@@ -52,6 +53,7 @@
     "@edsc/eslint-config": "^0.0.5",
     "@graphql-tools/merge": "^8.2.10",
     "@graphql-tools/schema": "^8.5.1",
+    "@apollo/datasource-rest": "^4.3.2",
     "array-foreach-async": "^1.0.1",
     "axios": "^0.21.4",
     "babel-loader": "^8.3.0",

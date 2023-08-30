@@ -53,7 +53,8 @@ plugins:
   - serverless-webpack
   - serverless-offline
   - serverless-plugin-log-subscription
-
+  - serverless-python-requirements
+  
 functions:
   graphql:
     handler: src/graphql/handler.default
@@ -94,6 +95,16 @@ functions:
                     "${self:provider.region}/graphql_apigw/"
                   ]
                 ]
+
+  earthdataVarinfo:
+    runtime: python3.9
+    handler: src/earthdataVarinfo/handler.default
+    timeout: ${env:LAMBDA_TIMEOUT, '30'}
+    events:
+    - http:
+        path: earthdataVarinfo
+        method: get
+        cors: true
 
 resources:
   Resources:
@@ -181,3 +192,7 @@ custom:
   logSubscription:
     enabled: true
     destinationArn: ${env:LOG_DESTINATION_ARN, ''}
+
+  # Compile Python modules on docker only on non-linux environments
+  pythonRequirements:
+    dockerizePip: non-linux
