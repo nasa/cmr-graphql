@@ -39,6 +39,15 @@ type VariableDraft {
   variableSubType: String
   "Specify basic type of a variable."
   variableType: String
+  "Metadata Specification"
+  metadataSpecification: JSON
+}
+
+type VariableDraftList {
+  "The number of variable drafts."
+  count: Int
+  "The list of variable drafts."
+  items: [VariableDraft]
 }
 
 input VariableDraftInput {

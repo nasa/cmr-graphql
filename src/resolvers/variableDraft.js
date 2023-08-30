@@ -11,5 +11,10 @@ export default {
 
       return firstResult
     }
+  },
+
+  VariableDraftList: {
+    count: (source) => Object.keys(source).length,
+    items: (source) => source
   }
 }

@@ -25,6 +25,7 @@ import toolDraftSource from '../datasources/toolDraft'
 import toolSource from '../datasources/tool'
 import variableSource from '../datasources/variable'
 import variableDraftSource from '../datasources/variableDraft'
+import { GenerateCollectionVariablesAPI } from '../datasources/GenerateCollectionVariablesAPI'
 
 import {
   deleteSubscription as subscriptionSourceDelete,
@@ -51,6 +52,8 @@ export default startServerAndCreateLambdaHandler(
   {
     context: async ({ event }) => {
       const { body, headers } = event
+
+      const { Host } = headers
 
       const { operationName } = JSON.parse(body)
 
@@ -107,6 +110,7 @@ export default startServerAndCreateLambdaHandler(
           collectionDraftSource,
           collectionSource,
           dataQualitySummarySource,
+          generateCollectionVariablesApi: new GenerateCollectionVariablesAPI(Host, bearerToken),
           granuleSource,
           graphDbDuplicateCollectionsSource,
           graphDbSource,
