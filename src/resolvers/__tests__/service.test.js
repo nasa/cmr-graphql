@@ -326,6 +326,62 @@ describe('Service', () => {
     })
   })
 
+  describe('when variable associations are not present in the metadata', () => {
+    test('queries for and returns variables', async () => {
+      nock(/example/)
+        .defaultReplyHeaders({
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .post(/services\.json/)
+        .reply(200, {
+          items: [{
+            concept_id: 'S100000-EDSC',
+            association_details: {
+              variables: null
+            }
+          }, {
+            concept_id: 'S100001-EDSC',
+            association_details: {
+              variables: null
+            }
+          }]
+        })
+
+      const response = await server.executeOperation({
+        variables: {},
+        query: `{
+          services {
+            items {
+              conceptId
+              variables {
+                items {
+                  conceptId
+                }
+              }
+            }
+          }
+        }`
+      }, {
+        contextValue
+      })
+
+      const { data } = response.body.singleResult
+
+      expect(data).toEqual({
+        services: {
+          items: [{
+            conceptId: 'S100000-EDSC',
+            variables: null
+          }, {
+            conceptId: 'S100001-EDSC',
+            variables: null
+          }]
+        }
+      })
+    })
+  })
+
   describe('Service', () => {
     test('collections', async () => {
       nock(/example/)
