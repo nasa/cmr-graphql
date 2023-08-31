@@ -87,6 +87,29 @@ export default {
         ...handlePagingParams(args, orderOptionConceptIds.length)
       }, context, parseResolveInfo(info))
     },
+    variables: async (source, args, context, info) => {
+      const {
+        associationDetails = {}
+      } = source
+
+      const { dataSources } = context
+
+      const { variables = [] } = associationDetails
+
+      const variableConceptIds = variables.map(({ conceptId }) => conceptId)
+
+      if (!variables.length) {
+        return {
+          count: 0,
+          items: null
+        }
+      }
+
+      return dataSources.variableSource({
+        conceptId: variableConceptIds,
+        ...handlePagingParams(args, variables.length)
+      }, context, parseResolveInfo(info))
+    },
     maxItemsPerOrder: async (source, args, context) => {
       const { providerId, type } = source
 
