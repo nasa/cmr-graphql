@@ -143,7 +143,7 @@ describe('ServiceDraft', () => {
             .defaultReplyHeaders({
               'X-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .get(/api\/tool_drafts/)
+            .get(/api\/service_drafts/)
             .reply(200, {})
           const response = await server.executeOperation({
             variables: {},
@@ -159,7 +159,9 @@ describe('ServiceDraft', () => {
           const { data } = response.body.singleResult
 
           expect(data).toEqual({
-            serviceDraft: null
+            serviceDraft: {
+              name: null
+            }
           })
         })
       })
