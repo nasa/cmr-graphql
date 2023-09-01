@@ -1809,26 +1809,26 @@ describe('Collection', () => {
         nock(/localhost/)
           .get(/earthdataVarinfo/)
           .reply(200, [
-              {
-                  "Name": "Grid/time",
-                  "LongName": "Grid/time",
-                  "StandardName": "time",
-                  "Definition": "Grid/time",
-                  "DataType": "int32",
-                  "Dimensions": [
-                      {
-                          "Name": "Grid/time",
-                          "Size": 1,
-                          "Type": "TIME_DIMENSION"
-                      }
-                  ],
-                  "Units": "seconds since 1970-01-01 00:00:00 UTC",
-                  "MetadataSpecification": {
-                      "URL": "https://cdn.earthdata.nasa.gov/umm/variable/v1.8.2",
-                      "Name": "UMM-Var",
-                      "Version": "1.8.2"
-                  }
+            {
+              Name: 'Grid/time',
+              LongName: 'Grid/time',
+              StandardName: 'time',
+              Definition: 'Grid/time',
+              DataType: 'int32',
+              Dimensions: [
+                {
+                  Name: 'Grid/time',
+                  Size: 1,
+                  Type: 'TIME_DIMENSION'
+                }
+              ],
+              Units: 'seconds since 1970-01-01 00:00:00 UTC',
+              MetadataSpecification: {
+                URL: 'https://cdn.earthdata.nasa.gov/umm/variable/v1.8.2',
+                Name: 'UMM-Var',
+                Version: '1.8.2'
               }
+            }
           ])
 
         const response = await server.executeOperation({
@@ -1860,7 +1860,19 @@ describe('Collection', () => {
         })
 
         const { data } = response.body.singleResult
-        const results = {"collections": {"items": [{"conceptId": "C1200400842-GHRC", "generateVariableDrafts": {"count": 1, "items": [{"dataType": "int32", "definition": "Grid/time", "dimensions": [{"Name": "Grid/time", "Size": 1, "Type": "TIME_DIMENSION"}], "longName": "Grid/time", "metadataSpecification": {"Name": "UMM-Var", "URL": "https://cdn.earthdata.nasa.gov/umm/variable/v1.8.2", "Version": "1.8.2"}, "name": "Grid/time", "standardName": "time", "units": "seconds since 1970-01-01 00:00:00 UTC"}]}}]}}
+        const results = {
+          collections: {
+            items: [{
+              conceptId: 'C1200400842-GHRC',
+              generateVariableDrafts: {
+                count: 1,
+                items: [{
+                  dataType: 'int32', definition: 'Grid/time', dimensions: [{ Name: 'Grid/time', Size: 1, Type: 'TIME_DIMENSION' }], longName: 'Grid/time', metadataSpecification: { Name: 'UMM-Var', URL: 'https://cdn.earthdata.nasa.gov/umm/variable/v1.8.2', Version: '1.8.2' }, name: 'Grid/time', standardName: 'time', units: 'seconds since 1970-01-01 00:00:00 UTC'
+                }]
+              }
+            }]
+          }
+        }
 
         expect(data).toEqual(results)
       })
