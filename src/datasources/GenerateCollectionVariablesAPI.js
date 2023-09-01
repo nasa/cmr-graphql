@@ -27,12 +27,12 @@ export class GenerateCollectionVariablesAPI extends RESTDataSource {
   }
 
   willSendRequest(request) {
-    // Set the headers for the request
+    // set the headers for the request
     request.headers.authorization = this.token
   }
 
   async generateVariables(collectionConceptId) {
-    // fetch collections from earthdata-varinfo lambda
+    // generate variables from earthdata-varinfo lambda
     const results = await this.get(`earthdataVarinfo/?collection_concept_id=${collectionConceptId}`)
 
     return this.formatResults(results)

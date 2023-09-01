@@ -23,6 +23,7 @@ import toolSource from '../../../datasources/tool'
 import toolDraftSource from '../../../datasources/toolDraft'
 import variableDraftSource from '../../../datasources/variableDraft'
 import variableSource from '../../../datasources/variable'
+import { GenerateCollectionVariablesAPI } from '../../../datasources/GenerateCollectionVariablesAPI'
 
 export const server = new ApolloServer({
   typeDefs,
@@ -35,6 +36,7 @@ export const buildContextValue = (extraContext) => ({
     collectionDraftSource,
     collectionDraftProposalSource,
     dataQualitySummarySource,
+    generateCollectionVariablesApi: new GenerateCollectionVariablesAPI('localhost', 'testtoken'),
     granuleSource,
     graphDbDuplicateCollectionsSource,
     graphDbSource,
