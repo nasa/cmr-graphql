@@ -382,6 +382,50 @@ describe('Service', () => {
     })
   })
 
+  describe('when no variable associations are provided', () => {
+    test('returns empty variables', async () => {
+      const response = await server.executeOperation({
+        variables: {},
+        query: `{
+          services {
+            items {
+              conceptId
+              variables {
+                count
+                items
+              }
+            }
+          }
+        }`
+      }, {
+        contextValue
+      })
+
+      const { data } = response.body.singleResult
+
+      expect(data).toEqual({
+        services: {
+          items: [
+            {
+              conceptId: 'S100000-EDSC',
+              variables: {
+                count: 0,
+                items: null
+              }
+            },
+            {
+              conceptId: 'S100001-EDSC',
+              variables: {
+                count: 0,
+                items: null
+              }
+            }
+          ]
+        }
+      })
+    })
+  })
+
   describe('Service', () => {
     test('collections', async () => {
       nock(/example/)
