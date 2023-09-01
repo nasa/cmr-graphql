@@ -6,6 +6,7 @@ import collectionResolver from './collection'
 import granuleResolver from './granule'
 import gridResolver from './grid'
 import serviceResolver from './service'
+import serviceDraftResolver from './serviceDraft'
 import subscriptionResolver from './subscription'
 import toolDraftResolver from './toolDraft'
 import toolResolver from './tool'
@@ -23,6 +24,7 @@ const resolvers = [
   gridResolver,
   orderOptionResolver,
   serviceResolver,
+  serviceDraftResolver,
   subscriptionResolver,
   toolDraftResolver,
   toolResolver,

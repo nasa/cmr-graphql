@@ -1,5 +1,7 @@
 type Service {
-  "Words or phrases to further describe the service."
+  "Information about any constraints for accessing the service, software, or tool."
+  accessConstraints: String
+  "Words or phrases to further describe the service, software, or tool."
   ancillaryKeywords: [String]
   "The list of concepts and any data on the relationship between this service and other permitted concepts"
   associationDetails: JSON
@@ -11,6 +13,8 @@ type Service {
   contactPersons: JSON
   "A brief description of the service."
   description: String
+  "This element describes the latest date when the service was most recently pushed to production for support and maintenance."
+  lastUpdatedDate: String
   "The long name of the service, software, or tool."
   longName: String
   "The maximum number of items permitted in a single order. Only for services that are type ECHO ORDERS."
@@ -19,15 +23,17 @@ type Service {
   name: String
   "The native id to set on the service."
   nativeId: String!
+  "This class describes the signature of the operational metadata provided by the service."
+  operationMetadata: JSON
   "Provider ID of the service."
   providerId: String
-  "This element contains important information about the universal resource locator (URL) for the service."
+  "Web addresses used to get supported documentation or other related information link to the service."
   relatedUrls: JSON
-  "Allows for the specification of Earth Science Service keywords that are representative of the service."
+  "Allows for the specification of Earth Science Service keywords that are representative of the service, software, or tool being described. The controlled vocabulary for Service Keywords is maintained in the Keyword Management System (KMS)."
   serviceKeywords: JSON
-  "Service options, data transformations and output formats."
+  "This element contains important information about the Unique Resource Locator for the service."
   serviceOptions: JSON
-  "The service provider, or organization, or institution responsible for developing, archiving, and/or distributing the service."
+  "The service provider, or organization, or institution responsible for developing, archiving, and/or distributing the service, software, or tool."
   serviceOrganizations: JSON
   "List of input projection names supported by the service."
   supportedInputProjections: JSON

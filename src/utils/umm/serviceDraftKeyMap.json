@@ -1,0 +1,23 @@
+{
+  "ummKeyMappings": {
+    "accessConstraints": "AccessConstraints",
+    "ancillaryKeywords": "AncillaryKeywords",
+    "contactGroups": "ContactGroups",
+    "contactPersons": "ContactPersons",
+    "description": "Description",
+    "lastUpdatedDate": "LastUpdatedDate",
+    "longName": "LongName",
+    "name": "Name",
+    "operationMetadata": "OperationMetadata",
+    "relatedUrls": "RelatedURLs",
+    "serviceKeywords": "ServiceKeywords",
+    "serviceOptions": "ServiceOptions",
+    "serviceOrganizations": "ServiceOrganizations",
+    "serviceQuality": "ServiceQuality",
+    "type": "Type",
+    "url": "URL",
+    "useConstraints": "UseConstraints",
+    "version": "Version",
+    "versionDescription": "VersionDescription"
+  }
+}
