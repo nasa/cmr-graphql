@@ -1,12 +1,13 @@
 import { RESTDataSource } from '@apollo/datasource-rest'
 import { camelCase, mapKeys } from 'lodash'
 
-export class GenerateCollectionVariablesAPI extends RESTDataSource {
+export class CollectionVariableDrafts extends RESTDataSource {
   constructor(host, token) {
     super()
-    this.baseURL = `http://${host}`
-    if (this.baseURL.includes('localhost')) {
-      this.baseURL += '/dev'
+    if (host.includes('localhost')) {
+      this.baseURL = `http://${host}/dev`
+    } else {
+      this.baseURL = `https://${host}`
     }
     this.token = token
   }
@@ -20,9 +21,7 @@ export class GenerateCollectionVariablesAPI extends RESTDataSource {
       const mappedKeys = mapKeys(variable, (value, key) => camelCase(key))
 
       // return the mappedKeys along with a conceptId key
-      return {
-        ...mappedKeys
-      }
+      return mappedKeys
     })
   }
 

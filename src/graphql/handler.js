@@ -25,7 +25,7 @@ import toolDraftSource from '../datasources/toolDraft'
 import toolSource from '../datasources/tool'
 import variableSource from '../datasources/variable'
 import variableDraftSource from '../datasources/variableDraft'
-import { GenerateCollectionVariablesAPI } from '../datasources/GenerateCollectionVariablesAPI'
+import { CollectionVariableDrafts } from '../datasources/CollectionVariableDrafts'
 
 import {
   deleteSubscription as subscriptionSourceDelete,
@@ -53,6 +53,9 @@ export default startServerAndCreateLambdaHandler(
     context: async ({ event }) => {
       const { body, headers } = event
 
+      // Host where cmr-graphQL is currently running from. This will be used
+      // by the CollectionVariableDrafts class to figure out where to call
+      // the earthdata-varinfo lambda from.
       const { Host } = headers
 
       const { operationName } = JSON.parse(body)
@@ -110,7 +113,7 @@ export default startServerAndCreateLambdaHandler(
           collectionDraftSource,
           collectionSource,
           dataQualitySummarySource,
-          generateCollectionVariablesApi: new GenerateCollectionVariablesAPI(Host, bearerToken),
+          collectionVariableDraftsSource: new CollectionVariableDrafts(Host, bearerToken),
           granuleSource,
           graphDbDuplicateCollectionsSource,
           graphDbSource,

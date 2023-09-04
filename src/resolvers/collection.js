@@ -84,12 +84,9 @@ export default {
 
       const { dataSources } = context
 
-      const { generateCollectionVariablesApi } = dataSources
+      const { collectionVariableDraftsSource } = dataSources
 
-      const variableDrafts = await generateCollectionVariablesApi
-        .generateVariables(conceptId)
-
-      return variableDrafts
+      return collectionVariableDraftsSource.generateVariables(conceptId)
     },
     dataQualitySummaries: async (source, args, context, info) => {
       const {

@@ -1,6 +1,6 @@
 import nock from 'nock'
 
-import { GenerateCollectionVariablesAPI } from '../GenerateCollectionVariablesAPI'
+import { CollectionVariableDrafts } from '../CollectionVariableDrafts'
 
 describe('generateVariables', () => {
   describe('with localhost', () => {
@@ -93,8 +93,8 @@ describe('generateVariables', () => {
           }
         ])
 
-      const generateCollectionVariablesAPI = new GenerateCollectionVariablesAPI('localhost', 'testtoken')
-      const variableDrafts = await generateCollectionVariablesAPI.generateVariables('C1234-TEST')
+      const collectionVariableDraftSource = new CollectionVariableDrafts('localhost', 'testtoken')
+      const variableDrafts = await collectionVariableDraftSource.generateVariables('C1234-TEST')
       expect(variableDrafts).toStrictEqual(variableList)
     })
   })
@@ -148,8 +148,8 @@ describe('generateVariables', () => {
           }
         ])
 
-      const generateCollectionVariablesAPI = new GenerateCollectionVariablesAPI('earthdata', 'testtoken')
-      const variableDrafts = await generateCollectionVariablesAPI.generateVariables('C1234-TEST')
+      const collectionVariableDraftSource = new CollectionVariableDrafts('earthdata', 'testtoken')
+      const variableDrafts = await collectionVariableDraftSource.generateVariables('C1234-TEST')
       expect(variableDrafts).toStrictEqual(variableList)
     })
   })

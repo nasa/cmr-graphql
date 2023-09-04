@@ -10,19 +10,15 @@ from varinfo.umm_var import export_all_umm_var_to_json, get_all_umm_var
 
 
 def default(event, context):
-  print('Calling earthdata-varinfo lambda')
-  # print(json.dumps(event, indent=4))
   # Get authorization token from header
   headers = event['headers']
   if 'authorization' in headers:
     token = headers['authorization'] 
-    # print('Token in python lambda:'+token)
 
   # Get collectionConceptId from the query parameters
   query_string_parameters = event['queryStringParameters']
   if query_string_parameters != None and 'collection_concept_id' in query_string_parameters:
     collection_concept_id = query_string_parameters['collection_concept_id']
-    # print('collection_concept_id:'+collectionConceptId)
 
   # Setup CMR search url from cmrRootUrl
   cmr_url = os.environ['cmrRootUrl']+'/search/'
@@ -35,14 +31,12 @@ def default(event, context):
 
     # Get the URL for the first granule (NetCDF-4 file):
     granule_link = get_granule_link(granules)
-    print('Downloading granule from '+granule_link)
 
     # Make a temporary directory (this may cause permission issues?):
     temp_dir = mkdtemp()
 
     # Download file to lambda runtime environment
     local_granule = download_granule(granule_link, token, out_directory=temp_dir)
-    print('Downloaded!')
 
     # Parse the granule with VarInfo:
     var_info = VarInfoFromNetCDF4(local_granule)
