@@ -20,7 +20,7 @@ export class CollectionVariableDrafts extends RESTDataSource {
       // rename each collection's object keys with the camelCased version of the key
       const mappedKeys = mapKeys(variable, (value, key) => camelCase(key))
 
-      // return the mappedKeys along with a conceptId key
+      // return the mappedKeys
       return mappedKeys
     })
   }
