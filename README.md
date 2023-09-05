@@ -698,66 +698,66 @@ CMR-GraphQL queries an earthdata-varinfo lambda in order to generate collection 
 
 ##### Example Queries
 
-query Collection($params: CollectionInput) {
-  collection(params: $params) {
-    conceptId
-    generateVariableDrafts {
-      count
-      items {
-        dataType
-        definition
-        dimensions
-        longName
-        name
-        standardName
-        units
-        metadataSpecification
+    query Collection($params: CollectionInput) {
+      collection(params: $params) {
+        conceptId
+        generateVariableDrafts {
+          count
+          items {
+            dataType
+            definition
+            dimensions
+            longName
+            name
+            standardName
+            units
+            metadataSpecification
+          }
+        }
       }
     }
-  }
-}
 
-variables:
-{
-  "params": {
-    "conceptId": "C1598621093-GES_DISC"
-  }
-}
+    variables:
+    {
+      "params": {
+        "conceptId": "C1598621093-GES_DISC"
+      }
+    }
 
 ##### Example Response
 
- {
-  "data": {
-    "collection": {
-      "conceptId": "C1598621093-GES_DISC",
-      "generateVariableDrafts": {
-        "count": 16,
-        "items": [
-          {
-            "dataType": "int32",
-            "definition": "Grid/time",
-            "dimensions": [
+     {
+      "data": {
+        "collection": {
+          "conceptId": "C1598621093-GES_DISC",
+          "generateVariableDrafts": {
+            "count": 16,
+            "items": [
               {
-                "Name": "Grid/time",
-                "Size": 1,
-                "Type": "TIME_DIMENSION"
+                "dataType": "int32",
+                "definition": "Grid/time",
+                "dimensions": [
+                  {
+                    "Name": "Grid/time",
+                    "Size": 1,
+                    "Type": "TIME_DIMENSION"
+                  }
+                ],
+                "longName": "Grid/time",
+                "name": "Grid/time",
+                "standardName": "time",
+                "units": "seconds since 1970-01-01 00:00:00 UTC",
+                "metadataSpecification": {
+                  "URL": "https://cdn.earthdata.nasa.gov/umm/variable/v1.8.2",
+                  "Name": "UMM-Var",
+                  "Version": "1.8.2"
+                }
               }
-            ],
-            "longName": "Grid/time",
-            "name": "Grid/time",
-            "standardName": "time",
-            "units": "seconds since 1970-01-01 00:00:00 UTC",
-            "metadataSpecification": {
-              "URL": "https://cdn.earthdata.nasa.gov/umm/variable/v1.8.2",
-              "Name": "UMM-Var",
-              "Version": "1.8.2"
-            }
+            ]
           }
-        ]
+        }
       }
     }
-  }
-}
 
 #### Local graph database:
 
