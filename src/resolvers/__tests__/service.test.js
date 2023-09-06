@@ -230,7 +230,7 @@ describe('Service', () => {
     })
   })
 
-  describe('when variable associations are present in the metadata', () => {
+  describe('when there are variable associations in the service metadata', () => {
     test('queries for and returns variables', async () => {
       nock(/example/)
         .defaultReplyHeaders({
@@ -326,8 +326,8 @@ describe('Service', () => {
     })
   })
 
-  describe('when variable associations are not present in the metadata', () => {
-    test('queries for and returns variables', async () => {
+  describe('when there are no variable associations in the service metadata', () => {
+    test('queries for and does not return any variables', async () => {
       nock(/example/)
         .defaultReplyHeaders({
           'CMR-Took': 7,
@@ -336,15 +336,37 @@ describe('Service', () => {
         .post(/services\.json/)
         .reply(200, {
           items: [{
-            concept_id: 'S100000-EDSC',
-            association_details: {
-              variables: null
-            }
+            concept_id: 'S100000-EDSC'
           }, {
-            concept_id: 'S100001-EDSC',
-            association_details: {
-              variables: null
-            }
+            concept_id: 'S100001-EDSC'
+          }]
+        })
+
+      nock(/example/)
+        .defaultReplyHeaders({
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .post(/variables\.json/, 'concept_id[]=V100000-EDSC&concept_id[]=V100001-EDSC&page_size=2')
+        .reply(200, {
+          items: [{
+            concept_id: 'V100000-EDSC'
+          }, {
+            concept_id: 'V100001-EDSC'
+          }]
+        })
+
+      nock(/example/)
+        .defaultReplyHeaders({
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .post(/variables\.json/, 'concept_id[]=V100002-EDSC&concept_id[]=V100003-EDSC&page_size=2')
+        .reply(200, {
+          items: [{
+            concept_id: 'V100002-EDSC'
+          }, {
+            concept_id: 'V100003-EDSC'
           }]
         })
 
@@ -372,55 +394,15 @@ describe('Service', () => {
         services: {
           items: [{
             conceptId: 'S100000-EDSC',
-            variables: null
+            variables: {
+              items: null
+            }
           }, {
             conceptId: 'S100001-EDSC',
-            variables: null
+            variables: {
+              items: null
+            }
           }]
-        }
-      })
-    })
-  })
-
-  describe('when no variable associations are provided', () => {
-    test('returns empty variables', async () => {
-      const response = await server.executeOperation({
-        variables: {},
-        query: `{
-          services {
-            items {
-              conceptId
-              variables {
-                count
-                items
-              }
-            }
-          }
-        }`
-      }, {
-        contextValue
-      })
-
-      const { data } = response.body.singleResult
-
-      expect(data).toEqual({
-        services: {
-          items: [
-            {
-              conceptId: 'S100000-EDSC',
-              variables: {
-                count: 0,
-                items: null
-              }
-            },
-            {
-              conceptId: 'S100001-EDSC',
-              variables: {
-                count: 0,
-                items: null
-              }
-            }
-          ]
         }
       })
     })
