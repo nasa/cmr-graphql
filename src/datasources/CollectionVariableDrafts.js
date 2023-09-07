@@ -1,39 +1,45 @@
-import { RESTDataSource } from '@apollo/datasource-rest'
-import { camelCase, mapKeys } from 'lodash'
+import {
+  InvocationType,
+  InvokeCommand,
+  LambdaClient,
+  LogType
+} from '@aws-sdk/client-lambda'
 
-export class CollectionVariableDrafts extends RESTDataSource {
-  constructor(host, token) {
-    super()
-    if (host.includes('localhost')) {
-      this.baseURL = `http://${host}/dev`
-    } else {
-      this.baseURL = `https://${host}`
-    }
-    this.token = token
-  }
+import camelCase from 'lodash/camelCase'
+import mapKeys from 'lodash/mapKeys'
 
-  formatResults(results) {
-    const variables = Object.values(results)
+import { downcaseKeys } from '../utils/downcaseKeys'
+import { getLambdaConfig } from '../utils/aws/getLambdaConfig'
 
-    // return variables with keys formatted
-    return variables.map((variable) => {
-      // rename each collection's object keys with the camelCased version of the key
-      const mappedKeys = mapKeys(variable, (value, key) => camelCase(key))
+export default async (params, context) => {
+  const { headers } = context
 
-      // return the mappedKeys
-      return mappedKeys
+  const { authorization: authorizationHeader } = downcaseKeys(headers)
+  const [, token] = authorizationHeader.split(' ')
+
+  const lambdaClient = new LambdaClient(getLambdaConfig())
+
+  const lambdaCommand = new InvokeCommand({
+    FunctionName: `graphql-${process.env.stage}-earthdataVarinfo`,
+    InvocationType: InvocationType.RequestResponse,
+    LogType: LogType.Tail,
+    Payload: JSON.stringify({
+      ...params,
+      token
     })
-  }
+  })
 
-  willSendRequest(request) {
-    // set the headers for the request
-    request.headers.authorization = this.token
-  }
+  const results = await lambdaClient.send(lambdaCommand)
 
-  async generateVariables(collectionConceptId) {
-    // generate variables from earthdata-varinfo lambda
-    const results = await this.get(`earthdataVarinfo/?collection_concept_id=${collectionConceptId}`)
+  // Parse the Lambda response
+  const parsedResults = JSON.parse(Buffer.from(results.Payload).toString('utf8'))
 
-    return this.formatResults(results)
-  }
+  // Return variables with keys formatted
+  return parsedResults.map((variable) => {
+    // Rename each collection's object keys with the camelCased version of the key
+    const mappedKeys = mapKeys(variable, (value, key) => camelCase(key))
+
+    // Return the mappedKeys
+    return mappedKeys
+  })
 }

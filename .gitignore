@@ -19,3 +19,6 @@ junit.xml
 .dir-locals.el
 \#*\#
 .\#*
+
+# Python Runtime
+.venv

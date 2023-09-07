@@ -1,10 +1,11 @@
 /**
- * List of supported CMR concept types
+ * List of supported CMR concept types or objects that will require overrides to the user input internall
  */
 export const CONCEPT_TYPES = [
   'collections',
-  'duplicateCollections',
   'dataQualitySummaries',
+  'duplicateCollections',
+  'generateVariableDrafts',
   'granules',
   'grids',
   'orderOptions',

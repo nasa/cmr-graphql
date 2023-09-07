@@ -98,14 +98,9 @@ functions:
 
   earthdataVarinfo:
     runtime: python3.9
-    handler: src/earthdataVarinfo/handler.default
+    handler: src/earthdataVarinfo/handler.main
     ephemeralStorageSize: 2048
     timeout: ${env:LAMBDA_TIMEOUT, '30'}
-    events:
-    - http:
-        path: earthdataVarinfo
-        method: get
-        cors: true
 
 resources:
   Resources:

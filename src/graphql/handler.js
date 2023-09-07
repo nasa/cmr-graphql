@@ -13,6 +13,7 @@ import typeDefs from '../types'
 import collectionDraftProposalSource from '../datasources/collectionDraftProposal'
 import collectionDraftSource from '../datasources/collectionDraft'
 import collectionSource from '../datasources/collection'
+import collectionVariableDraftsSource from '../datasources/collectionVariableDrafts'
 import dataQualitySummarySource from '../datasources/dataQualitySummary'
 import granuleSource from '../datasources/granule'
 import graphDbDuplicateCollectionsSource from '../datasources/graphDbDuplicateCollections'
@@ -23,9 +24,8 @@ import orderOptionSource from '../datasources/orderOption'
 import serviceSource from '../datasources/service'
 import toolDraftSource from '../datasources/toolDraft'
 import toolSource from '../datasources/tool'
-import variableSource from '../datasources/variable'
 import variableDraftSource from '../datasources/variableDraft'
-import { CollectionVariableDrafts } from '../datasources/CollectionVariableDrafts'
+import variableSource from '../datasources/variable'
 
 import {
   deleteSubscription as subscriptionSourceDelete,
@@ -52,11 +52,6 @@ export default startServerAndCreateLambdaHandler(
   {
     context: async ({ event }) => {
       const { body, headers } = event
-
-      // Host where cmr-graphQL is currently running from. This will be used
-      // by the CollectionVariableDrafts class to figure out where to call
-      // the earthdata-varinfo lambda from.
-      const { Host } = headers
 
       const { operationName } = JSON.parse(body)
 
@@ -113,7 +108,7 @@ export default startServerAndCreateLambdaHandler(
           collectionDraftSource,
           collectionSource,
           dataQualitySummarySource,
-          collectionVariableDraftsSource: new CollectionVariableDrafts(Host, bearerToken),
+          collectionVariableDraftsSource,
           granuleSource,
           graphDbDuplicateCollectionsSource,
           graphDbSource,
