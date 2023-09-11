@@ -13,6 +13,24 @@ import relatedCollectionsResponseMocks from './__mocks__/relatedCollections.resp
 
 const contextValue = buildContextValue()
 
+const payload = {
+  Payload: '[{"Name":"Grid/time","LongName":"Grid/time","StandardName":"time","Definition":"Grid/time","DataType":"int32","Dimensions":[{"Name":"Grid/time","Size":1,"Type":"TIME_DIMENSION"}],"Units":"seconds since 1970-01-01 00:00:00 UTC","MetadataSpecification":{"URL":"https://cdn.earthdata.nasa.gov/umm/variable/v1.8.2","Name":"UMM-Var","Version":"1.8.2"}}]'
+}
+
+jest.mock('@aws-sdk/client-lambda', () => ({
+  LambdaClient: jest.fn(() => ({
+    send: () => Promise.resolve(payload)
+  })),
+  InvocationType: jest.fn(() => ({
+    RequestResponse: () => {}
+  })),
+  LogType: jest.fn(() => ({
+    Tail: () => {}
+  })),
+  InvokeCommand: jest.fn(() => ({
+  }))
+}))
+
 describe('Collection', () => {
   const OLD_ENV = process.env
 
@@ -1805,31 +1823,6 @@ describe('Collection', () => {
               }]
             }
           })
-
-        nock(/localhost/)
-          .get(/earthdataVarinfo/)
-          .reply(200, [
-            {
-              Name: 'Grid/time',
-              LongName: 'Grid/time',
-              StandardName: 'time',
-              Definition: 'Grid/time',
-              DataType: 'int32',
-              Dimensions: [
-                {
-                  Name: 'Grid/time',
-                  Size: 1,
-                  Type: 'TIME_DIMENSION'
-                }
-              ],
-              Units: 'seconds since 1970-01-01 00:00:00 UTC',
-              MetadataSpecification: {
-                URL: 'https://cdn.earthdata.nasa.gov/umm/variable/v1.8.2',
-                Name: 'UMM-Var',
-                Version: '1.8.2'
-              }
-            }
-          ])
 
         const response = await server.executeOperation({
           variables: {},
