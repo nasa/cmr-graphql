@@ -84,9 +84,7 @@ export default {
 
       const { dataSources } = context
 
-      const { collectionVariableDraftsSource } = dataSources
-
-      return collectionVariableDraftsSource.generateVariables(conceptId)
+      return dataSources.collectionVariableDraftsSource({ conceptId }, context, parseResolveInfo)
     },
     dataQualitySummaries: async (source, args, context, info) => {
       const {

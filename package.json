@@ -46,6 +46,7 @@
   "dependencies": {
     "@apollo/server": "^4.4.1",
     "@as-integrations/aws-lambda": "^2.0.1",
+    "@aws-sdk/client-lambda": "^3.405.0",
     "@aws-sdk/client-s3": "^3.282.0",
     "@babel/core": "^7.21.0",
     "@babel/eslint-parser": "^7.22.15",
@@ -53,7 +54,6 @@
     "@edsc/eslint-config": "^0.0.5",
     "@graphql-tools/merge": "^8.2.10",
     "@graphql-tools/schema": "^8.5.1",
-    "@apollo/datasource-rest": "^4.3.2",
     "array-foreach-async": "^1.0.1",
     "axios": "^0.21.4",
     "babel-loader": "^8.3.0",
