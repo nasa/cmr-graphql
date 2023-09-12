@@ -14,7 +14,7 @@ describe('toolDraft', () => {
 
     process.env = { ...OLD_ENV }
 
-    process.env.mmtRootUrl = 'http://example.com'
+    process.env.mmtRootUrl = 'http://example-mmt.com'
 
     // Default requestInfo
     requestInfo = {

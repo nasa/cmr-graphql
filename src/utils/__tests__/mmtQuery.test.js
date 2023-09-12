@@ -9,7 +9,7 @@ describe('mmtQuery', () => {
   beforeEach(() => {
     process.env = { ...OLD_ENV }
 
-    process.env.mmtRootUrl = 'http://example.com'
+    process.env.mmtRootUrl = 'http://example-mmt.com'
   })
 
   afterEach(() => {
@@ -19,14 +19,14 @@ describe('mmtQuery', () => {
   test('queries mmt', async () => {
     const consoleMock = jest.spyOn(console, 'log').mockImplementation(() => jest.fn())
 
-    nock(/example/)
+    nock(/example-mmt/)
       .get(/api\/collection_drafts/)
       .reply(200, {
         ShortName: 'Mock ShortName'
       })
 
     const response = await mmtQuery({
-      draftType: 'collection_drafts',
+      draftType: 'collection_draft',
       params: {
         id: 123
       },
@@ -47,13 +47,13 @@ describe('mmtQuery', () => {
     })
 
     expect(consoleMock).toBeCalledWith(
-      `Request abcd-1234-efgh-5678 from eed-test-graphql to MMT [Draft Type: collection_drafts] completed external request in [observed: ${requestDuration} ms]`
+      `Request abcd-1234-efgh-5678 from eed-test-graphql to MMT [Draft Type: collection_draft] completed external request in [observed: ${requestDuration} ms]`
     )
   })
 
   describe('when provided a token via the Authorization header', () => {
     test('queries mmt using the Authorization header', async () => {
-      nock(/example/, {
+      nock(/example-mmt/, {
         reqheaders: {
           Authorization: 'test-token',
           'Client-Id': 'eed-test-graphql',
@@ -66,7 +66,7 @@ describe('mmtQuery', () => {
         })
 
       const response = await mmtQuery({
-        draftType: 'collection_drafts',
+        draftType: 'collection_draft',
         params: {},
         headers: {
           Authorization: 'test-token',
@@ -84,14 +84,14 @@ describe('mmtQuery', () => {
 
   describe('when an error is returned', () => {
     test('throws an exception', async () => {
-      nock(/example/)
+      nock(/example-mmt/)
         .get(/api\/collection_drafts/)
         .reply(500, {
           errors: ['HTTP Error']
         })
 
       const response = mmtQuery({
-        draftType: 'collection_drafts',
+        draftType: 'collection_draft',
         params: {},
         headers: {
           'Client-Id': 'eed-test-graphql',

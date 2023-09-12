@@ -156,7 +156,7 @@ describe('graphDb', () => {
           .reply(200, relatedCollectionsRelatedUrlTypeGraphdbResponseMocks)
 
         const response = await graphDbDatasource(
-          { conceptId: 'C1200400842-GHRC' },
+          { conceptId: 'C100000-EDSC' },
           {
             limit: 1,
             relatedUrlType: ['VIEW RELATED INFORMATION']
@@ -188,7 +188,7 @@ describe('graphDb', () => {
           .reply(200, relatedCollectionsRelatedUrlSubtypeGraphdbResponseMocks)
 
         const response = await graphDbDatasource(
-          { conceptId: 'C1200400842-GHRC' },
+          { conceptId: 'C100000-EDSC' },
           {
             limit: 1,
             relatedUrlSubtype: ["USER'S GUIDE"]
@@ -220,7 +220,7 @@ describe('graphDb', () => {
           .reply(200, relatedCollectionsRelatedUrlTypeAndSubtypeGraphdbResponseMocks)
 
         const response = await graphDbDatasource(
-          { conceptId: 'C1200400842-GHRC' },
+          { conceptId: 'C100000-EDSC' },
           {
             limit: 1,
             relatedUrlType: ['VIEW RELATED INFORMATION'],
@@ -315,7 +315,7 @@ describe('graphDb', () => {
           .reply(200, relatedCollectionsGraphDbProjectGraphdbResponseMocks)
 
         const response = await graphDbDatasource(
-          { conceptId: 'C1200400842-GHRC' },
+          { conceptId: 'C100000-EDSC' },
           {
             limit: 1
           },
@@ -412,7 +412,7 @@ describe('graphDb', () => {
           .reply(200, relatedCollectionsGraphDbPlatformInstrumentGraphdbResponseMocks)
 
         const response = await graphDbDatasource(
-          { conceptId: 'C1200400842-GHRC' },
+          { conceptId: 'C100000-EDSC' },
           {
             limit: 1
           },
@@ -521,7 +521,7 @@ describe('graphDb', () => {
           .reply(200, relatedCollectionsGraphDbRelatedUrlGraphdbResponseMocks)
 
         const response = await graphDbDatasource(
-          { conceptId: 'C1200400842-GHRC' },
+          { conceptId: 'C100000-EDSC' },
           {
             limit: 1
           },
@@ -636,7 +636,7 @@ describe('graphDb', () => {
           .reply(200, relatedCollectionsGraphDbRelatedUrlGraphdbResponseMocks)
 
         const response = await graphDbDatasource(
-          { conceptId: 'C1200400842-GHRC' },
+          { conceptId: 'C100000-EDSC' },
           {
             limit: 1,
             relatedUrlType: ['VIEW RELATED INFORMATION']
@@ -760,7 +760,7 @@ describe('graphDb', () => {
           .reply(200, relatedCollectionsGraphDbRelatedUrlProjectGraphdbResponseMocks)
 
         const response = await graphDbDatasource(
-          { conceptId: 'C1200400842-GHRC' },
+          { conceptId: 'C100000-EDSC' },
           {
             limit: 1,
             relatedUrlType: ['VIEW RELATED INFORMATION']
@@ -883,7 +883,7 @@ describe('graphDb', () => {
           .reply(200, relatedCollectionsGraphDbRelatedUrlRelationshipTypeGraphdbResponseMocks)
 
         const response = await graphDbDatasource(
-          { conceptId: 'C1200400842-GHRC' },
+          { conceptId: 'C100000-EDSC' },
           {
             limit: 1,
             relatedUrlType: ['VIEW RELATED INFORMATION']
@@ -974,7 +974,7 @@ describe('graphDb', () => {
           .reply(200, relatedCollectionsRelationshipTypeGraphdbResponseMocks)
 
         const response = await graphDbDatasource(
-          { conceptId: 'C1200400842-GHRC' },
+          { conceptId: 'C100000-EDSC' },
           {
             limit: 1
           },
@@ -1044,7 +1044,7 @@ describe('graphDb', () => {
         .reply(200, relatedCollectionsNoRelationshipsGraphDbResponseMock)
 
       const response = await graphDbDatasource(
-        { conceptId: 'C1200400842-GHRC' },
+        { conceptId: 'C100000-EDSC' },
         {
           limit: 1
         },
@@ -1103,7 +1103,7 @@ describe('graphDb', () => {
         })
 
       const response = await graphDbDatasource(
-        { conceptId: 'C1200400842-GHRC' },
+        { conceptId: 'C100000-EDSC' },
         {
           limit: 1
         },
@@ -1139,7 +1139,7 @@ describe('graphDb', () => {
         .reply(200, {})
 
       const response = await graphDbDatasource(
-        { conceptId: 'C1200400842-GHRC' },
+        { conceptId: 'C100000-EDSC' },
         {
           limit: 1
         },

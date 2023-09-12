@@ -1752,7 +1752,7 @@ describe('Collection', () => {
           .reply(200, {
             feed: {
               entry: [{
-                id: 'C1200400842-GHRC'
+                id: 'C100000-EDSC'
               }]
             }
           })
@@ -1765,7 +1765,7 @@ describe('Collection', () => {
           variables: {},
           query: `{
             collections (
-              conceptId: "C1200400842-GHRC"
+              conceptId: "C100000-EDSC"
             ) {
               items {
                 conceptId
@@ -1817,16 +1817,34 @@ describe('Collection', () => {
           .reply(200, {
             feed: {
               entry: [{
-                id: 'C1200400842-GHRC'
+                id: 'C100000-EDSC'
+              }]
+            }
+          })
+
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .post(/collections\.json/)
+          .reply(200, {
+            feed: {
+              entry: [{
+                id: 'C100000-EDSC'
               }]
             }
           })
 
         const response = await server.executeOperation({
-          variables: {},
+          variables: {
+            params: {
+              conceptId: 'C100000-EDSC'
+            }
+          },
           query: `{
             collections (
-              conceptId: "C1598621093-GES_DISC"
+              conceptId: "C100000-EDSC"
             ) {
               items {
                 conceptId
@@ -1854,7 +1872,7 @@ describe('Collection', () => {
         const results = {
           collections: {
             items: [{
-              conceptId: 'C1200400842-GHRC',
+              conceptId: 'C100000-EDSC',
               generateVariableDrafts: {
                 count: 1,
                 items: [{

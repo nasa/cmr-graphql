@@ -10,7 +10,7 @@ describe('Collection', () => {
   beforeEach(() => {
     process.env = { ...OLD_ENV }
 
-    process.env.mmtRootUrl = 'http://example.com'
+    process.env.mmtRootUrl = 'http://example-mmt.com'
   })
 
   afterEach(() => {
@@ -21,7 +21,7 @@ describe('Collection', () => {
     describe('toolDraft', () => {
       describe('with results', () => {
         test('returns results', async () => {
-          nock(/example/)
+          nock(/example-mmt/)
             .defaultReplyHeaders({
               'X-Request-Id': 'abcd-1234-efgh-5678'
             })
@@ -55,7 +55,7 @@ describe('Collection', () => {
 
       describe('with no results', () => {
         test('returns no results', async () => {
-          nock(/example/)
+          nock(/example-mmt/)
             .defaultReplyHeaders({
               'X-Request-Id': 'abcd-1234-efgh-5678'
             })

@@ -45,13 +45,13 @@ describe('generateVariables', () => {
 
     const response = await collectionVariableDraftsSource(
       {
-        conceptId: 'C1200400842-GHRC'
+        conceptId: 'C100000-EDSC'
       },
       {
         headers: {
           'Client-Id': 'eed-test-graphql',
           'CMR-Request-Id': 'abcd-1234-efgh-5678',
-          authorization: 'testtoken'
+          authorization: 'test-token'
         }
       }
     )

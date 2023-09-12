@@ -657,12 +657,12 @@ We use [GraphQL interfaces](https://graphql.org/learn/schema/#interfaces) in ord
 ##### Example Response
 
     {
-      "conceptId": "C1200400842-GHRC",
+      "conceptId": "C1000000001-EXAMPLE",
       "relatedCollections": {
         "count": 18,
         "items": [
           {
-            "id": "C1200400792-GHRC",
+            "id": "C2000000001-EXAMPLE",
             "title": "Infrared Global Geostationary Composite Demo 4",
             "doi": "10.5067/GHRC/AMSU-A/DATA303",
             "relationships": [
@@ -720,7 +720,7 @@ CMR-GraphQL queries an earthdata-varinfo lambda in order to generate collection 
     variables:
     {
       "params": {
-        "conceptId": "C1598621093-GES_DISC"
+        "conceptId": "C1000000001-EXAMPLE"
       }
     }
 
@@ -729,7 +729,7 @@ CMR-GraphQL queries an earthdata-varinfo lambda in order to generate collection 
      {
       "data": {
         "collection": {
-          "conceptId": "C1598621093-GES_DISC",
+          "conceptId": "C1000000001-EXAMPLE",
           "generateVariableDrafts": {
             "count": 16,
             "items": [

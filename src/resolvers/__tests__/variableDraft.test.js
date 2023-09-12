@@ -10,7 +10,7 @@ describe('Variable Draft', () => {
   beforeEach(() => {
     process.env = { ...OLD_ENV }
 
-    process.env.mmtRootUrl = 'http://example.com'
+    process.env.mmtRootUrl = 'http://example-mmt.com'
   })
 
   afterEach(() => {
@@ -110,7 +110,7 @@ describe('Variable Draft', () => {
         })
 
         test('returns results', async () => {
-          nock(/example/)
+          nock(/example-mmt/)
             .defaultReplyHeaders({
               'X-Request-Id': 'abcd-1234-efgh-5678'
             })

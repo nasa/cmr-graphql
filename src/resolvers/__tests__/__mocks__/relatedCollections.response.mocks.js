@@ -3,7 +3,7 @@ export default {
     collections: {
       items: [
         {
-          conceptId: 'C1200400842-GHRC',
+          conceptId: 'C100000-EDSC',
           relatedCollections: {
             count: 21,
             items: [
