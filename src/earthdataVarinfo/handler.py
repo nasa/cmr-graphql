@@ -18,8 +18,9 @@ def main(event, context):
   # Pull the concept id and token from the body
   collection_concept_id = event.get('conceptId')
 
-  token = event.get('token').split.pop()
-
+  # Get token and remove 'Bearer ' if present 
+  token = event.get('token').split().pop()
+  
   # These two arguments are required for varinfo, return an error if they are not provided
   if collection_concept_id is None or token is None:
     return {
