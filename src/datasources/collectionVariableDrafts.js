@@ -14,9 +14,7 @@ import { getLambdaConfig } from '../utils/aws/getLambdaConfig'
 export default async (params, context) => {
   const { headers } = context
 
-  const { authorization: authorizationHeader } = downcaseKeys(headers)
-
-  const token = authorizationHeader.split(' ').pop()
+  const { authorization: token } = downcaseKeys(headers)
 
   const lambdaClient = new LambdaClient(getLambdaConfig())
 
