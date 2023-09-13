@@ -19,12 +19,16 @@ def main(event, context):
   collection_concept_id = event.get('conceptId')
 
   # Get token and remove 'Bearer ' if present 
-  token = event.get('token').split().pop()
+  token = event.get('token')
   
   # These two arguments are required for varinfo, return an error if they are not provided
   if collection_concept_id is None or token is None:
     return {
-      'Error': 'Collection Concept ID and Token are must be provided.'
+      'isBase64Encoded': False,
+      'statusCode': 500,
+      'body': {
+        'error': 'Collection Concept ID and Token are must be provided.'
+      }
     }
 
   try:
@@ -45,27 +49,22 @@ def main(event, context):
 
     # Generate all the UMM-Var records:
     all_variables = get_all_umm_var(var_info)
-
-    # Delete temporary directory and files
-    shutil.rmtree(temp_dir)
-  except:
-    # Delete temporary directory and files if created
-    if temp_dir is not None:
-      shutil.rmtree(temp_dir)
-
-    # Print error message and stacktrace
-    print('Error executing earthdata-varinfo lambda')
-
-    tb = traceback.format_exc()
-    print(tb)
-
+  except Exception as e:
     return {
-      'Error': 'Error executing earthdata-varinfo lambda',
-      'StackTrace': tb
+      'isBase64Encoded': False,
+      'statusCode': 500,
+      'body': {
+        'error': str(e)
+      }
     }
 
-  # Return a successful response
-  return list(all_variables.values())
+  # Delete temporary directory and files if created
+  if temp_dir is not None:
+    shutil.rmtree(temp_dir)
 
-if __name__ == "__main__":
-  print(main('', ''))
+  # Return a successful response
+  return {
+    'isBase64Encoded': False,
+    'statusCode': 200,
+    'body': list(all_variables.values())
+  }

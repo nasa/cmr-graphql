@@ -1,5 +1,11 @@
 import nock from 'nock'
 
+import { mockClient } from 'aws-sdk-client-mock'
+import {
+  InvokeCommand,
+  LambdaClient
+} from '@aws-sdk/client-lambda'
+
 import resolvers from '..'
 import { buildContextValue, server } from './__mocks__/mockServer'
 
@@ -10,23 +16,11 @@ import relatedCollectionsResponseMocks from './__mocks__/relatedCollections.resp
 
 const contextValue = buildContextValue()
 
-const payload = {
-  Payload: '[{"Name":"Grid/time","LongName":"Grid/time","StandardName":"time","Definition":"Grid/time","DataType":"int32","Dimensions":[{"Name":"Grid/time","Size":1,"Type":"TIME_DIMENSION"}],"Units":"seconds since 1970-01-01 00:00:00 UTC","MetadataSpecification":{"URL":"https://cdn.earthdata.nasa.gov/umm/variable/v1.8.2","Name":"UMM-Var","Version":"1.8.2"}}]'
-}
+const lambdaClientMock = mockClient(LambdaClient)
 
-jest.mock('@aws-sdk/client-lambda', () => ({
-  LambdaClient: jest.fn(() => ({
-    send: () => Promise.resolve(payload)
-  })),
-  InvocationType: jest.fn(() => ({
-    RequestResponse: () => {}
-  })),
-  LogType: jest.fn(() => ({
-    Tail: () => {}
-  })),
-  InvokeCommand: jest.fn(() => ({
-  }))
-}))
+beforeEach(() => {
+  lambdaClientMock.reset()
+})
 
 describe('Collection', () => {
   const OLD_ENV = process.env
@@ -1822,19 +1816,17 @@ describe('Collection', () => {
             }
           })
 
-        nock(/example-cmr/)
-          .defaultReplyHeaders({
-            'CMR-Took': 7,
-            'CMR-Request-Id': 'abcd-1234-efgh-5678'
-          })
-          .post(/collections\.json/)
-          .reply(200, {
-            feed: {
-              entry: [{
-                id: 'C100000-EDSC'
-              }]
-            }
-          })
+        const variableList = [{
+          dataType: 'int32', definition: 'Grid/time', dimensions: [{ Name: 'Grid/time', Size: 1, Type: 'TIME_DIMENSION' }], longName: 'Grid/time', metadataSpecification: { Name: 'UMM-Var', URL: 'https://cdn.earthdata.nasa.gov/umm/variable/v1.8.2', Version: '1.8.2' }, name: 'Grid/time', standardName: 'time', units: 'seconds since 1970-01-01 00:00:00 UTC'
+        }]
+
+        lambdaClientMock.on(InvokeCommand).resolves({
+          Payload: Buffer.from(JSON.stringify({
+            isBase64Encoded: false,
+            statusCode: 200,
+            body: variableList
+          }))
+        })
 
         const response = await server.executeOperation({
           variables: {
@@ -1869,21 +1861,18 @@ describe('Collection', () => {
         })
 
         const { data } = response.body.singleResult
-        const results = {
+
+        expect(data).toEqual({
           collections: {
             items: [{
               conceptId: 'C100000-EDSC',
               generateVariableDrafts: {
                 count: 1,
-                items: [{
-                  dataType: 'int32', definition: 'Grid/time', dimensions: [{ Name: 'Grid/time', Size: 1, Type: 'TIME_DIMENSION' }], longName: 'Grid/time', metadataSpecification: { Name: 'UMM-Var', URL: 'https://cdn.earthdata.nasa.gov/umm/variable/v1.8.2', Version: '1.8.2' }, name: 'Grid/time', standardName: 'time', units: 'seconds since 1970-01-01 00:00:00 UTC'
-                }]
+                items: variableList
               }
             }]
           }
-        }
-
-        expect(data).toEqual(results)
+        })
       })
     })
 
