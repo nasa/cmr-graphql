@@ -10,7 +10,7 @@ from varinfo.umm_var import export_all_umm_var_to_json, get_all_umm_var
 
 
 def main(event, context):
-    # Setup CMR search url from cmrRootUrl
+  # Setup CMR search url from cmrRootUrl
   cmr_url = os.environ['cmrRootUrl'] + '/search/'
 
   temp_dir = None
