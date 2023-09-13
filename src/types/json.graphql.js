@@ -7,4 +7,7 @@ const resolveFunctions = {
   JSON: GraphQLJSON
 }
 
-export default makeExecutableSchema({ typeDefs: schemaString, resolvers: resolveFunctions })
+export default makeExecutableSchema({
+  typeDefs: schemaString,
+  resolvers: resolveFunctions
+})

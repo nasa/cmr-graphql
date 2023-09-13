@@ -29,7 +29,10 @@ describe('collection', () => {
 
       describe('both json and umm keys', () => {
         test('returns 84', () => {
-          const concept = new Concept('concept', {}, { jsonKeys: ['jsonKey'], ummKeys: ['ummKey'] })
+          const concept = new Concept('concept', {}, {
+            jsonKeys: ['jsonKey'],
+            ummKeys: ['ummKey']
+          })
 
           concept.setJsonItemCount(84)
           concept.setUmmItemCount(84)
@@ -40,7 +43,10 @@ describe('collection', () => {
 
       describe('both json and umm keys but count is different', () => {
         test('throws an error', () => {
-          const concept = new Concept('concept', {}, { jsonKeys: ['jsonKey'], ummKeys: ['ummKey'] })
+          const concept = new Concept('concept', {}, {
+            jsonKeys: ['jsonKey'],
+            ummKeys: ['ummKey']
+          })
 
           concept.setJsonItemCount(84)
           concept.setUmmItemCount(32617)

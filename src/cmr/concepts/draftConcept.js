@@ -1,8 +1,5 @@
 import camelcaseKeys from 'camelcase-keys'
-import {
-  get,
-  pick
-} from 'lodash'
+import { get, pick } from 'lodash'
 import snakecaseKeys from 'snakecase-keys'
 
 import { mergeParams } from '../../utils/mergeParams'
@@ -78,12 +75,16 @@ export default class DraftConcept extends Concept {
         )
       })
     } catch (e) {
-      parseError(e, { reThrowError: true, provider: 'MMT' })
+      parseError(e, {
+        reThrowError: true,
+        provider: 'MMT'
+      })
     }
   }
 
   fetchUmm(searchParams, requestedKeys, providedHeaders) {
     this.logKeyRequest(requestedKeys, 'umm')
+
     // Construct the promise that will request data from the umm endpoint
     return mmtQuery({
       draftType: this.getConceptType(),

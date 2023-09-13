@@ -1,9 +1,6 @@
 import nock from 'nock'
 
-import {
-  buildContextValue,
-  server
-} from './__mocks__/mockServer'
+import { buildContextValue, server } from './__mocks__/mockServer'
 
 const contextValue = buildContextValue()
 

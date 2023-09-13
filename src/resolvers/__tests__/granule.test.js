@@ -1,10 +1,7 @@
 import nock from 'nock'
 import DataLoader from 'dataloader'
 
-import {
-  buildContextValue,
-  server
-} from './__mocks__/mockServer'
+import { buildContextValue, server } from './__mocks__/mockServer'
 
 import { getCollectionsById } from '../../dataloaders/getCollectionsById'
 

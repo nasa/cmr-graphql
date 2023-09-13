@@ -50,9 +50,11 @@ export default async (
   if (Object.keys(relationshipsFields).includes('GraphDbProject')) {
     includedLabels.push('project')
   }
+
   if (Object.keys(relationshipsFields).includes('GraphDbPlatformInstrument')) {
     includedLabels.push('platformInstrument')
   }
+
   if (Object.keys(relationshipsFields).includes('GraphDbRelatedUrl')) {
     includedLabels.push('relatedUrl')
   }
@@ -67,9 +69,11 @@ export default async (
     if (relatedUrlType && !relatedUrlSubtype) {
       relatedUrlFilters.push(`has('relatedUrl', 'type', within('${relatedUrlType.join('\',\'')}'))`)
     }
+
     if (relatedUrlSubtype && !relatedUrlType) {
       relatedUrlFilters.push(`has('relatedUrl', 'subtype', within("${relatedUrlSubtype.join('","')}"))`)
     }
+
     // If both type and subtype are provided we need to AND those params together, while still ORing the other relationship vertex types
     if (relatedUrlType && relatedUrlSubtype) {
       relatedUrlFilters.push(`
@@ -108,6 +112,7 @@ export default async (
       .hasLabel('${includedLabels.join("','")}')
     `
   }
+
   // Retrieve the user groups from EDL to filter the query
   const userGroups = await getUserPermittedGroups(headers, edlUsername)
 
@@ -192,8 +197,8 @@ export default async (
     ([{ '@value': totalRelatedCollectionsCount }] = totalRelatedCollectionsMap)
 
     // Parse the collection values
-    const { '@value': relatedCollectionsList } = relatedCollectionsBulkSet
-    const [{ '@value': relatedCollectionsMap }] = relatedCollectionsList
+    const { '@value': relatedCollectionsListValue } = relatedCollectionsBulkSet
+    const [{ '@value': relatedCollectionsMap }] = relatedCollectionsListValue
 
     relatedCollectionsMap.forEach((relatedCollectionMap) => {
       const { '@value': relatedCollectionMapValues } = relatedCollectionMap
@@ -206,7 +211,7 @@ export default async (
 
       const { '@value': relationshipValues } = relationshipValuesList
 
-      const relationships = []
+      const relationshipsArray = []
       const relatedCollectionValues = {}
 
       relationshipValues.forEach((relationshipValue) => {
@@ -215,6 +220,7 @@ export default async (
 
         const { '@value': objectValueList } = objects
 
+        // The following describes the indices inside objectValueList:
         // objectValueList[0] is starting collection vertex
         // objectValueList[1] is the edge going out of the starting collection vertex
         // objectValueList[2] is relationship vertex (project, documenation, platformInstrument)
@@ -245,7 +251,8 @@ export default async (
           const [relationshipVertexValue] = relationshipVertexValueMap
           relationshipVertexValues[key] = relationshipVertexValue
         })
-        relationships.push(relationshipVertexValues)
+
+        relationshipsArray.push(relationshipVertexValues)
 
         // Parse the related collection vertex (objectValueList[4]) for values
         const { '@value': relatedCollectionVertexMap } = objectValueList[4]
@@ -267,7 +274,7 @@ export default async (
       // Push the data onto the collectionsList to be returned to the resolver
       collectionsList.push({
         ...relatedCollectionValues,
-        relationships
+        relationships: relationshipsArray
       })
     })
   })

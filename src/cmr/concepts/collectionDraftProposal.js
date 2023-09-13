@@ -1,8 +1,5 @@
 import camelcaseKeys from 'camelcase-keys'
-import {
-  get,
-  pick
-} from 'lodash'
+import { get, pick } from 'lodash'
 import snakecaseKeys from 'snakecase-keys'
 
 import { draftMmtQuery } from '../../utils/draftMmtQuery'
@@ -75,7 +72,10 @@ export default class CollectionDraftProposal extends Concept {
         )
       })
     } catch (e) {
-      parseError(e, { reThrowError: true, provider: 'MMT' })
+      parseError(e, {
+        reThrowError: true,
+        provider: 'MMT'
+      })
     }
   }
 

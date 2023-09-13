@@ -1,9 +1,6 @@
 import nock from 'nock'
 
-import {
-  buildContextValue,
-  server
-} from './__mocks__/mockServer'
+import { buildContextValue, server } from './__mocks__/mockServer'
 
 const contextValue = buildContextValue()
 
@@ -53,6 +50,7 @@ describe('Variable Draft', () => {
                 VariableType: 'Mock Variable Types'
               }
             })
+
           const response = await server.executeOperation({
             variables: {},
             query: `{
@@ -110,6 +108,7 @@ describe('Variable Draft', () => {
             }
           })
         })
+
         test('returns results', async () => {
           nock(/example/)
             .defaultReplyHeaders({

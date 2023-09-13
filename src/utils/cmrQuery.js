@@ -78,8 +78,7 @@ export const cmrQuery = ({
     const milliseconds = Math.round((end[0] * 1000) + (end[1] / 1000000))
 
     // Retrieve the reported timing from CMR
-    const { headers } = response
-    const { 'cmr-took': cmrTook } = downcaseKeys(headers)
+    const { 'cmr-took': cmrTook } = downcaseKeys(response.headers)
     response.headers['request-duration'] = milliseconds
 
     console.log(`Request ${requestId} from ${clientId} to [concept: ${conceptType}, format: ${format}] completed external request in [reported: ${cmrTook} ms, observed: ${milliseconds} ms]`)

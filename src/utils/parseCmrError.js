@@ -24,8 +24,8 @@ export const parseCmrError = (error, reThrow = true) => {
     'cmr-request-id': requestId
   } = downcaseKeys(headers)
 
-  errors.forEach((error) => {
-    console.log(`Request ${requestId} from ${clientId} experienced an error: ${error}`)
+  errors.forEach((logError) => {
+    console.log(`Request ${requestId} from ${clientId} experienced an error: ${logError}`)
   })
 
   if (reThrow) {
