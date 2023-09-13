@@ -55,7 +55,7 @@ describe('mmtQuery', () => {
     test('queries mmt using the Authorization header', async () => {
       nock(/example-mmt/, {
         reqheaders: {
-          Authorization: 'test-token',
+          Authorization: 'Bearer test-token',
           'Client-Id': 'eed-test-graphql',
           'X-Request-Id': 'abcd-1234-efgh-5678'
         }
@@ -69,7 +69,7 @@ describe('mmtQuery', () => {
         draftType: 'collection_draft',
         params: {},
         headers: {
-          Authorization: 'test-token',
+          Authorization: 'Bearer test-token',
           'Client-Id': 'eed-test-graphql',
           'X-Request-Id': 'abcd-1234-efgh-5678'
         }

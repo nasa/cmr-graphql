@@ -10,7 +10,7 @@ describe('Collection', () => {
   beforeEach(() => {
     process.env = { ...OLD_ENV }
 
-    process.env.draftMmtRootUrl = 'http://example.com'
+    process.env.draftMmtRootUrl = 'http://example-mmt.com'
     process.env.dmmtSslCert = '-----BEGIN CERTIFICATE-----\nmock-certificate\n-----END CERTIFICATE-----'
   })
 
@@ -22,7 +22,7 @@ describe('Collection', () => {
     describe('collectionDraftProposal', () => {
       describe('with results', () => {
         test('returns results', async () => {
-          nock(/example/)
+          nock(/example-mmt/)
             .defaultReplyHeaders({
               'Client-Id': 'eed-test-graphql',
               'X-Request-Id': 'abcd-1234-efgh-5678'
@@ -55,7 +55,7 @@ describe('Collection', () => {
 
       describe('with no results', () => {
         test('returns no results', async () => {
-          nock(/example/)
+          nock(/example-mmt/)
             .defaultReplyHeaders({
               'Client-Id': 'eed-test-graphql',
               'X-Request-Id': 'abcd-1234-efgh-5678'

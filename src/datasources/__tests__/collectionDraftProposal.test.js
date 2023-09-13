@@ -75,7 +75,7 @@ describe('collectionDraftProposal', () => {
 
   test('catches errors received from draftMmtQuery', async () => {
     nock(/example/)
-      .get(/collection_draft_proposals/)
+      .get(/api\/collection_draft_proposals/)
       .reply(500, {
         errors: ['HTTP Error']
       }, {
@@ -84,6 +84,7 @@ describe('collectionDraftProposal', () => {
 
     await expect(
       collectionDraftProposalDatasource({
+        draftType: 'collection_draft_proposal',
         params: {
           id: '123'
         }

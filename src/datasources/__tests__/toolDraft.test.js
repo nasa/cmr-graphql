@@ -45,7 +45,7 @@ describe('toolDraft', () => {
   })
 
   test('return the tool draft results', async () => {
-    nock(/example/)
+    nock(/example-mmt/)
       .defaultReplyHeaders({
         'X-Request-Id': 'abcd-1234-efgh-5678'
       })
@@ -75,7 +75,7 @@ describe('toolDraft', () => {
   })
 
   test('catches errors received from mmtQuery', async () => {
-    nock(/example/)
+    nock(/example-mmt/)
       .get(/api\/tool_drafts/)
       .reply(500, {
         errors: ['HTTP Error']
@@ -85,6 +85,7 @@ describe('toolDraft', () => {
 
     await expect(
       toolDraftDataSource({
+        draftType: 'tool_draft',
         params: {
           id: '123'
         }

@@ -118,7 +118,7 @@ describe('cmrIngest', () => {
           Accept: 'application/json',
           'Client-Id': 'eed-test-graphql',
           'CMR-Request-Id': 'abcd-1234-efgh-5678',
-          Authorization: 'test-token'
+          Authorization: 'Bearer test-token'
         }
       })
         .put(/ingest\/subscriptions\/1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed/)
@@ -131,7 +131,7 @@ describe('cmrIngest', () => {
         'subscriptions',
         { collectionConceptId: 'C100000-EDSC' },
         {
-          Authorization: 'test-token',
+          Authorization: 'Bearer test-token',
           'Client-Id': 'eed-test-graphql',
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         },

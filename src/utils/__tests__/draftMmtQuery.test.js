@@ -9,7 +9,7 @@ describe('draftMmtQuery', () => {
   beforeEach(() => {
     process.env = { ...OLD_ENV }
 
-    process.env.draftMmtRootUrl = 'http://example.com'
+    process.env.draftMmtRootUrl = 'http://example-mmt.com'
   })
 
   afterEach(() => {
@@ -28,7 +28,7 @@ describe('draftMmtQuery', () => {
     test('queries draft mmt', async () => {
       const consoleMock = jest.spyOn(console, 'log').mockImplementation(() => jest.fn())
 
-      nock(/example/)
+      nock(/example-mmt/)
         .get(/collection_draft_proposals/)
         .reply(200, {
           ShortName: 'Mock ShortName'
@@ -73,7 +73,7 @@ describe('draftMmtQuery', () => {
     test('queries draft mmt', async () => {
       const consoleMock = jest.spyOn(console, 'log').mockImplementation(() => jest.fn())
 
-      nock(/example/)
+      nock(/example-mmt/)
         .get(/collection_draft_proposals/)
         .reply(200, {
           ShortName: 'Mock ShortName'
@@ -108,9 +108,9 @@ describe('draftMmtQuery', () => {
 
   describe('when provided a token via the Authorization header', () => {
     test('queries draft mmt using the Authorization header', async () => {
-      nock(/example/, {
+      nock(/example-mmt/, {
         reqheaders: {
-          Authorization: 'test-token',
+          Authorization: 'Bearer test-token',
           'Client-Id': 'eed-test-graphql',
           'X-Request-Id': 'abcd-1234-efgh-5678'
         }
@@ -124,7 +124,7 @@ describe('draftMmtQuery', () => {
         conceptType: 'collectionDraftProposal',
         params: {},
         headers: {
-          Authorization: 'test-token',
+          Authorization: 'Bearer test-token',
           'Client-Id': 'eed-test-graphql',
           'X-Request-Id': 'abcd-1234-efgh-5678'
         }
@@ -139,7 +139,7 @@ describe('draftMmtQuery', () => {
 
   describe('when an error is returned', () => {
     test('throws an exception', async () => {
-      nock(/example/)
+      nock(/example-mmt/)
         .get(/collection_draft_proposals/)
         .reply(500, {
           errors: ['HTTP Error']
