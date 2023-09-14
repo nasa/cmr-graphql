@@ -7,7 +7,7 @@ from varinfo.cmr_search import get_granules, get_granule_link, download_granule
 from varinfo.umm_var import get_all_umm_var
 
 def main(event, context):
-    #Handler that calls the earthdata-varinfo library
+    """Handler that calls the earthdata-varinfo library"""
 
     # Setup CMR search url from cmrRootUrl
     cmr_url = os.environ['cmrRootUrl'] + '/search/'
