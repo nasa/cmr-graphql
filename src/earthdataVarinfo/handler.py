@@ -21,11 +21,11 @@ def main(event, context):
     # These two arguments are required for varinfo, return an error if they are not provided
     if collection_concept_id is None or token is None:
         return {
-        'isBase64Encoded': False,
-        'statusCode': 500,
-        'body': {
-            'error': 'Collection Concept ID and Token must be provided.'
-        }
+            'isBase64Encoded': False,
+            'statusCode': 500,
+            'body': {
+                'error': 'Collection Concept ID and Token must be provided.'
+            }
         }
 
     try:
@@ -47,11 +47,11 @@ def main(event, context):
             all_variables = get_all_umm_var(var_info)
     except Exception as error:
         return {
-        'isBase64Encoded': False,
-        'statusCode': 500,
-        'body': {
-            'error': str(error)
-        }
+            'isBase64Encoded': False,
+            'statusCode': 500,
+            'body': {
+                'error': str(error)
+            }
         }
 
     # Return a successful response
