@@ -33,7 +33,7 @@ class HandlerTest(TestCase):
     def test_good_case(self, mock_download_granule, mock_get_granule_link, mock_get_granules):
         ''' Test when main is called successfully
         '''
-        mock_download_granule.return_value = 'test/Sample.HDF5'
+        mock_download_granule.return_value = 'test/sample.HDF5'
         mock_get_granule_link.return_value = 'Mock link'
         mock_get_granules.return_value = 'Mock granules'
 
