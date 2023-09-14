@@ -88,7 +88,7 @@ jobs:
         working-directory: ./src/earthdataVarinfo
   deploy:
     if: success() && github.ref == 'refs/heads/main' # only run on main success
-    needs: [jest] # only run after jest jobs complete
+    needs: [jest, python-test] # only run after jest and python-test jobs complete
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
