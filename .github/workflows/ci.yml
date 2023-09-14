@@ -67,9 +67,25 @@ jobs:
       run: npm run silent-test
     - name: Upload coverage to codecov
       uses: codecov/codecov-action@v3
+  python-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [ '3.9', '3.10', '3.11', '3.x' ]
+      fail-fast: false
+    steps:
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Run tests
+        run: python -m unittest discover
+        working-directory: ./src/earthdataVarinfo
   deploy:
     if: success() && github.ref == 'refs/heads/main' # only run on main success
-    needs: [jest] # only run after jest jobs complete
+    needs: [jest, python-test] # only run after jest and python-test jobs complete
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
