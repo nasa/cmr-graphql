@@ -46,4 +46,5 @@ class HandlerTest(TestCase):
             # Use json.load() to parse the JSON data into a Python variable
             expected_response = json.load(json_file)
 
+        self.maxDiff = None
         self.assertEqual(response, expected_response)
