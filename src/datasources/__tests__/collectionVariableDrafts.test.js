@@ -1,8 +1,5 @@
 import { mockClient } from 'aws-sdk-client-mock'
-import {
-  InvokeCommand,
-  LambdaClient
-} from '@aws-sdk/client-lambda'
+import { InvokeCommand, LambdaClient } from '@aws-sdk/client-lambda'
 
 import collectionVariableDraftsSource from '../collectionVariableDrafts'
 

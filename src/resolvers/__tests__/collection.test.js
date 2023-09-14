@@ -1,10 +1,7 @@
 import nock from 'nock'
 
 import { mockClient } from 'aws-sdk-client-mock'
-import {
-  InvokeCommand,
-  LambdaClient
-} from '@aws-sdk/client-lambda'
+import { InvokeCommand, LambdaClient } from '@aws-sdk/client-lambda'
 
 import resolvers from '..'
 import { buildContextValue, server } from './__mocks__/mockServer'
@@ -1817,7 +1814,22 @@ describe('Collection', () => {
           })
 
         const variableList = [{
-          dataType: 'int32', definition: 'Grid/time', dimensions: [{ Name: 'Grid/time', Size: 1, Type: 'TIME_DIMENSION' }], longName: 'Grid/time', metadataSpecification: { Name: 'UMM-Var', URL: 'https://cdn.earthdata.nasa.gov/umm/variable/v1.8.2', Version: '1.8.2' }, name: 'Grid/time', standardName: 'time', units: 'seconds since 1970-01-01 00:00:00 UTC'
+          dataType: 'int32',
+          definition: 'Grid/time',
+          dimensions: [{
+            Name: 'Grid/time',
+            Size: 1,
+            Type: 'TIME_DIMENSION'
+          }],
+          longName: 'Grid/time',
+          metadataSpecification: {
+            Name: 'UMM-Var',
+            URL: 'https://cdn.earthdata.nasa.gov/umm/variable/v1.8.2',
+            Version: '1.8.2'
+          },
+          name: 'Grid/time',
+          standardName: 'time',
+          units: 'seconds since 1970-01-01 00:00:00 UTC'
         }]
 
         lambdaClientMock.on(InvokeCommand).resolves({
