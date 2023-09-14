@@ -146,6 +146,7 @@ describe('parseRequestedFields', () => {
         isList: true
       })
     })
+
     describe('with facets requested', () => {
       test('returns both json (conceptId), umm keys and facets', () => {
         const requestInfo = {

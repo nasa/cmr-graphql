@@ -1,9 +1,6 @@
 import nock from 'nock'
 
-import {
-  buildContextValue,
-  server
-} from './__mocks__/mockServer'
+import { buildContextValue, server } from './__mocks__/mockServer'
 
 const contextValue = buildContextValue()
 
@@ -939,7 +936,14 @@ describe('Service', () => {
               entry: [{
                 id: 'C100000-EDSC',
                 association_details: {
-                  services: [{ concept_id: 'S100000-EDSC', data: { key: 'value' } }]
+                  services: [
+                    {
+                      concept_id: 'S100000-EDSC',
+                      data: {
+                        key: 'value'
+                      }
+                    }
+                  ]
                 }
               }]
             }
@@ -951,7 +955,10 @@ describe('Service', () => {
               concept_id: 'S100000-EDSC',
               association_details: {
                 collections: [{
-                  concept_id: 'C100000-EDSC', data: { key: 'value' }
+                  concept_id: 'C100000-EDSC',
+                  data: {
+                    key: 'value'
+                  }
                 }]
               }
             }]

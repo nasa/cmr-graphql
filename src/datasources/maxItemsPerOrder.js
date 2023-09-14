@@ -12,7 +12,11 @@ export default async (params, context) => {
     providerId
   }
 
-  const response = await cmrOrdering({ query, variables, headers })
+  const response = await cmrOrdering({
+    query,
+    variables,
+    headers
+  })
 
   const { data, errors } = response.data
 

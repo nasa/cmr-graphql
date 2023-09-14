@@ -117,6 +117,7 @@ export default {
 
       // Fetch the maxItemsPerOrder from cmr-ordering
       const { dataSources } = context
+
       return dataSources.maxItemsPerOrderSource({ providerId }, context)
     }
   }

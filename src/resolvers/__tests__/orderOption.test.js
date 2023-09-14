@@ -1,9 +1,6 @@
 import nock from 'nock'
 
-import {
-  buildContextValue,
-  server
-} from './__mocks__/mockServer'
+import { buildContextValue, server } from './__mocks__/mockServer'
 
 const contextValue = buildContextValue()
 
@@ -158,6 +155,7 @@ describe('OrderOption', () => {
                 name: 'Lorem Ipsum'
               }]
             })
+
           const response = await server.executeOperation({
             variables: {},
             query: `{
@@ -190,6 +188,7 @@ describe('OrderOption', () => {
             .reply(200, {
               items: []
             })
+
           const response = await server.executeOperation({
             variables: {},
             query: `{

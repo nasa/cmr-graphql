@@ -109,6 +109,7 @@ describe('graphDb', () => {
         if (correctGremlin) {
           return true
         }
+
         return false
       })
       .reply(200, duplicatedCollectionsGraphdbResponseMocks)

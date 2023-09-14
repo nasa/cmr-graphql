@@ -24,7 +24,7 @@ CMR-GraphQL is an API developed by [NASA](http://nasa.gov) [EOSDIS](https://eart
 
 Before running the application you'll want to ensure that all necessary packages are installed by running:
 
-    npm install
+   npm install
 
 CMR-GraphQL uses a few environment variables for configuring runtime options:
 

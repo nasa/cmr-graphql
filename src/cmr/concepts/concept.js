@@ -2,7 +2,11 @@ import camelcaseKeys from 'camelcase-keys'
 import dasherize from 'dasherize'
 import snakeCaseKeys from 'snakecase-keys'
 
-import { snakeCase, get, pick } from 'lodash'
+import {
+  snakeCase,
+  get,
+  pick
+} from 'lodash'
 
 import { CONCEPT_TYPES } from '../../constants'
 

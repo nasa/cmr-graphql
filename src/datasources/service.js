@@ -5,8 +5,7 @@ import serviceKeyMap from '../utils/umm/serviceKeyMap.json'
 import Service from '../cmr/concepts/service'
 
 export default async (params, context, parsedInfo, parentCollectionConceptId) => {
-  // parentCollectionConceptId defined for service queries which are children of collections queries
-
+  // For service queries that are children of collections queries, parentCollectionConceptId is defined.
   const { headers } = context
 
   const requestInfo = parseRequestedFields(parsedInfo, serviceKeyMap, 'service')

@@ -22,11 +22,12 @@ export const verifyEDLJwt = async (header) => {
     const client = jwksClient({
       getKeysInterceptor: () => {
         const edlJwk = JSON.parse(process.env.edlJwk)
+
         return edlJwk.keys
       }
     })
 
-    // getSigningKey retrieves the signing key obj which can access the public key
+    // The getSigningKey function retrieves the signing key object, which provides access to the public key
     const signKey = await client.getSigningKey(keyId)
 
     // Decrypt the 'n' key in the JWK to get the public key used for verification of JWT token
@@ -41,6 +42,9 @@ export const verifyEDLJwt = async (header) => {
     // Return the value provided by the token
     return uid
   } catch (e) {
-    return parseError(e, { reThrowError: true, provider: 'EDL' })
+    return parseError(e, {
+      reThrowError: true,
+      provider: 'EDL'
+    })
   }
 }
