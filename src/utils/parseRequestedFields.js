@@ -161,6 +161,32 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
     if (requestedFields.includes('maxItemsPerOrder') && !requestedFields.includes('type')) {
       requestedFields.push('type')
     }
+
+    // If a user has requested collections, from
+    // within a service request the resolver will pull the conceptId and provide
+    // it to the collections request but if a user doesn't explicity ask for the
+    // collection concept id we need to request it
+    if (
+      (
+        requestedFields.includes('collections')
+      )
+       && !requestedFields.includes('conceptId')) {
+      requestedFields.push('conceptId')
+    }
+  }
+
+  if (name === 'variables') {
+    // If a user has requested collections, from
+    // within a variable request the resolver will pull the conceptId and provide
+    // it to the collections request but if a user doesn't explicity ask for the
+    // collection concept id we need to request it
+    if (
+      (
+        requestedFields.includes('collections')
+      )
+       && !requestedFields.includes('conceptId')) {
+      requestedFields.push('conceptId')
+    }
   }
 
   const { sharedKeys = [], ummKeyMappings } = keyMap

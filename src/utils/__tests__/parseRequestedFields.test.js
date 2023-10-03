@@ -535,4 +535,112 @@ describe('parseRequestedFields', () => {
       })
     })
   })
+
+  describe('when collections are requested from within a service without conceptId', () => {
+    test('requestedFields includes conceptId', () => {
+      const requestInfo = {
+        name: 'services',
+        alias: 'services',
+        args: {},
+        fieldsByTypeName: {
+          ServiceList: {
+            items: {
+              name: 'items',
+              alias: 'items',
+              args: {},
+              fieldsByTypeName: {
+                Service: {
+                  type: {
+                    name: 'type',
+                    alias: 'type',
+                    args: {},
+                    fieldsByTypeName: {}
+                  },
+                  collections: {
+                    name: 'collections',
+                    alias: 'collections',
+                    args: {},
+                    fieldsByTypeName: {
+                      CollectionList: {
+                        count: {
+                          name: 'count',
+                          alias: 'count',
+                          args: {},
+                          fieldsByTypeName: {}
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      const requestedFields = parseRequestedFields(requestInfo, keyMap, 'service')
+
+      expect(requestedFields).toEqual({
+        jsonKeys: ['type', 'collections', 'conceptId'],
+        metaKeys: [],
+        ummKeys: [],
+        ummKeyMappings,
+        isList: true
+      })
+    })
+  })
+
+  describe('when collections are requested from within a variable without conceptId', () => {
+    test('requestedFields includes conceptId', () => {
+      const requestInfo = {
+        name: 'variables',
+        alias: 'variables',
+        args: {},
+        fieldsByTypeName: {
+          VariableList: {
+            items: {
+              name: 'items',
+              alias: 'items',
+              args: {},
+              fieldsByTypeName: {
+                Variable: {
+                  type: {
+                    name: 'type',
+                    alias: 'type',
+                    args: {},
+                    fieldsByTypeName: {}
+                  },
+                  collections: {
+                    name: 'collections',
+                    alias: 'collections',
+                    args: {},
+                    fieldsByTypeName: {
+                      CollectionList: {
+                        count: {
+                          name: 'count',
+                          alias: 'count',
+                          args: {},
+                          fieldsByTypeName: {}
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      const requestedFields = parseRequestedFields(requestInfo, keyMap, 'variable')
+
+      expect(requestedFields).toEqual({
+        jsonKeys: ['type', 'collections', 'conceptId'],
+        metaKeys: [],
+        ummKeys: [],
+        ummKeyMappings,
+        isList: true
+      })
+    })
+  })
 })
