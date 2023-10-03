@@ -189,6 +189,20 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
     }
   }
 
+  if (name === 'tools') {
+    // If a user has requested collections, from
+    // within a tool request the resolver will pull the conceptId and provide
+    // it to the collections request but if a user doesn't explicity ask for the
+    // collection concept id we need to request it
+    if (
+      (
+        requestedFields.includes('collections')
+      )
+       && !requestedFields.includes('conceptId')) {
+      requestedFields.push('conceptId')
+    }
+  }
+
   const { sharedKeys = [], ummKeyMappings } = keyMap
 
   // Gather keys that the user requested that only exist in umm

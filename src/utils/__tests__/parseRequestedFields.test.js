@@ -643,4 +643,58 @@ describe('parseRequestedFields', () => {
       })
     })
   })
+
+  describe('when collections are requested from within a tool without conceptId', () => {
+    test('requestedFields includes conceptId', () => {
+      const requestInfo = {
+        name: 'tools',
+        alias: 'tools',
+        args: {},
+        fieldsByTypeName: {
+          ToolList: {
+            items: {
+              name: 'items',
+              alias: 'items',
+              args: {},
+              fieldsByTypeName: {
+                Tool: {
+                  type: {
+                    name: 'type',
+                    alias: 'type',
+                    args: {},
+                    fieldsByTypeName: {}
+                  },
+                  collections: {
+                    name: 'collections',
+                    alias: 'collections',
+                    args: {},
+                    fieldsByTypeName: {
+                      CollectionList: {
+                        count: {
+                          name: 'count',
+                          alias: 'count',
+                          args: {},
+                          fieldsByTypeName: {}
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      const requestedFields = parseRequestedFields(requestInfo, keyMap, 'tool')
+
+      expect(requestedFields).toEqual({
+        jsonKeys: ['type', 'collections', 'conceptId'],
+        metaKeys: [],
+        ummKeys: [],
+        ummKeyMappings,
+        isList: true
+      })
+    })
+  })
 })
