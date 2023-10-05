@@ -1,9 +1,6 @@
 import nock from 'nock'
 
-import {
-  buildContextValue,
-  server
-} from './__mocks__/mockServer'
+import { buildContextValue, server } from './__mocks__/mockServer'
 
 const contextValue = buildContextValue()
 
@@ -52,6 +49,7 @@ describe('ServiceDraft', () => {
                 VersionDescription: 'Mock Version Description'
               }
             })
+
           const response = await server.executeOperation({
             variables: {},
             query: `{
@@ -107,6 +105,7 @@ describe('ServiceDraft', () => {
             }
           })
         })
+
         test('return results', async () => {
           nock(/example/)
             .defaultReplyHeaders({
@@ -118,6 +117,7 @@ describe('ServiceDraft', () => {
                 Name: 'Mock Name'
               }
             })
+
           const response = await server.executeOperation({
             variables: {},
             query: `{
@@ -128,7 +128,9 @@ describe('ServiceDraft', () => {
           }, {
             contextValue
           })
+
           const { data } = response.body.singleResult
+
           expect(data).toEqual({
             serviceDraft: {
               name: 'Mock Name'
@@ -145,6 +147,7 @@ describe('ServiceDraft', () => {
             })
             .get(/api\/service_drafts/)
             .reply(200, {})
+
           const response = await server.executeOperation({
             variables: {},
             query: `{
