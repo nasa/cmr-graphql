@@ -35,6 +35,7 @@ export default class Grid extends Concept {
       ...headers,
       Accept: 'application/vnd.nasa.cmr.umm_results+json'
     }
+
     return super.fetchUmm(searchParams, ummKeys, ummHeaders)
   }
 }

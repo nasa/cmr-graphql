@@ -69,6 +69,11 @@ type Service {
     "Order option's query parameters"
     params: OrderOptionsInput
   ): OrderOptionList
+
+  variables (
+    "Variables query parameters"
+    params: VariablesInput
+  ): VariableList
 }
 
 type ServiceList {

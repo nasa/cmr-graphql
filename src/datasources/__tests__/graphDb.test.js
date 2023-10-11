@@ -1076,6 +1076,7 @@ describe('graphDb', () => {
           return false
         })
         .reply(200, relatedCollectionsRelationshipTypeGraphdbResponseMocks)
+
       nock(/example-urs/)
         .get(/groups_for_user/)
         .reply(200, {
@@ -1128,6 +1129,7 @@ describe('graphDb', () => {
           if (correctGremlin) {
             return true
           }
+
           return false
         })
         .reply(200, relatedCollectionsResponseEmptyMocks)
@@ -1150,7 +1152,10 @@ describe('graphDb', () => {
         },
         parsedInfo
       )
-      expect(response).toEqual({ count: 0, items: [] })
+      expect(response).toEqual({
+        count: 0,
+        items: []
+      })
     })
   })
 })

@@ -17,7 +17,7 @@ export const pickIgnoringCase = (input = {}, keys = []) => {
 
     // If the key isn't found as it was provided
     if (pickedValue == null) {
-      // downcase they keys of the object as well as the provided to see if
+      // Downcase they keys of the object as well as the provided to see if
       // it exists with a different case, if it is found this way set the value
       ({ [key.toLowerCase()]: pickedValue } = downcaseKeys(input))
     }

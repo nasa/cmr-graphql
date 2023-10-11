@@ -77,6 +77,7 @@ export const mmtQuery = ({
     response.headers['request-duration'] = milliseconds
 
     console.log(`Request ${requestId} from ${clientId} to MMT [Draft Type: ${draftType}] completed external request in [observed: ${milliseconds} ms]`)
+
     return response
   })
 

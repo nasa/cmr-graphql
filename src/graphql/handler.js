@@ -43,7 +43,10 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   introspection: true,
-  plugins: [ApolloServerPluginLandingPageLocalDefault({ embed: false, footer: false })]
+  plugins: [ApolloServerPluginLandingPageLocalDefault({
+    embed: false,
+    footer: false
+  })]
 })
 
 export default startServerAndCreateLambdaHandler(
@@ -79,7 +82,7 @@ export default startServerAndCreateLambdaHandler(
       if (bearerToken) {
         requestHeaders.Authorization = bearerToken
 
-        // regex to match JWT token structures
+        // Regex to match JWT token structures
         const regex = /^Bearer [A-Za-z0-9-_]*\.[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*/
 
         // If this is a JWT token verify that the token is from EDL and retrieve the earthdata login username

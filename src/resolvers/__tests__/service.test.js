@@ -1,9 +1,6 @@
 import nock from 'nock'
 
-import {
-  buildContextValue,
-  server
-} from './__mocks__/mockServer'
+import { buildContextValue, server } from './__mocks__/mockServer'
 
 const contextValue = buildContextValue()
 
@@ -226,6 +223,184 @@ describe('Service', () => {
             service: null
           })
         })
+      })
+    })
+  })
+
+  describe('when there are variable associations in the service metadata', () => {
+    test('queries for and returns variables', async () => {
+      nock(/example/)
+        .defaultReplyHeaders({
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .post(/services\.json/)
+        .reply(200, {
+          items: [{
+            concept_id: 'S100000-EDSC',
+            association_details: {
+              variables: [{ concept_id: 'V100000-EDSC' }, { concept_id: 'V100001-EDSC' }]
+            }
+          }, {
+            concept_id: 'S100001-EDSC',
+            association_details: {
+              variables: [{ concept_id: 'V100002-EDSC' }, { concept_id: 'V100003-EDSC' }]
+            }
+          }]
+        })
+
+      nock(/example/)
+        .defaultReplyHeaders({
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .post(/variables\.json/, 'concept_id[]=V100000-EDSC&concept_id[]=V100001-EDSC&page_size=2')
+        .reply(200, {
+          items: [{
+            concept_id: 'V100000-EDSC'
+          }, {
+            concept_id: 'V100001-EDSC'
+          }]
+        })
+
+      nock(/example/)
+        .defaultReplyHeaders({
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .post(/variables\.json/, 'concept_id[]=V100002-EDSC&concept_id[]=V100003-EDSC&page_size=2')
+        .reply(200, {
+          items: [{
+            concept_id: 'V100002-EDSC'
+          }, {
+            concept_id: 'V100003-EDSC'
+          }]
+        })
+
+      const response = await server.executeOperation({
+        variables: {},
+        query: `{
+          services {
+            items {
+              conceptId
+              variables {
+                items {
+                  conceptId
+                }
+              }
+            }
+          }
+        }`
+      }, {
+        contextValue
+      })
+
+      const { data } = response.body.singleResult
+
+      expect(data).toEqual({
+        services: {
+          items: [{
+            conceptId: 'S100000-EDSC',
+            variables: {
+              items: [{
+                conceptId: 'V100000-EDSC'
+              }, {
+                conceptId: 'V100001-EDSC'
+              }]
+            }
+          }, {
+            conceptId: 'S100001-EDSC',
+            variables: {
+              items: [{
+                conceptId: 'V100002-EDSC'
+              }, {
+                conceptId: 'V100003-EDSC'
+              }]
+            }
+          }]
+        }
+      })
+    })
+  })
+
+  describe('when there are no variable associations in the service metadata', () => {
+    test('queries for and does not return any variables', async () => {
+      nock(/example/)
+        .defaultReplyHeaders({
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .post(/services\.json/)
+        .reply(200, {
+          items: [{
+            concept_id: 'S100000-EDSC'
+          }, {
+            concept_id: 'S100001-EDSC'
+          }]
+        })
+
+      nock(/example/)
+        .defaultReplyHeaders({
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .post(/variables\.json/, 'concept_id[]=V100000-EDSC&concept_id[]=V100001-EDSC&page_size=2')
+        .reply(200, {
+          items: [{
+            concept_id: 'V100000-EDSC'
+          }, {
+            concept_id: 'V100001-EDSC'
+          }]
+        })
+
+      nock(/example/)
+        .defaultReplyHeaders({
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .post(/variables\.json/, 'concept_id[]=V100002-EDSC&concept_id[]=V100003-EDSC&page_size=2')
+        .reply(200, {
+          items: [{
+            concept_id: 'V100002-EDSC'
+          }, {
+            concept_id: 'V100003-EDSC'
+          }]
+        })
+
+      const response = await server.executeOperation({
+        variables: {},
+        query: `{
+          services {
+            items {
+              conceptId
+              variables {
+                items {
+                  conceptId
+                }
+              }
+            }
+          }
+        }`
+      }, {
+        contextValue
+      })
+
+      const { data } = response.body.singleResult
+
+      expect(data).toEqual({
+        services: {
+          items: [{
+            conceptId: 'S100000-EDSC',
+            variables: {
+              items: null
+            }
+          }, {
+            conceptId: 'S100001-EDSC',
+            variables: {
+              items: null
+            }
+          }]
+        }
       })
     })
   })
@@ -761,7 +936,14 @@ describe('Service', () => {
               entry: [{
                 id: 'C100000-EDSC',
                 association_details: {
-                  services: [{ concept_id: 'S100000-EDSC', data: { key: 'value' } }]
+                  services: [
+                    {
+                      concept_id: 'S100000-EDSC',
+                      data: {
+                        key: 'value'
+                      }
+                    }
+                  ]
                 }
               }]
             }
@@ -773,7 +955,10 @@ describe('Service', () => {
               concept_id: 'S100000-EDSC',
               association_details: {
                 collections: [{
-                  concept_id: 'C100000-EDSC', data: { key: 'value' }
+                  concept_id: 'C100000-EDSC',
+                  data: {
+                    key: 'value'
+                  }
                 }]
               }
             }]

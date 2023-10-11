@@ -1,7 +1,4 @@
-import {
-  chunk,
-  isObject
-} from 'lodash'
+import { chunk, isObject } from 'lodash'
 
 import { cmrGraphDb } from '../utils/cmrGraphDb'
 import { getUserPermittedGroups } from '../utils/getUserPermittedGroups'

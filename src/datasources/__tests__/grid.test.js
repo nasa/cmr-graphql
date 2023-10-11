@@ -107,6 +107,7 @@ describe('grid', () => {
             }
           }]
         })
+
       const response = await gridDatasource({}, {
         headers: {
           'Client-Id': 'eed-test-graphql',

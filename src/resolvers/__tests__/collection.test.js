@@ -1,10 +1,7 @@
 import nock from 'nock'
 
 import resolvers from '..'
-import {
-  buildContextValue,
-  server
-} from './__mocks__/mockServer'
+import { buildContextValue, server } from './__mocks__/mockServer'
 
 import duplicateCollectionsGraphdbResponseMocks from './__mocks__/duplicateCollections.graphdbResponse.mocks'
 import duplicateCollectionsResponseMocks from './__mocks__/duplicateCollections.response.mocks'
@@ -1536,6 +1533,7 @@ describe('Collection', () => {
                 }]
               }
             })
+
           const response = await server.executeOperation({
             variables: {},
             query: `{
