@@ -101,6 +101,9 @@ functions:
     handler: src/earthdataVarinfo/handler.main
     ephemeralStorageSize: 2048
     timeout: ${env:LAMBDA_TIMEOUT, '30'}
+    package:
+      patterns:
+        - '!node_modules/**'
 
 resources:
   Resources:
