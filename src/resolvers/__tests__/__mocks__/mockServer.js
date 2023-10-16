@@ -25,6 +25,11 @@ import toolSource from '../../../datasources/tool'
 import toolDraftSource from '../../../datasources/toolDraft'
 import variableDraftSource from '../../../datasources/variableDraft'
 import variableSource from '../../../datasources/variable'
+import {
+  deleteDraft as draftSourceDelete,
+  fetchDrafts as draftSourceFetch,
+  ingestDraft as draftSourceIngest
+} from '../../../datasources/draft'
 
 export const server = new ApolloServer({
   typeDefs,
@@ -33,26 +38,29 @@ export const server = new ApolloServer({
 
 export const buildContextValue = (extraContext) => ({
   dataSources: {
-    collectionSource,
-    collectionDraftSource,
     collectionDraftProposalSource,
-    dataQualitySummarySource,
+    collectionDraftSource,
+    collectionSource,
     collectionVariableDraftsSource,
+    dataQualitySummarySource,
+    draftSourceDelete,
+    draftSourceFetch,
+    draftSourceIngest,
     granuleSource,
     graphDbDuplicateCollectionsSource,
     graphDbSource,
     gridSource,
     maxItemsPerOrderSource,
     orderOptionSource,
-    serviceSource,
     serviceDraftSource,
+    serviceSource,
     subscriptionSourceDelete,
     subscriptionSourceFetch,
     subscriptionSourceIngest,
-    toolSource,
     toolDraftSource,
-    variableSource,
-    variableDraftSource
+    toolSource,
+    variableDraftSource,
+    variableSource
   },
   headers: {
     'Client-Id': 'eed-test-graphql',

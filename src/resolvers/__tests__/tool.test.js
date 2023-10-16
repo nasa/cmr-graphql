@@ -267,95 +267,159 @@ describe('Tool', () => {
   })
 
   describe('Tool', () => {
-    test('collections', async () => {
-      nock(/example/)
-        .defaultReplyHeaders({
-          'CMR-Took': 7,
-          'CMR-Request-Id': 'abcd-1234-efgh-5678'
-        })
-        .post(/tools\.json/)
-        .reply(200, {
-          items: [{
-            concept_id: 'T100000-EDSC'
-          }, {
-            concept_id: 'T100001-EDSC'
-          }]
-        })
-
-      nock(/example/)
-        .defaultReplyHeaders({
-          'CMR-Took': 7,
-          'CMR-Request-Id': 'abcd-1234-efgh-5678'
-        })
-        .post(/collections\.json/, 'page_size=20&tool_concept_id=T100000-EDSC')
-        .reply(200, {
-          feed: {
-            entry: [{
-              id: 'C100000-EDSC'
+    describe('collections', () => {
+      test('returns collections when querying a published record', async () => {
+        nock(/example/)
+          .defaultReplyHeaders({
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .post(/tools\.json/)
+          .reply(200, {
+            items: [{
+              concept_id: 'T100000-EDSC'
             }, {
-              id: 'C100001-EDSC'
+              concept_id: 'T100001-EDSC'
             }]
-          }
-        })
+          })
 
-      nock(/example/)
-        .defaultReplyHeaders({
-          'CMR-Took': 7,
-          'CMR-Request-Id': 'abcd-1234-efgh-5678'
-        })
-        .post(/collections\.json/, 'page_size=20&tool_concept_id=T100001-EDSC')
-        .reply(200, {
-          feed: {
-            entry: [{
-              id: 'C100002-EDSC'
-            }, {
-              id: 'C100003-EDSC'
-            }]
-          }
-        })
+        nock(/example/)
+          .defaultReplyHeaders({
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .post(/collections\.json/, 'page_size=20&tool_concept_id=T100000-EDSC')
+          .reply(200, {
+            feed: {
+              entry: [{
+                id: 'C100000-EDSC'
+              }, {
+                id: 'C100001-EDSC'
+              }]
+            }
+          })
 
-      const response = await server.executeOperation({
-        variables: {},
-        query: `{
-          tools {
-            items {
-              conceptId
-              collections {
-                items {
-                  conceptId
+        nock(/example/)
+          .defaultReplyHeaders({
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .post(/collections\.json/, 'page_size=20&tool_concept_id=T100001-EDSC')
+          .reply(200, {
+            feed: {
+              entry: [{
+                id: 'C100002-EDSC'
+              }, {
+                id: 'C100003-EDSC'
+              }]
+            }
+          })
+
+        const response = await server.executeOperation({
+          variables: {},
+          query: `{
+            tools {
+              items {
+                conceptId
+                collections {
+                  items {
+                    conceptId
+                  }
                 }
               }
             }
+          }`
+        }, {
+          contextValue
+        })
+
+        const { data } = response.body.singleResult
+
+        expect(data).toEqual({
+          tools: {
+            items: [{
+              conceptId: 'T100000-EDSC',
+              collections: {
+                items: [{
+                  conceptId: 'C100000-EDSC'
+                }, {
+                  conceptId: 'C100001-EDSC'
+                }]
+              }
+            }, {
+              conceptId: 'T100001-EDSC',
+              collections: {
+                items: [{
+                  conceptId: 'C100002-EDSC'
+                }, {
+                  conceptId: 'C100003-EDSC'
+                }]
+              }
+            }]
           }
-        }`
-      }, {
-        contextValue
+        })
       })
 
-      const { data } = response.body.singleResult
+      test('returns null when querying a draft', async () => {
+        nock(/example/)
+          .defaultReplyHeaders({
+            'CMR-Hits': 2,
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .post(/tool-drafts\.umm_json/)
+          .reply(200, {
+            items: [{
+              meta: {
+                'concept-id': 'TD100000-EDSC'
+              },
+              umm: {}
+            }, {
+              meta: {
+                'concept-id': 'TD100001-EDSC'
+              },
+              umm: {}
+            }]
+          })
 
-      expect(data).toEqual({
-        tools: {
-          items: [{
-            conceptId: 'T100000-EDSC',
-            collections: {
-              items: [{
-                conceptId: 'C100000-EDSC'
-              }, {
-                conceptId: 'C100001-EDSC'
-              }]
+        const response = await server.executeOperation({
+          variables: {
+            params: {
+              conceptType: 'Tool'
             }
-          }, {
-            conceptId: 'T100001-EDSC',
-            collections: {
-              items: [{
-                conceptId: 'C100002-EDSC'
-              }, {
-                conceptId: 'C100003-EDSC'
-              }]
+          },
+          query: `query Drafts($params: DraftsInput) {
+            drafts(params: $params) {
+              items {
+                draftMetadata {
+                  ... on Tool {
+                    collections {
+                      count
+                    }
+                  }
+                }
+              }
             }
-          }]
-        }
+          }`
+        }, {
+          contextValue
+        })
+
+        const { data } = response.body.singleResult
+
+        expect(data).toEqual({
+          drafts: {
+            items: [{
+              draftMetadata: {
+                collections: null
+              }
+            }, {
+              draftMetadata: {
+                collections: null
+              }
+            }]
+          }
+        })
       })
     })
   })

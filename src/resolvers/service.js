@@ -29,6 +29,10 @@ export default {
         conceptId
       } = source
 
+      // If the concept being returned is a draft, there will be no associations,
+      // return null to avoid an extra call to CMR
+      if (conceptId.startsWith('SD')) return null
+
       const requestedParams = handlePagingParams({
         serviceConceptId: conceptId,
         ...args
@@ -40,11 +44,15 @@ export default {
       const { dataSources } = context
 
       // Pull out the service's parent collection id to filter the associated orderOptions only to those collections
-
       const {
         associationDetails = {},
+        conceptId,
         parentCollectionConceptId
       } = source
+
+      // If the concept being returned is a draft, there will be no associations,
+      // return null to avoid an extra call to CMR
+      if (conceptId.startsWith('SD')) return null
 
       const { collections = [] } = associationDetails
       // If there are no associations to collections for this service
@@ -89,14 +97,21 @@ export default {
     },
     variables: async (source, args, context, info) => {
       const {
-        associationDetails = {}
+        associationDetails = {},
+        conceptId
       } = source
+
+      // If the concept being returned is a draft, there will be no associations,
+      // return null to avoid an extra call to CMR
+      if (conceptId.startsWith('SD')) return null
 
       const { dataSources } = context
 
       const { variables = [] } = associationDetails
 
-      const variableConceptIds = variables.map(({ conceptId }) => conceptId)
+      const variableConceptIds = variables.map(
+        ({ conceptId: variableConceptId }) => variableConceptId
+      )
 
       if (!variables.length) {
         return {
@@ -111,7 +126,15 @@ export default {
       }, context, parseResolveInfo(info))
     },
     maxItemsPerOrder: async (source, args, context) => {
-      const { providerId, type } = source
+      const {
+        conceptId,
+        providerId,
+        type
+      } = source
+
+      // If the concept being returned is a draft, there will be no associations,
+      // return null to avoid an extra call to CMR
+      if (conceptId.startsWith('SD')) return null
 
       if (type !== 'ECHO ORDERS') return null
 

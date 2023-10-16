@@ -29,6 +29,10 @@ export default {
         conceptId
       } = source
 
+      // If the concept being returned is a draft, there will be no associations,
+      // return null to avoid an extra call to CMR
+      if (conceptId.startsWith('VD')) return null
+
       const requestedParams = handlePagingParams({
         variableConceptId: conceptId,
         ...args
