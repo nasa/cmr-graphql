@@ -1,0 +1,73 @@
+union DraftMetadata = Collection | Service | Tool | Variable
+
+enum DraftConceptType {
+  Collection
+  Service
+  Tool
+  Variable
+}
+
+type DraftMutationResponse {
+  conceptId: String!
+  revisionId: String!
+  warnings: [JSON]
+  existingErrors: [JSON]
+}
+
+type Draft {
+  conceptId: String
+  conceptType: String
+  deleted: Boolean
+  name: String
+  nativeId: String
+  providerId: String
+  revisionDate: String
+  revisionId: String
+  draftMetadata: DraftMetadata
+}
+
+type DraftList {
+  count: Int
+  items: [Draft]
+}
+
+type Mutation {
+  ingestDraft (
+    conceptType: DraftConceptType!
+    metadata: JSON!
+    nativeId: String!
+    providerId: String!
+  ): DraftMutationResponse
+
+  deleteDraft (
+    conceptType: DraftConceptType!
+    nativeId: String!
+    providerId: String!
+  ): DraftMutationResponse
+}
+
+input DraftInput {
+  conceptType: DraftConceptType!
+  conceptId: String!
+}
+
+input DraftsInput {
+  conceptType: DraftConceptType!
+  conceptId: [String]
+  cursor: String
+  name: [String]
+  nativeId: [String]
+  options: JSON
+  provider: [String]
+  sortKey: [String]
+}
+
+type Query {
+  draft (
+    params: DraftInput
+  ): Draft
+
+  drafts (
+    params: DraftsInput
+  ): DraftList
+}

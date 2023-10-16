@@ -25,9 +25,11 @@ export default {
       const { dataSources } = context
 
       // Pull out parent collection id to provide to the granules endpoint because cmr requires it
-      const {
-        conceptId
-      } = source
+      const { conceptId } = source
+
+      // If the concept being returned is a draft, there will be no associations,
+      // return null to avoid an extra call to CMR
+      if (conceptId.startsWith('TD')) return null
 
       const requestedParams = handlePagingParams({
         toolConceptId: conceptId,

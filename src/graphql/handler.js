@@ -34,6 +34,12 @@ import {
   ingestSubscription as subscriptionSourceIngest
 } from '../datasources/subscription'
 
+import {
+  deleteDraft as draftSourceDelete,
+  fetchDrafts as draftSourceFetch,
+  ingestDraft as draftSourceIngest
+} from '../datasources/draft'
+
 import { downcaseKeys } from '../utils/downcaseKeys'
 import { verifyEDLJwt } from '../utils/verifyEDLJwt'
 
@@ -111,23 +117,26 @@ export default startServerAndCreateLambdaHandler(
           collectionDraftProposalSource,
           collectionDraftSource,
           collectionSource,
-          dataQualitySummarySource,
           collectionVariableDraftsSource,
+          dataQualitySummarySource,
+          draftSourceDelete,
+          draftSourceFetch,
+          draftSourceIngest,
           granuleSource,
           graphDbDuplicateCollectionsSource,
           graphDbSource,
+          gridSource,
           maxItemsPerOrderSource,
           orderOptionSource,
-          serviceSource,
           serviceDraftSource,
+          serviceSource,
           subscriptionSourceDelete,
           subscriptionSourceFetch,
           subscriptionSourceIngest,
           toolDraftSource,
           toolSource,
-          variableSource,
           variableDraftSource,
-          gridSource
+          variableSource
         },
         headers: requestHeaders,
         collectionLoader: new DataLoader(getCollectionsById, { cacheKeyFn: (obj) => obj.conceptId })
