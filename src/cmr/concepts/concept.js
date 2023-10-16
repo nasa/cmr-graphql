@@ -649,7 +649,16 @@ export default class Concept {
       ummKeys.forEach((ummKey) => {
         // Use lodash.get to retrieve a value from the umm response given the
         // path we've defined above
-        const keyValue = get(item, ummKeyMappings[ummKey])
+        let keyValue = get(item, ummKeyMappings[ummKey])
+
+        // If the UMM Key is `draftMetadata`, we need to combine the `meta` and `umm` fields
+        // This ensures all the keys are available for the DraftMetadata union type
+        if (ummKey === 'draftMetadata') {
+          keyValue = {
+            ...item.umm,
+            ...item.meta
+          }
+        }
 
         if (keyValue != null) {
           const camelCasedObject = camelcaseKeys({ [ummKey]: keyValue }, { deep: true })

@@ -29,6 +29,10 @@ export default {
         conceptId: collectionId
       } = source
 
+      // If the concept being returned is a draft, there will be no associations,
+      // return null to avoid an extra call to CMR
+      if (collectionId.startsWith('CD')) return null
+
       // Empty object that will contain the search parameters sent to CMR
       const granuleParams = {}
 
@@ -77,6 +81,12 @@ export default {
     relatedCollections: async (source, args, context, info) => {
       const { dataSources } = context
 
+      const { conceptId } = source
+
+      // If the concept being returned is a draft, there will be no associations,
+      // return null to avoid an extra call to CMR
+      if (conceptId.startsWith('CD')) return null
+
       return dataSources.graphDbSource(source, args, context, parseResolveInfo(info))
     },
     generateVariableDrafts: async (source, args, context) => {
@@ -88,14 +98,21 @@ export default {
     },
     dataQualitySummaries: async (source, args, context, info) => {
       const {
-        associationDetails = {}
+        associationDetails = {},
+        conceptId
       } = source
+
+      // If the concept being returned is a draft, there will be no associations,
+      // return null to avoid an extra call to CMR
+      if (conceptId.startsWith('CD')) return null
 
       const { dataSources } = context
 
       const { dataQualitySummaries = [] } = associationDetails
 
-      const dataQualitySummaryConceptIds = dataQualitySummaries.map(({ conceptId }) => conceptId)
+      const dataQualitySummaryConceptIds = dataQualitySummaries.map(
+        ({ conceptId: dqsId }) => dqsId
+      )
 
       if (!dataQualitySummaryConceptIds.length) {
         return {
@@ -112,6 +129,12 @@ export default {
     duplicateCollections: async (source, args, context) => {
       const { dataSources } = context
 
+      const { conceptId } = source
+
+      // If the concept being returned is a draft, there will be no associations,
+      // return null to avoid an extra call to CMR
+      if (conceptId.startsWith('CD')) return null
+
       return dataSources.graphDbDuplicateCollectionsSource(source, context)
     },
     services: async (source, args, context, info) => {
@@ -119,6 +142,10 @@ export default {
         associationDetails = {},
         conceptId: collectionConceptId
       } = source
+
+      // If the concept being returned is a draft, there will be no associations,
+      // return null to avoid an extra call to CMR
+      if (collectionConceptId.startsWith('CD')) return null
 
       const { dataSources } = context
 
@@ -150,6 +177,10 @@ export default {
         conceptId: collectionId
       } = source
 
+      // If the concept being returned is a draft, there will be no associations,
+      // return null to avoid an extra call to CMR
+      if (collectionId.startsWith('CD')) return null
+
       const { dataSources } = context
 
       return dataSources.subscriptionSourceFetch({
@@ -159,14 +190,19 @@ export default {
     },
     tools: async (source, args, context, info) => {
       const {
-        associationDetails = {}
+        associationDetails = {},
+        conceptId
       } = source
+
+      // If the concept being returned is a draft, there will be no associations,
+      // return null to avoid an extra call to CMR
+      if (conceptId.startsWith('CD')) return null
 
       const { dataSources } = context
 
       const { tools = [] } = associationDetails
 
-      const toolConceptIds = tools.map(({ conceptId }) => conceptId)
+      const toolConceptIds = tools.map(({ conceptId: toolId }) => toolId)
 
       if (!tools.length) {
         return {
@@ -182,14 +218,19 @@ export default {
     },
     variables: async (source, args, context, info) => {
       const {
-        associationDetails = {}
+        associationDetails = {},
+        conceptId
       } = source
+
+      // If the concept being returned is a draft, there will be no associations,
+      // return null to avoid an extra call to CMR
+      if (conceptId.startsWith('CD')) return null
 
       const { dataSources } = context
 
       const { variables = [] } = associationDetails
 
-      const variableConceptIds = variables.map(({ conceptId }) => conceptId)
+      const variableConceptIds = variables.map(({ conceptId: variableId }) => variableId)
 
       if (!variables.length) {
         return {

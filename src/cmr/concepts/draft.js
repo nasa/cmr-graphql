@@ -1,0 +1,150 @@
+import { uniq } from 'lodash'
+
+import { pickIgnoringCase } from '../../utils/pickIgnoringCase'
+import Concept from './concept'
+
+export default class Draft extends Concept {
+  /**
+   * Instantiates a Draft object
+   * @param {Object} headers HTTP headers provided by the query
+   * @param {Object} requestInfo Parsed data pertaining to the Graph query
+   * @param {Object} params GraphQL query parameters
+   */
+  constructor(conceptType, headers, requestInfo, params) {
+    super(conceptType, headers, requestInfo, params)
+
+    const singularConceptType = conceptType.replace('drafts', 'draft')
+    const { providerId } = params
+
+    const {
+      ummCollectionDraftVersion,
+      ummServiceDraftVersion,
+      ummToolDraftVersion,
+      ummVariableDraftVersion
+    } = process.env
+
+    let ummVersion
+    switch (conceptType) {
+      case 'collection-drafts':
+        ummVersion = ummCollectionDraftVersion
+        break
+      case 'service-drafts':
+        ummVersion = ummServiceDraftVersion
+        break
+      case 'tool-drafts':
+        ummVersion = ummToolDraftVersion
+        break
+      case 'variable-drafts':
+        ummVersion = ummVariableDraftVersion
+        break
+      default:
+        break
+    }
+
+    this.ingestPath = `providers/${providerId}/${conceptType}`
+    this.metadataSpecification = {
+      URL: `https://cdn.earthdata.nasa.gov/umm/${singularConceptType}/v${ummVersion}`,
+      Name: singularConceptType,
+      Version: ummVersion
+    }
+  }
+
+  /**
+   * Parse and return the array of data from the nested response body
+   * @param {Object} jsonResponse HTTP response from the CMR endpoint
+   */
+  parseJsonBody(jsonResponse) {
+    const { data } = jsonResponse
+
+    const { items } = data
+
+    return items
+  }
+
+  /**
+   * Returns an array of keys representing supported search params for the umm endpoint
+   */
+  getPermittedJsonSearchParams() {
+    return [
+      ...super.getPermittedJsonSearchParams(),
+      'provider',
+      'type'
+      // TODO update these
+    ]
+  }
+
+  /**
+   * Returns an array of keys representing supported search params for the umm endpoint
+   */
+  getPermittedUmmSearchParams() {
+    return [
+      ...super.getPermittedUmmSearchParams(),
+      'provider',
+      'type'
+      // TODO update these
+    ]
+  }
+
+  /**
+   * Returns an array of keys that should not be indexed when sent to CMR
+   */
+  getNonIndexedKeys() {
+    return uniq([
+      ...super.getNonIndexedKeys(),
+      'collection_concept_id'
+    ])
+  }
+
+  /**
+   * Query the CMR UMM API endpoint to retrieve requested data
+   * @param {Object} searchParams Parameters provided by the query
+   * @param {Array} ummKeys Keys requested by the query
+   * @param {Object} headers Headers requested by the query
+   */
+  fetchUmm(searchParams, ummKeys, headers) {
+    const ummHeaders = {
+      ...headers,
+      Accept: `application/vnd.nasa.cmr.umm_results+json; version=${process.env.ummToolDraftVersion}`
+    }
+
+    return super.fetchUmm(searchParams, ummKeys, ummHeaders)
+  }
+
+  /**
+   * Ingest the provided object into the CMR
+   * @param {Object} data Parameters provided by the query
+   * @param {Array} requestedKeys Keys requested by the query
+   * @param {Object} providedHeaders Headers requested by the query
+   */
+  ingest(data, requestedKeys, providedHeaders) {
+    // Default headers
+    const defaultHeaders = {
+      Accept: 'application/json',
+      'Content-Type': `application/vnd.nasa.cmr.umm+json; version=${process.env.ummToolDraftVersion}`
+    }
+
+    // Merge default headers into the provided headers and then pick out only permitted values
+    const permittedHeaders = pickIgnoringCase({
+      ...defaultHeaders,
+      ...providedHeaders
+    }, [
+      'Accept',
+      'Authorization',
+      'Client-Id',
+      'Content-Type',
+      'CMR-Request-Id'
+    ])
+
+    // Add MetadataSpecification to the data
+    // eslint-disable-next-line no-param-reassign
+    data.metadataSpecification = this.metadataSpecification
+
+    const metadata = {
+      metadataSpecification: this.metadataSpecification,
+      nativeId: data.nativeId,
+      ...data.metadata
+    }
+
+    super.ingest(metadata, requestedKeys, permittedHeaders)
+  }
+}

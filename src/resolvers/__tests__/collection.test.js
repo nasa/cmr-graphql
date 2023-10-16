@@ -587,194 +587,258 @@ describe('Collection', () => {
   })
 
   describe('Collection', () => {
-    test('granules', async () => {
-      nock(/example-cmr/)
-        .defaultReplyHeaders({
-          'CMR-Took': 7,
-          'CMR-Request-Id': 'abcd-1234-efgh-5678'
-        })
-        .post(/collections\.json/)
-        .reply(200, {
-          feed: {
-            entry: [{
-              id: 'C100000-EDSC'
-            }, {
-              id: 'C100001-EDSC'
-            }]
-          }
-        })
+    describe('granules', () => {
+      test('granules', async () => {
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .post(/collections\.json/)
+          .reply(200, {
+            feed: {
+              entry: [{
+                id: 'C100000-EDSC'
+              }, {
+                id: 'C100001-EDSC'
+              }]
+            }
+          })
 
-      nock(/example-cmr/)
-        .defaultReplyHeaders({
-          'CMR-Took': 7,
-          'CMR-Request-Id': 'abcd-1234-efgh-5678'
-        })
-        .post(/granules\.json/, 'page_size=20&collection_concept_id=C100000-EDSC')
-        .reply(200, {
-          feed: {
-            entry: [{
-              id: 'G100000-EDSC'
-            }, {
-              id: 'G100001-EDSC'
-            }]
-          }
-        })
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .post(/granules\.json/, 'page_size=20&collection_concept_id=C100000-EDSC')
+          .reply(200, {
+            feed: {
+              entry: [{
+                id: 'G100000-EDSC'
+              }, {
+                id: 'G100001-EDSC'
+              }]
+            }
+          })
 
-      nock(/example-cmr/)
-        .defaultReplyHeaders({
-          'CMR-Took': 7,
-          'CMR-Request-Id': 'abcd-1234-efgh-5678'
-        })
-        .post(/granules\.json/, 'page_size=20&collection_concept_id=C100001-EDSC')
-        .reply(200, {
-          feed: {
-            entry: [{
-              id: 'G100002-EDSC'
-            }, {
-              id: 'G100003-EDSC'
-            }]
-          }
-        })
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .post(/granules\.json/, 'page_size=20&collection_concept_id=C100001-EDSC')
+          .reply(200, {
+            feed: {
+              entry: [{
+                id: 'G100002-EDSC'
+              }, {
+                id: 'G100003-EDSC'
+              }]
+            }
+          })
 
-      const response = await server.executeOperation({
-        variables: {},
-        query: `{
-          collections {
-            items {
-              conceptId
-              granules {
-                items {
-                  conceptId
+        const response = await server.executeOperation({
+          variables: {},
+          query: `{
+            collections {
+              items {
+                conceptId
+                granules {
+                  items {
+                    conceptId
+                  }
                 }
               }
             }
+          }`
+        }, {
+          contextValue
+        })
+
+        const { data } = response.body.singleResult
+
+        expect(data).toEqual({
+          collections: {
+            items: [{
+              conceptId: 'C100000-EDSC',
+              granules: {
+                items: [{
+                  conceptId: 'G100000-EDSC'
+                }, {
+                  conceptId: 'G100001-EDSC'
+                }]
+              }
+            }, {
+              conceptId: 'C100001-EDSC',
+              granules: {
+                items: [{
+                  conceptId: 'G100002-EDSC'
+                }, {
+                  conceptId: 'G100003-EDSC'
+                }]
+              }
+            }]
           }
-        }`
-      }, {
-        contextValue
+        })
       })
 
-      const { data } = response.body.singleResult
-
-      expect(data).toEqual({
-        collections: {
-          items: [{
-            conceptId: 'C100000-EDSC',
-            granules: {
-              items: [{
-                conceptId: 'G100000-EDSC'
+      test('granules with arguments passed from the collection', async () => {
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .post(/collections\.json/)
+          .reply(200, {
+            feed: {
+              entry: [{
+                id: 'C100000-EDSC'
               }, {
-                conceptId: 'G100001-EDSC'
+                id: 'C100001-EDSC'
               }]
             }
-          }, {
-            conceptId: 'C100001-EDSC',
-            granules: {
-              items: [{
-                conceptId: 'G100002-EDSC'
+          })
+
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .post(/granules\.json/, 'page_size=20&bounding_box=-90.08940124511719,41.746426050239336,-82.33992004394531,47.84755587105307&collection_concept_id=C100000-EDSC')
+          .reply(200, {
+            feed: {
+              entry: [{
+                id: 'G100000-EDSC'
               }, {
-                conceptId: 'G100003-EDSC'
+                id: 'G100001-EDSC'
               }]
             }
-          }]
-        }
-      })
-    })
+          })
 
-    test('granules with arguments passed from the collection', async () => {
-      nock(/example-cmr/)
-        .defaultReplyHeaders({
-          'CMR-Took': 7,
-          'CMR-Request-Id': 'abcd-1234-efgh-5678'
-        })
-        .post(/collections\.json/)
-        .reply(200, {
-          feed: {
-            entry: [{
-              id: 'C100000-EDSC'
-            }, {
-              id: 'C100001-EDSC'
-            }]
-          }
-        })
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .post(/granules\.json/, 'page_size=20&bounding_box=-90.08940124511719,41.746426050239336,-82.33992004394531,47.84755587105307&collection_concept_id=C100001-EDSC')
+          .reply(200, {
+            feed: {
+              entry: [{
+                id: 'G100002-EDSC'
+              }, {
+                id: 'G100003-EDSC'
+              }]
+            }
+          })
 
-      nock(/example-cmr/)
-        .defaultReplyHeaders({
-          'CMR-Took': 7,
-          'CMR-Request-Id': 'abcd-1234-efgh-5678'
-        })
-        .post(/granules\.json/, 'page_size=20&bounding_box=-90.08940124511719,41.746426050239336,-82.33992004394531,47.84755587105307&collection_concept_id=C100000-EDSC')
-        .reply(200, {
-          feed: {
-            entry: [{
-              id: 'G100000-EDSC'
-            }, {
-              id: 'G100001-EDSC'
-            }]
-          }
-        })
-
-      nock(/example-cmr/)
-        .defaultReplyHeaders({
-          'CMR-Took': 7,
-          'CMR-Request-Id': 'abcd-1234-efgh-5678'
-        })
-        .post(/granules\.json/, 'page_size=20&bounding_box=-90.08940124511719,41.746426050239336,-82.33992004394531,47.84755587105307&collection_concept_id=C100001-EDSC')
-        .reply(200, {
-          feed: {
-            entry: [{
-              id: 'G100002-EDSC'
-            }, {
-              id: 'G100003-EDSC'
-            }]
-          }
-        })
-
-      const response = await server.executeOperation({
-        variables: {},
-        query: `{
-          collections(
-            limit:2
-            boundingBox:"-90.08940124511719,41.746426050239336,-82.33992004394531,47.84755587105307"
-          ) {
-            items {
-              conceptId
-              granules {
-                items {
-                  conceptId
+        const response = await server.executeOperation({
+          variables: {},
+          query: `{
+            collections(
+              limit:2
+              boundingBox:"-90.08940124511719,41.746426050239336,-82.33992004394531,47.84755587105307"
+            ) {
+              items {
+                conceptId
+                granules {
+                  items {
+                    conceptId
+                  }
                 }
               }
             }
+          }`
+        }, {
+          contextValue
+        })
+
+        const { data } = response.body.singleResult
+
+        expect(data).toEqual({
+          collections: {
+            items: [{
+              conceptId: 'C100000-EDSC',
+              granules: {
+                items: [{
+                  conceptId: 'G100000-EDSC'
+                }, {
+                  conceptId: 'G100001-EDSC'
+                }]
+              }
+            }, {
+              conceptId: 'C100001-EDSC',
+              granules: {
+                items: [{
+                  conceptId: 'G100002-EDSC'
+                }, {
+                  conceptId: 'G100003-EDSC'
+                }]
+              }
+            }]
           }
-        }`
-      }, {
-        contextValue
+        })
       })
 
-      const { data } = response.body.singleResult
+      test('returns null when querying a draft', async () => {
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Hits': 2,
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .post(/collection-drafts\.umm_json/)
+          .reply(200, {
+            items: [{
+              meta: {
+                'concept-id': 'CD100000-EDSC'
+              },
+              umm: {}
+            }, {
+              meta: {
+                'concept-id': 'CD100001-EDSC'
+              },
+              umm: {}
+            }]
+          })
 
-      expect(data).toEqual({
-        collections: {
-          items: [{
-            conceptId: 'C100000-EDSC',
-            granules: {
-              items: [{
-                conceptId: 'G100000-EDSC'
-              }, {
-                conceptId: 'G100001-EDSC'
-              }]
+        const response = await server.executeOperation({
+          variables: {
+            params: {
+              conceptType: 'Collection'
             }
-          }, {
-            conceptId: 'C100001-EDSC',
-            granules: {
-              items: [{
-                conceptId: 'G100002-EDSC'
-              }, {
-                conceptId: 'G100003-EDSC'
-              }]
+          },
+          query: `query Drafts($params: DraftsInput) {
+            drafts(params: $params) {
+              items {
+                draftMetadata {
+                  ... on Collection {
+                    granules {
+                      count
+                    }
+                  }
+                }
+              }
             }
-          }]
-        }
+          }`
+        }, {
+          contextValue
+        })
+
+        const { data } = response.body.singleResult
+
+        expect(data).toEqual({
+          drafts: {
+            items: [{
+              draftMetadata: {
+                granules: null
+              }
+            }, {
+              draftMetadata: {
+                granules: null
+              }
+            }]
+          }
+        })
       })
     })
 
@@ -994,6 +1058,68 @@ describe('Collection', () => {
           })
         })
       })
+
+      test('returns null when querying a draft', async () => {
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Hits': 2,
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .post(/collection-drafts\.umm_json/)
+          .reply(200, {
+            items: [{
+              meta: {
+                'concept-id': 'CD100000-EDSC'
+              },
+              umm: {}
+            }, {
+              meta: {
+                'concept-id': 'CD100001-EDSC'
+              },
+              umm: {}
+            }]
+          })
+
+        const response = await server.executeOperation({
+          variables: {
+            params: {
+              conceptType: 'Collection'
+            }
+          },
+          query: `query Drafts($params: DraftsInput) {
+            drafts(params: $params) {
+              items {
+                draftMetadata {
+                  ... on Collection {
+                    services {
+                      count
+                    }
+                  }
+                }
+              }
+            }
+          }`
+        }, {
+          contextValue
+        })
+
+        const { data } = response.body.singleResult
+
+        expect(data).toEqual({
+          drafts: {
+            items: [{
+              draftMetadata: {
+                services: null
+              }
+            }, {
+              draftMetadata: {
+                services: null
+              }
+            }]
+          }
+        })
+      })
     })
 
     describe('subscriptions', () => {
@@ -1081,6 +1207,68 @@ describe('Collection', () => {
                 }, {
                   conceptId: 'SUB100003-EDSC'
                 }]
+              }
+            }]
+          }
+        })
+      })
+
+      test('returns null when querying a draft', async () => {
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Hits': 2,
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .post(/collection-drafts\.umm_json/)
+          .reply(200, {
+            items: [{
+              meta: {
+                'concept-id': 'CD100000-EDSC'
+              },
+              umm: {}
+            }, {
+              meta: {
+                'concept-id': 'CD100001-EDSC'
+              },
+              umm: {}
+            }]
+          })
+
+        const response = await server.executeOperation({
+          variables: {
+            params: {
+              conceptType: 'Collection'
+            }
+          },
+          query: `query Drafts($params: DraftsInput) {
+            drafts(params: $params) {
+              items {
+                draftMetadata {
+                  ... on Collection {
+                    subscriptions {
+                      count
+                    }
+                  }
+                }
+              }
+            }
+          }`
+        }, {
+          contextValue
+        })
+
+        const { data } = response.body.singleResult
+
+        expect(data).toEqual({
+          drafts: {
+            items: [{
+              draftMetadata: {
+                subscriptions: null
+              }
+            }, {
+              draftMetadata: {
+                subscriptions: null
               }
             }]
           }
@@ -1304,6 +1492,68 @@ describe('Collection', () => {
           })
         })
       })
+
+      test('returns null when querying a draft', async () => {
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Hits': 2,
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .post(/collection-drafts\.umm_json/)
+          .reply(200, {
+            items: [{
+              meta: {
+                'concept-id': 'CD100000-EDSC'
+              },
+              umm: {}
+            }, {
+              meta: {
+                'concept-id': 'CD100001-EDSC'
+              },
+              umm: {}
+            }]
+          })
+
+        const response = await server.executeOperation({
+          variables: {
+            params: {
+              conceptType: 'Collection'
+            }
+          },
+          query: `query Drafts($params: DraftsInput) {
+            drafts(params: $params) {
+              items {
+                draftMetadata {
+                  ... on Collection {
+                    tools {
+                      count
+                    }
+                  }
+                }
+              }
+            }
+          }`
+        }, {
+          contextValue
+        })
+
+        const { data } = response.body.singleResult
+
+        expect(data).toEqual({
+          drafts: {
+            items: [{
+              draftMetadata: {
+                tools: null
+              }
+            }, {
+              draftMetadata: {
+                tools: null
+              }
+            }]
+          }
+        })
+      })
     })
 
     describe('variables', () => {
@@ -1522,6 +1772,68 @@ describe('Collection', () => {
           })
         })
       })
+
+      test('returns null when querying a draft', async () => {
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Hits': 2,
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .post(/collection-drafts\.umm_json/)
+          .reply(200, {
+            items: [{
+              meta: {
+                'concept-id': 'CD100000-EDSC'
+              },
+              umm: {}
+            }, {
+              meta: {
+                'concept-id': 'CD100001-EDSC'
+              },
+              umm: {}
+            }]
+          })
+
+        const response = await server.executeOperation({
+          variables: {
+            params: {
+              conceptType: 'Collection'
+            }
+          },
+          query: `query Drafts($params: DraftsInput) {
+            drafts(params: $params) {
+              items {
+                draftMetadata {
+                  ... on Collection {
+                    variables {
+                      count
+                    }
+                  }
+                }
+              }
+            }
+          }`
+        }, {
+          contextValue
+        })
+
+        const { data } = response.body.singleResult
+
+        expect(data).toEqual({
+          drafts: {
+            items: [{
+              draftMetadata: {
+                variables: null
+              }
+            }, {
+              draftMetadata: {
+                variables: null
+              }
+            }]
+          }
+        })
+      })
     })
 
     describe('data-quality-summaries', () => {
@@ -1730,6 +2042,68 @@ describe('Collection', () => {
           })
         })
       })
+
+      test('returns null when querying a draft', async () => {
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Hits': 2,
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .post(/collection-drafts\.umm_json/)
+          .reply(200, {
+            items: [{
+              meta: {
+                'concept-id': 'CD100000-EDSC'
+              },
+              umm: {}
+            }, {
+              meta: {
+                'concept-id': 'CD100001-EDSC'
+              },
+              umm: {}
+            }]
+          })
+
+        const response = await server.executeOperation({
+          variables: {
+            params: {
+              conceptType: 'Collection'
+            }
+          },
+          query: `query Drafts($params: DraftsInput) {
+            drafts(params: $params) {
+              items {
+                draftMetadata {
+                  ... on Collection {
+                    dataQualitySummaries {
+                      count
+                    }
+                  }
+                }
+              }
+            }
+          }`
+        }, {
+          contextValue
+        })
+
+        const { data } = response.body.singleResult
+
+        expect(data).toEqual({
+          drafts: {
+            items: [{
+              draftMetadata: {
+                dataQualitySummaries: null
+              }
+            }, {
+              draftMetadata: {
+                dataQualitySummaries: null
+              }
+            }]
+          }
+        })
+      })
     })
 
     describe('relatedCollections', () => {
@@ -1794,6 +2168,68 @@ describe('Collection', () => {
         const { data } = response.body.singleResult
 
         expect(data).toEqual(relatedCollectionsResponseMocks.data)
+      })
+
+      test('returns null when querying a draft', async () => {
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Hits': 2,
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .post(/collection-drafts\.umm_json/)
+          .reply(200, {
+            items: [{
+              meta: {
+                'concept-id': 'CD100000-EDSC'
+              },
+              umm: {}
+            }, {
+              meta: {
+                'concept-id': 'CD100001-EDSC'
+              },
+              umm: {}
+            }]
+          })
+
+        const response = await server.executeOperation({
+          variables: {
+            params: {
+              conceptType: 'Collection'
+            }
+          },
+          query: `query Drafts($params: DraftsInput) {
+            drafts(params: $params) {
+              items {
+                draftMetadata {
+                  ... on Collection {
+                    relatedCollections {
+                      count
+                    }
+                  }
+                }
+              }
+            }
+          }`
+        }, {
+          contextValue
+        })
+
+        const { data } = response.body.singleResult
+
+        expect(data).toEqual({
+          drafts: {
+            items: [{
+              draftMetadata: {
+                relatedCollections: null
+              }
+            }, {
+              draftMetadata: {
+                relatedCollections: null
+              }
+            }]
+          }
+        })
       })
     })
 
@@ -1942,6 +2378,68 @@ describe('Collection', () => {
         const { data } = response.body.singleResult
 
         expect(data).toEqual(duplicateCollectionsResponseMocks.data)
+      })
+
+      test('returns null when querying a draft', async () => {
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Hits': 2,
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .post(/collection-drafts\.umm_json/)
+          .reply(200, {
+            items: [{
+              meta: {
+                'concept-id': 'CD100000-EDSC'
+              },
+              umm: {}
+            }, {
+              meta: {
+                'concept-id': 'CD100001-EDSC'
+              },
+              umm: {}
+            }]
+          })
+
+        const response = await server.executeOperation({
+          variables: {
+            params: {
+              conceptType: 'Collection'
+            }
+          },
+          query: `query Drafts($params: DraftsInput) {
+            drafts(params: $params) {
+              items {
+                draftMetadata {
+                  ... on Collection {
+                    duplicateCollections {
+                      count
+                    }
+                  }
+                }
+              }
+            }
+          }`
+        }, {
+          contextValue
+        })
+
+        const { data } = response.body.singleResult
+
+        expect(data).toEqual({
+          drafts: {
+            items: [{
+              draftMetadata: {
+                duplicateCollections: null
+              }
+            }, {
+              draftMetadata: {
+                duplicateCollections: null
+              }
+            }]
+          }
+        })
       })
     })
   })
