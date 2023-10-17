@@ -530,7 +530,7 @@ describe('Service', () => {
           query: `query Drafts($params: DraftsInput) {
             drafts(params: $params) {
               items {
-                draftMetadata {
+                previewMetadata {
                   ... on Service {
                     collections {
                       count
@@ -549,11 +549,11 @@ describe('Service', () => {
         expect(data).toEqual({
           drafts: {
             items: [{
-              draftMetadata: {
+              previewMetadata: {
                 collections: null
               }
             }, {
-              draftMetadata: {
+              previewMetadata: {
                 collections: null
               }
             }]
@@ -1175,7 +1175,7 @@ describe('Service', () => {
           query: `query Drafts($params: DraftsInput) {
             drafts(params: $params) {
               items {
-                draftMetadata {
+                previewMetadata {
                   ... on Service {
                     orderOptions {
                       count
@@ -1194,11 +1194,11 @@ describe('Service', () => {
         expect(data).toEqual({
           drafts: {
             items: [{
-              draftMetadata: {
+              previewMetadata: {
                 orderOptions: null
               }
             }, {
-              draftMetadata: {
+              previewMetadata: {
                 orderOptions: null
               }
             }]
@@ -1449,7 +1449,7 @@ describe('Service', () => {
           query: `query Drafts($params: DraftsInput) {
             drafts(params: $params) {
               items {
-                draftMetadata {
+                previewMetadata {
                   ... on Service {
                     variables {
                       count
@@ -1468,11 +1468,11 @@ describe('Service', () => {
         expect(data).toEqual({
           drafts: {
             items: [{
-              draftMetadata: {
+              previewMetadata: {
                 variables: null
               }
             }, {
-              draftMetadata: {
+              previewMetadata: {
                 variables: null
               }
             }]
@@ -1639,7 +1639,7 @@ describe('Service', () => {
           query: `query Drafts($params: DraftsInput) {
             drafts(params: $params) {
               items {
-                draftMetadata {
+                previewMetadata {
                   ... on Service {
                     maxItemsPerOrder
                   }
@@ -1656,11 +1656,11 @@ describe('Service', () => {
         expect(data).toEqual({
           drafts: {
             items: [{
-              draftMetadata: {
+              previewMetadata: {
                 maxItemsPerOrder: null
               }
             }, {
-              draftMetadata: {
+              previewMetadata: {
                 maxItemsPerOrder: null
               }
             }]

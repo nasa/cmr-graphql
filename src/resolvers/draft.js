@@ -47,7 +47,7 @@ export default {
       )
     }
   },
-  DraftMetadata: {
+  PreviewMetadata: {
     __resolveType: (source) => {
       const { conceptId } = source
 

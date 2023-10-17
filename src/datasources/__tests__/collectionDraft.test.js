@@ -75,8 +75,8 @@ describe('collectionDraft', () => {
   })
 
   test('catches errors received from mmtQuery', async () => {
-    nock(/example-mmt/)
-      .get(/api\/drafts/)
+    nock(/example/)
+      .get(/api\/collection_drafts/)
       .reply(500, {
         errors: ['HTTP Error']
       }, {

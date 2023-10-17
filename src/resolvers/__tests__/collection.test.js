@@ -810,7 +810,7 @@ describe('Collection', () => {
           query: `query Drafts($params: DraftsInput) {
             drafts(params: $params) {
               items {
-                draftMetadata {
+                previewMetadata {
                   ... on Collection {
                     granules {
                       count
@@ -829,11 +829,11 @@ describe('Collection', () => {
         expect(data).toEqual({
           drafts: {
             items: [{
-              draftMetadata: {
+              previewMetadata: {
                 granules: null
               }
             }, {
-              draftMetadata: {
+              previewMetadata: {
                 granules: null
               }
             }]
@@ -1090,7 +1090,7 @@ describe('Collection', () => {
           query: `query Drafts($params: DraftsInput) {
             drafts(params: $params) {
               items {
-                draftMetadata {
+                previewMetadata {
                   ... on Collection {
                     services {
                       count
@@ -1109,11 +1109,11 @@ describe('Collection', () => {
         expect(data).toEqual({
           drafts: {
             items: [{
-              draftMetadata: {
+              previewMetadata: {
                 services: null
               }
             }, {
-              draftMetadata: {
+              previewMetadata: {
                 services: null
               }
             }]
@@ -1244,7 +1244,7 @@ describe('Collection', () => {
           query: `query Drafts($params: DraftsInput) {
             drafts(params: $params) {
               items {
-                draftMetadata {
+                previewMetadata {
                   ... on Collection {
                     subscriptions {
                       count
@@ -1263,11 +1263,11 @@ describe('Collection', () => {
         expect(data).toEqual({
           drafts: {
             items: [{
-              draftMetadata: {
+              previewMetadata: {
                 subscriptions: null
               }
             }, {
-              draftMetadata: {
+              previewMetadata: {
                 subscriptions: null
               }
             }]
@@ -1524,7 +1524,7 @@ describe('Collection', () => {
           query: `query Drafts($params: DraftsInput) {
             drafts(params: $params) {
               items {
-                draftMetadata {
+                previewMetadata {
                   ... on Collection {
                     tools {
                       count
@@ -1543,11 +1543,11 @@ describe('Collection', () => {
         expect(data).toEqual({
           drafts: {
             items: [{
-              draftMetadata: {
+              previewMetadata: {
                 tools: null
               }
             }, {
-              draftMetadata: {
+              previewMetadata: {
                 tools: null
               }
             }]
@@ -1804,7 +1804,7 @@ describe('Collection', () => {
           query: `query Drafts($params: DraftsInput) {
             drafts(params: $params) {
               items {
-                draftMetadata {
+                previewMetadata {
                   ... on Collection {
                     variables {
                       count
@@ -1823,11 +1823,11 @@ describe('Collection', () => {
         expect(data).toEqual({
           drafts: {
             items: [{
-              draftMetadata: {
+              previewMetadata: {
                 variables: null
               }
             }, {
-              draftMetadata: {
+              previewMetadata: {
                 variables: null
               }
             }]
@@ -2074,7 +2074,7 @@ describe('Collection', () => {
           query: `query Drafts($params: DraftsInput) {
             drafts(params: $params) {
               items {
-                draftMetadata {
+                previewMetadata {
                   ... on Collection {
                     dataQualitySummaries {
                       count
@@ -2093,11 +2093,11 @@ describe('Collection', () => {
         expect(data).toEqual({
           drafts: {
             items: [{
-              draftMetadata: {
+              previewMetadata: {
                 dataQualitySummaries: null
               }
             }, {
-              draftMetadata: {
+              previewMetadata: {
                 dataQualitySummaries: null
               }
             }]
@@ -2201,7 +2201,7 @@ describe('Collection', () => {
           query: `query Drafts($params: DraftsInput) {
             drafts(params: $params) {
               items {
-                draftMetadata {
+                previewMetadata {
                   ... on Collection {
                     relatedCollections {
                       count
@@ -2220,11 +2220,11 @@ describe('Collection', () => {
         expect(data).toEqual({
           drafts: {
             items: [{
-              draftMetadata: {
+              previewMetadata: {
                 relatedCollections: null
               }
             }, {
-              draftMetadata: {
+              previewMetadata: {
                 relatedCollections: null
               }
             }]
@@ -2411,7 +2411,7 @@ describe('Collection', () => {
           query: `query Drafts($params: DraftsInput) {
             drafts(params: $params) {
               items {
-                draftMetadata {
+                previewMetadata {
                   ... on Collection {
                     duplicateCollections {
                       count
@@ -2430,11 +2430,11 @@ describe('Collection', () => {
         expect(data).toEqual({
           drafts: {
             items: [{
-              draftMetadata: {
+              previewMetadata: {
                 duplicateCollections: null
               }
             }, {
-              draftMetadata: {
+              previewMetadata: {
                 duplicateCollections: null
               }
             }]

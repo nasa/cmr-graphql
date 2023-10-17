@@ -384,7 +384,7 @@ describe('Variable', () => {
           query: `query Drafts($params: DraftsInput) {
             drafts(params: $params) {
               items {
-                draftMetadata {
+                previewMetadata {
                   ... on Variable {
                     collections {
                       count
@@ -403,11 +403,11 @@ describe('Variable', () => {
         expect(data).toEqual({
           drafts: {
             items: [{
-              draftMetadata: {
+              previewMetadata: {
                 collections: null
               }
             }, {
-              draftMetadata: {
+              previewMetadata: {
                 collections: null
               }
             }]
