@@ -248,7 +248,7 @@ describe('draft#fetch', () => {
     beforeEach(() => {
       // Overwrite default requestInfo
       requestInfo = {
-        name: 'drafts', // TODO What is this supposed to be?
+        name: 'drafts',
         alias: 'drafts',
         args: {},
         fieldsByTypeName: {

@@ -67,9 +67,10 @@ export default class Draft extends Concept {
   getPermittedJsonSearchParams() {
     return [
       ...super.getPermittedJsonSearchParams(),
-      'provider',
-      'type'
-      // TODO update these
+      'name',
+      'native_id',
+      'options',
+      'provider'
     ]
   }
 
@@ -79,9 +80,10 @@ export default class Draft extends Concept {
   getPermittedUmmSearchParams() {
     return [
       ...super.getPermittedUmmSearchParams(),
-      'provider',
-      'type'
-      // TODO update these
+      'name',
+      'native_id',
+      'options',
+      'provider'
     ]
   }
 
@@ -91,7 +93,9 @@ export default class Draft extends Concept {
   getNonIndexedKeys() {
     return uniq([
       ...super.getNonIndexedKeys(),
-      'collection_concept_id'
+      'name',
+      'native_id',
+      'provider'
     ])
   }
 

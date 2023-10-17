@@ -1,5 +1,7 @@
+"DraftMetadata can be either a Collection, Service, Tool or Variable."
 union DraftMetadata = Collection | Service | Tool | Variable
 
+"DraftConceptType must be one of the enum values."
 enum DraftConceptType {
   Collection
   Service
@@ -8,66 +10,105 @@ enum DraftConceptType {
 }
 
 type DraftMutationResponse {
+  "The concept id of the draft."
   conceptId: String!
+  "The revision id of the draft."
   revisionId: String!
+  "Warnings returned from ingesting the draft."
   warnings: [JSON]
+  "Existing errors in the draft."
   existingErrors: [JSON]
 }
 
 type Draft {
+  "The concept id of the draft."
   conceptId: String
+  "The concept type of the draft."
   conceptType: String
+  "If the draft has been deleted."
   deleted: Boolean
+  "Name of the draft."
   name: String
+  "The native id of the draft."
   nativeId: String
+  "Provider ID of the draft."
   providerId: String
+  "Date which the draft was last updated."
   revisionDate: String
+  "The revision id of the draft."
   revisionId: String
+  "The metadata content of the draft"
   draftMetadata: DraftMetadata
 }
 
 type DraftList {
+  "The number of hits for a given search."
   count: Int
+  "Cursor that points to the a specific position in a list of requested records."
+  cursor: String
+  "The list of draft search results."
   items: [Draft]
 }
 
 type Mutation {
   ingestDraft (
+    "The concept type of the draft."
     conceptType: DraftConceptType!
     metadata: JSON!
+    "The native id of the draft."
     nativeId: String!
+    "Provider ID of the draft."
     providerId: String!
   ): DraftMutationResponse
 
   deleteDraft (
+    "The concept type of the draft."
     conceptType: DraftConceptType!
+    "The native id of the draft."
     nativeId: String!
+    "Provider ID of the draft."
     providerId: String!
   ): DraftMutationResponse
 }
 
 input DraftInput {
+  "The concept type of the draft."
   conceptType: DraftConceptType!
+  "The concept id of the draft."
   conceptId: String!
 }
 
 input DraftsInput {
+  "The concept type of the draft."
   conceptType: DraftConceptType!
+  "The concept id of the draft."
   conceptId: [String]
+  "Cursor that points to the/a specific position in a list of requested records."
   cursor: String
+  "The number of draft requested by the user."
+  limit: Int
+  "The name of the draft."
   name: [String]
+  "The native id of the draft."
   nativeId: [String]
+  "Zero based offset of individual results."
+  offset: Int
+  "Options to provide to CMR pertaining to and, or, and wildcard searching."
   options: JSON
+  "The name of the provider associated with the draft."
   provider: [String]
+  "One or more sort keys can be specified to impact searching. Fields can be prepended with a '-' to sort in descending order. Ascending order is the default but + can be used to explicitly request ascending."
   sortKey: [String]
 }
 
 type Query {
   draft (
+    "Draft query parameters"
     params: DraftInput
   ): Draft
 
   drafts (
+    "Drafts query parameters"
     params: DraftsInput
   ): DraftList
 }
