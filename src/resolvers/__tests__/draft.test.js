@@ -14,10 +14,6 @@ describe('Draft', () => {
     process.env = { ...OLD_ENV }
 
     process.env.cmrRootUrl = 'http://example.com'
-    process.env.ummCollectionDraftVersion = '1.0.0'
-    process.env.ummServiceDraftVersion = '1.0.0'
-    process.env.ummToolDraftVersion = '1.0.0'
-    process.env.ummVariableDraftVersion = '1.0.0'
   })
 
   afterEach(() => {
@@ -56,7 +52,8 @@ describe('Draft', () => {
           variables: {
             params: {
               conceptId: 'CD100000-EDSC',
-              conceptType: 'Collection'
+              conceptType: 'Collection',
+              ummVersion: '1.0.0'
             }
           },
           query: `query Draft($params: DraftInput) {
@@ -69,7 +66,8 @@ describe('Draft', () => {
               providerId
               revisionDate
               revisionId
-              draftMetadata {
+              ummMetadata
+              previewMetadata {
                 ... on Collection {
                   conceptId
                   shortName
@@ -88,7 +86,7 @@ describe('Draft', () => {
             conceptId: 'CD100000-EDSC',
             conceptType: 'collection-draft',
             deleted: false,
-            draftMetadata: {
+            previewMetadata: {
               conceptId: 'CD100000-EDSC',
               shortName: 'Test Draft'
             },
@@ -96,7 +94,10 @@ describe('Draft', () => {
             nativeId: 'test-guid',
             providerId: 'EDSC',
             revisionDate: '2022-05-27T15:18:00.920Z',
-            revisionId: '1'
+            revisionId: '1',
+            ummMetadata: {
+              ShortName: 'Test Draft'
+            }
           }
         })
       })
@@ -143,7 +144,8 @@ describe('Draft', () => {
         const response = await server.executeOperation({
           variables: {
             params: {
-              conceptType: 'Collection'
+              conceptType: 'Collection',
+              ummVersion: '1.0.0'
             }
           },
           query: `query Drafts($params: DraftsInput) {
@@ -151,7 +153,7 @@ describe('Draft', () => {
               count
               items {
                 conceptId
-                draftMetadata {
+                previewMetadata {
                   ... on Collection {
                     conceptId
                     shortName
@@ -171,13 +173,13 @@ describe('Draft', () => {
             count: 2,
             items: [{
               conceptId: 'CD100000-EDSC',
-              draftMetadata: {
+              previewMetadata: {
                 conceptId: 'CD100000-EDSC',
                 shortName: 'Test Draft'
               }
             }, {
               conceptId: 'CD100001-EDSC',
-              draftMetadata: {
+              previewMetadata: {
                 conceptId: 'CD100001-EDSC',
                 shortName: 'Test Draft 2'
               }
@@ -295,19 +297,22 @@ describe('Draft', () => {
                 LongName: 'Long Collection Name'
               },
               nativeId: 'collection-1',
-              providerId: 'EDSC'
+              providerId: 'EDSC',
+              ummVersion: '1.0.0'
             },
             query: `mutation IngestDraft(
               $conceptType: DraftConceptType!
               $metadata: JSON!
               $nativeId: String!
               $providerId: String!
+              $ummVersion: String!
             ) {
               ingestDraft(
                 conceptType: $conceptType
                 metadata: $metadata
                 nativeId: $nativeId
                 providerId: $providerId
+                ummVersion: $ummVersion
               ) {
                 conceptId
                 revisionId
@@ -438,7 +443,8 @@ describe('Draft', () => {
               providerId
               revisionDate
               revisionId
-              draftMetadata {
+              ummMetadata
+              previewMetadata {
                 ... on Service {
                   conceptId
                   name
@@ -457,7 +463,7 @@ describe('Draft', () => {
             conceptId: 'SD100000-EDSC',
             conceptType: 'service-draft',
             deleted: false,
-            draftMetadata: {
+            previewMetadata: {
               conceptId: 'SD100000-EDSC',
               name: 'Test Draft'
             },
@@ -465,7 +471,10 @@ describe('Draft', () => {
             nativeId: 'test-guid',
             providerId: 'EDSC',
             revisionDate: '2022-05-27T15:18:00.920Z',
-            revisionId: '1'
+            revisionId: '1',
+            ummMetadata: {
+              Name: 'Test Draft'
+            }
           }
         })
       })
@@ -520,7 +529,7 @@ describe('Draft', () => {
               count
               items {
                 conceptId
-                draftMetadata {
+                previewMetadata {
                   ... on Service {
                     conceptId
                     name
@@ -540,13 +549,13 @@ describe('Draft', () => {
             count: 2,
             items: [{
               conceptId: 'SD100000-EDSC',
-              draftMetadata: {
+              previewMetadata: {
                 conceptId: 'SD100000-EDSC',
                 name: 'Test Draft'
               }
             }, {
               conceptId: 'SD100001-EDSC',
-              draftMetadata: {
+              previewMetadata: {
                 conceptId: 'SD100001-EDSC',
                 name: 'Test Draft 2'
               }
@@ -664,19 +673,22 @@ describe('Draft', () => {
                 LongName: 'Long Service Name'
               },
               nativeId: 'service-1',
-              providerId: 'EDSC'
+              providerId: 'EDSC',
+              ummVersion: '1.0.0'
             },
             query: `mutation IngestDraft(
               $conceptType: DraftConceptType!
               $metadata: JSON!
               $nativeId: String!
               $providerId: String!
+              $ummVersion: String!
             ) {
               ingestDraft(
                 conceptType: $conceptType
                 metadata: $metadata
                 nativeId: $nativeId
                 providerId: $providerId
+                ummVersion: $ummVersion
               ) {
                 conceptId
                 revisionId
@@ -807,7 +819,8 @@ describe('Draft', () => {
               providerId
               revisionDate
               revisionId
-              draftMetadata {
+              ummMetadata
+              previewMetadata {
                 ... on Tool {
                   conceptId
                   name
@@ -826,7 +839,7 @@ describe('Draft', () => {
             conceptId: 'TD100000-EDSC',
             conceptType: 'tool-draft',
             deleted: false,
-            draftMetadata: {
+            previewMetadata: {
               conceptId: 'TD100000-EDSC',
               name: 'Test Draft'
             },
@@ -834,7 +847,10 @@ describe('Draft', () => {
             nativeId: 'test-guid',
             providerId: 'EDSC',
             revisionDate: '2022-05-27T15:18:00.920Z',
-            revisionId: '1'
+            revisionId: '1',
+            ummMetadata: {
+              Name: 'Test Draft'
+            }
           }
         })
       })
@@ -889,7 +905,7 @@ describe('Draft', () => {
               count
               items {
                 conceptId
-                draftMetadata {
+                previewMetadata {
                   ... on Tool {
                     conceptId
                     name
@@ -909,13 +925,13 @@ describe('Draft', () => {
             count: 2,
             items: [{
               conceptId: 'TD100000-EDSC',
-              draftMetadata: {
+              previewMetadata: {
                 conceptId: 'TD100000-EDSC',
                 name: 'Test Draft'
               }
             }, {
               conceptId: 'TD100001-EDSC',
-              draftMetadata: {
+              previewMetadata: {
                 conceptId: 'TD100001-EDSC',
                 name: 'Test Draft 2'
               }
@@ -1033,19 +1049,22 @@ describe('Draft', () => {
                 LongName: 'Long Tool Name'
               },
               nativeId: 'tool-1',
-              providerId: 'EDSC'
+              providerId: 'EDSC',
+              ummVersion: '1.0.0'
             },
             query: `mutation IngestDraft(
               $conceptType: DraftConceptType!
               $metadata: JSON!
               $nativeId: String!
               $providerId: String!
+              $ummVersion: String!
             ) {
               ingestDraft(
                 conceptType: $conceptType
                 metadata: $metadata
                 nativeId: $nativeId
                 providerId: $providerId
+                ummVersion: $ummVersion
               ) {
                 conceptId
                 revisionId
@@ -1176,7 +1195,8 @@ describe('Draft', () => {
               providerId
               revisionDate
               revisionId
-              draftMetadata {
+              ummMetadata
+              previewMetadata {
                 ... on Variable {
                   conceptId
                   name
@@ -1195,7 +1215,7 @@ describe('Draft', () => {
             conceptId: 'VD100000-EDSC',
             conceptType: 'variable-draft',
             deleted: false,
-            draftMetadata: {
+            previewMetadata: {
               conceptId: 'VD100000-EDSC',
               name: 'Test Draft'
             },
@@ -1203,7 +1223,10 @@ describe('Draft', () => {
             nativeId: 'test-guid',
             providerId: 'EDSC',
             revisionDate: '2022-05-27T15:18:00.920Z',
-            revisionId: '1'
+            revisionId: '1',
+            ummMetadata: {
+              Name: 'Test Draft'
+            }
           }
         })
       })
@@ -1258,7 +1281,7 @@ describe('Draft', () => {
               count
               items {
                 conceptId
-                draftMetadata {
+                previewMetadata {
                   ... on Variable {
                     conceptId
                     name
@@ -1278,13 +1301,13 @@ describe('Draft', () => {
             count: 2,
             items: [{
               conceptId: 'VD100000-EDSC',
-              draftMetadata: {
+              previewMetadata: {
                 conceptId: 'VD100000-EDSC',
                 name: 'Test Draft'
               }
             }, {
               conceptId: 'VD100001-EDSC',
-              draftMetadata: {
+              previewMetadata: {
                 conceptId: 'VD100001-EDSC',
                 name: 'Test Draft 2'
               }
@@ -1402,19 +1425,22 @@ describe('Draft', () => {
                 LongName: 'Long Variable Name'
               },
               nativeId: 'variable-1',
-              providerId: 'EDSC'
+              providerId: 'EDSC',
+              ummVersion: '1.0.0'
             },
             query: `mutation IngestDraft(
               $conceptType: DraftConceptType!
               $metadata: JSON!
               $nativeId: String!
               $providerId: String!
+              $ummVersion: String!
             ) {
               ingestDraft(
                 conceptType: $conceptType
                 metadata: $metadata
                 nativeId: $nativeId
                 providerId: $providerId
+                ummVersion: $ummVersion
               ) {
                 conceptId
                 revisionId
@@ -1500,43 +1526,43 @@ describe('Draft', () => {
     })
   })
 
-  describe('DraftMetadata', () => {
+  describe('PreviewMetadata', () => {
     describe('__resolveType', () => {
       test('returns Collection when the conceptId starts with CD', () => {
-        const { DraftMetadata: draftMetadata } = resolvers
-        const { __resolveType: resolveType } = draftMetadata
+        const { PreviewMetadata: previewMetadata } = resolvers
+        const { __resolveType: resolveType } = previewMetadata
 
         const result = resolveType({ conceptId: 'CD' })
         expect(result).toEqual('Collection')
       })
 
       test('returns Service when the conceptId starts with SD', () => {
-        const { DraftMetadata: draftMetadata } = resolvers
-        const { __resolveType: resolveType } = draftMetadata
+        const { PreviewMetadata: previewMetadata } = resolvers
+        const { __resolveType: resolveType } = previewMetadata
 
         const result = resolveType({ conceptId: 'SD' })
         expect(result).toEqual('Service')
       })
 
       test('returns Tool when the conceptId starts with TD', () => {
-        const { DraftMetadata: draftMetadata } = resolvers
-        const { __resolveType: resolveType } = draftMetadata
+        const { PreviewMetadata: previewMetadata } = resolvers
+        const { __resolveType: resolveType } = previewMetadata
 
         const result = resolveType({ conceptId: 'TD' })
         expect(result).toEqual('Tool')
       })
 
       test('returns Variable when the conceptId starts with VD', () => {
-        const { DraftMetadata: draftMetadata } = resolvers
-        const { __resolveType: resolveType } = draftMetadata
+        const { PreviewMetadata: previewMetadata } = resolvers
+        const { __resolveType: resolveType } = previewMetadata
 
         const result = resolveType({ conceptId: 'VD' })
         expect(result).toEqual('Variable')
       })
 
       test('returns null when the conceptId is not a draft', () => {
-        const { DraftMetadata: draftMetadata } = resolvers
-        const { __resolveType: resolveType } = draftMetadata
+        const { PreviewMetadata: previewMetadata } = resolvers
+        const { __resolveType: resolveType } = previewMetadata
 
         const result = resolveType({ conceptId: 'something-bad' })
         expect(result).toEqual(null)
