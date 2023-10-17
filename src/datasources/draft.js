@@ -14,10 +14,10 @@ export const fetchDrafts = async (args, context, parsedInfo) => {
 
   const requestInfo = parseRequestedFields(parsedInfo, draftKeyMap, 'Draft')
 
-  const draft = new Draft(draftType, headers, requestInfo, params)
+  const draft = new Draft(draftType, headers, requestInfo, args)
 
   // Query CMR
-  draft.fetch(params)
+  draft.fetch(args)
 
   // Parse the response from CMR
   await draft.parse(requestInfo)
@@ -26,10 +26,10 @@ export const fetchDrafts = async (args, context, parsedInfo) => {
   return draft.getFormattedResponse()
 }
 
-export const ingestDraft = async (params, context, parsedInfo) => {
+export const ingestDraft = async (args, context, parsedInfo) => {
   const { headers } = context
 
-  const { conceptType } = params
+  const { conceptType } = args
 
   const draftType = `${conceptType.toLowerCase()}-drafts`
 
@@ -39,10 +39,10 @@ export const ingestDraft = async (params, context, parsedInfo) => {
     ingestKeys
   } = requestInfo
 
-  const draft = new Draft(draftType, headers, requestInfo, params)
+  const draft = new Draft(draftType, headers, requestInfo, args)
 
   // Contact CMR
-  draft.ingest(params, ingestKeys, headers)
+  draft.ingest(args, ingestKeys, headers)
 
   // Parse the response from CMR
   await draft.parseIngest(requestInfo)
@@ -51,10 +51,10 @@ export const ingestDraft = async (params, context, parsedInfo) => {
   return draft.getFormattedIngestResponse()
 }
 
-export const deleteDraft = async (params, context, parsedInfo) => {
+export const deleteDraft = async (args, context, parsedInfo) => {
   const { headers } = context
 
-  const { conceptType } = params
+  const { conceptType } = args
 
   const draftType = `${conceptType.toLowerCase()}-drafts`
 
@@ -64,10 +64,10 @@ export const deleteDraft = async (params, context, parsedInfo) => {
     ingestKeys
   } = requestInfo
 
-  const draft = new Draft(draftType, headers, requestInfo, params)
+  const draft = new Draft(draftType, headers, requestInfo, args)
 
   // Contact CMR
-  draft.delete(params, ingestKeys, headers)
+  draft.delete(args, ingestKeys, headers)
 
   // Parse the response from CMR
   await draft.parseDelete(requestInfo)
