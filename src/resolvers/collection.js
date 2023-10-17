@@ -79,6 +79,13 @@ export default {
 
       return dataSources.graphDbSource(source, args, context, parseResolveInfo(info))
     },
+    generateVariableDrafts: async (source, args, context) => {
+      const { conceptId } = source
+
+      const { dataSources } = context
+
+      return dataSources.collectionVariableDraftsSource({ conceptId }, context, parseResolveInfo)
+    },
     dataQualitySummaries: async (source, args, context, info) => {
       const {
         associationDetails = {}

@@ -265,6 +265,8 @@ type Collection {
     name: String @deprecated(reason: "Use `params.name`")
   ): VariableList
 
+  "Generates variable drafts on the collection using earthdata-varinfo"
+  generateVariableDrafts: VariableDraftList
 
   dataQualitySummaries (
     "dataQualitySummary query parameters"

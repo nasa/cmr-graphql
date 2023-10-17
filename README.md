@@ -26,6 +26,12 @@ Before running the application you'll want to ensure that all necessary packages
 
    npm install
 
+You will also need Python3.9+ (Ideally installed in a virtual environment) to query the collection generateVariableDrafts field. Run the following to ensure proper operation of this query.
+
+    python3 -m venv .venv
+    source .venv/bin/activate
+    pip install -r requirements.txt
+
 CMR-GraphQL uses a few environment variables for configuring runtime options:
 
 |Variable Name|Default|Description|
@@ -651,12 +657,12 @@ We use [GraphQL interfaces](https://graphql.org/learn/schema/#interfaces) in ord
 ##### Example Response
 
     {
-      "conceptId": "C1200400842-GHRC",
+      "conceptId": "C1000000001-EXAMPLE",
       "relatedCollections": {
         "count": 18,
         "items": [
           {
-            "id": "C1200400792-GHRC",
+            "id": "C2000000001-EXAMPLE",
             "title": "Infrared Global Geostationary Composite Demo 4",
             "doi": "10.5067/GHRC/AMSU-A/DATA303",
             "relationships": [
@@ -679,6 +685,77 @@ We use [GraphQL interfaces](https://graphql.org/learn/schema/#interfaces) in ord
             ]
           }
         ]
+      }
+    }
+
+#### Generate Collection Variable Drafts
+
+For all supported arguments and columns, see [the schema](src/types/collection.graphql).
+
+CMR-GraphQL queries an earthdata-varinfo lambda in order to generate collection variable drafts. These generated variable drafts can be returned as part of the Collection type response.
+
+`generateVariableDrafts` will return collection generated variable drafts, using the earthdata-varinfo project(https://github.com/nasa/earthdata-varinfo)
+
+##### Example Queries
+
+    query Collection($params: CollectionInput) {
+      collection(params: $params) {
+        conceptId
+        generateVariableDrafts {
+          count
+          items {
+            dataType
+            definition
+            dimensions
+            longName
+            name
+            standardName
+            units
+            metadataSpecification
+          }
+        }
+      }
+    }
+
+    variables:
+    {
+      "params": {
+        "conceptId": "C1000000001-EXAMPLE"
+      }
+    }
+
+##### Example Response
+
+     {
+      "data": {
+        "collection": {
+          "conceptId": "C1000000001-EXAMPLE",
+          "generateVariableDrafts": {
+            "count": 16,
+            "items": [
+              {
+                "dataType": "int32",
+                "definition": "Grid/time",
+                "dimensions": [
+                  {
+                    "Name": "Grid/time",
+                    "Size": 1,
+                    "Type": "TIME_DIMENSION"
+                  }
+                ],
+                "longName": "Grid/time",
+                "name": "Grid/time",
+                "standardName": "time",
+                "units": "seconds since 1970-01-01 00:00:00 UTC",
+                "metadataSpecification": {
+                  "URL": "https://cdn.earthdata.nasa.gov/umm/variable/v1.8.2",
+                  "Name": "UMM-Var",
+                  "Version": "1.8.2"
+                }
+              }
+            ]
+          }
+        }
       }
     }
 

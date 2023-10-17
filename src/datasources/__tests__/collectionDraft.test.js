@@ -14,7 +14,7 @@ describe('collectionDraft', () => {
 
     process.env = { ...OLD_ENV }
 
-    process.env.mmtRootUrl = 'http://example.com'
+    process.env.mmtRootUrl = 'http://example-mmt.com'
 
     // Default requestInfo
     requestInfo = {
@@ -45,7 +45,7 @@ describe('collectionDraft', () => {
   })
 
   test('returns the collection draft results', async () => {
-    nock(/example/)
+    nock(/example-mmt/)
       .defaultReplyHeaders({
         'X-Request-Id': 'abcd-1234-efgh-5678'
       })
@@ -75,7 +75,7 @@ describe('collectionDraft', () => {
   })
 
   test('catches errors received from mmtQuery', async () => {
-    nock(/example/)
+    nock(/example-mmt/)
       .get(/api\/drafts/)
       .reply(500, {
         errors: ['HTTP Error']

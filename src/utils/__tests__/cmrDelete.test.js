@@ -68,7 +68,7 @@ describe('cmrDelete', () => {
       nock(/example/, {
         reqheaders: {
           Accept: 'application/json',
-          Authorization: 'test-token',
+          Authorization: 'Bearer test-token',
           'Client-Id': 'eed-test-graphql',
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         }
@@ -86,7 +86,7 @@ describe('cmrDelete', () => {
           nativeId: '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed'
         },
         {
-          Authorization: 'test-token',
+          Authorization: 'Bearer test-token',
           'Client-Id': 'eed-test-graphql',
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         },
