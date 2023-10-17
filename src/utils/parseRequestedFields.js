@@ -204,14 +204,6 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
     }
   }
 
-  if (name === 'draft' || name === 'drafts') {
-    // If a user has requested the collection when making a granule query, but has not requested the
-    // collectionConceptId, push the collection conceptId onto the requested fields.
-    if (requestedFields.includes('draftMetadata') && !requestedFields.includes('conceptId')) {
-      requestedFields.push('conceptId')
-    }
-  }
-
   const { sharedKeys = [], ummKeyMappings } = keyMap
 
   // Gather keys that the user requested that only exist in umm

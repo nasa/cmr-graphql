@@ -391,7 +391,7 @@ describe('Tool', () => {
           query: `query Drafts($params: DraftsInput) {
             drafts(params: $params) {
               items {
-                draftMetadata {
+                previewMetadata {
                   ... on Tool {
                     collections {
                       count
@@ -410,11 +410,11 @@ describe('Tool', () => {
         expect(data).toEqual({
           drafts: {
             items: [{
-              draftMetadata: {
+              previewMetadata: {
                 collections: null
               }
             }, {
-              draftMetadata: {
+              previewMetadata: {
                 collections: null
               }
             }]

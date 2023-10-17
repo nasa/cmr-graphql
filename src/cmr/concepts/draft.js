@@ -14,32 +14,10 @@ export default class Draft extends Concept {
     super(conceptType, headers, requestInfo, params)
 
     const singularConceptType = conceptType.replace('drafts', 'draft')
-    const { providerId } = params
-
     const {
-      ummCollectionDraftVersion,
-      ummServiceDraftVersion,
-      ummToolDraftVersion,
-      ummVariableDraftVersion
-    } = process.env
-
-    let ummVersion
-    switch (conceptType) {
-      case 'collection-drafts':
-        ummVersion = ummCollectionDraftVersion
-        break
-      case 'service-drafts':
-        ummVersion = ummServiceDraftVersion
-        break
-      case 'tool-drafts':
-        ummVersion = ummToolDraftVersion
-        break
-      case 'variable-drafts':
-        ummVersion = ummVariableDraftVersion
-        break
-      default:
-        break
-    }
+      providerId,
+      ummVersion
+    } = params
 
     this.ingestPath = `providers/${providerId}/${conceptType}`
     this.metadataSpecification = {
@@ -106,9 +84,16 @@ export default class Draft extends Concept {
    * @param {Object} headers Headers requested by the query
    */
   fetchUmm(searchParams, ummKeys, headers) {
+    const { ummVersion } = searchParams
+
+    let acceptVersion
+    if (ummVersion) {
+      acceptVersion = `version=${ummVersion}`
+    }
+
     const ummHeaders = {
       ...headers,
-      Accept: `application/vnd.nasa.cmr.umm_results+json; version=${process.env.ummToolDraftVersion}`
+      Accept: `application/vnd.nasa.cmr.umm_results+json; ${acceptVersion}`
     }
 
     return super.fetchUmm(searchParams, ummKeys, ummHeaders)
@@ -121,10 +106,11 @@ export default class Draft extends Concept {
    * @param {Object} providedHeaders Headers requested by the query
    */
   ingest(data, requestedKeys, providedHeaders) {
+    const { ummVersion } = data
     // Default headers
     const defaultHeaders = {
       Accept: 'application/json',
-      'Content-Type': `application/vnd.nasa.cmr.umm+json; version=${process.env.ummToolDraftVersion}`
+      'Content-Type': `application/vnd.nasa.cmr.umm+json; version=${ummVersion}`
     }
 
     // Merge default headers into the provided headers and then pick out only permitted values

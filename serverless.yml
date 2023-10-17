@@ -33,11 +33,6 @@ provider:
     ummToolVersion: '1.1'
     ummVariableVersion: '1.9.0'
 
-    ummCollectionDraftVersion: '1.0.0'
-    ummServiceDraftVersion: '1.0.0'
-    ummToolDraftVersion: '1.0.0'
-    ummVariableDraftVersion: '1.0.0'
-
   vpc:
     securityGroupIds:
       - Fn::ImportValue: ${self:provider.stage}-GraphQLLambdaSecurityGroup
@@ -59,7 +54,7 @@ plugins:
   - serverless-offline
   - serverless-plugin-log-subscription
   - serverless-python-requirements
-  
+
 functions:
   graphql:
     handler: src/graphql/handler.default

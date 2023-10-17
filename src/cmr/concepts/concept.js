@@ -651,9 +651,20 @@ export default class Concept {
         // path we've defined above
         let keyValue = get(item, ummKeyMappings[ummKey])
 
-        // If the UMM Key is `draftMetadata`, we need to combine the `meta` and `umm` fields
-        // This ensures all the keys are available for the DraftMetadata union type
-        if (ummKey === 'draftMetadata') {
+        // If the raw `ummMetadata` was requested return that value unaltered
+        if (ummKey === 'ummMetadata') {
+          this.setItemValue(
+            conceptId,
+            ummKey,
+            keyValue
+          )
+
+          return
+        }
+
+        // If the UMM Key is `previewMetadata`, we need to combine the `meta` and `umm` fields
+        // This ensures all the keys are available for the PreviewMetadata union type
+        if (ummKey === 'previewMetadata') {
           keyValue = {
             ...item.umm,
             ...item.meta

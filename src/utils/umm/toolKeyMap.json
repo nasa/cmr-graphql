@@ -9,7 +9,6 @@
     "ancillaryKeywords": "umm.AncillaryKeywords",
     "associationDetails": "meta.association-details",
     "conceptId": "meta.concept-id",
-    "conceptType": "meta.concept-type",
     "contactGroups": "umm.ContactGroups",
     "contactPersons": "umm.ContactPersons",
     "description": "umm.Description",

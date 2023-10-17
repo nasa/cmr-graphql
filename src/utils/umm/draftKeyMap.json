@@ -12,9 +12,10 @@
     "deleted": "meta.deleted",
     "name": "umm.Name",
     "nativeId": "meta.native-id",
+    "previewMetadata": "",
     "providerId": "meta.provider-id",
     "revisionDate": "meta.revision-date",
     "revisionId": "meta.revision-id",
-    "draftMetadata": ""
+    "ummMetadata": "umm"
   }
 }
