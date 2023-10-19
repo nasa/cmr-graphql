@@ -208,129 +208,7 @@ describe('Subscription', () => {
     })
   })
 
-  describe('Subscription', () => {
-    test('collection', async () => {
-      nock(/example-cmr/)
-        .defaultReplyHeaders({
-          'CMR-Took': 7,
-          'CMR-Request-Id': 'abcd-1234-efgh-5678'
-        })
-        .post(/subscriptions\.json/)
-        .reply(200, {
-          items: [{
-            concept_id: 'SUB100000-EDSC',
-            collection_concept_id: 'C100000-EDSC'
-          }, {
-            concept_id: 'SUB100001-EDSC',
-            collection_concept_id: 'C100003-EDSC'
-          }]
-        })
-
-      nock(/example-cmr/)
-        .defaultReplyHeaders({
-          'CMR-Took': 7,
-          'CMR-Request-Id': 'abcd-1234-efgh-5678'
-        })
-        .post(/collections\.json/, 'concept_id=C100000-EDSC&page_size=20')
-        .reply(200, {
-          feed: {
-            entry: [{
-              id: 'C100000-EDSC'
-            }]
-          }
-        })
-
-      nock(/example-cmr/)
-        .defaultReplyHeaders({
-          'CMR-Took': 7,
-          'CMR-Request-Id': 'abcd-1234-efgh-5678'
-        })
-        .post(/collections\.json/, 'concept_id=C100003-EDSC&page_size=20')
-        .reply(200, {
-          feed: {
-            entry: [{
-              id: 'C100003-EDSC'
-            }]
-          }
-        })
-
-      const response = await server.executeOperation({
-        variables: {},
-        query: `{
-          subscriptions {
-            items {
-              conceptId
-              collection {
-                conceptId
-              }
-            }
-          }
-        }`
-      }, {
-        contextValue
-      })
-
-      const { data } = response.body.singleResult
-
-      expect(data).toEqual({
-        subscriptions: {
-          items: [{
-            conceptId: 'SUB100000-EDSC',
-            collection: {
-              conceptId: 'C100000-EDSC'
-            }
-          }, {
-            conceptId: 'SUB100001-EDSC',
-            collection: {
-              conceptId: 'C100003-EDSC'
-            }
-          }]
-        }
-      })
-    })
-
-    test('collection when collectionConceptId does not exist', async () => {
-      nock(/example-cmr/)
-        .defaultReplyHeaders({
-          'CMR-Took': 7,
-          'CMR-Request-Id': 'abcd-1234-efgh-5678'
-        })
-        .post(/subscriptions\.json/)
-        .reply(200, {
-          items: [{
-            concept_id: 'SUB100000-EDSC',
-            type: 'collection'
-          }]
-        })
-
-      const response = await server.executeOperation({
-        variables: {},
-        query: `{
-          subscriptions {
-            items {
-              conceptId
-              collection {
-                conceptId
-              }
-            }
-          }
-        }`
-      }, {
-        contextValue
-      })
-
-      const { data } = response.body.singleResult
-
-      expect(data).toEqual({
-        subscriptions: {
-          items: [{
-            conceptId: 'SUB100000-EDSC',
-            collection: null
-          }]
-        }
-      })
-    })
-
+  describe('Mutation', () => {
     test('createSubscription for a granule subscription', async () => {
       nock(/example-cmr/, {
         reqheaders: {
@@ -548,6 +426,130 @@ describe('Subscription', () => {
         deleteSubscription: {
           conceptId: 'SUB100000-EDSC',
           revisionId: '2'
+        }
+      })
+    })
+  })
+
+  describe('Subscription', () => {
+    test('collection', async () => {
+      nock(/example-cmr/)
+        .defaultReplyHeaders({
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .post(/subscriptions\.json/)
+        .reply(200, {
+          items: [{
+            concept_id: 'SUB100000-EDSC',
+            collection_concept_id: 'C100000-EDSC'
+          }, {
+            concept_id: 'SUB100001-EDSC',
+            collection_concept_id: 'C100003-EDSC'
+          }]
+        })
+
+      nock(/example-cmr/)
+        .defaultReplyHeaders({
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .post(/collections\.json/, 'concept_id=C100000-EDSC&page_size=20')
+        .reply(200, {
+          feed: {
+            entry: [{
+              id: 'C100000-EDSC'
+            }]
+          }
+        })
+
+      nock(/example-cmr/)
+        .defaultReplyHeaders({
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .post(/collections\.json/, 'concept_id=C100003-EDSC&page_size=20')
+        .reply(200, {
+          feed: {
+            entry: [{
+              id: 'C100003-EDSC'
+            }]
+          }
+        })
+
+      const response = await server.executeOperation({
+        variables: {},
+        query: `{
+          subscriptions {
+            items {
+              conceptId
+              collection {
+                conceptId
+              }
+            }
+          }
+        }`
+      }, {
+        contextValue
+      })
+
+      const { data } = response.body.singleResult
+
+      expect(data).toEqual({
+        subscriptions: {
+          items: [{
+            conceptId: 'SUB100000-EDSC',
+            collection: {
+              conceptId: 'C100000-EDSC'
+            }
+          }, {
+            conceptId: 'SUB100001-EDSC',
+            collection: {
+              conceptId: 'C100003-EDSC'
+            }
+          }]
+        }
+      })
+    })
+
+    test('collection when collectionConceptId does not exist', async () => {
+      nock(/example-cmr/)
+        .defaultReplyHeaders({
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .post(/subscriptions\.json/)
+        .reply(200, {
+          items: [{
+            concept_id: 'SUB100000-EDSC',
+            type: 'collection'
+          }]
+        })
+
+      const response = await server.executeOperation({
+        variables: {},
+        query: `{
+          subscriptions {
+            items {
+              conceptId
+              collection {
+                conceptId
+              }
+            }
+          }
+        }`
+      }, {
+        contextValue
+      })
+
+      const { data } = response.body.singleResult
+
+      expect(data).toEqual({
+        subscriptions: {
+          items: [{
+            conceptId: 'SUB100000-EDSC',
+            collection: null
+          }]
         }
       })
     })

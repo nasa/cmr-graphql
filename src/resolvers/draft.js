@@ -25,6 +25,17 @@ export default {
       )
 
       return result
+    },
+    publishDraft: async (source, args, context, info) => {
+      const { dataSources } = context
+
+      const result = await dataSources.draftSourcePublish(
+        args,
+        context,
+        parseResolveInfo(info)
+      )
+
+      return result
     }
   },
   Query: {

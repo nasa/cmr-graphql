@@ -28,7 +28,8 @@ import variableSource from '../../../datasources/variable'
 import {
   deleteDraft as draftSourceDelete,
   fetchDrafts as draftSourceFetch,
-  ingestDraft as draftSourceIngest
+  ingestDraft as draftSourceIngest,
+  publishDraft as draftSourcePublish
 } from '../../../datasources/draft'
 
 export const server = new ApolloServer({
@@ -46,6 +47,7 @@ export const buildContextValue = (extraContext) => ({
     draftSourceDelete,
     draftSourceFetch,
     draftSourceIngest,
+    draftSourcePublish,
     granuleSource,
     graphDbDuplicateCollectionsSource,
     graphDbSource,

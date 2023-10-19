@@ -5,7 +5,8 @@ jest.mock('uuid', () => ({ v4: () => '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed' }))
 import {
   deleteDraft as draftSourceDelete,
   fetchDrafts as draftSourceFetch,
-  ingestDraft as draftSourceIngest
+  ingestDraft as draftSourceIngest,
+  publishDraft as draftSourcePublish
 } from '../draft'
 
 let requestInfo
@@ -348,6 +349,10 @@ describe('draft#ingest', () => {
     process.env = { ...OLD_ENV }
 
     process.env.cmrRootUrl = 'http://example-cmr.com'
+    process.env.ummCollectionVersion = '1.0.0'
+    process.env.ummServiceVersion = '1.0.0'
+    process.env.ummToolVersion = '1.0.0'
+    process.env.ummVariableVersion = '1.0.0'
 
     // Default requestInfo
     requestInfo = {
@@ -388,7 +393,20 @@ describe('draft#ingest', () => {
       .defaultReplyHeaders({
         'CMR-Request-Id': 'abcd-1234-efgh-5678'
       })
-      .put(/ingest\/providers\/EDSC\/tool-drafts\/test-guid/)
+      .put(/ingest\/providers\/EDSC\/tool-drafts\/test-guid/, JSON.stringify({
+        MetadataSpecification: {
+          URL: 'https://cdn.earthdata.nasa.gov/umm/tool/v1.0.0',
+          Name: 'UMM-T',
+          Version: '1.0.0'
+        },
+        Name: 'mock name',
+        URL: {
+          URLContentType: 'DistributionURL',
+          Type: 'GOTO WEB TOOL',
+          Description: 'Landing Page',
+          URLValue: 'https://example.com/'
+        }
+      }))
       .reply(201, {
         'concept-id': 'TD100000-EDSC',
         'revision-id': '1'
@@ -396,7 +414,15 @@ describe('draft#ingest', () => {
 
     const response = await draftSourceIngest({
       conceptType: 'Tool',
-      metadata: {},
+      metadata: {
+        Name: 'mock name',
+        URL: {
+          URLContentType: 'DistributionURL',
+          Type: 'GOTO WEB TOOL',
+          Description: 'Landing Page',
+          URLValue: 'https://example.com/'
+        }
+      },
       nativeId: 'test-guid',
       providerId: 'EDSC',
       ummVersion: '1.0.0'
@@ -540,6 +566,102 @@ describe('draft#delete', () => {
         conceptType: 'Tool',
         nativeId: 'test-guid',
         providerId: 'EDSC'
+      }, {
+        headers: {
+          'Client-Id': 'eed-test-graphql',
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        }
+      }, requestInfo)
+    ).rejects.toThrow(Error)
+  })
+})
+
+describe('draft#publish', () => {
+  const OLD_ENV = process.env
+
+  beforeEach(() => {
+    jest.resetAllMocks()
+
+    jest.restoreAllMocks()
+
+    process.env = { ...OLD_ENV }
+
+    process.env.cmrRootUrl = 'http://example.com'
+
+    // Default requestInfo
+    requestInfo = {
+      name: 'publishDraft',
+      alias: 'publishDraft',
+      args: {
+        draftConceptId: 'CD100000-EDSC',
+        nativeId: 'mock-native-id',
+        ummVersion: '1.0.0'
+      },
+      fieldsByTypeName: {
+        PublishDraftMutationResponse: {
+          conceptId: {
+            name: 'conceptId',
+            alias: 'conceptId',
+            args: {},
+            fieldsByTypeName: {}
+          },
+          revisionId: {
+            name: 'revisionId',
+            alias: 'revisionId',
+            args: {},
+            fieldsByTypeName: {}
+          }
+        }
+      }
+    }
+  })
+
+  afterEach(() => {
+    process.env = OLD_ENV
+  })
+
+  test('returns the parsed draft results', async () => {
+    nock(/example/)
+      .defaultReplyHeaders({
+        'CMR-Request-Id': 'abcd-1234-efgh-5678'
+      })
+      .put(/ingest\/publish\/CD100000-EDSC\/mock-native-id/, JSON.stringify({}))
+      .reply(201, {
+        'concept-id': 'C100000-EDSC',
+        'revision-id': '1'
+      })
+
+    const response = await draftSourcePublish({
+      draftConceptId: 'CD100000-EDSC',
+      nativeId: 'mock-native-id',
+      ummVersion: '1.0.0'
+    }, {
+      headers: {
+        'Client-Id': 'eed-test-graphql',
+        'CMR-Request-Id': 'abcd-1234-efgh-5678'
+      }
+    }, requestInfo)
+
+    expect(response).toEqual({
+      conceptId: 'C100000-EDSC',
+      revisionId: '1'
+    })
+  })
+
+  test('catches errors received from ingestCmr', async () => {
+    nock(/example/)
+      .put(/ingest\/publish\/CD100000-EDSC\/mock-native-id/, JSON.stringify({}))
+      .reply(500, {
+        errors: ['HTTP Error']
+      }, {
+        'cmr-request-id': 'abcd-1234-efgh-5678'
+      })
+
+    await expect(
+      draftSourcePublish({
+        draftConceptId: 'CD100000-EDSC',
+        nativeId: 'mock-native-id',
+        ummVersion: '1.0.0'
       }, {
         headers: {
           'Client-Id': 'eed-test-graphql',

@@ -37,7 +37,8 @@ import {
 import {
   deleteDraft as draftSourceDelete,
   fetchDrafts as draftSourceFetch,
-  ingestDraft as draftSourceIngest
+  ingestDraft as draftSourceIngest,
+  publishDraft as draftSourcePublish
 } from '../datasources/draft'
 
 import { downcaseKeys } from '../utils/downcaseKeys'
@@ -122,6 +123,7 @@ export default startServerAndCreateLambdaHandler(
           draftSourceDelete,
           draftSourceFetch,
           draftSourceIngest,
+          draftSourcePublish,
           granuleSource,
           graphDbDuplicateCollectionsSource,
           graphDbSource,

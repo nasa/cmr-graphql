@@ -52,6 +52,17 @@ type DraftList {
   items: [Draft]
 }
 
+type PublishDraftMutationResponse {
+  "The concept id of the draft."
+  conceptId: String!
+  "The revision id of the draft."
+  revisionId: String!
+  "Warnings returned from ingesting the draft."
+  warnings: [JSON]
+  "Existing errors in the draft."
+  existingErrors: [JSON]
+}
+
 type Mutation {
   ingestDraft (
     "The concept type of the draft."
@@ -74,6 +85,15 @@ type Mutation {
     "Provider ID of the draft."
     providerId: String!
   ): DraftMutationResponse
+
+  publishDraft (
+    "Concept ID of the draft to be published."
+    draftConceptId: String!
+    "New Native ID for the published record."
+    nativeId: String!
+    "UMM Version of the record being published."
+    ummVersion: String!
+  ): PublishDraftMutationResponse
 }
 
 input DraftInput {
