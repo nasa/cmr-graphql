@@ -212,7 +212,7 @@ export default {
         }
       }
 
-      return dataSources.toolSource({
+      return dataSources.toolSourceFetch({
         conceptId: toolConceptIds,
         ...handlePagingParams(args, tools.length)
       }, context, parseResolveInfo(info))

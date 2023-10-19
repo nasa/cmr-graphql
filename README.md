@@ -471,6 +471,28 @@ For all supported arguments and columns, see [the schema](src/types/tool.graphql
       }
     }
 
+###### Deleting a Tool
+
+    mutation DeleteTool(
+      $providerId: String!
+      $nativeId: String!
+    ) {
+      deleteTool(
+        providerId: $providerId
+        nativeId: $nativeId
+      ) {
+        conceptId
+        revisionId
+      }
+    }
+
+variables:
+
+    {
+      "providerId": "EXAMPLE",
+      "nativeId": "tool-1"
+    }
+
 #### Variables
 
 For all supported arguments and columns, see [the schema](src/types/variable.graphql).

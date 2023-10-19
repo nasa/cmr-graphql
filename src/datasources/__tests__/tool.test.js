@@ -1,10 +1,10 @@
 import nock from 'nock'
 
-import toolDatasource from '../tool'
+import { deleteTool as toolSourceDelete, fetchTools as toolSourceFetch } from '../tool'
 
 let requestInfo
 
-describe('tool', () => {
+describe('tool#fetch', () => {
   const OLD_ENV = process.env
 
   beforeEach(() => {
@@ -108,7 +108,7 @@ describe('tool', () => {
           }]
         })
 
-      const response = await toolDatasource({}, {
+      const response = await toolSourceFetch({}, {
         headers: {
           'Client-Id': 'eed-test-graphql',
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -146,7 +146,7 @@ describe('tool', () => {
             }]
           })
 
-        const response = await toolDatasource({}, {
+        const response = await toolSourceFetch({}, {
           headers: {
             'Client-Id': 'eed-test-graphql',
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -180,7 +180,7 @@ describe('tool', () => {
           }]
         })
 
-      const response = await toolDatasource({}, {
+      const response = await toolSourceFetch({}, {
         headers: {
           'Client-Id': 'eed-test-graphql',
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -212,7 +212,7 @@ describe('tool', () => {
           }]
         })
 
-      const response = await toolDatasource({
+      const response = await toolSourceFetch({
         params: {
           concept_id: 'T100000-EDSC'
         }
@@ -287,7 +287,7 @@ describe('tool', () => {
           }]
         })
 
-      const response = await toolDatasource({
+      const response = await toolSourceFetch({
         params: {
           concept_id: 'T100000-EDSC'
         }
@@ -318,10 +318,103 @@ describe('tool', () => {
       })
 
     await expect(
-      toolDatasource({
+      toolSourceFetch({
         params: {
           conceptId: 'T100000-EDSC'
         }
+      }, {
+        headers: {
+          'Client-Id': 'eed-test-graphql',
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        }
+      }, requestInfo)
+    ).rejects.toThrow(Error)
+  })
+})
+
+describe('subscription#delete', () => {
+  const OLD_ENV = process.env
+
+  beforeEach(() => {
+    jest.resetAllMocks()
+
+    jest.restoreAllMocks()
+
+    process.env = { ...OLD_ENV }
+
+    process.env.cmrRootUrl = 'http://example.com'
+
+    // Default requestInfo
+    requestInfo = {
+      name: 'deleteTool',
+      alias: 'deleteTool',
+      args: {
+        conceptId: 'T100000-EDSC',
+        nativeId: 'test-guid'
+      },
+      fieldsByTypeName: {
+        ToolMutationResponse: {
+          conceptId: {
+            name: 'conceptId',
+            alias: 'conceptId',
+            args: {},
+            fieldsByTypeName: {}
+          },
+          revisionId: {
+            name: 'revisionId',
+            alias: 'revisionId',
+            args: {},
+            fieldsByTypeName: {}
+          }
+        }
+      }
+    }
+  })
+
+  afterEach(() => {
+    process.env = OLD_ENV
+  })
+
+  test('returns the CMR results', async () => {
+    nock(/example/)
+      .defaultReplyHeaders({
+        'CMR-Request-Id': 'abcd-1234-efgh-5678'
+      })
+      .delete(/ingest\/providers\/EDSC\/tools\/test-guid/)
+      .reply(201, {
+        'concept-id': 'T100000-EDSC',
+        'revision-id': '2'
+      })
+
+    const response = await toolSourceDelete({
+      nativeId: 'test-guid',
+      providerId: 'EDSC'
+    }, {
+      headers: {
+        'Client-Id': 'eed-test-graphql',
+        'CMR-Request-Id': 'abcd-1234-efgh-5678'
+      }
+    }, requestInfo)
+
+    expect(response).toEqual({
+      conceptId: 'T100000-EDSC',
+      revisionId: '2'
+    })
+  })
+
+  test('catches errors received from cmrDelete', async () => {
+    nock(/example/)
+      .delete(/ingest\/providers\/EDSC\/tools\/test-guid/)
+      .reply(500, {
+        errors: ['HTTP Error']
+      }, {
+        'cmr-request-id': 'abcd-1234-efgh-5678'
+      })
+
+    await expect(
+      toolSourceDelete({
+        nativeId: 'test-guid',
+        providerId: 'EDSC'
       }, {
         headers: {
           'Client-Id': 'eed-test-graphql',

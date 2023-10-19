@@ -8,16 +8,24 @@ export default {
     tools: async (source, args, context, info) => {
       const { dataSources } = context
 
-      return dataSources.toolSource(handlePagingParams(args), context, parseResolveInfo(info))
+      return dataSources.toolSourceFetch(handlePagingParams(args), context, parseResolveInfo(info))
     },
     tool: async (source, args, context, info) => {
       const { dataSources } = context
 
-      const result = await dataSources.toolSource(args, context, parseResolveInfo(info))
+      const result = await dataSources.toolSourceFetch(args, context, parseResolveInfo(info))
 
       const [firstResult] = result
 
       return firstResult
+    }
+  },
+
+  Mutation: {
+    deleteTool: async (source, args, context, info) => {
+      const { dataSources } = context
+
+      return dataSources.toolSourceDelete(handlePagingParams(args), context, parseResolveInfo(info))
     }
   },
 
