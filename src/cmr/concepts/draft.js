@@ -1,7 +1,9 @@
-import { uniq } from 'lodash'
+import { pick, uniq } from 'lodash'
 
 import { pickIgnoringCase } from '../../utils/pickIgnoringCase'
 import Concept from './concept'
+import { mergeParams } from '../../utils/mergeParams'
+import { cmrIngest } from '../../utils/cmrIngest'
 
 export default class Draft extends Concept {
   /**
@@ -13,16 +15,58 @@ export default class Draft extends Concept {
   constructor(conceptType, headers, requestInfo, params) {
     super(conceptType, headers, requestInfo, params)
 
-    const singularConceptType = conceptType.replace('drafts', 'draft')
     const {
-      providerId,
-      ummVersion
+      draftConceptId = '',
+      providerId
     } = params
 
     this.ingestPath = `providers/${providerId}/${conceptType}`
+    this.publishPath = `publish/${draftConceptId}`
+
+    const {
+      ummCollectionVersion,
+      ummServiceVersion,
+      ummToolVersion,
+      ummVariableVersion
+    } = process.env
+
+    let ummType
+    let ummName
+    let ummVersion
+    switch (conceptType) {
+      case 'collection-drafts':
+        ummName = 'UMM-C'
+        ummType = 'collection'
+        ummVersion = ummCollectionVersion
+        break
+
+      case 'service-drafts':
+        ummName = 'UMM-S'
+        ummType = 'service'
+        ummVersion = ummServiceVersion
+        break
+
+      case 'tool-drafts':
+        ummName = 'UMM-T'
+        ummType = 'tool'
+        ummVersion = ummToolVersion
+        break
+
+      case 'variable-drafts':
+        ummName = 'UMM-Var'
+        ummType = 'variable'
+        ummVersion = ummVariableVersion
+        break
+
+      default:
+        break
+    }
+
+    // This needs to be the published version number, not draft version,
+    // so that when a user tries to publish the draft, it has the correct MetadataSpecification
     this.metadataSpecification = {
-      URL: `https://cdn.earthdata.nasa.gov/umm/${singularConceptType}/v${ummVersion}`,
-      Name: singularConceptType,
+      URL: `https://cdn.earthdata.nasa.gov/umm/${ummType}/v${ummVersion}`,
+      Name: ummName,
       Version: ummVersion
     }
   }
@@ -75,6 +119,12 @@ export default class Draft extends Concept {
       'native_id',
       'provider'
     ])
+  }
+
+  getPermittedPublishKeys() {
+    return [
+      'nativeId'
+    ]
   }
 
   /**
@@ -130,16 +180,51 @@ export default class Draft extends Concept {
       'CMR-Request-Id'
     ])
 
-    // Add MetadataSpecification to the data
-    // eslint-disable-next-line no-param-reassign
-    data.metadataSpecification = this.metadataSpecification
-
     const metadata = {
-      metadataSpecification: this.metadataSpecification,
+      MetadataSpecification: this.metadataSpecification,
       nativeId: data.nativeId,
       ...data.metadata
     }
 
-    super.ingest(metadata, requestedKeys, permittedHeaders)
+    super.ingest(
+      metadata,
+      requestedKeys,
+      permittedHeaders
+    )
+  }
+
+  publish(data, requestedKeys, providedHeaders) {
+    const { ummVersion } = data
+
+    // eslint-disable-next-line no-param-reassign
+    data = mergeParams(data)
+
+    // Default headers
+    const defaultHeaders = {
+      Accept: 'application/json',
+      'Content-Type': `application/vnd.nasa.cmr.umm+json; version=${ummVersion}`
+    }
+
+    // Merge default headers into the provided headers and then pick out only permitted values
+    const permittedHeaders = pickIgnoringCase({
+      ...defaultHeaders,
+      ...providedHeaders
+    }, [
+      'Accept',
+      'Authorization',
+      'Client-Id',
+      'Content-Type',
+      'CMR-Request-Id'
+    ])
+
+    this.logKeyRequest(requestedKeys, 'ingest')
+
+    // Construct the promise that will ingest data into CMR
+    this.response = cmrIngest(
+      this.getConceptType(),
+      pick(data, this.getPermittedPublishKeys()),
+      permittedHeaders,
+      this.publishPath
+    )
   }
 }

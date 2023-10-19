@@ -75,3 +75,24 @@ export const deleteDraft = async (args, context, parsedInfo) => {
   // Return a formatted JSON response
   return draft.getFormattedDeleteResponse()
 }
+
+export const publishDraft = async (args, context, parsedInfo) => {
+  const { headers } = context
+
+  const requestInfo = parseRequestedFields(parsedInfo, draftKeyMap, 'PublishDraft')
+
+  const {
+    ingestKeys
+  } = requestInfo
+
+  const draft = new Draft('Draft', headers, requestInfo, args)
+
+  // Contact CMR
+  draft.publish(args, ingestKeys, headers)
+
+  // Parse the response from CMR
+  await draft.parseIngest(requestInfo)
+
+  // Return a formatted JSON response
+  return draft.getFormattedIngestResponse()
+}

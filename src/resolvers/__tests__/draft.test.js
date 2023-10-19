@@ -395,6 +395,65 @@ describe('Draft', () => {
           })
         })
       })
+
+      describe('publishDraft', () => {
+        test('returns the cmr result', async () => {
+          nock(/example-cmr/, {
+            reqheaders: {
+              accept: 'application/json',
+              'client-id': 'eed-test-graphql',
+              'content-type': 'application/vnd.nasa.cmr.umm+json; version=1.0.0',
+              'cmr-request-id': 'abcd-1234-efgh-5678'
+            }
+          })
+            .defaultReplyHeaders({
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .put(/ingest\/publish\/CD100000-EDSC\/collection-1/)
+            .reply(201, {
+              'concept-id': 'C100000-EDSC',
+              'revision-id': '1'
+            })
+
+          const response = await server.executeOperation({
+            variables: {
+              draftConceptId: 'CD100000-EDSC',
+              nativeId: 'collection-1',
+              ummVersion: '1.0.0'
+            },
+            query: `mutation PublishDraft(
+              $draftConceptId: String!
+              $nativeId: String!
+              $ummVersion: String!
+            ) {
+              publishDraft(
+                draftConceptId: $draftConceptId
+                nativeId: $nativeId
+                ummVersion: $ummVersion
+              ) {
+                conceptId
+                revisionId
+                warnings
+                existingErrors
+              }
+            }`
+          }, {
+            contextValue
+          })
+
+          const { data } = response.body.singleResult
+
+          expect(data).toEqual({
+            publishDraft: {
+              conceptId: 'C100000-EDSC',
+              revisionId: '1',
+              warnings: null,
+              existingErrors: null
+            }
+          })
+        })
+      })
     })
   })
 
@@ -765,6 +824,65 @@ describe('Draft', () => {
             deleteDraft: {
               conceptId: 'SD100000-EDSC',
               revisionId: '2',
+              warnings: null,
+              existingErrors: null
+            }
+          })
+        })
+      })
+
+      describe('publishDraft', () => {
+        test('returns the cmr result', async () => {
+          nock(/example-cmr/, {
+            reqheaders: {
+              accept: 'application/json',
+              'client-id': 'eed-test-graphql',
+              'content-type': 'application/vnd.nasa.cmr.umm+json; version=1.0.0',
+              'cmr-request-id': 'abcd-1234-efgh-5678'
+            }
+          })
+            .defaultReplyHeaders({
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .put(/ingest\/publish\/SD100000-EDSC\/service-1/)
+            .reply(201, {
+              'concept-id': 'S100000-EDSC',
+              'revision-id': '1'
+            })
+
+          const response = await server.executeOperation({
+            variables: {
+              draftConceptId: 'SD100000-EDSC',
+              nativeId: 'service-1',
+              ummVersion: '1.0.0'
+            },
+            query: `mutation PublishDraft(
+              $draftConceptId: String!
+              $nativeId: String!
+              $ummVersion: String!
+            ) {
+              publishDraft(
+                draftConceptId: $draftConceptId
+                nativeId: $nativeId
+                ummVersion: $ummVersion
+              ) {
+                conceptId
+                revisionId
+                warnings
+                existingErrors
+              }
+            }`
+          }, {
+            contextValue
+          })
+
+          const { data } = response.body.singleResult
+
+          expect(data).toEqual({
+            publishDraft: {
+              conceptId: 'S100000-EDSC',
+              revisionId: '1',
               warnings: null,
               existingErrors: null
             }
@@ -1147,6 +1265,65 @@ describe('Draft', () => {
           })
         })
       })
+
+      describe('publishDraft', () => {
+        test('returns the cmr result', async () => {
+          nock(/example-cmr/, {
+            reqheaders: {
+              accept: 'application/json',
+              'client-id': 'eed-test-graphql',
+              'content-type': 'application/vnd.nasa.cmr.umm+json; version=1.0.0',
+              'cmr-request-id': 'abcd-1234-efgh-5678'
+            }
+          })
+            .defaultReplyHeaders({
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .put(/ingest\/publish\/TD100000-EDSC\/tool-1/)
+            .reply(201, {
+              'concept-id': 'T100000-EDSC',
+              'revision-id': '1'
+            })
+
+          const response = await server.executeOperation({
+            variables: {
+              draftConceptId: 'TD100000-EDSC',
+              nativeId: 'tool-1',
+              ummVersion: '1.0.0'
+            },
+            query: `mutation PublishDraft(
+              $draftConceptId: String!
+              $nativeId: String!
+              $ummVersion: String!
+            ) {
+              publishDraft(
+                draftConceptId: $draftConceptId
+                nativeId: $nativeId
+                ummVersion: $ummVersion
+              ) {
+                conceptId
+                revisionId
+                warnings
+                existingErrors
+              }
+            }`
+          }, {
+            contextValue
+          })
+
+          const { data } = response.body.singleResult
+
+          expect(data).toEqual({
+            publishDraft: {
+              conceptId: 'T100000-EDSC',
+              revisionId: '1',
+              warnings: null,
+              existingErrors: null
+            }
+          })
+        })
+      })
     })
   })
 
@@ -1517,6 +1694,66 @@ describe('Draft', () => {
             deleteDraft: {
               conceptId: 'VD100000-EDSC',
               revisionId: '2',
+              warnings: null,
+              existingErrors: null
+            }
+          })
+        })
+      })
+
+      // TODO MMT-3417
+      describe.skip('publishDraft', () => {
+        test('returns the cmr result', async () => {
+          nock(/example-cmr/, {
+            reqheaders: {
+              accept: 'application/json',
+              'client-id': 'eed-test-graphql',
+              'content-type': 'application/vnd.nasa.cmr.umm+json; version=1.0.0',
+              'cmr-request-id': 'abcd-1234-efgh-5678'
+            }
+          })
+            .defaultReplyHeaders({
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .put(/ingest\/publish\/VD100000-EDSC\/variable-1/)
+            .reply(201, {
+              'concept-id': 'V100000-EDSC',
+              'revision-id': '1'
+            })
+
+          const response = await server.executeOperation({
+            variables: {
+              draftConceptId: 'VD100000-EDSC',
+              nativeId: 'variable-1',
+              ummVersion: '1.0.0'
+            },
+            query: `mutation PublishDraft(
+              $draftConceptId: String!
+              $nativeId: String!
+              $ummVersion: String!
+            ) {
+              publishDraft(
+                draftConceptId: $draftConceptId
+                nativeId: $nativeId
+                ummVersion: $ummVersion
+              ) {
+                conceptId
+                revisionId
+                warnings
+                existingErrors
+              }
+            }`
+          }, {
+            contextValue
+          })
+
+          const { data } = response.body.singleResult
+
+          expect(data).toEqual({
+            publishDraft: {
+              conceptId: 'V100000-EDSC',
+              revisionId: '1',
               warnings: null,
               existingErrors: null
             }

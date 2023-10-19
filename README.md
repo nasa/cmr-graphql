@@ -52,7 +52,7 @@ This will run the application at [http://localhost:3003/dev/api](http://localhos
 
 ## Usage
 
-Currently, this API supports searching and retrieving data for [Collections](#collections), [Granules](#granules), [Services](#services), [Subscriptions](#subscriptions), [Tools](#tools), [Variables](#variables), and [Grids](#grids).
+Currently, this API supports searching and retrieving data for [Collections](#collections), [Granules](#granules), [Services](#services), [Subscriptions](#subscriptions), [Tools](#tools), [Variables](#variables), [Grids](#grids), [Order Options](#order-options) and [Drafts](#drafts).
 
 #### Optional Headers
 
@@ -536,42 +536,45 @@ For all supported arguments and columns, see [the schema](src/types/orderOption.
 
 ###### Single
 
-query ($params: OrderOptionInput) {
-  orderOption(params: $params) {
-    associationDetails
-    conceptId
-    id
-    name
-    nativeId
-    description
-    form
-  }
-}
+    {
+      query ($params: OrderOptionInput) {
+        orderOption(params: $params) {
+          associationDetails
+          conceptId
+          id
+          name
+          nativeId
+          description
+          form
+        }
+      }
+    }
 
 variables:
-{
-  "params": {
-    "conceptId": "OO1000000001-EXAMPLE"
-  }
-}
+
+    {
+      "params": {
+        "conceptId": "OO1000000001-EXAMPLE"
+      }
+    }
 
 ###### Multiple
 
-{
-  orderOptions {
-    count
-    items {
-      conceptId
-      name
-      nativeId
-      id
-      description
-      scope
-      form
-      sortKey
+    {
+      orderOptions {
+        count
+        items {
+          conceptId
+          name
+          nativeId
+          id
+          description
+          scope
+          form
+          sortKey
+        }
+      }
     }
-  }
-}
 
 #### Data-Quality-Summaries
 
@@ -581,37 +584,40 @@ For all supported arguments and columns, see [the schema](src/types/dataQualityS
 
 ###### Single
 
-query ($params: DataQualitySummaryInput) {
-  dataQualitySummary(params: $params) {
-    associationDetails
-    conceptId
-    id
-    name
-    nativeId
-    summary
-  }
-}
+    {
+      query ($params: DataQualitySummaryInput) {
+        dataQualitySummary(params: $params) {
+          associationDetails
+          conceptId
+          id
+          name
+          nativeId
+          summary
+        }
+      }
+    }
 
 variables:
-{
-  "params": {
-    "conceptId": "DQS1000000001-EXAMPLE"
-  }
-}
+
+    {
+      "params": {
+        "conceptId": "DQS1000000001-EXAMPLE"
+      }
+    }
 
 ###### Multiple
 
-{
-  dataQualitySummaries {
-    items {
-      conceptId
-      associationDetails
-      name
-      summary
-      id 
+    {
+      dataQualitySummaries {
+        items {
+          conceptId
+          associationDetails
+          name
+          summary
+          id
+        }
+      }
     }
-  }
-}
 
 #### Related Collections
 
@@ -653,6 +659,7 @@ We use [GraphQL interfaces](https://graphql.org/learn/schema/#interfaces) in ord
           }
         }
       }
+    }
 
 ##### Example Response
 
@@ -698,26 +705,29 @@ CMR-GraphQL queries an earthdata-varinfo lambda in order to generate collection 
 
 ##### Example Queries
 
-    query Collection($params: CollectionInput) {
-      collection(params: $params) {
-        conceptId
-        generateVariableDrafts {
-          count
-          items {
-            dataType
-            definition
-            dimensions
-            longName
-            name
-            standardName
-            units
-            metadataSpecification
+    {
+      query Collection($params: CollectionInput) {
+        collection(params: $params) {
+          conceptId
+          generateVariableDrafts {
+            count
+            items {
+              dataType
+              definition
+              dimensions
+              longName
+              name
+              standardName
+              units
+              metadataSpecification
+            }
           }
         }
       }
     }
 
-    variables:
+variables:
+
     {
       "params": {
         "conceptId": "C1000000001-EXAMPLE"
@@ -759,6 +769,176 @@ CMR-GraphQL queries an earthdata-varinfo lambda in order to generate collection 
       }
     }
 
+#### Drafts
+
+For all supported arguments and columns, see [the schema](src/types/draft.graphql).
+
+The Draft type utlizes the `PreviewMetadata` union type, which means you can return any of the types supported by the union in the `previewMetadata` return field. You need to ensure that your `conceptType` parameter matches the `previewMetadata` type. In the examples below notice the `conceptType` parameter is `Tool`, and the syntax in the request of `... on Tool {`.
+
+##### Example Queries
+
+###### Single
+
+    query Draft($params: DraftInput) {
+      draft(params: $params) {
+        conceptId
+        conceptType
+        deleted
+        name
+        nativeId
+        providerId
+        revisionDate
+        revisionId
+        ummMetadata
+        previewMetadata {
+          ... on Tool {
+            name
+            longName
+            collections {
+              count
+            }
+          }
+        }
+      }
+    }
+
+variables:
+
+    {
+      "params": {
+        "conceptId": "TD1000000001-EXAMPLE",
+        "conceptType": "Tool"
+      }
+    }
+
+###### Multiple
+
+    query Drafts($params: DraftsInput) {
+      drafts(params: $params) {
+        count
+        items {
+          conceptId
+          conceptType
+          deleted
+          name
+          nativeId
+          providerId
+          revisionDate
+          revisionId
+          ummMetadata
+          previewMetadata {
+            ... on Tool {
+              name
+              longName
+              collections {
+                count
+              }
+            }
+          }
+        }
+      }
+    }
+
+variables:
+
+    {
+      "params": {
+        "conceptType": "Tool"
+      }
+    }
+
+###### Ingesting a draft
+
+    mutation IngestDraft(
+      $conceptType: DraftConceptType!
+      $metadata: JSON!
+      $nativeId: String!
+      $providerId: String!
+      $ummVersion: String!
+    ) {
+      ingestDraft(
+        conceptType: $conceptType
+        metadata: $metadata
+        nativeId: $nativeId
+        providerId: $providerId
+        ummVersion: $ummVersion
+      ) {
+        conceptId
+        revisionId
+        warnings
+        existingErrors
+      }
+    }
+
+variables:
+
+    {
+      "conceptType": "Tool",
+      "metadata": {
+        "Name": "Test Tool",
+        "MetadataSpecification": {
+          "URL": "https://cdn.earthdata.nasa.gov/umm/tool/v1.2.0",
+          "Name": "UMM-T",
+          "Version": "1.2.0"
+        }
+      },
+      "nativeId": "sampleNativeId",
+      "providerId": "EXAMPLE",
+      "ummVersion": "1.0.0"
+    }
+
+###### Deleting a draft
+
+    mutation DeleteDraft(
+      $conceptType: DraftConceptType!
+      $nativeId: String!
+      $providerId: String!
+    ) {
+      deleteDraft(
+        conceptType: $conceptType
+        nativeId: $nativeId
+        providerId: $providerId
+      ) {
+        conceptId
+        revisionId
+        warnings
+        existingErrors
+      }
+    }
+
+variables:
+
+    {
+      "conceptType": "Tool",
+      "nativeId": "tool-3",
+      "providerId": "EXAMPLE"
+    }
+###### Publishing a draft
+
+    mutation PublishDraft(
+      $draftConceptId: String!
+      $nativeId: String!
+      $ummVersion: String!
+    ) {
+      publishDraft(
+        draftConceptId: $draftConceptId
+        nativeId: $nativeId
+        ummVersion: $ummVersion
+      ) {
+        conceptId
+        revisionId
+        warnings
+        existingErrors
+      }
+    }
+
+variables:
+
+    {
+      "draftConceptId": "TD1000000001-EXAMPLE",
+      "nativeId": "tool-1",
+      "ummVersion": "1.2.0"
+    }
 #### Local graph database:
 
 Normally running GraphQl with `serverless offline` will utilize the `(cmr.earthdata.nasa.gov/graphdb)` endpoint, to query against related collections and duplicate collections in the graph database. To send queries to a locally running graph database, we can use a docker gremlin-server that exposes an HTTP endpoint. This is launched by running
