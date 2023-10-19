@@ -266,6 +266,51 @@ describe('Tool', () => {
     })
   })
 
+  describe('Mutation', () => {
+    test('deleteTool', async () => {
+      nock(/example-cmr/)
+        .defaultReplyHeaders({
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .delete(/ingest\/providers\/EDSC\/tools\/test-guid/)
+        .reply(201, {
+          'concept-id': 'T100000-EDSC',
+          'revision-id': '2'
+        })
+
+      const response = await server.executeOperation({
+        variables: {
+          nativeId: 'test-guid',
+          providerId: 'EDSC'
+        },
+        query: `mutation DeleteTool (
+          $providerId: String!
+          $nativeId: String!
+        ) {
+          deleteTool (
+            providerId: $providerId
+            nativeId: $nativeId
+          ) {
+              conceptId
+              revisionId
+            }
+          }`
+      }, {
+        contextValue
+      })
+
+      const { data } = response.body.singleResult
+
+      expect(data).toEqual({
+        deleteTool: {
+          conceptId: 'T100000-EDSC',
+          revisionId: '2'
+        }
+      })
+    })
+  })
+
   describe('Tool', () => {
     describe('collections', () => {
       test('returns collections when querying a published record', async () => {

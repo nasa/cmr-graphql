@@ -4,7 +4,7 @@ import toolKeyMap from '../utils/umm/toolKeyMap.json'
 
 import Tool from '../cmr/concepts/tool'
 
-export default async (params, context, parsedInfo) => {
+export const fetchTools = async (params, context, parsedInfo) => {
   const { headers } = context
 
   const requestInfo = parseRequestedFields(parsedInfo, toolKeyMap, 'tool')
@@ -19,4 +19,25 @@ export default async (params, context, parsedInfo) => {
 
   // Return a formatted JSON response
   return tool.getFormattedResponse()
+}
+
+export const deleteTool = async (args, context, parsedInfo) => {
+  const { headers } = context
+
+  const requestInfo = parseRequestedFields(parsedInfo, toolKeyMap, 'tool')
+
+  const {
+    ingestKeys
+  } = requestInfo
+
+  const tool = new Tool(headers, requestInfo, args)
+
+  // Contact CMR
+  tool.delete(args, ingestKeys, headers)
+
+  // Parse the response from CMR
+  await tool.parseDelete(requestInfo)
+
+  // Return a formatted JSON response
+  return tool.getFormattedDeleteResponse()
 }

@@ -21,7 +21,10 @@ import {
   fetchSubscription as subscriptionSourceFetch,
   ingestSubscription as subscriptionSourceIngest
 } from '../../../datasources/subscription'
-import toolSource from '../../../datasources/tool'
+import {
+  deleteTool as toolSourceDelete,
+  fetchTools as toolSourceFetch
+} from '../../../datasources/tool'
 import toolDraftSource from '../../../datasources/toolDraft'
 import variableDraftSource from '../../../datasources/variableDraft'
 import variableSource from '../../../datasources/variable'
@@ -60,7 +63,8 @@ export const buildContextValue = (extraContext) => ({
     subscriptionSourceFetch,
     subscriptionSourceIngest,
     toolDraftSource,
-    toolSource,
+    toolSourceDelete,
+    toolSourceFetch,
     variableDraftSource,
     variableSource
   },
