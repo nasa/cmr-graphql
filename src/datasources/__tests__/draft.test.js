@@ -20,7 +20,7 @@ describe('draft#fetch', () => {
 
     process.env = { ...OLD_ENV }
 
-    process.env.cmrRootUrl = 'http://example.com'
+    process.env.cmrRootUrl = 'http://example-cmr.com'
 
     // Default requestInfo
     requestInfo = {
@@ -95,7 +95,7 @@ describe('draft#fetch', () => {
     })
 
     test('returns a cursor', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Hits': 84,
           'CMR-Took': 7,
@@ -133,7 +133,7 @@ describe('draft#fetch', () => {
 
     describe('when a cursor is requested', () => {
       test('requests a cursor', async () => {
-        nock(/example/)
+        nock(/example-cmr/)
           .defaultReplyHeaders({
             'CMR-Hits': 84,
             'CMR-Took': 7,
@@ -173,7 +173,7 @@ describe('draft#fetch', () => {
 
   describe('without params', () => {
     test('returns the parsed draft results', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Hits': 84,
           'CMR-Took': 7,
@@ -209,7 +209,7 @@ describe('draft#fetch', () => {
 
   describe('with params', () => {
     test('returns the parsed draft results', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Hits': 84,
           'CMR-Took': 7,
@@ -274,7 +274,7 @@ describe('draft#fetch', () => {
     })
 
     test('returns the parsed draft results', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Hits': 84,
           'CMR-Took': 7,
@@ -314,7 +314,7 @@ describe('draft#fetch', () => {
   })
 
   test('catches errors received from queryCmrDrafts', async () => {
-    nock(/example/)
+    nock(/example-cmr/)
       .post(/drafts/)
       .reply(500, {
         errors: ['HTTP Error']
@@ -347,17 +347,18 @@ describe('draft#ingest', () => {
 
     process.env = { ...OLD_ENV }
 
-    process.env.cmrRootUrl = 'http://example.com'
+    process.env.cmrRootUrl = 'http://example-cmr.com'
 
     // Default requestInfo
     requestInfo = {
       name: 'createDraft',
       alias: 'createDraft',
       args: {
-        collectionConceptId: 'C100000-EDSC',
-        name: 'Test Draft',
-        query: 'polygon=-18,-78,-13,-74,-16,-73,-22,-77,-18,-78',
-        subscriberId: 'testuser'
+        conceptType: 'Tool',
+        metadata: {},
+        nativeId: 'test-guid',
+        providerId: 'EDSC',
+        ummVersion: '1.0.0'
       },
       fieldsByTypeName: {
         DraftMutationResponse: {
@@ -383,7 +384,7 @@ describe('draft#ingest', () => {
   })
 
   test('returns the parsed draft results', async () => {
-    nock(/example/)
+    nock(/example-cmr/)
       .defaultReplyHeaders({
         'CMR-Request-Id': 'abcd-1234-efgh-5678'
       })
@@ -397,7 +398,8 @@ describe('draft#ingest', () => {
       conceptType: 'Tool',
       metadata: {},
       nativeId: 'test-guid',
-      providerId: 'EDSC'
+      providerId: 'EDSC',
+      ummVersion: '1.0.0'
     }, {
       headers: {
         'Client-Id': 'eed-test-graphql',
@@ -411,8 +413,24 @@ describe('draft#ingest', () => {
     })
   })
 
+  test('throws an error if ummVersion is not present', async () => {
+    await expect(
+      draftSourceIngest({
+        conceptType: 'Tool',
+        metadata: {},
+        nativeId: 'test-guid',
+        providerId: 'EDSC'
+      }, {
+        headers: {
+          'Client-Id': 'eed-test-graphql',
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        }
+      }, requestInfo)
+    ).rejects.toThrow(new Error('`ummVersion` is required when ingesting drafts.'))
+  })
+
   test('catches errors received from ingestCmr', async () => {
-    nock(/example/)
+    nock(/example-cmr/)
       .put(/ingest\/providers\/EDSC\/tool-drafts\/test-guid/)
       .reply(500, {
         errors: ['HTTP Error']
@@ -425,7 +443,8 @@ describe('draft#ingest', () => {
         conceptType: 'Tool',
         metadata: {},
         nativeId: 'test-guid',
-        providerId: 'EDSC'
+        providerId: 'EDSC',
+        ummVersion: '1.0.0'
       }, {
         headers: {
           'Client-Id': 'eed-test-graphql',
@@ -446,7 +465,7 @@ describe('draft#delete', () => {
 
     process.env = { ...OLD_ENV }
 
-    process.env.cmrRootUrl = 'http://example.com'
+    process.env.cmrRootUrl = 'http://example-cmr.com'
 
     // Default requestInfo
     requestInfo = {
@@ -480,7 +499,7 @@ describe('draft#delete', () => {
   })
 
   test('returns the parsed draft results', async () => {
-    nock(/example/)
+    nock(/example-cmr/)
       .defaultReplyHeaders({
         'CMR-Request-Id': 'abcd-1234-efgh-5678'
       })
@@ -508,7 +527,7 @@ describe('draft#delete', () => {
   })
 
   test('catches errors received from cmrDelete', async () => {
-    nock(/example/)
+    nock(/example-cmr/)
       .delete(/ingest\/providers\/EDSC\/tool-drafts\/test-guid/)
       .reply(500, {
         errors: ['HTTP Error']

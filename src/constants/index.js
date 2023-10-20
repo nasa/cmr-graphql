@@ -22,3 +22,13 @@ export const CONCEPT_TYPES = [
 export const PSEUDO_FIELDS = [
   'maxItemsPerOrder'
 ]
+
+/**
+ * Draft concept ID prefixes
+ */
+export const DRAFT_CONCEPT_ID_PREFIXES = {
+  collection: 'CD',
+  service: 'SD',
+  tool: 'TD',
+  variable: 'VD'
+}

@@ -10,7 +10,7 @@ describe('OrderOption', () => {
   beforeEach(() => {
     process.env = { ...OLD_ENV }
 
-    process.env.cmrRootUrl = 'http://example.com'
+    process.env.cmrRootUrl = 'http://example-cmr.com'
   })
 
   afterEach(() => {
@@ -19,7 +19,7 @@ describe('OrderOption', () => {
 
   describe('Query', () => {
     test('all order option fields', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Hits': 1,
           'CMR-Took': 7,
@@ -100,7 +100,7 @@ describe('OrderOption', () => {
     })
 
     test('order options query', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -143,7 +143,7 @@ describe('OrderOption', () => {
     describe('orderOption', () => {
       describe('with results', () => {
         test('returns results', async () => {
-          nock(/example/)
+          nock(/example-cmr/)
             .defaultReplyHeaders({
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -179,7 +179,7 @@ describe('OrderOption', () => {
 
       describe('with no results', () => {
         test('returns results', async () => {
-          nock(/example/)
+          nock(/example-cmr/)
             .defaultReplyHeaders({
               'CMR-Took': 0,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'

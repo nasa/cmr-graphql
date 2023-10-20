@@ -13,7 +13,7 @@ describe('Draft', () => {
   beforeEach(() => {
     process.env = { ...OLD_ENV }
 
-    process.env.cmrRootUrl = 'http://example.com'
+    process.env.cmrRootUrl = 'http://example-cmr.com'
   })
 
   afterEach(() => {
@@ -23,7 +23,7 @@ describe('Draft', () => {
   describe('Collection drafts', () => {
     describe('Query', () => {
       test('all draft fields', async () => {
-        nock(/example/)
+        nock(/example-cmr/)
           .defaultReplyHeaders({
             'CMR-Hits': 1,
             'CMR-Took': 7,
@@ -103,7 +103,7 @@ describe('Draft', () => {
       })
 
       test('drafts', async () => {
-        nock(/example/)
+        nock(/example-cmr/)
           .defaultReplyHeaders({
             'CMR-Hits': 2,
             'CMR-Took': 7,
@@ -191,7 +191,7 @@ describe('Draft', () => {
       describe('draft', () => {
         describe('with results', () => {
           test('returns results', async () => {
-            nock(/example/)
+            nock(/example-cmr/)
               .defaultReplyHeaders({
                 'CMR-Hits': 1,
                 'CMR-Took': 7,
@@ -232,7 +232,7 @@ describe('Draft', () => {
 
         describe('with no results', () => {
           test('returns no results', async () => {
-            nock(/example/)
+            nock(/example-cmr/)
               .defaultReplyHeaders({
                 'CMR-Took': 0,
                 'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -271,7 +271,7 @@ describe('Draft', () => {
     describe('Mutation', () => {
       describe('ingestDraft', () => {
         test('returns the cmr result', async () => {
-          nock(/example/, {
+          nock(/example-cmr/, {
             reqheaders: {
               accept: 'application/json',
               'client-id': 'eed-test-graphql',
@@ -339,7 +339,7 @@ describe('Draft', () => {
 
       describe('deleteDraft', () => {
         test('returns the cmr result', async () => {
-          nock(/example/, {
+          nock(/example-cmr/, {
             reqheaders: {
               accept: 'application/json',
               'client-id': 'eed-test-graphql',
@@ -401,7 +401,7 @@ describe('Draft', () => {
   describe('Service drafts', () => {
     describe('Query', () => {
       test('all draft fields', async () => {
-        nock(/example/)
+        nock(/example-cmr/)
           .defaultReplyHeaders({
             'CMR-Hits': 1,
             'CMR-Took': 7,
@@ -480,7 +480,7 @@ describe('Draft', () => {
       })
 
       test('drafts', async () => {
-        nock(/example/)
+        nock(/example-cmr/)
           .defaultReplyHeaders({
             'CMR-Hits': 2,
             'CMR-Took': 7,
@@ -567,7 +567,7 @@ describe('Draft', () => {
       describe('draft', () => {
         describe('with results', () => {
           test('returns results', async () => {
-            nock(/example/)
+            nock(/example-cmr/)
               .defaultReplyHeaders({
                 'CMR-Hits': 1,
                 'CMR-Took': 7,
@@ -608,7 +608,7 @@ describe('Draft', () => {
 
         describe('with no results', () => {
           test('returns no results', async () => {
-            nock(/example/)
+            nock(/example-cmr/)
               .defaultReplyHeaders({
                 'CMR-Took': 0,
                 'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -647,7 +647,7 @@ describe('Draft', () => {
     describe('Mutation', () => {
       describe('ingestDraft', () => {
         test('returns the cmr result', async () => {
-          nock(/example/, {
+          nock(/example-cmr/, {
             reqheaders: {
               accept: 'application/json',
               'client-id': 'eed-test-graphql',
@@ -715,7 +715,7 @@ describe('Draft', () => {
 
       describe('deleteDraft', () => {
         test('returns the cmr result', async () => {
-          nock(/example/, {
+          nock(/example-cmr/, {
             reqheaders: {
               accept: 'application/json',
               'client-id': 'eed-test-graphql',
@@ -777,7 +777,7 @@ describe('Draft', () => {
   describe('Tool drafts', () => {
     describe('Query', () => {
       test('all draft fields', async () => {
-        nock(/example/)
+        nock(/example-cmr/)
           .defaultReplyHeaders({
             'CMR-Hits': 1,
             'CMR-Took': 7,
@@ -856,7 +856,7 @@ describe('Draft', () => {
       })
 
       test('drafts', async () => {
-        nock(/example/)
+        nock(/example-cmr/)
           .defaultReplyHeaders({
             'CMR-Hits': 2,
             'CMR-Took': 7,
@@ -943,7 +943,7 @@ describe('Draft', () => {
       describe('draft', () => {
         describe('with results', () => {
           test('returns results', async () => {
-            nock(/example/)
+            nock(/example-cmr/)
               .defaultReplyHeaders({
                 'CMR-Hits': 1,
                 'CMR-Took': 7,
@@ -984,7 +984,7 @@ describe('Draft', () => {
 
         describe('with no results', () => {
           test('returns no results', async () => {
-            nock(/example/)
+            nock(/example-cmr/)
               .defaultReplyHeaders({
                 'CMR-Took': 0,
                 'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -1023,7 +1023,7 @@ describe('Draft', () => {
     describe('Mutation', () => {
       describe('ingestDraft', () => {
         test('returns the cmr result', async () => {
-          nock(/example/, {
+          nock(/example-cmr/, {
             reqheaders: {
               accept: 'application/json',
               'client-id': 'eed-test-graphql',
@@ -1091,7 +1091,7 @@ describe('Draft', () => {
 
       describe('deleteDraft', () => {
         test('returns the cmr result', async () => {
-          nock(/example/, {
+          nock(/example-cmr/, {
             reqheaders: {
               accept: 'application/json',
               'client-id': 'eed-test-graphql',
@@ -1153,7 +1153,7 @@ describe('Draft', () => {
   describe('Variable drafts', () => {
     describe('Query', () => {
       test('all draft fields', async () => {
-        nock(/example/)
+        nock(/example-cmr/)
           .defaultReplyHeaders({
             'CMR-Hits': 1,
             'CMR-Took': 7,
@@ -1232,7 +1232,7 @@ describe('Draft', () => {
       })
 
       test('drafts', async () => {
-        nock(/example/)
+        nock(/example-cmr/)
           .defaultReplyHeaders({
             'CMR-Hits': 2,
             'CMR-Took': 7,
@@ -1319,7 +1319,7 @@ describe('Draft', () => {
       describe('draft', () => {
         describe('with results', () => {
           test('returns results', async () => {
-            nock(/example/)
+            nock(/example-cmr/)
               .defaultReplyHeaders({
                 'CMR-Hits': 1,
                 'CMR-Took': 7,
@@ -1360,7 +1360,7 @@ describe('Draft', () => {
 
         describe('with no results', () => {
           test('returns no results', async () => {
-            nock(/example/)
+            nock(/example-cmr/)
               .defaultReplyHeaders({
                 'CMR-Took': 0,
                 'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -1399,7 +1399,7 @@ describe('Draft', () => {
     describe('Mutation', () => {
       describe('ingestDraft', () => {
         test('returns the cmr result', async () => {
-          nock(/example/, {
+          nock(/example-cmr/, {
             reqheaders: {
               accept: 'application/json',
               'client-id': 'eed-test-graphql',
@@ -1467,7 +1467,7 @@ describe('Draft', () => {
 
       describe('deleteDraft', () => {
         test('returns the cmr result', async () => {
-          nock(/example/, {
+          nock(/example-cmr/, {
             reqheaders: {
               accept: 'application/json',
               'client-id': 'eed-test-graphql',

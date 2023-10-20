@@ -14,7 +14,7 @@ describe('Order Option', () => {
 
     process.env = { ...OLD_ENV }
 
-    process.env.cmrRootUrl = 'http://example.com'
+    process.env.cmrRootUrl = 'http://example-cmr.com'
 
     // Default requestInfo
     requestInfo = {
@@ -89,7 +89,7 @@ describe('Order Option', () => {
     })
 
     test('returns a cursor', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Hits': 84,
           'CMR-Took': 7,
@@ -127,7 +127,7 @@ describe('Order Option', () => {
 
     describe('when a cursor is requested', () => {
       test('requests a cursor', async () => {
-        nock(/example/)
+        nock(/example-cmr/)
           .defaultReplyHeaders({
             'CMR-Hits': 84,
             'CMR-Took': 7,
@@ -167,7 +167,7 @@ describe('Order Option', () => {
 
   describe('without params', () => {
     test('returns the parsed orderOption results', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Hits': 84,
           'CMR-Took': 7,
@@ -199,7 +199,7 @@ describe('Order Option', () => {
 
   describe('with params', () => {
     test('returns the parsed orderOption results', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Hits': 84,
           'CMR-Took': 7,
@@ -263,7 +263,7 @@ describe('Order Option', () => {
     })
 
     test('returns the parsed orderOption results', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Hits': 84,
           'CMR-Took': 7,
@@ -303,7 +303,7 @@ describe('Order Option', () => {
   })
 
   test('Catches errors received from queryCmr', async () => {
-    nock(/example/)
+    nock(/example-cmr/)
       .post(/order-options/)
       .reply(500, {
         errors: ['HTTP Error']

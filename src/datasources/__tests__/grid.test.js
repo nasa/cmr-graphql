@@ -14,7 +14,7 @@ describe('grid', () => {
 
     process.env = { ...OLD_ENV }
 
-    process.env.cmrRootUrl = 'http://example.com'
+    process.env.cmrRootUrl = 'http://example-cmr.com'
 
     // Default requestInfo
     requestInfo = {
@@ -89,7 +89,7 @@ describe('grid', () => {
     })
 
     test('returns a cursor', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Hits': 84,
           'CMR-Took': 7,
@@ -127,7 +127,7 @@ describe('grid', () => {
 
     describe('when a cursor is requested', () => {
       test('requests a cursor', async () => {
-        nock(/example/)
+        nock(/example-cmr/)
           .defaultReplyHeaders({
             'CMR-Hits': 84,
             'CMR-Took': 7,
@@ -167,7 +167,7 @@ describe('grid', () => {
 
   describe('without params', () => {
     test('returns the parsed grid results', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Hits': 84,
           'CMR-Took': 7,
@@ -199,7 +199,7 @@ describe('grid', () => {
 
   describe('with params', () => {
     test('returns the parsed grid results', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Hits': 84,
           'CMR-Took': 7,
@@ -263,7 +263,7 @@ describe('grid', () => {
     })
 
     test('returns the parsed grid results', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Hits': 84,
           'CMR-Took': 7,
@@ -303,7 +303,7 @@ describe('grid', () => {
   })
 
   test('Catches errors received from queryCmr', async () => {
-    nock(/example/)
+    nock(/example-cmr/)
       .post(/grids/)
       .reply(500, {
         errors: ['HTTP Error']

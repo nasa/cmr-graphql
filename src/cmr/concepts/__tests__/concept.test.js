@@ -1,20 +1,10 @@
 import Concept from '../concept'
 
 describe('collection', () => {
-  const OLD_ENV = process.env
-
   beforeEach(() => {
     jest.resetAllMocks()
 
     jest.restoreAllMocks()
-
-    process.env = { ...OLD_ENV }
-
-    process.env.cmrRootUrl = 'http://example.com'
-  })
-
-  afterEach(() => {
-    process.env = OLD_ENV
   })
 
   describe('concept', () => {

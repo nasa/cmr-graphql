@@ -9,7 +9,7 @@ describe('DataQualitySummary', () => {
   beforeEach(() => {
     process.env = { ...OLD_ENV }
 
-    process.env.cmrRootUrl = 'http://example.com'
+    process.env.cmrRootUrl = 'http://example-cmr.com'
   })
 
   afterEach(() => {
@@ -18,7 +18,7 @@ describe('DataQualitySummary', () => {
 
   describe('Query', () => {
     test('All dataQualitySummary fields', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Hits': 1,
           'CMR-Took': 7,
@@ -90,7 +90,7 @@ describe('DataQualitySummary', () => {
     })
 
     test('dataQualitySummaries', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -134,7 +134,7 @@ describe('DataQualitySummary', () => {
     describe('dataQualitySummary', () => {
       describe('with results', () => {
         test('returns results', async () => {
-          nock(/example/)
+          nock(/example-cmr/)
             .defaultReplyHeaders({
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -172,7 +172,7 @@ describe('DataQualitySummary', () => {
 
       describe('with no results', () => {
         test('returns no results', async () => {
-          nock(/example/)
+          nock(/example-cmr/)
             .defaultReplyHeaders({
               'CMR-Took': 0,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'

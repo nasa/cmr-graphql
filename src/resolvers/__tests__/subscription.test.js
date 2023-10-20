@@ -12,7 +12,7 @@ describe('Subscription', () => {
   beforeEach(() => {
     process.env = { ...OLD_ENV }
 
-    process.env.cmrRootUrl = 'http://example.com'
+    process.env.cmrRootUrl = 'http://example-cmr.com'
     process.env.ummSubscriptionVersion = '1.1'
   })
 
@@ -22,7 +22,7 @@ describe('Subscription', () => {
 
   describe('Query', () => {
     test('all subscription fields', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Hits': 1,
           'CMR-Took': 7,
@@ -99,7 +99,7 @@ describe('Subscription', () => {
     })
 
     test('subscriptions', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -142,7 +142,7 @@ describe('Subscription', () => {
     describe('subscription', () => {
       describe('with results', () => {
         test('returns results', async () => {
-          nock(/example/)
+          nock(/example-cmr/)
             .defaultReplyHeaders({
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -177,7 +177,7 @@ describe('Subscription', () => {
 
       describe('with no results', () => {
         test('returns no results', async () => {
-          nock(/example/)
+          nock(/example-cmr/)
             .defaultReplyHeaders({
               'CMR-Took': 0,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -210,7 +210,7 @@ describe('Subscription', () => {
 
   describe('Subscription', () => {
     test('collection', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -226,7 +226,7 @@ describe('Subscription', () => {
           }]
         })
 
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -240,7 +240,7 @@ describe('Subscription', () => {
           }
         })
 
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -290,7 +290,7 @@ describe('Subscription', () => {
     })
 
     test('collection when collectionConceptId does not exist', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -332,7 +332,7 @@ describe('Subscription', () => {
     })
 
     test('createSubscription for a granule subscription', async () => {
-      nock(/example/, {
+      nock(/example-cmr/, {
         reqheaders: {
           accept: 'application/json',
           'client-id': 'eed-test-graphql',
@@ -393,7 +393,7 @@ describe('Subscription', () => {
     })
 
     test('createSubscription for a collection subscription', async () => {
-      nock(/example/, {
+      nock(/example-cmr/, {
         reqheaders: {
           accept: 'application/json',
           'client-id': 'eed-test-graphql',
@@ -451,7 +451,7 @@ describe('Subscription', () => {
     })
 
     test('updateSubscription', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -508,7 +508,7 @@ describe('Subscription', () => {
     })
 
     test('deleteSubscription', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'

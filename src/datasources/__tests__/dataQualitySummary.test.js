@@ -14,7 +14,7 @@ describe('dataQualitySummary', () => {
 
     process.env = { ...OLD_ENV }
 
-    process.env.cmrRootUrl = 'http://example.com'
+    process.env.cmrRootUrl = 'http://example-cmr.com'
 
     // Default requestInfo
     requestInfo = {
@@ -89,7 +89,7 @@ describe('dataQualitySummary', () => {
     })
 
     test('returns a cursor', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Hits': 84,
           'CMR-Took': 7,
@@ -127,7 +127,7 @@ describe('dataQualitySummary', () => {
 
     describe('when a cursor is requested', () => {
       test('requests a cursor', async () => {
-        nock(/example/)
+        nock(/example-cmr/)
           .defaultReplyHeaders({
             'CMR-Hits': 84,
             'CMR-Took': 7,
@@ -167,7 +167,7 @@ describe('dataQualitySummary', () => {
 
   describe('without params', () => {
     test('returns the parsed data-quality-summary results', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Hits': 84,
           'CMR-Took': 7,
@@ -199,7 +199,7 @@ describe('dataQualitySummary', () => {
 
   describe('with params', () => {
     test('returns the parsed dataQuality summary results', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Hits': 84,
           'CMR-Took': 7,
@@ -263,7 +263,7 @@ describe('dataQualitySummary', () => {
     })
 
     test('returns the parsed dataQualitySummary results', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Hits': 84,
           'CMR-Took': 7,
@@ -303,7 +303,7 @@ describe('dataQualitySummary', () => {
   })
 
   test('catches errors received from querying CMR for dataQualitySummaries', async () => {
-    nock(/example/)
+    nock(/example-cmr/)
       .post(/data-quality-summaries/)
       .reply(500, {
         errors: ['HTTP Error']

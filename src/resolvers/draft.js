@@ -1,5 +1,6 @@
 import { parseResolveInfo } from 'graphql-parse-resolve-info'
 import { handlePagingParams } from '../utils/handlePagingParams'
+import { isDraftConceptId } from '../utils/isDraftConceptId'
 
 export default {
   Mutation: {
@@ -30,8 +31,7 @@ export default {
     draft: async (source, args, context, info) => {
       const { dataSources } = context
 
-      const result = await
-      dataSources.draftSourceFetch(args, context, parseResolveInfo(info))
+      const result = await dataSources.draftSourceFetch(args, context, parseResolveInfo(info))
 
       const [firstResult] = result
 
@@ -51,10 +51,12 @@ export default {
     __resolveType: (source) => {
       const { conceptId } = source
 
-      if (conceptId.startsWith('CD')) return 'Collection'
-      if (conceptId.startsWith('SD')) return 'Service'
-      if (conceptId.startsWith('TD')) return 'Tool'
-      if (conceptId.startsWith('VD')) return 'Variable'
+      // PreviewMetadata is a union, __resolveType is necessary to tell GraphQL which type is being returned
+      // Check the source conceptId in order to determine which union type is correct.
+      if (isDraftConceptId(conceptId, 'collection')) return 'Collection'
+      if (isDraftConceptId(conceptId, 'service')) return 'Service'
+      if (isDraftConceptId(conceptId, 'tool')) return 'Tool'
+      if (isDraftConceptId(conceptId, 'variable')) return 'Variable'
 
       return null
     }
