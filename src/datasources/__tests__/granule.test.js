@@ -14,7 +14,7 @@ describe('granule', () => {
 
     process.env = { ...OLD_ENV }
 
-    process.env.cmrRootUrl = 'http://example.com'
+    process.env.cmrRootUrl = 'http://example-cmr.com'
 
     // Default requestInfo
     requestInfo = {
@@ -95,7 +95,7 @@ describe('granule', () => {
     })
 
     test('returns a cursor', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Hits': 84,
           'CMR-Took': 7,
@@ -112,7 +112,7 @@ describe('granule', () => {
           }
         })
 
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Hits': 84,
           'CMR-Took': 7,
@@ -153,7 +153,7 @@ describe('granule', () => {
 
     describe('when a cursor is requested', () => {
       test('requests a cursor', async () => {
-        nock(/example/)
+        nock(/example-cmr/)
           .defaultReplyHeaders({
             'CMR-Hits': 84,
             'CMR-Took': 7,
@@ -170,7 +170,7 @@ describe('granule', () => {
             }
           })
 
-        nock(/example/)
+        nock(/example-cmr/)
           .defaultReplyHeaders({
             'CMR-Hits': 84,
             'CMR-Took': 7,
@@ -211,7 +211,7 @@ describe('granule', () => {
 
   describe('without params', () => {
     test('returns the parsed granule results', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Hits': 84,
           'CMR-Took': 7,
@@ -245,7 +245,7 @@ describe('granule', () => {
 
   describe('with params', () => {
     test('returns the parsed granule results', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Hits': 84,
           'CMR-Took': 7,
@@ -311,7 +311,7 @@ describe('granule', () => {
     })
 
     test('returns filtered links', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Hits': 84,
           'CMR-Took': 7,
@@ -322,19 +322,19 @@ describe('granule', () => {
           feed: {
             entry: [{
               links: [{
-                href: 'https://example.com/data_link',
+                href: 'https://example-cmr.com/data_link',
                 hreflang: 'en-US',
-                rel: 'https://example.com/data#',
+                rel: 'https://example-cmr.com/data#',
                 type: 'application/x-hdf5'
               }, {
-                href: 'https://example.com/metadata_link',
+                href: 'https://example-cmr.com/metadata_link',
                 hreflang: 'en-US',
-                rel: 'https://example.com/metadata#',
+                rel: 'https://example-cmr.com/metadata#',
                 type: 'application/x-hdf5'
               }, {
-                href: 'https://example.com/s3_link',
+                href: 'https://example-cmr.com/s3_link',
                 hreflang: 'en-US',
-                rel: 'https://example.com/s3#',
+                rel: 'https://example-cmr.com/s3#',
                 type: 'application/x-hdf5'
               }]
             }]
@@ -361,14 +361,14 @@ describe('granule', () => {
         cursor: null,
         items: [{
           links: [{
-            href: 'https://example.com/data_link',
+            href: 'https://example-cmr.com/data_link',
             hreflang: 'en-US',
-            rel: 'https://example.com/data#',
+            rel: 'https://example-cmr.com/data#',
             type: 'application/x-hdf5'
           }, {
-            href: 'https://example.com/s3_link',
+            href: 'https://example-cmr.com/s3_link',
             hreflang: 'en-US',
-            rel: 'https://example.com/s3#',
+            rel: 'https://example-cmr.com/s3#',
             type: 'application/x-hdf5'
           }]
         }]
@@ -418,7 +418,7 @@ describe('granule', () => {
     })
 
     test('returns the parsed granule results', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Hits': 84,
           'CMR-Took': 7,
@@ -434,7 +434,7 @@ describe('granule', () => {
           }
         })
 
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Hits': 84,
           'CMR-Took': 7,
@@ -511,7 +511,7 @@ describe('granule', () => {
     })
 
     test('returns the parsed granule results', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Hits': 84,
           'CMR-Took': 7,
@@ -551,7 +551,7 @@ describe('granule', () => {
   })
 
   test('catches errors received from queryCmrGranules', async () => {
-    nock(/example/)
+    nock(/example-cmr/)
       .post(/granules/)
       .reply(500, {
         errors: ['HTTP Error']

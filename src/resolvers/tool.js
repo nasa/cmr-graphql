@@ -1,6 +1,7 @@
 import { parseResolveInfo } from 'graphql-parse-resolve-info'
 
 import { handlePagingParams } from '../utils/handlePagingParams'
+import { isDraftConceptId } from '../utils/isDraftConceptId'
 
 export default {
   Query: {
@@ -29,7 +30,7 @@ export default {
 
       // If the concept being returned is a draft, there will be no associations,
       // return null to avoid an extra call to CMR
-      if (conceptId.startsWith('TD')) return null
+      if (isDraftConceptId(conceptId, 'tool')) return null
 
       const requestedParams = handlePagingParams({
         toolConceptId: conceptId,

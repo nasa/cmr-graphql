@@ -9,7 +9,7 @@ describe('cmrQuery', () => {
   beforeEach(() => {
     process.env = { ...OLD_ENV }
 
-    process.env.cmrRootUrl = 'http://example.com'
+    process.env.cmrRootUrl = 'http://example-cmr.com'
   })
 
   afterEach(() => {
@@ -19,7 +19,7 @@ describe('cmrQuery', () => {
   test('queries cmr', async () => {
     const consoleMock = jest.spyOn(console, 'log').mockImplementation(() => jest.fn())
 
-    nock(/example/, {
+    nock(/example-cmr/, {
       reqheaders: {
         'Client-Id': 'eed-test-graphql',
         'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -68,7 +68,7 @@ describe('cmrQuery', () => {
 
   describe('when provided a format', () => {
     test('queries cmr', async () => {
-      nock(/example/, {
+      nock(/example-cmr/, {
         reqheaders: {
           'Client-Id': 'eed-test-graphql',
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -106,7 +106,7 @@ describe('cmrQuery', () => {
 
   describe('when provided a token via the Authorization header', () => {
     test('queries cmr using the Authorization header', async () => {
-      nock(/example/, {
+      nock(/example-cmr/, {
         reqheaders: {
           Authorization: 'Bearer test-token',
           'Client-Id': 'eed-test-graphql',
@@ -145,7 +145,7 @@ describe('cmrQuery', () => {
 
   describe('when an error is returned', () => {
     test('throws an exception', async () => {
-      nock(/example/, {
+      nock(/example-cmr/, {
         reqheaders: {
           'Client-Id': 'eed-test-graphql',
           'CMR-Request-Id': 'abcd-1234-efgh-5678'

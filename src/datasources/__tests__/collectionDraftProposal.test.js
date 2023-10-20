@@ -14,7 +14,7 @@ describe('collectionDraftProposal', () => {
 
     process.env = { ...OLD_ENV }
 
-    process.env.draftMmtRootUrl = 'http://example.com'
+    process.env.draftMmtRootUrl = 'http://example-dmmt.com'
     process.env.dmmtSslCert = '-----BEGIN CERTIFICATE-----\nmock-certificate\n-----END CERTIFICATE-----'
 
     // Default requestInfo
@@ -46,7 +46,7 @@ describe('collectionDraftProposal', () => {
   })
 
   test('returns the collection draft proposal results', async () => {
-    nock(/example/)
+    nock(/example-dmmt/)
       .defaultReplyHeaders({
         'X-Request-Id': 'abcd-1234-efgh-5678'
       })
@@ -74,7 +74,7 @@ describe('collectionDraftProposal', () => {
   })
 
   test('catches errors received from draftMmtQuery', async () => {
-    nock(/example/)
+    nock(/example-dmmt/)
       .get(/api\/collection_draft_proposals/)
       .reply(500, {
         errors: ['HTTP Error']

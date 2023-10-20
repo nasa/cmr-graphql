@@ -1,20 +1,10 @@
 import Draft from '../draft'
 
 describe('Draft concept', () => {
-  const OLD_ENV = process.env
-
   beforeEach(() => {
     jest.resetAllMocks()
 
     jest.restoreAllMocks()
-
-    process.env = { ...OLD_ENV }
-
-    process.env.cmrRootUrl = 'http://example.com'
-  })
-
-  afterEach(() => {
-    process.env = OLD_ENV
   })
 
   describe('Draft concept', () => {

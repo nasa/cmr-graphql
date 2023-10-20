@@ -104,7 +104,7 @@ describe('Collection', () => {
                       applied: false,
                       count: 1,
                       links: {
-                        apply: 'http://example.com:443/search/collections.json?include_facets=v2&science_keywords_h%5B0%5D%5Btopic%5D=Aerosols'
+                        apply: 'http://example-cmr.com:443/search/collections.json?include_facets=v2&science_keywords_h%5B0%5D%5Btopic%5D=Aerosols'
                       },
                       has_children: true
                     }
@@ -326,7 +326,7 @@ describe('Collection', () => {
                     count: 1,
                     hasChildren: true,
                     links: {
-                      apply: 'http://example.com:443/search/collections.json?include_facets=v2&science_keywords_h%5B0%5D%5Btopic%5D=Aerosols'
+                      apply: 'http://example-cmr.com:443/search/collections.json?include_facets=v2&science_keywords_h%5B0%5D%5Btopic%5D=Aerosols'
                     },
                     title: 'Aerosols',
                     type: 'filter'
