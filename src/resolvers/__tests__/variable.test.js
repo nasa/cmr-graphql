@@ -10,7 +10,7 @@ describe('Variable', () => {
   beforeEach(() => {
     process.env = { ...OLD_ENV }
 
-    process.env.cmrRootUrl = 'http://example.com'
+    process.env.cmrRootUrl = 'http://example-cmr.com'
   })
 
   afterEach(() => {
@@ -19,7 +19,7 @@ describe('Variable', () => {
 
   describe('Query', () => {
     test('all variable fields', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Hits': 1,
           'CMR-Took': 7,
@@ -142,7 +142,7 @@ describe('Variable', () => {
     })
 
     test('variables', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -185,7 +185,7 @@ describe('Variable', () => {
     describe('variable', () => {
       describe('with results', () => {
         test('returns results', async () => {
-          nock(/example/)
+          nock(/example-cmr/)
             .defaultReplyHeaders({
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -226,7 +226,7 @@ describe('Variable', () => {
 
       describe('with no results', () => {
         test('returns results', async () => {
-          nock(/example/)
+          nock(/example-cmr/)
             .defaultReplyHeaders({
               'CMR-Took': 0,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -262,7 +262,7 @@ describe('Variable', () => {
   describe('Variable', () => {
     describe('collections', () => {
       test('returns collections when querying a published record', async () => {
-        nock(/example/)
+        nock(/example-cmr/)
           .defaultReplyHeaders({
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -276,7 +276,7 @@ describe('Variable', () => {
             }]
           })
 
-        nock(/example/)
+        nock(/example-cmr/)
           .defaultReplyHeaders({
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -292,7 +292,7 @@ describe('Variable', () => {
             }
           })
 
-        nock(/example/)
+        nock(/example-cmr/)
           .defaultReplyHeaders({
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -354,7 +354,7 @@ describe('Variable', () => {
       })
 
       test('returns null when querying a draft', async () => {
-        nock(/example/)
+        nock(/example-cmr/)
           .defaultReplyHeaders({
             'CMR-Hits': 2,
             'CMR-Took': 7,

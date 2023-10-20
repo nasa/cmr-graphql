@@ -1,6 +1,7 @@
 import { parseResolveInfo } from 'graphql-parse-resolve-info'
 
 import { handlePagingParams } from '../utils/handlePagingParams'
+import { isDraftConceptId } from '../utils/isDraftConceptId'
 
 export default {
   Query: {
@@ -31,7 +32,7 @@ export default {
 
       // If the concept being returned is a draft, there will be no associations,
       // return null to avoid an extra call to CMR
-      if (conceptId.startsWith('SD')) return null
+      if (isDraftConceptId(conceptId, 'service')) return null
 
       const requestedParams = handlePagingParams({
         serviceConceptId: conceptId,
@@ -52,7 +53,7 @@ export default {
 
       // If the concept being returned is a draft, there will be no associations,
       // return null to avoid an extra call to CMR
-      if (conceptId.startsWith('SD')) return null
+      if (isDraftConceptId(conceptId, 'service')) return null
 
       const { collections = [] } = associationDetails
       // If there are no associations to collections for this service
@@ -103,7 +104,7 @@ export default {
 
       // If the concept being returned is a draft, there will be no associations,
       // return null to avoid an extra call to CMR
-      if (conceptId.startsWith('SD')) return null
+      if (isDraftConceptId(conceptId, 'service')) return null
 
       const { dataSources } = context
 
@@ -134,7 +135,7 @@ export default {
 
       // If the concept being returned is a draft, there will be no associations,
       // return null to avoid an extra call to CMR
-      if (conceptId.startsWith('SD')) return null
+      if (isDraftConceptId(conceptId, 'service')) return null
 
       if (type !== 'ECHO ORDERS') return null
 

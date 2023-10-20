@@ -20,7 +20,7 @@ describe('subscription#fetch', () => {
 
     process.env = { ...OLD_ENV }
 
-    process.env.cmrRootUrl = 'http://example.com'
+    process.env.cmrRootUrl = 'http://example-cmr.com'
 
     // Default requestInfo
     requestInfo = {
@@ -95,7 +95,7 @@ describe('subscription#fetch', () => {
     })
 
     test('returns a cursor', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Hits': 84,
           'CMR-Took': 7,
@@ -109,7 +109,7 @@ describe('subscription#fetch', () => {
               'concept-id': 'SUB100000-EDSC'
             },
             umm: {
-              EmailAddress: 'test@example.com'
+              EmailAddress: 'test@example-cmr.com'
             }
           }]
         })
@@ -126,14 +126,14 @@ describe('subscription#fetch', () => {
         cursor: 'eyJ1bW0iOiJbXCJ4eXpcIiwgNzg5LCA5OTldIn0=',
         items: [{
           conceptId: 'SUB100000-EDSC',
-          emailAddress: 'test@example.com'
+          emailAddress: 'test@example-cmr.com'
         }]
       })
     })
 
     describe('when a cursor is requested', () => {
       test('requests a cursor', async () => {
-        nock(/example/)
+        nock(/example-cmr/)
           .defaultReplyHeaders({
             'CMR-Hits': 84,
             'CMR-Took': 7,
@@ -147,7 +147,7 @@ describe('subscription#fetch', () => {
                 'concept-id': 'SUB100000-EDSC'
               },
               umm: {
-                EmailAddress: 'test@example.com'
+                EmailAddress: 'test@example-cmr.com'
               }
             }]
           })
@@ -164,7 +164,7 @@ describe('subscription#fetch', () => {
           cursor: 'eyJ1bW0iOiJbXCJ4eXpcIiwgNzg5LCA5OTldIn0=',
           items: [{
             conceptId: 'SUB100000-EDSC',
-            emailAddress: 'test@example.com'
+            emailAddress: 'test@example-cmr.com'
           }]
         })
       })
@@ -173,7 +173,7 @@ describe('subscription#fetch', () => {
 
   describe('without params', () => {
     test('returns the parsed subscription results', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Hits': 84,
           'CMR-Took': 7,
@@ -205,7 +205,7 @@ describe('subscription#fetch', () => {
 
   describe('with params', () => {
     test('returns the parsed subscription results', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Hits': 84,
           'CMR-Took': 7,
@@ -269,7 +269,7 @@ describe('subscription#fetch', () => {
     })
 
     test('returns the parsed subscription results', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Hits': 84,
           'CMR-Took': 7,
@@ -282,7 +282,7 @@ describe('subscription#fetch', () => {
               'concept-id': 'SUB100000-EDSC'
             },
             umm: {
-              EmailAddress: 'test@example.com'
+              EmailAddress: 'test@example-cmr.com'
             }
           }]
         })
@@ -302,14 +302,14 @@ describe('subscription#fetch', () => {
         count: 84,
         cursor: null,
         items: [{
-          emailAddress: 'test@example.com'
+          emailAddress: 'test@example-cmr.com'
         }]
       })
     })
   })
 
   test('catches errors received from queryCmrSubscriptions', async () => {
-    nock(/example/)
+    nock(/example-cmr/)
       .post(/subscriptions/)
       .reply(500, {
         errors: ['HTTP Error']
@@ -342,7 +342,7 @@ describe('subscription#ingest', () => {
 
     process.env = { ...OLD_ENV }
 
-    process.env.cmrRootUrl = 'http://example.com'
+    process.env.cmrRootUrl = 'http://example-cmr.com'
 
     // Default requestInfo
     requestInfo = {
@@ -379,7 +379,7 @@ describe('subscription#ingest', () => {
 
   describe('when a native id is not provided', () => {
     test('returns the parsed subscription results', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
@@ -412,7 +412,7 @@ describe('subscription#ingest', () => {
 
   describe('when a native id is provided', () => {
     test('returns the parsed subscription results', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
@@ -425,7 +425,7 @@ describe('subscription#ingest', () => {
       const response = await subscriptionSourceIngest({
         params: {
           collectionConceptId: 'C100000-EDSC',
-          emailAddress: 'test@example.com',
+          emailAddress: 'test@example-cmr.com',
           name: 'Test Subscription',
           nativeId: 'test-guid',
           query: 'polygon=-18,-78,-13,-74,-16,-73,-22,-77,-18,-78',
@@ -446,7 +446,7 @@ describe('subscription#ingest', () => {
   })
 
   test('catches errors received from ingestCmr', async () => {
-    nock(/example/)
+    nock(/example-cmr/)
       .put(/ingest\/subscriptions\/1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed/)
       .reply(500, {
         errors: ['HTTP Error']
@@ -458,7 +458,7 @@ describe('subscription#ingest', () => {
       subscriptionSourceIngest({
         params: {
           collectionConceptId: 'C100000-EDSC',
-          emailAddress: 'test@example.com',
+          emailAddress: 'test@example-cmr.com',
           name: 'Test Subscription',
           query: 'polygon=-18,-78,-13,-74,-16,-73,-22,-77,-18,-78',
           subscriberId: 'testuser'
@@ -483,7 +483,7 @@ describe('subscription#delete', () => {
 
     process.env = { ...OLD_ENV }
 
-    process.env.cmrRootUrl = 'http://example.com'
+    process.env.cmrRootUrl = 'http://example-cmr.com'
 
     // Default requestInfo
     requestInfo = {
@@ -518,7 +518,7 @@ describe('subscription#delete', () => {
 
   describe('when a native id is provided', () => {
     test('returns the parsed subscription results', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
@@ -548,7 +548,7 @@ describe('subscription#delete', () => {
   })
 
   test('catches errors received from cmrDelete', async () => {
-    nock(/example/)
+    nock(/example-cmr/)
       .delete(/ingest\/subscriptions\/test-guid/)
       .reply(500, {
         errors: ['HTTP Error']

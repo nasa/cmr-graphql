@@ -14,7 +14,7 @@ describe('collection', () => {
 
     process.env = { ...OLD_ENV }
 
-    process.env.cmrRootUrl = 'http://example.com'
+    process.env.cmrRootUrl = 'http://example-cmr.com'
 
     // Default requestInfo
     requestInfo = {
@@ -101,7 +101,7 @@ describe('collection', () => {
     })
 
     test('returns a cursor', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Hits': 84,
           'CMR-Took': 7,
@@ -118,7 +118,7 @@ describe('collection', () => {
           }
         })
 
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Hits': 84,
           'CMR-Took': 7,
@@ -165,7 +165,7 @@ describe('collection', () => {
 
     describe('when a cursor is requested', () => {
       test('requests a cursor', async () => {
-        nock(/example/)
+        nock(/example-cmr/)
           .defaultReplyHeaders({
             'CMR-Hits': 84,
             'CMR-Took': 7,
@@ -182,7 +182,7 @@ describe('collection', () => {
             }
           })
 
-        nock(/example/)
+        nock(/example-cmr/)
           .defaultReplyHeaders({
             'CMR-Hits': 84,
             'CMR-Took': 7,
@@ -227,7 +227,7 @@ describe('collection', () => {
 
   describe('without params', () => {
     test('returns the parsed collection results', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Hits': 84,
           'CMR-Took': 7,
@@ -261,7 +261,7 @@ describe('collection', () => {
 
   describe('with params', () => {
     test('returns the parsed collection results', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Hits': 84,
           'CMR-Took': 7,
@@ -359,7 +359,7 @@ describe('collection', () => {
     })
 
     test('returns the parsed collection results', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Hits': 84,
           'CMR-Took': 7,
@@ -375,7 +375,7 @@ describe('collection', () => {
           }
         })
 
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Hits': 84,
           'CMR-Took': 7,
@@ -468,7 +468,7 @@ describe('collection', () => {
     })
 
     test('returns the parsed collection results', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Hits': 84,
           'CMR-Took': 7,
@@ -485,7 +485,7 @@ describe('collection', () => {
           }
         })
 
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Hits': 84,
           'CMR-Took': 7,
@@ -567,7 +567,7 @@ describe('collection', () => {
     })
 
     test('returns the parsed collection results', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Hits': 84,
           'CMR-Took': 7,
@@ -619,7 +619,7 @@ describe('collection', () => {
   })
 
   test('catches errors received from queryCmrCollections', async () => {
-    nock(/example/)
+    nock(/example-cmr/)
       .post(/collections/)
       .reply(500, {
         errors: ['HTTP Error']

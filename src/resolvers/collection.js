@@ -1,6 +1,7 @@
 import { parseResolveInfo } from 'graphql-parse-resolve-info'
 
 import { handlePagingParams } from '../utils/handlePagingParams'
+import { isDraftConceptId } from '../utils/isDraftConceptId'
 
 export default {
   Query: {
@@ -31,7 +32,7 @@ export default {
 
       // If the concept being returned is a draft, there will be no associations,
       // return null to avoid an extra call to CMR
-      if (collectionId.startsWith('CD')) return null
+      if (isDraftConceptId(collectionId, 'collection')) return null
 
       // Empty object that will contain the search parameters sent to CMR
       const granuleParams = {}
@@ -85,7 +86,7 @@ export default {
 
       // If the concept being returned is a draft, there will be no associations,
       // return null to avoid an extra call to CMR
-      if (conceptId.startsWith('CD')) return null
+      if (isDraftConceptId(conceptId, 'collection')) return null
 
       return dataSources.graphDbSource(source, args, context, parseResolveInfo(info))
     },
@@ -104,7 +105,7 @@ export default {
 
       // If the concept being returned is a draft, there will be no associations,
       // return null to avoid an extra call to CMR
-      if (conceptId.startsWith('CD')) return null
+      if (isDraftConceptId(conceptId, 'collection')) return null
 
       const { dataSources } = context
 
@@ -133,7 +134,7 @@ export default {
 
       // If the concept being returned is a draft, there will be no associations,
       // return null to avoid an extra call to CMR
-      if (conceptId.startsWith('CD')) return null
+      if (isDraftConceptId(conceptId, 'collection')) return null
 
       return dataSources.graphDbDuplicateCollectionsSource(source, context)
     },
@@ -145,7 +146,7 @@ export default {
 
       // If the concept being returned is a draft, there will be no associations,
       // return null to avoid an extra call to CMR
-      if (collectionConceptId.startsWith('CD')) return null
+      if (isDraftConceptId(collectionConceptId, 'collection')) return null
 
       const { dataSources } = context
 
@@ -179,7 +180,7 @@ export default {
 
       // If the concept being returned is a draft, there will be no associations,
       // return null to avoid an extra call to CMR
-      if (collectionId.startsWith('CD')) return null
+      if (isDraftConceptId(collectionId, 'collection')) return null
 
       const { dataSources } = context
 
@@ -196,7 +197,7 @@ export default {
 
       // If the concept being returned is a draft, there will be no associations,
       // return null to avoid an extra call to CMR
-      if (conceptId.startsWith('CD')) return null
+      if (isDraftConceptId(conceptId, 'collection')) return null
 
       const { dataSources } = context
 
@@ -224,7 +225,7 @@ export default {
 
       // If the concept being returned is a draft, there will be no associations,
       // return null to avoid an extra call to CMR
-      if (conceptId.startsWith('CD')) return null
+      if (isDraftConceptId(conceptId, 'collection')) return null
 
       const { dataSources } = context
 

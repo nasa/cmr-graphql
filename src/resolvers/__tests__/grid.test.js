@@ -10,7 +10,7 @@ describe('Grid', () => {
   beforeEach(() => {
     process.env = { ...OLD_ENV }
 
-    process.env.cmrRootUrl = 'http://example.com'
+    process.env.cmrRootUrl = 'http://example-cmr.com'
   })
 
   afterEach(() => {
@@ -19,7 +19,7 @@ describe('Grid', () => {
 
   describe('Query', () => {
     test('all grid fields', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Hits': 1,
           'CMR-Took': 7,
@@ -133,7 +133,7 @@ describe('Grid', () => {
     })
 
     test('grids', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -176,7 +176,7 @@ describe('Grid', () => {
     describe('grid', () => {
       describe('with results', () => {
         test('returns results', async () => {
-          nock(/example/)
+          nock(/example-cmr/)
             .defaultReplyHeaders({
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -212,7 +212,7 @@ describe('Grid', () => {
 
       describe('with no results', () => {
         test('returns results', async () => {
-          nock(/example/)
+          nock(/example-cmr/)
             .defaultReplyHeaders({
               'CMR-Took': 0,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'

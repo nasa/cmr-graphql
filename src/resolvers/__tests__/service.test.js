@@ -10,7 +10,7 @@ describe('Service', () => {
   beforeEach(() => {
     process.env = { ...OLD_ENV }
 
-    process.env.cmrRootUrl = 'http://example.com'
+    process.env.cmrRootUrl = 'http://example-cmr.com'
   })
 
   afterEach(() => {
@@ -19,7 +19,7 @@ describe('Service', () => {
 
   describe('Query', () => {
     test('all service fields', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Hits': 1,
           'CMR-Took': 7,
@@ -118,7 +118,7 @@ describe('Service', () => {
     })
 
     test('services', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -161,7 +161,7 @@ describe('Service', () => {
     describe('service', () => {
       describe('with results', () => {
         test('returns results', async () => {
-          nock(/example/)
+          nock(/example-cmr/)
             .defaultReplyHeaders({
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -196,7 +196,7 @@ describe('Service', () => {
 
       describe('with no results', () => {
         test('returns no results', async () => {
-          nock(/example/)
+          nock(/example-cmr/)
             .defaultReplyHeaders({
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -229,7 +229,7 @@ describe('Service', () => {
 
   describe('when there are variable associations in the service metadata', () => {
     test('queries for and returns variables', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -249,7 +249,7 @@ describe('Service', () => {
           }]
         })
 
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -263,7 +263,7 @@ describe('Service', () => {
           }]
         })
 
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -325,7 +325,7 @@ describe('Service', () => {
 
   describe('when there are no variable associations in the service metadata', () => {
     test('queries for and does not return any variables', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -339,7 +339,7 @@ describe('Service', () => {
           }]
         })
 
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -353,7 +353,7 @@ describe('Service', () => {
           }]
         })
 
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -408,7 +408,7 @@ describe('Service', () => {
   describe('Service', () => {
     describe('collections', () => {
       test('returns collections when querying a published record', async () => {
-        nock(/example/)
+        nock(/example-cmr/)
           .defaultReplyHeaders({
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -422,7 +422,7 @@ describe('Service', () => {
             }]
           })
 
-        nock(/example/)
+        nock(/example-cmr/)
           .defaultReplyHeaders({
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -438,7 +438,7 @@ describe('Service', () => {
             }
           })
 
-        nock(/example/)
+        nock(/example-cmr/)
           .defaultReplyHeaders({
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -500,7 +500,7 @@ describe('Service', () => {
       })
 
       test('returns null when querying a draft', async () => {
-        nock(/example/)
+        nock(/example-cmr/)
           .defaultReplyHeaders({
             'CMR-Hits': 2,
             'CMR-Took': 7,
@@ -566,7 +566,7 @@ describe('Service', () => {
       describe('orderOptions query WITH parent collection', () => {
         // Tests for the associated legacy services order-options
         test('only retrieve one OO filtered from assoc details', async () => {
-          nock(/example/)
+          nock(/example-cmr/)
             .defaultReplyHeaders({
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -711,7 +711,7 @@ describe('Service', () => {
         })
 
         test('After filter check data payload fields existence', async () => {
-          nock(/example/)
+          nock(/example-cmr/)
             .defaultReplyHeaders({
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -822,7 +822,7 @@ describe('Service', () => {
         })
 
         test('No order options in the payload', async () => {
-          nock(/example/)
+          nock(/example-cmr/)
             .defaultReplyHeaders({
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -905,7 +905,7 @@ describe('Service', () => {
         })
 
         test('No association back to the collection', async () => {
-          nock(/example/)
+          nock(/example-cmr/)
           // Note I am not sure that this can happen in CMR
             .defaultReplyHeaders({
               'CMR-Took': 7,
@@ -990,7 +990,7 @@ describe('Service', () => {
         })
 
         test('No order_option field in the data payload in the association between the collection and service', async () => {
-          nock(/example/)
+          nock(/example-cmr/)
             .defaultReplyHeaders({
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -1083,7 +1083,7 @@ describe('Service', () => {
         })
 
         test('legacy services order-option not retrieved because there were NO associations on the collection', async () => {
-          nock(/example/)
+          nock(/example-cmr/)
             .defaultReplyHeaders({
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -1145,7 +1145,7 @@ describe('Service', () => {
       })
 
       test('returns null when querying a draft', async () => {
-        nock(/example/)
+        nock(/example-cmr/)
           .defaultReplyHeaders({
             'CMR-Hits': 2,
             'CMR-Took': 7,
@@ -1209,7 +1209,7 @@ describe('Service', () => {
 
     describe('orderOptions query WITHOUT parent collection', () => {
       test('order options from service no collection parent retrieves all order-options in the collection assoc', async () => {
-        nock(/example/)
+        nock(/example-cmr/)
           .defaultReplyHeaders({
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -1302,7 +1302,7 @@ describe('Service', () => {
       })
 
       test('Default no association details for orderOption query off of services', async () => {
-        nock(/example/)
+        nock(/example-cmr/)
           .defaultReplyHeaders({
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -1349,7 +1349,7 @@ describe('Service', () => {
 
     describe('variables', () => {
       test('returns variables when querying a published record', async () => {
-        nock(/example/)
+        nock(/example-cmr/)
           .defaultReplyHeaders({
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -1368,7 +1368,7 @@ describe('Service', () => {
             }]
           })
 
-        nock(/example/)
+        nock(/example-cmr/)
           .defaultReplyHeaders({
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -1419,7 +1419,7 @@ describe('Service', () => {
       })
 
       test('returns null when querying a draft', async () => {
-        nock(/example/)
+        nock(/example-cmr/)
           .defaultReplyHeaders({
             'CMR-Hits': 2,
             'CMR-Took': 7,
@@ -1483,7 +1483,7 @@ describe('Service', () => {
 
     describe('maxItemsPerOrder', () => {
       test('returns the maxItemsPerOrder for ECHO ORDERS service types', async () => {
-        nock(/example/)
+        nock(/example-cmr/)
           .defaultReplyHeaders({
             'CMR-Hits': 1,
             'CMR-Took': 7,
@@ -1549,7 +1549,7 @@ describe('Service', () => {
       })
 
       test('returns null for maxItemsPerOrder for non ECHO ORDERS service types', async () => {
-        nock(/example/)
+        nock(/example-cmr/)
           .defaultReplyHeaders({
             'CMR-Hits': 1,
             'CMR-Took': 7,
@@ -1609,7 +1609,7 @@ describe('Service', () => {
       })
 
       test('returns null when querying a draft', async () => {
-        nock(/example/)
+        nock(/example-cmr/)
           .defaultReplyHeaders({
             'CMR-Hits': 2,
             'CMR-Took': 7,

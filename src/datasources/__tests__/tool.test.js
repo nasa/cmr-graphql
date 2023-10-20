@@ -14,7 +14,7 @@ describe('tool', () => {
 
     process.env = { ...OLD_ENV }
 
-    process.env.cmrRootUrl = 'http://example.com'
+    process.env.cmrRootUrl = 'http://example-cmr.com'
 
     // Default requestInfo
     requestInfo = {
@@ -89,7 +89,7 @@ describe('tool', () => {
     })
 
     test('returns a cursor', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Hits': 84,
           'CMR-Took': 7,
@@ -127,7 +127,7 @@ describe('tool', () => {
 
     describe('when a cursor is requested', () => {
       test('requests a cursor', async () => {
-        nock(/example/)
+        nock(/example-cmr/)
           .defaultReplyHeaders({
             'CMR-Hits': 84,
             'CMR-Took': 7,
@@ -167,7 +167,7 @@ describe('tool', () => {
 
   describe('without params', () => {
     test('returns the parsed tool results', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Hits': 84,
           'CMR-Took': 7,
@@ -199,7 +199,7 @@ describe('tool', () => {
 
   describe('with params', () => {
     test('returns the parsed tool results', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Hits': 84,
           'CMR-Took': 7,
@@ -269,7 +269,7 @@ describe('tool', () => {
     })
 
     test('returns the parsed tool results', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Hits': 84,
           'CMR-Took': 7,
@@ -309,7 +309,7 @@ describe('tool', () => {
   })
 
   test('catches errors received from queryCmrTools', async () => {
-    nock(/example/)
+    nock(/example-cmr/)
       .post(/tools/)
       .reply(500, {
         errors: ['HTTP Error']

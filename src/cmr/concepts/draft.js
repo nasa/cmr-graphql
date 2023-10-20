@@ -107,6 +107,11 @@ export default class Draft extends Concept {
    */
   ingest(data, requestedKeys, providedHeaders) {
     const { ummVersion } = data
+
+    if (!ummVersion) {
+      throw new Error('`ummVersion` is required when ingesting drafts.')
+    }
+
     // Default headers
     const defaultHeaders = {
       Accept: 'application/json',

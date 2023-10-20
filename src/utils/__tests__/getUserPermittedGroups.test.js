@@ -7,7 +7,7 @@ describe('Retrieve data from EDL on the user groups', () => {
   beforeEach(() => {
     process.env = { ...OLD_ENV }
     process.env.rsaKey = ''
-    process.env.ursRootUrl = 'http://example.com'
+    process.env.ursRootUrl = 'http://example-urs.com'
     process.env.edlClientId = 'clientIdOfSomeApplication'
   })
 
@@ -16,7 +16,7 @@ describe('Retrieve data from EDL on the user groups', () => {
   })
 
   test('Retrieving correct data from the permitted groups', async () => {
-    nock(/example/)
+    nock(/example-urs/)
       .get(/user_groups/)
       .reply(200, {
         user_groups: [
@@ -49,7 +49,7 @@ describe('Retrieve data from EDL on the user groups', () => {
   })
 
   test('If the user has no groups they would still have guest and registered privillages', async () => {
-    nock(/example/)
+    nock(/example-urs/)
       .get(/user_groups/)
       .reply(200, {
         user_groups: []
@@ -63,7 +63,7 @@ describe('Retrieve data from EDL on the user groups', () => {
   })
 
   test('If the response has an issue and returns null the client should still have guest privillages ', async () => {
-    nock(/example/)
+    nock(/example-urs/)
       .get(/user_groups/)
       .reply(400, null)
 
@@ -75,7 +75,7 @@ describe('Retrieve data from EDL on the user groups', () => {
   })
 
   test('If the response has an issue and returns null the client should still have guest privillages ', async () => {
-    nock(/example/)
+    nock(/example-urs/)
       .get(/user_groups/)
       .reply(400, null)
 
