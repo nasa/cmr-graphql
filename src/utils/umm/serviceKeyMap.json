@@ -6,7 +6,7 @@
     "providerId"
   ],
   "ummKeyMappings": {
-    "accessConstraints": "AccessConstraints",
+    "accessConstraints": "umm.AccessConstraints",
     "ancillaryKeywords": "umm.AncillaryKeywords",
     "associationDetails": "meta.association-details",
     "conceptId": "meta.concept-id",
@@ -22,7 +22,7 @@
     "serviceKeywords": "umm.ServiceKeywords",
     "serviceOptions": "umm.ServiceOptions",
     "serviceOrganizations": "umm.ServiceOrganizations",
-    "serviceQuality": "ServiceQuality",
+    "serviceQuality": "umm.ServiceQuality",
     "supportedInputProjections": "umm.ServiceOptions.SupportedInputProjections",
     "supportedOutputProjections": "umm.ServiceOptions.SupportedOutputProjections",
     "supportedReformattings": "umm.ServiceOptions.SupportedReformattings",
