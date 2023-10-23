@@ -6,6 +6,7 @@
     "providerId"
   ],
   "ummKeyMappings": {
+    "accessConstraints": "umm.AccessConstraints",
     "ancillaryKeywords": "umm.AncillaryKeywords",
     "associationDetails": "meta.association-details",
     "conceptId": "meta.concept-id",
@@ -14,12 +15,14 @@
     "description": "umm.Description",
     "longName": "umm.LongName",
     "name": "umm.Name",
+    "operationMetadata": "umm.OperationMetadata",
     "nativeId": "meta.native-id",
     "providerId": "meta.provider-id",
     "relatedUrls": "umm.RelatedURLs",
     "serviceKeywords": "umm.ServiceKeywords",
     "serviceOptions": "umm.ServiceOptions",
     "serviceOrganizations": "umm.ServiceOrganizations",
+    "serviceQuality": "umm.ServiceQuality",
     "supportedInputProjections": "umm.ServiceOptions.SupportedInputProjections",
     "supportedOutputProjections": "umm.ServiceOptions.SupportedOutputProjections",
     "supportedReformattings": "umm.ServiceOptions.SupportedReformattings",
