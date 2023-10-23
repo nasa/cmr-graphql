@@ -108,7 +108,7 @@ describe('cmrQuery', () => {
     test('queries cmr using the Authorization header', async () => {
       nock(/example/, {
         reqheaders: {
-          Authorization: 'test-token',
+          Authorization: 'Bearer test-token',
           'Client-Id': 'eed-test-graphql',
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         }
@@ -126,7 +126,7 @@ describe('cmrQuery', () => {
         conceptType: 'collections',
         params: {},
         headers: {
-          Authorization: 'test-token',
+          Authorization: 'Bearer test-token',
           'Client-Id': 'eed-test-graphql',
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         }

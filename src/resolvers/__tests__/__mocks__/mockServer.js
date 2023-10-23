@@ -3,13 +3,14 @@ import { ApolloServer } from '@apollo/server'
 import resolvers from '../..'
 import typeDefs from '../../../types'
 
-import collectionSource from '../../../datasources/collection'
-import collectionDraftSource from '../../../datasources/collectionDraft'
 import collectionDraftProposalSource from '../../../datasources/collectionDraftProposal'
+import collectionDraftSource from '../../../datasources/collectionDraft'
+import collectionSource from '../../../datasources/collection'
+import collectionVariableDraftsSource from '../../../datasources/collectionVariableDrafts'
 import dataQualitySummarySource from '../../../datasources/dataQualitySummary'
 import granuleSource from '../../../datasources/granule'
-import graphDbSource from '../../../datasources/graphDb'
 import graphDbDuplicateCollectionsSource from '../../../datasources/graphDbDuplicateCollections'
+import graphDbSource from '../../../datasources/graphDb'
 import gridSource from '../../../datasources/grid'
 import maxItemsPerOrderSource from '../../../datasources/maxItemsPerOrder'
 import orderOptionSource from '../../../datasources/orderOption'
@@ -36,6 +37,7 @@ export const buildContextValue = (extraContext) => ({
     collectionDraftSource,
     collectionDraftProposalSource,
     dataQualitySummarySource,
+    collectionVariableDraftsSource,
     granuleSource,
     graphDbDuplicateCollectionsSource,
     graphDbSource,

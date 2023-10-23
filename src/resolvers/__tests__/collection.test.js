@@ -1,5 +1,8 @@
 import nock from 'nock'
 
+import { mockClient } from 'aws-sdk-client-mock'
+import { InvokeCommand, LambdaClient } from '@aws-sdk/client-lambda'
+
 import resolvers from '..'
 import { buildContextValue, server } from './__mocks__/mockServer'
 
@@ -9,6 +12,12 @@ import relatedCollectionsGraphdbResponseMocks from './__mocks__/relatedCollectio
 import relatedCollectionsResponseMocks from './__mocks__/relatedCollections.response.mocks'
 
 const contextValue = buildContextValue()
+
+const lambdaClientMock = mockClient(LambdaClient)
+
+beforeEach(() => {
+  lambdaClientMock.reset()
+})
 
 describe('Collection', () => {
   const OLD_ENV = process.env
@@ -1734,7 +1743,7 @@ describe('Collection', () => {
           .reply(200, {
             feed: {
               entry: [{
-                id: 'C1200400842-GHRC'
+                id: 'C100000-EDSC'
               }]
             }
           })
@@ -1747,7 +1756,7 @@ describe('Collection', () => {
           variables: {},
           query: `{
             collections (
-              conceptId: "C1200400842-GHRC"
+              conceptId: "C100000-EDSC"
             ) {
               items {
                 conceptId
@@ -1785,6 +1794,97 @@ describe('Collection', () => {
         const { data } = response.body.singleResult
 
         expect(data).toEqual(relatedCollectionsResponseMocks.data)
+      })
+    })
+
+    describe('generateCollectionVariableDrafts', () => {
+      test('calls earthdata-varinfo lambda to generate variable drafts', async () => {
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .post(/collections\.json/)
+          .reply(200, {
+            feed: {
+              entry: [{
+                id: 'C100000-EDSC'
+              }]
+            }
+          })
+
+        const variableList = [{
+          dataType: 'int32',
+          definition: 'Grid/time',
+          dimensions: [{
+            Name: 'Grid/time',
+            Size: 1,
+            Type: 'TIME_DIMENSION'
+          }],
+          longName: 'Grid/time',
+          metadataSpecification: {
+            Name: 'UMM-Var',
+            URL: 'https://cdn.earthdata.nasa.gov/umm/variable/v1.8.2',
+            Version: '1.8.2'
+          },
+          name: 'Grid/time',
+          standardName: 'time',
+          units: 'seconds since 1970-01-01 00:00:00 UTC'
+        }]
+
+        lambdaClientMock.on(InvokeCommand).resolves({
+          Payload: Buffer.from(JSON.stringify({
+            isBase64Encoded: false,
+            statusCode: 200,
+            body: variableList
+          }))
+        })
+
+        const response = await server.executeOperation({
+          variables: {
+            params: {
+              conceptId: 'C100000-EDSC'
+            }
+          },
+          query: `{
+            collections (
+              conceptId: "C100000-EDSC"
+            ) {
+              items {
+                conceptId
+                generateVariableDrafts {
+                  count
+                  items {
+                    dataType
+                    definition
+                    dimensions
+                    longName
+                    name
+                    standardName
+                    units
+                    metadataSpecification
+                  }
+                }
+              }
+            }
+          }`
+        }, {
+          contextValue
+        })
+
+        const { data } = response.body.singleResult
+
+        expect(data).toEqual({
+          collections: {
+            items: [{
+              conceptId: 'C100000-EDSC',
+              generateVariableDrafts: {
+                count: 1,
+                items: variableList
+              }
+            }]
+          }
+        })
       })
     })
 

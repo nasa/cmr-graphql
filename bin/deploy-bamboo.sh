@@ -16,6 +16,9 @@ FROM node:18.16-bullseye
 COPY . /build
 WORKDIR /build
 RUN npm ci --omit=dev
+RUN apt-get update
+RUN apt-get install -y python3 python3-pip python-is-python3
+RUN pip install -r requirements.txt
 EOF
 
 dockerTag=edsc-$bamboo_STAGE_NAME

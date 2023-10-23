@@ -10,7 +10,7 @@ describe('Variable Draft', () => {
   beforeEach(() => {
     process.env = { ...OLD_ENV }
 
-    process.env.mmtRootUrl = 'http://example.com'
+    process.env.mmtRootUrl = 'http://example-mmt.com'
   })
 
   afterEach(() => {
@@ -21,7 +21,7 @@ describe('Variable Draft', () => {
     describe('variableDraft', () => {
       describe('with results', () => {
         test('all variable draft fields', async () => {
-          nock(/example/)
+          nock(/example-mmt/)
             .defaultReplyHeaders({
               'X-Request-Id': 'abcd-1234-efgh-5678'
             })
@@ -110,7 +110,7 @@ describe('Variable Draft', () => {
         })
 
         test('returns results', async () => {
-          nock(/example/)
+          nock(/example-mmt/)
             .defaultReplyHeaders({
               'X-Request-Id': 'abcd-1234-efgh-5678'
             })

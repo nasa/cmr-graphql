@@ -113,7 +113,7 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
   }
 
   if (name === 'collection' || name === 'collections') {
-    // If a user has requested granules, subscriptions, relatedCollections or duplicateCollections, from
+    // If a user has requested granules, subscriptions, relatedCollections, duplicateCollections or generateVariableDrafts from
     // within a collection request the resolver will pull the conceptId and provide
     // it to the granules request but if a user doesn't explicity ask for the
     // collection concept id we need to request it
@@ -123,6 +123,7 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
         || requestedFields.includes('subscriptions')
         || requestedFields.includes('relatedCollections')
         || requestedFields.includes('duplicateCollections')
+        || requestedFields.includes('generateVariableDrafts')
       )
        && !requestedFields.includes('conceptId')) {
       requestedFields.push('conceptId')
