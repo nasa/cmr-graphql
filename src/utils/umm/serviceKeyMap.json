@@ -13,6 +13,7 @@
     "contactGroups": "umm.ContactGroups",
     "contactPersons": "umm.ContactPersons",
     "description": "umm.Description",
+    "lastUpdatedDate": "umm.LastUpdatedDate",
     "longName": "umm.LongName",
     "name": "umm.Name",
     "operationMetadata": "umm.OperationMetadata",
@@ -27,6 +28,9 @@
     "supportedOutputProjections": "umm.ServiceOptions.SupportedOutputProjections",
     "supportedReformattings": "umm.ServiceOptions.SupportedReformattings",
     "type": "umm.Type",
-    "url": "umm.URL"
+    "url": "umm.URL",
+    "useConstraints": "umm.UseConstraints",
+    "version": "umm.Version",
+    "versionDescription": "umm.VersionDescription"
   }
 }
