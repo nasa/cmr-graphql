@@ -342,7 +342,7 @@ describe('subscription#delete', () => {
 
     process.env = { ...OLD_ENV }
 
-    process.env.cmrRootUrl = 'http://example.com'
+    process.env.cmrRootUrl = 'http://example-cmr.com'
 
     // Default requestInfo
     requestInfo = {
@@ -376,7 +376,7 @@ describe('subscription#delete', () => {
   })
 
   test('returns the CMR results', async () => {
-    nock(/example/)
+    nock(/example-cmr/)
       .defaultReplyHeaders({
         'CMR-Request-Id': 'abcd-1234-efgh-5678'
       })
@@ -403,7 +403,7 @@ describe('subscription#delete', () => {
   })
 
   test('catches errors received from cmrDelete', async () => {
-    nock(/example/)
+    nock(/example-cmr/)
       .delete(/ingest\/providers\/EDSC\/tools\/test-guid/)
       .reply(500, {
         errors: ['HTTP Error']

@@ -362,15 +362,14 @@ export default class Concept {
    * @param {Object} providedHeaders Headers requested by the query
    */
   ingest(data, requestedKeys, providedHeaders) {
-    // eslint-disable-next-line no-param-reassign
-    data = mergeParams(data)
+    const params = mergeParams(data)
 
     this.logKeyRequest(requestedKeys, 'ingest')
 
     // Construct the promise that will ingest data into CMR
     this.response = cmrIngest(
       this.getConceptType(),
-      data,
+      params,
       providedHeaders,
       this.ingestPath
     )
@@ -383,15 +382,14 @@ export default class Concept {
    * @param {Object} providedHeaders Headers requested by the query
    */
   delete(data, requestedKeys, providedHeaders) {
-    // eslint-disable-next-line no-param-reassign
-    data = mergeParams(data)
+    const params = mergeParams(data)
 
     this.logKeyRequest(requestedKeys, 'ingest')
 
     // Construct the promise that will delete data from CMR
     this.response = cmrDelete(
       this.getConceptType(),
-      data,
+      params,
       providedHeaders,
       this.ingestPath
     )
@@ -455,8 +453,7 @@ export default class Concept {
    * @param {Object} searchParams Parameters provided by the query
    */
   fetch(searchParams) {
-    // eslint-disable-next-line no-param-reassign
-    searchParams = mergeParams(searchParams)
+    const params = mergeParams(searchParams)
 
     // Default an array to hold the promises we need to make depending on the requested fields
     const promises = []
@@ -469,11 +466,10 @@ export default class Concept {
 
     const {
       cursor
-    } = searchParams
+    } = params
 
     if (cursor) {
-      // eslint-disable-next-line no-param-reassign
-      delete searchParams.cursor
+      delete params.cursor
     }
 
     const {
@@ -493,7 +489,7 @@ export default class Concept {
       }
 
       promises.push(
-        this.fetchJson(this.arrayifyParams(searchParams), jsonKeys, jsonHeaders)
+        this.fetchJson(this.arrayifyParams(params), jsonKeys, jsonHeaders)
       )
     } else {
       // Push a null promise to the array so that the umm promise always exists as
@@ -516,7 +512,7 @@ export default class Concept {
 
       // Construct the promise that will request data from the umm endpoint
       promises.push(
-        this.fetchUmm(this.arrayifyParams(searchParams), ummKeys, ummHeaders)
+        this.fetchUmm(this.arrayifyParams(params), ummKeys, ummHeaders)
       )
     } else {
       promises.push(

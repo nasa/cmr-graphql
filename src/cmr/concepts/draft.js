@@ -1,9 +1,10 @@
 import { pick, uniq } from 'lodash'
 
 import { pickIgnoringCase } from '../../utils/pickIgnoringCase'
-import Concept from './concept'
 import { mergeParams } from '../../utils/mergeParams'
 import { cmrIngest } from '../../utils/cmrIngest'
+
+import Concept from './concept'
 
 export default class Draft extends Concept {
   /**
@@ -16,7 +17,7 @@ export default class Draft extends Concept {
     super(conceptType, headers, requestInfo, params)
 
     const {
-      draftConceptId = '',
+      draftConceptId,
       providerId
     } = params
 
@@ -196,8 +197,7 @@ export default class Draft extends Concept {
   publish(data, requestedKeys, providedHeaders) {
     const { ummVersion } = data
 
-    // eslint-disable-next-line no-param-reassign
-    data = mergeParams(data)
+    const params = mergeParams(data)
 
     // Default headers
     const defaultHeaders = {
@@ -222,7 +222,7 @@ export default class Draft extends Concept {
     // Construct the promise that will ingest data into CMR
     this.response = cmrIngest(
       this.getConceptType(),
-      pick(data, this.getPermittedPublishKeys()),
+      pick(params, this.getPermittedPublishKeys()),
       permittedHeaders,
       this.publishPath
     )

@@ -10,7 +10,6 @@ describe('Draft concept', () => {
 
     process.env = { ...OLD_ENV }
 
-    process.env.cmrRootUrl = 'http://example.com'
     process.env.ummCollectionVersion = '1.0.0'
     process.env.ummServiceVersion = '1.0.0'
     process.env.ummToolVersion = '1.0.0'
