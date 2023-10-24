@@ -128,7 +128,7 @@ type Mutation {
 
 type ToolMutationResponse {
   "The unique concept id assigned to the tool."
-  conceptId: String
+  conceptId: String!
   "The revision of the tool."
-  revisionId: String
+  revisionId: String!
 }
