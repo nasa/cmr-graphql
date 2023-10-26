@@ -71,7 +71,6 @@ if (!isOffline) {
     createStellateLoggerPlugin({
       serviceName: stellateAppName,
       token: stellateKey,
-
       fetch
     })
   )
