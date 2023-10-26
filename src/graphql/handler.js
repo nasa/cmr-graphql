@@ -61,7 +61,7 @@ const apolloPlugins = [
 const { IS_OFFLINE: isOffline } = env
 
 // Only utilize stellate in deployed environments
-if (isOffline) {
+if (!isOffline) {
   const {
     stellateAppName,
     stellateKey
