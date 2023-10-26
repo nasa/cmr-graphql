@@ -83,6 +83,7 @@
     "serverless-python-requirements": "github:william-valencia/serverless-python-requirements#master",
     "serverless-webpack": "^5.11.0",
     "snakecase-keys": "^5.4.5",
+    "stellate": "^2.5.2",
     "uuid": "^9.0.0",
     "webpack": "^5.76.1",
     "webpack-node-externals": "^3.0.0",

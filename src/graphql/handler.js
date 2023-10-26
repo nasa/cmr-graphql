@@ -2,6 +2,7 @@ import { ApolloServer } from '@apollo/server'
 import {
   ApolloServerPluginLandingPageLocalDefault
 } from '@apollo/server/plugin/landingPage/default'
+import { createStellateLoggerPlugin } from 'stellate/apollo-server'
 import { handlers, startServerAndCreateLambdaHandler } from '@as-integrations/aws-lambda'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -21,8 +22,8 @@ import graphDbSource from '../datasources/graphDb'
 import gridSource from '../datasources/grid'
 import maxItemsPerOrderSource from '../datasources/maxItemsPerOrder'
 import orderOptionSource from '../datasources/orderOption'
-import serviceSource from '../datasources/service'
 import serviceDraftSource from '../datasources/serviceDraft'
+import serviceSource from '../datasources/service'
 import toolDraftSource from '../datasources/toolDraft'
 import variableDraftSource from '../datasources/variableDraft'
 import variableSource from '../datasources/variable'
@@ -47,15 +48,41 @@ import { verifyEDLJwt } from '../utils/verifyEDLJwt'
 
 import { getCollectionsById } from '../dataloaders/getCollectionsById'
 
+const { env } = process
+
+// Initialize the plugins with those we always want enabled
+const apolloPlugins = [
+  ApolloServerPluginLandingPageLocalDefault({
+    embed: false,
+    footer: false
+  })
+]
+
+const { IS_OFFLINE: isOffline } = env
+
+// Only utilize stellate in deployed environments
+if (isOffline) {
+  const {
+    stellateAppName,
+    stellateKey
+  } = env
+
+  apolloPlugins.push(
+    createStellateLoggerPlugin({
+      serviceName: stellateAppName,
+      token: stellateKey,
+
+      fetch
+    })
+  )
+}
+
 const server = new ApolloServer({
   // Passing types and resolvers to the server
   typeDefs,
   resolvers,
   introspection: true,
-  plugins: [ApolloServerPluginLandingPageLocalDefault({
-    embed: false,
-    footer: false
-  })]
+  plugins: apolloPlugins
 })
 
 export default startServerAndCreateLambdaHandler(

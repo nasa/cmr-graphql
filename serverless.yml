@@ -10,17 +10,19 @@ provider:
 
   environment:
     cmrRootUrl: ${self:custom.variables.cmrRootUrl}
-    graphdbHost: ${self:custom.variables.graphdbHost}
-    graphdbPort: ${self:custom.variables.graphdbPort}
-    graphdbPath: ${self:custom.variables.graphdbPath}
-    mmtRootUrl: ${self:custom.variables.mmtRootUrl}
-    draftMmtRootUrl: ${self:custom.variables.draftMmtRootUrl}
-    ursRootUrl: ${self:custom.variables.ursRootUrl}
-    edlClientId: ${self:custom.variables.edlClientId}
-    edlKeyId: ${self:custom.variables.edlKeyId}
-    edlJwk: ${self:custom.variables.edlJwk}
     dmmtSslCert: ${self:custom.variables.dmmtSslCert}
+    draftMmtRootUrl: ${self:custom.variables.draftMmtRootUrl}
+    edlClientId: ${self:custom.variables.edlClientId}
+    edlJwk: ${self:custom.variables.edlJwk}
+    edlKeyId: ${self:custom.variables.edlKeyId}
+    graphdbHost: ${self:custom.variables.graphdbHost}
+    graphdbPath: ${self:custom.variables.graphdbPath}
+    graphdbPort: ${self:custom.variables.graphdbPort}
+    mmtRootUrl: ${self:custom.variables.mmtRootUrl}
     stage: ${self:provider.stage}
+    stellateAppName: ${self:custom.variables.stellateAppName}
+    stellateKey: ${self:custom.variables.stellateKey}
+    ursRootUrl: ${self:custom.variables.ursRootUrl}
 
     # Timeout for lambda
     lambdaTimeout: ${env:LAMBDA_TIMEOUT, '30'}
@@ -161,16 +163,18 @@ custom:
   variables:
     # Default values for environment variables used to set environment variables
     cmrRootUrl: ${env:CMR_ROOT_URL, 'https://cmr.earthdata.nasa.gov'}
-    graphdbHost: ${env:GRAPHDB_HOST, 'http://localhost'}
-    graphdbPort: ${env:GRAPHDB_PORT, '8182'}
-    graphdbPath: ${env:GRAPHDB_PATH, 'gremlin'}
-    mmtRootUrl: ${env:MMT_ROOT_URL, 'https://mmt.earthdata.nasa.gov'}
-    draftMmtRootUrl: ${env:DRAFT_MMT_ROOT_URL, 'https://draftmmt.earthdata.nasa.gov'}
-    ursRootUrl: ${env:URS_ROOT_URL, 'https://urs.earthdata.nasa.gov'}
-    edlClientId: ${env:EDL_CLIENT_ID, ''}
-    edlKeyId: ${env:EDL_KEY_ID, ''}
-    edlJwk: ${env:EDL_JWK, ''}
     dmmtSslCert: ${env:DMMT_SSL_CERT, ''}
+    draftMmtRootUrl: ${env:DRAFT_MMT_ROOT_URL, 'https://draftmmt.earthdata.nasa.gov'}
+    edlClientId: ${env:EDL_CLIENT_ID, ''}
+    edlJwk: ${env:EDL_JWK, ''}
+    edlKeyId: ${env:EDL_KEY_ID, ''}
+    graphdbHost: ${env:GRAPHDB_HOST, 'http://localhost'}
+    graphdbPath: ${env:GRAPHDB_PATH, 'gremlin'}
+    graphdbPort: ${env:GRAPHDB_PORT, '8182'}
+    mmtRootUrl: ${env:MMT_ROOT_URL, 'https://mmt.earthdata.nasa.gov'}
+    stellateAppName: ${env:STELLATE_APP_NAME, ''}
+    stellateKey: ${env:STELLATE_KEY, ''}
+    ursRootUrl: ${env:URS_ROOT_URL, 'https://urs.earthdata.nasa.gov'}
 
   # Default is 3000 so to avoid conflicts with other applications we'll define a new port
   serverless-offline:
