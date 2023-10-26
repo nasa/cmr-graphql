@@ -31,6 +31,7 @@ dockerRun() {
         -e "AWS_SECRET_ACCESS_KEY=$bamboo_AWS_SECRET_ACCESS_KEY" \
         -e "CLOUDFRONT_BUCKET_NAME=$bamboo_CLOUDFRONT_BUCKET_NAME" \
         -e "CMR_ROOT_URL=$bamboo_CMR_ROOT_URL" \
+        -e "DMMT_SSL_CERT=$bamboo_DMMT_SSL_CERT" \
         -e "DRAFT_MMT_ROOT_URL=$bamboo_DRAFT_MMT_ROOT_URL" \
         -e "EDL_JWK=$bamboo_EDL_JWK" \
         -e "EDL_KEY_ID=$bamboo_EDL_KEY_ID" \
@@ -41,7 +42,8 @@ dockerRun() {
         -e "LOG_DESTINATION_ARN=$bamboo_LOG_DESTINATION_ARN" \
         -e "MMT_ROOT_URL=$bamboo_MMT_ROOT_URL" \
         -e "NODE_ENV=production" \
-        -e "DMMT_SSL_CERT=$bamboo_DMMT_SSL_CERT" \
+        -e "STELLATE_APP_NAME=$bamboo_STELLATE_APP_NAME" \
+        -e "STELLATE_KEY=$bamboo_STELLATE_KEY" \
         -e "SUBNET_ID_A=$bamboo_SUBNET_ID_A" \
         -e "SUBNET_ID_B=$bamboo_SUBNET_ID_B" \
         -e "VPC_ID=$bamboo_VPC_ID" \
