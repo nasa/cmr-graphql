@@ -138,7 +138,7 @@ type Mutation {
 
 type ServiceMutationResponse {
   "The unique concept id assigned to the service."
-  conceptId: String
+  conceptId: String!
   "The revision of the service."
-  revisionId: String
+  revisionId: String!
 }
