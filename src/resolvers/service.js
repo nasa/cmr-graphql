@@ -8,16 +8,34 @@ export default {
     services: async (source, args, context, info) => {
       const { dataSources } = context
 
-      return dataSources.serviceSource(handlePagingParams(args), context, parseResolveInfo(info))
+      return dataSources.serviceSourceFetch(
+        handlePagingParams(args),
+        context,
+
+        parseResolveInfo(info)
+      )
     },
     service: async (source, args, context, info) => {
       const { dataSources } = context
 
-      const result = await dataSources.serviceSource(args, context, parseResolveInfo(info))
+      const result = await dataSources.serviceSourceFetch(args, context, parseResolveInfo(info))
 
       const [firstResult] = result
 
       return firstResult
+    }
+  },
+
+  Mutation: {
+    deleteService: async (source, args, context, info) => {
+      const { dataSources } = context
+
+      return dataSources.serviceSourceDelete(
+        handlePagingParams(args),
+        context,
+
+        parseResolveInfo(info)
+      )
     }
   },
 

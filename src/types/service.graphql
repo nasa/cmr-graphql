@@ -126,3 +126,19 @@ type Query {
     conceptId: String @deprecated(reason: "Use `params.conceptId`")
   ): Service
 }
+
+type Mutation {
+  deleteService (
+    "Provider ID of the service."
+    providerId: String!
+    "The native id of a service."
+    nativeId: String!
+  ): ServiceMutationResponse
+}
+
+type ServiceMutationResponse {
+  "The unique concept id assigned to the service."
+  conceptId: String
+  "The revision of the service."
+  revisionId: String
+}

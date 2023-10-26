@@ -13,6 +13,10 @@ export default class Service extends Concept {
   constructor(headers, requestInfo, params, parentCollectionConceptId) {
     super('services', headers, requestInfo, params)
     this.parentCollectionConceptId = parentCollectionConceptId
+
+    const { providerId } = params
+
+    this.ingestPath = `providers/${providerId}/services`
   }
 
   /**

@@ -4,7 +4,7 @@ import serviceKeyMap from '../utils/umm/serviceKeyMap.json'
 
 import Service from '../cmr/concepts/service'
 
-export default async (params, context, parsedInfo, parentCollectionConceptId) => {
+export const fetchServices = async (params, context, parsedInfo, parentCollectionConceptId) => {
   // For service queries that are children of collections queries, parentCollectionConceptId is defined.
   const { headers } = context
 
@@ -20,4 +20,25 @@ export default async (params, context, parsedInfo, parentCollectionConceptId) =>
 
   // Return a formatted JSON response
   return service.getFormattedResponse()
+}
+
+export const deleteService = async (args, context, parsedInfo) => {
+  const { headers } = context
+
+  const requestInfo = parseRequestedFields(parsedInfo, serviceKeyMap, 'service')
+
+  const {
+    ingestKeys
+  } = requestInfo
+
+  const service = new Service(headers, requestInfo, args)
+
+  // Contact CMR
+  service.delete(args, ingestKeys, headers)
+
+  // Parse the response from CMR
+  await service.parseDelete(requestInfo)
+
+  // Return a formatted JSON response
+  return service.getFormattedDeleteResponse()
 }

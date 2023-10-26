@@ -29,6 +29,10 @@ import variableDraftSource from '../datasources/variableDraft'
 import variableSource from '../datasources/variable'
 
 import { deleteTool as toolSourceDelete, fetchTools as toolSourceFetch } from '../datasources/tool'
+import {
+  deleteService as serviceSourceDelete,
+  fetchServices as serviceSourceFetch
+} from '../datasources/service'
 
 import {
   deleteSubscription as subscriptionSourceDelete,
@@ -158,7 +162,8 @@ export default startServerAndCreateLambdaHandler(
           maxItemsPerOrderSource,
           orderOptionSource,
           serviceDraftSource,
-          serviceSource,
+          serviceSourceDelete,
+          serviceSourceFetch,
           subscriptionSourceDelete,
           subscriptionSourceFetch,
           subscriptionSourceIngest,
