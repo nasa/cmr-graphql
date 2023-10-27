@@ -157,6 +157,11 @@ resources:
 
 configValidationMode: error
 
+package:
+  patterns:
+    - '!venv/**'
+    - '!__pycache__/**'
+
 custom:
   siteName: graphql-${self:provider.stage}
 
@@ -199,3 +204,5 @@ custom:
   # Compile Python modules on docker only on non-linux environments
   pythonRequirements:
     dockerizePip: non-linux
+    zip: true
+    slim: true
