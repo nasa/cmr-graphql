@@ -50,6 +50,9 @@ provider:
 # each lambda but increases the complexity of the compilation process slightly
 package:
   individually: true
+  patterns:
+    - '!venv/**'
+    - '!__pycache__/**'
 
 plugins:
   - serverless-webpack
@@ -156,11 +159,6 @@ resources:
           - Ref: IamRoleCustomResourcesLambdaExecution
 
 configValidationMode: error
-
-package:
-  patterns:
-    - '!venv/**'
-    - '!__pycache__/**'
 
 custom:
   siteName: graphql-${self:provider.stage}
