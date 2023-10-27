@@ -28,5 +28,6 @@ module.exports = {
   },
   testPathIgnorePatterns: [
     'mocks.js'
-  ]
+  ],
+  transformIgnorePatterns: ['node_modules/(?!axios)']
 }
