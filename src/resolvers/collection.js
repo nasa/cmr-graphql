@@ -161,7 +161,7 @@ export default {
         }
       }
 
-      return dataSources.serviceSource(
+      return dataSources.serviceSourceFetch(
         {
           conceptId: serviceConceptIds,
           ...handlePagingParams(args, services.length)
