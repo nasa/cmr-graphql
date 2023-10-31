@@ -33,7 +33,6 @@ export default {
       return dataSources.serviceSourceDelete(
         handlePagingParams(args),
         context,
-
         parseResolveInfo(info)
       )
     }
