@@ -1,0 +1,21 @@
+{
+  "sharedKeys": [
+    "conceptId",
+    "name",
+    "nativeId",
+    "providerId",
+    "revisionId"
+  ],
+  "ummKeyMappings": {
+    "conceptId": "meta.concept-id",
+    "conceptType": "meta.concept-type",
+    "deleted": "meta.deleted",
+    "name": "umm.Name",
+    "nativeId": "meta.native-id",
+    "previewMetadata": "",
+    "providerId": "meta.provider-id",
+    "revisionDate": "meta.revision-date",
+    "revisionId": "meta.revision-id",
+    "ummMetadata": "umm"
+  }
+}

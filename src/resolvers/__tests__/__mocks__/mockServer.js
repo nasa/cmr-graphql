@@ -14,17 +14,29 @@ import graphDbSource from '../../../datasources/graphDb'
 import gridSource from '../../../datasources/grid'
 import maxItemsPerOrderSource from '../../../datasources/maxItemsPerOrder'
 import orderOptionSource from '../../../datasources/orderOption'
-import serviceSource from '../../../datasources/service'
 import serviceDraftSource from '../../../datasources/serviceDraft'
 import {
   deleteSubscription as subscriptionSourceDelete,
   fetchSubscription as subscriptionSourceFetch,
   ingestSubscription as subscriptionSourceIngest
 } from '../../../datasources/subscription'
-import toolSource from '../../../datasources/tool'
+import {
+  deleteTool as toolSourceDelete,
+  fetchTools as toolSourceFetch
+} from '../../../datasources/tool'
+import {
+  deleteService as serviceSourceDelete,
+  fetchServices as serviceSourceFetch
+} from '../../../datasources/service'
 import toolDraftSource from '../../../datasources/toolDraft'
 import variableDraftSource from '../../../datasources/variableDraft'
 import variableSource from '../../../datasources/variable'
+import {
+  deleteDraft as draftSourceDelete,
+  fetchDrafts as draftSourceFetch,
+  ingestDraft as draftSourceIngest,
+  publishDraft as draftSourcePublish
+} from '../../../datasources/draft'
 
 export const server = new ApolloServer({
   typeDefs,
@@ -33,26 +45,32 @@ export const server = new ApolloServer({
 
 export const buildContextValue = (extraContext) => ({
   dataSources: {
-    collectionSource,
-    collectionDraftSource,
     collectionDraftProposalSource,
-    dataQualitySummarySource,
+    collectionDraftSource,
+    collectionSource,
     collectionVariableDraftsSource,
+    dataQualitySummarySource,
+    draftSourceDelete,
+    draftSourceFetch,
+    draftSourceIngest,
+    draftSourcePublish,
     granuleSource,
     graphDbDuplicateCollectionsSource,
     graphDbSource,
     gridSource,
     maxItemsPerOrderSource,
     orderOptionSource,
-    serviceSource,
     serviceDraftSource,
+    serviceSourceDelete,
+    serviceSourceFetch,
     subscriptionSourceDelete,
     subscriptionSourceFetch,
     subscriptionSourceIngest,
-    toolSource,
     toolDraftSource,
-    variableSource,
-    variableDraftSource
+    toolSourceDelete,
+    toolSourceFetch,
+    variableDraftSource,
+    variableSource
   },
   headers: {
     'Client-Id': 'eed-test-graphql',

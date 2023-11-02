@@ -13,7 +13,8 @@ module.exports = {
     'src/**/*.js'
   ],
   modulePathIgnorePatterns: [
-    '.*__mocks__.*'
+    '.*__mocks__.*',
+    'dist'
   ],
   // https://github.com/axios/axios/issues/1180#issuecomment-375093333
   // By default jest runs tests in jsdom mode which adds XmlHttpRequest
@@ -27,5 +28,6 @@ module.exports = {
   },
   testPathIgnorePatterns: [
     'mocks.js'
-  ]
+  ],
+  transformIgnorePatterns: ['node_modules/(?!axios)']
 }

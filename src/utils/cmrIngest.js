@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import pascalCaseKeys from 'pascalcase-keys'
+import camelcaseKeys from 'camelcase-keys'
 
 import { v4 as uuidv4 } from 'uuid'
 
@@ -39,7 +39,10 @@ export const cmrIngest = async (conceptType, data, headers, ingestPath) => {
   // eslint-disable-next-line no-param-reassign
   delete data.nativeId
 
-  const cmrParameters = pascalCaseKeys(data)
+  const cmrParameters = camelcaseKeys(data, {
+    pascalCase: true,
+    exclude: ['URL']
+  })
 
   const {
     'client-id': clientId,

@@ -3,14 +3,15 @@ import nock from 'nock'
 jest.mock('uuid', () => ({ v4: () => '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed' }))
 
 import {
-  deleteSubscription as subscriptionSourceDelete,
-  fetchSubscription as subscriptionSourceFetch,
-  ingestSubscription as subscriptionSourceIngest
-} from '../subscription'
+  deleteDraft as draftSourceDelete,
+  fetchDrafts as draftSourceFetch,
+  ingestDraft as draftSourceIngest,
+  publishDraft as draftSourcePublish
+} from '../draft'
 
 let requestInfo
 
-describe('subscription#fetch', () => {
+describe('draft#fetch', () => {
   const OLD_ENV = process.env
 
   beforeEach(() => {
@@ -24,17 +25,17 @@ describe('subscription#fetch', () => {
 
     // Default requestInfo
     requestInfo = {
-      name: 'subscriptions',
-      alias: 'subscriptions',
+      name: 'drafts',
+      alias: 'drafts',
       args: {},
       fieldsByTypeName: {
-        SubscriptionList: {
+        DraftList: {
           items: {
             name: 'items',
             alias: 'items',
             args: {},
             fieldsByTypeName: {
-              Subscription: {
+              Draft: {
                 conceptId: {
                   name: 'conceptId',
                   alias: 'conceptId',
@@ -57,11 +58,11 @@ describe('subscription#fetch', () => {
     beforeEach(() => {
       // Overwrite default requestInfo
       requestInfo = {
-        name: 'subscriptions',
-        alias: 'subscriptions',
+        name: 'drafts',
+        alias: 'drafts',
         args: {},
         fieldsByTypeName: {
-          SubscriptionList: {
+          DraftList: {
             cursor: {
               name: 'cursor',
               alias: 'cursor',
@@ -73,16 +74,16 @@ describe('subscription#fetch', () => {
               alias: 'items',
               args: {},
               fieldsByTypeName: {
-                Subscription: {
+                Draft: {
                   conceptId: {
                     name: 'conceptId',
                     alias: 'conceptId',
                     args: {},
                     fieldsByTypeName: {}
                   },
-                  emailAddress: {
-                    name: 'emailAddress',
-                    alias: 'emailAddress',
+                  name: {
+                    name: 'name',
+                    alias: 'name',
                     args: {},
                     fieldsByTypeName: {}
                   }
@@ -102,19 +103,19 @@ describe('subscription#fetch', () => {
           'CMR-Request-Id': 'abcd-1234-efgh-5678',
           'CMR-Search-After': '["xyz", 789, 999]'
         })
-        .post(/subscriptions\.umm_json/)
+        .post(/tool-drafts\.json/)
         .reply(200, {
           items: [{
-            meta: {
-              'concept-id': 'SUB100000-EDSC'
-            },
-            umm: {
-              EmailAddress: 'test@example-cmr.com'
-            }
+            concept_id: 'TD100000-EDSC',
+            name: 'Mock Name'
           }]
         })
 
-      const response = await subscriptionSourceFetch({}, {
+      const response = await draftSourceFetch({
+        params: {
+          conceptType: 'Tool'
+        }
+      }, {
         headers: {
           'Client-Id': 'eed-test-graphql',
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -123,10 +124,10 @@ describe('subscription#fetch', () => {
 
       expect(response).toEqual({
         count: 84,
-        cursor: 'eyJ1bW0iOiJbXCJ4eXpcIiwgNzg5LCA5OTldIn0=',
+        cursor: 'eyJqc29uIjoiW1wieHl6XCIsIDc4OSwgOTk5XSJ9',
         items: [{
-          conceptId: 'SUB100000-EDSC',
-          emailAddress: 'test@example-cmr.com'
+          conceptId: 'TD100000-EDSC',
+          name: 'Mock Name'
         }]
       })
     })
@@ -140,19 +141,19 @@ describe('subscription#fetch', () => {
             'CMR-Request-Id': 'abcd-1234-efgh-5678',
             'CMR-Search-After': '["xyz", 789, 999]'
           })
-          .post(/subscriptions\.umm_json/)
+          .post(/tool-drafts\.json/)
           .reply(200, {
             items: [{
-              meta: {
-                'concept-id': 'SUB100000-EDSC'
-              },
-              umm: {
-                EmailAddress: 'test@example-cmr.com'
-              }
+              concept_id: 'TD100000-EDSC',
+              name: 'Mock Name'
             }]
           })
 
-        const response = await subscriptionSourceFetch({}, {
+        const response = await draftSourceFetch({
+          params: {
+            conceptType: 'Tool'
+          }
+        }, {
           headers: {
             'Client-Id': 'eed-test-graphql',
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -161,10 +162,10 @@ describe('subscription#fetch', () => {
 
         expect(response).toEqual({
           count: 84,
-          cursor: 'eyJ1bW0iOiJbXCJ4eXpcIiwgNzg5LCA5OTldIn0=',
+          cursor: 'eyJqc29uIjoiW1wieHl6XCIsIDc4OSwgOTk5XSJ9',
           items: [{
-            conceptId: 'SUB100000-EDSC',
-            emailAddress: 'test@example-cmr.com'
+            conceptId: 'TD100000-EDSC',
+            name: 'Mock Name'
           }]
         })
       })
@@ -172,55 +173,23 @@ describe('subscription#fetch', () => {
   })
 
   describe('without params', () => {
-    test('returns the parsed subscription results', async () => {
+    test('returns the parsed draft results', async () => {
       nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Hits': 84,
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/subscriptions\.json/)
+        .post(/tool-drafts\.json/)
         .reply(200, {
           items: [{
-            concept_id: 'SUB100000-EDSC'
+            concept_id: 'TD100000-EDSC'
           }]
         })
 
-      const response = await subscriptionSourceFetch({}, {
-        headers: {
-          'Client-Id': 'eed-test-graphql',
-          'CMR-Request-Id': 'abcd-1234-efgh-5678'
-        }
-      }, requestInfo)
-
-      expect(response).toEqual({
-        count: 84,
-        cursor: null,
-        items: [{
-          conceptId: 'SUB100000-EDSC'
-        }]
-      })
-    })
-  })
-
-  describe('with params', () => {
-    test('returns the parsed subscription results', async () => {
-      nock(/example-cmr/)
-        .defaultReplyHeaders({
-          'CMR-Hits': 84,
-          'CMR-Took': 7,
-          'CMR-Request-Id': 'abcd-1234-efgh-5678'
-        })
-        .post(/subscriptions\.json/, 'concept_id=SUB100000-EDSC')
-        .reply(200, {
-          items: [{
-            concept_id: 'SUB100000-EDSC'
-          }]
-        })
-
-      const response = await subscriptionSourceFetch({
+      const response = await draftSourceFetch({
         params: {
-          concept_id: 'SUB100000-EDSC'
+          conceptType: 'Tool'
         }
       }, {
         headers: {
@@ -233,7 +202,44 @@ describe('subscription#fetch', () => {
         count: 84,
         cursor: null,
         items: [{
-          conceptId: 'SUB100000-EDSC'
+          conceptId: 'TD100000-EDSC'
+        }]
+      })
+    })
+  })
+
+  describe('with params', () => {
+    test('returns the parsed draft results', async () => {
+      nock(/example-cmr/)
+        .defaultReplyHeaders({
+          'CMR-Hits': 84,
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .post(/tool-drafts\.json/, 'concept_id=TD100000-EDSC')
+        .reply(200, {
+          items: [{
+            concept_id: 'TD100000-EDSC'
+          }]
+        })
+
+      const response = await draftSourceFetch({
+        params: {
+          conceptType: 'Tool',
+          conceptId: 'TD100000-EDSC'
+        }
+      }, {
+        headers: {
+          'Client-Id': 'eed-test-graphql',
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        }
+      }, requestInfo)
+
+      expect(response).toEqual({
+        count: 84,
+        cursor: null,
+        items: [{
+          conceptId: 'TD100000-EDSC'
         }]
       })
     })
@@ -243,20 +249,20 @@ describe('subscription#fetch', () => {
     beforeEach(() => {
       // Overwrite default requestInfo
       requestInfo = {
-        name: 'subscriptions',
-        alias: 'subscriptions',
+        name: 'drafts',
+        alias: 'drafts',
         args: {},
         fieldsByTypeName: {
-          SubscriptionList: {
+          DraftList: {
             items: {
               name: 'items',
               alias: 'items',
               args: {},
               fieldsByTypeName: {
-                Subscription: {
-                  emailAddress: {
-                    name: 'emailAddress',
-                    alias: 'emailAddress',
+                Draft: {
+                  deleted: {
+                    name: 'deleted',
+                    alias: 'deleted',
                     args: {},
                     fieldsByTypeName: {}
                   }
@@ -268,28 +274,28 @@ describe('subscription#fetch', () => {
       }
     })
 
-    test('returns the parsed subscription results', async () => {
+    test('returns the parsed draft results', async () => {
       nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Hits': 84,
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/subscriptions\.umm_json/)
+        .post(/drafts\.umm_json/)
         .reply(200, {
           items: [{
             meta: {
-              'concept-id': 'SUB100000-EDSC'
+              'concept-id': 'TD100000-EDSC',
+              deleted: false
             },
-            umm: {
-              EmailAddress: 'test@example-cmr.com'
-            }
+            umm: {}
           }]
         })
 
-      const response = await subscriptionSourceFetch({
+      const response = await draftSourceFetch({
         params: {
-          concept_id: 'SUB100000-EDSC'
+          conceptId: 'TD100000-EDSC',
+          conceptType: 'Tool'
         }
       }, {
         headers: {
@@ -302,15 +308,15 @@ describe('subscription#fetch', () => {
         count: 84,
         cursor: null,
         items: [{
-          emailAddress: 'test@example-cmr.com'
+          deleted: false
         }]
       })
     })
   })
 
-  test('catches errors received from queryCmrSubscriptions', async () => {
+  test('catches errors received from queryCmrDrafts', async () => {
     nock(/example-cmr/)
-      .post(/subscriptions/)
+      .post(/drafts/)
       .reply(500, {
         errors: ['HTTP Error']
       }, {
@@ -318,9 +324,9 @@ describe('subscription#fetch', () => {
       })
 
     await expect(
-      subscriptionSourceFetch({
+      draftSourceFetch({
         params: {
-          conceptId: 'SUB100000-EDSC'
+          conceptId: 'TD100000-EDSC'
         }
       }, {
         headers: {
@@ -332,7 +338,7 @@ describe('subscription#fetch', () => {
   })
 })
 
-describe('subscription#ingest', () => {
+describe('draft#ingest', () => {
   const OLD_ENV = process.env
 
   beforeEach(() => {
@@ -343,20 +349,24 @@ describe('subscription#ingest', () => {
     process.env = { ...OLD_ENV }
 
     process.env.cmrRootUrl = 'http://example-cmr.com'
-    process.env.ummSubscriptionVersion = '1.0.0'
+    process.env.ummCollectionVersion = '1.0.0'
+    process.env.ummServiceVersion = '1.0.0'
+    process.env.ummToolVersion = '1.0.0'
+    process.env.ummVariableVersion = '1.0.0'
 
     // Default requestInfo
     requestInfo = {
-      name: 'createSubscription',
-      alias: 'createSubscription',
+      name: 'createDraft',
+      alias: 'createDraft',
       args: {
-        collectionConceptId: 'C100000-EDSC',
-        name: 'Test Subscription',
-        query: 'polygon=-18,-78,-13,-74,-16,-73,-22,-77,-18,-78',
-        subscriberId: 'testuser'
+        conceptType: 'Tool',
+        metadata: {},
+        nativeId: 'test-guid',
+        providerId: 'EDSC',
+        ummVersion: '1.0.0'
       },
       fieldsByTypeName: {
-        SubscriptionMutationResponse: {
+        DraftMutationResponse: {
           conceptId: {
             name: 'conceptId',
             alias: 'conceptId',
@@ -378,100 +388,76 @@ describe('subscription#ingest', () => {
     process.env = OLD_ENV
   })
 
-  describe('when a native id is not provided', () => {
-    test('returns the parsed subscription results', async () => {
-      nock(/example-cmr/)
-        .defaultReplyHeaders({
-          'CMR-Request-Id': 'abcd-1234-efgh-5678'
-        })
-        .put(/ingest\/subscriptions\/1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed/, JSON.stringify({
-          MetadataSpecification: {
-            URL: 'https://cdn.earthdata.nasa.gov/umm/subscription/v1.0.0',
-            Name: 'UMM-Sub',
-            Version: '1.0.0'
-          },
-          CollectionConceptId: 'C100000-EDSC',
-          EmailAddress: 'test@example.com',
-          Name: 'Test Subscription',
-          Query: 'polygon=-18,-78,-13,-74,-16,-73,-22,-77,-18,-78',
-          SubscriberId: 'testuser'
-        }))
-        .reply(201, {
-          'concept-id': 'SUB100000-EDSC',
-          'revision-id': '1'
-        })
-
-      const response = await subscriptionSourceIngest({
-        params: {
-          collectionConceptId: 'C100000-EDSC',
-          emailAddress: 'test@example.com',
-          name: 'Test Subscription',
-          query: 'polygon=-18,-78,-13,-74,-16,-73,-22,-77,-18,-78',
-          subscriberId: 'testuser'
-        }
-      }, {
-        headers: {
-          'Client-Id': 'eed-test-graphql',
-          'CMR-Request-Id': 'abcd-1234-efgh-5678'
-        }
-      }, requestInfo)
-
-      expect(response).toEqual({
-        conceptId: 'SUB100000-EDSC',
-        revisionId: '1'
+  test('returns the parsed draft results', async () => {
+    nock(/example-cmr/)
+      .defaultReplyHeaders({
+        'CMR-Request-Id': 'abcd-1234-efgh-5678'
       })
+      .put(/ingest\/providers\/EDSC\/tool-drafts\/test-guid/, JSON.stringify({
+        MetadataSpecification: {
+          URL: 'https://cdn.earthdata.nasa.gov/umm/tool/v1.0.0',
+          Name: 'UMM-T',
+          Version: '1.0.0'
+        },
+        Name: 'mock name',
+        URL: {
+          URLContentType: 'DistributionURL',
+          Type: 'GOTO WEB TOOL',
+          Description: 'Landing Page',
+          URLValue: 'https://example.com/'
+        }
+      }))
+      .reply(201, {
+        'concept-id': 'TD100000-EDSC',
+        'revision-id': '1'
+      })
+
+    const response = await draftSourceIngest({
+      conceptType: 'Tool',
+      metadata: {
+        Name: 'mock name',
+        URL: {
+          URLContentType: 'DistributionURL',
+          Type: 'GOTO WEB TOOL',
+          Description: 'Landing Page',
+          URLValue: 'https://example.com/'
+        }
+      },
+      nativeId: 'test-guid',
+      providerId: 'EDSC',
+      ummVersion: '1.0.0'
+    }, {
+      headers: {
+        'Client-Id': 'eed-test-graphql',
+        'CMR-Request-Id': 'abcd-1234-efgh-5678'
+      }
+    }, requestInfo)
+
+    expect(response).toEqual({
+      conceptId: 'TD100000-EDSC',
+      revisionId: '1'
     })
   })
 
-  describe('when a native id is provided', () => {
-    test('returns the parsed subscription results', async () => {
-      nock(/example-cmr/)
-        .defaultReplyHeaders({
-          'CMR-Request-Id': 'abcd-1234-efgh-5678'
-        })
-        .put(/ingest\/subscriptions\/test-guid/, JSON.stringify({
-          MetadataSpecification: {
-            URL: 'https://cdn.earthdata.nasa.gov/umm/subscription/v1.0.0',
-            Name: 'UMM-Sub',
-            Version: '1.0.0'
-          },
-          CollectionConceptId: 'C100000-EDSC',
-          EmailAddress: 'test@example.com',
-          Name: 'Test Subscription',
-          Query: 'polygon=-18,-78,-13,-74,-16,-73,-22,-77,-18,-78',
-          SubscriberId: 'testuser'
-        }))
-        .reply(201, {
-          'concept-id': 'SUB100000-EDSC',
-          'revision-id': '1'
-        })
-
-      const response = await subscriptionSourceIngest({
-        params: {
-          collectionConceptId: 'C100000-EDSC',
-          emailAddress: 'test@example.com',
-          name: 'Test Subscription',
-          nativeId: 'test-guid',
-          query: 'polygon=-18,-78,-13,-74,-16,-73,-22,-77,-18,-78',
-          subscriberId: 'testuser'
-        }
+  test('throws an error if ummVersion is not present', async () => {
+    await expect(
+      draftSourceIngest({
+        conceptType: 'Tool',
+        metadata: {},
+        nativeId: 'test-guid',
+        providerId: 'EDSC'
       }, {
         headers: {
           'Client-Id': 'eed-test-graphql',
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         }
       }, requestInfo)
-
-      expect(response).toEqual({
-        conceptId: 'SUB100000-EDSC',
-        revisionId: '1'
-      })
-    })
+    ).rejects.toThrow(new Error('`ummVersion` is required when ingesting drafts.'))
   })
 
   test('catches errors received from ingestCmr', async () => {
     nock(/example-cmr/)
-      .put(/ingest\/subscriptions\/1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed/)
+      .put(/ingest\/providers\/EDSC\/tool-drafts\/test-guid/)
       .reply(500, {
         errors: ['HTTP Error']
       }, {
@@ -479,14 +465,12 @@ describe('subscription#ingest', () => {
       })
 
     await expect(
-      subscriptionSourceIngest({
-        params: {
-          collectionConceptId: 'C100000-EDSC',
-          emailAddress: 'test@example-cmr.com',
-          name: 'Test Subscription',
-          query: 'polygon=-18,-78,-13,-74,-16,-73,-22,-77,-18,-78',
-          subscriberId: 'testuser'
-        }
+      draftSourceIngest({
+        conceptType: 'Tool',
+        metadata: {},
+        nativeId: 'test-guid',
+        providerId: 'EDSC',
+        ummVersion: '1.0.0'
       }, {
         headers: {
           'Client-Id': 'eed-test-graphql',
@@ -497,7 +481,7 @@ describe('subscription#ingest', () => {
   })
 })
 
-describe('subscription#delete', () => {
+describe('draft#delete', () => {
   const OLD_ENV = process.env
 
   beforeEach(() => {
@@ -511,14 +495,14 @@ describe('subscription#delete', () => {
 
     // Default requestInfo
     requestInfo = {
-      name: 'deleteSubscription',
-      alias: 'deleteSubscription',
+      name: 'deleteDraft',
+      alias: 'deleteDraft',
       args: {
-        conceptId: 'SUB100000-EDSC',
+        conceptId: 'TD100000-EDSC',
         nativeId: 'test-guid'
       },
       fieldsByTypeName: {
-        SubscriptionMutationResponse: {
+        DraftMutationResponse: {
           conceptId: {
             name: 'conceptId',
             alias: 'conceptId',
@@ -540,40 +524,37 @@ describe('subscription#delete', () => {
     process.env = OLD_ENV
   })
 
-  describe('when a native id is provided', () => {
-    test('returns the parsed subscription results', async () => {
-      nock(/example-cmr/)
-        .defaultReplyHeaders({
-          'CMR-Request-Id': 'abcd-1234-efgh-5678'
-        })
-        .delete(/ingest\/subscriptions\/test-guid/)
-        .reply(201, {
-          'concept-id': 'SUB100000-EDSC',
-          'revision-id': '1'
-        })
-
-      const response = await subscriptionSourceDelete({
-        params: {
-          conceptId: 'SUB100000-EDSC',
-          nativeId: 'test-guid'
-        }
-      }, {
-        headers: {
-          'Client-Id': 'eed-test-graphql',
-          'CMR-Request-Id': 'abcd-1234-efgh-5678'
-        }
-      }, requestInfo)
-
-      expect(response).toEqual({
-        conceptId: 'SUB100000-EDSC',
-        revisionId: '1'
+  test('returns the parsed draft results', async () => {
+    nock(/example-cmr/)
+      .defaultReplyHeaders({
+        'CMR-Request-Id': 'abcd-1234-efgh-5678'
       })
+      .delete(/ingest\/providers\/EDSC\/tool-drafts\/test-guid/)
+      .reply(201, {
+        'concept-id': 'TD100000-EDSC',
+        'revision-id': '1'
+      })
+
+    const response = await draftSourceDelete({
+      conceptType: 'Tool',
+      nativeId: 'test-guid',
+      providerId: 'EDSC'
+    }, {
+      headers: {
+        'Client-Id': 'eed-test-graphql',
+        'CMR-Request-Id': 'abcd-1234-efgh-5678'
+      }
+    }, requestInfo)
+
+    expect(response).toEqual({
+      conceptId: 'TD100000-EDSC',
+      revisionId: '1'
     })
   })
 
   test('catches errors received from cmrDelete', async () => {
     nock(/example-cmr/)
-      .delete(/ingest\/subscriptions\/test-guid/)
+      .delete(/ingest\/providers\/EDSC\/tool-drafts\/test-guid/)
       .reply(500, {
         errors: ['HTTP Error']
       }, {
@@ -581,11 +562,106 @@ describe('subscription#delete', () => {
       })
 
     await expect(
-      subscriptionSourceDelete({
-        params: {
-          conceptId: 'C100000-EDSC',
-          nativeId: 'test-guid'
+      draftSourceDelete({
+        conceptType: 'Tool',
+        nativeId: 'test-guid',
+        providerId: 'EDSC'
+      }, {
+        headers: {
+          'Client-Id': 'eed-test-graphql',
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
         }
+      }, requestInfo)
+    ).rejects.toThrow(Error)
+  })
+})
+
+describe('draft#publish', () => {
+  const OLD_ENV = process.env
+
+  beforeEach(() => {
+    jest.resetAllMocks()
+
+    jest.restoreAllMocks()
+
+    process.env = { ...OLD_ENV }
+
+    process.env.cmrRootUrl = 'http://example.com'
+
+    // Default requestInfo
+    requestInfo = {
+      name: 'publishDraft',
+      alias: 'publishDraft',
+      args: {
+        draftConceptId: 'CD100000-EDSC',
+        nativeId: 'mock-native-id',
+        ummVersion: '1.0.0'
+      },
+      fieldsByTypeName: {
+        PublishDraftMutationResponse: {
+          conceptId: {
+            name: 'conceptId',
+            alias: 'conceptId',
+            args: {},
+            fieldsByTypeName: {}
+          },
+          revisionId: {
+            name: 'revisionId',
+            alias: 'revisionId',
+            args: {},
+            fieldsByTypeName: {}
+          }
+        }
+      }
+    }
+  })
+
+  afterEach(() => {
+    process.env = OLD_ENV
+  })
+
+  test('returns the parsed draft results', async () => {
+    nock(/example/)
+      .defaultReplyHeaders({
+        'CMR-Request-Id': 'abcd-1234-efgh-5678'
+      })
+      .put(/ingest\/publish\/CD100000-EDSC\/mock-native-id/, JSON.stringify({}))
+      .reply(201, {
+        'concept-id': 'C100000-EDSC',
+        'revision-id': '1'
+      })
+
+    const response = await draftSourcePublish({
+      draftConceptId: 'CD100000-EDSC',
+      nativeId: 'mock-native-id',
+      ummVersion: '1.0.0'
+    }, {
+      headers: {
+        'Client-Id': 'eed-test-graphql',
+        'CMR-Request-Id': 'abcd-1234-efgh-5678'
+      }
+    }, requestInfo)
+
+    expect(response).toEqual({
+      conceptId: 'C100000-EDSC',
+      revisionId: '1'
+    })
+  })
+
+  test('catches errors received from ingestCmr', async () => {
+    nock(/example/)
+      .put(/ingest\/publish\/CD100000-EDSC\/mock-native-id/, JSON.stringify({}))
+      .reply(500, {
+        errors: ['HTTP Error']
+      }, {
+        'cmr-request-id': 'abcd-1234-efgh-5678'
+      })
+
+    await expect(
+      draftSourcePublish({
+        draftConceptId: 'CD100000-EDSC',
+        nativeId: 'mock-native-id',
+        ummVersion: '1.0.0'
       }, {
         headers: {
           'Client-Id': 'eed-test-graphql',

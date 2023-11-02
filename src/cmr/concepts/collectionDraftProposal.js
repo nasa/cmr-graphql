@@ -92,8 +92,7 @@ export default class CollectionDraftProposal extends Concept {
   }
 
   fetch(searchParams) {
-    // eslint-disable-next-line no-param-reassign
-    searchParams = mergeParams(searchParams)
+    const params = mergeParams(searchParams)
 
     // Default an array to hold the promises we need to make depending on the requested fields
     const promises = []
@@ -106,7 +105,7 @@ export default class CollectionDraftProposal extends Concept {
 
     // Construct the promise that will request data from the umm endpoint
     promises.push(
-      this.fetchUmm(searchParams, ummKeys, ummHeaders)
+      this.fetchUmm(params, ummKeys, ummHeaders)
     )
 
     this.response = Promise.all(promises)

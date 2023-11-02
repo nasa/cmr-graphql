@@ -10,7 +10,7 @@ describe('ServiceDraft', () => {
   beforeEach(() => {
     process.env = { ...OLD_ENV }
 
-    process.env.mmtRootUrl = 'http://example.com'
+    process.env.mmtRootUrl = 'http://example-mmt.com'
   })
 
   afterEach(() => {
@@ -21,7 +21,7 @@ describe('ServiceDraft', () => {
     describe('serviceDraft', () => {
       describe('with result', () => {
         test('all service draft fields', async () => {
-          nock(/example/)
+          nock(/example-mmt/)
             .defaultReplyHeaders({
               'X-Request-Id': 'abcd-1234-efgh-5678'
             })
@@ -107,7 +107,7 @@ describe('ServiceDraft', () => {
         })
 
         test('return results', async () => {
-          nock(/example/)
+          nock(/example-mmt/)
             .defaultReplyHeaders({
               'X-Request-Id': 'abcd-1234-efgh-5678'
             })
@@ -141,7 +141,7 @@ describe('ServiceDraft', () => {
 
       describe('with no results', () => {
         test('return no results', async () => {
-          nock(/example/)
+          nock(/example-mmt/)
             .defaultReplyHeaders({
               'X-Request-Id': 'abcd-1234-efgh-5678'
             })

@@ -12,7 +12,7 @@ describe('maxItemsPerOrder', () => {
 
     process.env = { ...OLD_ENV }
 
-    process.env.cmrRootUrl = 'http://example.com'
+    process.env.cmrRootUrl = 'http://example-cmr.com'
   })
 
   afterEach(() => {
@@ -20,7 +20,7 @@ describe('maxItemsPerOrder', () => {
   })
 
   test('returns the maxItemsPerOrder of the service', async () => {
-    nock(/example/)
+    nock(/example-cmr/)
       .defaultReplyHeaders({
         'X-Request-Id': 'abcd-1234-efgh-5678'
       })
@@ -44,7 +44,7 @@ describe('maxItemsPerOrder', () => {
   })
 
   test('returns null if maxItemsPerOrder of the service is null', async () => {
-    nock(/example/)
+    nock(/example-cmr/)
       .defaultReplyHeaders({
         'X-Request-Id': 'abcd-1234-efgh-5678'
       })
@@ -68,7 +68,7 @@ describe('maxItemsPerOrder', () => {
   })
 
   test('Catches errors received from cmrOrdering', async () => {
-    nock(/example/)
+    nock(/example-cmr/)
       .post(/ordering\/api/)
       .reply(500, {
         errors: ['HTTP Error']
@@ -89,7 +89,7 @@ describe('maxItemsPerOrder', () => {
   })
 
   test('Catches graphql errors received from cmrOrdering', async () => {
-    nock(/example/)
+    nock(/example-cmr/)
       .post(/ordering\/api/)
       .reply(200, {
         errors: ['graphql error']

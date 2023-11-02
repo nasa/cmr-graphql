@@ -4,6 +4,7 @@ import collection from './collection.graphql'
 import collectionDraft from './collectionDraft.graphql'
 import collectionDraftProposal from './collectionDraftProposal.graphql'
 import dataQualitySummary from './dataQualitySummary.graphql'
+import draft from './draft.graphql'
 import granule from './granule.graphql'
 import grid from './grid.graphql'
 import json from './json.graphql'
@@ -22,6 +23,7 @@ export default mergeTypeDefs(
     collectionDraft,
     collectionDraftProposal,
     dataQualitySummary,
+    draft,
     granule,
     grid,
     json,

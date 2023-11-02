@@ -1,6 +1,9 @@
 import nock from 'nock'
 
-import serviceDatasource from '../service'
+import {
+  deleteService as serviceSourceDelete,
+  fetchServices as serviceSourceFetch
+} from '../service'
 
 let requestInfo
 
@@ -14,7 +17,7 @@ describe('service', () => {
 
     process.env = { ...OLD_ENV }
 
-    process.env.cmrRootUrl = 'http://example.com'
+    process.env.cmrRootUrl = 'http://example-cmr.com'
 
     // Default requestInfo
     requestInfo = {
@@ -89,7 +92,7 @@ describe('service', () => {
     })
 
     test('returns a cursor', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Hits': 84,
           'CMR-Took': 7,
@@ -108,7 +111,7 @@ describe('service', () => {
           }]
         })
 
-      const response = await serviceDatasource({}, {
+      const response = await serviceSourceFetch({}, {
         headers: {
           'Client-Id': 'eed-test-graphql',
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -127,7 +130,7 @@ describe('service', () => {
 
     describe('when a cursor is requested', () => {
       test('requests a cursor', async () => {
-        nock(/example/)
+        nock(/example-cmr/)
           .defaultReplyHeaders({
             'CMR-Hits': 84,
             'CMR-Took': 7,
@@ -146,7 +149,7 @@ describe('service', () => {
             }]
           })
 
-        const response = await serviceDatasource({}, {
+        const response = await serviceSourceFetch({}, {
           headers: {
             'Client-Id': 'eed-test-graphql',
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -167,7 +170,7 @@ describe('service', () => {
 
   describe('without params', () => {
     test('returns the parsed service results', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Hits': 84,
           'CMR-Took': 7,
@@ -180,7 +183,7 @@ describe('service', () => {
           }]
         })
 
-      const response = await serviceDatasource({}, {
+      const response = await serviceSourceFetch({}, {
         headers: {
           'Client-Id': 'eed-test-graphql',
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -199,7 +202,7 @@ describe('service', () => {
 
   describe('with params', () => {
     test('returns the parsed service results', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Hits': 84,
           'CMR-Took': 7,
@@ -212,7 +215,7 @@ describe('service', () => {
           }]
         })
 
-      const response = await serviceDatasource({
+      const response = await serviceSourceFetch({
         params: {
           concept_id: 'S100000-EDSC'
         }
@@ -269,7 +272,7 @@ describe('service', () => {
     })
 
     test('returns the parsed service results', async () => {
-      nock(/example/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Hits': 84,
           'CMR-Took': 7,
@@ -287,7 +290,7 @@ describe('service', () => {
           }]
         })
 
-      const response = await serviceDatasource({
+      const response = await serviceSourceFetch({
         params: {
           concept_id: 'S100000-EDSC'
         }
@@ -309,7 +312,7 @@ describe('service', () => {
   })
 
   test('catches errors received from queryCmrServices', async () => {
-    nock(/example/)
+    nock(/example-cmr/)
       .post(/services/)
       .reply(500, {
         errors: ['HTTP Error']
@@ -318,10 +321,103 @@ describe('service', () => {
       })
 
     await expect(
-      serviceDatasource({
+      serviceSourceFetch({
         params: {
           conceptId: 'S100000-EDSC'
         }
+      }, {
+        headers: {
+          'Client-Id': 'eed-test-graphql',
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        }
+      }, requestInfo)
+    ).rejects.toThrow(Error)
+  })
+})
+
+describe('subscription#delete', () => {
+  const OLD_ENV = process.env
+
+  beforeEach(() => {
+    jest.resetAllMocks()
+
+    jest.restoreAllMocks()
+
+    process.env = { ...OLD_ENV }
+
+    process.env.cmrRootUrl = 'http://example-cmr.com'
+
+    // Default requestInfo
+    requestInfo = {
+      name: 'deleteService',
+      alias: 'deleteService',
+      args: {
+        conceptId: 'S100000-EDSC',
+        nativeId: 'test-guid'
+      },
+      fieldsByTypeName: {
+        ServiceMutationResponse: {
+          conceptId: {
+            name: 'conceptId',
+            alias: 'conceptId',
+            args: {},
+            fieldsByTypeName: {}
+          },
+          revisionId: {
+            name: 'revisionId',
+            alias: 'revisionId',
+            args: {},
+            fieldsByTypeName: {}
+          }
+        }
+      }
+    }
+  })
+
+  afterEach(() => {
+    process.env = OLD_ENV
+  })
+
+  test('returns the CMR results', async () => {
+    nock(/example-cmr/)
+      .defaultReplyHeaders({
+        'CMR-Request-Id': 'abcd-1234-efgh-5678'
+      })
+      .delete(/ingest\/providers\/EDSC\/services\/test-guid/)
+      .reply(201, {
+        'concept-id': 'S100000-EDSC',
+        'revision-id': '1'
+      })
+
+    const response = await serviceSourceDelete({
+      nativeId: 'test-guid',
+      providerId: 'EDSC'
+    }, {
+      headers: {
+        'Client-Id': 'eed-test-graphql',
+        'CMR-Request-Id': 'abcd-1234-efgh-5678'
+      }
+    }, requestInfo)
+
+    expect(response).toEqual({
+      conceptId: 'S100000-EDSC',
+      revisionId: '1'
+    })
+  })
+
+  test('catches errors received from cmrDelete', async () => {
+    nock(/example-cmr/)
+      .delete(/ingest\/providers\/EDSC\/services\/test-guid/)
+      .reply(500, {
+        errors: ['HTTP Error']
+      }, {
+        'cmr-request-id': 'abcd-1234-efgh-5678'
+      })
+
+    await expect(
+      serviceSourceDelete({
+        nativeId: 'test-guid',
+        providerId: 'EDSC'
       }, {
         headers: {
           'Client-Id': 'eed-test-graphql',

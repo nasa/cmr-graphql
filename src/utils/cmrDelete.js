@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import pascalCaseKeys from 'pascalcase-keys'
+import camelcaseKeys from 'camelcase-keys'
 
 import { downcaseKeys } from './downcaseKeys'
 import { pickIgnoringCase } from './pickIgnoringCase'
@@ -38,7 +38,7 @@ export const cmrDelete = async (conceptType, data, headers, ingestPath) => {
   // eslint-disable-next-line no-param-reassign
   delete data.nativeId
 
-  const cmrParameters = pascalCaseKeys(data)
+  const cmrParameters = camelcaseKeys(data, { pascalCase: true })
 
   const {
     'client-id': clientId,
