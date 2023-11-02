@@ -1,0 +1,491 @@
+[
+    {
+        "Name": "Grid/time",
+        "LongName": "Grid/time",
+        "StandardName": "time",
+        "Definition": "Grid/time",
+        "DataType": "int32",
+        "Dimensions": [
+            {
+                "Name": "Grid/time",
+                "Size": 1,
+                "Type": "TIME_DIMENSION"
+            }
+        ],
+        "Units": "seconds since 1970-01-01 00:00:00 UTC",
+        "MetadataSpecification": {
+            "URL": "https://cdn.earthdata.nasa.gov/umm/variable/v1.8.2",
+            "Name": "UMM-Var",
+            "Version": "1.8.2"
+        }
+    },
+    {
+        "Name": "Grid/lon",
+        "LongName": "Grid/lon",
+        "StandardName": "longitude",
+        "Definition": "Grid/lon",
+        "DataType": "float32",
+        "Dimensions": [
+            {
+                "Name": "Grid/lon",
+                "Size": 3600,
+                "Type": "LONGITUDE_DIMENSION"
+            }
+        ],
+        "Units": "degrees_east",
+        "MetadataSpecification": {
+            "URL": "https://cdn.earthdata.nasa.gov/umm/variable/v1.8.2",
+            "Name": "UMM-Var",
+            "Version": "1.8.2"
+        }
+    },
+    {
+        "Name": "Grid/lat",
+        "LongName": "Grid/lat",
+        "StandardName": "latitude",
+        "Definition": "Grid/lat",
+        "DataType": "float32",
+        "Dimensions": [
+            {
+                "Name": "Grid/lat",
+                "Size": 1800,
+                "Type": "LATITUDE_DIMENSION"
+            }
+        ],
+        "Units": "degrees_north",
+        "MetadataSpecification": {
+            "URL": "https://cdn.earthdata.nasa.gov/umm/variable/v1.8.2",
+            "Name": "UMM-Var",
+            "Version": "1.8.2"
+        }
+    },
+    {
+        "Name": "Grid/time_bnds",
+        "LongName": "Grid/time_bnds",
+        "Definition": "Grid/time_bnds",
+        "DataType": "int32",
+        "Dimensions": [
+            {
+                "Name": "Grid/time",
+                "Size": 1,
+                "Type": "TIME_DIMENSION"
+            },
+            {
+                "Name": "Grid/nv",
+                "Size": 2,
+                "Type": "OTHER"
+            }
+        ],
+        "Units": "seconds since 1970-01-01 00:00:00 UTC",
+        "MetadataSpecification": {
+            "URL": "https://cdn.earthdata.nasa.gov/umm/variable/v1.8.2",
+            "Name": "UMM-Var",
+            "Version": "1.8.2"
+        }
+    },
+    {
+        "Name": "Grid/lon_bnds",
+        "LongName": "Grid/lon_bnds",
+        "Definition": "Grid/lon_bnds",
+        "DataType": "float32",
+        "Dimensions": [
+            {
+                "Name": "Grid/lon",
+                "Size": 3600,
+                "Type": "LONGITUDE_DIMENSION"
+            },
+            {
+                "Name": "Grid/lonv",
+                "Size": 2,
+                "Type": "OTHER"
+            }
+        ],
+        "Units": "degrees_east",
+        "MetadataSpecification": {
+            "URL": "https://cdn.earthdata.nasa.gov/umm/variable/v1.8.2",
+            "Name": "UMM-Var",
+            "Version": "1.8.2"
+        }
+    },
+    {
+        "Name": "Grid/lat_bnds",
+        "LongName": "Grid/lat_bnds",
+        "Definition": "Grid/lat_bnds",
+        "DataType": "float32",
+        "Dimensions": [
+            {
+                "Name": "Grid/lat",
+                "Size": 1800,
+                "Type": "LATITUDE_DIMENSION"
+            },
+            {
+                "Name": "Grid/latv",
+                "Size": 2,
+                "Type": "OTHER"
+            }
+        ],
+        "Units": "degrees_north",
+        "MetadataSpecification": {
+            "URL": "https://cdn.earthdata.nasa.gov/umm/variable/v1.8.2",
+            "Name": "UMM-Var",
+            "Version": "1.8.2"
+        }
+    },
+    {
+        "Name": "Grid/precipitationCal",
+        "LongName": "Grid/precipitationCal",
+        "Definition": "Grid/precipitationCal",
+        "DataType": "float32",
+        "Dimensions": [
+            {
+                "Name": "Grid/time",
+                "Size": 1,
+                "Type": "TIME_DIMENSION"
+            },
+            {
+                "Name": "Grid/lon",
+                "Size": 3600,
+                "Type": "LONGITUDE_DIMENSION"
+            },
+            {
+                "Name": "Grid/lat",
+                "Size": 1800,
+                "Type": "LATITUDE_DIMENSION"
+            }
+        ],
+        "Units": "mm/hr",
+        "FillValues": [
+            {
+                "Value": -9999.900390625,
+                "Type": "SCIENCE_FILLVALUE",
+                "Description": "Extracted from _FillValue metadata attribute"
+            }
+        ],
+        "MetadataSpecification": {
+            "URL": "https://cdn.earthdata.nasa.gov/umm/variable/v1.8.2",
+            "Name": "UMM-Var",
+            "Version": "1.8.2"
+        }
+    },
+    {
+        "Name": "Grid/precipitationUncal",
+        "LongName": "Grid/precipitationUncal",
+        "Definition": "Grid/precipitationUncal",
+        "DataType": "float32",
+        "Dimensions": [
+            {
+                "Name": "Grid/time",
+                "Size": 1,
+                "Type": "TIME_DIMENSION"
+            },
+            {
+                "Name": "Grid/lon",
+                "Size": 3600,
+                "Type": "LONGITUDE_DIMENSION"
+            },
+            {
+                "Name": "Grid/lat",
+                "Size": 1800,
+                "Type": "LATITUDE_DIMENSION"
+            }
+        ],
+        "Units": "mm/hr",
+        "FillValues": [
+            {
+                "Value": -9999.900390625,
+                "Type": "SCIENCE_FILLVALUE",
+                "Description": "Extracted from _FillValue metadata attribute"
+            }
+        ],
+        "MetadataSpecification": {
+            "URL": "https://cdn.earthdata.nasa.gov/umm/variable/v1.8.2",
+            "Name": "UMM-Var",
+            "Version": "1.8.2"
+        }
+    },
+    {
+        "Name": "Grid/randomError",
+        "LongName": "Grid/randomError",
+        "Definition": "Grid/randomError",
+        "DataType": "float32",
+        "Dimensions": [
+            {
+                "Name": "Grid/time",
+                "Size": 1,
+                "Type": "TIME_DIMENSION"
+            },
+            {
+                "Name": "Grid/lon",
+                "Size": 3600,
+                "Type": "LONGITUDE_DIMENSION"
+            },
+            {
+                "Name": "Grid/lat",
+                "Size": 1800,
+                "Type": "LATITUDE_DIMENSION"
+            }
+        ],
+        "Units": "mm/hr",
+        "FillValues": [
+            {
+                "Value": -9999.900390625,
+                "Type": "SCIENCE_FILLVALUE",
+                "Description": "Extracted from _FillValue metadata attribute"
+            }
+        ],
+        "MetadataSpecification": {
+            "URL": "https://cdn.earthdata.nasa.gov/umm/variable/v1.8.2",
+            "Name": "UMM-Var",
+            "Version": "1.8.2"
+        }
+    },
+    {
+        "Name": "Grid/HQprecipitation",
+        "LongName": "Grid/HQprecipitation",
+        "Definition": "Grid/HQprecipitation",
+        "DataType": "float32",
+        "Dimensions": [
+            {
+                "Name": "Grid/time",
+                "Size": 1,
+                "Type": "TIME_DIMENSION"
+            },
+            {
+                "Name": "Grid/lon",
+                "Size": 3600,
+                "Type": "LONGITUDE_DIMENSION"
+            },
+            {
+                "Name": "Grid/lat",
+                "Size": 1800,
+                "Type": "LATITUDE_DIMENSION"
+            }
+        ],
+        "Units": "mm/hr",
+        "FillValues": [
+            {
+                "Value": -9999.900390625,
+                "Type": "SCIENCE_FILLVALUE",
+                "Description": "Extracted from _FillValue metadata attribute"
+            }
+        ],
+        "MetadataSpecification": {
+            "URL": "https://cdn.earthdata.nasa.gov/umm/variable/v1.8.2",
+            "Name": "UMM-Var",
+            "Version": "1.8.2"
+        }
+    },
+    {
+        "Name": "Grid/HQprecipSource",
+        "LongName": "Grid/HQprecipSource",
+        "Definition": "Grid/HQprecipSource",
+        "DataType": "int16",
+        "Dimensions": [
+            {
+                "Name": "Grid/time",
+                "Size": 1,
+                "Type": "TIME_DIMENSION"
+            },
+            {
+                "Name": "Grid/lon",
+                "Size": 3600,
+                "Type": "LONGITUDE_DIMENSION"
+            },
+            {
+                "Name": "Grid/lat",
+                "Size": 1800,
+                "Type": "LATITUDE_DIMENSION"
+            }
+        ],
+        "FillValues": [
+            {
+                "Value": -9999,
+                "Type": "SCIENCE_FILLVALUE",
+                "Description": "Extracted from _FillValue metadata attribute"
+            }
+        ],
+        "MetadataSpecification": {
+            "URL": "https://cdn.earthdata.nasa.gov/umm/variable/v1.8.2",
+            "Name": "UMM-Var",
+            "Version": "1.8.2"
+        }
+    },
+    {
+        "Name": "Grid/HQobservationTime",
+        "LongName": "Grid/HQobservationTime",
+        "Definition": "Grid/HQobservationTime",
+        "DataType": "int16",
+        "Dimensions": [
+            {
+                "Name": "Grid/time",
+                "Size": 1,
+                "Type": "TIME_DIMENSION"
+            },
+            {
+                "Name": "Grid/lon",
+                "Size": 3600,
+                "Type": "LONGITUDE_DIMENSION"
+            },
+            {
+                "Name": "Grid/lat",
+                "Size": 1800,
+                "Type": "LATITUDE_DIMENSION"
+            }
+        ],
+        "Units": "minutes",
+        "FillValues": [
+            {
+                "Value": -9999,
+                "Type": "SCIENCE_FILLVALUE",
+                "Description": "Extracted from _FillValue metadata attribute"
+            }
+        ],
+        "MetadataSpecification": {
+            "URL": "https://cdn.earthdata.nasa.gov/umm/variable/v1.8.2",
+            "Name": "UMM-Var",
+            "Version": "1.8.2"
+        }
+    },
+    {
+        "Name": "Grid/IRprecipitation",
+        "LongName": "Grid/IRprecipitation",
+        "Definition": "Grid/IRprecipitation",
+        "DataType": "float32",
+        "Dimensions": [
+            {
+                "Name": "Grid/time",
+                "Size": 1,
+                "Type": "TIME_DIMENSION"
+            },
+            {
+                "Name": "Grid/lon",
+                "Size": 3600,
+                "Type": "LONGITUDE_DIMENSION"
+            },
+            {
+                "Name": "Grid/lat",
+                "Size": 1800,
+                "Type": "LATITUDE_DIMENSION"
+            }
+        ],
+        "Units": "mm/hr",
+        "FillValues": [
+            {
+                "Value": -9999.900390625,
+                "Type": "SCIENCE_FILLVALUE",
+                "Description": "Extracted from _FillValue metadata attribute"
+            }
+        ],
+        "MetadataSpecification": {
+            "URL": "https://cdn.earthdata.nasa.gov/umm/variable/v1.8.2",
+            "Name": "UMM-Var",
+            "Version": "1.8.2"
+        }
+    },
+    {
+        "Name": "Grid/IRkalmanFilterWeight",
+        "LongName": "Grid/IRkalmanFilterWeight",
+        "Definition": "Grid/IRkalmanFilterWeight",
+        "DataType": "int16",
+        "Dimensions": [
+            {
+                "Name": "Grid/time",
+                "Size": 1,
+                "Type": "TIME_DIMENSION"
+            },
+            {
+                "Name": "Grid/lon",
+                "Size": 3600,
+                "Type": "LONGITUDE_DIMENSION"
+            },
+            {
+                "Name": "Grid/lat",
+                "Size": 1800,
+                "Type": "LATITUDE_DIMENSION"
+            }
+        ],
+        "FillValues": [
+            {
+                "Value": -9999,
+                "Type": "SCIENCE_FILLVALUE",
+                "Description": "Extracted from _FillValue metadata attribute"
+            }
+        ],
+        "MetadataSpecification": {
+            "URL": "https://cdn.earthdata.nasa.gov/umm/variable/v1.8.2",
+            "Name": "UMM-Var",
+            "Version": "1.8.2"
+        }
+    },
+    {
+        "Name": "Grid/probabilityLiquidPrecipitation",
+        "LongName": "Grid/probabilityLiquidPrecipitation",
+        "Definition": "Grid/probabilityLiquidPrecipitation",
+        "DataType": "int16",
+        "Dimensions": [
+            {
+                "Name": "Grid/time",
+                "Size": 1,
+                "Type": "TIME_DIMENSION"
+            },
+            {
+                "Name": "Grid/lon",
+                "Size": 3600,
+                "Type": "LONGITUDE_DIMENSION"
+            },
+            {
+                "Name": "Grid/lat",
+                "Size": 1800,
+                "Type": "LATITUDE_DIMENSION"
+            }
+        ],
+        "Units": "percent",
+        "FillValues": [
+            {
+                "Value": -9999,
+                "Type": "SCIENCE_FILLVALUE",
+                "Description": "Extracted from _FillValue metadata attribute"
+            }
+        ],
+        "MetadataSpecification": {
+            "URL": "https://cdn.earthdata.nasa.gov/umm/variable/v1.8.2",
+            "Name": "UMM-Var",
+            "Version": "1.8.2"
+        }
+    },
+    {
+        "Name": "Grid/precipitationQualityIndex",
+        "LongName": "Grid/precipitationQualityIndex",
+        "Definition": "Grid/precipitationQualityIndex",
+        "DataType": "float32",
+        "Dimensions": [
+            {
+                "Name": "Grid/time",
+                "Size": 1,
+                "Type": "TIME_DIMENSION"
+            },
+            {
+                "Name": "Grid/lon",
+                "Size": 3600,
+                "Type": "LONGITUDE_DIMENSION"
+            },
+            {
+                "Name": "Grid/lat",
+                "Size": 1800,
+                "Type": "LATITUDE_DIMENSION"
+            }
+        ],
+        "FillValues": [
+            {
+                "Value": -9999.900390625,
+                "Type": "SCIENCE_FILLVALUE",
+                "Description": "Extracted from _FillValue metadata attribute"
+            }
+        ],
+        "MetadataSpecification": {
+            "URL": "https://cdn.earthdata.nasa.gov/umm/variable/v1.8.2",
+            "Name": "UMM-Var",
+            "Version": "1.8.2"
+        }
+    }
+]
