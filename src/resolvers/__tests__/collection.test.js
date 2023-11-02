@@ -2340,7 +2340,7 @@ describe('Collection', () => {
             }
           })
 
-          nock(/example-cmr/)
+        nock(/example-cmr/)
           .defaultReplyHeaders({
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678',

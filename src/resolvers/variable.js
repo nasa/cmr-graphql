@@ -49,10 +49,14 @@ export default {
 
       // Pull out the variable concept ids from the source to use as parameters later
       const conceptIds = {
-        "params": {"conceptId":Object.values(source).map(object => Object.values(object)).flat()}
+        params: { conceptId: Object.values(source).map((object) => Object.values(object)).flat() }
       }
 
-      return dataSources.variableSource(handlePagingParams(conceptIds), context, parseResolveInfo(info))
+      return dataSources.variableSource(
+        handlePagingParams(conceptIds),
+        context,
+        parseResolveInfo(info)
+      )
     }
   }
 }
