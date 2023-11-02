@@ -6,7 +6,7 @@ export default {
   Query: {
     variables: async (source, args, context, info) => {
       const { dataSources } = context
-      
+
       return dataSources.variableSource(handlePagingParams(args), context, parseResolveInfo(info))
     },
     variable: async (source, args, context, info) => {
