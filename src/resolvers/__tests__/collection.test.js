@@ -1888,6 +1888,92 @@ describe('Collection', () => {
       })
     })
 
+    describe('publishCollectionVariableDrafts', () => {
+      test('calls earthdata-varinfo lambda to publish variable drafts', async () => {
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .post(/collections\.json/)
+          .reply(200, {
+            feed: {
+              entry: [{
+                id: 'C100000-EDSC'
+              }]
+            }
+          })
+
+          nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678',
+            'CMR-Hits': 1
+          })
+          .post(/variables\.json/)
+          .reply(200, {
+            items: [{
+              concept_id: 'V10000-EDSC'
+            }]
+          })
+
+        const variableConceptIdList = [{
+          conceptId: 'V10000-EDSC'
+        }]
+
+        lambdaClientMock.on(InvokeCommand).resolves({
+          Payload: Buffer.from(JSON.stringify({
+            isBase64Encoded: false,
+            statusCode: 200,
+            body: variableConceptIdList
+          }))
+        })
+
+        const response = await server.executeOperation({
+          variables: {
+            params: {
+              conceptId: 'C100000-EDSC'
+            }
+          },
+          query: `{
+            collections (
+              conceptId: "C100000-EDSC"
+            ) {
+              items {
+                conceptId
+                publishVariableDrafts {
+                  variables {
+                    count
+                    items {
+                      conceptId
+                    }
+                  }
+                }
+              }
+            }
+          }`
+        }, {
+          contextValue
+        })
+
+        const { data } = response.body.singleResult
+
+        expect(data).toEqual({
+          collections: {
+            items: [{
+              conceptId: 'C100000-EDSC',
+              publishVariableDrafts: {
+                variables: {
+                  count: 1,
+                  items: variableConceptIdList
+                }
+              }
+            }]
+          }
+        })
+      })
+    })
+
     describe('duplicateCollections', () => {
       test('queries CMR GraphDB for relationships', async () => {
         nock(/example-cmr/)

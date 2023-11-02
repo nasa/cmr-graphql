@@ -1,10 +1,8 @@
 """Module providing access to environment variables"""
 import os
-from tempfile import TemporaryDirectory
+import json
 
-from varinfo import VarInfoFromNetCDF4
-from varinfo.cmr_search import get_granules, get_granule_link, download_granule
-from varinfo.umm_var import get_all_umm_var
+from varinfo.generate_umm_var import generate_collection_umm_var
 
 def main(event, context):
     """Handler that calls the earthdata-varinfo library"""
@@ -18,6 +16,11 @@ def main(event, context):
     # Get token
     token = event.get('token')
 
+    if event.get('publish') is None:
+        publish = False
+    else:
+        publish = event.get('publish')
+
     # These two arguments are required for varinfo, return an error if they are not provided
     if collection_concept_id is None or token is None:
         return {
@@ -29,22 +32,11 @@ def main(event, context):
         }
 
     try:
-        # Retrieve a list of 10 granules for the collection
-        granules = get_granules(collection_concept_id, cmr_env=cmr_url, token=token)
-
-        # Get the URL for the first granule (NetCDF-4 file):
-        granule_link = get_granule_link(granules)
-
-        # Make a temporary directory:
-        with TemporaryDirectory() as temp_dir:
-            # Download file to lambda runtime environment
-            local_granule = download_granule(granule_link, token, out_directory=temp_dir)
-
-            # Parse the granule with VarInfo:
-            var_info = VarInfoFromNetCDF4(local_granule)
-
-            # Generate all the UMM-Var records:
-            all_variables = get_all_umm_var(var_info)
+        # Generate all the UMM-Var records:
+        all_variables = generate_collection_umm_var(collection_concept_id,
+                                                    auth_header=token,
+                                                    cmr_env=cmr_url,
+                                                    publish=publish)
     except Exception as error:
         return {
             'isBase64Encoded': False,
@@ -54,9 +46,12 @@ def main(event, context):
             }
         }
 
+    if publish == True:
+       all_variables = [{'conceptId': item} for item in all_variables]
+
     # Return a successful response
     return {
         'isBase64Encoded': False,
         'statusCode': 200,
-        'body': list(all_variables.values())
+        'body': list(all_variables)
     }

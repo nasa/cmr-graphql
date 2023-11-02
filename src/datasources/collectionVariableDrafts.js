@@ -16,11 +16,7 @@ import { parseError } from '../utils/parseError'
 export default async (params, context) => {
   const { headers } = context
 
-  const { authorization: authorizationHeader = '' } = downcaseKeys(headers)
-
-  // Split the token by a space (Bearer xxx.xxx.xxx) and take the
-  // last element to get just the token without the 'Bearer' identifier
-  const token = authorizationHeader.split(' ').pop()
+  const { authorization: token } = downcaseKeys(headers)
 
   const lambdaClient = new LambdaClient(getLambdaConfig())
 

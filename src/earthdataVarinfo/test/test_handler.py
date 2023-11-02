@@ -27,19 +27,47 @@ class HandlerTest(TestCase):
                              'statusCode': 500}
         self.assertEqual(response, expected_response)
 
-    @patch('handler.get_granules')
-    @patch('handler.get_granule_link')
-    @patch('handler.download_granule')
-    def test_good_case(self, mock_download_granule, mock_get_granule_link, mock_get_granules):
+    @patch('handler.generate_collection_umm_var')
+    def test_generate_case(self, mock_generate_collection_umm_var):
         ''' Test when main is called successfully
         '''
-        mock_download_granule.return_value = 'test/sample.HDF5'
-        mock_get_granule_link.return_value = 'Mock link'
-        mock_get_granules.return_value = 'Mock granules'
-
-        response = main({'token': 'faketoken', 'conceptId': 'C1234-TEST'}, "")
         # Specify the path to your JSON file
-        file_path = 'test/expected_response.json'
+        file_path = 'test/variables.json'
+
+        # Open the JSON file for reading
+        with open(file_path, 'r') as json_file:
+            # Use json.load() to parse the JSON data into a Python variable
+            mock_response = json.load(json_file)
+
+        # Set the mock's return value
+        mock_generate_collection_umm_var.return_value = mock_response
+
+        # Call the main function
+        response = main({'token': 'faketoken', 'conceptId': 'C1234-TEST'}, "")
+
+        # Specify the path to your JSON file
+        file_path = 'test/expected_generate_response.json'
+
+        # Open the JSON file for reading
+        with open(file_path, 'r') as json_file:
+            # Use json.load() to parse the JSON data into a Python variable
+            expected_response = json.load(json_file)
+
+        self.maxDiff = None
+        self.assertEqual(response, expected_response)
+
+    @patch('handler.generate_collection_umm_var')
+    def test_publish_case(self, mock_generate_collection_umm_var):
+        ''' Test when main is called successfully
+        '''
+         # Set the mock's return value
+        mock_generate_collection_umm_var.return_value = ['V0001-TEST', 'V0002-TEST']
+
+        # Call the main function
+        response = main({'token': 'faketoken', 'conceptId': 'C1234-TEST', 'publish': True}, "")
+
+        # Specify the path to your JSON file
+        file_path = 'test/expected_publish_response.json'
 
         # Open the JSON file for reading
         with open(file_path, 'r') as json_file:

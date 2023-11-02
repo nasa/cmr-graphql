@@ -69,6 +69,11 @@ type VariableList {
   items: [Variable]
 }
 
+type PublishedVariableList {
+  "The list of Published Variables."
+  variables: VariableList
+}
+
 input VariablesInput {
   "The unique concept id assigned to the variable."
   conceptId: [String]

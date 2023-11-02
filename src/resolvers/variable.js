@@ -6,7 +6,7 @@ export default {
   Query: {
     variables: async (source, args, context, info) => {
       const { dataSources } = context
-
+      
       return dataSources.variableSource(handlePagingParams(args), context, parseResolveInfo(info))
     },
     variable: async (source, args, context, info) => {
@@ -35,6 +35,19 @@ export default {
       })
 
       return dataSources.collectionSource(requestedParams, context, parseResolveInfo(info))
+    }
+  },
+
+  PublishedVariableList: {
+    variables: async (source, args, context, info) => {
+      const { dataSources } = context
+
+      // Pull out the variable concept ids from the source to use as parameters later
+      const conceptIds = {
+        "params": {"conceptId":Object.values(source).map(object => Object.values(object)).flat()}
+      }
+
+      return dataSources.variableSource(handlePagingParams(conceptIds), context, parseResolveInfo(info))
     }
   }
 }
