@@ -14,7 +14,14 @@ import { pickIgnoringCase } from './pickIgnoringCase'
  * @param {Object} headers Headers to send to CMR
  * @param {String} ingestPath CMR path to call to ingest concept
  */
-export const cmrIngest = async (conceptType, data, headers, ingestPath) => {
+
+export const cmrIngest = ({
+  camelCaseKeys = true,
+  conceptType,
+  data,
+  headers,
+  ingestPath
+}) => {
   // Default headers
   const defaultHeaders = {
     Accept: 'application/json'
@@ -33,16 +40,22 @@ export const cmrIngest = async (conceptType, data, headers, ingestPath) => {
   ])
 
   // Use the provided native id if one is provided, default to a guid
-  const { nativeId = uuidv4() } = data
+  const { nativeId = uuidv4(), collectionConceptId } = data
 
   // Remove native id as it is not a supported key in umm
   // eslint-disable-next-line no-param-reassign
   delete data.nativeId
 
-  const cmrParameters = camelcaseKeys(data, {
-    pascalCase: true,
-    exclude: ['URL']
-  })
+  let cmrParameters = data
+
+  if (camelCaseKeys) {
+    cmrParameters = camelcaseKeys(data, {
+      pascalCase: true,
+      exclude: ['URL', 'DOI']
+    })
+  }
+
+  cmrParameters = { 'collection-concept-id': collectionConceptId }
 
   const {
     'client-id': clientId,

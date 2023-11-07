@@ -124,7 +124,8 @@ export default class Draft extends Concept {
 
   getPermittedPublishKeys() {
     return [
-      'nativeId'
+      'nativeId',
+      'collectionConceptId'
     ]
   }
 
@@ -220,11 +221,19 @@ export default class Draft extends Concept {
     this.logKeyRequest(requestedKeys, 'ingest')
 
     // Construct the promise that will ingest data into CMR
-    this.response = cmrIngest(
-      this.getConceptType(),
-      pick(params, this.getPermittedPublishKeys()),
-      permittedHeaders,
-      this.publishPath
-    )
+    // return cmrIngest({
+    //   camelCaseKeys: false,
+    //   conceptType: this.getConceptType(),
+    //   data: pick(params, this.getPermittedPublishKeys()),
+    //   headers: permittedHeaders,
+    //   ingestPath: this.publish
+    // })
+    this.response = cmrIngest({
+      camelCaseKeys: false,
+      conceptType: this.getConceptType(),
+      data: pick(params, this.getPermittedPublishKeys()),
+      headers: permittedHeaders,
+      ingestPath: this.publishPath
+    })
   }
 }
