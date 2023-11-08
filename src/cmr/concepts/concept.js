@@ -368,7 +368,7 @@ export default class Concept {
 
     // Construct the promise that will ingest data into CMR
     this.response = cmrIngest({
-      camelCaseKeys: false,
+      camelCaseKeys: true,
       conceptType: this.getConceptType(),
       data: params,
       headers: providedHeaders,

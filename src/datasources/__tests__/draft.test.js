@@ -671,3 +671,81 @@ describe('draft#publish', () => {
     ).rejects.toThrow(Error)
   })
 })
+
+describe('variableDraft#publish', () => {
+  const OLD_ENV = process.env
+
+  beforeEach(() => {
+    jest.resetAllMocks()
+
+    jest.restoreAllMocks()
+
+    process.env = { ...OLD_ENV }
+
+    process.env.cmrRootUrl = 'http://example.com'
+
+    // Default requestInfo
+    requestInfo = {
+      name: 'publishDraft',
+      alias: 'publishDraft',
+      args: {
+        draftConceptId: 'VD100000-EDSC',
+        nativeId: 'mock-native-id',
+        ummVersion: '1.0.0',
+        collectionConceptId: ''
+      },
+      fieldsByTypeName: {
+        PublishDraftMutationResponse: {
+          conceptId: {
+            name: 'conceptId',
+            alias: 'conceptId',
+            args: {},
+            fieldsByTypeName: {}
+          },
+          revisionId: {
+            name: 'revisionId',
+            alias: 'revisionId',
+            args: {},
+            fieldsByTypeName: {}
+          }
+        }
+      }
+    }
+  })
+
+  afterEach(() => {
+    process.env = OLD_ENV
+  })
+
+  test('returns the parsed draft results', async () => {
+    nock(/example/)
+      .defaultReplyHeaders({
+        'CMR-Request-Id': 'abcd-1234-efgh-5678'
+      })
+      .put(/ingest\/publish\/VD100000-EDSC\/mock-native-id/, JSON.stringify({
+        'collection-concept-id': 'CD100000-EDSC'
+      }))
+      .reply(201, {
+        'concept-id': 'V100000-EDSC',
+        'revision-id': '1'
+      })
+
+    const response = await draftSourcePublish({
+      draftConceptId: 'VD100000-EDSC',
+      nativeId: 'mock-native-id',
+      ummVersion: '1.0.0',
+      collectionConceptId: 'CD100000-EDSC'
+
+    }, {
+      headers: {
+        'Client-Id': 'eed-test-graphql',
+        'CMR-Request-Id': 'abcd-1234-efgh-5678'
+      }
+    }, requestInfo)
+
+    expect(response).toEqual({
+      conceptId: 'V100000-EDSC',
+      revisionId: '1'
+    })
+  })
+})

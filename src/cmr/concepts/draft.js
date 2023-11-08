@@ -221,13 +221,6 @@ export default class Draft extends Concept {
     this.logKeyRequest(requestedKeys, 'ingest')
 
     // Construct the promise that will ingest data into CMR
-    // return cmrIngest({
-    //   camelCaseKeys: false,
-    //   conceptType: this.getConceptType(),
-    //   data: pick(params, this.getPermittedPublishKeys()),
-    //   headers: permittedHeaders,
-    //   ingestPath: this.publish
-    // })
     this.response = cmrIngest({
       camelCaseKeys: false,
       conceptType: this.getConceptType(),

@@ -50,7 +50,7 @@ export const cmrIngest = ({
 
   if (collectionConceptId) {
     cmrParameters = {
-      'collection-concept-id': collectionConceptId || null
+      'collection-concept-id': collectionConceptId
     }
   }
 
