@@ -48,14 +48,18 @@ export const cmrIngest = ({
 
   let cmrParameters = data
 
+  if (collectionConceptId) {
+    cmrParameters = {
+      'collection-concept-id': collectionConceptId || null
+    }
+  }
+
   if (camelCaseKeys) {
     cmrParameters = camelcaseKeys(data, {
       pascalCase: true,
       exclude: ['URL', 'DOI']
     })
   }
-
-  cmrParameters = { 'collection-concept-id': collectionConceptId }
 
   const {
     'client-id': clientId,
