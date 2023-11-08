@@ -28,6 +28,17 @@ export default {
     },
     publishDraft: async (source, args, context, info) => {
       const { dataSources } = context
+      const { draftConceptId, collectionConceptId } = args
+
+      // Checks if collectionConceptId is present when publishing a Variable Draft
+      if (isDraftConceptId(draftConceptId, 'variable') && !collectionConceptId) {
+        throw new Error('collectionConceptId required')
+      }
+
+      // Checks if collectionConcept is present when publishing a non Variable draft
+      if (!isDraftConceptId(draftConceptId, 'variable') && collectionConceptId) {
+        throw new Error('Invalid Argument, collectionConceptId')
+      }
 
       const result = await dataSources.draftSourcePublish(
         args,
