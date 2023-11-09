@@ -32,12 +32,12 @@ export default {
 
       // Checks if collectionConceptId is present when publishing a Variable Draft
       if (isDraftConceptId(draftConceptId, 'variable') && !collectionConceptId) {
-        throw new Error('collectionConceptId required')
+        throw new Error('collectionConceptId required. When publishing a Variable Draft, an associated Collection Concept Id is required')
       }
 
       // Checks if collectionConcept is present when publishing a non Variable draft
       if (!isDraftConceptId(draftConceptId, 'variable') && collectionConceptId) {
-        throw new Error('Invalid Argument, collectionConceptId')
+        throw new Error('Invalid Argument, collectionConceptId. Collection Concept ID is only required when publishing a Variable Draft.')
       }
 
       const result = await dataSources.draftSourcePublish(

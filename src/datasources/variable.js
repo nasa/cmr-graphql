@@ -4,13 +4,12 @@ import variableKeyMap from '../utils/umm/variableKeyMap.json'
 
 import Variable from '../cmr/concepts/variable'
 
-export const fetchVariables = async (params, context, parsedInfo, parentCollectionConceptId) => {
-  // For variable queries that are children of collections queries, parentCollectionConceptId is defined.
+export const fetchVariables = async (params, context, parsedInfo) => {
   const { headers } = context
 
   const requestInfo = parseRequestedFields(parsedInfo, variableKeyMap, 'variable')
 
-  const variable = new Variable(headers, requestInfo, params, parentCollectionConceptId)
+  const variable = new Variable(headers, requestInfo, params)
 
   // Query CMR
   variable.fetch(params)
