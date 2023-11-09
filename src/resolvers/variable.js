@@ -8,16 +8,34 @@ export default {
     variables: async (source, args, context, info) => {
       const { dataSources } = context
 
-      return dataSources.variableSource(handlePagingParams(args), context, parseResolveInfo(info))
+      return dataSources.variableSourceFetch(
+        handlePagingParams(args),
+        context,
+
+        parseResolveInfo(info)
+      )
     },
     variable: async (source, args, context, info) => {
       const { dataSources } = context
 
-      const result = await dataSources.variableSource(args, context, parseResolveInfo(info))
+      const result = await dataSources.variableSourceFetch(args, context, parseResolveInfo(info))
 
       const [firstResult] = result
 
       return firstResult
+    }
+  },
+
+  Mutation: {
+    deleteVariable: async (source, args, context, info) => {
+      const { dataSources } = context
+      console.log(args)
+
+      return dataSources.variableSourceDelete(
+        handlePagingParams(args),
+        context,
+        parseResolveInfo(info)
+      )
     }
   },
 

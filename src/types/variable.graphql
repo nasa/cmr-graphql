@@ -110,3 +110,19 @@ type Query {
     conceptId: String @deprecated(reason: "Use `params.conceptId`")
   ): Variable
 }
+
+type Mutation {
+  deleteVariable (
+    "Provider ID of the variable."
+    providerId: String!
+    "The native id of a varialbe."
+    nativeId: String!
+  ): VariableMutationResponse
+}
+
+type VariableMutationResponse {
+  "The unique concept id assigned to the variable."
+  conceptId: String!
+  "The revision of the variable."
+  revisionId: String!
+}
