@@ -34,7 +34,7 @@ import {
 } from '../../../datasources/variable'
 import toolDraftSource from '../../../datasources/toolDraft'
 import variableDraftSource from '../../../datasources/variableDraft'
-// Import variableSource from '../../../datasources/variable'
+
 import {
   deleteDraft as draftSourceDelete,
   fetchDrafts as draftSourceFetch,
