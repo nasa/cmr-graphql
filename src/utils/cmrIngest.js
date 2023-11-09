@@ -1,7 +1,5 @@
 import axios from 'axios'
 
-import camelcaseKeys from 'camelcase-keys'
-
 import { v4 as uuidv4 } from 'uuid'
 
 import { downcaseKeys } from './downcaseKeys'
@@ -16,7 +14,6 @@ import { pickIgnoringCase } from './pickIgnoringCase'
  */
 
 export const cmrIngest = ({
-  camelCaseKeys = true,
   conceptType,
   data,
   headers,
@@ -40,26 +37,13 @@ export const cmrIngest = ({
   ])
 
   // Use the provided native id if one is provided, default to a guid
-  const { nativeId = uuidv4(), collectionConceptId } = data
+  const { nativeId = uuidv4() } = data
 
   // Remove native id as it is not a supported key in umm
   // eslint-disable-next-line no-param-reassign
   delete data.nativeId
 
-  let cmrParameters = data
-
-  if (collectionConceptId) {
-    cmrParameters = {
-      'collection-concept-id': collectionConceptId
-    }
-  }
-
-  if (camelCaseKeys) {
-    cmrParameters = camelcaseKeys(data, {
-      pascalCase: true,
-      exclude: ['URL', 'DOI']
-    })
-  }
+  const cmrParameters = data
 
   const {
     'client-id': clientId,
