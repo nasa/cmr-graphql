@@ -9,11 +9,11 @@ from handler import main
 class HandlerTest(TestCase):
     ''' A class for testing main function of handler.py
     '''
-    def test_missing_token(self):
-        ''' Test when main is called with a missing token in the event paramter
+    def test_missing_auth_header(self):
+        ''' Test when main is called with a missing auth_header in the event paramter
         '''
         response = main({'conceptId': 'C1234-TEST'}, "")
-        expected_response = {'body': {'error': 'Collection Concept ID and Token must be provided.'},
+        expected_response = {'body': {'error': 'Collection Concept ID and Authentication Header must be provided.'},
                              'isBase64Encoded': False,
                              'statusCode': 500}
         self.assertEqual(response, expected_response)
@@ -21,8 +21,8 @@ class HandlerTest(TestCase):
     def test_missing_concept_id(self):
         ''' Test when main is called with a missing conceptId in the event paramter
         '''
-        response = main({'token': 'faketoken'}, "")
-        expected_response = {'body': {'error': 'Collection Concept ID and Token must be provided.'},
+        response = main({'authHeader': 'fake header'}, "")
+        expected_response = {'body': {'error': 'Collection Concept ID and Authentication Header must be provided.'},
                              'isBase64Encoded': False,
                              'statusCode': 500}
         self.assertEqual(response, expected_response)
@@ -43,7 +43,7 @@ class HandlerTest(TestCase):
         mock_generate_collection_umm_var.return_value = mock_response
 
         # Call the main function
-        response = main({'token': 'faketoken', 'conceptId': 'C1234-TEST'}, "")
+        response = main({'authHeader': 'fake header', 'conceptId': 'C1234-TEST'}, "")
 
         # Specify the path to your JSON file
         file_path = 'test/expected_generate_response.json'
@@ -64,7 +64,7 @@ class HandlerTest(TestCase):
         mock_generate_collection_umm_var.return_value = ['V0001-TEST', 'V0002-TEST']
 
         # Call the main function
-        response = main({'token': 'faketoken', 'conceptId': 'C1234-TEST', 'publish': True}, "")
+        response = main({'authHeader': 'fake header', 'conceptId': 'C1234-TEST', 'publish': True}, "")
 
         # Specify the path to your JSON file
         file_path = 'test/expected_publish_response.json'

@@ -16,7 +16,7 @@ import { parseError } from '../utils/parseError'
 export default async (params, context) => {
   const { headers } = context
 
-  const { authorization: token } = downcaseKeys(headers)
+  const { authorization: authHeader } = downcaseKeys(headers)
 
   const lambdaClient = new LambdaClient(getLambdaConfig())
 
@@ -26,7 +26,7 @@ export default async (params, context) => {
     LogType: LogType.Tail,
     Payload: JSON.stringify({
       ...params,
-      token
+      authHeader
     })
   })
 

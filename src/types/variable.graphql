@@ -69,11 +69,6 @@ type VariableList {
   items: [Variable]
 }
 
-type PublishedVariableList {
-  "The list of Published Variables."
-  variables: VariableList
-}
-
 input VariablesInput {
   "The unique concept id assigned to the variable."
   conceptId: [String]
@@ -114,4 +109,11 @@ type Query {
     "The unique concept id assigned to the variable."
     conceptId: String @deprecated(reason: "Use `params.conceptId`")
   ): Variable
+}
+
+type Mutation {
+  publishGeneratedVariables (
+    "The collection concept Id."
+    conceptId: String!
+  ): VariableList
 }

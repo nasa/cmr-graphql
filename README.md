@@ -793,77 +793,65 @@ variables:
 
 #### Publish Generated Collection Variable Drafts
 
-For all supported arguments and columns, see [the schema](src/types/collection.graphql).
+For all supported arguments and columns, see [the schema](src/types/variable.graphql).
 
-CMR-GraphQL queries an earthdata-varinfo lambda in order to generate and publish collection variable drafts. The resulting variables can be returned as part of the Collection type response.
+CMR-GraphQL queries an earthdata-varinfo lambda in order to generate and publish collection variable drafts. The resulting variables can be returned as part of the Variable type response.
 
 `publishVariableDrafts` will return collection generated variables, using the earthdata-varinfo project(https://github.com/nasa/earthdata-varinfo)
 
-##### Example Queries
+##### Example Mutation
 
-    query Collection($params: CollectionInput) {
-      collection(params: $params) {
-        conceptId
-        publishVariableDrafts {
-          variables {
-            count
-            items {
-              conceptId
-              dataType
-              definition
-              dimensions
-              longName
-              name
-              standardName
-              units
-              metadataSpecification
-            }
-          }
+    mutation PublishGeneratedVariables($conceptId: String!) {
+      publishGeneratedVariables(conceptId: $conceptId) {
+        count
+        items {
+          conceptId
+          dataType
+          definition
+          dimensions
+          longName
+          name
+          standardName
+          units
+          metadataSpecification
         }
       }
     }
 
     variables:
     {
-      "params": {
-        "conceptId": "C1000000001-EXAMPLE"
-      }
+      "conceptId": "C1000000001-EXAMPLE"
     }
 
 ##### Example Response
 
      {
       "data": {
-        "collection": {
-          "conceptId": "C1000000001-EXAMPLE",
-          "publishVariableDrafts": {
-            "variables": {
-              "count": 1,
-              "items": [
+        "publishGeneratedVariables": {
+          "count": 1,
+          "items": [
+            {
+              "conceptId": "V1000000001-EXAMPLE",
+              "dataType": "int32",
+              "definition": "Grid/time",
+              "dimensions": [
                 {
-                  "conceptId": "V1000000001-EXAMPLE",
-                  "dataType": "int32",
-                  "definition": "Grid/time",
-                  "dimensions": [
-                    {
-                      "Name": "Grid/time",
-                      "Size": 1,
-                      "Type": "TIME_DIMENSION"
-                    }
-                  ],
-                  "longName": "Grid/time",
-                  "name": "Grid/time",
-                  "standardName": "time",
-                  "units": "seconds since 1970-01-01 00:00:00 UTC",
-                  "metadataSpecification": {
-                    "URL": "https://cdn.earthdata.nasa.gov/umm/variable/v1.8.2",
-                    "Name": "UMM-Var",
-                    "Version": "1.8.2"
-                  }
+                  "Name": "Grid/time",
+                  "Size": 1,
+                  "Type": "TIME_DIMENSION"
                 }
-              ]
+              ],
+              "longName": "Grid/time",
+              "name": "Grid/time",
+              "standardName": "time",
+              "units": "seconds since 1970-01-01 00:00:00 UTC",
+              "metadataSpecification": {
+                "URL": "https://cdn.earthdata.nasa.gov/umm/variable/v1.8.2",
+                "Name": "UMM-Var",
+                "Version": "1.8.2"
+              }
             }
-          }
+          ]
         }
       }
     }

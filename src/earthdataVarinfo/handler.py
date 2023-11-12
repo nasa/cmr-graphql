@@ -14,7 +14,7 @@ def main(event, context):
     collection_concept_id = event.get('conceptId')
 
     # Get token
-    token = event.get('token')
+    auth_header = event.get('authHeader')
 
     if event.get('publish') is None:
         publish = False
@@ -22,19 +22,19 @@ def main(event, context):
         publish = event.get('publish')
 
     # These two arguments are required for varinfo, return an error if they are not provided
-    if collection_concept_id is None or token is None:
+    if collection_concept_id is None or auth_header is None:
         return {
             'isBase64Encoded': False,
             'statusCode': 500,
             'body': {
-                'error': 'Collection Concept ID and Token must be provided.'
+                'error': 'Collection Concept ID and Authentication Header must be provided.'
             }
         }
 
     try:
         # Generate all the UMM-Var records:
         all_variables = generate_collection_umm_var(collection_concept_id,
-                                                    auth_header=token,
+                                                    auth_header=auth_header,
                                                     cmr_env=cmr_url,
                                                     publish=publish)
     except Exception as error:

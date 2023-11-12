@@ -9,7 +9,6 @@ export const CONCEPT_TYPES = [
   'granules',
   'grids',
   'orderOptions',
-  'publishVariableDrafts',
   'relatedCollections',
   'services',
   'subscriptions',

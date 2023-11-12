@@ -4,6 +4,29 @@ import { handlePagingParams } from '../utils/handlePagingParams'
 import { isDraftConceptId } from '../utils/isDraftConceptId'
 
 export default {
+  Mutation: {
+    publishGeneratedVariables: async (source, args, context, info) => {
+      const { conceptId } = args
+
+      const { dataSources } = context
+
+      const results = await dataSources.collectionVariableDraftsSource({
+        conceptId,
+        publish: true
+      }, context, parseResolveInfo)
+
+      // Pull out the variable concept ids from the source to use as parameters later
+      const conceptIds = {
+        params: { conceptId: Object.values(results).map((object) => Object.values(object)).flat() }
+      }
+
+      return dataSources.variableSource(
+        handlePagingParams(conceptIds),
+        context,
+        parseResolveInfo(info)
+      )
+    }
+  },
   Query: {
     variables: async (source, args, context, info) => {
       const { dataSources } = context
@@ -40,23 +63,6 @@ export default {
       })
 
       return dataSources.collectionSource(requestedParams, context, parseResolveInfo(info))
-    }
-  },
-
-  PublishedVariableList: {
-    variables: async (source, args, context, info) => {
-      const { dataSources } = context
-
-      // Pull out the variable concept ids from the source to use as parameters later
-      const conceptIds = {
-        params: { conceptId: Object.values(source).map((object) => Object.values(object)).flat() }
-      }
-
-      return dataSources.variableSource(
-        handlePagingParams(conceptIds),
-        context,
-        parseResolveInfo(info)
-      )
     }
   }
 }

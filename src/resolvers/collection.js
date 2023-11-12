@@ -97,18 +97,6 @@ export default {
 
       return dataSources.collectionVariableDraftsSource({ conceptId }, context, parseResolveInfo)
     },
-    publishVariableDrafts: async (source, args, context) => {
-      const { conceptId } = source
-
-      const { dataSources } = context
-
-      const publish = true
-
-      return dataSources.collectionVariableDraftsSource({
-        conceptId,
-        publish
-      }, context, parseResolveInfo)
-    },
     dataQualitySummaries: async (source, args, context, info) => {
       const {
         associationDetails = {},

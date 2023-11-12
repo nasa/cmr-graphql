@@ -268,9 +268,6 @@ type Collection {
   "Generates variable drafts on the collection using earthdata-varinfo"
   generateVariableDrafts: VariableDraftList
 
-  "Publishes variable drafts on the collection using earthdata-varinfo"
-  publishVariableDrafts: PublishedVariableList
-
   dataQualitySummaries (
     "dataQualitySummary query parameters"
     params: DataQualitySummariesInput
