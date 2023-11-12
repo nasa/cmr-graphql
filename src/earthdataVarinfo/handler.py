@@ -1,6 +1,5 @@
 """Module providing access to environment variables"""
 import os
-import json
 
 from varinfo.generate_umm_var import generate_collection_umm_var
 
