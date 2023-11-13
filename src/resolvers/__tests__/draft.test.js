@@ -1371,9 +1371,9 @@ describe('Draft', () => {
           }, {
             contextValue
           })
-          const { data } = response.body.singleResult
-
-          expect(data).toEqual({ publishDraft: null })
+          const { errors } = response.body.singleResult
+          const { message } = errors[0]
+          expect(message).toEqual('Invalid Argument, collectionConceptId. Collection Concept ID is only required when publishing a Variable Draft.')
         })
       })
     })
@@ -1814,7 +1814,7 @@ describe('Draft', () => {
           })
         })
 
-        test('returns the cmr result when collection concept not provided', async () => {
+        test('returns the cmr result when publishing a Publish Draft and collection concept not provided', async () => {
           nock(/example-cmr/, {
             reqheaders: {
               accept: 'application/json',
@@ -1858,9 +1858,9 @@ describe('Draft', () => {
           }, {
             contextValue
           })
-          const { data } = response.body.singleResult
-
-          expect(data).toEqual({ publishDraft: null })
+          const { errors } = response.body.singleResult
+          const { message } = errors[0]
+          expect(message).toEqual('collectionConceptId required. When publishing a Variable Draft, an associated Collection Concept Id is required')
         })
       })
     })

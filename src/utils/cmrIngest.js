@@ -12,7 +12,6 @@ import { pickIgnoringCase } from './pickIgnoringCase'
  * @param {Object} headers Headers to send to CMR
  * @param {String} ingestPath CMR path to call to ingest concept
  */
-
 export const cmrIngest = ({
   conceptType,
   data,
@@ -43,15 +42,13 @@ export const cmrIngest = ({
   // eslint-disable-next-line no-param-reassign
   delete data.nativeId
 
-  const cmrParameters = data
-
   const {
     'client-id': clientId,
     'cmr-request-id': requestId
   } = downcaseKeys(permittedHeaders)
 
   const requestConfiguration = {
-    data: cmrParameters,
+    data,
     headers: permittedHeaders,
     method: 'PUT',
     url: `${process.env.cmrRootUrl}/ingest/${ingestPath}/${nativeId}`

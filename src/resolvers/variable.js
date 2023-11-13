@@ -29,7 +29,6 @@ export default {
   Mutation: {
     deleteVariable: async (source, args, context, info) => {
       const { dataSources } = context
-      console.log(args)
 
       return dataSources.variableSourceDelete(
         handlePagingParams(args),
