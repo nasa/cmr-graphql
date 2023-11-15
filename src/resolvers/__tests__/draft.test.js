@@ -1814,7 +1814,7 @@ describe('Draft', () => {
           })
         })
 
-        test('returns the cmr result when publishing a Publish Draft and collection concept not provided', async () => {
+        test('returns the cmr result when collection concept id not provided', async () => {
           nock(/example-cmr/, {
             reqheaders: {
               accept: 'application/json',

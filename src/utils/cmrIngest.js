@@ -7,10 +7,11 @@ import { pickIgnoringCase } from './pickIgnoringCase'
 
 /**
  * Make a request to CMR and return the promise
- * @param {String} conceptType Concept type to ingest
- * @param {Object} data Parameters to send to CMR
- * @param {Object} headers Headers to send to CMR
- * @param {String} ingestPath CMR path to call to ingest concept
+ * @param {Object} params
+ * @param {String} params.conceptType Concept type to ingest
+ * @param {Object} params.data Parameters to send to CMR
+ * @param {Object} params.headers Headers to send to CMR
+ * @param {String} params.ingestPath CMR path to call to ingest concept
  */
 export const cmrIngest = ({
   conceptType,

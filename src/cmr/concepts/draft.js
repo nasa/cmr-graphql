@@ -227,7 +227,8 @@ export default class Draft extends Concept {
       ...pick(params, this.getPermittedPublishKeys()),
       'collection-concept-id': collectionConceptId
     }
-    // Calling cmrIngest directly because the ingest path is different for publish is different.
+
+    // Calling cmrIngest directly because the ingest path is different for publish.
     this.response = cmrIngest({
       conceptType: this.getConceptType(),
       data: prepDataForCmr,
