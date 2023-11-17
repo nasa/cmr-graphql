@@ -35,16 +35,16 @@ describe('cmrIngest', () => {
         'revision-id': 1
       })
 
-    const response = await cmrIngest(
-      'subscriptions',
-      { collectionConceptId: 'C100000-EDSC' },
-      {
+    const response = await cmrIngest({
+      conceptType: 'subscriptions',
+      data: { collectionConceptId: 'C100000-EDSC' },
+      headers: {
         'CMR-Request-Id': 'abcd-1234-efgh-5678',
         'Client-Id': 'eed-test-graphql',
         'Content-Type': 'application/vnd.nasa.cmr.umm+json; version=1.0'
       },
-      'subscriptions'
-    )
+      ingestPath: 'subscriptions'
+    })
 
     const { data, headers } = response
 
@@ -79,18 +79,18 @@ describe('cmrIngest', () => {
           'revision-id': 1
         })
 
-      const response = await cmrIngest(
-        'subscriptions',
-        {
+      const response = await cmrIngest({
+        conceptType: 'subscriptions',
+        data: {
           collectionConceptId: 'C100000-EDSC',
           nativeId: 'provided-native-id'
         },
-        {
+        headers: {
           'Client-Id': 'eed-test-graphql',
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         },
-        'subscriptions'
-      )
+        ingestPath: 'subscriptions'
+      })
 
       const { data, headers } = response
 
@@ -127,16 +127,16 @@ describe('cmrIngest', () => {
           'revision-id': 1
         })
 
-      const response = await cmrIngest(
-        'subscriptions',
-        { collectionConceptId: 'C100000-EDSC' },
-        {
+      const response = await cmrIngest({
+        conceptType: 'subscriptions',
+        data: { collectionConceptId: 'C100000-EDSC' },
+        headers: {
           Authorization: 'Bearer test-token',
           'Client-Id': 'eed-test-graphql',
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         },
-        'subscriptions'
-      )
+        ingestPath: 'subscriptions'
+      })
 
       const { data, headers } = response
 
@@ -168,15 +168,15 @@ describe('cmrIngest', () => {
           errors: ['HTTP Error']
         })
 
-      const response = cmrIngest(
-        'subscriptions',
-        { collectionConceptId: 'C100000-EDSC' },
-        {
+      const response = cmrIngest({
+        conceptType: 'subscriptions',
+        data: { collectionConceptId: 'C100000-EDSC' },
+        headers: {
           'Client-Id': 'eed-test-graphql',
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         },
-        'subscriptions'
-      )
+        ingestPath: 'subscriptions'
+      })
 
       await expect(response).rejects.toThrow()
     })

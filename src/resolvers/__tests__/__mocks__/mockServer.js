@@ -28,9 +28,13 @@ import {
   deleteService as serviceSourceDelete,
   fetchServices as serviceSourceFetch
 } from '../../../datasources/service'
+import {
+  deleteVariable as variableSourceDelete,
+  fetchVariables as variableSourceFetch
+} from '../../../datasources/variable'
 import toolDraftSource from '../../../datasources/toolDraft'
 import variableDraftSource from '../../../datasources/variableDraft'
-import variableSource from '../../../datasources/variable'
+
 import {
   deleteDraft as draftSourceDelete,
   fetchDrafts as draftSourceFetch,
@@ -70,7 +74,8 @@ export const buildContextValue = (extraContext) => ({
     toolSourceDelete,
     toolSourceFetch,
     variableDraftSource,
-    variableSource
+    variableSourceDelete,
+    variableSourceFetch
   },
   headers: {
     'Client-Id': 'eed-test-graphql',

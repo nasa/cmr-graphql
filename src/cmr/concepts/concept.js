@@ -367,12 +367,12 @@ export default class Concept {
     this.logKeyRequest(requestedKeys, 'ingest')
 
     // Construct the promise that will ingest data into CMR
-    this.response = cmrIngest(
-      this.getConceptType(),
-      params,
-      providedHeaders,
-      this.ingestPath
-    )
+    this.response = cmrIngest({
+      conceptType: this.getConceptType(),
+      data: params,
+      headers: providedHeaders,
+      ingestPath: this.ingestPath
+    })
   }
 
   /**

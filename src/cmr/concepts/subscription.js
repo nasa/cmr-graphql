@@ -1,4 +1,6 @@
+import camelcaseKeys from 'camelcase-keys'
 import { uniq } from 'lodash'
+import { mergeParams } from '../../utils/mergeParams'
 
 import { pickIgnoringCase } from '../../utils/pickIgnoringCase'
 import Concept from './concept'
@@ -113,6 +115,11 @@ export default class Subscription extends Concept {
     // eslint-disable-next-line no-param-reassign
     data.metadataSpecification = this.metadataSpecification
 
-    super.ingest(data, requestedKeys, permittedHeaders)
+    const prepDataForCmr = camelcaseKeys(mergeParams(data), {
+      pascalCase: true,
+      exclude: ['nativeId']
+    })
+
+    super.ingest(prepDataForCmr, requestedKeys, permittedHeaders)
   }
 }

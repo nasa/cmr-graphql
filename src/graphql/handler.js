@@ -25,13 +25,18 @@ import orderOptionSource from '../datasources/orderOption'
 import serviceDraftSource from '../datasources/serviceDraft'
 import toolDraftSource from '../datasources/toolDraft'
 import variableDraftSource from '../datasources/variableDraft'
-import variableSource from '../datasources/variable'
 
 import { deleteTool as toolSourceDelete, fetchTools as toolSourceFetch } from '../datasources/tool'
+
 import {
   deleteService as serviceSourceDelete,
   fetchServices as serviceSourceFetch
 } from '../datasources/service'
+
+import {
+  deleteVariable as variableSourceDelete,
+  fetchVariables as variableSourceFetch
+} from '../datasources/variable'
 
 import {
   deleteSubscription as subscriptionSourceDelete,
@@ -170,7 +175,8 @@ export default startServerAndCreateLambdaHandler(
           toolSourceDelete,
           toolSourceFetch,
           variableDraftSource,
-          variableSource
+          variableSourceDelete,
+          variableSourceFetch
         },
         headers: requestHeaders,
         collectionLoader: new DataLoader(getCollectionsById, { cacheKeyFn: (obj) => obj.conceptId })
