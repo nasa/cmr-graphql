@@ -1324,7 +1324,7 @@ describe('Draft', () => {
           })
         })
 
-        test('returns the cmr result when collection concept provided but not needed', async () => {
+        test('returns an error when collection concept id not provided', async () => {
           nock(/example-cmr/, {
             reqheaders: {
               accept: 'application/json',
@@ -1814,7 +1814,7 @@ describe('Draft', () => {
           })
         })
 
-        test('returns the cmr result when collection concept id not provided', async () => {
+        test('returns an error when collection concept id not provided', async () => {
           nock(/example-cmr/, {
             reqheaders: {
               accept: 'application/json',
