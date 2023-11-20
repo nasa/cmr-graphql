@@ -140,6 +140,7 @@ export default class Concept {
 
     const formattedAssociationDetails = camelcaseKeys(associationDetails, { deep: true })
 
+    // When querying for associated concepts we must ensure `associationDetails` is in the requested fields
     if (associationDetails) {
       this.setItemValue(id, 'associationDetails', formattedAssociationDetails)
     }
@@ -602,11 +603,11 @@ export default class Concept {
       this.setEssentialJsonValues(conceptId, normalizedItem)
 
       jsonKeys.forEach((jsonKey) => {
+        // Snake case the key requested and any children of that key
         const cmrKey = snakeCase(jsonKey)
 
         const { [cmrKey]: keyValue } = normalizedItem
 
-        // Snake case the key requested and any children of that key
         this.setItemValue(conceptId, jsonKey, keyValue)
       })
     })

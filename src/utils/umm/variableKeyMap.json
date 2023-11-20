@@ -2,7 +2,12 @@
   "sharedKeys": [
     "conceptId",
     "longName",
-    "name"
+    "name",
+    "instanceInformation",
+    "definition",
+    "nativeId",
+    "scienceKeywords",
+    "dimensions"
   ],
   "ummKeyMappings": {
     "additionalIdentifiers": "umm.AdditionalIdentifiers",
