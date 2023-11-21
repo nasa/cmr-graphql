@@ -608,7 +608,13 @@ export default class Concept {
 
         const { [cmrKey]: keyValue } = normalizedItem
 
-        this.setItemValue(conceptId, jsonKey, keyValue)
+        // Once accessed, ensure that the child key/value pairs are consistently returning in `camelCase` except for user-defined tags
+        let formattedKeyValue = keyValue
+        if (jsonKey !== 'tags') {
+          formattedKeyValue = camelcaseKeys(keyValue, { deep: true })
+        }
+
+        this.setItemValue(conceptId, jsonKey, formattedKeyValue)
       })
     })
   }
