@@ -491,7 +491,7 @@ describe('Variable', () => {
         }
       })
     })
-    
+
     test('deleteVariable', async () => {
       nock(/example-cmr/)
         .defaultReplyHeaders({
@@ -532,6 +532,6 @@ describe('Variable', () => {
           revisionId: '1'
         }
       })
-    }) 
+    })
   })
 })

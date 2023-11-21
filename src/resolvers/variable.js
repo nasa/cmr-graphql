@@ -20,8 +20,18 @@ export default {
         params: { conceptId: Object.values(results).map((object) => Object.values(object)).flat() }
       }
 
-      return dataSources.variableSource(
+      return dataSources.variableSourceFetch(
         handlePagingParams(conceptIds),
+        context,
+        parseResolveInfo(info)
+      )
+    },
+
+    deleteVariable: async (source, args, context, info) => {
+      const { dataSources } = context
+
+      return dataSources.variableSourceDelete(
+        handlePagingParams(args),
         context,
         parseResolveInfo(info)
       )
@@ -46,18 +56,6 @@ export default {
       const [firstResult] = result
 
       return firstResult
-    }
-  },
-
-  Mutation: {
-    deleteVariable: async (source, args, context, info) => {
-      const { dataSources } = context
-
-      return dataSources.variableSourceDelete(
-        handlePagingParams(args),
-        context,
-        parseResolveInfo(info)
-      )
     }
   },
 
