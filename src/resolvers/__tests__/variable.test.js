@@ -484,7 +484,6 @@ describe('Variable', () => {
       })
 
       const { data } = response.body.singleResult
-
       expect(data).toEqual({
         publishGeneratedVariables: {
           count: 1,
@@ -492,5 +491,47 @@ describe('Variable', () => {
         }
       })
     })
+    
+    test('deleteVariable', async () => {
+      nock(/example-cmr/)
+        .defaultReplyHeaders({
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .delete(/ingest\/providers\/EDSC\/variables\/test-guid/)
+        .reply(201, {
+          'concept-id': 'V100000-EDSC',
+          'revision-id': '1'
+        })
+
+      const response = await server.executeOperation({
+        variables: {
+          nativeId: 'test-guid',
+          providerId: 'EDSC'
+        },
+        query: `mutation DeleteVariable (
+            $providerId: String!
+            $nativeId: String!
+          ) {
+            deleteVariable (
+              providerId: $providerId
+              nativeId: $nativeId
+            ) {
+                conceptId
+                revisionId
+              }
+            }`
+      }, {
+        contextValue
+      })
+
+      const { data } = response.body.singleResult
+      expect(data).toEqual({
+        deleteVariable: {
+          conceptId: 'V100000-EDSC',
+          revisionId: '1'
+        }
+      })
+    }) 
   })
 })

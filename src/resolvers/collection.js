@@ -240,7 +240,7 @@ export default {
         }
       }
 
-      return dataSources.variableSource({
+      return dataSources.variableSourceFetch({
         conceptId: variableConceptIds,
         ...handlePagingParams(args, variables.length)
       }, context, parseResolveInfo(info))

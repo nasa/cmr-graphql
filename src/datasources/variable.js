@@ -4,7 +4,7 @@ import variableKeyMap from '../utils/umm/variableKeyMap.json'
 
 import Variable from '../cmr/concepts/variable'
 
-export default async (params, context, parsedInfo) => {
+export const fetchVariables = async (params, context, parsedInfo) => {
   const { headers } = context
 
   const requestInfo = parseRequestedFields(parsedInfo, variableKeyMap, 'variable')
@@ -19,4 +19,25 @@ export default async (params, context, parsedInfo) => {
 
   // Return a formatted JSON response
   return variable.getFormattedResponse()
+}
+
+export const deleteVariable = async (args, context, parsedInfo) => {
+  const { headers } = context
+
+  const requestInfo = parseRequestedFields(parsedInfo, variableKeyMap, 'variable')
+
+  const {
+    ingestKeys
+  } = requestInfo
+
+  const variable = new Variable(headers, requestInfo, args)
+
+  // Contact CMR
+  variable.delete(args, ingestKeys, headers)
+
+  // Parse the response from CMR
+  await variable.parseDelete(requestInfo)
+
+  // Return a formatted JSON response
+  return variable.getFormattedDeleteResponse()
 }

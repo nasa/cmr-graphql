@@ -1,6 +1,9 @@
 import nock from 'nock'
 
-import variableDatasource from '../variable'
+import {
+  deleteVariable as variableSourceDelete,
+  fetchVariables as variableSourceFetch
+} from '../variable'
 
 let requestInfo
 
@@ -108,7 +111,7 @@ describe('variable', () => {
           }]
         })
 
-      const response = await variableDatasource({}, {
+      const response = await variableSourceFetch({}, {
         headers: {
           'Client-Id': 'eed-test-graphql',
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -146,7 +149,7 @@ describe('variable', () => {
             }]
           })
 
-        const response = await variableDatasource({}, {
+        const response = await variableSourceFetch({}, {
           headers: {
             'Client-Id': 'eed-test-graphql',
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -180,7 +183,7 @@ describe('variable', () => {
           }]
         })
 
-      const response = await variableDatasource({}, {
+      const response = await variableSourceFetch({}, {
         headers: {
           'Client-Id': 'eed-test-graphql',
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -212,7 +215,7 @@ describe('variable', () => {
           }]
         })
 
-      const response = await variableDatasource({
+      const response = await variableSourceFetch({
         params: {
           concept_id: 'V100000-EDSC'
         }
@@ -287,7 +290,7 @@ describe('variable', () => {
           }]
         })
 
-      const response = await variableDatasource({
+      const response = await variableSourceFetch({
         params: {
           conceptId: 'V100000-EDSC'
         }
@@ -318,10 +321,103 @@ describe('variable', () => {
       })
 
     await expect(
-      variableDatasource({
+      variableSourceFetch({
         params: {
           conceptId: 'V100000-EDSC'
         }
+      }, {
+        headers: {
+          'Client-Id': 'eed-test-graphql',
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        }
+      }, requestInfo)
+    ).rejects.toThrow(Error)
+  })
+})
+
+describe('variable#delete', () => {
+  const OLD_ENV = process.env
+
+  beforeEach(() => {
+    jest.resetAllMocks()
+
+    jest.restoreAllMocks()
+
+    process.env = { ...OLD_ENV }
+
+    process.env.cmrRootUrl = 'http://example-cmr.com'
+
+    // Default requestInfo
+    requestInfo = {
+      name: 'deleteVariable',
+      alias: 'deleteVariable',
+      args: {
+        conceptId: 'V100000-EDSC',
+        nativeId: 'test-guid'
+      },
+      fieldsByTypeName: {
+        VariableMutationResponse: {
+          conceptId: {
+            name: 'conceptId',
+            alias: 'conceptId',
+            args: {},
+            fieldsByTypeName: {}
+          },
+          revisionId: {
+            name: 'revisionId',
+            alias: 'revisionId',
+            args: {},
+            fieldsByTypeName: {}
+          }
+        }
+      }
+    }
+  })
+
+  afterEach(() => {
+    process.env = OLD_ENV
+  })
+
+  test('returns the CMR results', async () => {
+    nock(/example-cmr/)
+      .defaultReplyHeaders({
+        'CMR-Request-Id': 'abcd-1234-efgh-5678'
+      })
+      .delete(/ingest\/providers\/EDSC\/variables\/test-guid/)
+      .reply(201, {
+        'concept-id': 'V100000-EDSC',
+        'revision-id': '1'
+      })
+
+    const response = await variableSourceDelete({
+      nativeId: 'test-guid',
+      providerId: 'EDSC'
+    }, {
+      headers: {
+        'Client-Id': 'eed-test-graphql',
+        'CMR-Request-Id': 'abcd-1234-efgh-5678'
+      }
+    }, requestInfo)
+
+    expect(response).toEqual({
+      conceptId: 'V100000-EDSC',
+      revisionId: '1'
+    })
+  })
+
+  test('catches errors received from cmrDelete', async () => {
+    nock(/example-cmr/)
+      .delete(/ingest\/providers\/EDSC\/variables\/test-guid/)
+      .reply(500, {
+        errors: ['HTTP Error']
+      }, {
+        'cmr-request-id': 'abcd-1234-efgh-5678'
+      })
+
+    await expect(
+      variableSourceDelete({
+        nativeId: 'test-guid',
+        providerId: 'EDSC'
       }, {
         headers: {
           'Client-Id': 'eed-test-graphql',

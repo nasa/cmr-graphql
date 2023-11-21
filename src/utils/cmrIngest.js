@@ -1,7 +1,5 @@
 import axios from 'axios'
 
-import camelcaseKeys from 'camelcase-keys'
-
 import { v4 as uuidv4 } from 'uuid'
 
 import { downcaseKeys } from './downcaseKeys'
@@ -9,12 +7,18 @@ import { pickIgnoringCase } from './pickIgnoringCase'
 
 /**
  * Make a request to CMR and return the promise
- * @param {String} conceptType Concept type to ingest
- * @param {Object} data Parameters to send to CMR
- * @param {Object} headers Headers to send to CMR
- * @param {String} ingestPath CMR path to call to ingest concept
+ * @param {Object} params
+ * @param {String} params.conceptType Concept type to ingest
+ * @param {Object} params.data Parameters to send to CMR
+ * @param {Object} params.headers Headers to send to CMR
+ * @param {String} params.ingestPath CMR path to call to ingest concept
  */
-export const cmrIngest = async (conceptType, data, headers, ingestPath) => {
+export const cmrIngest = ({
+  conceptType,
+  data,
+  headers,
+  ingestPath
+}) => {
   // Default headers
   const defaultHeaders = {
     Accept: 'application/json'
@@ -39,18 +43,13 @@ export const cmrIngest = async (conceptType, data, headers, ingestPath) => {
   // eslint-disable-next-line no-param-reassign
   delete data.nativeId
 
-  const cmrParameters = camelcaseKeys(data, {
-    pascalCase: true,
-    exclude: ['URL']
-  })
-
   const {
     'client-id': clientId,
     'cmr-request-id': requestId
   } = downcaseKeys(permittedHeaders)
 
   const requestConfiguration = {
-    data: cmrParameters,
+    data,
     headers: permittedHeaders,
     method: 'PUT',
     url: `${process.env.cmrRootUrl}/ingest/${ingestPath}/${nativeId}`
