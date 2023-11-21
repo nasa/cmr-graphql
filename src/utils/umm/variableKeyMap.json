@@ -2,7 +2,6 @@
   "sharedKeys": [
     "conceptId",
     "definition",
-    "dimensions",
     "instanceInformation",
     "longName",
     "name",
