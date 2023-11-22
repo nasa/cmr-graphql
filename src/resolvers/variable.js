@@ -17,7 +17,7 @@ export default {
 
       // Pull out the variable concept ids from the source to use as parameters later
       const conceptIds = {
-        params: { conceptId: Object.values(results).map((object) => Object.values(object)).flat() }
+        params: { conceptId: results.map((item) => item.conceptId) }
       }
 
       return dataSources.variableSourceFetch(
