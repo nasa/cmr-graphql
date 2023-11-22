@@ -112,6 +112,11 @@ type Query {
 }
 
 type Mutation {
+  publishGeneratedVariables (
+    "The collection concept Id."
+    conceptId: String!
+  ): VariableList
+
   deleteVariable (
     "Provider ID of the variable."
     providerId: String!

@@ -1,8 +1,17 @@
 import nock from 'nock'
 
+import { mockClient } from 'aws-sdk-client-mock'
+import { InvokeCommand, LambdaClient } from '@aws-sdk/client-lambda'
+
 import { buildContextValue, server } from './__mocks__/mockServer'
 
 const contextValue = buildContextValue()
+
+const lambdaClientMock = mockClient(LambdaClient)
+
+beforeEach(() => {
+  lambdaClientMock.reset()
+})
 
 describe('Variable', () => {
   const OLD_ENV = process.env
@@ -418,6 +427,71 @@ describe('Variable', () => {
   })
 
   describe('Mutation', () => {
+    test('publishGeneratedVariables calls earthdata-varinfo lambda to publish variable drafts', async () => {
+      nock(/example-cmr/)
+        .defaultReplyHeaders({
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .post(/collections\.json/)
+        .reply(200, {
+          feed: {
+            entry: [{
+              id: 'C100000-EDSC'
+            }]
+          }
+        })
+
+      nock(/example-cmr/)
+        .defaultReplyHeaders({
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678',
+          'CMR-Hits': 1
+        })
+        .post(/variables\.json/)
+        .reply(200, {
+          items: [{
+            concept_id: 'V10000-EDSC'
+          }]
+        })
+
+      const variableConceptIdList = [{
+        conceptId: 'V10000-EDSC'
+      }]
+
+      lambdaClientMock.on(InvokeCommand).resolves({
+        Payload: Buffer.from(JSON.stringify({
+          isBase64Encoded: false,
+          statusCode: 200,
+          body: variableConceptIdList
+        }))
+      })
+
+      const response = await server.executeOperation({
+        variables: {
+          conceptId: 'C100000-EDSC'
+        },
+        query: `mutation PublishGeneratedVariables($conceptId: String!) {
+            publishGeneratedVariables(conceptId: $conceptId) {
+              count
+              items {
+                conceptId
+              }
+            }
+          }`
+      }, {
+        contextValue
+      })
+
+      const { data } = response.body.singleResult
+      expect(data).toEqual({
+        publishGeneratedVariables: {
+          count: 1,
+          items: variableConceptIdList
+        }
+      })
+    })
+
     test('deleteVariable', async () => {
       nock(/example-cmr/)
         .defaultReplyHeaders({

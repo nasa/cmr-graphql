@@ -791,6 +791,71 @@ variables:
       }
     }
 
+#### Publish Generated Collection Variable Drafts
+
+For all supported arguments and columns, see [the schema](src/types/variable.graphql).
+
+CMR-GraphQL queries an earthdata-varinfo lambda in order to generate and publish collection variable drafts. The resulting variables can be returned as part of the Variable type response.
+
+`publishVariableDrafts` will return collection generated variables, using the earthdata-varinfo project(https://github.com/nasa/earthdata-varinfo)
+
+##### Example Mutation
+
+    mutation PublishGeneratedVariables($conceptId: String!) {
+      publishGeneratedVariables(conceptId: $conceptId) {
+        count
+        items {
+          conceptId
+          dataType
+          definition
+          dimensions
+          longName
+          name
+          standardName
+          units
+          metadataSpecification
+        }
+      }
+    }
+
+    variables:
+    {
+      "conceptId": "C1000000001-EXAMPLE"
+    }
+
+##### Example Response
+
+     {
+      "data": {
+        "publishGeneratedVariables": {
+          "count": 1,
+          "items": [
+            {
+              "conceptId": "V1000000001-EXAMPLE",
+              "dataType": "int32",
+              "definition": "Grid/time",
+              "dimensions": [
+                {
+                  "Name": "Grid/time",
+                  "Size": 1,
+                  "Type": "TIME_DIMENSION"
+                }
+              ],
+              "longName": "Grid/time",
+              "name": "Grid/time",
+              "standardName": "time",
+              "units": "seconds since 1970-01-01 00:00:00 UTC",
+              "metadataSpecification": {
+                "URL": "https://cdn.earthdata.nasa.gov/umm/variable/v1.8.2",
+                "Name": "UMM-Var",
+                "Version": "1.8.2"
+              }
+            }
+          ]
+        }
+      }
+    }
+
 #### Drafts
 
 For all supported arguments and columns, see [the schema](src/types/draft.graphql).
@@ -961,6 +1026,7 @@ variables:
       "nativeId": "tool-1",
       "ummVersion": "1.2.0"
     }
+
 #### Local graph database:
 
 Normally running GraphQl with `serverless offline` will utilize the `(cmr.earthdata.nasa.gov/graphdb)` endpoint, to query against related collections and duplicate collections in the graph database. To send queries to a locally running graph database, we can use a docker gremlin-server that exposes an HTTP endpoint. This is launched by running
