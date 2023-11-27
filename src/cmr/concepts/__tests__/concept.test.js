@@ -125,7 +125,7 @@ describe('concept', () => {
       })
 
       describe('the nested key is tag', () => {
-        test('the child-keys of the tag return snake_cased', () => {
+        test('the child-keys of the tag return in their original format', () => {
           const concept = new Concept('concept', {}, [])
           const conceptId = 'C1200000000-EDSC'
           const jsonKeys = ['tags']
