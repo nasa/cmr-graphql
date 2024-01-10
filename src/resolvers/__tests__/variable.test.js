@@ -423,6 +423,84 @@ describe('Variable', () => {
           }
         })
       })
+
+      test('returns correct values for Related URLs', async () => {
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Hits': 2,
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .post(/variable-drafts\.umm_json/)
+          .reply(200, {
+            items: [{
+              meta: {
+                'concept-id': 'VD100000-EDSC'
+              },
+              umm: {}
+            }, {
+              meta: {
+                'concept-id': 'VD100001-EDSC'
+              },
+              umm: {
+                RelatedURLs: [
+                  {
+                    description: 'Test',
+                    urlContentType: 'DataCenterURL',
+                    type: 'HOME PAGE',
+                    url: 'mock url',
+                    format: 'HTML',
+                    mimeType: 'application/msword'
+                  }
+                ]
+              }
+            }]
+          })
+
+        const response = await server.executeOperation({
+          variables: {
+            params: {
+              conceptType: 'Variable'
+            }
+          },
+          query: `query Drafts($params: DraftsInput) {
+            drafts(params: $params) {
+              items {
+                previewMetadata {
+                  ... on Variable {
+                    relatedUrls
+                  }
+                }
+              }
+            }
+          }`
+        }, {
+          contextValue
+        })
+
+        const { data } = response.body.singleResult
+
+        expect(data).toEqual({
+          drafts: {
+            items: [{
+              previewMetadata: {
+                relatedUrls: null
+              }
+            }, {
+              previewMetadata: {
+                relatedUrls: [{
+                  description: 'Test',
+                  urlContentType: 'DataCenterURL',
+                  type: 'HOME PAGE',
+                  url: 'mock url',
+                  format: 'HTML',
+                  mimeType: 'application/msword'
+                }]
+              }
+            }]
+          }
+        })
+      })
     })
   })
 
