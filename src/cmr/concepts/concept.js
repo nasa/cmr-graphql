@@ -668,7 +668,23 @@ export default class Concept {
         }
 
         if (keyValue != null) {
-          const camelCasedObject = camelcaseKeys({ [ummKey]: keyValue }, { deep: true })
+          const camelCasedObject = camelcaseKeys({ [ummKey]: keyValue }, {
+            deep: true,
+            exclude: ['RelatedURLs']
+          })
+
+          // CamelcaseKey converts RelatedURLs to relatedUrLs, so excluding RelatedURLs above.
+          // This will remove RelatedURLs and create a new
+          // key called relatedUrls and assign the value to it so MMT and graphql response matches.
+          if (ummKey === 'previewMetadata') {
+            const { previewMetadata } = camelCasedObject
+            camelCasedObject.previewMetadata = {
+              ...previewMetadata,
+              relatedUrls: previewMetadata.RelatedURLs
+            }
+
+            delete camelCasedObject.previewMetadata.RelatedURLs
+          }
 
           const { [ummKey]: camelCasedValue } = camelCasedObject
 
