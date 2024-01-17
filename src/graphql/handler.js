@@ -11,6 +11,7 @@ import DataLoader from 'dataloader'
 import resolvers from '../resolvers'
 import typeDefs from '../types'
 
+// Import aclSource from '../datasources/acl'
 import collectionDraftProposalSource from '../datasources/collectionDraftProposal'
 import collectionDraftSource from '../datasources/collectionDraft'
 import collectionSource from '../datasources/collection'
@@ -28,6 +29,7 @@ import variableDraftSource from '../datasources/variableDraft'
 
 import { deleteTool as toolSourceDelete, fetchTools as toolSourceFetch } from '../datasources/tool'
 
+import { fetchAcl as aclFetch } from '../datasources/acl'
 import {
   deleteService as serviceSourceDelete,
   fetchServices as serviceSourceFetch
@@ -150,6 +152,7 @@ export default startServerAndCreateLambdaHandler(
       return {
         ...context,
         dataSources: {
+          aclFetch,
           collectionDraftProposalSource,
           collectionDraftSource,
           collectionSource,
