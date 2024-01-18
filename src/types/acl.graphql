@@ -1,139 +1,16 @@
 type Acl {
-  "A brief description of the collection the metadata represents."
-  abstract: String
-  "Allows the author to constrain access to the collection. This includes any special restrictions, legal prerequisites, limitations and/or warnings on obtaining collection data. Some words that may be used in this element's value include: Public, In-house, Limited, None. The value field is used for special ACL rules (Access Control Lists (http://en.wikipedia.org/wiki/Access_control_list)). For example it can be used to hide metadata when it isn't ready for public consumption."
-  accessConstraints: JSON
-  "The data’s distinctive attributes of the collection (i.e. attributes used to describe the unique characteristics of the collection which extend beyond those defined)."
-  additionalAttributes: JSON
-  "Allows authors to provide words or phrases outside of the controlled Science Keyword vocabulary, to further describe the collection."
-  ancillaryKeywords: [String]
-  "Allows a data provider to provide archive and distribution information up front to an end user, to help them decide if they can use the product."
-  archiveAndDistributionInformation: JSON
-  "This element stores DOIs that are associated with the collection such as from campaigns and other related sources."
-  associatedDois: JSON
-  "Information required to properly cite the collection in professional scientific literature."
-  collectionCitations: JSON
-  "Data type of the collection, e.g. NEAR_REAL_TIME"
-  collectionDataType: String
-  "This element describes the production status of the data set."
-  collectionProgress: String
-  "Information about the personnel groups responsible for this collection and its metadata."
-  contactGroups: JSON
-  "Information about the personnel responsible for this collection and its metadata."
-  contactPersons: JSON
-  "Information about the data centers responsible for this collection and its metadata."
-  dataCenters: JSON
-  "Dates related to activities involving the collection data."
-  dataDates: JSON
-  "Describes the language used in the preparation, storage, and description of the collection. It is the language of the collection data themselves.   It does not refer to the language used in the metadata record (although this may be the same language)."
-  dataLanguage: String
-  "This element allows end users to get direct access to data products that are stored in the Amazon Web Service (AWS) S3 buckets. The sub elements include S3 credentials end point and a documentation URL as well as bucket prefix names and an AWS region."
-  directDistributionInformation: JSON
-  "Formerly called Internal Directory Name (IDN) Node (IDN_Node). This element has been used historically by the GCMD internally to identify association, responsibility and/or ownership of the dataset, service or supplemental information. Note: This field only occurs in the DIF. When a DIF record is retrieved in the ECHO10 or ISO 19115 formats, this element will not be translated. The controlled vocabulary for directory names is maintained in the Keyword Management System (KMS)."
-  directoryNames: JSON
-  "This element stores the DOI (Digital Object Identifier) that identifies the collection. note: The values should start with the directory indicator which in ESDIS' case is 10.  If the DOI was registered through ESDIS, the beginning of the string should be 10.5067. The DOI URL is not stored here; it should be stored as a RelatedURL. The DOI organization that is responsible for creating the DOI is described in the Authority element. For ESDIS records the value of https://doi.org/ should be used. While this element is not required, NASA metadata providers are strongly encouraged to include DOI and DOI Authority for their collections."
-  doi: JSON
-  "Identifies the topic categories from the EN ISO 19115-1:2014 Geographic Information – Metadata – Part 1: Fundamentals (http://www.isotc211.org/) Topic Category Code List that pertain to this collection, based on the Science Keywords associated with the collection. An ISO Topic Category is a high-level thematic classification to assist in the grouping of and search for available collections. The controlled vocabulary for ISO topic categories is maintained in the Keyword Management System (KMS)."
-  isoTopicCategories: [String]
-  "Controlled hierarchical keywords used to specify the spatial location of the collection.   The controlled vocabulary for spatial keywords is maintained in the Keyword Management System (KMS).  The Spatial Keyword hierarchy includes one or more of the following layers: Category (e.g., Continent), Type (e.g. Africa), Subregion1 (e.g., Central Africa), Subregion2 (e.g., Cameroon), and Subregion3. DetailedLocation exists outside the hierarchy."
-  locationKeywords: JSON
-  "This element is used to identify other services, collections, visualizations, granules, and other metadata types and resources that are associated with or dependent on the data described by the metadata. This element is also used to identify a parent metadata record if it exists. This usage should be reserved for instances where a group of metadata records are subsets that can be better represented by one parent metadata record, which describes the entire set. In some instances, a child may point to more than one parent. The EntryId is the same as the element described elsewhere in this document where it contains an ID and Version."
-  metadataAssociations: JSON
-  "Dates related to activities involving the metadata record itself."
-  metadataDates: JSON
-  "The language used in the metadata record."
-  metadataLanguage: String
-  "For paleoclimate or geologic data, PaleoTemporalCoverage is the length of time represented by the data collected. PaleoTemporalCoverage should be used when the data spans time frames earlier than yyyy-mm-dd = 0001-01-01."
-  paleoTemporalCoverages: JSON
-  "Information about the relevant platform(s) used to acquire the data in the collection. The controlled vocabulary for platform types is maintained in the Keyword Management System (KMS), and includes Spacecraft, Aircraft, Vessel, Buoy, Platform, Station, Network, Human, etc."
-  platforms: JSON
-  "The identifier for the processing level of the collection."
-  processingLevel: JSON
-  "The name of the scientific program, field campaign, or project from which the data were collected."
-  projects: JSON
-  "Describes key bibliographic citations pertaining to the collection."
-  publicationReferences: JSON
-  "Suggested usage or purpose for the collection data or service."
-  purpose: String
-  "Free text description of the quality of the collection data."
-  quality: String
-  "Describes any data/service related URLs that include project home pages, services, related data archives/servers, metadata extensions, direct links to online software packages, web mapping services, links to images, or other data."
-  relatedUrls: JSON
-  "Controlled Science Keywords describing the collection.  The controlled vocabulary for Science Keywords is maintained in the Keyword Management System (KMS)."
-  scienceKeywords: JSON
-  "Find collections matching any of the 'short_name' param values."
-  shortName: String
-  "Specifies the geographic and vertical (altitude, depth) coverage of the data."
-  spatialExtent: JSON
-  "The reference frame or system in which altitudes (elevations) are given. The information contains the datum name, distance units and encoding method, which provide the definition for the system. This field also stores the characteristics of the reference frame or system from which depths are measured. The additional information in the field is geometry reference data etc."
-  spatialInformation: JSON
-  "This element is reserved for NASA records only. A Standard Product is a product that has been vetted to ensure that they are complete, consistent, maintain integrity, and satifies the goals of the Earth Observing System mission. The NASA product owners have also commmitted to archiving and maintaining the data products. More information can be found here: https://earthdata.nasa.gov/eosdis/science-system-description/eosdis-standard-products."
-  standardProduct: Boolean
-  "This class contains attributes which describe the temporal range of a specific collection. Temporal Extent includes a specification of the Temporal Range Type of the collection, which is one of Range Date Time, Single Date Time, or Periodic Date Time."
-  temporalExtents: JSON
-  "One or more words or phrases that describe the temporal resolution of the dataset."
-  temporalKeywords: [String]
-  "Name of the two-dimensional tiling system for the collection."
-  tilingIdentificationSystems: JSON
-  "The title of the collection described by the metadata."
-  title: String
-  "Designed to protect privacy and/or intellectual property by allowing the author to specify how the collection may or may not be used after access is granted. This includes any special restrictions, legal prerequisites, terms and conditions, and/or limitations on using the item. Providers may request acknowledgement of the item from users and claim no responsibility for quality and completeness. Note: Use Constraints describe how the item may be used once access has been granted; and is distinct from Access Constraints, which refers to any constraints in accessing the item."
-  useConstraints: JSON
-  "The version description of the collection."
-  versionDescription: String
-  "The Version of the collection."
-  versionId: String
+  revisionId: Int
+  conceptId: String
+  identityType: String  
+  location: String
 }
-
 input AclInput {
-  "The id of the collection draft"
-  id: Int!
-}
+  "Options to provide to CMR"
+  options: JSON
 
+}
 type Query {
   acl (
     params: AclInput
   ): Acl
 }
-
-
-
-# type AccessControl {
-#      revisionId: Int!
-#      conceptId: String!
-#      identityType: String!
-#      acl: Acl
-#      name: string!
-#      location: String
-# }
-
-# type Acl {
-#     groupPermissions: [GroupPermission]
-#     provider_identity: ProviderIdentidy
-# }
-
-# type ProviderIdentidy {
-#     providerId: String
-#     target: String
-# }
-
-# type GroupPermission {
-#     userType: string
-#     permissions: [GrantablePermission]
-# }
-# "GrantablePermission must be one of the enum values"
-# enum GrantablePermission {
-#     read
-#     create
-#     delete
-#     update
-# }
-
-# input AccessControlInput {
-#     revisionId: Int!
-#     conceptId: String!
-# }
-
-# type Query {
-#     accessControl(params: AccessControlInput): AccessControl
-# }   

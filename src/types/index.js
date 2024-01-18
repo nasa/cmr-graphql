@@ -1,6 +1,5 @@
 import { mergeTypeDefs } from '@graphql-tools/merge'
-
-import acl from './acl.graqhql'
+import acl from './acl.graphql'
 import collection from './collection.graphql'
 import collectionDraft from './collectionDraft.graphql'
 import collectionDraftProposal from './collectionDraftProposal.graphql'
