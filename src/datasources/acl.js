@@ -1,20 +1,34 @@
 import { parseRequestedFields } from '../utils/parseRequestedFields'
+
+import aclKeyMap from '../utils/umm/aclKeyMap.json'
+
 import Acl from '../cmr/concepts/acl'
 
-export const fetchAcl = async (params, context, parsedInfo) => {
+export default async (params, context, parsedInfo) => {
   const { headers } = context
+  console.log('I am datasourxce acl 1')
+  
+  //const requestInfo = parseRequestedFields(parsedInfo, collectionKeyMap, 'collection')
 
-    
-  const requestInfo = parseRequestedFields(parsedInfo,'Acl')
+  // const requestInfo = parseRequestedFields(parsedInfo, aclKeyMap, 'acl')
 
-  const acl = new Acl(headers, requestInfo, params)
+  console.log('I am datasourxce acl 2')
 
-  //Query CMR
+  //const acl = new Acl(headers, requestInfo, params)
+
+  const acl = new Acl(headers, params)
+
+  console.log('@@@acl3')
+  // Query MMT
   acl.fetch(params)
 
-  //Parse the response from CMR
-  await acl.parse(requestInfo)
+  console.log('@@@acl4')
 
-  //Return a formatted JSON response
+  // Parse the response from MMT
+  // await acl.parse(requestInfo)
+
+  console.log('@@@acl5')
+
+  // Return a formatted JSON response
   return acl.getFormattedResponse()
 }
