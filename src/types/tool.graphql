@@ -29,10 +29,16 @@ type Tool {
   organizations: JSON
   "This element contains information about a smart handoff from one web user interface to another."
   potentialAction: JSON
+  "Provider ID of the Tool."
+  providerId: String
   "Information about the quality of the downloadable tool or web user interface. This would include information about any quality assurance procedures followed in development. Note: This field allows lightweight markup language with plain text formatting syntax. Line breaks within the text are preserved."
   quality: JSON
   "A URL associated with the web user interface or downloadable tool, e.g., the home page for the tool provider which is responsible for the tool."
   relatedUrls: JSON
+  "Date which the Tool was last updated."
+  revisionDate: String
+  "The revision id of the Tool."
+  revisionId: String
   "This element contains information about a smart handoff from one web user interface to another."
   searchAction: JSON
   "The browser(s) and associated version supported by the web user interface."
