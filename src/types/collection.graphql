@@ -111,6 +111,10 @@ type Collection {
   processingLevelId: String @deprecated(reason: "Use `processingLevel`.")
   "Suggested usage or purpose for the collection data or service."
   purpose: String
+  "Date which the Collection was last updated."
+  revisionDate: String
+  "The revision id of the Collection."
+  revisionId: String
   "Describes any data/service related URLs that include project home pages, services, related data archives/servers, metadata extensions, direct links to online software packages, web mapping services, links to images, or other data."
   relatedUrls: JSON
   "Controlled Science Keywords describing the collection.  The controlled vocabulary for Science Keywords is maintained in the Keyword Management System (KMS)."

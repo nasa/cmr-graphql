@@ -20,6 +20,8 @@
     "nativeId": "meta.native-id",
     "providerId": "meta.provider-id",
     "relatedUrls": "umm.RelatedURLs",
+    "revisionDate": "meta.revision-date",
+    "revisionId": "meta.revision-id",
     "serviceKeywords": "umm.ServiceKeywords",
     "serviceOptions": "umm.ServiceOptions",
     "serviceOrganizations": "umm.ServiceOrganizations",

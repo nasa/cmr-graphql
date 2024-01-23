@@ -27,8 +27,14 @@ type Variable {
   nativeId: String
   "The offset is the value which is either added to or subtracted from all values in the stored data field in order to obtain the original values. May be used together with Scale. An example of an offset is '0.49'."
   offset: Float
+  "Provider ID of the Variable."
+  providerId: String
   "A described URL associated with the a web resource, or interface. e.g., the home page for the variable provider."
   relatedUrls: JSON
+  "Date which the Variable was last updated."
+  revisionDate: String
+  "The revision id of the Variable."
+  revisionId: String
   "The sampling information of a variable."
   samplingIdentifiers: JSON
   "The scale is the numerical factor by which all values in the stored data field are multiplied in order to obtain the original values. May be used together with Offset. An example of a scale factor is '0.002'."
