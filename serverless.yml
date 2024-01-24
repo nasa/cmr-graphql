@@ -32,7 +32,7 @@ provider:
     ummGranuleVersion: '1.5'
     ummServiceVersion: '1.5.2'
     ummSubscriptionVersion: '1.1'
-    ummToolVersion: '1.1'
+    ummToolVersion: '1.2.0'
     ummVariableVersion: '1.9.0'
 
   vpc:
