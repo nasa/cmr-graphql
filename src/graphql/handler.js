@@ -57,7 +57,7 @@ import { verifyEDLJwt } from '../utils/verifyEDLJwt'
 
 import { getCollectionsById } from '../dataloaders/getCollectionsById'
 
-//import { getAclById } from '../dataloaders/getAclById'
+// Import { getAclById } from '../dataloaders/getAclById'
 
 const { env } = process
 
@@ -150,8 +150,6 @@ export default startServerAndCreateLambdaHandler(
 
       requestHeaders.User = context.edlUsername
 
-      console.log('I anm handdelre')
-
       return {
         ...context,
         dataSources: {
@@ -186,8 +184,8 @@ export default startServerAndCreateLambdaHandler(
         },
         headers: requestHeaders,
         collectionLoader: new DataLoader(getCollectionsById, { cacheKeyFn: (obj) => obj.conceptId })
-  
-        //aclLoader: new DataLoader(getAclById, { cacheKeyFn: (obj) => obj.conceptId })
+
+        // AclLoader: new DataLoader(getAclById, { cacheKeyFn: (obj) => obj.conceptId })
       }
     },
     middleware: [

@@ -13,9 +13,9 @@ import { pickIgnoringCase } from './pickIgnoringCase'
 //   console.log('aclquery@@')
 
 export const aclQuery = ({
-  conceptType,      // may not use it later
+  conceptType, // May not use it later
   headers,
- // nonIndexedKeys = [],
+  // NonIndexedKeys = [],
   options = {},
   params
 }) => {
@@ -23,7 +23,6 @@ export const aclQuery = ({
     format = 'json'
   } = options
 
-  console.log('export aclQuery1')
   // Default headers
   const defaultHeaders = {}
 
@@ -35,24 +34,16 @@ export const aclQuery = ({
     'Accept',
     'Authorization',
     'Client-Id',
-    'CMR-Request-Id',
+    'CMR-Request-Id'
   ])
 
-//   const aclParameters = prepKeysForCmr(snakeCaseKeys(params))
-
-  const {
-  } = downcaseKeys(permittedHeaders)
-
   const requestConfiguration = {
-    // data: aclParameters,
+    // Data: aclParameters,
     headers: permittedHeaders,
     method: 'GET',
-    // url: `${process.env.cmrRootUrl}/access-control/acls`
-    // url: `${process.env.cmrRootUrl}/access-control/acls/ACL1200000022-CMR`
     url: `${process.env.cmrRootUrl}/access-control/acls?permitted_user=typical`
-    // url: `${process.env.aclServiceUrl}/acl.${format}`
   }
-  console.log('@@@-requestConfiguration', requestConfiguration)
+
   // Interceptors require an instance of axios
   const instance = axios.create()
   const { interceptors } = instance
@@ -70,23 +61,16 @@ export const aclQuery = ({
   })
 
   responseInterceptor.use((response) => {
+    console.log('🚀 ~ responseInterceptor.use ~ response:', response)
     // Determine total time to complete this request
     const start = response.config.headers['request-startTime']
-    const end = process.hrtime(start);
+    const end = process.hrtime(start)
     const milliseconds = Math.round((end[0] * 1000) + (end[1] / 1000000))
 
-    
     // Log request duration
-    // console.log(`ACL Request ${requestId} from ${clientId} completed in ${milliseconds} ms`)
-    const { data } = response
-    const { items } = data
-    console.log('items  @@@', items )
-    // console.log(`Acl response @@@`, response)
-    // console.log(`this is aclQuery Response@@@`, response)
-    console.log('I am aclQuery')
+
     return response
   })
-  
 
-  return instance.request(requestConfiguration);
+  return instance.request(requestConfiguration)
 }
