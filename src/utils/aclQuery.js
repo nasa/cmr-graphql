@@ -13,7 +13,7 @@ import { pickIgnoringCase } from './pickIgnoringCase'
 //   console.log('aclquery@@')
 
 export const aclQuery = ({
-  conceptType,
+  conceptType,      // may not use it later
   headers,
  // nonIndexedKeys = [],
   options = {},
@@ -47,11 +47,12 @@ export const aclQuery = ({
     // data: aclParameters,
     headers: permittedHeaders,
     method: 'GET',
-    url: `${process.env.cmrRootUrl}/access-control/acls`
-    // url: `${process.env.cmrRootUrl}/access-control/acls?permitted_user=ttle9`
+    // url: `${process.env.cmrRootUrl}/access-control/acls`
+    // url: `${process.env.cmrRootUrl}/access-control/acls/ACL1200000022-CMR`
+    url: `${process.env.cmrRootUrl}/access-control/acls?permitted_user=typical`
     // url: `${process.env.aclServiceUrl}/acl.${format}`
   }
-
+  console.log('@@@-requestConfiguration', requestConfiguration)
   // Interceptors require an instance of axios
   const instance = axios.create()
   const { interceptors } = instance
@@ -77,8 +78,11 @@ export const aclQuery = ({
     
     // Log request duration
     // console.log(`ACL Request ${requestId} from ${clientId} completed in ${milliseconds} ms`)
-    //console.log(`response @@@`, response)
-    console.log(`this is aclQuery Response@@@`, response)
+    const { data } = response
+    const { items } = data
+    console.log('items  @@@', items )
+    // console.log(`Acl response @@@`, response)
+    // console.log(`this is aclQuery Response@@@`, response)
     console.log('I am aclQuery')
     return response
   })

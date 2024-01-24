@@ -80,9 +80,9 @@ export default class aclConcept {
    * @param {String} key The key to set within the result
    * @param {Any} value They value to assign to the key within the result
    */
-  setIngestValue(key, value) {
-    this.items[key] = value
-  }
+  // setIngestValue(key, value) {
+  //   this.items[key] = value
+  // }
 
   /**
    * Set a specific property on an object within the result set of a search operation
@@ -216,22 +216,22 @@ export default class aclConcept {
   /**
    * Return the ingest result set formatted for the graphql json response
    */
-  getFormattedIngestResponse() {
-    // Retrieve the result set regardless of whether or not the query is a list or not
-    const items = this.getItems()
+  // getFormattedIngestResponse() {
+  //   // Retrieve the result set regardless of whether or not the query is a list or not
+  //   const items = this.getItems()
 
-    return items
-  }
+  //   return items
+  // }
 
   /**
    * Return the delete result set formatted for the graphql json response
    */
-  getFormattedDeleteResponse() {
-    // Retrieve the result set regardless of whether or not the query is a list or not
-    const items = this.getItems()
+  // getFormattedDeleteResponse() {
+  //   // Retrieve the result set regardless of whether or not the query is a list or not
+  //   const items = this.getItems()
 
-    return items
-  }
+  //   return items
+  // }
 
   /**
    * Return the result set formatted for the graphql json response
@@ -275,14 +275,14 @@ export default class aclConcept {
   /**
    * Returns an array of keys representing supported search params for the umm endpoint
    */
-  getPermittedUmmSearchParams() {
-    return [
-      'concept_id',
-      'offset',
-      'page_size',
-      'sort_key'
-    ]
-  }
+  // getPermittedUmmSearchParams() {
+  //   return [
+  //     'concept_id',
+  //     'offset',
+  //     'page_size',
+  //     'sort_key'
+  //   ]
+  // }
 
   /**
    * Returns an array of keys that should not be indexed when sent to CMR
@@ -347,7 +347,7 @@ export default class aclConcept {
       return Buffer.from(
         JSON.stringify({
           json: this.jsonSearchAfterIdentifier,
-          umm: this.ummSearchAfterIdentifier
+          // umm: this.ummSearchAfterIdentifier
         })
       ).toString('base64')
     }
@@ -361,19 +361,19 @@ export default class aclConcept {
    * @param {Array} requestedKeys Keys requested by the query
    * @param {Object} providedHeaders Headers requested by the query
    */
-  ingest(data, requestedKeys, providedHeaders) {
-    const params = mergeParams(data)
+  // ingest(data, requestedKeys, providedHeaders) {
+  //   const params = mergeParams(data)
 
-    this.logKeyRequest(requestedKeys, 'ingest')
+  //   this.logKeyRequest(requestedKeys, 'ingest')
 
-    // Construct the promise that will ingest data into CMR
-    this.response = cmrIngest({
-      conceptType: this.getConceptType(),
-      data: params,
-      headers: providedHeaders,
-      ingestPath: this.ingestPath
-    })
-  }
+  //   // Construct the promise that will ingest data into CMR
+  //   this.response = cmrIngest({
+  //     conceptType: this.getConceptType(),
+  //     data: params,
+  //     headers: providedHeaders,
+  //     ingestPath: this.ingestPath
+  //   })
+  // }
 
   /**
    * Delete the provided object into the CMR
@@ -381,19 +381,19 @@ export default class aclConcept {
    * @param {Array} requestedKeys Keys requested by the query
    * @param {Object} providedHeaders Headers requested by the query
    */
-  delete(data, requestedKeys, providedHeaders) {
-    const params = mergeParams(data)
+  // delete(data, requestedKeys, providedHeaders) {
+  //   const params = mergeParams(data)
 
-    this.logKeyRequest(requestedKeys, 'ingest')
+  //   this.logKeyRequest(requestedKeys, 'ingest')
 
-    // Construct the promise that will delete data from CMR
-    this.response = cmrDelete(
-      this.getConceptType(),
-      params,
-      providedHeaders,
-      this.ingestPath
-    )
-  }
+  //   // Construct the promise that will delete data from CMR
+  //   this.response = cmrDelete(
+  //     this.getConceptType(),
+  //     params,
+  //     providedHeaders,
+  //     this.ingestPath
+  //   )
+  // }
 
   /**
    * Log requested keys for metrics and debugging
@@ -404,11 +404,11 @@ export default class aclConcept {
 
     console.log('aclConcept logKeyRequest 1')
 
-    try {
-      console.log('aclConcept logKeyRequest 2', keys.filter((field)))
-    } catch (error) {
-      console.log(error)
-    }
+    // try {
+    //   console.log('aclConcept logKeyRequest 2', keys.filter((field)))
+    // } catch (error) {
+    //   console.log(error)
+    // }
 
     
     // Prevent logging concept types, their meta keys are logged above
@@ -429,9 +429,9 @@ export default class aclConcept {
    * @param {Array} requestedKeys Keys requested by the query
    * @param {Object} providedHeaders Headers requested by the query
    */
-  fetchJson(searchParams, requestedKeys, providedHeaders) {
-
-    console.log('concept fetchJson 1')
+  // fetchJson(searchParams, requestedKeys, providedHeaders) {
+  fetchAcl(searchParams, requestedKeys, providedHeaders) {
+    console.log('concept fetchAcl 1')
     
     // this.logKeyRequest(requestedKeys, 'json')
 
@@ -451,20 +451,20 @@ export default class aclConcept {
    * @param {Array} requestedKeys Keys requested by the query
    * @param {Object} providedHeaders Headers requested by the query
    */
-  fetchUmm(searchParams, requestedKeys, providedHeaders) {
-    this.logKeyRequest(requestedKeys, 'umm')
+  // fetchUmm(searchParams, requestedKeys, providedHeaders) {
+  //   this.logKeyRequest(requestedKeys, 'umm')
 
-    // Construct the promise that will request data from the umm endpoint
-    return cmrQuery({
-      conceptType: this.getConceptType(),
-      params: pick(snakeCaseKeys(searchParams), this.getPermittedUmmSearchParams()),
-      nonIndexedKeys: this.getNonIndexedKeys(),
-      headers: providedHeaders,
-      options: {
-        format: 'umm_json'
-      }
-    })
-  }
+  //   // Construct the promise that will request data from the umm endpoint
+  //   return cmrQuery({
+  //     conceptType: this.getConceptType(),
+  //     params: pick(snakeCaseKeys(searchParams), this.getPermittedUmmSearchParams()),
+  //     nonIndexedKeys: this.getNonIndexedKeys(),
+  //     headers: providedHeaders,
+  //     options: {
+  //       format: 'umm_json'
+  //     }
+  //   })
+  // }
 
   /**
    * Query the CMR API
@@ -502,7 +502,7 @@ export default class aclConcept {
     console.log('aclConcept fetch 2')
 
     // if (jsonKeys.length > 0) {
-      if (true) {
+      if (jsonKeys.length) {
       console.log('aclConcept fetch 3')
 
       const jsonHeaders = {
@@ -516,7 +516,8 @@ export default class aclConcept {
       }
 
       promises.push(
-        this.fetchJson(this.arrayifyParams(params), jsonKeys, jsonHeaders)
+        // this.fetchJson(this.arrayifyParams(params), jsonKeys, jsonHeaders)
+        this.fetchAcl(this.arrayifyParams(params), jsonKeys, jsonHeaders)
       )
     } else {
       // Push a null promise to the array so that the umm promise always exists as
@@ -528,25 +529,25 @@ export default class aclConcept {
     }
 
     // If any requested keys are umm keys, we need to make an additional request to cmr
-    if (ummKeys.length > 0) {
-      const ummHeaders = {
-        ...this.headers
-      }
+    // if (ummKeys.length > 0) {
+    //   const ummHeaders = {
+    //     ...this.headers
+    //   }
 
-      if (ummSearchAfterIdentifier) {
-        ummHeaders['CMR-Search-After'] = ummSearchAfterIdentifier
-      }
+    //   if (ummSearchAfterIdentifier) {
+    //     ummHeaders['CMR-Search-After'] = ummSearchAfterIdentifier
+    //   }
 
-      // Construct the promise that will request data from the umm endpoint
-      promises.push(
-        this.fetchUmm(this.arrayifyParams(params), ummKeys, ummHeaders)
-      )
-    } else {
-      promises.push(
-        // eslint-disable-next-line no-promise-executor-return
-        new Promise((resolve) => resolve(null))
-      )
-    }
+    //   // Construct the promise that will request data from the umm endpoint
+    //   promises.push(
+    //     this.fetchUmm(this.arrayifyParams(params), ummKeys, ummHeaders)
+    //   )
+    // } else {
+    //   promises.push(
+    //     // eslint-disable-next-line no-promise-executor-return
+    //     new Promise((resolve) => resolve(null))
+    //   )
+    // }
 
     this.response = Promise.all(promises)
   }
@@ -571,11 +572,11 @@ export default class aclConcept {
    * Parse and return the body of an ingest operation
    * @param {Object} ingestResponse HTTP response from the CMR endpoint
    */
-  parseIngestBody(ingestResponse) {
-    const { data } = ingestResponse
+  // parseIngestBody(ingestResponse) {
+  //   const { data } = ingestResponse
 
-    return data
-  }
+  //   return data
+  // }
 
   /**
    * Parse and return the array of data from the nested response body
@@ -595,13 +596,13 @@ export default class aclConcept {
    * Parse and return the array of data from the nested response body
    * @param {Object} ummResponse HTTP response from the CMR endpoint
    */
-  parseUmmBody(ummResponse) {
-    const { data } = ummResponse
+  // parseUmmBody(ummResponse) {
+  //   const { data } = ummResponse
 
-    const { items } = data
+  //   const { items } = data
 
-    return items
-  }
+  //   return items
+  // }
 
   /**
    * Parses the response from the json endpoint
@@ -730,27 +731,27 @@ export default class aclConcept {
    * Parses the response from an ingest
    * @param {Object} requestInfo Parsed data pertaining to the ingest operation
    */
-  async parseIngest(requestInfo) {
-    try {
-      const {
-        ingestKeys
-      } = requestInfo
+  // async parseIngest(requestInfo) {
+  //   try {
+  //     const {
+  //       ingestKeys
+  //     } = requestInfo
 
-      const result = await this.getResponse()
+  //     const result = await this.getResponse()
 
-      const data = this.parseIngestBody(result)
+  //     const data = this.parseIngestBody(result)
 
-      ingestKeys.forEach((key) => {
-        const cmrKey = dasherize(key)
+  //     ingestKeys.forEach((key) => {
+  //       const cmrKey = dasherize(key)
 
-        const { [cmrKey]: keyValue } = data
+  //       const { [cmrKey]: keyValue } = data
 
-        this.setIngestValue(key, keyValue)
-      })
-    } catch (e) {
-      parseError(e, { reThrowError: true })
-    }
-  }
+  //       this.setIngestValue(key, keyValue)
+  //     })
+  //   } catch (e) {
+  //     parseError(e, { reThrowError: true })
+  //   }
+  // }
 
   /**
    * Parses the response from a delete
@@ -772,6 +773,8 @@ export default class aclConcept {
       } = requestInfo
 
       const response = await this.getResponse()
+
+      console.log('aclConcept response 🚀', response)
 
       const [jsonResponse, ummResponse] = response
 
