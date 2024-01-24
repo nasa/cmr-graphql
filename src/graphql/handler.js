@@ -11,7 +11,7 @@ import DataLoader from 'dataloader'
 import resolvers from '../resolvers'
 import typeDefs from '../types'
 
-// Import aclSource from '../datasources/acl'
+import aclSource from '../datasources/acl'
 import collectionDraftProposalSource from '../datasources/collectionDraftProposal'
 import collectionDraftSource from '../datasources/collectionDraft'
 import collectionSource from '../datasources/collection'
@@ -29,7 +29,6 @@ import variableDraftSource from '../datasources/variableDraft'
 
 import { deleteTool as toolSourceDelete, fetchTools as toolSourceFetch } from '../datasources/tool'
 
-import { fetchAcl as aclFetch } from '../datasources/acl'
 import {
   deleteService as serviceSourceDelete,
   fetchServices as serviceSourceFetch
@@ -57,6 +56,8 @@ import { downcaseKeys } from '../utils/downcaseKeys'
 import { verifyEDLJwt } from '../utils/verifyEDLJwt'
 
 import { getCollectionsById } from '../dataloaders/getCollectionsById'
+
+//import { getAclById } from '../dataloaders/getAclById'
 
 const { env } = process
 
@@ -149,10 +150,12 @@ export default startServerAndCreateLambdaHandler(
 
       requestHeaders.User = context.edlUsername
 
+      console.log('I anm handdelre')
+
       return {
         ...context,
         dataSources: {
-          aclFetch,
+          aclSource,
           collectionDraftProposalSource,
           collectionDraftSource,
           collectionSource,
@@ -183,6 +186,8 @@ export default startServerAndCreateLambdaHandler(
         },
         headers: requestHeaders,
         collectionLoader: new DataLoader(getCollectionsById, { cacheKeyFn: (obj) => obj.conceptId })
+  
+        //aclLoader: new DataLoader(getAclById, { cacheKeyFn: (obj) => obj.conceptId })
       }
     },
     middleware: [
