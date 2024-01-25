@@ -1,10 +1,10 @@
 {
   "ummKeyMappings": {
     "conceptId" : "umm.ConceptId",
-    "revisionId" : "RevisionId",
-    "identityType" : "IdentityType",
-    "name" : "Name",
-    "location" : "Location"
-    }   
+    "revisionId" : "umm.RevisionId",
+    "identityType" : "umm.IdentityType",
+    "name" : "umm.Name",
+    "location" : "umm.Location"
+  }   
 }
 

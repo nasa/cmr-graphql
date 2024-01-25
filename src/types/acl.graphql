@@ -1,28 +1,26 @@
 type Acl{
   "The unique concept id assigned to the ACL."
   conceptId: String
+  "The revision id for the ACL."
+  revisionId: Int
+  "The type of identity (provider, system, single_instance, catalog_item)."
+  identityType: String
+  "The name of the ACL."
+  name: String,
+  "A URL to retrieve the ACL."  
+  location: String
 }
 
-# type Acl {
-#   "The number of hits for a given search."
-#   count: Int
-#   "Cursor that points to the/a specific position in a list of requested records."
-#   cursor: String
-#   # "The list of collection search results."
-#   # items: [AclItem]
-#   "The revision id for the ACL."
-#   revisionId: Int
-#   "The unique concept id assigned to the ACL."
-#   conceptId: String
-#   "The type of identity (provider, system, single_instance, catalog_item)."
-#   identityType: String
-#   "The name of the ACL."
-#   name: String
-#   "A URL to retrieve the ACL."  
-#   location: String
-# }
+type AclList {
+  "The number of hits for a given search."
+  count: Int
+  "Cursor that points to the/a specific position in a list of requested records."
+  cursor: String
+  "some description"
+  items: [Acl]  
+}
 
-input AclInput {
+input AclsInput {
   "List of permitted groups for ACL search."
   permittedGroup: [String]
   "List of identity types for ACL search."
@@ -38,8 +36,9 @@ input AclInput {
 
 }
 type Query {
-  "Acl query parameters"
-  acl (
-    params: AclInput
-  ): Acl
+  acls(
+    "Order option's query parameters"
+    params: AclsInput
+  ): AclList!
+
 }

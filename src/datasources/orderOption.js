@@ -7,6 +7,7 @@ import OrderOption from '../cmr/concepts/orderOption'
 export default async (params, context, parsedInfo) => {
   // This passes orderOption and will transform to the OrderOption graphql type
   const requestInfo = parseRequestedFields(parsedInfo, orderOptionKeyMap, 'orderOption')
+  console.log('🚀 ~ parseRequestedFields:', requestInfo)
 
   const { headers } = context
 

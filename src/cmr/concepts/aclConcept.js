@@ -28,24 +28,22 @@ export default class aclConcept {
 
   fetch(searchParams) {
     const params = mergeParams(searchParams)
+    console.log('🚀 ~ params:', params)
 
     // Default an array to hold the promises we need to make depending on the requested fields
     const promises = []
 
     const {
-      jsonKeys
+      ummKeys
     } = this.requestInfo
 
-    // This.logKeyRequest(metaKeys, 'meta')
-    console.log('🚀 ~ //If ~ jsonKeys:', jsonKeys)
-
     // If (jsonKeys.length > 0) {
-    if (jsonKeys.length) {
+    if (ummKeys.length) {
       const jsonHeaders = {
         ...this.headers
       }
       promises.push(
-        this.fetchAcl(params, jsonKeys, jsonHeaders)
+        this.fetchAcl(params, ummKeys, jsonHeaders)
       )
     } else {
       // Push a null promise to the array so that the umm promise always exists as
@@ -171,7 +169,6 @@ export default class aclConcept {
    * @param {Array} jsonKeys Array of the keys requested in the query
    */
   async parseJson(jsonResponse, jsonKeys) {
-    console.log('🚀 ~ parseJson ~ jsonKeys:', jsonKeys)
     const { headers } = jsonResponse
     const {
       'cmr-hits': cmrHits,
@@ -244,11 +241,13 @@ export default class aclConcept {
         ummKeys
       } = requestInfo
 
+      console.log('request info', requestInfo)
       const response = await this.getResponse()
 
       const [jsonResponse, ummResponse] = response
+
       if (jsonResponse) {
-        await this.parseJson(jsonResponse, jsonKeys)
+        await this.parseJson(jsonResponse, ummKeys)
       }
 
       if (ummResponse) {

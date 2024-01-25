@@ -1,7 +1,3 @@
-import camelcaseKeys from 'camelcase-keys'
-import { get, pick } from 'lodash'
-import snakecaseKeys from 'snakecase-keys'
-// Import Concept from './concept'
 import aclConcept from './aclConcept'
 
 export default class Acl extends aclConcept {
@@ -19,4 +15,8 @@ export default class Acl extends aclConcept {
 
     this.facets = []
   }
+
+  // Call fetchAcl
+
+  // parseJsonBody()
 }

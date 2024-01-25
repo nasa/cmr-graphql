@@ -42,6 +42,7 @@ export const aclQuery = ({
     headers: permittedHeaders,
     method: 'GET',
     url: `${process.env.cmrRootUrl}/access-control/acls?permitted_user=typical`
+    // Url: `${process.env.cmrRootUrl}/access-control/acls`
   }
 
   // Interceptors require an instance of axios
@@ -61,7 +62,6 @@ export const aclQuery = ({
   })
 
   responseInterceptor.use((response) => {
-    console.log('🚀 ~ responseInterceptor.use ~ response:', response)
     // Determine total time to complete this request
     const start = response.config.headers['request-startTime']
     const end = process.hrtime(start)
