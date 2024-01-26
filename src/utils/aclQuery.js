@@ -41,7 +41,7 @@ export const aclQuery = ({
     // Data: aclParameters,
     headers: permittedHeaders,
     method: 'GET',
-    url: `${process.env.cmrRootUrl}/access-control/acls?permitted_user=typical`
+    url: `${process.env.cmrRootUrl}/access-control/acls`
     // Url: `${process.env.cmrRootUrl}/access-control/acls`
   }
 

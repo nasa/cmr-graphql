@@ -14,7 +14,7 @@ import { CONCEPT_TYPES, PSEUDO_FIELDS } from '../constants'
  * @param {String} conceptName Name of the concept () to lookup requested fields in the query
  */
 export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
-  const { fieldsByTypeName } = parsedInfo
+  let { fieldsByTypeName } = parsedInfo
 
   const { name } = parsedInfo
 
@@ -46,8 +46,9 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
       cursor,
       items = {},
       facets
-    } = conceptListKeysRequested
+    } = conceptListKeysRequested;
 
+    ({ fieldsByTypeName } = items)
     // If the user requested `count`, `cursor` or `facets` and no other fields, default the requested fields
     // to convince graph that it should still make a request
     if ((count || cursor || facets) && isEmpty(items)) {

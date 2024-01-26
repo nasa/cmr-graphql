@@ -16,7 +16,25 @@ export default class Acl extends aclConcept {
     this.facets = []
   }
 
-  // Call fetchAcl
+  /**
+   * Parse and return the array of data from the nested response body
+   * @param {Object} jsonResponse HTTP response from the CMR endpoint
+   */
+  parseJsonBody(jsonResponse) {
+    const { data } = jsonResponse
 
-  // parseJsonBody()
+    const { items } = data
+
+    return items
+  }
+
+  /**
+   * Query the CMR UMM API endpoint to retrieve requested data
+   * @param {Object} searchParams Parameters provided by the query
+   * @param {Array} ummKeys Keys requested by the query
+   * @param {Object} headers Headers requested by the query
+   */
+  fetchAcl(searchParams, ummKeys, headers) {
+    return super.fetchAcl(searchParams, ummKeys, headers)
+  }
 }

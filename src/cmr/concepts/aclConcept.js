@@ -28,22 +28,21 @@ export default class aclConcept {
 
   fetch(searchParams) {
     const params = mergeParams(searchParams)
-    console.log('🚀 ~ params:', params)
 
     // Default an array to hold the promises we need to make depending on the requested fields
     const promises = []
 
     const {
-      ummKeys
+      jsonKeys
     } = this.requestInfo
 
     // If (jsonKeys.length > 0) {
-    if (ummKeys.length) {
+    if (jsonKeys.length) {
       const jsonHeaders = {
         ...this.headers
       }
       promises.push(
-        this.fetchAcl(params, ummKeys, jsonHeaders)
+        this.fetchAcl(params, jsonKeys, jsonHeaders)
       )
     } else {
       // Push a null promise to the array so that the umm promise always exists as
@@ -206,6 +205,53 @@ export default class aclConcept {
     return this.items
   }
 
+  /**
+   * Get the total number of records available for a given search across all endpoints. Also
+   * ensure that the value is the same if a given search spans multiple endpoints
+   */
+  getItemCount() {
+    const { jsonKeys = [], ummKeys = [] } = this.requestInfo
+
+    if (jsonKeys.length) {
+      if (ummKeys.length) {
+        // If both json and umm keys are being requested ensure that each endpoint
+        // returned the same number of results
+        if (this.jsonItemCount !== this.ummItemCount) {
+          throw new Error(`Inconsistent data prevented GraphQL from correctly parsing results (JSON Hits: ${this.jsonItemCount}, UMM Hits: ${this.ummItemCount})`)
+        }
+
+        // Both endpoints returned the same value, return either value here
+        return this.ummItemCount
+      }
+
+      // Only json keys were requested, return the json item count
+      return this.jsonItemCount
+    }
+
+    if (ummKeys.length) {
+      // Only umm keys were requested, return the umm item count
+      return this.ummItemCount
+    }
+
+    return 0
+  }
+
+  /**
+   * Encode and return a base64 hashed version of the json and umm search after identifier
+   */
+  encodeCursor() {
+    if (this.jsonSearchAfterIdentifier || this.ummSearchAfterIdentifier) {
+      return Buffer.from(
+        JSON.stringify({
+          json: this.jsonSearchAfterIdentifier,
+          umm: this.ummSearchAfterIdentifier
+        })
+      ).toString('base64')
+    }
+
+    return null
+  }
+
   getFormattedResponse() {
     // Determine if the query was a list or not, list queries return meta
     // keys using a slightly different format
@@ -237,21 +283,18 @@ export default class aclConcept {
   async parse(requestInfo) {
     try {
       const {
-        jsonKeys,
-        ummKeys
+        jsonKeys
       } = requestInfo
 
-      console.log('request info', requestInfo)
       const response = await this.getResponse()
 
       const [jsonResponse, ummResponse] = response
-
       if (jsonResponse) {
-        await this.parseJson(jsonResponse, ummKeys)
+        await this.parseJson(jsonResponse, jsonKeys)
       }
 
       if (ummResponse) {
-        await this.parseUmm(ummResponse, ummKeys)
+        await this.parseUmm(ummResponse, jsonKeys)
       }
     } catch (e) {
       parseError(e, { reThrowError: true })
