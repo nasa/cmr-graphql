@@ -2,6 +2,9 @@ import axios from 'axios'
 import { downcaseKeys } from './downcaseKeys'
 import { pickIgnoringCase } from './pickIgnoringCase'
 
+import snakeCaseKeys from 'snakecase-keys'
+import { prepKeysForCmr } from './prepKeysForCmr'
+
 /**
  * Make a request to retrieve ACL information and return the promise
  * @param {Object} params
@@ -9,13 +12,10 @@ import { pickIgnoringCase } from './pickIgnoringCase'
  * @param {Object} params.options Additional Options (format)
  * @param {Object} params.params Parameters to send to the ACL service
  */
-// export const aclQuery = ({ headers }) => {
-//   console.log('aclquery@@')
 
 export const aclQuery = ({
-  conceptType, // May not use it later
   headers,
-  // NonIndexedKeys = [],
+  nonIndexedKeys = [],
   options = {},
   params
 }) => {
@@ -34,16 +34,29 @@ export const aclQuery = ({
     'Accept',
     'Authorization',
     'Client-Id',
-    'CMR-Request-Id'
+    'CMR-Request-Id',
+    // 'CMR-Search-After'
   ])
 
+  console.log('🚀 ACLparams', params)
+  const aclParameters = prepKeysForCmr(snakeCaseKeys(params), nonIndexedKeys)
+
+  console.log('🚀 aclParameters', aclParameters)
+
+  const {
+    'client-id': clientId,
+    'cmr-request-id': requestId
+  } = downcaseKeys(permittedHeaders)
+
   const requestConfiguration = {
-    // Data: aclParameters,
+    data: aclParameters,
     headers: permittedHeaders,
     method: 'GET',
     url: `${process.env.cmrRootUrl}/access-control/acls`
-    // Url: `${process.env.cmrRootUrl}/access-control/acls`
+    // url: `${process.env.cmrRootUrl}/access-control/acls?permitted_user=typical`
   }
+
+  console.log('🚀 acl requestConfiguration', requestConfiguration)
 
   // Interceptors require an instance of axios
   const instance = axios.create()
@@ -61,14 +74,24 @@ export const aclQuery = ({
     return config
   })
 
+  //if the response has providers ids then it is working
   responseInterceptor.use((response) => {
     // Determine total time to complete this request
     const start = response.config.headers['request-startTime']
     const end = process.hrtime(start)
     const milliseconds = Math.round((end[0] * 1000) + (end[1] / 1000000))
 
-    // Log request duration
+    // Retrieve the reported timing from CMR
+    const { 'cmr-took': cmrTook } = downcaseKeys(response.headers)
+    response.headers['request-duration'] = milliseconds
 
+    // console.log(`Request aclQuery ${requestId} from ${clientId} to [format: ${format}] completed external request in [reported: ${cmrTook} ms, observed: ${milliseconds} ms]`)
+
+    const { data } = response
+     const { items } = data
+     console.log('items  @@@', items )
+     console.log(`Acl response @@@`, response)
+     // console.log(`this is aclQuery Response@@@`, response)
     return response
   })
 

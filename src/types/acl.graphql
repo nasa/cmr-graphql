@@ -1,4 +1,4 @@
-type Acl{
+type Acl {
   "The unique concept id assigned to the ACL."
   conceptId: String
   "The revision id for the ACL."
@@ -21,20 +21,15 @@ type AclList {
 }
 
 input AclsInput {
-  "List of permitted groups for ACL search."
-  permittedGroup: [String]
-  "List of identity types for ACL search."
-  identityType: [String]
-  "Permitted user for ACL search."
   permittedUser: String
-  "Provider for ACL search."
-  provider: String
-  "Flag indicating if the full ACL details should be included in the search response."
   includeFullAcl: Boolean
-  "Options to provide to CMR"
-  options: JSON
+  target: String
+  pageSize: Int
+  pageNum: Int
+
 
 }
+
 type Query {
   acls(
     "Order option's query parameters"

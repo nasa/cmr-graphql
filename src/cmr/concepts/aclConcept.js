@@ -2,6 +2,8 @@ import snakeCaseKeys from 'snakecase-keys'
 
 import { pick, snakeCase } from 'lodash'
 
+import { CONCEPT_TYPES } from '../../constants'
+
 import camelcaseKeys from 'camelcase-keys'
 import { aclQuery } from '../../utils/aclQuery'
 import { mergeParams } from '../../utils/mergeParams'
@@ -24,20 +26,26 @@ export default class aclConcept {
 
     // Defaults the result set to an empty object
     this.items = {}
+
+    this.params = params
+    console.log('@@acl concept params', params)
   }
 
   fetch(searchParams) {
     const params = mergeParams(searchParams)
 
+    console.log('🚀 fetch acl params', params)
+
     // Default an array to hold the promises we need to make depending on the requested fields
     const promises = []
+    
 
     const {
-      jsonKeys
+      jsonKeys,
     } = this.requestInfo
 
-    // If (jsonKeys.length > 0) {
-    if (jsonKeys.length) {
+    // If (jsonKeys.length) {
+    if (jsonKeys.length > 0) {
       const jsonHeaders = {
         ...this.headers
       }
@@ -57,6 +65,20 @@ export default class aclConcept {
   }
 
   /**
+   * Log requested keys for metrics and debugging
+   * @param {Array} keys List of keys being requested
+   * @param {String} format Format of the request (json, umm, meta)
+   */
+  logKeyRequest(keys, format) {
+    // Prevent logging concept types, their meta keys are logged above
+    const filteredKeys = keys.filter((field) => CONCEPT_TYPES.indexOf(field) === -1)
+
+    filteredKeys.forEach((key) => {
+      console.log(`Request ${this.getRequestId()} from ${this.getClientId()} to [concept: ${this.getConceptType()}] requested [format: ${format}, key: ${key}]`)
+    })
+  }
+
+  /**
    * Query the CMR JSON API endpoint to retrieve requested data
    * @param {Object} searchParams Parameters provided by the query
    * @param {Array} requestedKeys Keys requested by the query
@@ -64,13 +86,18 @@ export default class aclConcept {
    */
   fetchAcl(searchParams, requestedKeys, providedHeaders) {
     // This.logKeyRequest(requestedKeys, 'json')
+    this.logKeyRequest(requestedKeys, 'json')
+    console.log('blabla', requestedKeys)
+
+    console.log('snakeCaseKeys(searchParams)', snakeCaseKeys(searchParams))
+
+    console.log('snakeCaseKeys(searchParams)', pick(snakeCaseKeys(searchParams), this.getPermittedJsonSearchParams()))
 
     // Construct the promise that will request data from the json endpoint
-    // return cmrQuery({
     return aclQuery({
-      conceptType: '',
-      params: '',
-      nonIndexedKeys: '',
+      conceptType: this.getConceptType(),
+      params: pick(snakeCaseKeys(searchParams), this.getPermittedJsonSearchParams()),
+      nonIndexedKeys: this.getNonIndexedKeys(),
       headers: providedHeaders
     })
   }
@@ -130,6 +157,51 @@ export default class aclConcept {
     if (associationDetails) {
       this.setItemValue(id, 'associationDetails', formattedAssociationDetails)
     }
+  }
+
+  /**
+   * Retrieve the request id header from the request
+   * @param {Object} headers The provided headers from the query
+   * @return {String} Request ID defined in the headers
+   */
+  getRequestId() {
+    const {
+      'CMR-Request-Id': requestId
+    } = this.headers
+
+    return requestId
+  }
+
+  /**
+   * Retrieve the client id header from the request
+   * @param {Object} headers The provided headers from the query
+   * @return {String} Client ID defined in the headers
+   */
+  getClientId() {
+    const {
+      'Client-Id': clientId
+    } = this.headers
+
+    return clientId
+  }
+
+  /**
+   * Get the CMR concept type of this object
+   */
+  getConceptType() {
+    return this.conceptType
+  }
+
+  /**
+   * Returns an array of keys that should not be indexed when sent to CMR
+   */
+  getNonIndexedKeys() {
+    return [
+      'concept_id',
+      'offset',
+      'page_size',
+      'sort_key'
+    ]
   }
 
   /**
@@ -277,25 +349,35 @@ export default class aclConcept {
   }
 
   /**
+   * Returns an array of keys representing supported search params for the json endpoint
+   */
+  getPermittedJsonSearchParams() {
+    return [
+      'concept_id',
+      'offset',
+      'page_size',
+      'sort_key',
+      // 'permitted_user'
+    ]
+  }
+
+  /**
    * Parses the response from each endpoint after a request is made
    * @param {Object} requestInfo Parsed data pertaining to the Graph query
    */
   async parse(requestInfo) {
     try {
       const {
-        jsonKeys
+        jsonKeys,
       } = requestInfo
 
       const response = await this.getResponse()
 
-      const [jsonResponse, ummResponse] = response
+      const [jsonResponse] = response
       if (jsonResponse) {
         await this.parseJson(jsonResponse, jsonKeys)
       }
 
-      if (ummResponse) {
-        await this.parseUmm(ummResponse, jsonKeys)
-      }
     } catch (e) {
       parseError(e, { reThrowError: true })
     }
