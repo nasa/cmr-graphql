@@ -32,11 +32,11 @@
     "supportedOutputFormats": "umm.SupportedOutputFormats",
     "supportedSoftwareLanguages": "umm.SupportedSoftwareLanguages",
     "toolKeywords": "umm.ToolKeywords",
+    "ummMetadata": "umm",
     "type": "umm.Type",
     "url": "umm.URL",
     "useConstraints": "umm.UseConstraints",
     "version": "umm.Version",
-    "versionDescription": "umm.VersionDescription",
-    "ummMetadata": "umm"
+    "versionDescription": "umm.VersionDescription"
   }
 }

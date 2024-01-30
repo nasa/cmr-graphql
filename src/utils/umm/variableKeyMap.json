@@ -28,6 +28,7 @@
     "scienceKeywords": "umm.ScienceKeywords",
     "sets": "umm.Sets",
     "standardName": "umm.StandardName",
+    "ummMetadata": "umm",
     "units": "umm.Units",
     "validRanges": "umm.ValidRanges",
     "variableSubType": "umm.VariableSubType",
