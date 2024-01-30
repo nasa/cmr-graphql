@@ -357,7 +357,10 @@ export default class aclConcept {
       'offset',
       'page_size',
       'sort_key',
-      // 'permitted_user'
+      'permitted_user',
+      'include_full_acl',
+      'page_num',
+      'target'
     ]
   }
 

@@ -15,7 +15,8 @@ export default async (params, context, parsedInfo) => {
 
   // // Parse the response from CMR
   await acl.parse(requestInfo)
-  console.log('acl', acl.getFormattedResponse())
+
+  console.log('🚀🚀🚀acl', JSON.stringify(acl.getFormattedResponse()))
 
   // // Return a formatted JSON response
   return acl.getFormattedResponse()

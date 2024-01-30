@@ -6,9 +6,10 @@ type Acl {
   "The type of identity (provider, system, single_instance, catalog_item)."
   identityType: String
   "The name of the ACL."
-  name: String,
+  name: String
   "A URL to retrieve the ACL."  
   location: String
+  acl: JSON
 }
 
 type AclList {

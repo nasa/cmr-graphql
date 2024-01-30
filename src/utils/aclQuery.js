@@ -49,11 +49,12 @@ export const aclQuery = ({
   } = downcaseKeys(permittedHeaders)
 
   const requestConfiguration = {
-    data: aclParameters,
+    // data: aclParameters,
     headers: permittedHeaders,
     method: 'GET',
-    url: `${process.env.cmrRootUrl}/access-control/acls`
-    // url: `${process.env.cmrRootUrl}/access-control/acls?permitted_user=typical`
+    // options: aclParameters,
+    url: `${process.env.cmrRootUrl}/access-control/acls?${aclParameters}`
+    // url: `${process.env.cmrRootUrl}/access-control/acls?permitted_user=typical&include_full_acl=true&page_size=20&page_num=1&target=PROVIDER_CONTEXT`
   }
 
   console.log('🚀 acl requestConfiguration', requestConfiguration)
@@ -89,8 +90,9 @@ export const aclQuery = ({
 
     const { data } = response
      const { items } = data
-     console.log('items  @@@', items )
-     console.log(`Acl response @@@`, response)
+
+    //  console.log('items  @@@', items[0]["acl"]["provider_identity"]["provider_id"])
+     console.log(`@@@Acl response items@@@`, items)
      // console.log(`this is aclQuery Response@@@`, response)
     return response
   })
