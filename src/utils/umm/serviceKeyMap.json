@@ -30,6 +30,7 @@
     "supportedOutputProjections": "umm.ServiceOptions.SupportedOutputProjections",
     "supportedReformattings": "umm.ServiceOptions.SupportedReformattings",
     "type": "umm.Type",
+    "ummMetadata": "umm",
     "url": "umm.URL",
     "useConstraints": "umm.UseConstraints",
     "version": "umm.Version",
