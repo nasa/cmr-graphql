@@ -64,6 +64,7 @@
     "temporalKeywords": "umm.TemporalKeywords",
     "tilingIdentificationSystems": "umm.TilingIdentificationSystems",
     "title": "umm.EntryTitle",
+    "ummMetadata": "umm",
     "useConstraints": "umm.UseConstraints",
     "version": "umm.Version",
     "versionDescription": "umm.VersionDescription",

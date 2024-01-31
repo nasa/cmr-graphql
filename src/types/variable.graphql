@@ -45,6 +45,8 @@ type Variable {
   sets: JSON
   "This is the more formal or scientific name, .e.g., the CF Standard Name."
   standardName: String
+  "Raw UMM Metadata of the Variable Record."
+  ummMetadata: JSON
   "The units associated with a variable."
   units: String
   "Valid ranges of variable data values."

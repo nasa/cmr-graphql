@@ -55,6 +55,8 @@ type Tool {
   toolKeywords: JSON
   "The type of the downloadable tool or web user interface."
   type: String
+  "Raw UMM Metadata of the Tool Record."
+  ummMetadata: JSON
   "The URL where you can directly access the web user interface or downloadable tool."
   url: JSON
   "Information on how the item (downloadable tool or web user interface) may or may not be used after access is granted. This includes any special restrictions, legal prerequisites, terms and conditions, and/or limitations on using the item. Providers may request acknowledgement of the item from users and claim no responsibility for quality and completeness."
