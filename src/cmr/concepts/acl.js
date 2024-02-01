@@ -1,6 +1,6 @@
-import aclConcept from './aclConcept'
+import AclConcept from './aclConcept'
 
-export default class Acl extends aclConcept {
+export default class Acl extends AclConcept {
   /**
    * Instantiates an Acl object
    * @param {Object} headers HTTP headers provided by the query
@@ -12,8 +12,7 @@ export default class Acl extends aclConcept {
 
   constructor(headers, requestInfo, params) {
     super('acls', headers, requestInfo, params)
-
-    this.facets = []
+  
   }
 
   /**

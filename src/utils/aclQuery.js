@@ -35,7 +35,7 @@ export const aclQuery = ({
     'Authorization',
     'Client-Id',
     'CMR-Request-Id',
-    // 'CMR-Search-After'
+    'CMR-Search-After'
   ])
 
   console.log('🚀 ACLparams', params)
@@ -59,6 +59,7 @@ export const aclQuery = ({
 
   console.log('🚀 acl requestConfiguration', requestConfiguration)
 
+console.log('🚀 acl requestConfiguration.url', requestConfiguration.url)
   // Interceptors require an instance of axios
   const instance = axios.create()
   const { interceptors } = instance
@@ -86,7 +87,7 @@ export const aclQuery = ({
     const { 'cmr-took': cmrTook } = downcaseKeys(response.headers)
     response.headers['request-duration'] = milliseconds
 
-    // console.log(`Request aclQuery ${requestId} from ${clientId} to [format: ${format}] completed external request in [reported: ${cmrTook} ms, observed: ${milliseconds} ms]`)
+    console.log(`Request aclQuery ${requestId} from ${clientId} to [format: ${format}] completed external request in [reported: ${cmrTook} ms, observed: ${milliseconds} ms]`)
 
     const { data } = response
      const { items } = data

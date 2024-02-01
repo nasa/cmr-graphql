@@ -10,7 +10,7 @@ import { mergeParams } from '../../utils/mergeParams'
 import { parseError } from '../../utils/parseError'
 import { downcaseKeys } from '../../utils/downcaseKeys'
 
-export default class aclConcept {
+export default class AclConcept {
   /**
    * Instantiates a Concept object
    * @param {String} conceptType The CMR concept type to query against
@@ -85,7 +85,6 @@ export default class aclConcept {
    * @param {Object} providedHeaders Headers requested by the query
    */
   fetchAcl(searchParams, requestedKeys, providedHeaders) {
-    // This.logKeyRequest(requestedKeys, 'json')
     this.logKeyRequest(requestedKeys, 'json')
     console.log('blabla', requestedKeys)
 
@@ -200,7 +199,11 @@ export default class aclConcept {
       'concept_id',
       'offset',
       'page_size',
-      'sort_key'
+      'sort_key',
+      'permitted_user',
+      'include_full_acl',
+      'page_num',
+      'target'
     ]
   }
 
@@ -282,27 +285,14 @@ export default class aclConcept {
    * ensure that the value is the same if a given search spans multiple endpoints
    */
   getItemCount() {
-    const { jsonKeys = [], ummKeys = [] } = this.requestInfo
+    const { jsonKeys = [] } = this.requestInfo
 
     if (jsonKeys.length) {
-      if (ummKeys.length) {
-        // If both json and umm keys are being requested ensure that each endpoint
-        // returned the same number of results
-        if (this.jsonItemCount !== this.ummItemCount) {
-          throw new Error(`Inconsistent data prevented GraphQL from correctly parsing results (JSON Hits: ${this.jsonItemCount}, UMM Hits: ${this.ummItemCount})`)
-        }
-
-        // Both endpoints returned the same value, return either value here
-        return this.ummItemCount
-      }
+      console.log('@@@ jsonKeys.length', jsonKeys.length)
 
       // Only json keys were requested, return the json item count
+      console.log('@@@ this.jsonItemCount', this.jsonItemCount)
       return this.jsonItemCount
-    }
-
-    if (ummKeys.length) {
-      // Only umm keys were requested, return the umm item count
-      return this.ummItemCount
     }
 
     return 0
