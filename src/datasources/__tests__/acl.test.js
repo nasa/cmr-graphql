@@ -28,20 +28,18 @@ describe('acls', () => {
             alias: 'items',
             args: {},
             fieldsByTypeName: {
-              name: {
-                name: 'name',
-                alias: 'name',
+              conceptId: {
+                name: 'conceptId',
+                alias: 'conceptId',
                 args: {},
                 fieldsByTypeName: {}
-              }              
+              }
             }
           }
         }
       }
     }
   })
-
-  console.log('@@@', requestInfo)
 
   afterEach(() => {
     process.env = OLD_ENV
@@ -60,26 +58,13 @@ describe('acls', () => {
               name: 'cursor',
               alias: 'cursor',
               args: {},
-              fieldsByTypeName: {}
-            },
-            items: {
-              name: 'items',
-              alias: 'items',
-              args: {},
               fieldsByTypeName: {
-                // Acl: {
-                //   conceptId: {
-                //     name: 'conceptId',
-                //     alias: 'conceptId',
-                //     args: {},
-                //     fieldsByTypeName: {}
-                //   },
-                  name: {
-                    name: 'name',
-                    alias: 'name',
-                    args: {},
-                    fieldsByTypeName: {}
-                  }
+                conceptId: {
+                  name: 'conceptId',
+                  alias: 'conceptId',
+                  args: {},
+                  fieldsByTypeName: {}
+                }
               }
             }
           }
@@ -95,33 +80,28 @@ describe('acls', () => {
           'CMR-Request-Id': 'abcd-1234-efgh-5678',
           'CMR-Search-After': '["xyz", 789, 999]'
         })
-        .get(/acls\.umm_json/)
+        .get(/acls/)
         .reply(200, {
           items: [{
-            name: 'Mock Name'
+            concept_id: 'Mock Concept id'
           }]
         })
 
       const response = await aclSource({
-        params: {
-        cursor: 'eyJqc29uIjoiLTI5ODM0NzUwIiwidW1tIjoiLTk4NzI2MzU3In0='
-      }}, {
+      }, {
         headers: {
           'Client-Id': 'eed-test-graphql',
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         }
       }, requestInfo)
 
-      console.log('@@response', response)
-      // expect(response).toEqual({
-      //   count: 24,
-      //   cursor: 'eyJqc29uIjoiLTI5ODM0NzUwIiwidW1tIjoiLTk4NzI2MzU3In0=',
-      //   items: [{
-      //     name: 'Mock Name'
-      //   }]
-      // })
+      expect(response).toEqual({
+        count: 24,
+        cursor: 'eyJqc29uIjoiW1wieHl6XCIsIDc4OSwgOTk5XSJ9',
+        items: [{
+          conceptId: 'Mock Concept id'
+        }]
+      })
     })
-
-    
   })
 })
