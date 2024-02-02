@@ -36,5 +36,4 @@ type Query {
     "Order option's query parameters"
     params: AclsInput
   ): AclList!
-
 }

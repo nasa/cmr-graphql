@@ -11,14 +11,12 @@ export default async (params, context, parsedInfo) => {
   console.log('@@@ datasource requestInfo', requestInfo)
   const acl = new Acl(headers, requestInfo, params)
 
-  // // // Query CMR
+  // Query CMR
   acl.fetch(params)
 
-  // // Parse the response from CMR
+  // Parse the response from CMR
   await acl.parse(requestInfo)
 
-  console.log('🚀🚀🚀acl', JSON.stringify(acl.getFormattedResponse()))
-
-  // // Return a formatted JSON response
+  // Return a formatted JSON response
   return acl.getFormattedResponse()
 }
