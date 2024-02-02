@@ -1,8 +1,16 @@
 {
   "sharedKeys": [
-    "conceptId"
+    "conceptId",
+    "identityType",
+    "location",
+    "name",
+    "revisionId"
   ],
   "ummKeyMappings": {
-    "conceptId": "umm.concept-id"
+    "conceptId": "umm.concept-id",
+    "identityType": "umm.identity-type",
+    "location": "umm.location",
+    "name": "umm.name",
+    "revisionId": "umm.revision-id"
   }
 }
