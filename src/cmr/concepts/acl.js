@@ -7,8 +7,6 @@ export default class Acl extends AclConcept {
    * @param {Object} requestInfo Parsed data pertaining to the Graph query
    * @param {Object} params GraphQL query parameters
    */
-  // first fetchAcl function --> providedHeaders for now
-  // in here calls aclQuery save where cmrQuery saved--> similar to cmrQuery
 
   constructor(headers, requestInfo, params) {
     super('acls', headers, requestInfo, params)

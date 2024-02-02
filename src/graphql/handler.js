@@ -57,8 +57,6 @@ import { verifyEDLJwt } from '../utils/verifyEDLJwt'
 
 import { getCollectionsById } from '../dataloaders/getCollectionsById'
 
-// Import { getAclById } from '../dataloaders/getAclById'
-
 const { env } = process
 
 // Initialize the plugins with those we always want enabled
@@ -184,8 +182,6 @@ export default startServerAndCreateLambdaHandler(
         },
         headers: requestHeaders,
         collectionLoader: new DataLoader(getCollectionsById, { cacheKeyFn: (obj) => obj.conceptId })
-
-        // AclLoader: new DataLoader(getAclById, { cacheKeyFn: (obj) => obj.conceptId })
       }
     },
     middleware: [

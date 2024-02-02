@@ -81,7 +81,6 @@ describe('Acl', () => {
       })
 
       const { data } = response.body.singleResult
-      console.log('🚀 ~ test ~ data:', data.acls)
 
       expect(data).toEqual({
         acls: {

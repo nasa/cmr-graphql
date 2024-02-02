@@ -27,7 +27,6 @@ export default class AclConcept {
     this.items = {}
 
     this.params = params
-    console.log('@@acl concept params', params)
   }
 
   fetch(searchParams) {
@@ -42,7 +41,6 @@ export default class AclConcept {
       jsonKeys
     } = this.requestInfo
 
-    // If (jsonKeys.length) {
     if (jsonKeys.length > 0) {
       const jsonHeaders = {
         ...this.headers
@@ -84,12 +82,7 @@ export default class AclConcept {
    */
   fetchAcl(searchParams, requestedKeys, providedHeaders) {
     this.logKeyRequest(requestedKeys, 'json')
-    console.log('blabla', requestedKeys)
-
-    console.log('snakeCaseKeys(searchParams)', snakeCaseKeys(searchParams))
-
-    console.log('snakeCaseKeys(searchParams)', pick(snakeCaseKeys(searchParams), this.getPermittedJsonSearchParams()))
-
+   
     // Construct the promise that will request data from the json endpoint
     return aclQuery({
       conceptType: this.getConceptType(),
@@ -272,7 +265,6 @@ export default class AclConcept {
       console.log('@@@ jsonKeys.length', jsonKeys.length)
 
       // Only json keys were requested, return the json item count
-      console.log('@@@ this.jsonItemCount', this.jsonItemCount)
 
       return this.jsonItemCount
     }

@@ -49,6 +49,7 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
     } = conceptListKeysRequested;
 
     ({ fieldsByTypeName } = items)
+    
     // If the user requested `count`, `cursor` or `facets` and no other fields, default the requested fields
     // to convince graph that it should still make a request
     if ((count || cursor || facets) && isEmpty(items)) {
