@@ -12,7 +12,6 @@ export default class Acl extends AclConcept {
 
   constructor(headers, requestInfo, params) {
     super('acls', headers, requestInfo, params)
-  
   }
 
   /**
