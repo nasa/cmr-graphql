@@ -82,7 +82,7 @@ export default class AclConcept {
    */
   fetchAcl(searchParams, requestedKeys, providedHeaders) {
     this.logKeyRequest(requestedKeys, 'json')
-   
+
     // Construct the promise that will request data from the json endpoint
     return aclQuery({
       conceptType: this.getConceptType(),
