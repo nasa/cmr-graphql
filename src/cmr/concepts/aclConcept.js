@@ -144,21 +144,6 @@ export default class AclConcept {
   }
 
   /**
-   * Set a value in the result set that a query has not requested but is necessary for other functionality
-   * @param {String} id Concept ID to set a value for within the result set
-   * @param {Object} item The item returned from the CMR json endpoint
-   */
-  setEssentialJsonValues(id, item) {
-    const { association_details: associationDetails } = item
-
-    const formattedAssociationDetails = camelcaseKeys(associationDetails, { deep: true })
-
-    if (associationDetails) {
-      this.setItemValue(id, 'associationDetails', formattedAssociationDetails)
-    }
-  }
-
-  /**
    * Retrieve the request id header from the request
    * @param {Object} headers The provided headers from the query
    * @return {String} Request ID defined in the headers
@@ -260,7 +245,6 @@ export default class AclConcept {
 
       const { concept_id: conceptId } = normalizedItem
 
-      this.setEssentialJsonValues(conceptId, normalizedItem)
 
       jsonKeys.forEach((jsonKey) => {
         const cmrKey = snakeCase(jsonKey)
@@ -367,10 +351,7 @@ export default class AclConcept {
       const response = await this.getResponse()
 
       const [jsonResponse] = response
-      if (jsonResponse) {
-        await this.parseJson(jsonResponse, jsonKeys)
-      }
-
+      await this.parseJson(jsonResponse, jsonKeys)
     } catch (e) {
       parseError(e, { reThrowError: true })
     }

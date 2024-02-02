@@ -38,10 +38,10 @@ export const aclQuery = ({
     'CMR-Search-After'
   ])
 
-  console.log('🚀 ACLparams', params)
+  // console.log('🚀 ACLparams', params)
   const aclParameters = prepKeysForCmr(snakeCaseKeys(params), nonIndexedKeys)
 
-  console.log('🚀 aclParameters', aclParameters)
+  // console.log('🚀 aclParameters', aclParameters)
 
   const {
     'client-id': clientId,
@@ -57,9 +57,9 @@ export const aclQuery = ({
     // url: `${process.env.cmrRootUrl}/access-control/acls?permitted_user=typical&include_full_acl=true&page_size=20&page_num=1&target=PROVIDER_CONTEXT`
   }
 
-  console.log('🚀 acl requestConfiguration', requestConfiguration)
+  // console.log('Actual Request:', requestConfiguration)
 
-console.log('🚀 acl requestConfiguration.url', requestConfiguration.url)
+// console.log('🚀 acl requestConfiguration.url', requestConfiguration.url)
   // Interceptors require an instance of axios
   const instance = axios.create()
   const { interceptors } = instance
@@ -87,13 +87,13 @@ console.log('🚀 acl requestConfiguration.url', requestConfiguration.url)
     const { 'cmr-took': cmrTook } = downcaseKeys(response.headers)
     response.headers['request-duration'] = milliseconds
 
-    console.log(`Request aclQuery ${requestId} from ${clientId} to [format: ${format}] completed external request in [reported: ${cmrTook} ms, observed: ${milliseconds} ms]`)
+    console.log(`Request ${requestId} from ${clientId} to [format: ${format}] completed external request in [reported: ${cmrTook} ms, observed: ${milliseconds} ms]`)
 
     const { data } = response
      const { items } = data
 
     //  console.log('items  @@@', items[0]["acl"]["provider_identity"]["provider_id"])
-     console.log(`@@@Acl response items@@@`, items)
+    //  console.log(`@@@Acl response items@@@`, items)
      // console.log(`this is aclQuery Response@@@`, response)
     return response
   })
