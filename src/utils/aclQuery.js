@@ -1,8 +1,8 @@
 import axios from 'axios'
+import snakeCaseKeys from 'snakecase-keys'
 import { downcaseKeys } from './downcaseKeys'
 import { pickIgnoringCase } from './pickIgnoringCase'
 
-import snakeCaseKeys from 'snakecase-keys'
 import { prepKeysForCmr } from './prepKeysForCmr'
 
 /**
@@ -38,10 +38,7 @@ export const aclQuery = ({
     'CMR-Search-After'
   ])
 
-  // console.log('🚀 ACLparams', params)
   const aclParameters = prepKeysForCmr(snakeCaseKeys(params), nonIndexedKeys)
-
-  // console.log('🚀 aclParameters', aclParameters)
 
   const {
     'client-id': clientId,
@@ -49,17 +46,11 @@ export const aclQuery = ({
   } = downcaseKeys(permittedHeaders)
 
   const requestConfiguration = {
-    // data: aclParameters,
     headers: permittedHeaders,
     method: 'GET',
-    // options: aclParameters,
     url: `${process.env.cmrRootUrl}/access-control/acls?${aclParameters}`
-    // url: `${process.env.cmrRootUrl}/access-control/acls?permitted_user=typical&include_full_acl=true&page_size=20&page_num=1&target=PROVIDER_CONTEXT`
   }
 
-  // console.log('Actual Request:', requestConfiguration)
-
-// console.log('🚀 acl requestConfiguration.url', requestConfiguration.url)
   // Interceptors require an instance of axios
   const instance = axios.create()
   const { interceptors } = instance
@@ -76,7 +67,7 @@ export const aclQuery = ({
     return config
   })
 
-  //if the response has providers ids then it is working
+  // If the response has providers ids then it is working
   responseInterceptor.use((response) => {
     // Determine total time to complete this request
     const start = response.config.headers['request-startTime']
@@ -89,12 +80,6 @@ export const aclQuery = ({
 
     console.log(`Request ${requestId} from ${clientId} to [format: ${format}] completed external request in [reported: ${cmrTook} ms, observed: ${milliseconds} ms]`)
 
-    const { data } = response
-     const { items } = data
-
-    //  console.log('items  @@@', items[0]["acl"]["provider_identity"]["provider_id"])
-    //  console.log(`@@@Acl response items@@@`, items)
-     // console.log(`this is aclQuery Response@@@`, response)
     return response
   })
 

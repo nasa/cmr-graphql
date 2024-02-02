@@ -4,7 +4,6 @@ import { pick, snakeCase } from 'lodash'
 
 import { CONCEPT_TYPES } from '../../constants'
 
-import camelcaseKeys from 'camelcase-keys'
 import { aclQuery } from '../../utils/aclQuery'
 import { mergeParams } from '../../utils/mergeParams'
 import { parseError } from '../../utils/parseError'
@@ -38,10 +37,9 @@ export default class AclConcept {
 
     // Default an array to hold the promises we need to make depending on the requested fields
     const promises = []
-    
 
     const {
-      jsonKeys,
+      jsonKeys
     } = this.requestInfo
 
     // If (jsonKeys.length) {
@@ -245,7 +243,6 @@ export default class AclConcept {
 
       const { concept_id: conceptId } = normalizedItem
 
-
       jsonKeys.forEach((jsonKey) => {
         const cmrKey = snakeCase(jsonKey)
 
@@ -276,6 +273,7 @@ export default class AclConcept {
 
       // Only json keys were requested, return the json item count
       console.log('@@@ this.jsonItemCount', this.jsonItemCount)
+
       return this.jsonItemCount
     }
 
@@ -345,7 +343,7 @@ export default class AclConcept {
   async parse(requestInfo) {
     try {
       const {
-        jsonKeys,
+        jsonKeys
       } = requestInfo
 
       const response = await this.getResponse()
