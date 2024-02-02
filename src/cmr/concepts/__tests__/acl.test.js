@@ -1,7 +1,8 @@
 import Acl from '../acl'
+import { aclQuery } from '../../../utils/aclQuery'
 
 jest.mock('../../../utils/aclQuery', () => ({
-  aclQuery: jest.fn()
+  aclQuery: jest.fn(),
 }))
 
 describe('Acl', () => {
@@ -24,33 +25,21 @@ describe('Acl', () => {
   })
 
   test('parseJsonBody extracts items from jsonResponse', () => {
-    const acl = new Acl({}, {}, {})
+    const acl = new Acl({}, {}, {});
     const jsonResponse = {
       data: {
         items: [
-          {
-            id: '1',
-            name: 'Acl 1'
-          },
-          {
-            id: '2',
-            name: 'Acl 2'
-          }
-        ]
-      }
-    }
+          { id: '1', name: 'Acl 1' },
+          { id: '2', name: 'Acl 2' },
+        ],
+      },
+    };
 
-    const result = acl.parseJsonBody(jsonResponse)
+    const result = acl.parseJsonBody(jsonResponse);
 
     expect(result).toEqual([
-      {
-        id: '1',
-        name: 'Acl 1'
-      },
-      {
-        id: '2',
-        name: 'Acl 2'
-      }
+      { id: '1', name: 'Acl 1' },
+      { id: '2', name: 'Acl 2' },
     ])
   })
 

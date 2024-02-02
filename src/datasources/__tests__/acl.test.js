@@ -112,29 +112,30 @@ describe('acls', () => {
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678',
             'CMR-Search-After': '["xyz", 789, 999]'
-          })
-          .get(/acls/)
-          .reply(200, {
-            items: [{
-              concept_id: 'Mock Concept id'
-            }]
-          })
-
-        const response = await aclSource({}, {
-          headers: {
-            'Client-Id': 'eed-test-graphql',
-            'CMR-Request-Id': 'abcd-1234-efgh-5678'
-          }
-        }, requestInfo)
-
-        expect(response).toEqual({
-          count: 24,
-          cursor: 'eyJqc29uIjoiW1wieHl6XCIsIDc4OSwgOTk5XSJ9',
+        })
+        .get(/acls/)
+        .reply(200, {
           items: [{
-            conceptId: 'Mock Concept id'
+            concept_id: 'Mock Concept id'
           }]
         })
+  
+      const response = await aclSource({}, {
+        headers: {
+          'Client-Id': 'eed-test-graphql',
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        }
+      }, requestInfo)
+  
+      expect(response).toEqual({
+        count: 24,
+        cursor: 'eyJqc29uIjoiW1wieHl6XCIsIDc4OSwgOTk5XSJ9',
+        items: [{
+          conceptId: 'Mock Concept id'
+        }]
       })
-    })
-  })
+      
+      })
+    }) 
+  }) 
 })

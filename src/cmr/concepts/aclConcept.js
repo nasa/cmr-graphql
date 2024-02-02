@@ -4,6 +4,7 @@ import { pick, snakeCase } from 'lodash'
 
 import { CONCEPT_TYPES } from '../../constants'
 
+import camelcaseKeys from 'camelcase-keys'
 import { aclQuery } from '../../utils/aclQuery'
 import { mergeParams } from '../../utils/mergeParams'
 import { parseError } from '../../utils/parseError'
@@ -23,19 +24,27 @@ export default class AclConcept {
     this.headers = headers
     this.requestInfo = requestInfo
 
+    // Defaults the result set to an empty object
+    this.items = {}
+
     this.params = params
+    console.log('@@acl concept params', params)
   }
 
   fetch(searchParams) {
     const params = mergeParams(searchParams)
 
+    console.log('🚀 fetch acl params', params)
+
     // Default an array to hold the promises we need to make depending on the requested fields
     const promises = []
+    
 
     const {
-      jsonKeys
+      jsonKeys,
     } = this.requestInfo
 
+    // If (jsonKeys.length) {
     if (jsonKeys.length > 0) {
       const jsonHeaders = {
         ...this.headers
@@ -77,6 +86,11 @@ export default class AclConcept {
    */
   fetchAcl(searchParams, requestedKeys, providedHeaders) {
     this.logKeyRequest(requestedKeys, 'json')
+    console.log('blabla', requestedKeys)
+
+    console.log('snakeCaseKeys(searchParams)', snakeCaseKeys(searchParams))
+
+    console.log('snakeCaseKeys(searchParams)', pick(snakeCaseKeys(searchParams), this.getPermittedJsonSearchParams()))
 
     // Construct the promise that will request data from the json endpoint
     return aclQuery({
@@ -231,6 +245,7 @@ export default class AclConcept {
 
       const { concept_id: conceptId } = normalizedItem
 
+
       jsonKeys.forEach((jsonKey) => {
         const cmrKey = snakeCase(jsonKey)
 
@@ -261,7 +276,6 @@ export default class AclConcept {
 
       // Only json keys were requested, return the json item count
       console.log('@@@ this.jsonItemCount', this.jsonItemCount)
-
       return this.jsonItemCount
     }
 
@@ -331,7 +345,7 @@ export default class AclConcept {
   async parse(requestInfo) {
     try {
       const {
-        jsonKeys
+        jsonKeys,
       } = requestInfo
 
       const response = await this.getResponse()
