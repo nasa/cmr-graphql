@@ -19,53 +19,103 @@ describe('Acl', () => {
 
   describe('Query', () => {
     test('acl fields', async () => {
-        nock(/example-cmr/)
+      nock(/example-cmr/)
         .defaultReplyHeaders({
-            'CMR-Hits': 1,
-            'CMR-Took': 7,
-            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          'CMR-Hits': 1,
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/acls/)
+        .get(/access-control\/acls/)
         .reply(200, {
-            items: [{ 
-                  conceptId: 'example-provider-id',
-                }
-            ]
-        })
-
-        const response = await server.executeOperation({
-            variables: {},
-            query: `{
-                acls(params: { includeFullAcl: true }){
-                  count
-                  items {
-                    acl
-                    conceptId
-                    identityType
-                    location
-                    name
-                    revisionId
+          items: [
+            {
+              concept_id: 'Mock Concept ID',
+              revision_id: 1,
+              identity_type: 'Catalog Item',
+              name: 'Mock Test Name',
+              location: 'Mock Location',
+              acl: {
+                group_permissions: [
+                  {
+                    permissions: [
+                      'read'
+                    ],
+                    user_type: 'guest'
+                  },
+                  {
+                    permissions: [
+                      'read'
+                    ],
+                    user_type: 'registered'
                   }
+                ],
+                catalog_item_identity: {
+                  name: 'Mock test',
+                  provider_id: 'TEST_123',
+                  collection_applicable: true,
+                  granule_applicable: true
                 }
-              }`
-        }, {
-            contextValue
+              }
+            }
+          ]
+
         })
 
-        const { data } = response.body.singleResult
-        console.log('@@@ response', response)
+      const response = await server.executeOperation({
+        variables: {},
+        query: `
+          query Acls($params: AclsInput) {
+            acls(params: $params) {
+              items {
+                conceptId
+                revisionId
+                identityType
+                name
+                location
+                acl
+              }
+            }
+          }`
+      }, {
+        contextValue
+      })
 
-        // expect(data).toEqual({
-        //     items: [
-        //         {
-        //           acls: {
-        //             items: {
-        //                 name: 'example-provider-id'
-        //             }
-        //           }
-        //         }
-        //     ]
-        //   })
+      const { data } = response.body.singleResult
+      console.log('🚀 ~ test ~ data:', data.acls)
+
+      expect(data).toEqual({
+        acls: {
+          items: [{
+            conceptId: 'Mock Concept ID',
+            revisionId: 1,
+            identityType: 'Catalog Item',
+            name: 'Mock Test Name',
+            location: 'Mock Location',
+            acl: {
+              group_permissions: [
+                {
+                  permissions: [
+                    'read'
+                  ],
+                  user_type: 'guest'
+                },
+                {
+                  permissions: [
+                    'read'
+                  ],
+                  user_type: 'registered'
+                }
+              ],
+              catalog_item_identity: {
+                name: 'Mock test',
+                provider_id: 'TEST_123',
+                collection_applicable: true,
+                granule_applicable: true
+              }
+            }
+          }]
+        }
+      })
     })
   })
 })
