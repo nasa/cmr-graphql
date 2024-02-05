@@ -18,15 +18,20 @@ type AclList {
   count: Int
   "Cursor that points to the/a specific position in a list of requested records."
   cursor: String
-  "the list of acl search results"
+  "The list of acl search results."
   items: [Acl]  
 }
 
 input AclsInput {
+  "User is an URS user name corresponding to a member of a group that has access to an ACL."
   permittedUser: String
+  "Boolean parameter that indicates if the full acl details should be included in the search response."
   includeFullAcl: Boolean
+  "Matches ACLs which have the given object identity target."
   target: String
+  "Size of page desired, only supported with concept_id."
   pageSize: Int
+  "Page number desired, only supported with concept_id."
   pageNum: Int
 
 
@@ -34,7 +39,7 @@ input AclsInput {
 
 type Query {
   acls(
-    "Order option's query parameters"
+    "Acls query parameters"
     params: AclsInput
   ): AclList!
 
