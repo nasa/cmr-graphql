@@ -7,7 +7,7 @@ type Acl {
   identityType: String
   "The name of the ACL."
   name: String
-  "A URL to retrieve the ACL."  
+  "An URL to retrieve the ACL."  
   location: String
   "Full JSON of the ACL. Included if include_full_acl=true parameter is set."
   acl: JSON
@@ -33,8 +33,6 @@ input AclsInput {
   pageSize: Int
   "Page number desired, only supported with concept_id."
   pageNum: Int
-
-
 }
 
 type Query {
@@ -42,5 +40,4 @@ type Query {
     "Acls query parameters"
     params: AclsInput
   ): AclList!
-
 }
