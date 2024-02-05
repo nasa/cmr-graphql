@@ -9,6 +9,7 @@ type Acl {
   name: String
   "A URL to retrieve the ACL."  
   location: String
+  "Full JSON of the ACL. Included if include_full_acl=true parameter is set."
   acl: JSON
 }
 
@@ -17,7 +18,7 @@ type AclList {
   count: Int
   "Cursor that points to the/a specific position in a list of requested records."
   cursor: String
-  "some description"
+  "the list of acl search results"
   items: [Acl]  
 }
 

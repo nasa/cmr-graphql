@@ -32,8 +32,6 @@ export default class AclConcept {
   fetch(searchParams) {
     const params = mergeParams(searchParams)
 
-    console.log('🚀 fetch acl params', params)
-
     // Default an array to hold the promises we need to make depending on the requested fields
     const promises = []
 
@@ -262,10 +260,7 @@ export default class AclConcept {
     const { jsonKeys = [] } = this.requestInfo
 
     if (jsonKeys.length) {
-      console.log('@@@ jsonKeys.length', jsonKeys.length)
-
       // Only json keys were requested, return the json item count
-
       return this.jsonItemCount
     }
 

@@ -8,7 +8,6 @@ export default async (params, context, parsedInfo) => {
 
   const requestInfo = parseRequestedFields(parsedInfo, aclKeyMap, 'acl')
 
-  console.log('@@@ datasource requestInfo', requestInfo)
   const acl = new Acl(headers, requestInfo, params)
 
   // Query CMR
