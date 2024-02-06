@@ -11,7 +11,6 @@ export default {
       return dataSources.serviceSourceFetch(
         handlePagingParams(args),
         context,
-
         parseResolveInfo(info)
       )
     },
@@ -20,6 +19,7 @@ export default {
 
       const result = await dataSources.serviceSourceFetch(args, context, parseResolveInfo(info))
 
+      console.log(result)
       const [firstResult] = result
 
       return firstResult
