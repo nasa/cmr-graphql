@@ -19,7 +19,6 @@ export default {
 
       const result = await dataSources.serviceSourceFetch(args, context, parseResolveInfo(info))
 
-      console.log(result)
       const [firstResult] = result
 
       return firstResult
