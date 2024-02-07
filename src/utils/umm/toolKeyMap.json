@@ -26,6 +26,7 @@
     "revisionDate": "meta.revision-date",
     "revisionId": "meta.revision-id",
     "searchAction": "umm.SearchAction",
+    "sortKey": "umm.SortKey",
     "supportedBrowsers": "umm.SupportedBrowsers",
     "supportedInputFormats": "umm.SupportedInputFormats",
     "supportedOperatingSystems": "umm.SupportedOperatingSystems",

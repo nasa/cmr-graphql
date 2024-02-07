@@ -11,7 +11,6 @@ export default {
       return dataSources.serviceSourceFetch(
         handlePagingParams(args),
         context,
-
         parseResolveInfo(info)
       )
     },

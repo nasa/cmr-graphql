@@ -26,6 +26,7 @@
     "serviceOptions": "umm.ServiceOptions",
     "serviceOrganizations": "umm.ServiceOrganizations",
     "serviceQuality": "umm.ServiceQuality",
+    "sortKey": "umm.SortKey",
     "supportedInputProjections": "umm.ServiceOptions.SupportedInputProjections",
     "supportedOutputProjections": "umm.ServiceOptions.SupportedOutputProjections",
     "supportedReformattings": "umm.ServiceOptions.SupportedReformattings",

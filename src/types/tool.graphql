@@ -96,6 +96,8 @@ input ToolsInput {
   limit: Int
   "Zero based offset of individual results."
   offset: Int
+  "One or more sort keys can be specified to impact searching. Fields can be prepended with a '-' to sort in descending order. Ascending order is the default but + can be used to explicitly request ascending."
+  sortKey: String
 }
 
 input ToolInput {
@@ -115,6 +117,8 @@ type Query {
     limit: Int @deprecated(reason: "Use `params.limit`")
     "Zero based offset of individual results."
     offset: Int @deprecated(reason: "Use `params.offset`")
+    "One or more sort keys can be specified to impact searching. Fields can be prepended with a '-' to sort in descending order. Ascending order is the default but + can be used to explicitly request ascending."
+    sortKey: [String] @deprecated(reason: "Use `params.sortKey`")
   ): ToolList!
 
   tool (
