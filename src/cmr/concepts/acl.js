@@ -2,12 +2,11 @@ import AclConcept from './aclConcept'
 
 export default class Acl extends AclConcept {
   /**
-   * Instantiates an Acl object
+   * Instantiates an ACL object from the CMR API
    * @param {Object} headers HTTP headers provided by the query
    * @param {Object} requestInfo Parsed data pertaining to the Graph query
    * @param {Object} params GraphQL query parameters
    */
-
   constructor(headers, requestInfo, params) {
     super('acls', headers, requestInfo, params)
   }
@@ -25,7 +24,7 @@ export default class Acl extends AclConcept {
   }
 
   /**
-   * Query the CMR UMM API endpoint to retrieve requested data
+   * Query the CMR ACL API endpoint to retrieve requested data
    * @param {Object} searchParams Parameters provided by the query
    * @param {Array} ummKeys Keys requested by the query
    * @param {Object} headers Headers requested by the query

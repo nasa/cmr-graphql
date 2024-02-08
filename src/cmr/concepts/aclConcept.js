@@ -11,7 +11,7 @@ import { downcaseKeys } from '../../utils/downcaseKeys'
 
 export default class AclConcept {
   /**
-   * Instantiates a Concept object
+   * Instantiates an AclConcept object
    * @param {String} conceptType The CMR concept type to query against
    * @param {Object} headers HTTP headers provided by the query
    * @param {Object} requestInfo Parsed data pertaining to the Graph query
@@ -35,9 +35,7 @@ export default class AclConcept {
     // Default an array to hold the promises we need to make depending on the requested fields
     const promises = []
 
-    const {
-      jsonKeys
-    } = this.requestInfo
+    const { jsonKeys } = this.requestInfo
 
     if (jsonKeys.length > 0) {
       const jsonHeaders = {
