@@ -1027,6 +1027,65 @@ variables:
       "ummVersion": "1.2.0"
     }
 
+##### Acls
+
+For all supported arguments and columns, see [the schema](src/types/acl.graphql).
+
+##### Example Query
+
+query Acls($params: AclsInput) {
+  acls(params: $params) {
+    items {
+      acl
+    }
+  }
+}
+
+variables:
+
+{
+  "params": {
+    "includeFullAcl": true,
+    "pageNum": 1,
+    "pageSize": 20,
+    "permittedUser": "typical",
+    "target": "PROVIDER_CONTEXT"
+  }
+}
+
+##### Example Response
+
+{
+  "data": {
+    "acls": {
+      "items": [
+        {
+          "acl": {
+            "group_permissions": [
+              {
+                "group_id": "AG1200000003-MMT_2",
+                "permissions": [
+                  "read"
+                ]
+              },
+              {
+                "group_id": "AG1200000001-CMR",
+                "permissions": [
+                  "read"
+                ]
+              }
+            ],
+            "provider_identity": {
+              "target": "PROVIDER_CONTEXT",
+              "provider_id": "MMT_2"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+
 #### Local graph database:
 
 Normally running GraphQl with `serverless offline` will utilize the `(cmr.earthdata.nasa.gov/graphdb)` endpoint, to query against related collections and duplicate collections in the graph database. To send queries to a locally running graph database, we can use a docker gremlin-server that exposes an HTTP endpoint. This is launched by running
