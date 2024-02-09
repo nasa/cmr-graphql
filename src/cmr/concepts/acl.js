@@ -2,7 +2,6 @@ import snakeCaseKeys from 'snakecase-keys'
 import { pick } from 'lodash'
 import { aclQuery } from '../../utils/aclQuery'
 import { mergeParams } from '../../utils/mergeParams'
-import { downcaseKeys } from '../../utils/downcaseKeys'
 import Concept from './concept'
 
 export default class Acl extends Concept {
