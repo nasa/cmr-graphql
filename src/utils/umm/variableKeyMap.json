@@ -27,6 +27,7 @@
     "scale": "umm.Scale",
     "scienceKeywords": "umm.ScienceKeywords",
     "sets": "umm.Sets",
+    "sortKey": "umm.SortKey",
     "standardName": "umm.StandardName",
     "ummMetadata": "umm",
     "units": "umm.Units",

@@ -88,6 +88,8 @@ input VariablesInput {
   name: String
   "Zero based offset of individual results."
   offset: Int
+  "One or more sort keys can be specified to impact searching. Fields can be prepended with a '-' to sort in descending order. Ascending order is the default but + can be used to explicitly request ascending."
+  sortKey: String
 }
 
 input VariableInput {
@@ -109,6 +111,8 @@ type Query {
     name: String @deprecated(reason: "Use `params.name`")
     "Zero based offset of individual results."
     offset: Int @deprecated(reason: "Use `params.offset`")
+    "One or more sort keys can be specified to impact searching. Fields can be prepended with a '-' to sort in descending order. Ascending order is the default but + can be used to explicitly request ascending."
+    sortKey: [String] @deprecated(reason: "Use `params.sortKey`")
   ): VariableList!
 
   variable (
