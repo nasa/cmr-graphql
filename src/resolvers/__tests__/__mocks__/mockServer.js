@@ -3,6 +3,7 @@ import { ApolloServer } from '@apollo/server'
 import resolvers from '../..'
 import typeDefs from '../../../types'
 
+import aclSource from '../../../datasources/acl'
 import collectionDraftProposalSource from '../../../datasources/collectionDraftProposal'
 import collectionDraftSource from '../../../datasources/collectionDraft'
 import collectionSource from '../../../datasources/collection'
@@ -49,6 +50,7 @@ export const server = new ApolloServer({
 
 export const buildContextValue = (extraContext) => ({
   dataSources: {
+    aclSource,
     collectionDraftProposalSource,
     collectionDraftSource,
     collectionSource,

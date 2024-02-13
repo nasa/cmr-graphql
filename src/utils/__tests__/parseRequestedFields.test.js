@@ -49,7 +49,6 @@ describe('parseRequestedFields', () => {
       }
 
       const requestedFields = parseRequestedFields(requestInfo, keyMap, 'collection')
-
       expect(requestedFields).toEqual({
         jsonKeys: ['conceptId', 'keyThree'],
         metaKeys: [],

@@ -268,7 +268,11 @@ export default class Concept {
       'concept_id',
       'offset',
       'page_size',
-      'sort_key'
+      'sort_key',
+      'permitted_user',
+      'include_full_acl',
+      'page_num',
+      'target'
     ]
   }
 
@@ -292,7 +296,11 @@ export default class Concept {
       'concept_id',
       'offset',
       'page_size',
-      'sort_key'
+      'sort_key',
+      'permitted_user',
+      'include_full_acl',
+      'page_num',
+      'target'
     ]
   }
 
