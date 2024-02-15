@@ -31,6 +31,7 @@
     "directDistributionInformation": "umm.DirectDistributionInformation",
     "directoryNames": "umm.DirectoryNames",
     "doi": "umm.DOI",
+    "entryTitle": "umm.EntryTitle",
     "hasFormats": "meta.has-formats",
     "hasSpatialSubsetting": "meta.has-spatial-subsetting",
     "hasTemporalSubsetting": "meta.has-temporal-subsetting",
