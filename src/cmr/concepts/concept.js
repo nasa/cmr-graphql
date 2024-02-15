@@ -271,6 +271,7 @@ export default class Concept {
       'sort_key',
       'permitted_user',
       'include_full_acl',
+      'all_revisions',
       'page_num',
       'target'
     ]
@@ -284,6 +285,7 @@ export default class Concept {
       'concept_id',
       'offset',
       'page_size',
+      'all_revisions',
       'sort_key'
     ]
   }
@@ -590,6 +592,7 @@ export default class Concept {
    * @param {Array} jsonKeys Array of the keys requested in the query
    */
   async parseJson(jsonResponse, jsonKeys) {
+    console.log("🚀 ~ Concept ~ parseJson ~ jsonResponse:", jsonResponse)
     const { headers } = jsonResponse
     const {
       'cmr-hits': cmrHits,
@@ -605,8 +608,8 @@ export default class Concept {
     items.forEach((item) => {
       const normalizedItem = this.normalizeJsonItem(item)
 
-      const { concept_id: conceptId } = normalizedItem
-
+      const { concept_id: conceptId, revision_id: revisionId } = normalizedItem
+ 
       this.setEssentialJsonValues(conceptId, normalizedItem)
 
       jsonKeys.forEach((jsonKey) => {
@@ -615,7 +618,7 @@ export default class Concept {
         const { [cmrKey]: keyValue } = normalizedItem
 
         // Snake case the key requested and any children of that key
-        this.setItemValue(conceptId, jsonKey, keyValue)
+        this.setItemValue(revisionId, jsonKey, keyValue)
       })
     })
   }
@@ -640,12 +643,15 @@ export default class Concept {
     this.setUmmSearchAfter(ummSearchAfterIdentifier)
 
     const items = this.parseUmmBody(ummResponse)
+    // these work
 
     items.forEach((item) => {
       const normalizedItem = this.normalizeUmmItem(item)
 
       const { meta } = normalizedItem
-      const { 'concept-id': conceptId } = meta
+
+      const { 'concept-id': conceptId, 'revision-id': revisionId } = meta
+
 
       this.setEssentialUmmValues(conceptId, normalizedItem)
 
@@ -658,7 +664,7 @@ export default class Concept {
         // If the raw `ummMetadata` was requested return that value unaltered
         if (ummKey === 'ummMetadata') {
           this.setItemValue(
-            conceptId,
+            revisionId,
             ummKey,
             keyValue
           )
@@ -755,14 +761,17 @@ export default class Concept {
       const response = await this.getResponse()
 
       const [jsonResponse, ummResponse] = response
-
+      // console.log(ummResponse)
+      
+      if (ummResponse) {
+        await this.parseUmm(ummResponse, ummKeys)
+      }
       if (jsonResponse) {
         await this.parseJson(jsonResponse, jsonKeys)
       }
 
-      if (ummResponse) {
-        await this.parseUmm(ummResponse, ummKeys)
-      }
+      
+
     } catch (e) {
       parseError(e, { reThrowError: true })
     }

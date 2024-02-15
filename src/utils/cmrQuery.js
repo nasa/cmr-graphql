@@ -82,7 +82,7 @@ export const cmrQuery = ({
     response.headers['request-duration'] = milliseconds
 
     console.log(`Request ${requestId} from ${clientId} to [concept: ${conceptType}, format: ${format}] completed external request in [reported: ${cmrTook} ms, observed: ${milliseconds} ms]`)
-
+    
     return response
   })
 

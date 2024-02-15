@@ -46,6 +46,26 @@ export default {
       })
 
       return dataSources.collectionSource(requestedParams, context, parseResolveInfo(info))
+    },
+    revisions: async (source, args, context, info) => {
+      const { dataSources } = context
+      // console.log(context)
+
+      // Pull out parent collection id to provide to the granules endpoint because cmr requires it
+      // const { conceptId } = source
+      // console.log(source)
+
+      // If the concept being returned is a draft, there will be no associations,
+      // return null to avoid an extra call to CMR
+      // if (isDraftConceptId(conceptId, 'tool')) return null
+
+      // const requestedParams = handlePagingParams({
+      //   toolConceptId: conceptId,
+      //   ...args
+      // })
+
+      return dataSources.revisionSource(handlePagingParams(args), context, parseResolveInfo(info))
     }
+
   }
 }
