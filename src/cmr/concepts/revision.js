@@ -10,7 +10,10 @@ export default class Revision extends Concept {
   constructor(headers, requestInfo, params) {
     // This concept uses the "-" character to delineate spaces in CMR we must pass it
     // in this form to fetch order option concepts from CMR
+    
+    // Here is where I believe we need to change things
     super('tools', headers, requestInfo, params)
+  
   }
 
   /**
@@ -18,7 +21,6 @@ export default class Revision extends Concept {
    * @param {Object} jsonResponse HTTP response from the CMR endpoint
    */
   parseJsonBody(jsonResponse) {
-    console.log('REVISON CONCEPT PARSEJSON')
     const { data } = jsonResponse
 
     const { items } = data

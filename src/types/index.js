@@ -16,6 +16,7 @@ import tool from './tool.graphql'
 import variableDraft from './variableDraft.graphql'
 import variable from './variable.graphql'
 import orderOption from './orderOption.graphql'
+import revision from './revision.graphql'
 
 export default mergeTypeDefs(
   [
@@ -29,6 +30,7 @@ export default mergeTypeDefs(
     grid,
     json,
     orderOption,
+    revision,
     service,
     serviceDraft,
     subscription,

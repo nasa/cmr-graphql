@@ -592,7 +592,6 @@ export default class Concept {
    * @param {Array} jsonKeys Array of the keys requested in the query
    */
   async parseJson(jsonResponse, jsonKeys) {
-    console.log("🚀 ~ Concept ~ parseJson ~ jsonResponse:", jsonResponse)
     const { headers } = jsonResponse
     const {
       'cmr-hits': cmrHits,
