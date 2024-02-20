@@ -14,6 +14,9 @@ export default class Collection extends Concept {
     super('collections', headers, requestInfo, params)
 
     this.facets = []
+    const { providerId } = params
+
+    this.ingestPath = `providers/${providerId}/collections`
   }
 
   /**

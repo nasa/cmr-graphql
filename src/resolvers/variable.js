@@ -77,7 +77,7 @@ export default {
         ...args
       })
 
-      return dataSources.collectionSource(requestedParams, context, parseResolveInfo(info))
+      return dataSources.collectionSourceFetch(requestedParams, context, parseResolveInfo(info))
     }
   }
 }
