@@ -1,0 +1,43 @@
+type Acl {
+  "The unique concept id assigned to the ACL."
+  conceptId: String
+  "The revision id for the ACL."
+  revisionId: Int
+  "The type of identity (provider, system, single_instance, catalog_item)."
+  identityType: String
+  "The name of the ACL."
+  name: String
+  "An URL to retrieve the ACL."  
+  location: String
+  "Full JSON of the ACL. Included if include_full_acl=true parameter is set."
+  acl: JSON
+}
+
+type AclList {
+  "The number of hits for a given search."
+  count: Int
+  "Cursor that points to the/a specific position in a list of requested records."
+  cursor: String
+  "The list of acl search results."
+  items: [Acl]  
+}
+
+input AclsInput {
+  "User is an URS user name corresponding to a member of a group that has access to an ACL."
+  permittedUser: String
+  "Boolean parameter that indicates if the full acl details should be included in the search response."
+  includeFullAcl: Boolean
+  "Matches ACLs which have the given object identity target."
+  target: String
+  "Size of page desired, only supported with concept_id."
+  pageSize: Int
+  "Page number desired, only supported with concept_id."
+  pageNum: Int
+}
+
+type Query {
+  acls(
+    "Acls query parameters"
+    params: AclsInput
+  ): AclList!
+}

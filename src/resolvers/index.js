@@ -1,5 +1,6 @@
 import { mergeResolvers } from '@graphql-tools/merge'
 
+import aclResolver from './acl'
 import collectionDraftProposalResolver from './collectionDraftProposal'
 import collectionDraftResolver from './collectionDraft'
 import collectionResolver from './collection'
@@ -17,6 +18,7 @@ import variableDraftResolver from './variableDraft'
 import variableResolver from './variable'
 
 const resolvers = [
+  aclResolver,
   collectionDraftProposalResolver,
   collectionDraftResolver,
   collectionResolver,

@@ -11,6 +11,7 @@ import DataLoader from 'dataloader'
 import resolvers from '../resolvers'
 import typeDefs from '../types'
 
+import aclSource from '../datasources/acl'
 import collectionDraftProposalSource from '../datasources/collectionDraftProposal'
 import collectionDraftSource from '../datasources/collectionDraft'
 import collectionSource from '../datasources/collection'
@@ -150,6 +151,7 @@ export default startServerAndCreateLambdaHandler(
       return {
         ...context,
         dataSources: {
+          aclSource,
           collectionDraftProposalSource,
           collectionDraftSource,
           collectionSource,
