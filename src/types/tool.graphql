@@ -77,9 +77,9 @@ type Tool {
     offset: Int @deprecated(reason: "Use `params.offset`")
   ): CollectionList
 
-  # revisions (
-  #   params: RevisionsInput
-  # ): RevisionList
+  revisions (
+    params: RevisionsInput
+  ): RevisionList
 }
 
 type ToolList {
@@ -89,6 +89,20 @@ type ToolList {
   cursor: String
   "The list of service search results."
   items: [Tool]
+}
+
+type Revision {
+  name: String
+  conceptId: String
+}
+
+type RevisionList {
+    "The number of hits for a given search."
+  count: Int
+  "Cursor that points to the/a specific position in a list of requested records."
+  cursor: String
+  "The list of service search results."
+  items: [Revision]
 }
 
 input ToolsInput {
@@ -107,6 +121,11 @@ input ToolsInput {
 input ToolInput {
   "The unique concept id assigned to the tool."
   conceptId: String!
+}
+
+input RevisionsInput {
+  conceptId: String!
+  allRevisions: Boolean
 }
 
 type Query {
@@ -132,9 +151,9 @@ type Query {
     conceptId: String @deprecated(reason: "Use `params.conceptId`")
   ): Tool
 
-  # revisions (
-  #   params: RevisionsInput
-  # ): RevisionList!
+  revisions (
+    params: RevisionsInput
+  ): RevisionList!
 }
 
 type Mutation {

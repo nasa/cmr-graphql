@@ -1,3 +1,5 @@
+import { snakeCase } from 'lodash'
+import { downcaseKeys } from '../../utils/downcaseKeys'
 import Concept from './concept'
 
 export default class Revision extends Concept {
@@ -10,10 +12,40 @@ export default class Revision extends Concept {
   constructor(headers, requestInfo, params) {
     // This concept uses the "-" character to delineate spaces in CMR we must pass it
     // in this form to fetch order option concepts from CMR
-    
+
     // Here is where I believe we need to change things
     super('tools', headers, requestInfo, params)
-  
+  }
+
+  async parseJson(jsonResponse, jsonKeys) {
+    const { headers } = jsonResponse
+    const {
+      'cmr-hits': cmrHits,
+      'cmr-search-after': jsonSearchAfterIdentifier
+    } = downcaseKeys(headers)
+
+    this.setJsonItemCount(cmrHits)
+
+    this.setJsonSearchAfter(jsonSearchAfterIdentifier)
+
+    const items = this.parseJsonBody(jsonResponse)
+
+    items.forEach((item) => {
+      const normalizedItem = this.normalizeJsonItem(item)
+
+      const { revision_id: revisionId } = normalizedItem
+
+      this.setEssentialJsonValues(revisionId, normalizedItem)
+
+      jsonKeys.forEach((jsonKey) => {
+        const cmrKey = snakeCase(jsonKey)
+
+        const { [cmrKey]: keyValue } = normalizedItem
+
+        // Snake case the key requested and any children of that key
+        this.setItemValue(`Revision${revisionId}`, jsonKey, keyValue)
+      })
+    })
   }
 
   /**

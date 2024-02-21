@@ -607,8 +607,8 @@ export default class Concept {
     items.forEach((item) => {
       const normalizedItem = this.normalizeJsonItem(item)
 
-      const { concept_id: conceptId, revision_id: revisionId } = normalizedItem
- 
+      const { concept_id: conceptId } = normalizedItem
+
       this.setEssentialJsonValues(conceptId, normalizedItem)
 
       jsonKeys.forEach((jsonKey) => {
@@ -617,7 +617,7 @@ export default class Concept {
         const { [cmrKey]: keyValue } = normalizedItem
 
         // Snake case the key requested and any children of that key
-        this.setItemValue(revisionId, jsonKey, keyValue)
+        this.setItemValue(conceptId, jsonKey, keyValue)
       })
     })
   }
@@ -642,7 +642,7 @@ export default class Concept {
     this.setUmmSearchAfter(ummSearchAfterIdentifier)
 
     const items = this.parseUmmBody(ummResponse)
-    // these work
+    // These work
 
     items.forEach((item) => {
       const normalizedItem = this.normalizeUmmItem(item)
@@ -650,7 +650,6 @@ export default class Concept {
       const { meta } = normalizedItem
 
       const { 'concept-id': conceptId, 'revision-id': revisionId } = meta
-
 
       this.setEssentialUmmValues(conceptId, normalizedItem)
 
@@ -760,17 +759,15 @@ export default class Concept {
       const response = await this.getResponse()
 
       const [jsonResponse, ummResponse] = response
-      // console.log(ummResponse)
-      
+      // Console.log(ummResponse)
+
       if (ummResponse) {
         await this.parseUmm(ummResponse, ummKeys)
       }
+
       if (jsonResponse) {
         await this.parseJson(jsonResponse, jsonKeys)
       }
-
-      
-
     } catch (e) {
       parseError(e, { reThrowError: true })
     }

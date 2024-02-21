@@ -16,9 +16,9 @@ export default async (params, context, parsedInfo) => {
 
   // Parse the response from CMR
   await revision.parse(requestInfo)
-//   console.log("🚀 ~ revision:", revision)
+  //   Console.log("🚀 ~ revision:", revision)
 
-	// console.log(revision.getFormattedResponse())
+  // console.log(revision.getFormattedResponse())
   // Return a formatted JSON response
   return revision.getFormattedResponse()
 }
