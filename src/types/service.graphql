@@ -80,6 +80,10 @@ type Service {
     "Variables query parameters"
     params: VariablesInput
   ): VariableList
+
+  revisions (
+    params: RevisionsInput
+  ): RevisionList
 }
 
 type ServiceList {
@@ -135,6 +139,10 @@ type Query {
     "The unique concept id assigned to the service."
     conceptId: String @deprecated(reason: "Use `params.conceptId`")
   ): Service
+
+  revisions (
+    params: RevisionsInput
+  ): RevisionList!
 }
 
 type Mutation {

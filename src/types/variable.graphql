@@ -66,6 +66,10 @@ type Variable {
     "Zero based offset of individual results."
     offset: Int @deprecated(reason: "Use `params.offset`")
   ): CollectionList
+
+  revisions (
+    params: RevisionsInput
+  ): RevisionList
 }
 
 type VariableList {

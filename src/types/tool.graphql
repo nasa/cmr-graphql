@@ -91,20 +91,6 @@ type ToolList {
   items: [Tool]
 }
 
-type Revision {
-  name: String
-  conceptId: String
-}
-
-type RevisionList {
-    "The number of hits for a given search."
-  count: Int
-  "Cursor that points to the/a specific position in a list of requested records."
-  cursor: String
-  "The list of service search results."
-  items: [Revision]
-}
-
 input ToolsInput {
   "The unique concept id assigned to the tool."
   conceptId: [String]
@@ -121,11 +107,6 @@ input ToolsInput {
 input ToolInput {
   "The unique concept id assigned to the tool."
   conceptId: String!
-}
-
-input RevisionsInput {
-  conceptId: String!
-  allRevisions: Boolean
 }
 
 type Query {

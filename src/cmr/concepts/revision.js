@@ -36,8 +36,6 @@ export default class Revision extends Concept {
 
       const { revision_id: revisionId } = normalizedItem
 
-      this.setEssentialJsonValues(revisionId, normalizedItem)
-
       jsonKeys.forEach((jsonKey) => {
         const cmrKey = snakeCase(jsonKey)
 

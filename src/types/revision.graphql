@@ -1,53 +1,34 @@
 type Revision {
-	# "Short Name of the revised published record"
-	# name: String
-	# "Published Record Concept Id of revised published record"
-	# id: String
-	# "url endpoint of revised published record"
-	# location: String
 	"Revision number of revised published record"
 	revisionId: String
 	conceptId: String
 	name: String
 }
 
-# type RevisionList {
-#   "The number of hits for a given search."
-#   count: Int
-#   "Cursor that points to the/a specific position in a list of requested records."
-#   cursor: String
-#   "The list of collection search results."
-#   items: [Revision]
-# }
+type RevisionList {
+    "The number of hits for a given search."
+  count: Int
+  "Cursor that points to the/a specific position in a list of requested records."
+  cursor: String
+  "The list of service search results."
+  items: [Revision]
+}
 
 input RevisionInput {
 	"The revisionId of the published record"
-  revisionId: String!
+	revisionId: String!
 	conceptId: String!
 }
 
-# input RevisionsInput {
-# 	"The unique concept id assigned to the published record."
-#   conceptId: String!
-# # 	"all published revisions associated with the conceptId"
-# #   allRevisions: Boolea
-# }
+input RevisionsInput {
+  conceptId: String!
+  allRevisions: Boolean
+}
 
 type Query {
-	# revisions (
-	# 	"Revisions query parameters"
-	# 	params: RevisionsInput
-	# 	"The unique concept id assigned to the published record."
-	# 	conceptId: [String] @deprecated(reason: "Use `params.conceptId`")
-	# 	"Cursor that points to the a specific position in a list of requested records."
-	# 	cursor: String @deprecated(reason: "Use `params.cursor`")
-	# 	"The number of servies requested by the user."
-	# 	limit: Int @deprecated(reason: "Use `params.limit`")
-	# 	"Zero based offset of individual results."
-	# 	offset: Int @deprecated(reason: "Use `params.offset`")
-	# 	"One or more sort keys can be specified to impact searching. Fields can be prepended with a '-' to sort in descending order. Ascending order is the default but + can be used to explicitly request ascending."
-	# 	sortKey: [String] @deprecated(reason: "Use `params.sortKey`")
-	# ): RevisionList!
+	revisions (
+    params: RevisionsInput
+  ): RevisionList!
 
 	revision (
 		"Tool query parameters"

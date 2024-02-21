@@ -159,6 +159,11 @@ export default {
       const { dataSources } = context
 
       return dataSources.maxItemsPerOrderSource({ providerId }, context)
+    },
+    revisions: async (source, args, context, info) => {
+      const { dataSources } = context
+
+      return dataSources.revisionSource('services', handlePagingParams(args), context, parseResolveInfo(info))
     }
   }
 }

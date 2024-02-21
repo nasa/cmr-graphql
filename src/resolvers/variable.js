@@ -78,6 +78,11 @@ export default {
       })
 
       return dataSources.collectionSource(requestedParams, context, parseResolveInfo(info))
+    },
+    revisions: async (source, args, context, info) => {
+      const { dataSources } = context
+
+      return dataSources.revisionSource('variables', handlePagingParams(args), context, parseResolveInfo(info))
     }
   }
 }
