@@ -759,7 +759,6 @@ export default class Concept {
       const response = await this.getResponse()
 
       const [jsonResponse, ummResponse] = response
-      // Console.log(ummResponse)
 
       if (ummResponse) {
         await this.parseUmm(ummResponse, ummKeys)

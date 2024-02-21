@@ -9,12 +9,13 @@ export default class Revision extends Concept {
    * @param {Object} requestInfo Parsed data pertaining to the Graph query
    * @param {Object} params GraphQL query parameters
    */
-  constructor(headers, requestInfo, params) {
+
+  // eslint-disable-next-line no-useless-constructor
+  constructor(conceptType, headers, requestInfo, params) {
     // This concept uses the "-" character to delineate spaces in CMR we must pass it
     // in this form to fetch order option concepts from CMR
 
-    // Here is where I believe we need to change things
-    super('tools', headers, requestInfo, params)
+    super(conceptType, headers, requestInfo, params)
   }
 
   async parseJson(jsonResponse, jsonKeys) {
