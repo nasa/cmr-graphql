@@ -1,8 +1,11 @@
 type Revision {
 	"Revision number of revised published record"
-	revisionId: String
 	conceptId: String
+	revisionId: String
+	providerId: String
+	nativeId: String
 	name: String
+	longName: String
 }
 
 type RevisionList {

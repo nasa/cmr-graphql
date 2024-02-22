@@ -163,7 +163,12 @@ export default {
     revisions: async (source, args, context, info) => {
       const { dataSources } = context
 
-      return dataSources.revisionSource('services', handlePagingParams(args), context, parseResolveInfo(info))
+      const requestedParams = handlePagingParams({
+        allRevisions: true,
+        ...args
+      })
+
+      return dataSources.revisionSource('services', requestedParams, context, parseResolveInfo(info))
     }
   }
 }
