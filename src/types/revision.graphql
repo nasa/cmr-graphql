@@ -11,6 +11,10 @@ type Revision {
 	name: String
 	"Longname of the published record"
 	longName: String
+	"Last Revision date of published record"
+	revisionDate:String
+	"URL or 'location' of revision draft"
+	url: JSON
 }
 
 type RevisionList {

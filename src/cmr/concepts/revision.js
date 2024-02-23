@@ -1,4 +1,8 @@
-import { snakeCase } from 'lodash'
+import {
+  snakeCase,
+  kebabCase,
+  _
+} from 'lodash'
 import { downcaseKeys } from '../../utils/downcaseKeys'
 import Concept from './concept'
 
@@ -16,6 +20,64 @@ export default class Revision extends Concept {
     // in this form to fetch order option concepts from CMR
 
     super(conceptType, headers, requestInfo, params)
+  }
+
+  /**
+   * Parse and return the array of data from the nested response body
+   * @param {Object} ummResponse HTTP response from the CMR endpoint
+   */
+  parseUmmBody(ummResponse) {
+    const { data } = ummResponse
+
+    const { items } = data
+
+    return items
+  }
+
+  /**
+   * Parses the response from the umm endpoint
+   * @param {Object} ummResponse HTTP response from the CMR endpoint
+   * @param {Array} ummKeys Array of the keys requested in the query
+   */
+  async parseUmm(ummResponse, ummKeys) {
+    // Pull out the key mappings so we can retrieve the values below
+    const { headers } = ummResponse
+    const {
+      'cmr-hits': cmrHits,
+      'cmr-search-after': ummSearchAfterIdentifier
+    } = downcaseKeys(headers)
+
+    this.setUmmItemCount(cmrHits)
+
+    this.setUmmSearchAfter(ummSearchAfterIdentifier)
+
+    const items = this.parseUmmBody(ummResponse)
+
+    items.forEach((item) => {
+      const normalizedItem = this.normalizeUmmItem(item)
+
+      const { meta, umm } = normalizedItem
+
+      const { 'revision-id': revisionId } = meta
+
+      // Loop through the requested umm keys
+      ummKeys.forEach((ummKey) => {
+        const metaKey = kebabCase(ummKey)
+        const subUmmKey = _.startCase(ummKey).replace(/\s/g, '')
+        let urlKeyValue = ''
+
+        if (subUmmKey === 'Url') {
+          const { URL } = umm
+          const { URLValue } = URL || 'Not Provided'
+          urlKeyValue = URLValue
+        }
+
+        const { [metaKey]: metaKeyValue } = meta
+        const { [subUmmKey]: ummKeyValue } = umm
+        // Snake case the key requested and any children of that key
+        this.setItemValue(`Revision${revisionId}`, ummKey, (metaKeyValue || ummKeyValue || urlKeyValue || 'Not Provided'))
+      })
+    })
   }
 
   async parseJson(jsonResponse, jsonKeys) {

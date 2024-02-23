@@ -615,7 +615,6 @@ export default class Concept {
         const cmrKey = snakeCase(jsonKey)
 
         const { [cmrKey]: keyValue } = normalizedItem
-
         // Snake case the key requested and any children of that key
         this.setItemValue(conceptId, jsonKey, keyValue)
       })

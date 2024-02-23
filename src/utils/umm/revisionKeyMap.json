@@ -12,7 +12,9 @@
 		"revisionId": "meta.revision-id",
 		"providerId": "meta.provider-id",
 		"nativeId": "meta.native-id",
-		"name": "meta.Name",
-		"longName": "umm.LongName"
+		"name": "umm.Name",
+		"longName": "umm.LongName",
+		"revisionDate": "meta.revision-date",
+		"url": "umm.URL"
 	}
 }

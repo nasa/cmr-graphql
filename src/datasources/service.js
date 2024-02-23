@@ -18,8 +18,6 @@ export const fetchServices = async (params, context, parsedInfo, parentCollectio
   // Parse the response from CMR
   await service.parse(requestInfo)
 
-  console.log(service.getFormattedResponse())
-
   // Return a formatted JSON response
   return service.getFormattedResponse()
 }
