@@ -642,7 +642,15 @@ export default class Concept {
     this.setUmmSearchAfter(ummSearchAfterIdentifier)
 
     const items = this.parseUmmBody(ummResponse)
-    // These work
+
+    let isDraft = false
+
+    if (
+      this.conceptType === 'variable-drafts'
+      || this.conceptType === 'tool-drafts'
+      || this.conceptType === 'service-drafts'
+      || this.conceptType === 'collection-drafts'
+    ) { isDraft = true }
 
     items.forEach((item) => {
       const normalizedItem = this.normalizeUmmItem(item)
@@ -660,9 +668,19 @@ export default class Concept {
         let keyValue = get(item, ummKeyMappings[ummKey])
 
         // If the raw `ummMetadata` was requested return that value unaltered
-        if (ummKey === 'ummMetadata') {
+        if (ummKey === 'ummMetadata' && !isDraft) {
           this.setItemValue(
             revisionId,
+            ummKey,
+            keyValue
+          )
+
+          return
+        }
+
+        if (ummKey === 'ummMetadata' && isDraft) {
+          this.setItemValue(
+            conceptId,
             ummKey,
             keyValue
           )

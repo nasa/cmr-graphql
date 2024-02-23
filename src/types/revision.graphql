@@ -1,10 +1,15 @@
 type Revision {
-	"Revision number of revised published record"
+	"Concept Id of the published record"
 	conceptId: String
+	"Revision Id of the published record"
 	revisionId: String
+	"Provider Id of the published record"
 	providerId: String
+	"Native Id of the published record"
 	nativeId: String
+	"Name Id of the published record"
 	name: String
+	"Longname of the published record"
 	longName: String
 }
 
@@ -24,8 +29,7 @@ input RevisionInput {
 }
 
 input RevisionsInput {
-  conceptId: String!
-  allRevisions: Boolean
+  conceptId: String
 }
 
 type Query {

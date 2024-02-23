@@ -194,6 +194,90 @@ describe('Service', () => {
         })
       })
 
+      describe('with revisions', () => {
+        test('returns revisions', async () => {
+          nock(/example-cmr/)
+            .defaultReplyHeaders({
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .post(/services\.json/, 'all_revisions=true&concept_id=S100000-EDSCpage_size=20')
+            .reply(200, {
+              data: {
+                items:
+                  [
+                    {
+                      conceptId: 'S100000-EDSC',
+                      longName: 'Example Long Name',
+                      name: 'Example Name Modified',
+                      nativeId: 'service-1',
+                      providerId: 'MMT_2',
+                      revisionId: 2
+                    },
+                    {
+                      conceptId: 'S100000-EDSC',
+                      longName: 'Example Long Name',
+                      name: 'Example Name',
+                      nativeId: 'service-1',
+                      providerId: 'MMT_2',
+                      revisionId: 1
+                    }
+                  ]
+              }
+            })
+
+          const response = await server.executeOperation({
+            variables: {},
+            query: `{
+              service(params: { conceptId: "S100000-EDSC" }) {
+                conceptId
+                revisions(params: { conceptId: "S100000-EDSC" }){
+                  items {
+                    conceptId
+                    longName
+                    name
+                    nativeId
+                    providerId
+                    revisionId
+                  }
+                }
+              }
+            }`
+          }, {
+            contextValue
+          })
+
+          const { data } = response.body.singleResult
+          console.log("🚀 ~ test ~ data:", data)
+
+          expect(data).toEqual({
+            service: {
+              conceptId: 'S100000-EDSC',
+              revisions: {
+                items: [
+                  {
+                    conceptId: 'S100000-EDSC',
+                    longName: 'Example Long Name',
+                    name: 'Example Name',
+                    nativeId: 'service-1',
+                    providerId: 'MMT_2',
+                    revisionId: 1
+                  },
+                  {
+                    conceptId: 'S100000-EDSC',
+                    longName: 'Example Long Name',
+                    name: 'Example Name Modified',
+                    nativeId: 'service-1',
+                    providerId: 'MMT_2',
+                    revisionId: 2
+                  }
+                ]
+              }
+            }
+          })
+        })
+      })
+
       describe('with no results', () => {
         test('returns no results', async () => {
           nock(/example-cmr/)
