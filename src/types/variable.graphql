@@ -82,6 +82,8 @@ input VariablesInput {
   conceptId: [String]
   "Cursor that points to the/a specific position in a list of requested records."
   cursor: String
+  "Keyword search value."
+  keyword: String
   "The number of variables requested by the user."
   limit: Int
   "The name of a variable."
