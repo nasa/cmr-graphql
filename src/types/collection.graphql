@@ -53,6 +53,8 @@ type Collection {
   doi: JSON
   "The title of the collection described by the metadata."
   datasetId: String
+  "Entry Title"
+  entryTitle: String
   "An array containing all of the different formats of the underlying data of a collection."
   nativeDataFormats: [String]
   "True if there are multiple supported formats for any services associated with the collection."
@@ -379,6 +381,8 @@ input CollectionsInput {
   conceptId: [String]
   "The consortium value of the collection."
   consortium: [String]
+  "The DOI Value of the collection"
+  doi: String
   "Cursor that points to the/a specific position in a list of requested records."
   cursor: String
   "Bounding boxes define an area on the earth aligned with longitude and latitude. The Bounding box parameters must be 4 comma-separated numbers: lower left longitude, lower left latitude, upper right longitude, upper right latitude."
@@ -389,6 +393,8 @@ input CollectionsInput {
   cloudHosted: Boolean
   "Type of the collection"
   collectionDataType: [String]
+  "The Entry Title of collection"
+  entryTitle: String
   "Data center assigned to the collection."
   dataCenter: String
   "Data centers assigned to the collection."
@@ -461,8 +467,12 @@ input CollectionsInput {
   provider: String
   "The name of the providers associated with the collections."
   providers: [String]
+  "The revision id of the collection"
+  revisionDate: String
   "Science Keywords associated with the collection, in facet form."
   scienceKeywordsH: JSON
+  "Science Keywords for searching term at all levels of the science keyword hierarchy"
+  scienceKeywords: JSON
   "UMM Service concept id."
   serviceConceptId: String
   "UMM Service type."
@@ -479,8 +489,11 @@ input CollectionsInput {
   tagKey: [String]
   "The temporal datetime has to be in yyyy-MM-ddTHH:mm:ssZ format."
   temporal: String
+  updatedSince: String
   "The 2D coordinate system associated with the collection"
   twoDCoordinateSystemName: [String]
+  "version of the collection"
+  version: String
   "UMM Variable concept id."
   variableConceptId: String
 }
@@ -510,6 +523,8 @@ type Query {
     cloudHosted: Boolean @deprecated(reason: "Use `params.cloudHosted`")
     "Type of the collection"
     collectionDataType: [String] @deprecated(reason: "Use `params.collectionDataType`")
+    "Entry Title"
+    entryTitle: String
     "Data center assigned to the collection."
     dataCenter: String @deprecated(reason: "Use `params.dataCenter`")
     "Data center assigned to the collection, in facet form."
