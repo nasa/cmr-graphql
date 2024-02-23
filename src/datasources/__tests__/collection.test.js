@@ -1,6 +1,9 @@
 import nock from 'nock'
 
-import collectionDatasource from '../collection'
+import {
+  deleteCollection as collectionSourceDelete,
+  fetchCollections as collectionSourceFetch
+} from '../collection'
 
 let requestInfo
 
@@ -139,7 +142,7 @@ describe('collection', () => {
           }]
         })
 
-      const response = await collectionDatasource({
+      const response = await collectionSourceFetch({
         params: {
           cursor: 'eyJqc29uIjoiLTI5ODM0NzUwIiwidW1tIjoiLTk4NzI2MzU3In0='
         }
@@ -203,7 +206,7 @@ describe('collection', () => {
             }]
           })
 
-        const response = await collectionDatasource({}, {
+        const response = await collectionSourceFetch({}, {
           headers: {
             'Client-Id': 'eed-test-graphql',
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -242,7 +245,7 @@ describe('collection', () => {
           }
         })
 
-      const response = await collectionDatasource({}, {
+      const response = await collectionSourceFetch({}, {
         headers: {
           'Client-Id': 'eed-test-graphql',
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -286,7 +289,7 @@ describe('collection', () => {
           }
         })
 
-      const response = await collectionDatasource({
+      const response = await collectionSourceFetch({
         params: {
           conceptId: 'C100000-EDSC'
         }
@@ -395,7 +398,7 @@ describe('collection', () => {
           }]
         })
 
-      const response = await collectionDatasource({
+      const response = await collectionSourceFetch({
         params: {
           conceptId: 'C100000-EDSC'
         }
@@ -505,7 +508,7 @@ describe('collection', () => {
           }]
         })
 
-      const response = await collectionDatasource({
+      const response = await collectionSourceFetch({
         params: {
           dataCenters: ['EDSC']
         }
@@ -591,7 +594,7 @@ describe('collection', () => {
           }]
         })
 
-      const response = await collectionDatasource({
+      const response = await collectionSourceFetch({
         params: {
           conceptId: 'C100000-EDSC'
         }
@@ -628,10 +631,103 @@ describe('collection', () => {
       })
 
     await expect(
-      collectionDatasource({
+      collectionSourceFetch({
         params: {
           conceptId: 'C100000-EDSC'
         }
+      }, {
+        headers: {
+          'Client-Id': 'eed-test-graphql',
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        }
+      }, requestInfo)
+    ).rejects.toThrow(Error)
+  })
+})
+
+describe('collection#delete', () => {
+  const OLD_ENV = process.env
+
+  beforeEach(() => {
+    jest.resetAllMocks()
+
+    jest.restoreAllMocks()
+
+    process.env = { ...OLD_ENV }
+
+    process.env.cmrRootUrl = 'http://example-cmr.com'
+
+    // Default requestInfo
+    requestInfo = {
+      name: 'collectionDelete',
+      alias: 'collectionDelete',
+      args: {
+        conceptId: 'C100000-EDSC',
+        nativeId: 'test-guid'
+      },
+      fieldsByTypeName: {
+        CollectionMutationResponse: {
+          conceptId: {
+            name: 'conceptId',
+            alias: 'conceptId',
+            args: {},
+            fieldsByTypeName: {}
+          },
+          revisionId: {
+            name: 'revisionId',
+            alias: 'revisionId',
+            args: {},
+            fieldsByTypeName: {}
+          }
+        }
+      }
+    }
+  })
+
+  afterEach(() => {
+    process.env = OLD_ENV
+  })
+
+  test('returns the CMR results', async () => {
+    nock(/example-cmr/)
+      .defaultReplyHeaders({
+        'CMR-Request-Id': 'abcd-1234-efgh-5678'
+      })
+      .delete(/ingest\/providers\/EDSC\/collections\/test-guid/)
+      .reply(201, {
+        'concept-id': 'C100000-EDSC',
+        'revision-id': '1'
+      })
+
+    const response = await collectionSourceDelete({
+      nativeId: 'test-guid',
+      providerId: 'EDSC'
+    }, {
+      headers: {
+        'Client-Id': 'eed-test-graphql',
+        'CMR-Request-Id': 'abcd-1234-efgh-5678'
+      }
+    }, requestInfo)
+
+    expect(response).toEqual({
+      conceptId: 'C100000-EDSC',
+      revisionId: '1'
+    })
+  })
+
+  test('catches errors received from cmrDelete', async () => {
+    nock(/example-cmr/)
+      .delete(/ingest\/providers\/EDSC\/collections\/test-guid/)
+      .reply(500, {
+        errors: ['HTTP Error']
+      }, {
+        'cmr-request-id': 'abcd-1234-efgh-5678'
+      })
+
+    await expect(
+      collectionSourceDelete({
+        nativeId: 'test-guid',
+        providerId: 'EDSC'
       }, {
         headers: {
           'Client-Id': 'eed-test-graphql',

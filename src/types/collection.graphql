@@ -620,3 +620,19 @@ type Query {
     includeTags: String @deprecated(reason: "Use `params.includeTags`")
   ): Collection
 }
+
+type Mutation {
+  deleteCollection (
+    "Provider ID of the collection."
+    providerId: String!
+    "The native id of a collection."
+    nativeId: String!
+  ): CollectionMutationResponse
+}
+
+type CollectionMutationResponse {
+  "The unique concept id assigned to the collection."
+  conceptId: String!
+  "The revision of the collection."
+  revisionId: String!
+}
