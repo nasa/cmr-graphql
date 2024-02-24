@@ -63,7 +63,9 @@ export default class Service extends Concept {
   getPermittedJsonSearchParams() {
     return [
       ...super.getPermittedJsonSearchParams(),
-      'type'
+      'type',
+      'keyword',
+      'provider'
     ]
   }
 
@@ -73,7 +75,9 @@ export default class Service extends Concept {
   getPermittedUmmSearchParams() {
     return [
       ...super.getPermittedUmmSearchParams(),
-      'type'
+      'type',
+      'keyword',
+      'provider'
     ]
   }
 
