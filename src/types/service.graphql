@@ -106,6 +106,8 @@ input ServicesInput {
   limit: Int
   "Zero based offset of individual results."
   offset: Int
+  "The name of the provider associated with the service."
+  provider: String
   "The type of the service."
   type: String
   "One or more sort keys can be specified to impact searching. Fields can be prepended with a '-' to sort in descending order. Ascending order is the default but + can be used to explicitly request ascending."

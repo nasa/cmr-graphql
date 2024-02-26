@@ -14,7 +14,6 @@ import typeDefs from '../types'
 import aclSource from '../datasources/acl'
 import collectionDraftProposalSource from '../datasources/collectionDraftProposal'
 import collectionDraftSource from '../datasources/collectionDraft'
-import collectionSource from '../datasources/collection'
 import collectionVariableDraftsSource from '../datasources/collectionVariableDrafts'
 import dataQualitySummarySource from '../datasources/dataQualitySummary'
 import granuleSource from '../datasources/granule'
@@ -29,6 +28,11 @@ import toolDraftSource from '../datasources/toolDraft'
 import variableDraftSource from '../datasources/variableDraft'
 
 import { deleteTool as toolSourceDelete, fetchTools as toolSourceFetch } from '../datasources/tool'
+
+import {
+  deleteCollection as collectionSourceDelete,
+  fetchCollections as collectionSourceFetch
+} from '../datasources/collection'
 
 import {
   deleteService as serviceSourceDelete,
@@ -155,7 +159,8 @@ export default startServerAndCreateLambdaHandler(
           aclSource,
           collectionDraftProposalSource,
           collectionDraftSource,
-          collectionSource,
+          collectionSourceDelete,
+          collectionSourceFetch,
           collectionVariableDraftsSource,
           dataQualitySummarySource,
           draftSourceDelete,

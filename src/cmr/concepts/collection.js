@@ -14,6 +14,9 @@ export default class Collection extends Concept {
     super('collections', headers, requestInfo, params)
 
     this.facets = []
+    const { providerId } = params
+
+    this.ingestPath = `providers/${providerId}/collections`
   }
 
   /**
@@ -57,7 +60,9 @@ export default class Collection extends Concept {
       'consortium',
       'data_center',
       'data_center_h',
+      'doi',
       'entry_id',
+      'entry_title',
       'facets_size',
       'granule_data_format',
       'granule_data_format_h',
@@ -83,6 +88,9 @@ export default class Collection extends Concept {
       'project',
       'project_h',
       'provider',
+      'revision_date',
+      'updated_since',
+      'science_keywords',
       'science_keywords_h',
       'service_concept_id',
       'service_type',
@@ -92,7 +100,9 @@ export default class Collection extends Concept {
       'temporal',
       'tool_concept_id',
       'two_d_coordinate_system_name',
-      'variable_concept_id'
+      'variable_concept_id',
+      'version'
+
     ]
   }
 
@@ -110,7 +120,9 @@ export default class Collection extends Concept {
       'consortium',
       'data_center',
       'data_center_h',
+      'doi',
       'entry_id',
+      'entry_title',
       'granule_data_format',
       'granule_data_format_h',
       'has_granules_or_cwic',
@@ -133,6 +145,9 @@ export default class Collection extends Concept {
       'project',
       'project_h',
       'provider',
+      'updated_since',
+      'revision_date',
+      'science_keywords',
       'science_keywords_h',
       'service_concept_id',
       'service_type',
@@ -142,7 +157,9 @@ export default class Collection extends Concept {
       'temporal',
       'tool_concept_id',
       'two_d_coordinate_system_name',
-      'variable_concept_id'
+      'variable_concept_id',
+      'version'
+
     ]
   }
 
@@ -159,7 +176,9 @@ export default class Collection extends Concept {
       'consortium',
       'data_center',
       'data_center_h',
+      'doi',
       'entry_id',
+      'entry_title',
       'granule_data_format_h',
       'granule_data_format',
       'horizontal_data_resolution_range',
@@ -173,6 +192,9 @@ export default class Collection extends Concept {
       'processing_level_id_h',
       'project_h',
       'provider',
+      'updated_since',
+      'revision_date',
+      'science_keywords',
       'service_concept_id',
       'service_type',
       'short_name',
@@ -181,7 +203,8 @@ export default class Collection extends Concept {
       'tag_key',
       'tool_concept_id',
       'two_d_coordinate_system_name',
-      'variable_concept_id'
+      'variable_concept_id',
+      'version'
     ])
   }
 

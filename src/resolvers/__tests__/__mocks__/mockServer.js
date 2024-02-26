@@ -6,7 +6,6 @@ import typeDefs from '../../../types'
 import aclSource from '../../../datasources/acl'
 import collectionDraftProposalSource from '../../../datasources/collectionDraftProposal'
 import collectionDraftSource from '../../../datasources/collectionDraft'
-import collectionSource from '../../../datasources/collection'
 import collectionVariableDraftsSource from '../../../datasources/collectionVariableDrafts'
 import dataQualitySummarySource from '../../../datasources/dataQualitySummary'
 import granuleSource from '../../../datasources/granule'
@@ -43,6 +42,11 @@ import {
   publishDraft as draftSourcePublish
 } from '../../../datasources/draft'
 
+import {
+  deleteCollection as collectionSourceDelete,
+  fetchCollections as collectionSourceFetch
+} from '../../../datasources/collection'
+
 export const server = new ApolloServer({
   typeDefs,
   resolvers
@@ -53,7 +57,8 @@ export const buildContextValue = (extraContext) => ({
     aclSource,
     collectionDraftProposalSource,
     collectionDraftSource,
-    collectionSource,
+    collectionSourceDelete,
+    collectionSourceFetch,
     collectionVariableDraftsSource,
     dataQualitySummarySource,
     draftSourceDelete,

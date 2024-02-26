@@ -55,7 +55,7 @@ export default {
         ...args
       })
 
-      return dataSources.collectionSource(requestedParams, context, parseResolveInfo(info))
+      return dataSources.collectionSourceFetch(requestedParams, context, parseResolveInfo(info))
     },
     orderOptions: async (source, args, context, info) => {
       const { dataSources } = context

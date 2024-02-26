@@ -46,7 +46,7 @@ export default {
         ...args
       })
 
-      const result = await dataSources.collectionSource(
+      const result = await dataSources.collectionSourceFetch(
         requestedParams,
         context,
         parseResolveInfo(info)

@@ -2485,4 +2485,48 @@ describe('Collection', () => {
       })
     })
   })
+
+  describe('Mutation', () => {
+    test('deleteCollection', async () => {
+      nock(/example-cmr/)
+        .defaultReplyHeaders({
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .delete(/ingest\/providers\/EDSC\/collections\/test-guid/)
+        .reply(201, {
+          'concept-id': 'C100000-EDSC',
+          'revision-id': '1'
+        })
+
+      const response = await server.executeOperation({
+        variables: {
+          nativeId: 'test-guid',
+          providerId: 'EDSC'
+        },
+        query: `mutation DeleteCollection (
+            $providerId: String!
+            $nativeId: String!
+          ) {
+            deleteCollection (
+              providerId: $providerId
+              nativeId: $nativeId
+            ) {
+                conceptId
+                revisionId
+              }
+            }`
+      }, {
+        contextValue
+      })
+
+      const { data } = response.body.singleResult
+      expect(data).toEqual({
+        deleteCollection: {
+          conceptId: 'C100000-EDSC',
+          revisionId: '1'
+        }
+      })
+    })
+  })
 })

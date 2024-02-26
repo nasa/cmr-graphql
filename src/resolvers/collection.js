@@ -8,16 +8,32 @@ export default {
     collections: async (source, args, context, info) => {
       const { dataSources } = context
 
-      return dataSources.collectionSource(handlePagingParams(args), context, parseResolveInfo(info))
+      return dataSources.collectionSourceFetch(
+        handlePagingParams(args),
+        context,
+        parseResolveInfo(info)
+      )
     },
     collection: async (source, args, context, info) => {
       const { dataSources } = context
 
-      const result = await dataSources.collectionSource(args, context, parseResolveInfo(info))
+      const result = await dataSources.collectionSourceFetch(args, context, parseResolveInfo(info))
 
       const [firstResult] = result
 
       return firstResult
+    }
+  },
+
+  Mutation: {
+    deleteCollection: async (source, args, context, info) => {
+      const { dataSources } = context
+
+      return dataSources.collectionSourceDelete(
+        handlePagingParams(args),
+        context,
+        parseResolveInfo(info)
+      )
     }
   },
 
