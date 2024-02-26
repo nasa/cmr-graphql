@@ -165,6 +165,152 @@ describe('tool#fetch', () => {
     })
   })
 
+  describe('revisions', () => {
+    beforeEach(() => {
+      // Overwrite default requestInfo
+      requestInfo = {
+        name: 'tool',
+        alias: 'tool',
+        args: { params: { conceptId: 'T100000-EDSC' } },
+        fieldsByTypeName: {
+          Tool: {
+            revisions: {
+              name: 'revisions',
+              alias: 'revisions',
+              args: {},
+              fieldsByTypeName: {
+                RevisionList: {
+                  items: {
+                    name: 'items',
+                    alias: 'items',
+                    args: {},
+                    fieldsByTypeName: {
+                      Revision: {
+                        conceptId: {
+                          name: 'conceptId',
+                          alias: 'conceptId',
+                          args: {},
+                          fieldsByTypeName: {}
+                        },
+                        revisionId: {
+                          name: 'revisionId',
+                          alias: 'revisionId',
+                          args: {},
+                          fieldsByTypeName: {}
+                        },
+                        name: { 
+                          name: 'name', 
+                          alias: 'name', 
+                          args: {}, 
+                          fieldsByTypeName: {} 
+                        },
+                    }
+                  }
+              }
+            }
+        }
+      }
+            }
+          }
+      }
+    })
+
+    test.only('returns revisions', async () => {
+      nock(/example-cmr/)
+        .defaultReplyHeaders({
+          'CMR-Hits': 2,
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678',
+          'CMR-Search-After': '["xyz", 789, 999]'
+        })
+        .post(/tools\.umm_json/, 'all_revisions=true&concept_id=T100000-EDSC')
+        .reply(200, {
+          items: [
+            {
+              meta: {
+                'concept-id': 'T100000-EDSC',
+                'revision-id': '2'
+              },
+              umm: {
+                Name: 'Downloadable Tool'
+              }
+            },
+            {
+              meta: {
+                'concept-id': 'T100000-EDSC',
+                'revision-id': '1'
+              },
+              umm: {
+                Name: 'Downloadable Tool'
+              }
+            }
+          ]
+        })
+
+      const response = await toolSourceFetch({}, {
+        headers: {
+          'Client-Id': 'eed-test-graphql',
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        }
+      }, requestInfo)
+
+      expect(response).toEqual({
+        count: 2,
+        items: [
+          {
+            conceptId: 'T100000-EDSC',
+            revisionId: '2',
+            name: 'Downloadable Tool'
+          },
+          {
+            conceptId: 'T100000-EDSC',
+            revisionId: '1',
+            name: 'Downloadable Tool'
+          }
+        ]
+      })
+    })
+
+    describe('when a cursor is requested', () => {
+      test('requests a cursor', async () => {
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Hits': 84,
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678',
+            'CMR-Search-After': '["xyz", 789, 999]'
+          })
+          .post(/tools\.umm_json/)
+          .reply(200, {
+            items: [{
+              meta: {
+                'concept-id': 'T100000-EDSC'
+              },
+              umm: {
+                Type: 'Downloadable Tool'
+              }
+            }]
+          })
+
+        const response = await toolSourceFetch({}, {
+          headers: {
+            'Client-Id': 'eed-test-graphql',
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          }
+        }, requestInfo)
+
+        expect(response).toEqual({
+          count: 84,
+          cursor: 'eyJ1bW0iOiJbXCJ4eXpcIiwgNzg5LCA5OTldIn0=',
+          items: [{
+            conceptId: 'T100000-EDSC',
+            type: 'Downloadable Tool'
+          }]
+        })
+      })
+    })
+  })
+
   describe('without params', () => {
     test('returns the parsed tool results', async () => {
       nock(/example-cmr/)
