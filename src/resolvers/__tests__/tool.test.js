@@ -233,6 +233,74 @@ describe('Tool', () => {
         })
       })
 
+      describe('with revisions', () => {
+        test('returns revisions', async () => {
+          nock(/example-cmr/)
+            .defaultReplyHeaders({
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .post(/tools\.json/, 'concept_id=T100000-EDSC')
+            .reply(200, {
+              items: [{
+                concept_id: 'T100000-EDSC'
+              }]
+            })
+
+          nock(/example-cmr/)
+            .defaultReplyHeaders({
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .post(/tools\.json/, 'all_revisions=true&page_size=20')
+            .reply(200, {
+              items: [
+                {
+                  concept_id: 'T100000-EDSC',
+                  revision_id: '1',
+                  provider_id: 'MMT_2',
+                  native_id: 'tool-50',
+                  name: 'UARS_READ_SOFTWARE',
+                  long_name: 'UARS Read Software'
+                }
+              ]
+            })
+
+          const response = await server.executeOperation({
+            variables: {},
+            query: `{
+              tool(params: { conceptId: "T100000-EDSC" }) {
+                conceptId
+                revisions {
+                  items {
+                    conceptId
+                    revisionId
+                  }
+                }
+              }
+            }`
+          }, {
+            contextValue
+          })
+
+          const { data } = response.body.singleResult
+
+          expect(data).toEqual({
+            tool: {
+              conceptId: 'T100000-EDSC',
+              revisions: {
+                items: [
+                  {
+                    conceptId: 'T100000-EDSC',
+                    revisionId: '1'
+                  }
+                ]
+              }
+            }
+          })
+        })
+      })
+
       describe('with no results', () => {
         test('returns no results', async () => {
           nock(/example-cmr/)
