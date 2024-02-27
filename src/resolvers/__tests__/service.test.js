@@ -293,7 +293,7 @@ describe('Service', () => {
                 umm: {
                   RevisionDate: '2024-02-09T20:34:41.570Z',
                   Name: 'Example Name Modified',
-                  LongName: 'Example Long Name Modified',
+                  LongName: 'Example Long Name Modified'
                 }
               },
               {
