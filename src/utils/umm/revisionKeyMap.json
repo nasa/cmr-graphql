@@ -15,6 +15,6 @@
 		"name": "umm.Name",
 		"longName": "umm.LongName",
 		"revisionDate": "meta.revision-date",
-		"url": "umm.URL"
+		"deleted": "meta.deleted"
 	}
 }

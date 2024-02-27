@@ -39,6 +39,8 @@ type Tool {
   revisionDate: String
   "The revision id of the Tool."
   revisionId: String
+  "Returns list of past revisions"
+  revisions: RevisionList
   "This element contains information about a smart handoff from one web user interface to another."
   searchAction: JSON
   "The browser(s) and associated version supported by the web user interface."
@@ -76,10 +78,6 @@ type Tool {
     "Zero based offset of individual results."
     offset: Int @deprecated(reason: "Use `params.offset`")
   ): CollectionList
-
-  revisions (
-    params: RevisionsInput
-  ): RevisionList
 }
 
 type ToolList {
@@ -135,10 +133,6 @@ type Query {
     "The unique concept id assigned to the tool."
     conceptId: String @deprecated(reason: "Use `params.conceptId`")
   ): Tool
-
-  revisions (
-    params: RevisionsInput
-  ): RevisionList!
 }
 
 type Mutation {

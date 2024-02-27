@@ -18,20 +18,7 @@ export default class Revision extends Concept {
   constructor(conceptType, headers, requestInfo, params) {
     // This concept uses the "-" character to delineate spaces in CMR we must pass it
     // in this form to fetch order option concepts from CMR
-
     super(conceptType, headers, requestInfo, params)
-  }
-
-  /**
-   * Parse and return the array of data from the nested response body
-   * @param {Object} ummResponse HTTP response from the CMR endpoint
-   */
-  parseUmmBody(ummResponse) {
-    const { data } = ummResponse
-
-    const { items } = data
-
-    return items
   }
 
   /**
@@ -60,27 +47,27 @@ export default class Revision extends Concept {
 
       const { 'revision-id': revisionId } = meta
 
-      // Loop through the requested umm keys
+      // Loop through the requested umm keys and adjust for correct casing
       ummKeys.forEach((ummKey) => {
         const metaKey = kebabCase(ummKey)
         const subUmmKey = _.startCase(ummKey).replace(/\s/g, '')
-        let urlKeyValue = ''
-
-        if (subUmmKey === 'Url') {
-          const { URL } = umm
-          const { URLValue } = URL || 'Not Provided'
-          urlKeyValue = URLValue
-        }
 
         const { [metaKey]: metaKeyValue } = meta
-        const { [subUmmKey]: ummKeyValue } = umm
+        const { [subUmmKey]: subUmmKeyValue } = umm
+
         // Snake case the key requested and any children of that key
-        this.setItemValue(`Revision${revisionId}`, ummKey, (metaKeyValue || ummKeyValue || urlKeyValue || 'Not Provided'))
+        this.setItemValue(`Revision${revisionId}`, ummKey, (metaKeyValue || subUmmKeyValue))
       })
     })
   }
 
+  /**
+   * Parses the response from the json endpoint, utlized when user requests only meta keys
+   * @param {Object} jsonResponse HTTP response from the CMR endpoint
+   * @param {Array} jsonKeys Array of the keys requested in the query
+   */
   async parseJson(jsonResponse, jsonKeys) {
+    // Pull out the key mappings so we can retrieve the values below
     const { headers } = jsonResponse
     const {
       'cmr-hits': cmrHits,
@@ -93,6 +80,7 @@ export default class Revision extends Concept {
 
     const items = this.parseJsonBody(jsonResponse)
 
+    // Loop through the requested json keys and adjust for correct casing
     items.forEach((item) => {
       const normalizedItem = this.normalizeJsonItem(item)
 
@@ -119,22 +107,5 @@ export default class Revision extends Concept {
     const { items } = data
 
     return items
-  }
-
-  /**
-   * Query the CMR UMM API endpoint to retrieve requested data
-   * @param {Object} searchParams Parameters provided by the query
-   * @param {Array} ummKeys Keys requested by the query
-   * @param {Object} headers Headers requested by the query
-   */
-  fetchUmm(searchParams, ummKeys, headers) {
-    // TODO: When generics support versioning we need to update this concept
-    const ummHeaders = {
-      ...headers,
-      Accept: 'application/vnd.nasa.cmr.umm_results+json'
-    }
-    const ummResponse = super.fetchUmm(searchParams, ummKeys, ummHeaders)
-
-    return ummResponse
   }
 }

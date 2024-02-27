@@ -252,7 +252,7 @@ describe('Tool', () => {
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .post(/tools\.json/, 'all_revisions=true&page_size=20')
+            .post(/tools\.json/, 'all_revisions=true&concept_id=T100000-EDSC&page_size=20')
             .reply(200, {
               items: [
                 {

@@ -35,6 +35,8 @@ type Variable {
   revisionDate: String
   "The revision id of the Variable."
   revisionId: String
+  "Returns list of past revisions"
+  revisions: RevisionList
   "The sampling information of a variable."
   samplingIdentifiers: JSON
   "The scale is the numerical factor by which all values in the stored data field are multiplied in order to obtain the original values. May be used together with Offset. An example of a scale factor is '0.002'."
@@ -66,10 +68,6 @@ type Variable {
     "Zero based offset of individual results."
     offset: Int @deprecated(reason: "Use `params.offset`")
   ): CollectionList
-
-  revisions (
-    params: RevisionsInput
-  ): RevisionList
 }
 
 type VariableList {

@@ -280,10 +280,6 @@ type Collection {
     "dataQualitySummary query parameters"
     params: DataQualitySummariesInput
   ): DataQualitySummaryList
-
-  revisions (
-    params: RevisionsInput
-  ): RevisionList
 }
 
 type DuplicateCollection {

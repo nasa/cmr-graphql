@@ -252,7 +252,7 @@ describe('Variable', () => {
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .post(/variables\.json/, 'all_revisions=true&page_size=20')
+            .post(/variables\.json/, 'all_revisions=true&concept_id=V100000-EDSC&page_size=20')
             .reply(200, {
               items: [
                 {

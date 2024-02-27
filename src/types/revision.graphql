@@ -13,8 +13,8 @@ type Revision {
 	longName: String
 	"Last Revision date of published record"
 	revisionDate:String
-	"URL or 'location' of revision draft"
-	url: JSON
+	"Deleted boolean indicates if the revision has been deleted"
+	deleted: Boolean
 }
 
 type RevisionList {
@@ -26,23 +26,9 @@ type RevisionList {
   items: [Revision]
 }
 
-input RevisionInput {
-	"The revisionId of the published record"
-	revisionId: String!
-	conceptId: String!
-}
-
-input RevisionsInput {
-  conceptId: String
-}
-
 type Query {
-	revisions (
-    params: RevisionsInput
-  ): RevisionList!
-
-	revision (
-		"Tool query parameters"
-		params: RevisionInput
-	): Revision  
+	"Query for all revisions of a published record"
+	revisions: RevisionList!
+	"Query for a single revision used in RevisionList"
+	revision: Revision  
 }
