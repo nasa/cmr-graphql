@@ -154,11 +154,6 @@ export default {
 
       return dataSources.graphDbDuplicateCollectionsSource(source, context)
     },
-    revisions: async (source, args, context, info) => {
-      const { dataSources } = context
-
-      return dataSources.revisionSource('collections', handlePagingParams(args), context, parseResolveInfo(info))
-    },
     services: async (source, args, context, info) => {
       const {
         associationDetails = {},
