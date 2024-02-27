@@ -213,7 +213,7 @@ describe('Service', () => {
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .post(/services\.json/, 'all_revisions=true&page_size=20')
+            .post(/services\.json/, 'all_revisions=true&concept_id=S100000-EDSC&page_size=20')
             .reply(200, {
               items: [
                 {
@@ -281,7 +281,7 @@ describe('Service', () => {
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .post(/services\.umm_json/, 'all_revisions=true&page_size=20')
+            .post(/services\.umm_json/, 'all_revisions=true&concept_id=S100000-EDSC&page_size=20')
             .reply(200, {
               items: [{
                 meta: {
@@ -294,9 +294,6 @@ describe('Service', () => {
                   RevisionDate: '2024-02-09T20:34:41.570Z',
                   Name: 'Example Name Modified',
                   LongName: 'Example Long Name Modified',
-                  URL: {
-                    URLValue: 'www.urlvalue.com'
-                  }
                 }
               },
               {
@@ -328,7 +325,6 @@ describe('Service', () => {
                     name
                     longName
                     revisionDate
-                    url
                   }
                 }
               }
@@ -351,8 +347,7 @@ describe('Service', () => {
                     nativeId: 'service-1',
                     providerId: 'MMT_2',
                     revisionDate: '2024-02-09T20:34:41.570Z',
-                    revisionId: '2',
-                    url: 'www.urlvalue.com'
+                    revisionId: '2'
                   },
                   {
                     conceptId: 'S100000-EDSC',
@@ -361,8 +356,7 @@ describe('Service', () => {
                     nativeId: 'service-1',
                     providerId: 'MMT_2',
                     revisionDate: '2024-02-09T20:34:41.570Z',
-                    revisionId: '1',
-                    url: 'Not Provided'
+                    revisionId: '1'
                   }
                 ]
               }

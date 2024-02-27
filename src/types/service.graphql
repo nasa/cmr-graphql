@@ -31,6 +31,8 @@ type Service {
   revisionDate: String
   "The revision id of the Service."
   revisionId: String
+  "Returns list of past revisions"
+  revisions: RevisionList
   "Web addresses used to get supported documentation or other related information link to the service."
   relatedUrls: JSON
   "Allows for the specification of Earth Science Service keywords that are representative of the service, software, or tool being described. The controlled vocabulary for Service Keywords is maintained in the Keyword Management System (KMS)."
@@ -80,10 +82,6 @@ type Service {
     "Variables query parameters"
     params: VariablesInput
   ): VariableList
-
-  revisions (
-    params: RevisionsInput
-  ): RevisionList
 }
 
 type ServiceList {
@@ -143,10 +141,6 @@ type Query {
     "The unique concept id assigned to the service."
     conceptId: String @deprecated(reason: "Use `params.conceptId`")
   ): Service
-
-  revisions (
-    params: RevisionsInput
-  ): RevisionList!
 }
 
 type Mutation {

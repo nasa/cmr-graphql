@@ -163,7 +163,10 @@ export default {
     revisions: async (source, args, context, info) => {
       const { dataSources } = context
 
+      const { conceptId: parentConceptId } = source
+
       const requestedParams = handlePagingParams({
+        conceptId: parentConceptId,
         allRevisions: true,
         ...args
       })
