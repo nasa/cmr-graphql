@@ -1,4 +1,5 @@
 type Tool {
+  revisionIds: JSON
   "Information about any constraints for accessing the downloadable tool or web user interface."
   accessConstraints: String
   "Words or phrases to further describe the downloadable tool or web user interface."
@@ -104,6 +105,7 @@ input ToolsInput {
   provider: String
   "One or more sort keys can be specified to impact searching. Fields can be prepended with a '-' to sort in descending order. Ascending order is the default but + can be used to explicitly request ascending."
   sortKey: String
+  allRevisions: Boolean
 }
 
 input ToolInput {

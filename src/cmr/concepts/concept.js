@@ -592,6 +592,7 @@ export default class Concept {
    * @param {Array} jsonKeys Array of the keys requested in the query
    */
   async parseJson(jsonResponse, jsonKeys) {
+    console.log('in parseJson')
     const { headers } = jsonResponse
     const {
       'cmr-hits': cmrHits,
@@ -647,7 +648,7 @@ export default class Concept {
 
       const { meta } = normalizedItem
 
-      const { 'concept-id': conceptId } = meta
+      const { 'concept-id': conceptId, 'revision-id': revisionId } = meta
 
       this.setEssentialUmmValues(conceptId, normalizedItem)
 
@@ -667,8 +668,24 @@ export default class Concept {
           return
         }
 
+        if (ummKey === 'revisionIds') {
+          keyValue = {
+            ...item.umm,
+            ...item.meta
+          }
+          console.log(`in revisions ${ummKey}`)
+          console.log(revisionId)
+          this.setItemValue(
+            `Revision${revisionId}`,
+            ummKey,
+            keyValue
+          )
+
+          return
+        }
         // If the UMM Key is `previewMetadata`, we need to combine the `meta` and `umm` fields
         // This ensures all the keys are available for the PreviewMetadata union type
+
         if (ummKey === 'previewMetadata') {
           keyValue = {
             ...item.umm,
