@@ -35,21 +35,12 @@ export default class Tag extends Concept {
 
     const { jsonKeys } = this.requestInfo
 
-    if (jsonKeys.length > 0) {
-      const jsonHeaders = {
-        ...this.headers
-      }
-      promises.push(
-        this.fetchTag(params, jsonKeys, jsonHeaders)
-      )
-    } else {
-      // Push a null promise to the array so that the umm promise always exists as
-      // the second element of the promise array
-      promises.push(
-        // eslint-disable-next-line no-promise-executor-return
-        new Promise((resolve) => resolve(null))
-      )
+    const jsonHeaders = {
+      ...this.headers
     }
+    promises.push(
+      this.fetchTag(params, jsonKeys, jsonHeaders)
+    )
 
     this.response = Promise.all(promises)
   }

@@ -18,7 +18,7 @@ import { prepKeysForCmr } from './prepKeysForCmr'
 export const tagQuery = ({
   conceptType,
   headers,
-  nonIndexedKeys = [],
+  nonIndexedKeys,
   options = {},
   params
 }) => {
