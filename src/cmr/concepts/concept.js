@@ -272,7 +272,8 @@ export default class Concept {
       'permitted_user',
       'include_full_acl',
       'page_num',
-      'target'
+      'target',
+      'originator_id'
     ]
   }
 
@@ -300,7 +301,8 @@ export default class Concept {
       'permitted_user',
       'include_full_acl',
       'page_num',
-      'target'
+      'target',
+      'tag_key'
     ]
   }
 

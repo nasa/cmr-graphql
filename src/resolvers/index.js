@@ -12,6 +12,7 @@ import orderOptionResolver from './orderOption'
 import serviceResolver from './service'
 import serviceDraftResolver from './serviceDraft'
 import subscriptionResolver from './subscription'
+import tagResolver from './tag'
 import toolDraftResolver from './toolDraft'
 import toolResolver from './tool'
 import variableDraftResolver from './variableDraft'
@@ -30,6 +31,7 @@ const resolvers = [
   serviceResolver,
   serviceDraftResolver,
   subscriptionResolver,
+  tagResolver,
   toolDraftResolver,
   toolResolver,
   variableDraftResolver,
