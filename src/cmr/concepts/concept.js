@@ -598,6 +598,9 @@ export default class Concept {
       'cmr-hits': cmrHits,
       'cmr-search-after': jsonSearchAfterIdentifier
     } = downcaseKeys(headers)
+    
+    const { params } = this.params
+    const { allRevisions } = params || false
 
     this.setJsonItemCount(cmrHits)
 
@@ -608,16 +611,21 @@ export default class Concept {
     items.forEach((item) => {
       const normalizedItem = this.normalizeJsonItem(item)
 
-      const { concept_id: conceptId } = normalizedItem
+      const { concept_id: conceptId, revision_id: revisionId } = normalizedItem
 
-      this.setEssentialJsonValues(conceptId, normalizedItem)
+      if (!allRevisions) { this.setEssentialJsonValues(conceptId, normalizedItem) }
 
       jsonKeys.forEach((jsonKey) => {
         const cmrKey = snakeCase(jsonKey)
 
         const { [cmrKey]: keyValue } = normalizedItem
         // Snake case the key requested and any children of that key
-        this.setItemValue(conceptId, jsonKey, keyValue)
+
+        let jsonValue = conceptId
+
+        if (allRevisions) { jsonValue = `Revision${revisionId}` }
+
+        this.setItemValue(jsonValue, jsonKey, keyValue)
       })
     })
   }
