@@ -592,13 +592,12 @@ export default class Concept {
    * @param {Array} jsonKeys Array of the keys requested in the query
    */
   async parseJson(jsonResponse, jsonKeys) {
-    console.log('in parseJson')
     const { headers } = jsonResponse
     const {
       'cmr-hits': cmrHits,
       'cmr-search-after': jsonSearchAfterIdentifier
     } = downcaseKeys(headers)
-    
+
     const { params } = this.params
     const { allRevisions } = params || false
 

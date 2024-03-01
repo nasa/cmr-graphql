@@ -201,20 +201,21 @@ describe('tool#fetch', () => {
     test('returns the parsed tool results', async () => {
       nock(/example-cmr/)
         .defaultReplyHeaders({
-          'CMR-Hits': 84,
+          'CMR-Hits': 1,
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/tools\.json/, 'concept_id=T100000-EDSC')
+        .post(/tools\.json/, 'all_revisions=true&concept_id[]=T100000-MMT_2')
         .reply(200, {
           items: [{
-            concept_id: 'T100000-EDSC'
+            concept_id: 'T100000-MMT_2'
           }]
         })
 
       const response = await toolSourceFetch({
         params: {
-          concept_id: 'T100000-EDSC'
+          conceptId: ['T100000-MMT_2'],
+          allRevisions: true
         }
       }, {
         headers: {
@@ -224,10 +225,10 @@ describe('tool#fetch', () => {
       }, requestInfo)
 
       expect(response).toEqual({
-        count: 84,
+        count: 1,
         cursor: null,
         items: [{
-          conceptId: 'T100000-EDSC'
+          conceptId: 'T100000-MMT_2'
         }]
       })
     })
