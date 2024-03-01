@@ -35,8 +35,6 @@ type Variable {
   revisionDate: String
   "The revision id of the Variable."
   revisionId: String
-  "Returns list of past revisions"
-  revisions: RevisionList
   "The sampling information of a variable."
   samplingIdentifiers: JSON
   "The scale is the numerical factor by which all values in the stored data field are multiplied in order to obtain the original values. May be used together with Offset. An example of a scale factor is '0.002'."
@@ -96,6 +94,8 @@ input VariablesInput {
   provider: String
   "One or more sort keys can be specified to impact searching. Fields can be prepended with a '-' to sort in descending order. Ascending order is the default but + can be used to explicitly request ascending."
   sortKey: String
+  "Returns all revisions when set to true"
+  allRevisions: Boolean
 }
 
 input VariableInput {

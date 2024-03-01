@@ -46,19 +46,6 @@ export default {
       })
 
       return dataSources.collectionSourceFetch(requestedParams, context, parseResolveInfo(info))
-    },
-    revisions: async (source, args, context, info) => {
-      const { dataSources } = context
-
-      const { conceptId: parentConceptId } = source
-
-      const requestedParams = handlePagingParams({
-        conceptId: parentConceptId,
-        allRevisions: true,
-        ...args
-      })
-
-      return dataSources.revisionSource('tools', requestedParams, context, parseResolveInfo(info))
     }
   }
 }

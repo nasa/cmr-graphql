@@ -631,6 +631,9 @@ export default class Concept {
     // Pull out the key mappings so we can retrieve the values below
     const { ummKeyMappings } = this.requestInfo
 
+    const { params } = this.params
+    const { allRevisions } = params || false
+
     const { headers } = ummResponse
     const {
       'cmr-hits': cmrHits,
@@ -668,24 +671,6 @@ export default class Concept {
           return
         }
 
-        if (ummKey === 'revisionIds') {
-          keyValue = {
-            ...item.umm,
-            ...item.meta
-          }
-          console.log(`in revisions ${ummKey}`)
-          console.log(revisionId)
-          this.setItemValue(
-            `Revision${revisionId}`,
-            ummKey,
-            keyValue
-          )
-
-          return
-        }
-        // If the UMM Key is `previewMetadata`, we need to combine the `meta` and `umm` fields
-        // This ensures all the keys are available for the PreviewMetadata union type
-
         if (ummKey === 'previewMetadata') {
           keyValue = {
             ...item.umm,
@@ -714,9 +699,15 @@ export default class Concept {
 
           const { [ummKey]: camelCasedValue } = camelCasedObject
 
-          // Camel case all of the keys of this object (ummKey is already camel cased)
+          // If allRevisions=true need to set the
+          // value to Revision1, Revision2, etc. Otherwise,
+          // the value can be the conceptId
+          let ummValue = conceptId
+
+          if (allRevisions) { ummValue = `Revision${revisionId}` }
+
           this.setItemValue(
-            conceptId,
+            ummValue,
             ummKey,
             camelCasedValue
           )

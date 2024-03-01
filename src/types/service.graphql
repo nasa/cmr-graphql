@@ -31,8 +31,6 @@ type Service {
   revisionDate: String
   "The revision id of the Service."
   revisionId: String
-  "Returns list of past revisions"
-  revisions: RevisionList
   "Web addresses used to get supported documentation or other related information link to the service."
   relatedUrls: JSON
   "Allows for the specification of Earth Science Service keywords that are representative of the service, software, or tool being described. The controlled vocabulary for Service Keywords is maintained in the Keyword Management System (KMS)."
@@ -110,6 +108,8 @@ input ServicesInput {
   type: String
   "One or more sort keys can be specified to impact searching. Fields can be prepended with a '-' to sort in descending order. Ascending order is the default but + can be used to explicitly request ascending."
   sortKey: String
+  "Returns all revisions when set to true"
+  allRevisions: Boolean
 }
 
 input ServiceInput {

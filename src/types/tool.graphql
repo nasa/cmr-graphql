@@ -40,8 +40,6 @@ type Tool {
   revisionDate: String
   "The revision id of the Tool."
   revisionId: String
-  "Returns list of past revisions"
-  revisions: RevisionList
   "This element contains information about a smart handoff from one web user interface to another."
   searchAction: JSON
   "The browser(s) and associated version supported by the web user interface."
