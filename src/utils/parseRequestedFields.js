@@ -25,7 +25,7 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
   let requestedFields = []
 
   // CMR concepts which are multiple words i.e. order-option, data-quality-summary etc
-  const camelCasedConcepts = ['orderOption', 'dataQualitySummary']
+  const camelCasedConcepts = ['orderOption', 'dataQualitySummary', 'tagDefinition']
 
   let formattedConceptName = conceptName
 
@@ -140,6 +140,10 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
     if (requestedFields.includes('duplicateCollections') && !requestedFields.includes('doi')) {
       requestedFields.push('doi')
     }
+  }
+
+  if (requestedFields.includes('tagDefinitions') && !requestedFields.includes('tags')) {
+    requestedFields.push('tags')
   }
 
   if (name === 'subscriptions') {

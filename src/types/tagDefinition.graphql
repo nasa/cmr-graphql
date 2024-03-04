@@ -1,4 +1,4 @@
-type Tag {
+type TagDefinition {
   "A concept id associated with the tag"
   conceptId: String
   "A revision id associated with the tag"
@@ -11,16 +11,12 @@ type Tag {
   originatorId: String
 }
 
-type TagList {
-  "The number of hits for a given search."
-  count: Int
-  "Cursor that points to the/a specific position in a list of requested records."
-  cursor: String
+type TagDefinitionList {
   "The list of tag search results"
-  items: [Tag]
+  items: [TagDefinition]
 }
 
-input TagsInput {
+input TagDefinitionsInput {
   "The unique tag keys"
   tagKey: [String]
   "The id of the user that created the tag"
@@ -28,8 +24,8 @@ input TagsInput {
 }
 
 type Query {
-  tags(
+  tagDefinitions(
     "Tag key"
-    params: TagsInput
-  ): TagList!
+    params: TagDefinitionsInput
+  ): TagDefinitionList!
 }

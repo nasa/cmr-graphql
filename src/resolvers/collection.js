@@ -205,6 +205,30 @@ export default {
         ...handlePagingParams(args)
       }, context, parseResolveInfo(info))
     },
+    tagDefinitions: async (source, args, context, info) => {
+      const { dataSources } = context
+      const { tags } = source
+
+      if (!tags) {
+        return null
+      }
+
+      const tagKeys = []
+
+      Object.keys(tags).map((key) => (
+        tagKeys.push(key)
+      ))
+
+      const requestedParams = handlePagingParams({
+        tagKeys
+      })
+
+      return dataSources.tagDefinitionSource(
+        requestedParams,
+        context,
+        parseResolveInfo(info)
+      )
+    },
     tools: async (source, args, context, info) => {
       const {
         associationDetails = {},

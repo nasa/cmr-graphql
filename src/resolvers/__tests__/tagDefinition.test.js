@@ -18,7 +18,7 @@ describe('Tag', () => {
   })
 
   describe('Query', () => {
-    test('tag field', async () => {
+    test('tagsDefinition', async () => {
       nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Hits': 1,
@@ -45,8 +45,8 @@ describe('Tag', () => {
           }
         },
         query: `
-          query Tags($params: TagsInput) {
-            tags(params: $params) {
+          query TagDefinitions($params: TagDefinitionsInput) {
+            tagDefinitions(params: $params) {
               items {
                 conceptId
                 tagKey
@@ -64,7 +64,7 @@ describe('Tag', () => {
       const { data } = response.body.singleResult
 
       expect(data).toEqual({
-        tags: {
+        tagDefinitions: {
           items: [{
             conceptId: 'C100000',
             tagKey: 'Mock tag key',

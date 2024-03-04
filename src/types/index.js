@@ -11,7 +11,7 @@ import json from './json.graphql'
 import service from './service.graphql'
 import serviceDraft from './serviceDraft.graphql'
 import subscription from './subscription.graphql'
-import tag from './tag.graphql'
+import tagDefinition from './tagDefinition.graphql'
 import toolDraft from './toolDraft.graphql'
 import tool from './tool.graphql'
 import variableDraft from './variableDraft.graphql'
@@ -33,7 +33,7 @@ export default mergeTypeDefs(
     service,
     serviceDraft,
     subscription,
-    tag,
+    tagDefinition,
     tool,
     toolDraft,
     variable,

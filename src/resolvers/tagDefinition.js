@@ -3,10 +3,10 @@ import { handlePagingParams } from '../utils/handlePagingParams'
 
 export default {
   Query: {
-    tags: async (source, args, context, info) => {
+    tagDefinitions: async (source, args, context, info) => {
       const { dataSources } = context
 
-      return dataSources.tagSource(
+      return dataSources.tagDefinitionSource(
         handlePagingParams(args),
         context,
         parseResolveInfo(info)
