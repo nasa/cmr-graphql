@@ -220,7 +220,7 @@ export default {
       ))
 
       const requestedParams = handlePagingParams({
-        tagKeys
+        tagKey: tagKeys
       })
 
       return dataSources.tagDefinitionSource(

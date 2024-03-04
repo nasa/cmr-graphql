@@ -273,6 +273,7 @@ export default class Concept {
       'include_full_acl',
       'page_num',
       'target',
+      'tag_key',
       'originator_id'
     ]
   }

@@ -4,7 +4,6 @@ import { parseRequestedFields } from '../utils/parseRequestedFields'
 import tagKeyMap from '../utils/umm/tagKeyMap.json'
 
 export default async (params, context, parsedInfo) => {
-  console.log('🚀 ~ parsedInfo:', parsedInfo)
   const { headers } = context
 
   const requestInfo = parseRequestedFields(parsedInfo, tagKeyMap, 'tagDefinition')
