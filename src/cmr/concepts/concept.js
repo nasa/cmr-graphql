@@ -612,7 +612,7 @@ export default class Concept {
 
       const { concept_id: conceptId, revision_id: revisionId } = normalizedItem
 
-      if (!allRevisions) { this.setEssentialJsonValues(conceptId, normalizedItem) }
+      if (!allRevisions) this.setEssentialJsonValues(conceptId, normalizedItem)
 
       jsonKeys.forEach((jsonKey) => {
         const cmrKey = snakeCase(jsonKey)

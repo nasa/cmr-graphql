@@ -38,7 +38,6 @@
     "url": "umm.URL",
     "useConstraints": "umm.UseConstraints",
     "version": "umm.Version",
-    "versionDescription": "umm.VersionDescription",
-    "revisionIds": ""
+    "versionDescription": "umm.VersionDescription"
   }
 }
