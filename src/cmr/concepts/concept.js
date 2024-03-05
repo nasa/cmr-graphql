@@ -475,11 +475,16 @@ export default class Concept {
     } = this.requestInfo
 
     const {
-      cursor
+      cursor,
+      allRevisions
     } = params
 
     if (cursor) {
       delete params.cursor
+    }
+
+    if (allRevisions) {
+      delete params.allRevisions
     }
 
     const {
@@ -598,8 +603,8 @@ export default class Concept {
       'cmr-search-after': jsonSearchAfterIdentifier
     } = downcaseKeys(headers)
 
-    const { params } = this.params
-    const { allRevisions } = params || false
+    const { params = {} } = this.params
+    const { allRevisions = false } = params
 
     this.setJsonItemCount(cmrHits)
 
@@ -638,8 +643,8 @@ export default class Concept {
     // Pull out the key mappings so we can retrieve the values below
     const { ummKeyMappings } = this.requestInfo
 
-    const { params } = this.params
-    const { allRevisions } = params || false
+    const { params = {} } = this.params
+    const { allRevisions = false } = params
 
     const { headers } = ummResponse
     const {
@@ -660,7 +665,7 @@ export default class Concept {
 
       const { 'concept-id': conceptId, 'revision-id': revisionId } = meta
 
-      this.setEssentialUmmValues(conceptId, normalizedItem)
+      if (!allRevisions) this.setEssentialUmmValues(conceptId, normalizedItem)
 
       // Loop through the requested umm keys
       ummKeys.forEach((ummKey) => {
