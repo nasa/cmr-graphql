@@ -475,16 +475,11 @@ export default class Concept {
     } = this.requestInfo
 
     const {
-      cursor,
-      allRevisions
+      cursor
     } = params
 
     if (cursor) {
       delete params.cursor
-    }
-
-    if (allRevisions) {
-      delete params.allRevisions
     }
 
     const {
@@ -603,31 +598,28 @@ export default class Concept {
       'cmr-search-after': jsonSearchAfterIdentifier
     } = downcaseKeys(headers)
 
-    const { params = {} } = this.params
-    const { allRevisions = false } = params
-
     this.setJsonItemCount(cmrHits)
 
     this.setJsonSearchAfter(jsonSearchAfterIdentifier)
 
     const items = this.parseJsonBody(jsonResponse)
 
-    items.forEach((item) => {
+    items.forEach((item, index) => {
       const normalizedItem = this.normalizeJsonItem(item)
 
       const { concept_id: conceptId, revision_id: revisionId } = normalizedItem
 
-      if (!allRevisions) this.setEssentialJsonValues(conceptId, normalizedItem)
+      const indexRevisionId = revisionId || index
+
+      const jsonValue = `${conceptId}-${indexRevisionId}`
+
+      this.setEssentialJsonValues(jsonValue, normalizedItem)
 
       jsonKeys.forEach((jsonKey) => {
         const cmrKey = snakeCase(jsonKey)
 
         const { [cmrKey]: keyValue } = normalizedItem
         // Snake case the key requested and any children of that key
-
-        let jsonValue = conceptId
-
-        if (allRevisions) { jsonValue = `Revision${revisionId}` }
 
         this.setItemValue(jsonValue, jsonKey, keyValue)
       })
@@ -643,9 +635,6 @@ export default class Concept {
     // Pull out the key mappings so we can retrieve the values below
     const { ummKeyMappings } = this.requestInfo
 
-    const { params = {} } = this.params
-    const { allRevisions = false } = params
-
     const { headers } = ummResponse
     const {
       'cmr-hits': cmrHits,
@@ -658,14 +647,18 @@ export default class Concept {
 
     const items = this.parseUmmBody(ummResponse)
 
-    items.forEach((item) => {
+    items.forEach((item, index) => {
       const normalizedItem = this.normalizeUmmItem(item)
 
       const { meta } = normalizedItem
 
       const { 'concept-id': conceptId, 'revision-id': revisionId } = meta
 
-      if (!allRevisions) this.setEssentialUmmValues(conceptId, normalizedItem)
+      const indexRevisionId = revisionId || index
+
+      const ummValue = `${conceptId}-${indexRevisionId}`
+
+      this.setEssentialUmmValues(ummValue, normalizedItem)
 
       // Loop through the requested umm keys
       ummKeys.forEach((ummKey) => {
@@ -675,7 +668,7 @@ export default class Concept {
 
         if (ummKey === 'ummMetadata') {
           this.setItemValue(
-            conceptId,
+            ummValue,
             ummKey,
             keyValue
           )
@@ -710,13 +703,6 @@ export default class Concept {
           }
 
           const { [ummKey]: camelCasedValue } = camelCasedObject
-
-          // If allRevisions=true need to set the
-          // value to Revision1, Revision2, etc. Otherwise,
-          // the value can be the conceptId
-          let ummValue = conceptId
-
-          if (allRevisions) { ummValue = `Revision${revisionId}` }
 
           this.setItemValue(
             ummValue,

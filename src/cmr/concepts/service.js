@@ -48,12 +48,12 @@ export default class Service extends Concept {
 
     //  Associations on services are used to retrieve order-options
     if (associationDetails) {
-      this.setItemValue(id, 'associationDetails', formattedAssociationDetails)
+      this.setItemValue(`${id}`, 'associationDetails', formattedAssociationDetails)
     }
 
     // Add the parent collection concept-id and pass it to the child queries from this service
     if (this.parentCollectionConceptId) {
-      this.setItemValue(id, 'parentCollectionConceptId', this.parentCollectionConceptId)
+      this.setItemValue(`${id}`, 'parentCollectionConceptId', this.parentCollectionConceptId)
     }
   }
 
