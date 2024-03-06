@@ -678,6 +678,7 @@ export default class Concept {
         }
 
         // If the UMM Key is `previewMetadata`, we need to combine the `meta` and `umm` fields
+        // This ensures all the keys are available for the PreviewMetadata union type
         if (ummKey === 'previewMetadata') {
           keyValue = {
             ...item.umm,
@@ -685,7 +686,6 @@ export default class Concept {
           }
         }
 
-        // This ensures all the keys are available for the PreviewMetadata union type
         if (keyValue != null) {
           const camelCasedObject = camelcaseKeys({ [ummKey]: keyValue }, {
             deep: true,
