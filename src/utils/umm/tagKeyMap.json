@@ -7,10 +7,10 @@
     "originatorId"
   ],
   "ummKeyMappings": {
-    "conceptId": "umm.concept-id",
+    "conceptId": "meta.concept-id",
     "tagKey": "umm.TagKey",
     "description": "umm.Description",
-    "revisionId": "umm.revision-id",
+    "revisionId": "meta.revision-id",
     "originatorId": "umm.OriginatorId"
 
   }

@@ -15,7 +15,7 @@ import { prepKeysForCmr } from './prepKeysForCmr'
  * @param {Object} params.params Parameters to send to CMR
  * @param {String} params.conceptType Concept type to search
  */
-export const tagQuery = ({
+export const tagDefinitionQuery = ({
   conceptType,
   headers,
   nonIndexedKeys,

@@ -1,10 +1,10 @@
 import { pick } from 'lodash'
 import snakecaseKeys from 'snakecase-keys'
 import { mergeParams } from '../../utils/mergeParams'
-import { tagQuery } from '../../utils/tagQuery'
+import { tagDefinitionQuery } from '../../utils/tagDefinitionQuery'
 import Concept from './concept'
 
-export default class Tag extends Concept {
+export default class TagDefinition extends Concept {
   /**
    * Instantiates an ACL object from the CMR API
    * @param {Object} headers HTTP headers provided by the query
@@ -39,7 +39,7 @@ export default class Tag extends Concept {
       ...this.headers
     }
     promises.push(
-      this.fetchTag(params, jsonKeys, jsonHeaders)
+      this.fetchTagDefinition(params, jsonKeys, jsonHeaders)
     )
 
     this.response = Promise.all(promises)
@@ -51,11 +51,11 @@ export default class Tag extends Concept {
    * @param {Array} requestedKeys Keys requested by the query
    * @param {Object} providedHeaders Headers requested by the query
    */
-  fetchTag(searchParams, requestedKeys, providedHeaders) {
+  fetchTagDefinition(searchParams, requestedKeys, providedHeaders) {
     this.logKeyRequest(requestedKeys, 'json')
 
     // Construct the promise that will request data from the json endpoint
-    return tagQuery({
+    return tagDefinitionQuery({
       conceptType: this.getConceptType(),
       params: pick(snakecaseKeys(searchParams), this.getPermittedJsonSearchParams()),
       nonIndexedKeys: this.getNonIndexedKeys(),
