@@ -1,5 +1,4 @@
 type Tool {
-  revisionIds: JSON
   "Information about any constraints for accessing the downloadable tool or web user interface."
   accessConstraints: String
   "Words or phrases to further describe the downloadable tool or web user interface."

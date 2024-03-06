@@ -156,46 +156,44 @@ describe('Tool', () => {
       })
     })
 
-    describe('tools', () => {
-      test('with results', async () => {
-        nock(/example-cmr/)
-          .defaultReplyHeaders({
-            'CMR-Took': 7,
-            'CMR-Request-Id': 'abcd-1234-efgh-5678'
-          })
-          .post(/tools\.json/, 'page_size=2')
-          .reply(200, {
-            items: [{
-              concept_id: 'T100000-EDSC'
-            }, {
-              concept_id: 'T100001-EDSC'
-            }]
-          })
+    test('tools', async () => {
+      nock(/example-cmr/)
+        .defaultReplyHeaders({
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .post(/tools\.json/, 'page_size=2')
+        .reply(200, {
+          items: [{
+            concept_id: 'T100000-EDSC'
+          }, {
+            concept_id: 'T100001-EDSC'
+          }]
+        })
 
-        const response = await server.executeOperation({
-          variables: {},
-          query: `{
+      const response = await server.executeOperation({
+        variables: {},
+        query: `{
             tools (limit:2) {
               items {
                 conceptId
               }
             }
           }`
-        }, {
-          contextValue
-        })
+      }, {
+        contextValue
+      })
 
-        const { data } = response.body.singleResult
+      const { data } = response.body.singleResult
 
-        expect(data).toEqual({
-          tools: {
-            items: [{
-              conceptId: 'T100000-EDSC'
-            }, {
-              conceptId: 'T100001-EDSC'
-            }]
-          }
-        })
+      expect(data).toEqual({
+        tools: {
+          items: [{
+            conceptId: 'T100000-EDSC'
+          }, {
+            conceptId: 'T100001-EDSC'
+          }]
+        }
       })
     })
 

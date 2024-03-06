@@ -52,7 +52,6 @@ export default class Collection extends Concept {
   getPermittedJsonSearchParams() {
     return [
       ...super.getPermittedJsonSearchParams(),
-      'all_revisions',
       'bounding_box',
       'circle',
       'cloud_hosted',
@@ -113,7 +112,6 @@ export default class Collection extends Concept {
   getPermittedUmmSearchParams() {
     return [
       ...super.getPermittedUmmSearchParams(),
-      'all_revisions',
       'bounding_box',
       'circle',
       'cloud_hosted',
@@ -171,7 +169,6 @@ export default class Collection extends Concept {
   getNonIndexedKeys() {
     return uniq([
       ...super.getNonIndexedKeys(),
-      'all_revisions',
       'bounding_box',
       'circle',
       'collection_data_type',
