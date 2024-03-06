@@ -174,12 +174,12 @@ describe('Tool', () => {
       const response = await server.executeOperation({
         variables: {},
         query: `{
-            tools (limit:2) {
-              items {
-                conceptId
-              }
+          tools (limit:2) {
+            items {
+              conceptId
             }
-          }`
+          }
+        }`
       }, {
         contextValue
       })
@@ -264,26 +264,27 @@ describe('Tool', () => {
         })
       })
     })
+  })
 
-    describe('Mutation', () => {
-      test('deleteTool', async () => {
-        nock(/example-cmr/)
-          .defaultReplyHeaders({
-            'CMR-Took': 7,
-            'CMR-Request-Id': 'abcd-1234-efgh-5678'
-          })
-          .delete(/ingest\/providers\/EDSC\/tools\/test-guid/)
-          .reply(201, {
-            'concept-id': 'T100000-EDSC',
-            'revision-id': '2'
-          })
+  describe('Mutation', () => {
+    test('deleteTool', async () => {
+      nock(/example-cmr/)
+        .defaultReplyHeaders({
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .delete(/ingest\/providers\/EDSC\/tools\/test-guid/)
+        .reply(201, {
+          'concept-id': 'T100000-EDSC',
+          'revision-id': '2'
+        })
 
-        const response = await server.executeOperation({
-          variables: {
-            nativeId: 'test-guid',
-            providerId: 'EDSC'
-          },
-          query: `mutation DeleteTool (
+      const response = await server.executeOperation({
+        variables: {
+          nativeId: 'test-guid',
+          providerId: 'EDSC'
+        },
+        query: `mutation DeleteTool (
           $providerId: String!
           $nativeId: String!
         ) {
@@ -295,73 +296,73 @@ describe('Tool', () => {
               revisionId
             }
           }`
-        }, {
-          contextValue
-        })
+      }, {
+        contextValue
+      })
 
-        const { data } = response.body.singleResult
+      const { data } = response.body.singleResult
 
-        expect(data).toEqual({
-          deleteTool: {
-            conceptId: 'T100000-EDSC',
-            revisionId: '2'
-          }
-        })
+      expect(data).toEqual({
+        deleteTool: {
+          conceptId: 'T100000-EDSC',
+          revisionId: '2'
+        }
       })
     })
+  })
 
-    describe('Tool', () => {
-      describe('collections', () => {
-        test('returns collections when querying a published record', async () => {
-          nock(/example-cmr/)
-            .defaultReplyHeaders({
-              'CMR-Took': 7,
-              'CMR-Request-Id': 'abcd-1234-efgh-5678'
-            })
-            .post(/tools\.json/)
-            .reply(200, {
-              items: [{
-                concept_id: 'T100000-EDSC'
+  describe('Tool', () => {
+    describe('collections', () => {
+      test('returns collections when querying a published record', async () => {
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .post(/tools\.json/)
+          .reply(200, {
+            items: [{
+              concept_id: 'T100000-EDSC'
+            }, {
+              concept_id: 'T100001-EDSC'
+            }]
+          })
+
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .post(/collections\.json/, 'page_size=20&tool_concept_id=T100000-EDSC')
+          .reply(200, {
+            feed: {
+              entry: [{
+                id: 'C100000-EDSC'
               }, {
-                concept_id: 'T100001-EDSC'
+                id: 'C100001-EDSC'
               }]
-            })
+            }
+          })
 
-          nock(/example-cmr/)
-            .defaultReplyHeaders({
-              'CMR-Took': 7,
-              'CMR-Request-Id': 'abcd-1234-efgh-5678'
-            })
-            .post(/collections\.json/, 'page_size=20&tool_concept_id=T100000-EDSC')
-            .reply(200, {
-              feed: {
-                entry: [{
-                  id: 'C100000-EDSC'
-                }, {
-                  id: 'C100001-EDSC'
-                }]
-              }
-            })
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .post(/collections\.json/, 'page_size=20&tool_concept_id=T100001-EDSC')
+          .reply(200, {
+            feed: {
+              entry: [{
+                id: 'C100002-EDSC'
+              }, {
+                id: 'C100003-EDSC'
+              }]
+            }
+          })
 
-          nock(/example-cmr/)
-            .defaultReplyHeaders({
-              'CMR-Took': 7,
-              'CMR-Request-Id': 'abcd-1234-efgh-5678'
-            })
-            .post(/collections\.json/, 'page_size=20&tool_concept_id=T100001-EDSC')
-            .reply(200, {
-              feed: {
-                entry: [{
-                  id: 'C100002-EDSC'
-                }, {
-                  id: 'C100003-EDSC'
-                }]
-              }
-            })
-
-          const response = await server.executeOperation({
-            variables: {},
-            query: `{
+        const response = await server.executeOperation({
+          variables: {},
+          query: `{
             tools {
               items {
                 conceptId
@@ -373,66 +374,66 @@ describe('Tool', () => {
               }
             }
           }`
-          }, {
-            contextValue
-          })
-
-          const { data } = response.body.singleResult
-
-          expect(data).toEqual({
-            tools: {
-              items: [{
-                conceptId: 'T100000-EDSC',
-                collections: {
-                  items: [{
-                    conceptId: 'C100000-EDSC'
-                  }, {
-                    conceptId: 'C100001-EDSC'
-                  }]
-                }
-              }, {
-                conceptId: 'T100001-EDSC',
-                collections: {
-                  items: [{
-                    conceptId: 'C100002-EDSC'
-                  }, {
-                    conceptId: 'C100003-EDSC'
-                  }]
-                }
-              }]
-            }
-          })
+        }, {
+          contextValue
         })
 
-        test('returns null when querying a draft', async () => {
-          nock(/example-cmr/)
-            .defaultReplyHeaders({
-              'CMR-Hits': 2,
-              'CMR-Took': 7,
-              'CMR-Request-Id': 'abcd-1234-efgh-5678'
-            })
-            .post(/tool-drafts\.umm_json/)
-            .reply(200, {
-              items: [{
-                meta: {
-                  'concept-id': 'TD100000-EDSC'
-                },
-                umm: {}
-              }, {
-                meta: {
-                  'concept-id': 'TD100001-EDSC'
-                },
-                umm: {}
-              }]
-            })
+        const { data } = response.body.singleResult
 
-          const response = await server.executeOperation({
-            variables: {
-              params: {
-                conceptType: 'Tool'
+        expect(data).toEqual({
+          tools: {
+            items: [{
+              conceptId: 'T100000-EDSC',
+              collections: {
+                items: [{
+                  conceptId: 'C100000-EDSC'
+                }, {
+                  conceptId: 'C100001-EDSC'
+                }]
               }
-            },
-            query: `query Drafts($params: DraftsInput) {
+            }, {
+              conceptId: 'T100001-EDSC',
+              collections: {
+                items: [{
+                  conceptId: 'C100002-EDSC'
+                }, {
+                  conceptId: 'C100003-EDSC'
+                }]
+              }
+            }]
+          }
+        })
+      })
+
+      test('returns null when querying a draft', async () => {
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Hits': 2,
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .post(/tool-drafts\.umm_json/)
+          .reply(200, {
+            items: [{
+              meta: {
+                'concept-id': 'TD100000-EDSC'
+              },
+              umm: {}
+            }, {
+              meta: {
+                'concept-id': 'TD100001-EDSC'
+              },
+              umm: {}
+            }]
+          })
+
+        const response = await server.executeOperation({
+          variables: {
+            params: {
+              conceptType: 'Tool'
+            }
+          },
+          query: `query Drafts($params: DraftsInput) {
             drafts(params: $params) {
               items {
                 previewMetadata {
@@ -445,25 +446,24 @@ describe('Tool', () => {
               }
             }
           }`
-          }, {
-            contextValue
-          })
+        }, {
+          contextValue
+        })
 
-          const { data } = response.body.singleResult
+        const { data } = response.body.singleResult
 
-          expect(data).toEqual({
-            drafts: {
-              items: [{
-                previewMetadata: {
-                  collections: null
-                }
-              }, {
-                previewMetadata: {
-                  collections: null
-                }
-              }]
-            }
-          })
+        expect(data).toEqual({
+          drafts: {
+            items: [{
+              previewMetadata: {
+                collections: null
+              }
+            }, {
+              previewMetadata: {
+                collections: null
+              }
+            }]
+          }
         })
       })
     })
