@@ -1,0 +1,17 @@
+{
+  "sharedKeys": [
+    "conceptId",
+    "tagKey",
+    "description",
+    "revisionId",
+    "originatorId"
+  ],
+  "ummKeyMappings": {
+    "conceptId": "meta.concept-id",
+    "tagKey": "umm.TagKey",
+    "description": "umm.Description",
+    "revisionId": "meta.revision-id",
+    "originatorId": "umm.OriginatorId"
+
+  }
+}

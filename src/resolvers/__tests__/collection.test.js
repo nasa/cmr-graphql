@@ -1276,6 +1276,143 @@ describe('Collection', () => {
       })
     })
 
+    describe('tagDefinition', () => {
+      test('when there tag value is null', async () => {
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .post(/collections\.json/)
+          .reply(200, {
+            feed: {
+              entry: [{
+                id: 'C100000-EDSC'
+              }]
+            }
+          })
+
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .get(/tags/)
+          .reply(200, {
+            items: [
+              {
+                concept_id: 'C100000',
+                tag_key: 'Mock tag key',
+                description: 'Mock tag description.',
+                revision_id: '1',
+                originator_id: 'test-user'
+              }
+            ]
+          })
+
+        const response = await server.executeOperation({
+          variables: {},
+          query: `{
+            collections {
+              items {
+                conceptId
+                tagDefinitions {
+                  items {
+                    conceptId
+                  }
+                }
+              }
+            }
+          }`
+        }, {
+          contextValue
+        })
+
+        const { data } = response.body.singleResult
+
+        expect(data).toEqual({
+          collections: {
+            items: [{
+              conceptId: 'C100000-EDSC',
+              tagDefinitions: null
+            }]
+          }
+        })
+      })
+
+      test('when there is a tag value', async () => {
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .post(/collections\.json/)
+          .reply(200, {
+            feed: {
+              entry: [{
+                id: 'C100000-EDSC',
+                tags: {
+                  'test.new': {
+                    data: 'Test tag 2'
+                  }
+                }
+              }]
+            }
+          })
+
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .get(/tags/)
+          .reply(200, {
+            items: [
+              {
+                concept_id: 'C100000',
+                tag_key: 'Mock tag key',
+                description: 'Mock tag description.',
+                revision_id: '1',
+                originator_id: 'test-user'
+              }
+            ]
+          })
+
+        const response = await server.executeOperation({
+          variables: {},
+          query: `{
+            collections {
+              items {
+                conceptId
+                tagDefinitions {
+                  items {
+                    conceptId
+                  }
+                }
+              }
+            }
+          }`
+        }, {
+          contextValue
+        })
+
+        const { data } = response.body.singleResult
+
+        expect(data).toEqual({
+          collections: {
+            items: [{
+              conceptId: 'C100000-EDSC',
+              tagDefinitions: {
+                items: [{
+                  conceptId: 'C100000'
+                }]
+              }
+            }]
+          }
+        })
+      })
+    })
+
     describe('tools', () => {
       describe('no associations are present in the metadata', () => {
         test('doesn\'t query for or return tools', async () => {

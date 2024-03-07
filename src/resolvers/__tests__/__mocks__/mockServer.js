@@ -20,6 +20,7 @@ import {
   fetchSubscription as subscriptionSourceFetch,
   ingestSubscription as subscriptionSourceIngest
 } from '../../../datasources/subscription'
+import tagDefinitionSource from '../../../datasources/tagDefinition'
 import {
   deleteTool as toolSourceDelete,
   fetchTools as toolSourceFetch
@@ -77,6 +78,7 @@ export const buildContextValue = (extraContext) => ({
     subscriptionSourceDelete,
     subscriptionSourceFetch,
     subscriptionSourceIngest,
+    tagDefinitionSource,
     toolDraftSource,
     toolSourceDelete,
     toolSourceFetch,

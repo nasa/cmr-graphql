@@ -1,0 +1,31 @@
+type TagDefinition {
+  "A concept id associated with the tag"
+  conceptId: String
+  "A revision id associated with the tag"
+  revisionId: String
+  "A free text specifying the key of the tag"
+  tagKey: String
+  "A description of the tag"
+  description: String
+  "The id of the user that created the tag"
+  originatorId: String
+}
+
+type TagDefinitionList {
+  "The list of tag search results"
+  items: [TagDefinition]
+}
+
+input TagDefinitionsInput {
+  "The unique tag keys"
+  tagKey: [String]
+  "The id of the user that created the tag"
+  originatorId: String
+}
+
+type Query {
+  tagDefinitions(
+    "Tag key"
+    params: TagDefinitionsInput
+  ): TagDefinitionList!
+}

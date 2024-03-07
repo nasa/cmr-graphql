@@ -249,6 +249,10 @@ type Collection {
     subscriberId: String @deprecated(reason: "Use `params.subscriberId`")
   ): SubscriptionList
 
+  tagDefinitions (
+    params: TagDefinitionsInput
+  ): TagDefinitionList
+
   tools (
     "Tools query parameters"
     params: ToolsInput
