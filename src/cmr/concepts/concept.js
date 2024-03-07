@@ -271,6 +271,7 @@ export default class Concept {
       'sort_key',
       'permitted_user',
       'include_full_acl',
+      'all_revisions',
       'page_num',
       'target',
       'tag_key',
@@ -286,6 +287,7 @@ export default class Concept {
       'concept_id',
       'offset',
       'page_size',
+      'all_revisions',
       'sort_key'
     ]
   }
@@ -605,12 +607,16 @@ export default class Concept {
 
     const items = this.parseJsonBody(jsonResponse)
 
-    items.forEach((item) => {
+    items.forEach((item, index) => {
       const normalizedItem = this.normalizeJsonItem(item)
 
       const { concept_id: conceptId } = normalizedItem
 
-      this.setEssentialJsonValues(conceptId, normalizedItem)
+      // Creates unique item keys regardless of whether or not
+      // a user calls for data with similar conceptIds (as is the case with revisions)
+      const itemKey = `${conceptId}-${index}`
+
+      this.setEssentialJsonValues(itemKey, normalizedItem)
 
       jsonKeys.forEach((jsonKey) => {
         const cmrKey = snakeCase(jsonKey)
@@ -618,7 +624,7 @@ export default class Concept {
         const { [cmrKey]: keyValue } = normalizedItem
 
         // Snake case the key requested and any children of that key
-        this.setItemValue(conceptId, jsonKey, keyValue)
+        this.setItemValue(itemKey, jsonKey, keyValue)
       })
     })
   }
@@ -644,13 +650,18 @@ export default class Concept {
 
     const items = this.parseUmmBody(ummResponse)
 
-    items.forEach((item) => {
+    items.forEach((item, index) => {
       const normalizedItem = this.normalizeUmmItem(item)
 
       const { meta } = normalizedItem
+
       const { 'concept-id': conceptId } = meta
 
-      this.setEssentialUmmValues(conceptId, normalizedItem)
+      // Creates unique item keys regardless of whether or not
+      // a user calls for data with similar conceptIds (as is the case with revisions)
+      const itemKey = `${conceptId}-${index}`
+
+      this.setEssentialUmmValues(itemKey, normalizedItem)
 
       // Loop through the requested umm keys
       ummKeys.forEach((ummKey) => {
@@ -661,7 +672,7 @@ export default class Concept {
         // If the raw `ummMetadata` was requested return that value unaltered
         if (ummKey === 'ummMetadata') {
           this.setItemValue(
-            conceptId,
+            itemKey,
             ummKey,
             keyValue
           )
@@ -697,11 +708,11 @@ export default class Concept {
             delete camelCasedObject.previewMetadata.RelatedURLs
           }
 
+          // Camel case all of the keys of this object (ummKey is already camel cased)
           const { [ummKey]: camelCasedValue } = camelCasedObject
 
-          // Camel case all of the keys of this object (ummKey is already camel cased)
           this.setItemValue(
-            conceptId,
+            itemKey,
             ummKey,
             camelCasedValue
           )

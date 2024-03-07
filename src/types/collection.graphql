@@ -500,6 +500,8 @@ input CollectionsInput {
   version: String
   "UMM Variable concept id."
   variableConceptId: String
+  "Returns all revisions when set to true"
+  allRevisions: Boolean
 }
 
 input CollectionInput {
