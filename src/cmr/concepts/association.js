@@ -8,7 +8,7 @@ import { cmrDeleteAssociation } from '../../utils/cmrDeleteAssociation'
 
 export default class Association extends Concept {
   /**
-   * Parse and return the body of an ingest operation
+   * Parse and return the body of an create association operation
    * @param {Object} ingestResponse HTTP response from the CMR endpoint
    */
   parseAssociationBody(ingestResponse) {
@@ -18,7 +18,7 @@ export default class Association extends Concept {
   }
 
   /**
-   * Parses the response from an create
+   * Parses the response from an create association
    * @param {Object} requestInfo Parsed data pertaining to the create operation
    */
   async parseAssociationResponse(requestInfo) {

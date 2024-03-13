@@ -74,7 +74,7 @@ export const cmrVariableAssociation = ({
 
     response.headers['request-duration'] = milliseconds
 
-    console.log(`Request ${requestId} from ${clientId} to association [concept: ${conceptType}] completed external request in [observed: ${milliseconds} ms]`)
+    console.log(`Request ${requestId} from ${clientId} to variable association [concept: ${conceptType}] completed external request in [observed: ${milliseconds} ms]`)
 
     return response
   })
