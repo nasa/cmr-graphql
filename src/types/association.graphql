@@ -1,0 +1,21 @@
+type AssociationMutationResponse {
+  toolAssociation: JSON
+  serviceAssociation: JSON
+  variableAssociation: JSON
+  associatedItem: JSON
+}
+
+type Mutation{
+  createAssociation (
+    "The concept id of the associated record"
+    conceptId: String!
+    "The list of collection conceptIds for association"
+    collectionConceptIds: [JSON]!
+    "The concept type of the association"
+    conceptType: String!
+    "Native Id of the published variable record"
+    nativeId: String
+    "The metadata for the published variable record"
+    metadata: JSON
+  ): AssociationMutationResponse
+}

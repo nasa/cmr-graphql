@@ -1,0 +1,12 @@
+{
+  "sharedKeys": [
+    "toolAssociation",
+    "associatedItem",
+    "serviceAssociation"
+  ],
+  "ummKeyMappings": {
+    "toolAssociation": "meta.tool-association",
+    "serviceAssociation": "meta.service-association",
+    "associatedItem": "meta.associated-item"
+  }
+}

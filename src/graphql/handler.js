@@ -12,6 +12,10 @@ import resolvers from '../resolvers'
 import typeDefs from '../types'
 
 import aclSource from '../datasources/acl'
+import {
+  createAssociation as associationSourceCreate,
+  createVariableAssociation as variableAssociationSourceCreate
+} from '../datasources/association'
 import collectionDraftProposalSource from '../datasources/collectionDraftProposal'
 import collectionDraftSource from '../datasources/collectionDraft'
 import collectionVariableDraftsSource from '../datasources/collectionVariableDrafts'
@@ -157,6 +161,7 @@ export default startServerAndCreateLambdaHandler(
         ...context,
         dataSources: {
           aclSource,
+          associationSourceCreate,
           collectionDraftProposalSource,
           collectionDraftSource,
           collectionSourceDelete,
@@ -183,6 +188,7 @@ export default startServerAndCreateLambdaHandler(
           toolDraftSource,
           toolSourceDelete,
           toolSourceFetch,
+          variableAssociationSourceCreate,
           variableDraftSource,
           variableSourceDelete,
           variableSourceFetch
