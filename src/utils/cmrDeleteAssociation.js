@@ -12,7 +12,7 @@ import { downcaseKeys } from './downcaseKeys'
  * @param {Object} params.params Parameters to send to CMR
  * @param {String} params.conceptType Concept type to search
  */
-export const cmrAssociation = ({
+export const cmrDeleteAssociation = ({
   conceptType,
   data,
   headers
@@ -42,7 +42,7 @@ export const cmrAssociation = ({
   const requestConfiguration = {
     data: snakecaseKeys(collectionConceptIds),
     headers: permittedHeaders,
-    method: 'POST',
+    method: 'DELETE',
     url: `${process.env.cmrRootUrl}/search/${conceptType}/${conceptId}/associations`
   }
 

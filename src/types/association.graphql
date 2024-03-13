@@ -1,21 +1,38 @@
+"ConceptType must be one of the enum values."
+enum ConceptType {
+  Service
+  Tool
+  Variable
+}
+
 type AssociationMutationResponse {
   toolAssociation: JSON
   serviceAssociation: JSON
   variableAssociation: JSON
   associatedItem: JSON
+  warnings: [String]
 }
 
-type Mutation{
+type Mutation {
   createAssociation (
     "The concept id of the associated record"
     conceptId: String!
     "The list of collection conceptIds for association"
     collectionConceptIds: [JSON]!
     "The concept type of the association"
-    conceptType: String!
+    conceptType: ConceptType!
     "Native Id of the published variable record"
     nativeId: String
     "The metadata for the published variable record"
     metadata: JSON
+  ): AssociationMutationResponse
+  
+  deleteAssociation (
+    "The concept id of the associated record"
+    conceptId: String!
+    "The list of collection conceptIds for association"
+    collectionConceptIds: [JSON]!
+    "The concept type of the association"
+    conceptType: ConceptType!
   ): AssociationMutationResponse
 }

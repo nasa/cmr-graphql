@@ -14,7 +14,8 @@ import typeDefs from '../types'
 import aclSource from '../datasources/acl'
 import {
   createAssociation as associationSourceCreate,
-  createVariableAssociation as variableAssociationSourceCreate
+  createVariableAssociation as variableAssociationSourceCreate,
+  deleteAssociation as associationSourceDelete
 } from '../datasources/association'
 import collectionDraftProposalSource from '../datasources/collectionDraftProposal'
 import collectionDraftSource from '../datasources/collectionDraft'
@@ -162,6 +163,7 @@ export default startServerAndCreateLambdaHandler(
         dataSources: {
           aclSource,
           associationSourceCreate,
+          associationSourceDelete,
           collectionDraftProposalSource,
           collectionDraftSource,
           collectionSourceDelete,
