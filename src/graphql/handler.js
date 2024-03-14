@@ -22,6 +22,7 @@ import graphDbSource from '../datasources/graphDb'
 import gridSource from '../datasources/grid'
 import maxItemsPerOrderSource from '../datasources/maxItemsPerOrder'
 import orderOptionSource from '../datasources/orderOption'
+import providerSource from '../datasources/provider'
 import serviceDraftSource from '../datasources/serviceDraft'
 import tagDefinitionSource from '../datasources/tagDefinition'
 import toolDraftSource from '../datasources/toolDraft'
@@ -173,6 +174,7 @@ export default startServerAndCreateLambdaHandler(
           gridSource,
           maxItemsPerOrderSource,
           orderOptionSource,
+          providerSource,
           serviceDraftSource,
           serviceSourceDelete,
           serviceSourceFetch,
