@@ -1,0 +1,11 @@
+{
+  "jsonKeys": [
+    "providerId",
+    "shortName",
+    "cmrOnly",
+    "small",
+    "consortiums"
+  ],
+  "sharedKeys": [],
+  "ummKeyMappings": {}
+}

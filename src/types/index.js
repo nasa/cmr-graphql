@@ -9,6 +9,7 @@ import draft from './draft.graphql'
 import granule from './granule.graphql'
 import grid from './grid.graphql'
 import json from './json.graphql'
+import provider from './provider.graphql'
 import service from './service.graphql'
 import serviceDraft from './serviceDraft.graphql'
 import subscription from './subscription.graphql'
@@ -32,6 +33,7 @@ export default mergeTypeDefs(
     grid,
     json,
     orderOption,
+    provider,
     service,
     serviceDraft,
     subscription,
