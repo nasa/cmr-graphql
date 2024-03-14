@@ -1,4 +1,5 @@
 import axios from 'axios'
+import snakecaseKeys from 'snakecase-keys'
 import { pickIgnoringCase } from './pickIgnoringCase'
 import { downcaseKeys } from './downcaseKeys'
 
@@ -41,7 +42,7 @@ export const cmrVariableAssociation = ({
     collectionConceptIds, nativeId, metadata
   } = data
 
-  const { concept_id: collectionConcept } = collectionConceptIds[0]
+  const { concept_id: collectionConcept } = snakecaseKeys(collectionConceptIds[0])
 
   const requestConfiguration = {
     data: metadata,
