@@ -3,7 +3,6 @@ import { kebabCase, pick } from 'lodash'
 import { mergeParams } from '../../utils/mergeParams'
 import { providersQuery } from '../../utils/providersQuery'
 import Concept from './concept'
-import { parseError } from '../../utils/parseError'
 
 export default class Provider extends Concept {
   /**
@@ -14,26 +13,6 @@ export default class Provider extends Concept {
    */
   constructor(headers, requestInfo, params) {
     super('providers', headers, requestInfo, params)
-  }
-
-  /**
-   * Parses the response from each endpoint after a request is made
-   * @param {Object} requestInfo Parsed data pertaining to the Graph query
-   */
-  async parse(requestInfo) {
-    try {
-      const {
-        jsonKeys
-      } = requestInfo
-      const response = await this.getResponse()
-
-      const [jsonResponse] = response
-      if (jsonResponse) {
-        await this.parseJson(jsonResponse, jsonKeys)
-      }
-    } catch (e) {
-      parseError(e, { reThrowError: true })
-    }
   }
 
   /**

@@ -154,8 +154,6 @@ export default startServerAndCreateLambdaHandler(
 
       requestHeaders.User = context.edlUsername
 
-      console.log('🚀 ~ context: ~ providerSource:', providerSource)
-
       return {
         ...context,
         dataSources: {
