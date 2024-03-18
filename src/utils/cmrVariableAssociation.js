@@ -48,7 +48,7 @@ export const cmrVariableAssociation = ({
     data: metadata,
     headers: permittedHeaders,
     method: 'PUT',
-    url: `${process.env.cmrRootUrl}/ingest/collections/${collectionConcept}/variables/${nativeId}. `
+    url: `${process.env.cmrRootUrl}/ingest/collections/${collectionConcept}/variables/${nativeId}`
   }
 
   // Interceptors require an instance of axios
