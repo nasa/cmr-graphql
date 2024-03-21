@@ -1031,7 +1031,7 @@ variables:
 #### Associations
 For all supported arguments and columns, see [the schema](src/types/association.graphql).
 
-The association support associate a Tool, Variable or Service record to a collation record. 
+The association supports associating a Tool, Variable, or Service record to a collection. 
 ##### Example Query
 
 ##### Associating a Tool to a Collection
