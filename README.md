@@ -1027,64 +1027,163 @@ variables:
       "ummVersion": "1.2.0"
     }
 
+
+#### Associations
+For all supported arguments and columns, see [the schema](src/types/association.graphql).
+
+The association supports associating a Tool, Variable, or Service record to a collection. 
+##### Example Query
+
+##### Associating a Tool to a Collection
+    Mutation CreateAssociation(
+      $conceptId: String!
+      $collectionConceptIds: [JSON]!
+      $conceptType: ConceptType!
+      ){
+        createAssociation(
+          conceptId: $conceptId
+          collectionConceptIds: $collectionConceptIds
+          conceptType: $conceptType
+          ) {
+          associatedItem
+          toolAssociation
+        }
+      }
+
+variables:
+
+    {
+      "conceptId": "TL12000000-EXAMPLE",
+      "conceptType": "Tool",
+      "collectionConceptIds": [
+        {
+          "conceptId": "C12000000-EXAMPLE"
+        }
+      ]
+    }
+
+##### Associating a Variable to a Collection
+  Note for Variable association, nativeId and metadata are required params.
+
+    Mutation CreateAssociation(
+      $conceptId: String!
+      $collectionConceptIds: [JSON]!
+      $conceptType: ConceptType!
+      $nativeId: String
+      $metadata: JSON
+      ){
+        createAssociation(
+          conceptId: $conceptId
+          collectionConceptIds: $collectionConceptIds
+          conceptType: $conceptType
+          nativeId: $nativeId
+          metadata: $metadata
+          ) {
+          associatedItem
+          variableAssociation
+        }
+      }
+
+variables:
+
+    {
+      "conceptId": "V12000000-EXAMPLE",
+      "conceptType": "Variable",
+      "collectionConceptIds": [
+        {
+          "conceptId": "C12000000-EXAMPLE"
+        }
+      ],
+      "nativeId": "Variable native id",
+      "metadata": {} 
+    }
+
+##### Disassociation a Tool to a Collection (Delete)
+    Mutation DeleteAssociation(
+      $conceptId: String!
+      $collectionConceptIds: [JSON]!
+      $conceptType: ConceptType!
+      ){
+        deleteAssociation(
+          conceptId: $conceptId
+          collectionConceptIds: $collectionConceptIds
+          conceptType: $conceptType
+          ) {
+          associatedItem
+          toolAssociation
+        }
+      }
+
+variables:
+
+    {
+      "conceptId": "TL12000000-EXAMPLE",
+      "conceptType": "Tool",
+      "collectionConceptIds": [
+        {
+          "conceptId": "C12000000-EXAMPLE"
+        }
+      ]
+    }
+
 ##### Acls
 
 For all supported arguments and columns, see [the schema](src/types/acl.graphql).
 
 ##### Example Query
 
-query Acls($params: AclsInput) {
-  acls(params: $params) {
-    items {
-      acl
+    query Acls($params: AclsInput) {
+      acls(params: $params) {
+        items {
+          acl
+        }
+      }
     }
-  }
-}
 
-variables:
+    variables:
 
-{
-  "params": {
-    "includeFullAcl": true,
-    "pageNum": 1,
-    "pageSize": 20,
-    "permittedUser": "typical",
-    "target": "PROVIDER_CONTEXT"
-  }
-}
+    {
+      "params": {
+        "includeFullAcl": true,
+        "pageNum": 1,
+        "pageSize": 20,
+        "permittedUser": "typical",
+        "target": "PROVIDER_CONTEXT"
+      }
+    }
 
 ##### Example Response
 
-{
-  "data": {
-    "acls": {
-      "items": [
-        {
-          "acl": {
-            "group_permissions": [
-              {
-                "group_id": "AG1200000003-MMT_2",
-                "permissions": [
-                  "read"
-                ]
-              },
-              {
-                "group_id": "AG1200000001-CMR",
-                "permissions": [
-                  "read"
-                ]
+    {
+      "data": {
+        "acls": {
+          "items": [
+            {
+              "acl": {
+                "group_permissions": [
+                  {
+                    "group_id": "AG1200000003-MMT_2",
+                    "permissions": [
+                      "read"
+                    ]
+                  },
+                  {
+                    "group_id": "AG1200000001-CMR",
+                    "permissions": [
+                      "read"
+                    ]
+                  }
+                ],
+                "provider_identity": {
+                  "target": "PROVIDER_CONTEXT",
+                  "provider_id": "MMT_2"
+                }
               }
-            ],
-            "provider_identity": {
-              "target": "PROVIDER_CONTEXT",
-              "provider_id": "MMT_2"
             }
-          }
+          ]
         }
-      ]
+      }
     }
-  }
-}
 
 #### Local graph database:
 

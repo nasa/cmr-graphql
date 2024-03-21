@@ -1,5 +1,6 @@
 import { mergeTypeDefs } from '@graphql-tools/merge'
 import acl from './acl.graphql'
+import association from './association.graphql'
 import collection from './collection.graphql'
 import collectionDraft from './collectionDraft.graphql'
 import collectionDraftProposal from './collectionDraftProposal.graphql'
@@ -22,6 +23,7 @@ import orderOption from './orderOption.graphql'
 export default mergeTypeDefs(
   [
     acl,
+    association,
     collection,
     collectionDraft,
     collectionDraftProposal,
