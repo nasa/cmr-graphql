@@ -49,6 +49,8 @@ type Variable {
   ummMetadata: JSON
   "The units associated with a variable."
   units: String
+  "Id of the user who modified/published record"
+  userId: String
   "Valid ranges of variable data values."
   validRanges: JSON
   "Specifies the sub type of a variable."

@@ -37,6 +37,7 @@
     "type": "umm.Type",
     "url": "umm.URL",
     "useConstraints": "umm.UseConstraints",
+    "userId": "meta.user-id",
     "version": "umm.Version",
     "versionDescription": "umm.VersionDescription"
   }
