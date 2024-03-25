@@ -17,7 +17,7 @@ describe('mmtQuery', () => {
   })
 
   test('queries mmt', async () => {
-    const consoleMock = jest.spyOn(console, 'log').mockImplementation(() => jest.fn())
+    const consoleMock = vi.spyOn(console, 'log').mockImplementation(() => vi.fn())
 
     nock(/example-mmt/)
       .get(/api\/collection_drafts/)

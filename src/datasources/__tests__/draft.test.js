@@ -1,6 +1,6 @@
 import nock from 'nock'
 
-jest.mock('uuid', () => ({ v4: () => '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed' }))
+vi.mock('uuid', () => ({ v4: () => '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed' }))
 
 import {
   deleteDraft as draftSourceDelete,
@@ -15,9 +15,9 @@ describe('draft#fetch', () => {
   const OLD_ENV = process.env
 
   beforeEach(() => {
-    jest.resetAllMocks()
+    vi.resetAllMocks()
 
-    jest.restoreAllMocks()
+    vi.restoreAllMocks()
 
     process.env = { ...OLD_ENV }
 
@@ -342,9 +342,9 @@ describe('draft#ingest', () => {
   const OLD_ENV = process.env
 
   beforeEach(() => {
-    jest.resetAllMocks()
+    vi.resetAllMocks()
 
-    jest.restoreAllMocks()
+    vi.restoreAllMocks()
 
     process.env = { ...OLD_ENV }
 
@@ -485,9 +485,9 @@ describe('draft#delete', () => {
   const OLD_ENV = process.env
 
   beforeEach(() => {
-    jest.resetAllMocks()
+    vi.resetAllMocks()
 
-    jest.restoreAllMocks()
+    vi.restoreAllMocks()
 
     process.env = { ...OLD_ENV }
 
@@ -580,9 +580,9 @@ describe('draft#publish', () => {
   const OLD_ENV = process.env
 
   beforeEach(() => {
-    jest.resetAllMocks()
+    vi.resetAllMocks()
 
-    jest.restoreAllMocks()
+    vi.restoreAllMocks()
 
     process.env = { ...OLD_ENV }
 
@@ -676,9 +676,9 @@ describe('variableDraft#publish', () => {
   const OLD_ENV = process.env
 
   beforeEach(() => {
-    jest.resetAllMocks()
+    vi.resetAllMocks()
 
-    jest.restoreAllMocks()
+    vi.restoreAllMocks()
 
     process.env = { ...OLD_ENV }
 

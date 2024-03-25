@@ -4,7 +4,7 @@ import { buildContextValue, server } from './__mocks__/mockServer'
 
 const contextValue = buildContextValue()
 
-jest.mock('uuid', () => ({ v4: () => '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed' }))
+vi.mock('uuid', () => ({ v4: () => '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed' }))
 
 describe('Subscription', () => {
   const OLD_ENV = process.env

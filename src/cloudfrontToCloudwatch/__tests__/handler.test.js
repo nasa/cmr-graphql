@@ -13,7 +13,7 @@ const gzip = util.promisify(zlib.gzip)
 const s3ClientMock = mockClient(S3Client)
 
 beforeEach(() => {
-  jest.clearAllMocks()
+  vi.clearAllMocks()
 })
 
 describe('cloudfrontToCloudwatch', () => {
@@ -22,7 +22,7 @@ describe('cloudfrontToCloudwatch', () => {
   })
 
   test('takes no action when no events are provided', async () => {
-    const consoleMock = jest.spyOn(console, 'log')
+    const consoleMock = vi.spyOn(console, 'log')
 
     await cloudfrontToCloudwatch({})
 
@@ -42,7 +42,7 @@ describe('cloudfrontToCloudwatch', () => {
     // Gzip the test file contents
     const zippedFile = await gzip(Buffer.from(testFileContents))
 
-    const consoleMock = jest.spyOn(console, 'log')
+    const consoleMock = vi.spyOn(console, 'log')
 
     s3ClientMock.on(GetObjectCommand).resolves({
       Body: zippedFile
@@ -66,7 +66,7 @@ describe('cloudfrontToCloudwatch', () => {
   })
 
   test('catches errors correctly', async () => {
-    const consoleMock = jest.spyOn(console, 'log')
+    const consoleMock = vi.spyOn(console, 'log')
 
     s3ClientMock.on(GetObjectCommand).rejects('Object not found.')
 
