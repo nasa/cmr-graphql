@@ -202,9 +202,6 @@ custom:
     exclude:
       - '@aws-sdk/client-lambda'
       - '@aws-sdk/client-s3'
-    external: ['stellate']
-    watch:
-      pattern: ['src/**/*.js', 'src/**/*.graphql']
 
   # Forward logs to Splunk
   logSubscription:
