@@ -188,12 +188,6 @@ custom:
     # https://github.com/dherault/serverless-offline#run-modes
     # useInProcess: true
 
-  # Serverless Webpack configurations
-  # webpack:
-  #   includeModules: true
-  #   packager: 'npm'
-  #   excludeFiles: src/**/*.test.js
-
   minifyBuild:
     dev: false
     sit: true
