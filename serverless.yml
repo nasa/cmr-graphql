@@ -55,7 +55,7 @@ package:
     - '!__pycache__/**'
 
 plugins:
-  - serverless-webpack
+  - serverless-esbuild
   - serverless-offline
   - serverless-plugin-log-subscription
   - serverless-python-requirements
@@ -189,10 +189,28 @@ custom:
     # useInProcess: true
 
   # Serverless Webpack configurations
-  webpack:
-    includeModules: true
-    packager: 'npm'
-    excludeFiles: src/**/*.test.js
+  # webpack:
+  #   includeModules: true
+  #   packager: 'npm'
+  #   excludeFiles: src/**/*.test.js
+
+  minifyBuild:
+    dev: false
+    sit: true
+    uat: true
+    prod: true
+
+  esbuild:
+    loader:
+      .graphql: text
+      .gql: text
+    minify: ${self:custom.minifyBuild.${self:provider.stage}}
+    exclude:
+      - '@aws-sdk/client-lambda'
+      - '@aws-sdk/client-s3'
+    external: ['stellate']
+    watch:
+      pattern: ['src/**/*.js', 'src/**/*.graphql']
 
   # Forward logs to Splunk
   logSubscription:

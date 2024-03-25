@@ -1,0 +1,29 @@
+{
+    "collectCoverage": true,
+    "coveragePathIgnorePatterns": [
+        "handler.js",
+        "package-lock.json",
+        "package.json",
+        "types"
+    ],
+    "setupFiles": [
+        "<rootDir>/test-env.js"
+    ],
+    "collectCoverageFrom": [
+        "src/**/*.js"
+    ],
+    "modulePathIgnorePatterns": [
+        ".*__mocks__.*",
+        "dist",
+        ".esbuild"
+    ],
+    "testEnvironment": "node",
+    "transform": {
+        "\\.(gql|graphql)$": "@graphql-tools/jest-transform",
+        "^.+\\.(js)$": "babel-jest",
+        "^.+\\.tsx?$": "esbuild-jest"
+    },
+    "transformIgnorePatterns": [
+        "node_modules/(?!axios)"
+    ]
+}
