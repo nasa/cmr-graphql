@@ -8,9 +8,9 @@ process.env.cmrRootUrl = 'http://example.com'
 
 describe('Provider concept', () => {
   beforeEach(() => {
-    jest.resetAllMocks()
+    vi.resetAllMocks()
 
-    jest.restoreAllMocks()
+    vi.restoreAllMocks()
   })
 
   describe('when fetching', () => {
