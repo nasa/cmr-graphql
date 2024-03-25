@@ -5,9 +5,9 @@ import { verifyEDLJwt } from '../verifyEDLJwt'
 const OLD_ENV = process.env
 
 beforeEach(() => {
-  jest.resetAllMocks()
+  vi.resetAllMocks()
 
-  jest.restoreAllMocks()
+  vi.restoreAllMocks()
 
   process.env = { ...OLD_ENV }
 
@@ -22,7 +22,7 @@ afterEach(() => {
 describe('Correct JWT token', () => {
   test('Verifies a correct jwt token', async () => {
     // Mock the output of the jwt.verification function to return a valid value
-    const mockJwtVerify = jest.spyOn(jwt, 'verify')
+    const mockJwtVerify = vi.spyOn(jwt, 'verify')
     mockJwtVerify.mockImplementationOnce(() => ({ uid: 'someUserId' }))
 
     // Run the function, verify that the uid matches the input
@@ -35,10 +35,10 @@ describe('Correct JWT token', () => {
 describe('Thowing an error', () => {
   test('Verifies an expired jwt token', async () => {
     // Mock the output of the jwt.verification function to return a valid value
-    const mockJwtVerify = jest.spyOn(jwt, 'verify')
+    const mockJwtVerify = vi.spyOn(jwt, 'verify')
     mockJwtVerify.mockImplementationOnce(() => { throw new TokenExpiredError() })
 
-    const consoleMock = jest.spyOn(console, 'log').mockImplementation(() => jest.fn())
+    const consoleMock = vi.spyOn(console, 'log').mockImplementation(() => vi.fn())
 
     // Run the function, verify that the uid matches the input
     await expect(
@@ -50,10 +50,10 @@ describe('Thowing an error', () => {
 
   test('Checks against a malformed or invalid bearer token', async () => {
     // Mock the output of the jwt.verification function to return a valid value
-    const mockJwtVerify = jest.spyOn(jwt, 'verify')
+    const mockJwtVerify = vi.spyOn(jwt, 'verify')
     mockJwtVerify.mockImplementationOnce(() => { throw new JsonWebTokenError() })
 
-    const consoleMock = jest.spyOn(console, 'log').mockImplementation(() => jest.fn())
+    const consoleMock = vi.spyOn(console, 'log').mockImplementation(() => vi.fn())
 
     // Run the function, verify that the uid matches the input
     await expect(
@@ -65,10 +65,10 @@ describe('Thowing an error', () => {
 
   test('checking against an unknown error jwt token', async () => {
     // Mock the output of the jwt.verification function to return a valid value
-    const mockJwtVerify = jest.spyOn(jwt, 'verify')
+    const mockJwtVerify = vi.spyOn(jwt, 'verify')
     mockJwtVerify.mockImplementationOnce(() => { throw new Error('Unknown Error') })
 
-    const consoleMock = jest.spyOn(console, 'log').mockImplementation(() => jest.fn())
+    const consoleMock = vi.spyOn(console, 'log').mockImplementation(() => vi.fn())
 
     // Run the function, verify that the uid matches the input
     await expect(

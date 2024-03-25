@@ -31,9 +31,9 @@ describe('graphDb', () => {
   const OLD_ENV = process.env
 
   beforeEach(() => {
-    jest.resetAllMocks()
+    vi.resetAllMocks()
 
-    jest.restoreAllMocks()
+    vi.restoreAllMocks()
 
     process.env = { ...OLD_ENV }
     process.env.ursRootUrl = 'http://example-urs.com'
@@ -145,7 +145,7 @@ describe('graphDb', () => {
 
     describe('When the relatedUrlType parameter is used', () => {
       test('returns the parsed graphDb response', async () => {
-        const getUserGroups = jest.spyOn(getUserPermittedGroups, 'getUserPermittedGroups')
+        const getUserGroups = vi.spyOn(getUserPermittedGroups, 'getUserPermittedGroups')
         getUserGroups.mockImplementationOnce(() => (''))
 
         nock(/example-graphdb/)
@@ -177,7 +177,7 @@ describe('graphDb', () => {
 
     describe('When the relatedUrlSubtype parameter is used', () => {
       test('returns the parsed graphDb response', async () => {
-        const getUserGroups = jest.spyOn(getUserPermittedGroups, 'getUserPermittedGroups')
+        const getUserGroups = vi.spyOn(getUserPermittedGroups, 'getUserPermittedGroups')
         getUserGroups.mockImplementationOnce(() => (''))
 
         nock(/example-graphdb/)
@@ -209,7 +209,7 @@ describe('graphDb', () => {
 
     describe('When the relatedUrlType and relatedUrlSubtype parameters are used', () => {
       test('returns the parsed graphDb response', async () => {
-        const getUserGroups = jest.spyOn(getUserPermittedGroups, 'getUserPermittedGroups')
+        const getUserGroups = vi.spyOn(getUserPermittedGroups, 'getUserPermittedGroups')
         getUserGroups.mockImplementationOnce(() => (''))
 
         nock(/example-graphdb/)
@@ -307,7 +307,7 @@ describe('graphDb', () => {
       })
 
       test('returns a result with only project types', async () => {
-        const getUserGroups = jest.spyOn(getUserPermittedGroups, 'getUserPermittedGroups')
+        const getUserGroups = vi.spyOn(getUserPermittedGroups, 'getUserPermittedGroups')
         getUserGroups.mockImplementationOnce(() => (''))
 
         nock(/example-graphdb/)
@@ -404,7 +404,7 @@ describe('graphDb', () => {
       })
 
       test('returns a result with only platformInstrument types', async () => {
-        const getUserGroups = jest.spyOn(getUserPermittedGroups, 'getUserPermittedGroups')
+        const getUserGroups = vi.spyOn(getUserPermittedGroups, 'getUserPermittedGroups')
         getUserGroups.mockImplementationOnce(() => (''))
 
         nock(/example-graphdb/)
@@ -513,7 +513,7 @@ describe('graphDb', () => {
       })
 
       test('returns a result with only relatedUrl types', async () => {
-        const getUserGroups = jest.spyOn(getUserPermittedGroups, 'getUserPermittedGroups')
+        const getUserGroups = vi.spyOn(getUserPermittedGroups, 'getUserPermittedGroups')
         getUserGroups.mockImplementationOnce(() => (''))
 
         nock(/example-graphdb/)
@@ -625,7 +625,7 @@ describe('graphDb', () => {
       })
 
       test('returns a result with only relatedUrl types', async () => {
-        const getUserGroups = jest.spyOn(getUserPermittedGroups, 'getUserPermittedGroups')
+        const getUserGroups = vi.spyOn(getUserPermittedGroups, 'getUserPermittedGroups')
         getUserGroups.mockImplementationOnce(() => (''))
 
         nock(/example-graphdb/)
@@ -749,7 +749,7 @@ describe('graphDb', () => {
       })
 
       test('returns a result with only relatedUrl and project types', async () => {
-        const getUserGroups = jest.spyOn(getUserPermittedGroups, 'getUserPermittedGroups')
+        const getUserGroups = vi.spyOn(getUserPermittedGroups, 'getUserPermittedGroups')
         getUserGroups.mockImplementationOnce(() => (''))
 
         nock(/example-graphdb/)
@@ -872,7 +872,7 @@ describe('graphDb', () => {
       })
 
       test('returns a result with only all types', async () => {
-        const getUserGroups = jest.spyOn(getUserPermittedGroups, 'getUserPermittedGroups')
+        const getUserGroups = vi.spyOn(getUserPermittedGroups, 'getUserPermittedGroups')
         getUserGroups.mockImplementationOnce(() => (''))
 
         nock(/example-graphdb/)
@@ -966,7 +966,7 @@ describe('graphDb', () => {
       })
 
       test('returns a result with only all relationship types', async () => {
-        const getUserGroups = jest.spyOn(getUserPermittedGroups, 'getUserPermittedGroups')
+        const getUserGroups = vi.spyOn(getUserPermittedGroups, 'getUserPermittedGroups')
         getUserGroups.mockImplementationOnce(() => (''))
 
         nock(/example-graphdb/)
@@ -1036,7 +1036,7 @@ describe('graphDb', () => {
     })
 
     test('returns a result with all relationship types', async () => {
-      const getUserGroups = jest.spyOn(getUserPermittedGroups, 'getUserPermittedGroups')
+      const getUserGroups = vi.spyOn(getUserPermittedGroups, 'getUserPermittedGroups')
       getUserGroups.mockImplementationOnce(() => (''))
 
       nock(/example-graphdb/)

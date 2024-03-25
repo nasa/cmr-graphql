@@ -1,12 +1,12 @@
 import Acl from '../acl'
 
-jest.mock('../../../utils/aclQuery', () => ({
-  aclQuery: jest.fn()
+vi.mock('../../../utils/aclQuery', () => ({
+  aclQuery: vi.fn()
 }))
 
 describe('Acl', () => {
   afterEach(() => {
-    jest.clearAllMocks()
+    vi.clearAllMocks()
   })
 
   describe('Giving parameters', () => {
@@ -16,7 +16,7 @@ describe('Acl', () => {
       const ummKeys = ['ummKey1', 'ummKey2']
       const headers = { 'Content-Type': 'application/json' }
       // Mock the super.fetchAcl method
-      jest.spyOn(Acl.prototype, 'fetchAcl')
+      vi.spyOn(Acl.prototype, 'fetchAcl')
       acl.fetchAcl(searchParams, ummKeys, headers)
       expect(Acl.prototype.fetchAcl).toHaveBeenCalledWith(searchParams, ummKeys, headers)
     })
@@ -57,7 +57,7 @@ describe('Acl', () => {
     test('when jsonKeys are present', () => {
       const acl = new Acl({ 'Header-Key': 'header-value' }, { jsonKeys: ['key1', 'key2'] })
       acl.jsonItemCount = 1
-      const aclQuerySpy = jest.spyOn(acl, 'fetchAcl').mockImplementation(() => Promise.resolve())
+      const aclQuerySpy = vi.spyOn(acl, 'fetchAcl').mockImplementation(() => Promise.resolve())
       acl.fetch({
         key1: 'value1',
         key2: 'value2'
@@ -72,7 +72,7 @@ describe('Acl', () => {
     test('fetchAcl does not call aclQuery when jsonKeys are not present', () => {
       const acl = new Acl({ 'Header-Key': 'header-value' }, { jsonKeys: [] })
       acl.jsonItemCount = 42
-      const aclQuerySpy = jest.spyOn(acl, 'fetchAcl').mockImplementation(() => Promise.resolve())
+      const aclQuerySpy = vi.spyOn(acl, 'fetchAcl').mockImplementation(() => Promise.resolve())
 
       acl.fetch({
         key1: 'value1',

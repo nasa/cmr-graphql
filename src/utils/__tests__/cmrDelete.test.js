@@ -17,7 +17,7 @@ describe('cmrDelete', () => {
   })
 
   test('deletes a record from cmr', async () => {
-    const consoleMock = jest.spyOn(console, 'log').mockImplementation(() => jest.fn())
+    const consoleMock = vi.spyOn(console, 'log').mockImplementation(() => vi.fn())
 
     nock(/example-cmr/, {
       reqheaders: {
@@ -63,7 +63,7 @@ describe('cmrDelete', () => {
 
   describe('when provided a token via the Authorization header', () => {
     test('queries cmr using the Authorization header', async () => {
-      const consoleMock = jest.spyOn(console, 'log').mockImplementation(() => jest.fn())
+      const consoleMock = vi.spyOn(console, 'log').mockImplementation(() => vi.fn())
 
       nock(/example-cmr/, {
         reqheaders: {

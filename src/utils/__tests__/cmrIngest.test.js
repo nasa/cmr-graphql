@@ -1,6 +1,6 @@
 import nock from 'nock'
 
-jest.mock('uuid', () => ({ v4: () => '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed' }))
+vi.mock('uuid', () => ({ v4: () => '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed' }))
 
 import { cmrIngest } from '../cmrIngest'
 import { downcaseKeys } from '../downcaseKeys'
@@ -19,7 +19,7 @@ describe('cmrIngest', () => {
   })
 
   test('ingests a record into cmr', async () => {
-    const consoleMock = jest.spyOn(console, 'log').mockImplementation(() => jest.fn())
+    const consoleMock = vi.spyOn(console, 'log').mockImplementation(() => vi.fn())
 
     nock(/example-cmr/, {
       reqheaders: {
@@ -64,7 +64,7 @@ describe('cmrIngest', () => {
 
   describe('when provided a native id', () => {
     test('ingests a record into cmr with the provided native id', async () => {
-      const consoleMock = jest.spyOn(console, 'log').mockImplementation(() => jest.fn())
+      const consoleMock = vi.spyOn(console, 'log').mockImplementation(() => vi.fn())
 
       nock(/example-cmr/, {
         reqheaders: {
@@ -111,7 +111,7 @@ describe('cmrIngest', () => {
 
   describe('when provided a token via the Authorization header', () => {
     test('queries cmr using the Authorization header', async () => {
-      const consoleMock = jest.spyOn(console, 'log').mockImplementation(() => jest.fn())
+      const consoleMock = vi.spyOn(console, 'log').mockImplementation(() => vi.fn())
 
       nock(/example-cmr/, {
         reqheaders: {

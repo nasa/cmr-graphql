@@ -13,7 +13,7 @@ describe('cmrGraphDb', () => {
     process.env.graphdbHost = 'http://example-graphdb.com'
     process.env.graphdbPort = '8182'
     process.env.graphdbPath = ''
-    const getUserGroups = jest.spyOn(getUserPermittedGroups, 'getUserPermittedGroups')
+    const getUserGroups = vi.spyOn(getUserPermittedGroups, 'getUserPermittedGroups')
     getUserGroups.mockImplementationOnce(() => (''))
   })
 
@@ -27,7 +27,7 @@ describe('cmrGraphDb', () => {
     })
 
     test('queries cmr graphdb', async () => {
-      const consoleMock = jest.spyOn(console, 'log').mockImplementation(() => jest.fn())
+      const consoleMock = vi.spyOn(console, 'log').mockImplementation(() => vi.fn())
 
       nock(/example-graphdb/)
         .post(() => true)
@@ -66,7 +66,7 @@ describe('cmrGraphDb', () => {
     })
 
     test('queries cmr graphdb', async () => {
-      const consoleMock = jest.spyOn(console, 'log').mockImplementation(() => jest.fn())
+      const consoleMock = vi.spyOn(console, 'log').mockImplementation(() => vi.fn())
 
       nock(/example-graphdb/)
         .post(() => true)

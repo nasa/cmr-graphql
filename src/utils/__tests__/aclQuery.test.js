@@ -17,7 +17,7 @@ describe('aclQuery', () => {
   })
 
   test('queries cmr', async () => {
-    const consoleMock = jest.spyOn(console, 'log').mockImplementation(() => jest.fn())
+    const consoleMock = vi.spyOn(console, 'log').mockImplementation(() => vi.fn())
 
     nock(/example-cmr/, {
       reqheaders: {
