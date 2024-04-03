@@ -634,6 +634,7 @@ describe('draft#publish', () => {
     const response = await draftSourcePublish({
       draftConceptId: 'CD100000-EDSC',
       nativeId: 'mock-native-id',
+      providerId: 'EDSC',
       ummVersion: '1.0.0'
     }, {
       headers: {
@@ -661,6 +662,7 @@ describe('draft#publish', () => {
       draftSourcePublish({
         draftConceptId: 'CD100000-EDSC',
         nativeId: 'mock-native-id',
+        providerId: 'EDSC',
         ummVersion: '1.0.0'
       }, {
         headers: {

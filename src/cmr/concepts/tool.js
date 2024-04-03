@@ -9,10 +9,6 @@ export default class Tool extends Concept {
    */
   constructor(headers, requestInfo, params) {
     super('tools', headers, requestInfo, params)
-
-    const { providerId } = params
-
-    this.ingestPath = `providers/${providerId}/tools`
   }
 
   /**

@@ -10,14 +10,33 @@ import { pickIgnoringCase } from './pickIgnoringCase'
  * @param {String} conceptType Concept type to delete
  * @param {Object} data Parameters to send to CMR
  * @param {Object} headers Headers to send to CMR
- * @param {String} ingestPath CMR path to call to delete concept
  */
-export const cmrDelete = async (conceptType, data, headers, ingestPath) => {
+export const cmrDelete = async ({
+  conceptType,
+  data,
+  headers,
+  options = {}
+}) => {
   // Default headers
   const defaultHeaders = {
     Accept: 'application/json',
     'Content-Type': 'application/vnd.nasa.cmr.umm+json'
   }
+
+  // Use the provided native id and provider id
+  const { providerId, nativeId } = data
+
+  // Remove native id as it is not a supported key in umm
+  // eslint-disable-next-line no-param-reassign
+  delete data.nativeId
+
+  // eslint-disable-next-line no-param-reassign
+  delete data.providerId
+
+  // Default options
+  const {
+    queryPath = `ingest/providers/${providerId}/${conceptType}/${nativeId}`
+  } = options
 
   // Merge default headers into the provided headers and then pick out only permitted values
   const permittedHeaders = pickIgnoringCase({
@@ -31,13 +50,6 @@ export const cmrDelete = async (conceptType, data, headers, ingestPath) => {
     'CMR-Request-Id'
   ])
 
-  // Use the provided native id
-  const { nativeId } = data
-
-  // Remove native id as it is not a supported key in umm
-  // eslint-disable-next-line no-param-reassign
-  delete data.nativeId
-
   const cmrParameters = camelcaseKeys(data, { pascalCase: true })
 
   const {
@@ -49,7 +61,7 @@ export const cmrDelete = async (conceptType, data, headers, ingestPath) => {
     data: cmrParameters,
     headers: permittedHeaders,
     method: 'DELETE',
-    url: `${process.env.cmrRootUrl}/ingest/${ingestPath}/${nativeId}`
+    url: `${process.env.cmrRootUrl}/${queryPath}`
   }
 
   // Interceptors require an instance of axios

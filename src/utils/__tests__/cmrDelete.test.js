@@ -32,18 +32,21 @@ describe('cmrDelete', () => {
         'revision-id': 1
       })
 
-    const response = await cmrDelete(
-      'subscriptions',
-      {
+    const response = await cmrDelete({
+      conceptType: 'subscriptions',
+      data: {
         conceptId: 'SUB100000-EDSC',
-        nativeId: '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed'
+        nativeId: '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed',
+        providerId: 'MMT1'
       },
-      {
+      headers: {
         'Client-Id': 'eed-test-graphql',
         'CMR-Request-Id': 'abcd-1234-efgh-5678'
       },
-      'subscriptions'
-    )
+      options: {
+        queryPath: 'ingest/subscriptions/1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed'
+      }
+    })
 
     const { data, headers } = response
 
@@ -79,19 +82,22 @@ describe('cmrDelete', () => {
           'revision-id': 1
         })
 
-      const response = await cmrDelete(
-        'subscriptions',
-        {
+      const response = await cmrDelete({
+        conceptType: 'subscriptions',
+        data: {
           conceptId: 'SUB100000-EDSC',
-          nativeId: '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed'
+          nativeId: '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed',
+          providerId: 'MMT1'
         },
-        {
+        headers: {
           Authorization: 'Bearer test-token',
           'Client-Id': 'eed-test-graphql',
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         },
-        'subscriptions'
-      )
+        options: {
+          queryPath: 'ingest/subscriptions/1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed'
+        }
+      })
 
       const { data, headers } = response
 
@@ -123,18 +129,21 @@ describe('cmrDelete', () => {
           errors: ['HTTP Error']
         })
 
-      const response = cmrDelete(
-        'subscriptions',
-        {
+      const response = cmrDelete({
+        conceptType: 'subscriptions',
+        data: {
           conceptId: 'SUB100000-EDSC',
-          nativeId: '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed'
+          nativeId: '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed',
+          providerId: 'MMT1'
         },
-        {
+        headers: {
           'Client-Id': 'eed-test-graphql',
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         },
-        'subscriptions'
-      )
+        options: {
+          queryPath: 'ingest/subscriptions/1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed'
+        }
+      })
 
       await expect(response).rejects.toThrow()
     })

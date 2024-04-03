@@ -374,7 +374,7 @@ export default class Concept {
    * @param {Array} requestedKeys Keys requested by the query
    * @param {Object} providedHeaders Headers requested by the query
    */
-  ingest(data, requestedKeys, providedHeaders) {
+  ingest(data, requestedKeys, providedHeaders, options) {
     const params = mergeParams(data)
 
     this.logKeyRequest(requestedKeys, 'ingest')
@@ -384,7 +384,7 @@ export default class Concept {
       conceptType: this.getConceptType(),
       data: params,
       headers: providedHeaders,
-      ingestPath: this.ingestPath
+      options
     })
   }
 
@@ -394,18 +394,18 @@ export default class Concept {
    * @param {Array} requestedKeys Keys requested by the query
    * @param {Object} providedHeaders Headers requested by the query
    */
-  delete(data, requestedKeys, providedHeaders) {
+  delete(data, requestedKeys, providedHeaders, options) {
     const params = mergeParams(data)
 
     this.logKeyRequest(requestedKeys, 'ingest')
 
     // Construct the promise that will delete data from CMR
-    this.response = cmrDelete(
-      this.getConceptType(),
-      params,
-      providedHeaders,
-      this.ingestPath
-    )
+    this.response = cmrDelete({
+      conceptType: this.getConceptType(),
+      data: params,
+      headers: providedHeaders,
+      options
+    })
   }
 
   /**

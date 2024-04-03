@@ -385,16 +385,16 @@ describe('subscription#ingest', () => {
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
         .put(/ingest\/subscriptions\/1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed/, JSON.stringify({
-          MetadataSpecification: {
-            URL: 'https://cdn.earthdata.nasa.gov/umm/subscription/v1.0.0',
-            Name: 'UMM-Sub',
-            Version: '1.0.0'
-          },
           CollectionConceptId: 'C100000-EDSC',
           EmailAddress: 'test@example.com',
           Name: 'Test Subscription',
           Query: 'polygon=-18,-78,-13,-74,-16,-73,-22,-77,-18,-78',
-          SubscriberId: 'testuser'
+          SubscriberId: 'testuser',
+          MetadataSpecification: {
+            URL: 'https://cdn.earthdata.nasa.gov/umm/subscription/v1.0.0',
+            Name: 'UMM-Sub',
+            Version: '1.0.0'
+          }
         }))
         .reply(201, {
           'concept-id': 'SUB100000-EDSC',
@@ -430,16 +430,16 @@ describe('subscription#ingest', () => {
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
         .put(/ingest\/subscriptions\/test-guid/, JSON.stringify({
-          MetadataSpecification: {
-            URL: 'https://cdn.earthdata.nasa.gov/umm/subscription/v1.0.0',
-            Name: 'UMM-Sub',
-            Version: '1.0.0'
-          },
           CollectionConceptId: 'C100000-EDSC',
           EmailAddress: 'test@example.com',
           Name: 'Test Subscription',
           Query: 'polygon=-18,-78,-13,-74,-16,-73,-22,-77,-18,-78',
-          SubscriberId: 'testuser'
+          SubscriberId: 'testuser',
+          MetadataSpecification: {
+            URL: 'https://cdn.earthdata.nasa.gov/umm/subscription/v1.0.0',
+            Name: 'UMM-Sub',
+            Version: '1.0.0'
+          }
         }))
         .reply(201, {
           'concept-id': 'SUB100000-EDSC',
