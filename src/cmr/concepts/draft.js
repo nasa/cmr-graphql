@@ -17,11 +17,9 @@ export default class Draft extends Concept {
     super(conceptType, headers, requestInfo, params)
 
     const {
-      draftConceptId,
-      providerId
+      draftConceptId
     } = params
 
-    this.ingestPath = `providers/${providerId}/${conceptType}`
     this.publishPath = `publish/${draftConceptId}`
 
     const {
@@ -158,7 +156,7 @@ export default class Draft extends Concept {
    * @param {Object} providedHeaders Headers requested by the query
    */
   ingest(data, requestedKeys, providedHeaders) {
-    const { ummVersion } = data
+    const { nativeId, providerId, ummVersion } = data
 
     if (!ummVersion) {
       throw new Error('`ummVersion` is required when ingesting drafts.')
@@ -188,15 +186,19 @@ export default class Draft extends Concept {
       ...data.metadata
     }
 
-    super.ingest(
-      metadata,
-      requestedKeys,
-      permittedHeaders
-    )
+    // Construct the promise that will ingest data into CMR
+    this.response = cmrIngest({
+      conceptType: this.getConceptType(),
+      data: metadata,
+      headers: permittedHeaders,
+      options: {
+        queryPath: `ingest/providers/${providerId}/${this.getConceptType()}/${nativeId}`
+      }
+    })
   }
 
   publish(data, requestedKeys, providedHeaders) {
-    const { ummVersion } = data
+    const { draftConceptId, nativeId, ummVersion } = data
 
     const params = mergeParams(data)
 
@@ -233,7 +235,9 @@ export default class Draft extends Concept {
       conceptType: this.getConceptType(),
       data: prepDataForCmr,
       headers: permittedHeaders,
-      ingestPath: this.publishPath
+      options: {
+        queryPath: `ingest/publish/${draftConceptId}/${nativeId}`
+      }
     })
   }
 }

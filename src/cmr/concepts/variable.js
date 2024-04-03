@@ -9,10 +9,6 @@ export default class Variable extends Concept {
    */
   constructor(headers, requestInfo, params) {
     super('variables', headers, requestInfo, params)
-
-    const { providerId } = params
-
-    this.ingestPath = `providers/${providerId}/variables`
   }
 
   /**

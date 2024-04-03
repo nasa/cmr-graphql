@@ -1,8 +1,8 @@
+import { v4 as uuidv4 } from 'uuid'
 import camelcaseKeys from 'camelcase-keys'
 import { uniq } from 'lodash'
 import { mergeParams } from '../../utils/mergeParams'
 
-import { pickIgnoringCase } from '../../utils/pickIgnoringCase'
 import Concept from './concept'
 
 export default class Subscription extends Concept {
@@ -15,7 +15,6 @@ export default class Subscription extends Concept {
   constructor(headers, requestInfo, params) {
     super('subscriptions', headers, requestInfo, params)
 
-    this.ingestPath = 'subscriptions'
     this.metadataSpecification = {
       URL: `https://cdn.earthdata.nasa.gov/umm/subscription/v${process.env.ummSubscriptionVersion}`,
       Name: 'UMM-Sub',
@@ -93,33 +92,43 @@ export default class Subscription extends Concept {
    * @param {Object} providedHeaders Headers requested by the query
    */
   ingest(data, requestedKeys, providedHeaders) {
+    const params = mergeParams(data)
+
     // Default headers
-    const defaultHeaders = {
+    const headers = {
+      ...providedHeaders,
       Accept: 'application/json',
       'Content-Type': `application/vnd.nasa.cmr.umm+json; version=${process.env.ummSubscriptionVersion}`
     }
 
-    // Merge default headers into the provided headers and then pick out only permitted values
-    const permittedHeaders = pickIgnoringCase({
-      ...defaultHeaders,
-      ...providedHeaders
-    }, [
-      'Accept',
-      'Authorization',
-      'Client-Id',
-      'Content-Type',
-      'CMR-Request-Id'
-    ])
-
     // Add MetadataSpecification to the data
     // eslint-disable-next-line no-param-reassign
-    data.metadataSpecification = this.metadataSpecification
+    params.metadataSpecification = this.metadataSpecification
 
-    const prepDataForCmr = camelcaseKeys(mergeParams(data), {
+    const casedKeys = camelcaseKeys(params, {
       pascalCase: true,
       exclude: ['nativeId']
     })
 
-    super.ingest(prepDataForCmr, requestedKeys, permittedHeaders)
+    // Use the provided native id and provider id
+    const { nativeId = uuidv4() } = params
+
+    super.ingest(casedKeys, requestedKeys, headers, { queryPath: `ingest/subscriptions/${nativeId}` })
+  }
+
+  /**
+   * Delete the provided object into the CMR
+   * @param {Object} data Parameters provided by the query
+   * @param {Array} requestedKeys Keys requested by the query
+   * @param {Object} providedHeaders Headers requested by the query
+   */
+  delete(data, requestedKeys, providedHeaders) {
+    const params = mergeParams(data)
+
+    this.logKeyRequest(requestedKeys, 'ingest')
+
+    const { nativeId } = params
+
+    super.delete(data, requestedKeys, providedHeaders, { queryPath: `ingest/subscriptions/${nativeId}` })
   }
 }

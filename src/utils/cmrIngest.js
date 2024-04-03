@@ -11,18 +11,32 @@ import { pickIgnoringCase } from './pickIgnoringCase'
  * @param {String} params.conceptType Concept type to ingest
  * @param {Object} params.data Parameters to send to CMR
  * @param {Object} params.headers Headers to send to CMR
- * @param {String} params.ingestPath CMR path to call to ingest concept
  */
 export const cmrIngest = ({
   conceptType,
   data,
   headers,
-  ingestPath
+  options = {}
 }) => {
   // Default headers
   const defaultHeaders = {
     Accept: 'application/json'
   }
+
+  // Use the provided native id and provider id
+  const { nativeId = uuidv4(), providerId } = data
+
+  // Remove native id as it is not a supported key in umm
+  // eslint-disable-next-line no-param-reassign
+  delete data.nativeId
+
+  // eslint-disable-next-line no-param-reassign
+  delete data.providerId
+
+  // Default options
+  const {
+    queryPath = `ingest/providers/${providerId}/${conceptType}/${nativeId}`
+  } = options
 
   // Merge default headers into the provided headers and then pick out only permitted values
   const permittedHeaders = pickIgnoringCase({
@@ -36,13 +50,6 @@ export const cmrIngest = ({
     'CMR-Request-Id'
   ])
 
-  // Use the provided native id if one is provided, default to a guid
-  const { nativeId = uuidv4() } = data
-
-  // Remove native id as it is not a supported key in umm
-  // eslint-disable-next-line no-param-reassign
-  delete data.nativeId
-
   const {
     'client-id': clientId,
     'cmr-request-id': requestId
@@ -52,7 +59,7 @@ export const cmrIngest = ({
     data,
     headers: permittedHeaders,
     method: 'PUT',
-    url: `${process.env.cmrRootUrl}/ingest/${ingestPath}/${nativeId}`
+    url: `${process.env.cmrRootUrl}/${queryPath}`
   }
 
   // Interceptors require an instance of axios

@@ -1,4 +1,5 @@
 import { mergeTypeDefs } from '@graphql-tools/merge'
+
 import acl from './acl.graphql'
 import association from './association.graphql'
 import collection from './collection.graphql'
@@ -9,16 +10,16 @@ import draft from './draft.graphql'
 import granule from './granule.graphql'
 import grid from './grid.graphql'
 import json from './json.graphql'
+import orderOption from './orderOption.graphql'
 import provider from './provider.graphql'
 import service from './service.graphql'
 import serviceDraft from './serviceDraft.graphql'
 import subscription from './subscription.graphql'
 import tagDefinition from './tagDefinition.graphql'
-import toolDraft from './toolDraft.graphql'
 import tool from './tool.graphql'
-import variableDraft from './variableDraft.graphql'
+import toolDraft from './toolDraft.graphql'
 import variable from './variable.graphql'
-import orderOption from './orderOption.graphql'
+import variableDraft from './variableDraft.graphql'
 
 export default mergeTypeDefs(
   [

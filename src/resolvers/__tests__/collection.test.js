@@ -2658,6 +2658,7 @@ describe('Collection', () => {
       })
 
       const { data } = response.body.singleResult
+
       expect(data).toEqual({
         deleteCollection: {
           conceptId: 'C100000-EDSC',

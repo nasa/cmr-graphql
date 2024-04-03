@@ -29,7 +29,6 @@ describe('Draft concept', () => {
             providerId: 'EDSC'
           })
 
-          expect(draft.ingestPath).toEqual('providers/EDSC/collection-drafts')
           expect(draft.publishPath).toEqual('publish/CD100000-EDSC')
           expect(draft.metadataSpecification).toEqual({
             Name: 'UMM-C',
@@ -46,7 +45,6 @@ describe('Draft concept', () => {
             providerId: 'EDSC'
           })
 
-          expect(draft.ingestPath).toEqual('providers/EDSC/service-drafts')
           expect(draft.publishPath).toEqual('publish/SD100000-EDSC')
           expect(draft.metadataSpecification).toEqual({
             Name: 'UMM-S',
@@ -63,7 +61,6 @@ describe('Draft concept', () => {
             providerId: 'EDSC'
           })
 
-          expect(draft.ingestPath).toEqual('providers/EDSC/tool-drafts')
           expect(draft.publishPath).toEqual('publish/TD100000-EDSC')
           expect(draft.metadataSpecification).toEqual({
             Name: 'UMM-T',
@@ -80,7 +77,6 @@ describe('Draft concept', () => {
             providerId: 'EDSC'
           })
 
-          expect(draft.ingestPath).toEqual('providers/EDSC/variable-drafts')
           expect(draft.publishPath).toEqual('publish/VD100000-EDSC')
           expect(draft.metadataSpecification).toEqual({
             Name: 'UMM-Var',
@@ -97,7 +93,6 @@ describe('Draft concept', () => {
             providerId: 'EDSC'
           })
 
-          expect(draft.ingestPath).toEqual('providers/EDSC/bad-drafts')
           expect(draft.publishPath).toEqual('publish/CD100000-EDSC')
           expect(draft.metadataSpecification).toEqual({
             Name: undefined,

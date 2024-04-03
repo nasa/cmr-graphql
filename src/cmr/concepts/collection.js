@@ -12,11 +12,6 @@ export default class Collection extends Concept {
    */
   constructor(headers, requestInfo, params) {
     super('collections', headers, requestInfo, params)
-
-    this.facets = []
-    const { providerId } = params
-
-    this.ingestPath = `providers/${providerId}/collections`
   }
 
   /**
@@ -102,7 +97,6 @@ export default class Collection extends Concept {
       'two_d_coordinate_system_name',
       'variable_concept_id',
       'version'
-
     ]
   }
 
@@ -159,7 +153,6 @@ export default class Collection extends Concept {
       'two_d_coordinate_system_name',
       'variable_concept_id',
       'version'
-
     ]
   }
 

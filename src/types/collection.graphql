@@ -387,7 +387,7 @@ input CollectionsInput {
   conceptId: [String]
   "The consortium value of the collection."
   consortium: [String]
-  "The DOI Value of the collection"
+  "The DOI Value of the collection."
   doi: String
   "Cursor that points to the/a specific position in a list of requested records."
   cursor: String
@@ -397,7 +397,7 @@ input CollectionsInput {
   circle: [String]
   "The cloud_hosted parameter can be set to 'true' or 'false'. When true, the results will be restricted to collections that have a DirectDistributionInformation element or have been tagged with gov.nasa.earthdatacloud.s3."
   cloudHosted: Boolean
-  "Type of the collection"
+  "Type of the collection."
   collectionDataType: [String]
   "The Entry Title of collection"
   entryTitle: String
@@ -477,7 +477,7 @@ input CollectionsInput {
   revisionDate: String
   "Science Keywords associated with the collection, in facet form."
   scienceKeywordsH: JSON
-  "Science Keywords for searching term at all levels of the science keyword hierarchy"
+  "Science Keywords for searching term at all levels of the science keyword hierarchy."
   scienceKeywords: JSON
   "UMM Service concept id."
   serviceConceptId: String
@@ -495,14 +495,15 @@ input CollectionsInput {
   tagKey: [String]
   "The temporal datetime has to be in yyyy-MM-ddTHH:mm:ssZ format."
   temporal: String
+  "Find collections which have a revision date starting at or after the provided datetime string in yyyy-MM-ddTHH:mm:ssZ format."
   updatedSince: String
-  "The 2D coordinate system associated with the collection"
+  "The 2D coordinate system associated with the collection."
   twoDCoordinateSystemName: [String]
-  "version of the collection"
+  "version of the collection."
   version: String
   "UMM Variable concept id."
   variableConceptId: String
-  "Returns all revisions when set to true"
+  "Returns all revisions when set to true."
   allRevisions: Boolean
 }
 

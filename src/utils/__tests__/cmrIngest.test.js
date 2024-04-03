@@ -37,13 +37,18 @@ describe('cmrIngest', () => {
 
     const response = await cmrIngest({
       conceptType: 'subscriptions',
-      data: { collectionConceptId: 'C100000-EDSC' },
+      data: {
+        collectionConceptId: 'C100000-EDSC',
+        providerId: 'EDSC'
+      },
       headers: {
         'CMR-Request-Id': 'abcd-1234-efgh-5678',
         'Client-Id': 'eed-test-graphql',
         'Content-Type': 'application/vnd.nasa.cmr.umm+json; version=1.0'
       },
-      ingestPath: 'subscriptions'
+      options: {
+        queryPath: 'ingest/subscriptions/1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed'
+      }
     })
 
     const { data, headers } = response
@@ -89,7 +94,9 @@ describe('cmrIngest', () => {
           'Client-Id': 'eed-test-graphql',
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         },
-        ingestPath: 'subscriptions'
+        options: {
+          queryPath: 'ingest/subscriptions/provided-native-id'
+        }
       })
 
       const { data, headers } = response
@@ -129,13 +136,17 @@ describe('cmrIngest', () => {
 
       const response = await cmrIngest({
         conceptType: 'subscriptions',
-        data: { collectionConceptId: 'C100000-EDSC' },
+        data: {
+          collectionConceptId: 'C100000-EDSC'
+        },
         headers: {
           Authorization: 'Bearer test-token',
           'Client-Id': 'eed-test-graphql',
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         },
-        ingestPath: 'subscriptions'
+        options: {
+          queryPath: 'ingest/subscriptions/1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed'
+        }
       })
 
       const { data, headers } = response
@@ -170,12 +181,13 @@ describe('cmrIngest', () => {
 
       const response = cmrIngest({
         conceptType: 'subscriptions',
-        data: { collectionConceptId: 'C100000-EDSC' },
+        data: {
+          collectionConceptId: 'C100000-EDSC'
+        },
         headers: {
           'Client-Id': 'eed-test-graphql',
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
-        },
-        ingestPath: 'subscriptions'
+        }
       })
 
       await expect(response).rejects.toThrow()
