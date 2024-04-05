@@ -31,6 +31,7 @@
     "standardName": "umm.StandardName",
     "ummMetadata": "umm",
     "units": "umm.Units",
+    "userId": "meta.user-id",
     "validRanges": "umm.ValidRanges",
     "variableSubType": "umm.VariableSubType",
     "variableType": "umm.VariableType"

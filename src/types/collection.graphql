@@ -149,6 +149,8 @@ type Collection {
   ummMetadata: JSON
   "Designed to protect privacy and/or intellectual property by allowing the author to specify how the collection may or may not be used after access is granted. This includes any special restrictions, legal prerequisites, terms and conditions, and/or limitations on using the item. Providers may request acknowledgement of the item from users and claim no responsibility for quality and completeness. Note: Use Constraints describe how the item may be used once access has been granted; and is distinct from Access Constraints, which refers to any constraints in accessing the item."
   useConstraints: JSON
+  "Id of the user who modified/published record"
+  userId: String
   "The version description of the collection."
   versionDescription: String
   "Provider defined version id of the collection."

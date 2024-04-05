@@ -67,6 +67,7 @@
     "title": "umm.EntryTitle",
     "ummMetadata": "umm",
     "useConstraints": "umm.UseConstraints",
+    "userId": "meta.user-id",
     "version": "umm.Version",
     "versionDescription": "umm.VersionDescription",
     "versionId": "umm.Version"
