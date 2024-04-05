@@ -1,0 +1,9 @@
+{
+  "jsonKeys": [
+    "toolAssociation",
+    "associatedItem",
+    "serviceAssociation"
+  ],
+  "sharedKeys": [],
+  "ummKeyMappings": {}
+}

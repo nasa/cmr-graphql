@@ -26,7 +26,7 @@ describe('draftMmtQuery', () => {
     })
 
     test('queries draft mmt', async () => {
-      const consoleMock = jest.spyOn(console, 'log').mockImplementation(() => jest.fn())
+      const consoleMock = vi.spyOn(console, 'log').mockImplementation(() => vi.fn())
 
       nock(/example-mmt/)
         .get(/collection_draft_proposals/)
@@ -71,7 +71,7 @@ describe('draftMmtQuery', () => {
     })
 
     test('queries draft mmt', async () => {
-      const consoleMock = jest.spyOn(console, 'log').mockImplementation(() => jest.fn())
+      const consoleMock = vi.spyOn(console, 'log').mockImplementation(() => vi.fn())
 
       nock(/example-mmt/)
         .get(/collection_draft_proposals/)

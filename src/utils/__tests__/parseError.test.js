@@ -1,14 +1,14 @@
 import { parseError } from '../parseError'
 
 beforeEach(() => {
-  jest.clearAllMocks()
+  vi.clearAllMocks()
 })
 
 describe('parseError', () => {
   describe('when standard errors are throw', () => {
     describe('when shouldLog is set to true', () => {
       test('it logs the errors', () => {
-        const consoleMock = jest.spyOn(console, 'log')
+        const consoleMock = vi.spyOn(console, 'log')
 
         const response = parseError(new Error('Standard Error'))
 
@@ -29,7 +29,7 @@ describe('parseError', () => {
 
     describe('when shouldLog is set to false', () => {
       test('nothing is logged', () => {
-        const consoleMock = jest.spyOn(console, 'log')
+        const consoleMock = vi.spyOn(console, 'log')
 
         const response = parseError(new Error('Standard Error'), { shouldLog: false })
 
@@ -52,7 +52,7 @@ describe('parseError', () => {
     describe('with shouldLog is set to true', () => {
       describe('with no options', () => {
         test('it logs the errors', () => {
-          const consoleMock = jest.spyOn(console, 'log')
+          const consoleMock = vi.spyOn(console, 'log')
 
           const response = parseError({
             response: {
@@ -82,7 +82,7 @@ describe('parseError', () => {
 
         describe('with no error name', () => {
           test('defaults the error name to `Error`', () => {
-            const consoleMock = jest.spyOn(console, 'log')
+            const consoleMock = vi.spyOn(console, 'log')
 
             const response = parseError({
               response: {
@@ -112,7 +112,7 @@ describe('parseError', () => {
 
         describe('with no errors array', () => {
           test('defaults to an array containing `Unknown Error`', () => {
-            const consoleMock = jest.spyOn(console, 'log')
+            const consoleMock = vi.spyOn(console, 'log')
 
             const response = parseError({
               response: {
@@ -142,7 +142,7 @@ describe('parseError', () => {
 
       describe('with asJSON set to false', () => {
         test('returns the errors array', () => {
-          const consoleMock = jest.spyOn(console, 'log')
+          const consoleMock = vi.spyOn(console, 'log')
 
           const response = parseError({
             response: {
@@ -169,7 +169,7 @@ describe('parseError', () => {
 
       describe('with reThrowError set to true', () => {
         test('rethrows the error provided', () => {
-          const consoleMock = jest.spyOn(console, 'log')
+          const consoleMock = vi.spyOn(console, 'log')
 
           expect(() => parseError({
             response: {
@@ -194,7 +194,7 @@ describe('parseError', () => {
     describe('with shouldLog set to false', () => {
       describe('with asJSON set to false', () => {
         test('returns the errors array', () => {
-          const consoleMock = jest.spyOn(console, 'log')
+          const consoleMock = vi.spyOn(console, 'log')
 
           const response = parseError({
             response: {
@@ -221,7 +221,7 @@ describe('parseError', () => {
 
       describe('with reThrowError set to true', () => {
         test('rethrows the error provided', () => {
-          const consoleMock = jest.spyOn(console, 'log')
+          const consoleMock = vi.spyOn(console, 'log')
 
           expect(() => parseError({
             response: {

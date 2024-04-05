@@ -4,6 +4,11 @@ import resolvers from '../..'
 import typeDefs from '../../../types'
 
 import aclSource from '../../../datasources/acl'
+import {
+  createAssociation as associationSourceCreate,
+  createVariableAssociation as variableAssociationSourceCreate,
+  deleteAssociation as associationSourceDelete
+} from '../../../datasources/association'
 import collectionDraftProposalSource from '../../../datasources/collectionDraftProposal'
 import collectionDraftSource from '../../../datasources/collectionDraft'
 import collectionVariableDraftsSource from '../../../datasources/collectionVariableDrafts'
@@ -57,6 +62,8 @@ export const server = new ApolloServer({
 export const buildContextValue = (extraContext) => ({
   dataSources: {
     aclSource,
+    associationSourceCreate,
+    associationSourceDelete,
     collectionDraftProposalSource,
     collectionDraftSource,
     collectionSourceDelete,
@@ -84,6 +91,7 @@ export const buildContextValue = (extraContext) => ({
     toolDraftSource,
     toolSourceDelete,
     toolSourceFetch,
+    variableAssociationSourceCreate,
     variableDraftSource,
     variableSourceDelete,
     variableSourceFetch

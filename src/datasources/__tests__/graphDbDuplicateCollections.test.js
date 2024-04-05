@@ -9,9 +9,9 @@ describe('graphDb', () => {
   const OLD_ENV = process.env
 
   beforeEach(() => {
-    jest.resetAllMocks()
+    vi.resetAllMocks()
 
-    jest.restoreAllMocks()
+    vi.restoreAllMocks()
 
     process.env = { ...OLD_ENV }
 

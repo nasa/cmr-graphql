@@ -2,9 +2,9 @@ import Concept from '../concept'
 
 describe('collection', () => {
   beforeEach(() => {
-    jest.resetAllMocks()
+    vi.resetAllMocks()
 
-    jest.restoreAllMocks()
+    vi.restoreAllMocks()
   })
 
   describe('concept', () => {

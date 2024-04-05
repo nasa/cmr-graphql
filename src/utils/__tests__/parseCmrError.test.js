@@ -2,7 +2,7 @@ import { parseCmrError } from '../parseCmrError'
 
 describe('parseCmrError', () => {
   beforeEach(() => {
-    jest.resetAllMocks()
+    vi.resetAllMocks()
   })
 
   test('returns an empty object when no response object is found', () => {
@@ -14,7 +14,7 @@ describe('parseCmrError', () => {
   })
 
   test('logs the error and re throws the exception by default', () => {
-    const consoleMock = jest.spyOn(console, 'log')
+    const consoleMock = vi.spyOn(console, 'log')
 
     const error = {
       response: {
@@ -35,7 +35,7 @@ describe('parseCmrError', () => {
   })
 
   test('logs the error and re throws the exception by default', () => {
-    const consoleMock = jest.spyOn(console, 'log')
+    const consoleMock = vi.spyOn(console, 'log')
 
     const error = {
       response: {
@@ -57,7 +57,7 @@ describe('parseCmrError', () => {
   })
 
   test('logs the error and returns the response when reThrow is false', () => {
-    const consoleMock = jest.spyOn(console, 'log')
+    const consoleMock = vi.spyOn(console, 'log')
 
     const error = {
       response: {

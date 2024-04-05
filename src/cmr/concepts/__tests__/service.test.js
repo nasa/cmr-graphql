@@ -8,15 +8,15 @@ process.env.cmrRootUrl = 'http://example.com'
 
 describe('Service concept', () => {
   beforeEach(() => {
-    jest.resetAllMocks()
+    vi.resetAllMocks()
 
-    jest.restoreAllMocks()
+    vi.restoreAllMocks()
   })
 
   afterEach(() => {
-    jest.resetAllMocks()
+    vi.resetAllMocks()
 
-    jest.restoreAllMocks()
+    vi.restoreAllMocks()
   })
 
   describe('Service concept', () => {

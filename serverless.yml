@@ -29,7 +29,7 @@ provider:
 
     # Pinned UMM versions
     ummCollectionVersion: '1.17.2'
-    ummGranuleVersion: '1.5'
+    ummGranuleVersion: '1.6.5'
     ummServiceVersion: '1.5.2'
     ummSubscriptionVersion: '1.1'
     ummToolVersion: '1.2.0'
@@ -55,7 +55,7 @@ package:
     - '!__pycache__/**'
 
 plugins:
-  - serverless-webpack
+  - serverless-esbuild
   - serverless-offline
   - serverless-plugin-log-subscription
   - serverless-python-requirements
@@ -188,11 +188,20 @@ custom:
     # https://github.com/dherault/serverless-offline#run-modes
     # useInProcess: true
 
-  # Serverless Webpack configurations
-  webpack:
-    includeModules: true
-    packager: 'npm'
-    excludeFiles: src/**/*.test.js
+  minifyBuild:
+    dev: false
+    sit: true
+    uat: true
+    prod: true
+
+  esbuild:
+    loader:
+      .graphql: text
+      .gql: text
+    minify: ${self:custom.minifyBuild.${self:provider.stage}}
+    exclude:
+      - '@aws-sdk/client-lambda'
+      - '@aws-sdk/client-s3'
 
   # Forward logs to Splunk
   logSubscription:

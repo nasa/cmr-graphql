@@ -2,6 +2,7 @@
 .DS_Store
 
 # Project Build Files
+.esbuild
 .serverless
 coverage
 dist
