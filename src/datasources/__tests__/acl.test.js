@@ -1,6 +1,6 @@
 import nock from 'nock'
 
-import aclSource from '../acl'
+import { fetchAcl } from '../acl'
 
 let requestInfo
 
@@ -87,7 +87,7 @@ describe('acls', () => {
           }]
         })
 
-      const response = await aclSource({
+      const response = await fetchAcl({
       }, {
         headers: {
           'Client-Id': 'eed-test-graphql',
@@ -120,7 +120,7 @@ describe('acls', () => {
             }]
           })
 
-        const response = await aclSource({}, {
+        const response = await fetchAcl({}, {
           headers: {
             'Client-Id': 'eed-test-graphql',
             'CMR-Request-Id': 'abcd-1234-efgh-5678'

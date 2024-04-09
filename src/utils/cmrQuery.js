@@ -23,7 +23,9 @@ export const cmrQuery = ({
   params
 }) => {
   const {
-    format = 'json'
+    format = 'json',
+    method = 'POST',
+    queryPath = `search/${conceptType}.${format}`
   } = options
 
   // Default headers
@@ -51,8 +53,8 @@ export const cmrQuery = ({
   const requestConfiguration = {
     data: cmrParameters,
     headers: permittedHeaders,
-    method: 'POST',
-    url: `${process.env.cmrRootUrl}/search/${conceptType}.${format}`
+    method,
+    url: `${process.env.cmrRootUrl}/${queryPath}`
   }
 
   // Interceptors require an instance of axios

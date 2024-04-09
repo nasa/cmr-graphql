@@ -3,7 +3,12 @@ import { ApolloServer } from '@apollo/server'
 import resolvers from '../..'
 import typeDefs from '../../../types'
 
-import aclSource from '../../../datasources/acl'
+import {
+  createAcl as aclSourceCreate,
+  deleteAcl as aclSourceDelete,
+  fetchAcl as aclSourceFetch,
+  updateAcl as aclSourceUpdate
+} from '../../../datasources/acl'
 import {
   createAssociation as associationSourceCreate,
   createVariableAssociation as variableAssociationSourceCreate,
@@ -61,7 +66,10 @@ export const server = new ApolloServer({
 
 export const buildContextValue = (extraContext) => ({
   dataSources: {
-    aclSource,
+    aclSourceCreate,
+    aclSourceDelete,
+    aclSourceFetch,
+    aclSourceUpdate,
     associationSourceCreate,
     associationSourceDelete,
     collectionDraftProposalSource,

@@ -54,7 +54,7 @@ type Collection {
   "The title of the collection described by the metadata."
   datasetId: String
   "Entry Title"
-  entryTitle: String
+  entryTitle: String @deprecated(reason: "Use `title`.")
   "An array containing all of the different formats of the underlying data of a collection."
   nativeDataFormats: [String]
   "True if there are multiple supported formats for any services associated with the collection."

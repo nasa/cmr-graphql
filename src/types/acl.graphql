@@ -1,38 +1,92 @@
 type Acl {
-  "The unique concept id assigned to the ACL."
+  "The unique concept id assigned to the Acl."
   conceptId: String
-  "The revision id for the ACL."
+
+  "The revision id for the Acl."
   revisionId: Int
+
   "The type of identity (provider, system, single_instance, catalog_item)."
   identityType: String
-  "The name of the ACL."
+
+  "The name of the Acl."
   name: String
-  "An URL to retrieve the ACL."  
+
+  "An URL to retrieve the Acl."  
   location: String
-  "Full JSON of the ACL. Included if include_full_acl=true parameter is set."
-  acl: JSON
+
+  "List of groups and their permissions to the catalog item associated with this Acl."
+  groupPermissions: JSON
+
+  "The GUID from Legacy Services that was used during migrations, this value should no longer be referenced."
+  legacyGuid: String @deprecated(reason: "This field was temporary and is being deprecated.")
+
+  "Identifies sets of catalog items (collections and granules) owned by a provider."
+  catalogItemIdentity: JSON
+
+  "Identifies a system level thing in the CMR."
+  systemIdentity: JSON
+
+  "Identifies a type of object owned by a specific provider."
+  providerIdentity: JSON
+
+  "Identifies a single instance of something in the CMR. Currently this only applies to managing specific groups."
+  singleInstanceIdentity: JSON
+
+  "Full JSON of the Acl."
+  acl: JSON @deprecated(reason: "Deprecating in favor of `groupPermissions`, `legacyGuid`, `catalogItemIdentity`.")
 }
 
 type AclList {
   "The number of hits for a given search."
   count: Int
+
   "Cursor that points to the/a specific position in a list of requested records."
   cursor: String
+
   "The list of acl search results."
   items: [Acl]  
 }
 
+enum IdentityType {
+  system
+  provider
+  single_instance
+  catalog_item
+}
+
 input AclsInput {
-  "User is an URS user name corresponding to a member of a group that has access to an ACL."
+  "The unique concept id assigned to the acl."
+  conceptId: String
+
+  "Cursor that points to the/a specific position in a list of requested records."
+  cursor: String
+
+  "The group concept id or permission to return acls for."
+  groupPermission: JSON
+
+  "Type of the object being controlled."
+  identityType: IdentityType
+
+  "The size of the range GraphDB searches on. Defaults to 20."
+  limit: Int
+
+  "User is an URS user name corresponding to a member of a group that has access to an Acl."
   permittedUser: String
-  "Boolean parameter that indicates if the full acl details should be included in the search response."
-  includeFullAcl: Boolean
-  "Matches ACLs which have the given object identity target."
+
+  "List of groups that are permitted via this Acl."
+  permittedGroup: [String]
+
+  "Provider that owns the Acl"
+  provider: String
+
+  "The unique concept id of the object this acl is permitted access to."
+  permittedConceptId: String
+
+  "Matches Acls which have the given object identity target."
   target: String
-  "Size of page desired, only supported with concept_id."
-  pageSize: Int
-  "Page number desired, only supported with concept_id."
-  pageNum: Int
+
+  "ID of a specific target, identityType=single_instance parameter is required alongside this parameter."
+  targetId: String
 }
 
 type Query {
@@ -40,4 +94,61 @@ type Query {
     "Acls query parameters"
     params: AclsInput
   ): AclList!
+
+  acl(
+    "Acl query parameters"
+    conceptId: String
+  ): Acl
+}
+
+type AclMutationResponse {
+  "The concept id of the draft."
+  conceptId: String!
+
+  "The revision id of the draft."
+  revisionId: String!
+}
+
+type Mutation {
+  createAcl (
+    "Identifies sets of catalog items (collections and granules) owned by a provider."
+    catalogItemIdentity: JSON
+
+    "Identifies a system level thing in the CMR."
+    systemIdentity: JSON
+
+    "Identifies a type of object owned by a specific provider."
+    providerIdentity: JSON
+
+    "Identifies a single instance of something in the CMR. Currently this only applies to managing specific groups."
+    singleInstanceIdentity: JSON
+
+    "List of groups and their permissions to the catalog item associated with this Acl."
+    groupPermissions: JSON!
+  ): AclMutationResponse
+
+  updateAcl (
+    "Identifies sets of catalog items (collections and granules) owned by a provider."
+    catalogItemIdentity: JSON
+
+    "Identifies a system level thing in the CMR."
+    systemIdentity: JSON
+
+    "Identifies a type of object owned by a specific provider."
+    providerIdentity: JSON
+
+    "Identifies a single instance of something in the CMR. Currently this only applies to managing specific groups."
+    singleInstanceIdentity: JSON
+
+    "Concept ID of the Acl to be updated."
+    conceptId: String!
+
+    "List of groups and their permissions to the catalog item associated with this Acl."
+    groupPermissions: JSON!
+  ): AclMutationResponse
+
+  deleteAcl (
+    "Concept ID of the Acl to be deleted."
+    conceptId: String!
+  ): AclMutationResponse
 }
