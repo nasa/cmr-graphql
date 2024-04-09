@@ -1,9 +1,7 @@
-import {
-  difference,
-  isEmpty,
-  map,
-  upperFirst
-} from 'lodash'
+import difference from 'lodash/difference'
+import isEmpty from 'lodash/isEmpty'
+import map from 'lodash/map'
+import upperFirst from 'lodash/upperFirst'
 
 import { CONCEPT_TYPES, PSEUDO_FIELDS } from '../constants'
 
@@ -208,7 +206,7 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
     }
   }
 
-  const { sharedKeys = [], ummKeyMappings } = keyMap
+  const { sharedKeys = [], ummKeyMappings = {} } = keyMap
 
   // Gather keys that the user requested that only exist in umm
   let ummKeys = requestedFields.filter((x) => (

@@ -45,6 +45,7 @@ export default class Concept {
 
     this.arrayifiableKeys = {
       collectionConceptIds: 'collectionConceptId',
+      conceptIds: 'conceptId',
       dataCenters: 'dataCenter',
       providers: 'provider',
       shortNames: 'shortName'
@@ -55,7 +56,7 @@ export default class Concept {
    * If a plural key is provided it will take the value but 'convert' the key
    * to singular but keep the array of values. This is done so that we can offer
    * two different keys (singular and plural) within the schema.
-   * @param {*} searchParams All provided search parameters requested
+   * @param {Object} searchParams All provided search parameters requested
    */
   arrayifyParams(searchParams) {
     const arrayified = searchParams
@@ -557,10 +558,32 @@ export default class Concept {
    * Parse and return the body of an ingest operation
    * @param {Object} ingestResponse HTTP response from the CMR endpoint
    */
-  parseIngestBody(ingestResponse) {
+  parseIngestBody(ingestResponse, ingestKeys) {
     const { data } = ingestResponse
 
-    return data
+    ingestKeys.forEach((key) => {
+      const cmrKey = dasherize(key)
+
+      const { [cmrKey]: keyValue } = data
+
+      this.setIngestValue(key, keyValue)
+    })
+  }
+
+  /**
+   * Parse and return the body of an ingest operation
+   * @param {Object} ingestResponse HTTP response from the CMR endpoint
+   */
+  parseDeleteBody(ingestResponse, ingestKeys) {
+    const { data } = ingestResponse
+
+    ingestKeys.forEach((key) => {
+      const cmrKey = dasherize(key)
+
+      const { [cmrKey]: keyValue } = data
+
+      this.setIngestValue(key, keyValue)
+    })
   }
 
   /**
@@ -590,6 +613,32 @@ export default class Concept {
   }
 
   /**
+   * Creates unique item keys regardless of whether or not a user calls for data with similar conceptIds (as is the case with revisions)
+   * @param {Int} itemIndex This method is called in a loop, this is the index of the loop
+   * @param {Object} normalizedItem The item to generate a key for, after it's been through our normalization method
+   * @returns A unique key representing this item
+   */
+  generateJsonItemKey(itemIndex, normalizedItem) {
+    const { concept_id: conceptId } = normalizedItem
+
+    return `${conceptId}-${itemIndex}`
+  }
+
+  /**
+   * Creates unique item keys regardless of whether or not a user calls for data with similar conceptIds (as is the case with revisions)
+   * @param {Int} itemIndex This method is called in a loop, this is the index of the loop
+   * @param {Object} normalizedItem The item to generate a key for, after it's been through our normalization method
+   * @returns A unique key representing this item
+   */
+  generateUmmItemKey(itemIndex, normalizedItem) {
+    const { meta } = normalizedItem
+
+    const { 'concept-id': conceptId } = meta
+
+    return `${conceptId}-${itemIndex}`
+  }
+
+  /**
    * Parses the response from the json endpoint
    * @param {Object} jsonResponse HTTP response from the CMR endpoint
    * @param {Array} jsonKeys Array of the keys requested in the query
@@ -607,14 +656,10 @@ export default class Concept {
 
     const items = this.parseJsonBody(jsonResponse)
 
-    items.forEach((item, index) => {
+    items.forEach((item, itemIndex) => {
       const normalizedItem = this.normalizeJsonItem(item)
 
-      const { concept_id: conceptId } = normalizedItem
-
-      // Creates unique item keys regardless of whether or not
-      // a user calls for data with similar conceptIds (as is the case with revisions)
-      const itemKey = `${conceptId}-${index}`
+      const itemKey = this.generateJsonItemKey(itemIndex, normalizedItem)
 
       this.setEssentialJsonValues(itemKey, normalizedItem)
 
@@ -650,16 +695,12 @@ export default class Concept {
 
     const items = this.parseUmmBody(ummResponse)
 
-    items.forEach((item, index) => {
+    items.forEach((item, itemIndex) => {
       const normalizedItem = this.normalizeUmmItem(item)
-
-      const { meta } = normalizedItem
-
-      const { 'concept-id': conceptId } = meta
 
       // Creates unique item keys regardless of whether or not
       // a user calls for data with similar conceptIds (as is the case with revisions)
-      const itemKey = `${conceptId}-${index}`
+      const itemKey = this.generateUmmItemKey(itemIndex, normalizedItem)
 
       this.setEssentialUmmValues(itemKey, normalizedItem)
 
@@ -733,15 +774,7 @@ export default class Concept {
 
       const result = await this.getResponse()
 
-      const data = this.parseIngestBody(result)
-
-      ingestKeys.forEach((key) => {
-        const cmrKey = dasherize(key)
-
-        const { [cmrKey]: keyValue } = data
-
-        this.setIngestValue(key, keyValue)
-      })
+      this.parseIngestBody(result, ingestKeys)
     } catch (e) {
       parseError(e, { reThrowError: true })
     }
@@ -752,7 +785,17 @@ export default class Concept {
    * @param {Object} requestInfo Parsed data pertaining to the delete operation
    */
   async parseDelete(requestInfo) {
-    await this.parseIngest(requestInfo)
+    try {
+      const {
+        ingestKeys
+      } = requestInfo
+
+      const result = await this.getResponse()
+
+      this.parseDeleteBody(result, ingestKeys)
+    } catch (e) {
+      parseError(e, { reThrowError: true })
+    }
   }
 
   /**

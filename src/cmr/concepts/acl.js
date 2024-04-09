@@ -1,7 +1,11 @@
-import snakeCaseKeys from 'snakecase-keys'
-import { pick } from 'lodash'
-import { aclQuery } from '../../utils/aclQuery'
+import pick from 'lodash/pick'
+import snakeCase from 'lodash/snakeCase'
+
+import snakecaseKeys from 'snakecase-keys'
+
+import { accessControlRequest } from '../../utils/accessControlRequest'
 import { mergeParams } from '../../utils/mergeParams'
+
 import Concept from './concept'
 
 export default class Acl extends Concept {
@@ -27,48 +31,173 @@ export default class Acl extends Concept {
     return items
   }
 
-  fetch(searchParams) {
-    const params = mergeParams(searchParams)
-
-    // Default an array to hold the promises we need to make depending on the requested fields
-    const promises = []
-
-    const { jsonKeys } = this.requestInfo
-
-    if (jsonKeys.length > 0) {
-      const jsonHeaders = {
-        ...this.headers
-      }
-      promises.push(
-        this.fetchAcl(params, jsonKeys, jsonHeaders)
-      )
-    } else {
-      // Push a null promise to the array so that the umm promise always exists as
-      // the second element of the promise array
-      promises.push(
-        // eslint-disable-next-line no-promise-executor-return
-        new Promise((resolve) => resolve(null))
-      )
-    }
-
-    this.response = Promise.all(promises)
-  }
-
   /**
    * Query the CMR JSON API endpoint to retrieve requested data
    * @param {Object} searchParams Parameters provided by the query
    * @param {Array} requestedKeys Keys requested by the query
    * @param {Object} providedHeaders Headers requested by the query
    */
-  fetchAcl(searchParams, requestedKeys, providedHeaders) {
+  fetchJson(searchParams, requestedKeys, providedHeaders) {
     this.logKeyRequest(requestedKeys, 'json')
 
-    // Construct the promise that will request data from the json endpoint
-    return aclQuery({
-      conceptType: this.getConceptType(),
-      params: pick(snakeCaseKeys(searchParams), this.getPermittedJsonSearchParams()),
+    const defaultSearchParams = {
+      include_full_acl: true
+    }
+
+    const { conceptId } = searchParams
+
+    if (conceptId) {
+      // eslint-disable-next-line no-param-reassign
+      searchParams.id = conceptId
+
+      // eslint-disable-next-line no-param-reassign
+      delete searchParams.conceptId
+    }
+
+    // Construct the promise that will get the records from CMR
+    return accessControlRequest({
+      headers: providedHeaders,
+      method: 'GET',
       nonIndexedKeys: this.getNonIndexedKeys(),
-      headers: providedHeaders
+      params: pick(snakecaseKeys({
+        ...searchParams,
+        ...defaultSearchParams
+      }), this.getPermittedJsonSearchParams()),
+      path: 'acls'
+    })
+  }
+
+  /**
+   * Rename fields, add fields, modify fields, etc
+   * @param {Object} item The item returned from the CMR json endpoint
+   */
+  normalizeJsonItem(item) {
+    // Alias conceptId for consistency in responses
+    const {
+      acl = {}
+    } = item
+
+    const {
+      catalog_item_identity: catalogItemIdentity,
+      group_permissions: groupPermissions,
+      legacy_guid: legacyGuid,
+      provider_identity: providerIdentity,
+      single_instance_identity: singleInstanceIdentity,
+      system_identity: systemIdentity
+    } = acl
+
+    return {
+      ...item,
+      group_permissions: groupPermissions,
+      catalog_item_identity: catalogItemIdentity,
+      legacy_guid: legacyGuid,
+      provider_identity: providerIdentity,
+      single_instance_identity: singleInstanceIdentity,
+      system_identity: systemIdentity
+    }
+  }
+
+  /**
+   * Returns an array of keys representing supported search params for the json endpoint
+   */
+  getPermittedJsonSearchParams() {
+    return [
+      'concept_id',
+      'group_permission',
+      'identity_type',
+      'id',
+      'include_full_acl',
+      'page_size',
+      'permitted_concept_id',
+      'permitted_group',
+      'permitted_user',
+      'permitted_user',
+      'provider',
+      'target_id',
+      'target'
+    ]
+  }
+
+  /**
+   * Parse and return the body of an ingest operation
+   * @param {Object} ingestResponse HTTP response from the CMR endpoint
+   */
+  parseIngestBody(ingestResponse, ingestKeys) {
+    const { data } = ingestResponse
+
+    ingestKeys.forEach((key) => {
+      const cmrKey = snakeCase(key)
+
+      const { [cmrKey]: keyValue } = data
+
+      this.setIngestValue(key, keyValue)
+    })
+  }
+
+  /**
+   * Ingest the provided object into the CMR
+   * @param {Object} data Parameters provided by the query
+   * @param {Array} requestedKeys Keys requested by the query
+   * @param {Object} providedHeaders Headers requested by the query
+   */
+  create(data, requestedKeys, providedHeaders) {
+    const params = mergeParams(data)
+
+    this.logKeyRequest(requestedKeys, 'create')
+
+    // Construct the promise that will create the record in CMR
+    this.response = accessControlRequest({
+      headers: providedHeaders,
+      method: 'POST',
+      params,
+      path: 'acls'
+    })
+  }
+
+  /**
+   * Ingest the provided object into the CMR
+   * @param {Object} data Parameters provided by the query
+   * @param {Array} requestedKeys Keys requested by the query
+   * @param {Object} providedHeaders Headers requested by the query
+   */
+  update(data, requestedKeys, providedHeaders) {
+    const params = mergeParams(data)
+
+    this.logKeyRequest(requestedKeys, 'update')
+
+    const { conceptId } = params
+
+    delete params.conceptId
+
+    // Construct the promise that will update the data in CMR
+    this.response = accessControlRequest({
+      headers: providedHeaders,
+      method: 'PUT',
+      params,
+      path: `acls/${conceptId}`
+    })
+  }
+
+  /**
+   * Ingest the provided object into the CMR
+   * @param {Object} data Parameters provided by the query
+   * @param {Array} requestedKeys Keys requested by the query
+   * @param {Object} providedHeaders Headers requested by the query
+   */
+  delete(data, requestedKeys, providedHeaders) {
+    const params = mergeParams(data)
+
+    this.logKeyRequest(requestedKeys, 'delete')
+
+    const { conceptId } = params
+
+    delete params.conceptId
+
+    // Construct the promise that will delete the record from CMR
+    this.response = accessControlRequest({
+      headers: providedHeaders,
+      method: 'DELETE',
+      path: `acls/${conceptId}`
     })
   }
 }

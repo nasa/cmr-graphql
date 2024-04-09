@@ -11,7 +11,12 @@ import DataLoader from 'dataloader'
 import resolvers from '../resolvers'
 import typeDefs from '../types'
 
-import aclSource from '../datasources/acl'
+import {
+  createAcl as aclSourceCreate,
+  deleteAcl as aclSourceDelete,
+  fetchAcl as aclSourceFetch,
+  updateAcl as aclSourceUpdate
+} from '../datasources/acl'
 import {
   createAssociation as associationSourceCreate,
   createVariableAssociation as variableAssociationSourceCreate,
@@ -162,7 +167,10 @@ export default startServerAndCreateLambdaHandler(
       return {
         ...context,
         dataSources: {
-          aclSource,
+          aclSourceCreate,
+          aclSourceDelete,
+          aclSourceFetch,
+          aclSourceUpdate,
           associationSourceCreate,
           associationSourceDelete,
           collectionDraftProposalSource,

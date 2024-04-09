@@ -1,30 +1,29 @@
 import axios from 'axios'
-import snakeCaseKeys from 'snakecase-keys'
+
+import snakecaseKeys from 'snakecase-keys'
 import { downcaseKeys } from './downcaseKeys'
 import { pickIgnoringCase } from './pickIgnoringCase'
-
 import { prepKeysForCmr } from './prepKeysForCmr'
 
 /**
- * Make a request to retrieve ACL information and return the promise
+ * Make a request to CMR and return the promise
  * @param {Object} params
- * @param {Object} params.headers Headers to send to the ACL service
- * @param {Object} params.options Additional Options (format)
- * @param {Object} params.params Parameters to send to the ACL service
+ * @param {Object} params.data Parameters to send to CMR
+ * @param {Object} params.headers Headers to send to CMR
+ * @param {String} params.method Method to make the request with
+ * @param {String} params.path Path to make the request to
  */
-
-export const aclQuery = ({
+export const accessControlRequest = ({
   headers,
-  nonIndexedKeys = [],
-  options = {},
-  params
+  method,
+  nonIndexedKeys,
+  params,
+  path
 }) => {
-  const {
-    format = 'json'
-  } = options
-
   // Default headers
-  const defaultHeaders = {}
+  const defaultHeaders = {
+    Accept: 'application/json'
+  }
 
   // Merge default headers into the provided headers and then pick out only permitted values
   const permittedHeaders = pickIgnoringCase({
@@ -34,11 +33,10 @@ export const aclQuery = ({
     'Accept',
     'Authorization',
     'Client-Id',
+    'Content-Type',
     'CMR-Request-Id',
     'CMR-Search-After'
   ])
-
-  const aclParameters = prepKeysForCmr(snakeCaseKeys(params), nonIndexedKeys)
 
   const {
     'client-id': clientId,
@@ -47,8 +45,20 @@ export const aclQuery = ({
 
   const requestConfiguration = {
     headers: permittedHeaders,
-    method: 'GET',
-    url: `${process.env.cmrRootUrl}/access-control/acls?${aclParameters}`
+    method,
+    url: `${process.env.cmrRootUrl}/access-control/${path}`
+  }
+
+  if (params) {
+    if (['POST', 'PUT'].includes(method)) {
+      requestConfiguration.data = snakecaseKeys(params)
+    }
+
+    if (method === 'GET') {
+      const cmrParameters = prepKeysForCmr(snakecaseKeys(params), nonIndexedKeys)
+
+      requestConfiguration.url += `?${cmrParameters}`
+    }
   }
 
   // Interceptors require an instance of axios
@@ -67,18 +77,15 @@ export const aclQuery = ({
     return config
   })
 
-  // If the response has providers ids then it is working
   responseInterceptor.use((response) => {
     // Determine total time to complete this request
     const start = response.config.headers['request-startTime']
     const end = process.hrtime(start)
     const milliseconds = Math.round((end[0] * 1000) + (end[1] / 1000000))
 
-    // Retrieve the reported timing from CMR
-    const { 'cmr-took': cmrTook } = downcaseKeys(response.headers)
     response.headers['request-duration'] = milliseconds
 
-    console.log(`Request ${requestId} from ${clientId} to [format: ${format}] completed external request in [reported: ${cmrTook} ms, observed: ${milliseconds} ms]`)
+    console.log(`Request ${requestId} from ${clientId} to access-control completed external request in [observed: ${milliseconds} ms]`)
 
     return response
   })

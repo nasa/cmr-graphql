@@ -76,6 +76,7 @@ describe('mmtQuery', () => {
       })
 
       const { data } = response
+
       expect(data).toEqual({
         ShortName: 'Mock ShortName'
       })
