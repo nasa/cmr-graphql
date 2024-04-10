@@ -10,9 +10,10 @@ import draftResolver from './draft'
 import granuleResolver from './granule'
 import gridResolver from './grid'
 import orderOptionResolver from './orderOption'
+import permissionResolver from './permission'
 import providerResolver from './provider'
-import serviceResolver from './service'
 import serviceDraftResolver from './serviceDraft'
+import serviceResolver from './service'
 import subscriptionResolver from './subscription'
 import tagDefinitionResolver from './tagDefinition'
 import toolDraftResolver from './toolDraft'
@@ -31,9 +32,10 @@ const resolvers = [
   granuleResolver,
   gridResolver,
   orderOptionResolver,
+  permissionResolver,
   providerResolver,
-  serviceResolver,
   serviceDraftResolver,
+  serviceResolver,
   subscriptionResolver,
   tagDefinitionResolver,
   toolDraftResolver,

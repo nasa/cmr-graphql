@@ -24,6 +24,7 @@ import graphDbSource from '../../../datasources/graphDb'
 import gridSource from '../../../datasources/grid'
 import maxItemsPerOrderSource from '../../../datasources/maxItemsPerOrder'
 import orderOptionSource from '../../../datasources/orderOption'
+import permissionSource from '../../../datasources/permission'
 import providerSource from '../../../datasources/provider'
 import serviceDraftSource from '../../../datasources/serviceDraft'
 import {
@@ -88,6 +89,7 @@ export const buildContextValue = (extraContext) => ({
     gridSource,
     maxItemsPerOrderSource,
     orderOptionSource,
+    permissionSource,
     providerSource,
     serviceDraftSource,
     serviceSourceDelete,
