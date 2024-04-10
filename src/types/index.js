@@ -11,6 +11,7 @@ import granule from './granule.graphql'
 import grid from './grid.graphql'
 import json from './json.graphql'
 import orderOption from './orderOption.graphql'
+import permission from './permission.graphql'
 import provider from './provider.graphql'
 import service from './service.graphql'
 import serviceDraft from './serviceDraft.graphql'
@@ -34,6 +35,7 @@ export default mergeTypeDefs(
     grid,
     json,
     orderOption,
+    permission,
     provider,
     service,
     serviceDraft,

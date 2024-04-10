@@ -1,0 +1,56 @@
+type Permission {
+  "The unique id assigned to a CMR concept."
+  conceptId: String
+
+  "A system object identity target."  
+  systemObject: String
+
+  "The capability being targeted."
+  target: String
+
+  "List of permissions."
+  permissions: [String]
+}
+
+type PermissionList {
+  "The number of hits for a given search."
+  count: Int
+
+  "The list of permission search results."
+  items: [Permission]  
+}
+
+enum PermissionUserType {
+  guest
+  registered
+}
+
+input PermissionsInput {
+  "The unique id assigned to a CMR concept."
+  conceptId: String
+
+  "The list of unique ids assigned to CMR concepts."
+  conceptIds: [String]
+
+  "A system object identity target."
+  systemObject: String
+
+  "ID of a valid provider."
+  provider: String
+
+  "The capability to target."
+  target: String
+
+  "Either guest or registered."
+  userType: PermissionUserType
+
+  "The user whose permissions will be computed."
+  userId: String
+}
+
+type Query {
+  permissions(
+    "Permissions query parameters"
+    params: PermissionsInput
+  ): PermissionList!
+}
