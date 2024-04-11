@@ -82,7 +82,6 @@ export default class Acl extends Concept {
       group_permissions: groupPermissions,
       legacy_guid: legacyGuid,
       provider_identity: providerIdentity,
-      single_instance_identity: singleInstanceIdentity,
       system_identity: systemIdentity
     } = acl
 
@@ -92,7 +91,6 @@ export default class Acl extends Concept {
       catalog_item_identity: catalogItemIdentity,
       legacy_guid: legacyGuid,
       provider_identity: providerIdentity,
-      single_instance_identity: singleInstanceIdentity,
       system_identity: systemIdentity
     }
   }
