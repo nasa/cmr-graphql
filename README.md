@@ -860,7 +860,7 @@ CMR-GraphQL queries an earthdata-varinfo lambda in order to generate and publish
 
 For all supported arguments and columns, see [the schema](src/types/draft.graphql).
 
-The Draft type utlizes the `PreviewMetadata` union type, which means you can return any of the types supported by the union in the `previewMetadata` return field. You need to ensure that your `conceptType` parameter matches the `previewMetadata` type. In the examples below notice the `conceptType` parameter is `Tool`, and the syntax in the request of `... on Tool {`.
+The Draft type utilizes the `PreviewMetadata` union type, which means you can return any of the types supported by the union in the `previewMetadata` return field. You need to ensure that your `conceptType` parameter matches the `previewMetadata` type. In the examples below notice the `conceptType` parameter is `Tool`, and the syntax in the request of `... on Tool {`.
 
 ##### Example Queries
 
@@ -1000,6 +1000,7 @@ variables:
       "nativeId": "tool-3",
       "providerId": "EXAMPLE"
     }
+
 ###### Publishing a draft
 
     mutation PublishDraft(
@@ -1053,11 +1054,11 @@ The association supports associating a Tool, Variable, or Service record to a co
 variables:
 
     {
-      "conceptId": "TL12000000-EXAMPLE",
+      "conceptId": "T1000000001-EXAMPLE",
       "conceptType": "Tool",
       "collectionConceptIds": [
         {
-          "conceptId": "C12000000-EXAMPLE"
+          "conceptId": "C1000000001-EXAMPLE"
         }
       ]
     }
@@ -1087,11 +1088,11 @@ variables:
 variables:
 
     {
-      "conceptId": "V12000000-EXAMPLE",
+      "conceptId": "V1000000001-EXAMPLE",
       "conceptType": "Variable",
       "collectionConceptIds": [
         {
-          "conceptId": "C12000000-EXAMPLE"
+          "conceptId": "C1000000001-EXAMPLE"
         }
       ],
       "nativeId": "Variable native id",
@@ -1121,32 +1122,75 @@ variables:
       "conceptType": "Tool",
       "collectionConceptIds": [
         {
-          "conceptId": "C12000000-EXAMPLE"
+          "conceptId": "C1000000001-EXAMPLE"
         }
       ]
     }
 
-##### Acls
+#### ACLs
 
 For all supported arguments and columns, see [the schema](src/types/acl.graphql).
 
-##### Example Query
+##### Example Queries
 
-    query Acls($params: AclsInput) {
-      acls(params: $params) {
-        items {
-          acl
+###### Single
+
+    query Acl($conceptId: String) {
+      acl(conceptId: $conceptId) {
+        name
+        groupPermissions
+      }
+    }
+    
+variables:
+
+    {
+      "conceptId": "ACL1000000001-EXAMPLE"
+    }
+    
+
+##### Example Response
+
+    {
+      "data": {
+        "acl": {
+          "groupPermissions": [
+            {
+              "group_id": "ACL1000000001-EXAMPLE",
+              "permissions": [
+                "read"
+              ]
+            },
+            {
+              "group_id": "ACL1000000002-EXAMPLE",
+              "permissions": [
+                "read"
+              ]
+            }
+          ],
+          "providerIdentity": {
+            "target": "PROVIDER_CONTEXT",
+            "provider_id": "EXAMPLE"
+          }
         }
       }
     }
 
-    variables:
+###### Multiple
+
+    query Acls($params: AclsInput) {
+      acls(params: $params) {
+        items {
+          systemIdentity
+          providerIdentity
+        }
+      }
+    }
+
+variables:
 
     {
       "params": {
-        "includeFullAcl": true,
-        "pageNum": 1,
-        "pageSize": 20,
         "permittedUser": "typical",
         "target": "PROVIDER_CONTEXT"
       }
@@ -1159,31 +1203,162 @@ For all supported arguments and columns, see [the schema](src/types/acl.graphql)
         "acls": {
           "items": [
             {
-              "acl": {
-                "group_permissions": [
-                  {
-                    "group_id": "AG1200000003-MMT_2",
-                    "permissions": [
-                      "read"
-                    ]
-                  },
-                  {
-                    "group_id": "AG1200000001-CMR",
-                    "permissions": [
-                      "read"
-                    ]
-                  }
-                ],
-                "provider_identity": {
-                  "target": "PROVIDER_CONTEXT",
-                  "provider_id": "MMT_2"
+              "groupPermissions": [
+                {
+                  "group_id": "ACL1000000001-EXAMPLE",
+                  "permissions": [
+                    "read"
+                  ]
+                },
+                {
+                  "group_id": "ACL1000000002-EXAMPLE",
+                  "permissions": [
+                    "read"
+                  ]
                 }
+              ],
+              "providerIdentity": {
+                "target": "PROVIDER_CONTEXT",
+                "provider_id": "EXAMPLE"
               }
             }
           ]
         }
       }
     }
+
+##### Mutations
+
+###### Creating an ACL
+
+    mutation CreateAcl(
+    	$groupPermissions: JSON
+        $catalogItemIdentity: JSON
+      ) {
+      createAcl(
+        groupPermissions: $groupPermissions
+        catalogItemIdentity: $catalogItemIdentity
+      ) {
+        revisionId
+        conceptId
+      }
+    }
+
+###### Updating an ACL
+
+    mutation UpdateAcl(
+    	$conceptId: String!
+        $catalogItemIdentity: JSON
+        $groupPermissions: JSON
+    ) {
+      updateAcl(
+        conceptId: $conceptId
+        catalogItemIdentity: $catalogItemIdentity
+        groupPermissions: $groupPermissions
+      ) {
+	    revisionId
+	    conceptId
+      }
+    }
+    
+variables:
+
+    {
+      "conceptId": "ACL1000000001-EXAMPLE",
+      "catalogItemIdentity": {
+            "name": "ACL Example Renamed",
+            "provider_id": "EXAMPLE",
+            "granule_applicable": true
+        },
+        "groupPermissions": [{
+            "user_type": "guest",
+            "permissions": ["read"]
+        }
+      ]
+    }
+
+###### Deleting an ACL
+
+    mutation DeleteAcl($conceptId: String!) {
+      deleteAcl(conceptId: $conceptId) {
+        conceptId
+        revisionId
+      }
+    }
+    
+variables:
+
+    {
+      "conceptId": "ACL1000000001-EXAMPLE"
+    }
+
+#### Permissions
+
+###### Searching by Concept ID
+
+    query GetPermissions($params: PermissionsInput) {
+      permissions(params: $params) {
+        count
+        items {
+          conceptId
+          permissions
+        }
+      }
+    }
+    
+variables:
+
+    {
+      "params": {
+        "userType": "registered",
+        "conceptId": "C1000000001-EXAMPLE"
+      }
+    }
+    
+###### Searching by System Object
+
+    query GetPermissions($params: PermissionsInput) {
+      permissions(params: $params) {
+        count
+        items {
+          systemObject
+          permissions
+        }
+      }
+    }
+    
+variables:
+
+    {
+      "params": {
+        "userType": "registered",
+        "systemObject": "USER"
+      }
+    }
+
+###### Searching by Target & Provider
+
+    query GetPermissions($params: PermissionsInput) {
+      permissions(params: $params) {
+        count
+        items {
+          target
+          permissions
+        }
+      }
+    }
+  
+variables:
+    
+    {
+      "params": {
+        "userType": "registered",
+        "target": "GROUP",
+        "provider": "EXAMPLE",
+      }
+    }
+    
+
 
 #### Local graph database:
 

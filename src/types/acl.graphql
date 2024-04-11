@@ -124,7 +124,7 @@ type Mutation {
     singleInstanceIdentity: JSON
 
     "List of groups and their permissions to the catalog item associated with this Acl."
-    groupPermissions: JSON!
+    groupPermissions: JSON
   ): AclMutationResponse
 
   updateAcl (
@@ -144,7 +144,7 @@ type Mutation {
     conceptId: String!
 
     "List of groups and their permissions to the catalog item associated with this Acl."
-    groupPermissions: JSON!
+    groupPermissions: JSON
   ): AclMutationResponse
 
   deleteAcl (
