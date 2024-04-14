@@ -373,6 +373,24 @@ export default class Concept {
   }
 
   /**
+   * Mutate the provided values from the user to meet expectations from CMR
+   * @param {Object} params Parameters provided by the client
+   * @returns The payload to send to CMR
+   */
+  mutateIngestParameters(params) {
+    return params
+  }
+
+  /**
+   * Mutate the provided values from the user to meet expectations from CMR
+   * @param {Object} params Parameters provided by the client
+   * @returns The payload to send to CMR
+   */
+  mutateDeleteParameters(params) {
+    return params
+  }
+
+  /**
    * Ingest the provided object into the CMR
    * @param {Object} data Parameters provided by the query
    * @param {Array} requestedKeys Keys requested by the query
@@ -383,17 +401,19 @@ export default class Concept {
 
     this.logKeyRequest(requestedKeys, 'ingest')
 
+    const preparedParameters = this.mutateIngestParameters(params)
+
     // Construct the promise that will ingest data into CMR
     this.response = cmrIngest({
       conceptType: this.getConceptType(),
-      data: params,
+      data: preparedParameters,
       headers: providedHeaders,
       options
     })
   }
 
   /**
-   * Delete the provided object into the CMR
+   * Delete the provided object from CMR
    * @param {Object} data Parameters provided by the query
    * @param {Array} requestedKeys Keys requested by the query
    * @param {Object} providedHeaders Headers requested by the query
@@ -403,10 +423,12 @@ export default class Concept {
 
     this.logKeyRequest(requestedKeys, 'ingest')
 
+    const preparedParameters = this.mutateDeleteParameters(params)
+
     // Construct the promise that will delete data from CMR
     this.response = cmrDelete({
       conceptType: this.getConceptType(),
-      data: params,
+      data: preparedParameters,
       headers: providedHeaders,
       options
     })

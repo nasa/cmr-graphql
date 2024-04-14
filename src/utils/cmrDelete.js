@@ -1,7 +1,5 @@
 import axios from 'axios'
 
-import camelcaseKeys from 'camelcase-keys'
-
 import { downcaseKeys } from './downcaseKeys'
 import { pickIgnoringCase } from './pickIgnoringCase'
 
@@ -19,8 +17,7 @@ export const cmrDelete = async ({
 }) => {
   // Default headers
   const defaultHeaders = {
-    Accept: 'application/json',
-    'Content-Type': 'application/vnd.nasa.cmr.umm+json'
+    Accept: 'application/json'
   }
 
   // Use the provided native id and provider id
@@ -50,15 +47,13 @@ export const cmrDelete = async ({
     'CMR-Request-Id'
   ])
 
-  const cmrParameters = camelcaseKeys(data, { pascalCase: true })
-
   const {
     'client-id': clientId,
     'cmr-request-id': requestId
   } = downcaseKeys(permittedHeaders)
 
   const requestConfiguration = {
-    data: cmrParameters,
+    data,
     headers: permittedHeaders,
     method: 'DELETE',
     url: `${process.env.cmrRootUrl}/${queryPath}`

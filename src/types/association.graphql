@@ -1,38 +1,37 @@
-"ConceptType must be one of the enum values."
-enum ConceptType {
-  Service
-  Tool
-  Variable
-}
-
 type AssociationMutationResponse {
-  toolAssociation: JSON
-  serviceAssociation: JSON
-  variableAssociation: JSON
-  associatedItem: JSON
-  warnings: [String]
+  "The unique id assigned to a CMR concept."
+  conceptId: String
+
+  "The revision id of the Association."
+  revisionId: Int
+
+  "The unique id assigned to the CMR concept associated with this conceptId"
+  associatedConceptId: String
 }
 
 type Mutation {
   createAssociation (
-    "The concept id of the associated record"
+    "The concept id of the associated record."
     conceptId: String!
-    "The list of collection conceptIds for association"
-    collectionConceptIds: [JSON]!
-    "The concept type of the association"
-    conceptType: ConceptType!
-    "Native Id of the published variable record"
-    nativeId: String
-    "The metadata for the published variable record"
-    metadata: JSON
-  ): AssociationMutationResponse
+
+    "Concept id to disassociate with the provided concept id."
+    associatedConceptId: String
+
+    "List of concept ids to disassociate with the provided concept id."
+    associatedConceptIds: [String]
+
+    "A JSON object that stores additional information specific to this association"
+    associatedConceptData: JSON
+  ): [AssociationMutationResponse]
   
   deleteAssociation (
-    "The concept id of the associated record"
+    "The concept id of the associated record."
     conceptId: String!
-    "The list of collection conceptIds for association"
-    collectionConceptIds: [JSON]!
-    "The concept type of the association"
-    conceptType: ConceptType!
-  ): AssociationMutationResponse
+
+    "Concept id to disassociate with the provided concept id."
+    associatedConceptId: String
+
+    "List of concept ids to disassociate with the provided concept id."
+    associatedConceptIds: [String]
+  ): [AssociationMutationResponse]
 }

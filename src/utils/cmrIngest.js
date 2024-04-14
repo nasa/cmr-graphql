@@ -35,6 +35,7 @@ export const cmrIngest = ({
 
   // Default options
   const {
+    method = 'PUT',
     queryPath = `ingest/providers/${providerId}/${conceptType}/${nativeId}`
   } = options
 
@@ -58,7 +59,7 @@ export const cmrIngest = ({
   const requestConfiguration = {
     data,
     headers: permittedHeaders,
-    method: 'PUT',
+    method,
     url: `${process.env.cmrRootUrl}/${queryPath}`
   }
 

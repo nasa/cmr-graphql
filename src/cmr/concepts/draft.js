@@ -1,3 +1,5 @@
+import camelcaseKeys from 'camelcase-keys'
+
 import { pick, uniq } from 'lodash'
 
 import { pickIgnoringCase } from '../../utils/pickIgnoringCase'
@@ -125,6 +127,37 @@ export default class Draft extends Concept {
       'nativeId',
       'collectionConceptId'
     ]
+  }
+
+  /**
+   * Mutate the provided values from the user to meet expectations from CMR
+   * @param {Object} params Parameters provided by the client
+   * @returns The payload to send to CMR
+   */
+  mutateDeleteParameters(params) {
+    return camelcaseKeys(params, {
+      pascalCase: true,
+      exclude: ['nativeId', 'providerId']
+    })
+  }
+
+  /**
+   * Delete the provided object from CMR
+   * @param {Object} data Parameters provided by the query
+   * @param {Array} requestedKeys Keys requested by the query
+   * @param {Object} providedHeaders Headers requested by the query
+   */
+  delete(data, requestedKeys, providedHeaders, options) {
+    // Construct the promise that will delete data from CMR
+    super.delete(
+      data,
+      requestedKeys,
+      {
+        ...providedHeaders,
+        'Content-Type': 'application/vnd.nasa.cmr.umm+json'
+      },
+      options
+    )
   }
 
   /**
