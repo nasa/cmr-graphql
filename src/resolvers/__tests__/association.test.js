@@ -19,318 +19,356 @@ describe('Association', () => {
 
   describe('Mutation', () => {
     describe('createAssociation', () => {
-      test('returns the cmr results', async () => {
-        nock(/example-cmr/, {
-          reqheaders: {
-            accept: 'application/json, text/plain, */*',
-            'content-type': 'application/json',
-            'client-id': 'eed-test-graphql',
-            'cmr-request-id': 'abcd-1234-efgh-5678'
-          }
-        })
-          .defaultReplyHeaders({
-            'CMR-Took': 7,
-            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+      describe('when using associatedConceptId to associate a single concept', () => {
+        test('returns one association', async () => {
+          nock(/example-cmr/, {
+            reqheaders: {
+              accept: 'application/json',
+              'content-type': 'application/json',
+              'client-id': 'eed-test-graphql',
+              'cmr-request-id': 'abcd-1234-efgh-5678'
+            }
           })
-          .post(/search\/tools\/T12000000\/associations/)
-          .reply(201, [{
-            tool_association: {
-              concept_id: 'TLA12000000-CMR',
-              revision_id: 1
+            .defaultReplyHeaders({
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .post(/search\/associate\/C10000000-CMR/)
+            .reply(201, [
+              {
+                generic_association: {
+                  concept_id: 'GA10000000-CMR',
+                  revision_id: 1
+                },
+                associated_item: {
+                  concept_id: 'OO10000000-CMR'
+                }
+              }])
+
+          const response = await server.executeOperation({
+            variables: {
+              conceptId: 'C10000000-CMR',
+              associatedConceptId: 'OO10000000-CMR'
             },
-            associated_item: { concept_id: 'C12000000' }
-          }])
-
-        const response = await server.executeOperation({
-          variables: {
-            conceptId: 'T12000000',
-            collectionConceptIds: [
-              {
-                conceptId: 'C12000000'
-              }
-            ],
-            conceptType: 'Tool'
-          },
-          query: `mutation CreateAssociation(
-            $conceptId: String!
-            $collectionConceptIds: [JSON]!
-            $conceptType: ConceptType!
-          ) {
-            createAssociation(
-              conceptId: $conceptId
-              collectionConceptIds: $collectionConceptIds
-              conceptType: $conceptType
+            query: `mutation CreateAssociation(
+              $conceptId: String!
+              $associatedConceptId: String
             ) {
-              associatedItem
-              toolAssociation
-            }
-          }`
-        }, {
-          contextValue
-        })
-        const { data } = response.body.singleResult
-        expect(data).toEqual({
-          createAssociation: {
-            associatedItem: { concept_id: 'C12000000' },
-            toolAssociation: {
-              concept_id: 'TLA12000000-CMR',
-              revision_id: 1
-            }
-          }
+              createAssociation(
+                conceptId: $conceptId
+                associatedConceptId: $associatedConceptId
+              ) {
+                conceptId
+                revisionId
+                associatedConceptId
+              }
+            }`
+          }, {
+            contextValue
+          })
+
+          const { data, errors } = response.body.singleResult
+
+          expect(errors).toBeUndefined()
+
+          expect(data).toEqual({
+            createAssociation: [{
+              conceptId: 'GA10000000-CMR',
+              revisionId: 1,
+              associatedConceptId: 'OO10000000-CMR'
+            }]
+          })
         })
       })
 
-      test('returns an error when Metadata or NativeId are provided', async () => {
-        nock(/example-cmr/, {
-          reqheaders: {
-            accept: 'application/json, text/plain, */*',
-            'content-type': 'application/json',
-            'client-id': 'eed-test-graphql',
-            'cmr-request-id': 'abcd-1234-efgh-5678'
-          }
-        })
-          .defaultReplyHeaders({
-            'CMR-Took': 7,
-            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+      describe('when using associatedConceptIds to associate multiple concepts', () => {
+        test('returns multiple associations', async () => {
+          nock(/example-cmr/, {
+            reqheaders: {
+              accept: 'application/json',
+              'content-type': 'application/json',
+              'client-id': 'eed-test-graphql',
+              'cmr-request-id': 'abcd-1234-efgh-5678'
+            }
           })
-          .post(/search\/tools\/T12000000\/associations/)
-          .reply(201, [{
-            tool_association: {
-              concept_id: 'TLA12000000-CMR',
-              revision_id: 1
+            .defaultReplyHeaders({
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .post(/search\/associate\/C10000000-CMR/)
+            .reply(201, [
+              {
+                generic_association: {
+                  concept_id: 'GA10000000-CMR',
+                  revision_id: 1
+                },
+                associated_item: {
+                  concept_id: 'OO10000000-CMR'
+                }
+              }, {
+                generic_association: {
+                  concept_id: 'GA10000001-CMR',
+                  revision_id: 1
+                },
+                associated_item: {
+                  concept_id: 'OO10000001-CMR'
+                }
+              }])
+
+          const response = await server.executeOperation({
+            variables: {
+              conceptId: 'C10000000-CMR',
+              associatedConceptIds: ['OO10000000-CMR', 'OO10000001-CMR']
             },
-            associated_item: { concept_id: 'C12000000' }
-          }])
-
-        const response = await server.executeOperation({
-          variables: {
-            conceptId: 'T12000000',
-            collectionConceptIds: [
-              {
-                conceptId: 'C12000000'
-              }
-            ],
-            conceptType: 'Tool',
-            nativeId: 'Variable-1',
-            metadata: {}
-          },
-          query: `mutation CreateAssociation(
-            $conceptId: String!
-            $collectionConceptIds: [JSON]!
-            $conceptType: ConceptType!
-            $nativeId: String
-            $metadata: JSON
-          ) {
-            createAssociation(
-              conceptId: $conceptId
-              collectionConceptIds: $collectionConceptIds
-              conceptType: $conceptType
-              nativeId: $nativeId
-              metadata: $metadata
+            query: `mutation CreateAssociation(
+              $conceptId: String!
+              $associatedConceptIds: [String]
             ) {
-              associatedItem
-              toolAssociation
-            }
-          }`
-        }, {
-          contextValue
-        })
-
-        const { errors } = response.body.singleResult
-        const { message } = errors[0]
-
-        expect(message).toEqual('nativeId or metadata are invalid fields. When creating a Tool or Service Association, nativeId and metadata are not valid field')
-      })
-    })
-
-    describe('createVariableAssociation', () => {
-      test('returns the cmr results', async () => {
-        nock(/example-cmr/, {
-          reqheaders: {
-            accept: 'application/json, text/plain, */*',
-            'content-type': 'application/vnd.nasa.cmr.umm+json',
-            'client-id': 'eed-test-graphql',
-            'cmr-request-id': 'abcd-1234-efgh-5678'
-          }
-        })
-          .defaultReplyHeaders({
-            'CMR-Took': 7,
-            'CMR-Request-Id': 'abcd-1234-efgh-5678'
-          })
-          .put(/ingest\/collections\/C12000000\/variables\/variable-1/)
-          .reply(200, {
-            'variable-association': {
-              'concept-id': 'VA1200000007-CMR',
-              'revision-id': 1
-            }
+              createAssociation(
+                conceptId: $conceptId
+                associatedConceptIds: $associatedConceptIds
+              ) {
+                conceptId
+                revisionId
+                associatedConceptId
+              }
+            }`
+          }, {
+            contextValue
           })
 
-        const response = await server.executeOperation({
-          variables: {
-            conceptId: 'V120000000',
-            collectionConceptIds: [
-              {
-                conceptId: 'C12000000'
-              }
-            ],
-            conceptType: 'Variable',
-            nativeId: 'variable-1',
-            metadata: {
-              Name: 'Test Variable',
-              LongName: 'mock long name'
-            }
-          },
-          query: `mutation CreateAssociation(
-            $conceptId: String!
-            $collectionConceptIds: [JSON]!
-            $conceptType: ConceptType!
-            $nativeId: String
-            $metadata: JSON
-          ) {
-            createAssociation(
-              conceptId: $conceptId
-              collectionConceptIds: $collectionConceptIds
-              conceptType: $conceptType
-              nativeId: $nativeId
-              metadata: $metadata
-            ) {
-              variableAssociation
-            }
-          }`
-        }, {
-          contextValue
-        })
+          const { data, errors } = response.body.singleResult
 
-        const { data } = response.body.singleResult
+          expect(errors).toBeUndefined()
 
-        expect(data).toEqual({
-          createAssociation: {
-            variableAssociation: {
-              'concept-id': 'VA1200000007-CMR',
-              'revision-id': 1
-            }
-          }
+          expect(data).toEqual({
+            createAssociation: [{
+              conceptId: 'GA10000000-CMR',
+              revisionId: 1,
+              associatedConceptId: 'OO10000000-CMR'
+            }, {
+              conceptId: 'GA10000001-CMR',
+              revisionId: 1,
+              associatedConceptId: 'OO10000001-CMR'
+            }]
+          })
         })
       })
 
-      test('returns an error when Metadata or NativeId not provided', async () => {
-        nock(/example-cmr/, {
-          reqheaders: {
-            accept: 'application/json, text/plain, */*',
-            'content-type': 'application/vnd.nasa.cmr.umm+json',
-            'client-id': 'eed-test-graphql',
-            'cmr-request-id': 'abcd-1234-efgh-5678'
-          }
-        })
-          .defaultReplyHeaders({
-            'CMR-Took': 7,
-            'CMR-Request-Id': 'abcd-1234-efgh-5678'
-          })
-          .put(/ingest\/collections\/C12000000\/variables\/variable-1/)
-          .reply(200, {
-            'variable-association': {
-              'concept-id': 'VA1200000007-CMR',
-              'revision-id': 1
+      describe('when using associatedConcepts to associate multiple concepts with data', () => {
+        test('returns multiple associations', async () => {
+          nock(/example-cmr/, {
+            reqheaders: {
+              accept: 'application/json',
+              'content-type': 'application/json',
+              'client-id': 'eed-test-graphql',
+              'cmr-request-id': 'abcd-1234-efgh-5678'
             }
           })
-
-        const response = await server.executeOperation({
-          variables: {
-            conceptId: 'V120000000',
-            collectionConceptIds: [
+            .defaultReplyHeaders({
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .post(/search\/associate\/C10000000-CMR/)
+            .reply(201, [
               {
-                conceptId: 'C12000000'
-              }
-            ],
-            conceptType: 'Variable'
-          },
-          query: `mutation CreateAssociation(
-            $conceptId: String!
-            $collectionConceptIds: [JSON]!
-            $conceptType: ConceptType!
-            $nativeId: String
-            $metadata: JSON
-          ) {
-            createAssociation(
-              conceptId: $conceptId
-              collectionConceptIds: $collectionConceptIds
-              conceptType: $conceptType
-              nativeId: $nativeId
-              metadata: $metadata
+                generic_association: {
+                  concept_id: 'GA10000000-CMR',
+                  revision_id: 1
+                },
+                associated_item: {
+                  concept_id: 'OO10000000-CMR'
+                }
+              }, {
+                generic_association: {
+                  concept_id: 'GA10000001-CMR',
+                  revision_id: 1
+                },
+                associated_item: {
+                  concept_id: 'OO10000001-CMR'
+                }
+              }])
+
+          const response = await server.executeOperation({
+            variables: {
+              conceptId: 'C10000000-CMR',
+              associatedConceptData: [{
+                concept_id: 'OO10000000-CMR',
+                data: { test: true }
+              }, {
+                concept_id: 'OO10000001-CMR'
+              }]
+            },
+            query: `mutation CreateAssociation(
+              $conceptId: String!
+              $associatedConceptData: JSON
             ) {
-              variableAssociation
-            }
-          }`
-        }, {
-          contextValue
+              createAssociation(
+                conceptId: $conceptId
+                associatedConceptData: $associatedConceptData
+              ) {
+                conceptId
+                revisionId
+                associatedConceptId
+              }
+            }`
+          }, {
+            contextValue
+          })
+
+          const { data, errors } = response.body.singleResult
+
+          expect(errors).toBeUndefined()
+
+          expect(data).toEqual({
+            createAssociation: [{
+              conceptId: 'GA10000000-CMR',
+              revisionId: 1,
+              associatedConceptId: 'OO10000000-CMR'
+            }, {
+              conceptId: 'GA10000001-CMR',
+              revisionId: 1,
+              associatedConceptId: 'OO10000001-CMR'
+            }]
+          })
         })
-
-        const { errors } = response.body.singleResult
-        const { message } = errors[0]
-
-        expect(message).toEqual('nativeId and metadata required. When creating a Variable Association, nativeId and metadata are required')
       })
     })
 
     describe('deleteAssociation', () => {
-      test('returns the cmr results', async () => {
-        nock(/example-cmr/, {
-          reqheaders: {
-            accept: 'application/json, text/plain, */*',
-            'content-type': 'application/json',
-            'client-id': 'eed-test-graphql',
-            'cmr-request-id': 'abcd-1234-efgh-5678'
-          }
-        })
-          .defaultReplyHeaders({
-            'CMR-Took': 7,
-            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+      describe('when using associatedConceptId to associate a single concept', () => {
+        test('returns one association', async () => {
+          nock(/example-cmr/, {
+            reqheaders: {
+              accept: 'application/json',
+              'content-type': 'application/json',
+              'client-id': 'eed-test-graphql',
+              'cmr-request-id': 'abcd-1234-efgh-5678'
+            }
           })
-          .delete(/search\/tools\/T12000000\/associations/)
-          .reply(201, [{
-            tool_association: {
-              concept_id: 'TLA12000000-CMR',
-              revision_id: 1
-            },
-            associated_item: { concept_id: 'C12000000' }
-          }])
-
-        const response = await server.executeOperation({
-          variables: {
-            conceptId: 'T12000000',
-            collectionConceptIds: [
+            .defaultReplyHeaders({
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .delete(/search\/associate\/C10000000-CMR/)
+            .reply(201, [
               {
-                conceptId: 'C12000000'
-              }
-            ],
-            conceptType: 'Tool'
-          },
-          query: `mutation DeleteAssociation(
-            $conceptId: String!
-            $collectionConceptIds: [JSON]!
-            $conceptType: ConceptType!
-          ) {
-            deleteAssociation(
-              conceptId: $conceptId
-              collectionConceptIds: $collectionConceptIds
-              conceptType: $conceptType
+                generic_association: {
+                  concept_id: 'GA10000000-CMR',
+                  revision_id: 1
+                },
+                associated_item: {
+                  concept_id: 'OO10000000-CMR'
+                }
+              }])
+
+          const response = await server.executeOperation({
+            variables: {
+              conceptId: 'C10000000-CMR',
+              associatedConceptId: 'OO10000000-CMR'
+            },
+            query: `mutation DeleteAssociation(
+              $conceptId: String!
+              $associatedConceptId: String
             ) {
-              associatedItem
-              toolAssociation
-            }
-          }`
-        }, {
-          contextValue
+              deleteAssociation(
+                conceptId: $conceptId
+                associatedConceptId: $associatedConceptId
+              ) {
+                conceptId
+                revisionId
+                associatedConceptId
+              }
+            }`
+          }, {
+            contextValue
+          })
+
+          const { data, errors } = response.body.singleResult
+
+          expect(errors).toBeUndefined()
+
+          expect(data).toEqual({
+            deleteAssociation: [{
+              conceptId: 'GA10000000-CMR',
+              revisionId: 1,
+              associatedConceptId: 'OO10000000-CMR'
+            }]
+          })
         })
-        const { data } = response.body.singleResult
-        expect(data).toEqual({
-          deleteAssociation: {
-            associatedItem: { concept_id: 'C12000000' },
-            toolAssociation: {
-              concept_id: 'TLA12000000-CMR',
-              revision_id: 1
+      })
+
+      describe('when using associatedConceptIds to associate multiple concepts', () => {
+        test('returns multiple associations', async () => {
+          nock(/example-cmr/, {
+            reqheaders: {
+              accept: 'application/json',
+              'content-type': 'application/json',
+              'client-id': 'eed-test-graphql',
+              'cmr-request-id': 'abcd-1234-efgh-5678'
             }
-          }
+          })
+            .defaultReplyHeaders({
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .delete(/search\/associate\/C10000000-CMR/)
+            .reply(201, [
+              {
+                generic_association: {
+                  concept_id: 'GA10000000-CMR',
+                  revision_id: 1
+                },
+                associated_item: {
+                  concept_id: 'OO10000000-CMR'
+                }
+              }, {
+                generic_association: {
+                  concept_id: 'GA10000001-CMR',
+                  revision_id: 1
+                },
+                associated_item: {
+                  concept_id: 'OO10000001-CMR'
+                }
+              }])
+
+          const response = await server.executeOperation({
+            variables: {
+              conceptId: 'C10000000-CMR',
+              associatedConceptIds: ['OO10000000-CMR', 'OO10000001-CMR']
+            },
+            query: `mutation DeleteAssociation(
+              $conceptId: String!
+              $associatedConceptIds: [String]
+            ) {
+              deleteAssociation(
+                conceptId: $conceptId
+                associatedConceptIds: $associatedConceptIds
+              ) {
+                conceptId
+                revisionId
+                associatedConceptId
+              }
+            }`
+          }, {
+            contextValue
+          })
+
+          const { data, errors } = response.body.singleResult
+
+          expect(errors).toBeUndefined()
+
+          expect(data).toEqual({
+            deleteAssociation: [{
+              conceptId: 'GA10000000-CMR',
+              revisionId: 1,
+              associatedConceptId: 'OO10000000-CMR'
+            }, {
+              conceptId: 'GA10000001-CMR',
+              revisionId: 1,
+              associatedConceptId: 'OO10000001-CMR'
+            }]
+          })
         })
       })
     })
