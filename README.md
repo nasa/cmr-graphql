@@ -50,9 +50,6 @@ The local development environment for the static assets can be started by execut
 
 This will run the application at [http://localhost:3003/dev/api](http://localhost:3003/dev/api)
 
-## Usage
-
-Currently, this API supports searching and retrieving data for [Collections](#collections), [Granules](#granules), [Services](#services), [Subscriptions](#subscriptions), [Tools](#tools), [Variables](#variables), [Grids](#grids), [Order Options](#order-options) and [Drafts](#drafts).
 
 #### Optional Headers
 
@@ -179,6 +176,32 @@ If you're querying single objects `count` is not available and therefore `items`
 
 Note that the response you get will match the structure of your query, meaning that in the event you've requested data from a list query you'll receive the results in an `items` array whereas with a single query request you will not.
 
+
+## Usage
+
+Currently, this API supports the following functionality within NASA's Earthdata Ecosystem.
+
+### Concepts (Objects)
+- [Collections](#collections)
+- [Granules](#granules)
+- [Grids](#grids)
+- [Order Options](#order-options)
+- [Services](#services)
+- [Subscriptions](#subscriptions)
+- [Tools](#tools)
+- [Variables](#variables)
+
+### Drafts of concepts
+- [Drafts](#drafts)
+
+### Associations between the supported concepts
+> Granules are not supported in this implementation, associations cannot be made between granules and any other concept
+
+- [Associations](#associations)
+
+### Access controls and permissions pertaining to the supported concepts
+- [ACLs](#collections)
+- [Permissions](#collections)
 
 #### Collections
 
@@ -1209,6 +1232,7 @@ Variables:
 #### Associations
 For all supported arguments and columns, see [the schema](src/types/association.graphql).
 
+<<<<<<< HEAD
 The association supports associating a Tool, Variable, or Service record to a collection.
 
 ##### Association Query
@@ -1231,6 +1255,34 @@ Mutation CreateAssociation(
   }
 }
 ```
+=======
+Associations are supported between any of the following concepts, and can be made to any/from any of the concepts
+- Tool
+- Variable
+- Service
+- Collections
+- Order Options 
+
+##### Creating an Association
+
+###### To A Single Other Concept
+
+    mutation CreateAssociation(
+      $conceptId: String!
+      $associatedConceptId: String
+     ) {
+      createAssociation(
+        conceptId: $conceptId,
+        associatedConceptId: $associatedConceptId
+      ) {
+        associatedConceptId
+        conceptId
+        revisionId
+      }
+    }
+    
+variables:
+>>>>>>> 49b11bd (GQL-38: Updates the Readme)
 
 Variables:
 
@@ -1240,12 +1292,18 @@ Variables:
   "conceptType": "Tool",
   "collectionConceptIds": [
     {
+<<<<<<< HEAD
       "conceptId": "C1000000001-EXAMPLE"
+=======
+      "conceptId": "C1000000001-EXAMPLE",
+      "associatedConceptId": "TL12000000-EXAMPLE"
+>>>>>>> 49b11bd (GQL-38: Updates the Readme)
     }
   ]
 }
 ```
 
+<<<<<<< HEAD
 ##### Associating a Variable to a Collection
 
 Note for Variable association, nativeId and metadata are required params.
@@ -1270,6 +1328,24 @@ Mutation CreateAssociation(
   }
 }
 ```
+=======
+###### To Multiple Other Concepts
+
+    mutation CreateAssociation(
+      $conceptId: String!,
+      $associatedConceptIds: [String]
+     ) {
+      createAssociation(
+        associatedConceptIds: $associatedConceptIds
+      ) {
+        associatedConceptId
+        conceptId
+        revisionId
+      }
+    }
+    
+variables:
+>>>>>>> 49b11bd (GQL-38: Updates the Readme)
 
 Variables:
 
@@ -1279,7 +1355,12 @@ Variables:
   "conceptType": "Variable",
   "collectionConceptIds": [
     {
+<<<<<<< HEAD
       "conceptId": "C1000000001-EXAMPLE"
+=======
+      "conceptId": "C1000000001-EXAMPLE",
+      "associatedConceptIds": ["TL12000000-EXAMPLE", "TL12000001-EXAMPLE"]
+>>>>>>> 49b11bd (GQL-38: Updates the Readme)
     }
   ],
   "nativeId": "Variable native id",
@@ -1287,7 +1368,86 @@ Variables:
 }
 ```
 
+<<<<<<< HEAD
 ##### Disassociation a Tool to a Collection (Delete)
+=======
+###### To One or More Other Concepts With Data
+
+    mutation CreateAssociation(
+      $conceptId: String!,
+      $associatedConceptData: JSON
+     ) {
+      createAssociation(
+        associatedConceptData: $associatedConceptData
+      ) {
+        associatedConceptId
+        conceptId
+        revisionId
+      }
+    }
+    
+variables:
+
+    {
+      "conceptId": "C1000000001-EXAMPLE",
+      "associatedConceptData": [{
+        "conceptId": "TL12000000-EXAMPLE",
+        "data": {
+          "namespace": {
+            "data": true
+          }
+        }
+      }, {
+        "conceptId": "TL12000001-EXAMPLE",
+        "data": {
+          "namespace": {
+            "data": false
+          }
+        }
+      }]
+    }
+
+##### Deleting an Association
+
+###### A Single Association
+
+    mutation DeleteAssociation(
+      $conceptId: String!,
+      $associatedConceptId: String
+    ) {
+      deleteAssociation(
+        conceptId: $conceptId,
+        associatedConceptId: $associatedConceptId
+      ) {
+        revisionId
+        conceptId
+        associatedConceptId
+      }
+    }
+    
+variables:
+
+    {
+      "conceptId": "C1000000001-EXAMPLE",
+      "associatedConceptId": "TL12000000-EXAMPLE"
+    }
+
+###### Multiple Associations
+
+    mutation DeleteAssociation(
+      $conceptId: String!,
+      $associatedConceptId: String
+    ) {
+      deleteAssociation(
+        conceptId: $conceptId,
+        associatedConceptId: $associatedConceptId
+      ) {
+        revisionId
+        conceptId
+        associatedConceptId
+      }
+    }
+>>>>>>> 49b11bd (GQL-38: Updates the Readme)
 
 ```
 Mutation DeleteAssociation(
@@ -1314,7 +1474,12 @@ Variables:
   "conceptType": "Tool",
   "collectionConceptIds": [
     {
+<<<<<<< HEAD
       "conceptId": "C1000000001-EXAMPLE"
+=======
+      "conceptId": "C1000000001-EXAMPLE",
+      "associatedConceptIds": ["TL12000000-EXAMPLE", "TL12000001-EXAMPLE"]
+>>>>>>> 49b11bd (GQL-38: Updates the Readme)
     }
   ]
 }
