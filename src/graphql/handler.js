@@ -19,7 +19,6 @@ import {
 } from '../datasources/acl'
 import {
   createAssociation as associationSourceCreate,
-  createVariableAssociation as variableAssociationSourceCreate,
   deleteAssociation as associationSourceDelete
 } from '../datasources/association'
 import collectionDraftProposalSource from '../datasources/collectionDraftProposal'
@@ -209,7 +208,6 @@ export default startServerAndCreateLambdaHandler(
           toolDraftSource,
           toolSourceDelete,
           toolSourceFetch,
-          variableAssociationSourceCreate,
           variableDraftSource,
           variableSourceDelete,
           variableSourceFetch
