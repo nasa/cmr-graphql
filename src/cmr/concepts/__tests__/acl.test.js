@@ -76,7 +76,7 @@ describe('Acl concept', () => {
 
       const response = await acl.response
 
-      expect(await response[0].config.url).toEqual('http://example.com/access-control/acls?permitted_user=test&include_full_acl=true')
+      expect(await response[0].config.url).toEqual('http://example.com/access-control/acls?include_full_acl=true&permitted_user=test')
     })
   })
 })

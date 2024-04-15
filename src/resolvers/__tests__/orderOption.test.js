@@ -72,8 +72,7 @@ describe('OrderOption', () => {
       })
       console.log('🚀 ~ test.only ~ response:', response)
 
-      const { data, errors } = response.body.singleResult
-      console.log('🚀 ~ test.only ~ errors:', errors)
+      const { data } = response.body.singleResult
 
       expect(data).toEqual({
         orderOptions: {
@@ -147,7 +146,7 @@ describe('OrderOption', () => {
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .post(/order-options\.json/, 'concept_id=OO100000-EDSC')
+            .post(/order-options\.json/, 'concept_id[]=OO100000-EDSC')
             .reply(200, {
               items: [{
                 concept_id: 'OO100000-EDSC',
@@ -183,7 +182,7 @@ describe('OrderOption', () => {
               'CMR-Took': 0,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .post(/order-options\.json/, 'concept_id=OO100000-EDSC')
+            .post(/order-options\.json/, 'concept_id[]=OO100000-EDSC')
             .reply(200, {
               items: []
             })
@@ -283,8 +282,7 @@ describe('OrderOption', () => {
             contextValue
           })
 
-          const { data, errors } = response.body.singleResult
-          console.log('🚀 ~ test.only ~ errors:', errors)
+          const { data } = response.body.singleResult
 
           expect(data).toEqual({
             updateOrderOption: {
@@ -323,8 +321,7 @@ describe('OrderOption', () => {
             contextValue
           })
 
-          const { data, errors } = response.body.singleResult
-          console.log('🚀 ~ test.only ~ errors:', errors)
+          const { data } = response.body.singleResult
 
           expect(data).toEqual({
             deleteOrderOption: {
