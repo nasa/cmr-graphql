@@ -47,11 +47,17 @@ input OrderOptionsInput {
 
   "Zero based offset of individual results."
   offset: Int
+
+  "The provider id."
+  providerId: [String]
 }
 
 input OrderOptionInput {
   "The unique concept id assigned to the order-option."
-  conceptId: String!
+  conceptId: [String]
+
+  "The provider id."
+  providerId: [String]
 }
 
 type Query {

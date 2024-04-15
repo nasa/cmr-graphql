@@ -23,7 +23,6 @@ export const fetchOrderOption = async (params, context, parsedInfo) => {
 }
 
 export const ingestOrderOption = async (args, context, parsedInfo) => {
-  console.log('🚀 ~ ingestOrderOption ~ args:', args)
   const { headers } = context
   const requestInfo = parseRequestedFields(parsedInfo, orderOptionKeyMap, 'orderOption')
   const {
