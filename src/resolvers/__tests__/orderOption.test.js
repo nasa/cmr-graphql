@@ -41,7 +41,6 @@ describe('OrderOption', () => {
               }
             },
             umm: {
-              Id: '0B4E0AF0BB4E0AF0BB4R0AF00',
               Name: 'With Browse',
               Description: 'Parturient Dolor Cras Aenean Dapibus',
               Form: "<form xmlns=\"http://echo.nasa.gov/v9/echoforms\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"> <model> <instance> <ecs:options xmlns:ecs=\"http://ecs.nasa.gov/options\"> <!-- ECS distribution options example --> <ecs:distribution> <ecs:mediatype> <ecs:value>FtpPull</ecs:value> </ecs:mediatype> <ecs:mediaformat> <ecs:ftppull-format> <ecs:value>FILEFORMAT</ecs:value> </ecs:ftppull-format> </ecs:mediaformat> </ecs:distribution> <ecs:do-ancillaryprocessing>true</ecs:do-ancillaryprocessing> <ecs:ancillary> <ecs:orderBrowse/> </ecs:ancillary> </ecs:options> </instance> </model> <ui> <group id=\"mediaOptionsGroup\" label=\"Media Options\" ref=\"ecs:distribution\"> <output id=\"MediaTypeOutput\" label=\"Media Type:\" relevant=\"ecs:mediatype/ecs:value ='FtpPull'\" type=\"xsd:string\" value=\"'HTTPS Pull'\"/> <output id=\"FtpPullMediaFormatOutput\" label=\"Media Format:\" relevant=\"ecs:mediaformat/ecs:ftppull-format/ecs:value='FILEFORMAT'\" type=\"xsd:string\" value=\"'File'\"/> </group> <group id=\"checkancillaryoptions\" label=\"Additional file options:\" ref=\"ecs:ancillary\" relevant=\"//ecs:do-ancillaryprocessing = 'true'\"> <input label=\"Include associated Browse file in order\" ref=\"ecs:orderBrowse\" type=\"xsd:boolean\"/> </group> </ui> </form>",
@@ -61,7 +60,6 @@ describe('OrderOption', () => {
               conceptId
               description
               form
-              id
               name
               nativeId
               scope
@@ -72,8 +70,10 @@ describe('OrderOption', () => {
       }, {
         contextValue
       })
+      console.log('🚀 ~ test.only ~ response:', response)
 
-      const { data } = response.body.singleResult
+      const { data, errors } = response.body.singleResult
+      console.log('🚀 ~ test.only ~ errors:', errors)
 
       expect(data).toEqual({
         orderOptions: {
@@ -89,7 +89,6 @@ describe('OrderOption', () => {
             conceptId: 'OO100000-EDSC',
             description: 'Parturient Dolor Cras Aenean Dapibus',
             form: "<form xmlns=\"http://echo.nasa.gov/v9/echoforms\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"> <model> <instance> <ecs:options xmlns:ecs=\"http://ecs.nasa.gov/options\"> <!-- ECS distribution options example --> <ecs:distribution> <ecs:mediatype> <ecs:value>FtpPull</ecs:value> </ecs:mediatype> <ecs:mediaformat> <ecs:ftppull-format> <ecs:value>FILEFORMAT</ecs:value> </ecs:ftppull-format> </ecs:mediaformat> </ecs:distribution> <ecs:do-ancillaryprocessing>true</ecs:do-ancillaryprocessing> <ecs:ancillary> <ecs:orderBrowse/> </ecs:ancillary> </ecs:options> </instance> </model> <ui> <group id=\"mediaOptionsGroup\" label=\"Media Options\" ref=\"ecs:distribution\"> <output id=\"MediaTypeOutput\" label=\"Media Type:\" relevant=\"ecs:mediatype/ecs:value ='FtpPull'\" type=\"xsd:string\" value=\"'HTTPS Pull'\"/> <output id=\"FtpPullMediaFormatOutput\" label=\"Media Format:\" relevant=\"ecs:mediaformat/ecs:ftppull-format/ecs:value='FILEFORMAT'\" type=\"xsd:string\" value=\"'File'\"/> </group> <group id=\"checkancillaryoptions\" label=\"Additional file options:\" ref=\"ecs:ancillary\" relevant=\"//ecs:do-ancillaryprocessing = 'true'\"> <input label=\"Include associated Browse file in order\" ref=\"ecs:orderBrowse\" type=\"xsd:boolean\"/> </group> </ui> </form>",
-            id: '0B4E0AF0BB4E0AF0BB4R0AF00',
             name: 'With Browse',
             nativeId: 'test-guid',
             scope: 'PROVIDER',
@@ -205,6 +204,133 @@ describe('OrderOption', () => {
 
           expect(data).toEqual({
             orderOption: null
+          })
+        })
+      })
+    })
+
+    describe('Mutation', () => {
+      describe('createOrderOption', () => {
+        test('calls the ingest endpoint to create an order option', async () => {
+          nock(/example-cmr/)
+            .defaultReplyHeaders({
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .put('/ingest/providers/TEST/order-options/test-native-id-2')
+            .reply(200, {
+              'concept-id': 'OO12341234-TEST',
+              'revision-id': 1
+            })
+
+          const response = await server.executeOperation({
+            variables: {
+              description: 'This is a description',
+              name: 'This is another new name',
+              providerId: 'TEST',
+              nativeId: 'test-native-id-2',
+              form: 'This is the form'
+            },
+            query: `mutation CreateOrderOption($description: String!, $name: String!, $providerId: String!, $form: String!, $nativeId: String) {
+              createOrderOption(description: $description, name: $name, providerId: $providerId, form: $form, nativeId: $nativeId) {
+                conceptId
+                revisionId
+              }
+            }`
+          }, {
+            contextValue
+          })
+
+          const { data } = response.body.singleResult
+
+          expect(data).toEqual({
+            createOrderOption: {
+              conceptId: 'OO12341234-TEST',
+              revisionId: '1'
+            }
+          })
+        })
+      })
+
+      describe('updateOrderOption', () => {
+        test('calls the ingest endpoint to update an order option', async () => {
+          nock(/example-cmr/)
+            .defaultReplyHeaders({
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .put('/ingest/providers/TEST/order-options/test-native-id-2')
+            .reply(200, {
+              'concept-id': 'OO12341234-TEST',
+              'revision-id': 2
+            })
+
+          const response = await server.executeOperation({
+            variables: {
+              description: 'This is a description',
+              name: 'This is another new name',
+              providerId: 'TEST',
+              nativeId: 'test-native-id-2',
+              form: 'This is the form'
+            },
+            query: `mutation UpdateOrderOption($description: String!, $name: String!, $providerId: String!, $form: String!, $nativeId: String!) {
+              updateOrderOption(description: $description, name: $name, providerId: $providerId, form: $form, nativeId: $nativeId) {
+                conceptId
+                revisionId
+              }
+            }`
+          }, {
+            contextValue
+          })
+
+          const { data, errors } = response.body.singleResult
+          console.log('🚀 ~ test.only ~ errors:', errors)
+
+          expect(data).toEqual({
+            updateOrderOption: {
+              conceptId: 'OO12341234-TEST',
+              revisionId: '2'
+            }
+          })
+        })
+      })
+
+      describe('deleteOrderOption', () => {
+        test('calls the ingest endpoint to delete an order option', async () => {
+          nock(/example-cmr/)
+            .defaultReplyHeaders({
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .delete('/ingest/providers/TEST/order-options/test-native-id-2')
+            .reply(200, {
+              'concept-id': 'OO12341234-TEST',
+              'revision-id': 2
+            })
+
+          const response = await server.executeOperation({
+            variables: {
+              providerId: 'TEST',
+              nativeId: 'test-native-id-2'
+            },
+            query: `mutation DeleteOrderOption($nativeId: String!, $providerId: String!) {
+              deleteOrderOption(nativeId: $nativeId, providerId: $providerId) {
+                conceptId
+                revisionId
+              }
+            }`
+          }, {
+            contextValue
+          })
+
+          const { data, errors } = response.body.singleResult
+          console.log('🚀 ~ test.only ~ errors:', errors)
+
+          expect(data).toEqual({
+            deleteOrderOption: {
+              conceptId: 'OO12341234-TEST',
+              revisionId: '2'
+            }
           })
         })
       })

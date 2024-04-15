@@ -31,7 +31,6 @@ import graphDbDuplicateCollectionsSource from '../datasources/graphDbDuplicateCo
 import graphDbSource from '../datasources/graphDb'
 import gridSource from '../datasources/grid'
 import maxItemsPerOrderSource from '../datasources/maxItemsPerOrder'
-import orderOptionSource from '../datasources/orderOption'
 import permissionSource from '../datasources/permission'
 import providerSource from '../datasources/provider'
 import serviceDraftSource from '../datasources/serviceDraft'
@@ -68,6 +67,12 @@ import {
   ingestDraft as draftSourceIngest,
   publishDraft as draftSourcePublish
 } from '../datasources/draft'
+
+import {
+  deleteOrderOption as orderOptionSourceDelete,
+  fetchOrderOption as orderOptionSourceFetch,
+  ingestOrderOption as orderOptionSourceIngest
+} from '../datasources/orderOption'
 
 import { downcaseKeys } from '../utils/downcaseKeys'
 import { verifyEDLJwt } from '../utils/verifyEDLJwt'
@@ -189,7 +194,9 @@ export default startServerAndCreateLambdaHandler(
           graphDbSource,
           gridSource,
           maxItemsPerOrderSource,
-          orderOptionSource,
+          orderOptionSourceDelete,
+          orderOptionSourceFetch,
+          orderOptionSourceIngest,
           permissionSource,
           providerSource,
           serviceDraftSource,

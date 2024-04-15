@@ -1,20 +1,25 @@
 type OrderOption {
   "The list of concepts and any data on the relationship between this order option and other permitted concepts"
   associationDetails: JSON
+
   "The concept id created by CMR for this orderOption"
   conceptId: String!
+
   "The description for this order option"
   description: String
+
   "The ECHO Forms schema for this order option"
   form: String
-  "The guid-id for this order option"
-  id: String!
+
   "The orderOption name."
   name: String
-  "The native id to set on the order option."  
+
+  "The native id to set on the order option."
   nativeId: String
-  "The two levels of order options, provider or system"
+
+  "The two levels of order options, `PROVIDER` or `SYSTEM`"
   scope: String
+
   "The sort key is used to indicate the preferred display order among other definitions"
   sortKey: String
 }
@@ -22,8 +27,10 @@ type OrderOption {
 type OrderOptionList {
   "The number of hits for a given search."
   count: Int
+
   "Cursor that points to the/a specific position in a list of requested records."
   cursor: String
+
   "The list of orderOption search results."
   items: [OrderOption]
 }
@@ -31,10 +38,13 @@ type OrderOptionList {
 input OrderOptionsInput {
   "The unique concept-id assigned to the order-option."
   conceptId: [String]
+
   "Cursor that points to the/a specific position in a list of requested records."
   cursor: String
+
   "The number of variables requested by the user."
   limit: Int
+
   "Zero based offset of individual results."
   offset: Int
 }
@@ -45,13 +55,82 @@ input OrderOptionInput {
 }
 
 type Query {
-  orderOptions(
-    "Order option's query parameters"
-    params: OrderOptionsInput
-  ): OrderOptionList!
-
   orderOption(
     "Order option's query parameters"
     params: OrderOptionInput
   ): OrderOption
+
+  orderOptions(
+    "Order option's query parameters"
+    params: OrderOptionsInput
+  ): OrderOptionList!
+}
+
+type OrderOptionMutationResponse {
+  "The concept id of the draft."
+  conceptId: String!
+
+  "The revision id of the draft."
+  revisionId: String!
+}
+
+enum OrderOptionScopeType {
+  PROVIDER
+  SYSTEM
+}
+
+type Mutation {
+  createOrderOption(
+    "The order option description."
+    description: String!
+
+    "The order option form."
+    form: String!
+
+    "The native id for the order option."
+    nativeId: String
+
+    "The order option name."
+    name: String!
+
+    "The provider id for the order option."
+    providerId: String!
+
+    "The two levels of order options, `PROVIDER` or `SYSTEM`"
+    scope: OrderOptionScopeType
+
+    "The sort key is used to indicate the preferred display order among other definitions"
+    sortKey: String
+  ): OrderOptionMutationResponse
+
+  updateOrderOption(
+    "The order option description."
+    description: String!
+
+    "The order option form."
+    form: String!
+
+    "The order option name."
+    name: String!
+
+    "The native id for the order option."
+    nativeId: String!
+
+    "The provider id for the order option."
+    providerId: String!
+
+    "The two levels of order options, `PROVIDER` or `SYSTEM`"
+    scope: OrderOptionScopeType
+
+    "The sort key is used to indicate the preferred display order among other definitions"
+    sortKey: String
+  ): OrderOptionMutationResponse
+
+  deleteOrderOption(
+    "The native id of the order option to be deleted."
+    nativeId: String!
+
+    "The provider id of the order option to be deleted."
+    providerId: String!
+  ): OrderOptionMutationResponse
 }
