@@ -70,8 +70,6 @@ describe('OrderOption', () => {
       }, {
         contextValue
       })
-      console.log('🚀 ~ test.only ~ response:', response)
-
       const { data } = response.body.singleResult
 
       expect(data).toEqual({
@@ -240,8 +238,7 @@ describe('OrderOption', () => {
             contextValue
           })
 
-          const { data, errors } = response.body.singleResult
-          console.log('🚀 ~ test.only ~ errors:', errors)
+          const { data } = response.body.singleResult
 
           expect(data).toEqual({
             createOrderOption: {

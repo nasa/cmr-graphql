@@ -104,7 +104,6 @@ describe('OrderOption concept', () => {
       })
 
       const response = await orderOption.response
-      console.log('🚀 ~ test ~ response:', response)
 
       expect(await response[0].config.url).toEqual('http://example.com/search/order-options.json')
       expect(await response[0].config.data).toEqual('concept_id=OO12341234_TEST')
