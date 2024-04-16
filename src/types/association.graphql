@@ -14,10 +14,10 @@ type Mutation {
     "The concept id of the associated record."
     conceptId: String!
 
-    "Concept id to disassociate with the provided concept id."
+    "Concept id to associate with the provided concept id."
     associatedConceptId: String
 
-    "List of concept ids to disassociate with the provided concept id."
+    "List of concept ids to associate with the provided concept id."
     associatedConceptIds: [String]
 
     "A JSON object that stores additional information specific to this association"
