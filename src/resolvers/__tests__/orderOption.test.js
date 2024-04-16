@@ -208,7 +208,7 @@ describe('OrderOption', () => {
 
     describe('Mutation', () => {
       describe('createOrderOption', () => {
-        test.only('calls the ingest endpoint to create an order option', async () => {
+        test('calls the ingest endpoint to create an order option', async () => {
           nock(/example-cmr/)
             .defaultReplyHeaders({
               'CMR-Took': 7,
