@@ -225,7 +225,8 @@ export default class Draft extends Concept {
       data: metadata,
       headers: permittedHeaders,
       options: {
-        queryPath: `ingest/providers/${providerId}/${this.getConceptType()}/${nativeId}`
+        method: 'PUT',
+        path: `ingest/providers/${providerId}/${this.getConceptType()}/${nativeId}`
       }
     })
   }
@@ -269,7 +270,7 @@ export default class Draft extends Concept {
       data: prepDataForCmr,
       headers: permittedHeaders,
       options: {
-        queryPath: `ingest/publish/${draftConceptId}/${nativeId}`
+        path: `ingest/publish/${draftConceptId}/${nativeId}`
       }
     })
   }

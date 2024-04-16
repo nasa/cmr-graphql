@@ -36,7 +36,7 @@ export const cmrIngest = ({
   // Default options
   const {
     method = 'PUT',
-    queryPath = `ingest/providers/${providerId}/${conceptType}/${nativeId}`
+    path = `ingest/providers/${providerId}/${conceptType}/${nativeId}`
   } = options
 
   // Merge default headers into the provided headers and then pick out only permitted values
@@ -60,7 +60,7 @@ export const cmrIngest = ({
     data,
     headers: permittedHeaders,
     method,
-    url: `${process.env.cmrRootUrl}/${queryPath}`
+    url: `${process.env.cmrRootUrl}/${path}`
   }
 
   // Interceptors require an instance of axios

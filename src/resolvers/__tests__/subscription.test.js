@@ -28,7 +28,7 @@ describe('Subscription', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/subscriptions\.umm_json/)
+        .get(/subscriptions\.umm_json/)
         .reply(200, {
           items: [{
             meta: {
@@ -104,7 +104,7 @@ describe('Subscription', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/subscriptions\.json/, 'page_size=2')
+        .get('/search/subscriptions.json?page_size=2')
         .reply(200, {
           items: [{
             concept_id: 'SUB100000-EDSC'
@@ -147,7 +147,7 @@ describe('Subscription', () => {
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .post(/subscriptions\.json/, 'concept_id=SUB100000-EDSC')
+            .get('/search/subscriptions.json?concept_id=SUB100000-EDSC')
             .reply(200, {
               items: [{
                 concept_id: 'SUB100000-EDSC'
@@ -182,7 +182,7 @@ describe('Subscription', () => {
               'CMR-Took': 0,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .post(/subscriptions\.json/, 'concept_id=SUB100000-EDSC')
+            .get('/search/subscriptions.json?concept_id=SUB100000-EDSC')
             .reply(200, {
               items: []
             })
@@ -438,7 +438,7 @@ describe('Subscription', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/subscriptions\.json/)
+        .get(/subscriptions\.json/)
         .reply(200, {
           items: [{
             concept_id: 'SUB100000-EDSC',
@@ -454,7 +454,7 @@ describe('Subscription', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/collections\.json/, 'concept_id=C100000-EDSC&page_size=20')
+        .get('/search/collections.json?concept_id=C100000-EDSC&page_size=20')
         .reply(200, {
           feed: {
             entry: [{
@@ -468,7 +468,7 @@ describe('Subscription', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/collections\.json/, 'concept_id=C100003-EDSC&page_size=20')
+        .get('/search/collections.json?concept_id=C100003-EDSC&page_size=20')
         .reply(200, {
           feed: {
             entry: [{
@@ -518,7 +518,7 @@ describe('Subscription', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/subscriptions\.json/)
+        .get(/subscriptions\.json/)
         .reply(200, {
           items: [{
             concept_id: 'SUB100000-EDSC',

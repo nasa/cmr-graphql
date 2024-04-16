@@ -37,6 +37,7 @@ export default class DataQualitySummary extends Concept {
       ...headers,
       Accept: 'application/vnd.nasa.cmr.umm_results+json'
     }
+
     const ummResponse = super.fetchUmm(searchParams, ummKeys, ummHeaders)
 
     return ummResponse

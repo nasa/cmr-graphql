@@ -32,7 +32,7 @@ export const cmrDelete = async ({
 
   // Default options
   const {
-    queryPath = `ingest/providers/${providerId}/${conceptType}/${nativeId}`
+    path = `ingest/providers/${providerId}/${conceptType}/${nativeId}`
   } = options
 
   // Merge default headers into the provided headers and then pick out only permitted values
@@ -56,7 +56,7 @@ export const cmrDelete = async ({
     data,
     headers: permittedHeaders,
     method: 'DELETE',
-    url: `${process.env.cmrRootUrl}/${queryPath}`
+    url: `${process.env.cmrRootUrl}/${path}`
   }
 
   // Interceptors require an instance of axios

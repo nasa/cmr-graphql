@@ -109,7 +109,7 @@ export default class Association extends Concept {
     super.ingest(params, requestedKeys, providedHeaders, {
       ...options,
       method: 'POST',
-      queryPath: `search/associate/${conceptId}`
+      path: `search/associate/${conceptId}`
     })
   }
 
@@ -127,7 +127,7 @@ export default class Association extends Concept {
     super.delete(params, requestedKeys, providedHeaders, {
       ...options,
       method: 'DELETE',
-      queryPath: `search/associate/${conceptId}`
+      path: `search/associate/${conceptId}`
     })
   }
 }

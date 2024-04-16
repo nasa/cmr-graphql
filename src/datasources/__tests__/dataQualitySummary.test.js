@@ -96,7 +96,7 @@ describe('dataQualitySummary', () => {
           'CMR-Request-Id': 'abcd-1234-efgh-5678',
           'CMR-Search-After': '["xyz", 789, 999]'
         })
-        .post(/data-quality-summaries\.umm_json/)
+        .get(/data-quality-summaries\.umm_json/)
         .reply(200, {
           items: [{
             meta: {
@@ -134,7 +134,7 @@ describe('dataQualitySummary', () => {
             'CMR-Request-Id': 'abcd-1234-efgh-5678',
             'CMR-Search-After': '["xyz", 789, 999]'
           })
-          .post(/data-quality-summaries\.umm_json/)
+          .get(/data-quality-summaries\.umm_json/)
           .reply(200, {
             items: [{
               meta: {
@@ -173,7 +173,7 @@ describe('dataQualitySummary', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/data-quality-summaries\.json/)
+        .get(/data-quality-summaries\.json/)
         .reply(200, {
           items: [{
             concept_id: 'DQS100000-EDSC'
@@ -205,7 +205,7 @@ describe('dataQualitySummary', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/data-quality-summaries\.json/, 'concept_id=DQS100000-EDSC')
+        .get('/search/data-quality-summaries.json?concept_id=DQS100000-EDSC')
         .reply(200, {
           items: [{
             concept_id: 'DQS100000-EDSC'
@@ -269,7 +269,7 @@ describe('dataQualitySummary', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/data-quality-summaries\.umm_json/)
+        .get(/data-quality-summaries\.umm_json/)
         .reply(200, {
           items: [{
             meta: {
@@ -304,7 +304,7 @@ describe('dataQualitySummary', () => {
 
   test('catches errors received from querying CMR for dataQualitySummaries', async () => {
     nock(/example-cmr/)
-      .post(/data-quality-summaries/)
+      .get(/data-quality-summaries/)
       .reply(500, {
         errors: ['HTTP Error']
       }, {

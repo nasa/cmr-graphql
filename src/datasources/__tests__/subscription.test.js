@@ -102,7 +102,7 @@ describe('subscription#fetch', () => {
           'CMR-Request-Id': 'abcd-1234-efgh-5678',
           'CMR-Search-After': '["xyz", 789, 999]'
         })
-        .post(/subscriptions\.umm_json/)
+        .get(/subscriptions\.umm_json/)
         .reply(200, {
           items: [{
             meta: {
@@ -140,7 +140,7 @@ describe('subscription#fetch', () => {
             'CMR-Request-Id': 'abcd-1234-efgh-5678',
             'CMR-Search-After': '["xyz", 789, 999]'
           })
-          .post(/subscriptions\.umm_json/)
+          .get(/subscriptions\.umm_json/)
           .reply(200, {
             items: [{
               meta: {
@@ -179,7 +179,7 @@ describe('subscription#fetch', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/subscriptions\.json/)
+        .get(/subscriptions\.json/)
         .reply(200, {
           items: [{
             concept_id: 'SUB100000-EDSC'
@@ -211,7 +211,7 @@ describe('subscription#fetch', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/subscriptions\.json/, 'concept_id=SUB100000-EDSC')
+        .get('/search/subscriptions.json?concept_id=SUB100000-EDSC')
         .reply(200, {
           items: [{
             concept_id: 'SUB100000-EDSC'
@@ -275,7 +275,7 @@ describe('subscription#fetch', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/subscriptions\.umm_json/)
+        .get(/subscriptions\.umm_json/)
         .reply(200, {
           items: [{
             meta: {
@@ -310,7 +310,7 @@ describe('subscription#fetch', () => {
 
   test('catches errors received from queryCmrSubscriptions', async () => {
     nock(/example-cmr/)
-      .post(/subscriptions/)
+      .get(/subscriptions/)
       .reply(500, {
         errors: ['HTTP Error']
       }, {

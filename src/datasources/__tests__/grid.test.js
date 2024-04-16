@@ -96,7 +96,7 @@ describe('grid', () => {
           'CMR-Request-Id': 'abcd-1234-efgh-5678',
           'CMR-Search-After': '["xyz", 789, 999]'
         })
-        .post(/grids\.umm_json/)
+        .get(/grids\.umm_json/)
         .reply(200, {
           items: [{
             meta: {
@@ -134,7 +134,7 @@ describe('grid', () => {
             'CMR-Request-Id': 'abcd-1234-efgh-5678',
             'CMR-Search-After': '["xyz", 789, 999]'
           })
-          .post(/grids\.umm_json/)
+          .get(/grids\.umm_json/)
           .reply(200, {
             items: [{
               meta: {
@@ -173,7 +173,7 @@ describe('grid', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/grids\.json/)
+        .get(/grids\.json/)
         .reply(200, {
           items: [{
             concept_id: 'GRD100000-EDSC'
@@ -205,7 +205,7 @@ describe('grid', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/grids\.json/, 'concept_id=GRD100000-EDSC')
+        .get('/search/grids.json?concept_id=GRD100000-EDSC')
         .reply(200, {
           items: [{
             concept_id: 'GRD100000-EDSC'
@@ -269,7 +269,7 @@ describe('grid', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/grids\.umm_json/)
+        .get(/grids\.umm_json/)
         .reply(200, {
           items: [{
             meta: {
@@ -304,7 +304,7 @@ describe('grid', () => {
 
   test('Catches errors received from queryCmr', async () => {
     nock(/example-cmr/)
-      .post(/grids/)
+      .get(/grids/)
       .reply(500, {
         errors: ['HTTP Error']
       }, {

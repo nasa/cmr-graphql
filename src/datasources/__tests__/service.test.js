@@ -99,7 +99,7 @@ describe('service', () => {
           'CMR-Request-Id': 'abcd-1234-efgh-5678',
           'CMR-Search-After': '["xyz", 789, 999]'
         })
-        .post(/services\.umm_json/)
+        .get(/services\.umm_json/)
         .reply(200, {
           items: [{
             meta: {
@@ -137,7 +137,7 @@ describe('service', () => {
             'CMR-Request-Id': 'abcd-1234-efgh-5678',
             'CMR-Search-After': '["xyz", 789, 999]'
           })
-          .post(/services\.umm_json/)
+          .get(/services\.umm_json/)
           .reply(200, {
             items: [{
               meta: {
@@ -176,7 +176,7 @@ describe('service', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/services\.json/)
+        .get(/services\.json/)
         .reply(200, {
           items: [{
             concept_id: 'S100000-EDSC'
@@ -208,7 +208,7 @@ describe('service', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/services\.json/, 'concept_id=S100000-EDSC')
+        .get('/search/services.json?concept_id=S100000-EDSC')
         .reply(200, {
           items: [{
             concept_id: 'S100000-EDSC'
@@ -278,7 +278,7 @@ describe('service', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/services\.umm_json/)
+        .get(/services\.umm_json/)
         .reply(200, {
           items: [{
             meta: {
@@ -313,7 +313,7 @@ describe('service', () => {
 
   test('catches errors received from queryCmrServices', async () => {
     nock(/example-cmr/)
-      .post(/services/)
+      .get(/services/)
       .reply(500, {
         errors: ['HTTP Error']
       }, {

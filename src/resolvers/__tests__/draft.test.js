@@ -29,7 +29,7 @@ describe('Draft', () => {
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/collection-drafts\.umm_json/)
+          .get(/collection-drafts\.umm_json/)
           .reply(200, {
             hits: 1,
             items: [{
@@ -109,7 +109,7 @@ describe('Draft', () => {
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/collection-drafts\.umm_json/)
+          .get(/collection-drafts\.umm_json/)
           .reply(200, {
             hits: 2,
             items: [{
@@ -197,7 +197,7 @@ describe('Draft', () => {
                 'CMR-Took': 7,
                 'CMR-Request-Id': 'abcd-1234-efgh-5678'
               })
-              .post(/collection-drafts\.json/, 'concept_id=CD100000-EDSC')
+              .get('/search/collection-drafts.json?concept_id=CD100000-EDSC')
               .reply(200, {
                 items: [{
                   concept_id: 'CD100000-EDSC'
@@ -237,7 +237,7 @@ describe('Draft', () => {
                 'CMR-Took': 0,
                 'CMR-Request-Id': 'abcd-1234-efgh-5678'
               })
-              .post(/collection-drafts\.json/, 'concept_id=CD100000-EDSC')
+              .get('/search/collection-drafts.json?concept_id=CD100000-EDSC')
               .reply(200, {
                 items: []
               })
@@ -466,7 +466,7 @@ describe('Draft', () => {
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/service-drafts\.umm_json/)
+          .get(/service-drafts\.umm_json/)
           .reply(200, {
             hits: 1,
             items: [{
@@ -545,7 +545,7 @@ describe('Draft', () => {
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/service-drafts\.umm_json/)
+          .get(/service-drafts\.umm_json/)
           .reply(200, {
             hits: 2,
             items: [{
@@ -632,7 +632,7 @@ describe('Draft', () => {
                 'CMR-Took': 7,
                 'CMR-Request-Id': 'abcd-1234-efgh-5678'
               })
-              .post(/service-drafts\.json/, 'concept_id=SD100000-EDSC')
+              .get('/search/service-drafts.json?concept_id=SD100000-EDSC')
               .reply(200, {
                 items: [{
                   concept_id: 'SD100000-EDSC'
@@ -672,7 +672,7 @@ describe('Draft', () => {
                 'CMR-Took': 0,
                 'CMR-Request-Id': 'abcd-1234-efgh-5678'
               })
-              .post(/service-drafts\.json/, 'concept_id=SD100000-EDSC')
+              .get('/search/service-drafts.json?concept_id=SD100000-EDSC')
               .reply(200, {
                 items: []
               })
@@ -901,7 +901,7 @@ describe('Draft', () => {
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/tool-drafts\.umm_json/)
+          .get(/tool-drafts\.umm_json/)
           .reply(200, {
             hits: 1,
             items: [{
@@ -980,7 +980,7 @@ describe('Draft', () => {
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/tool-drafts\.umm_json/)
+          .get(/tool-drafts\.umm_json/)
           .reply(200, {
             hits: 2,
             items: [{
@@ -1067,7 +1067,7 @@ describe('Draft', () => {
                 'CMR-Took': 7,
                 'CMR-Request-Id': 'abcd-1234-efgh-5678'
               })
-              .post(/tool-drafts\.json/, 'concept_id=TD100000-EDSC')
+              .get('/search/tool-drafts.json?concept_id=TD100000-EDSC')
               .reply(200, {
                 items: [{
                   concept_id: 'TD100000-EDSC'
@@ -1107,7 +1107,7 @@ describe('Draft', () => {
                 'CMR-Took': 0,
                 'CMR-Request-Id': 'abcd-1234-efgh-5678'
               })
-              .post(/tool-drafts\.json/, 'concept_id=TD100000-EDSC')
+              .get('/search/tool-drafts.json?concept_id=TD100000-EDSC')
               .reply(200, {
                 items: []
               })
@@ -1388,7 +1388,7 @@ describe('Draft', () => {
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/variable-drafts\.umm_json/)
+          .get(/variable-drafts\.umm_json/)
           .reply(200, {
             hits: 1,
             items: [{
@@ -1467,7 +1467,7 @@ describe('Draft', () => {
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/variable-drafts\.umm_json/)
+          .get(/variable-drafts\.umm_json/)
           .reply(200, {
             hits: 2,
             items: [{
@@ -1554,7 +1554,7 @@ describe('Draft', () => {
                 'CMR-Took': 7,
                 'CMR-Request-Id': 'abcd-1234-efgh-5678'
               })
-              .post(/variable-drafts\.json/, 'concept_id=VD100000-EDSC')
+              .get('/search/variable-drafts.json?concept_id=VD100000-EDSC')
               .reply(200, {
                 items: [{
                   concept_id: 'VD100000-EDSC'
@@ -1594,7 +1594,7 @@ describe('Draft', () => {
                 'CMR-Took': 0,
                 'CMR-Request-Id': 'abcd-1234-efgh-5678'
               })
-              .post(/variable-drafts\.json/, 'concept_id=VD100000-EDSC')
+              .get('/search/variable-drafts.json?concept_id=VD100000-EDSC')
               .reply(200, {
                 items: []
               })

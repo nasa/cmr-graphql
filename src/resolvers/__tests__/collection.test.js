@@ -44,7 +44,7 @@ describe('Collection', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/collections\.json/)
+        .get(/collections\.json/)
         .reply(200, {
           feed: {
             entry: [{
@@ -121,7 +121,7 @@ describe('Collection', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/collections\.umm_json/)
+        .get(/collections\.umm_json/)
         .reply(200, {
           items: [{
             meta: {
@@ -475,7 +475,7 @@ describe('Collection', () => {
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/collections\.json/, 'page_size=2')
+          .get('/search/collections.json?page_size=2')
           .reply(200, {
             feed: {
               entry: [{
@@ -521,7 +521,7 @@ describe('Collection', () => {
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .post(/collections\.json/, 'concept_id=C100000-EDSC')
+            .get('/search/collections.json?concept_id=C100000-EDSC')
             .reply(200, {
               feed: {
                 entry: [{
@@ -558,7 +558,7 @@ describe('Collection', () => {
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .post(/collections\.json/, 'concept_id=C100000-EDSC')
+            .get('/search/collections.json?concept_id=C100000-EDSC')
             .reply(200, {
               feed: {
                 entry: []
@@ -594,7 +594,7 @@ describe('Collection', () => {
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/collections\.json/)
+          .get(/collections\.json/)
           .reply(200, {
             feed: {
               entry: [{
@@ -610,7 +610,7 @@ describe('Collection', () => {
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/granules\.json/, 'page_size=20&collection_concept_id=C100000-EDSC')
+          .get('/search/granules.json?page_size=20&collection_concept_id=C100000-EDSC')
           .reply(200, {
             feed: {
               entry: [{
@@ -626,7 +626,7 @@ describe('Collection', () => {
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/granules\.json/, 'page_size=20&collection_concept_id=C100001-EDSC')
+          .get('/search/granules.json?page_size=20&collection_concept_id=C100001-EDSC')
           .reply(200, {
             feed: {
               entry: [{
@@ -688,7 +688,7 @@ describe('Collection', () => {
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/collections\.json/)
+          .get(/collections\.json/)
           .reply(200, {
             feed: {
               entry: [{
@@ -704,7 +704,7 @@ describe('Collection', () => {
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/granules\.json/, 'page_size=20&bounding_box=-90.08940124511719,41.746426050239336,-82.33992004394531,47.84755587105307&collection_concept_id=C100000-EDSC')
+          .get('/search/granules.json?page_size=20&bounding_box=-90.08940124511719,41.746426050239336,-82.33992004394531,47.84755587105307&collection_concept_id=C100000-EDSC')
           .reply(200, {
             feed: {
               entry: [{
@@ -720,7 +720,7 @@ describe('Collection', () => {
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/granules\.json/, 'page_size=20&bounding_box=-90.08940124511719,41.746426050239336,-82.33992004394531,47.84755587105307&collection_concept_id=C100001-EDSC')
+          .get('/search/granules.json?page_size=20&bounding_box=-90.08940124511719,41.746426050239336,-82.33992004394531,47.84755587105307&collection_concept_id=C100001-EDSC')
           .reply(200, {
             feed: {
               entry: [{
@@ -786,7 +786,7 @@ describe('Collection', () => {
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/collection-drafts\.umm_json/)
+          .get(/collection-drafts\.umm_json/)
           .reply(200, {
             items: [{
               meta: {
@@ -850,7 +850,7 @@ describe('Collection', () => {
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .post(/collections\.json/)
+            .get(/collections\.json/)
             .reply(200, {
               feed: {
                 entry: [{
@@ -906,7 +906,7 @@ describe('Collection', () => {
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .post(/collections\.json/)
+            .get(/collections\.json/)
             .reply(200, {
               feed: {
                 entry: [{
@@ -968,7 +968,7 @@ describe('Collection', () => {
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .post(/collections\.json/)
+            .get(/collections\.json/)
             .reply(200, {
               feed: {
                 entry: [{
@@ -990,7 +990,7 @@ describe('Collection', () => {
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .post(/services\.json/, 'concept_id[]=S100000-EDSC&concept_id[]=S100001-EDSC&page_size=2')
+            .get('/search/services.json?concept_id[]=S100000-EDSC&concept_id[]=S100001-EDSC&page_size=2')
             .reply(200, {
               items: [{
                 concept_id: 'S100000-EDSC'
@@ -1004,7 +1004,7 @@ describe('Collection', () => {
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .post(/services\.json/, 'concept_id[]=S100002-EDSC&concept_id[]=S100003-EDSC&page_size=2')
+            .get('/search/services.json?concept_id[]=S100002-EDSC&concept_id[]=S100003-EDSC&page_size=2')
             .reply(200, {
               items: [{
                 concept_id: 'S100002-EDSC'
@@ -1066,7 +1066,7 @@ describe('Collection', () => {
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/collection-drafts\.umm_json/)
+          .get(/collection-drafts\.umm_json/)
           .reply(200, {
             items: [{
               meta: {
@@ -1129,7 +1129,7 @@ describe('Collection', () => {
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/collections\.json/)
+          .get(/collections\.json/)
           .reply(200, {
             feed: {
               entry: [{
@@ -1145,7 +1145,7 @@ describe('Collection', () => {
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/subscriptions\.json/, 'page_size=20&collection_concept_id=C100000-EDSC')
+          .get('/search/subscriptions.json?page_size=20&collection_concept_id=C100000-EDSC')
           .reply(200, {
             items: [{
               concept_id: 'SUB100000-EDSC'
@@ -1159,7 +1159,7 @@ describe('Collection', () => {
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/subscriptions\.json/, 'page_size=20&collection_concept_id=C100001-EDSC')
+          .get('/search/subscriptions.json?page_size=20&collection_concept_id=C100001-EDSC')
           .reply(200, {
             items: [{
               concept_id: 'SUB100002-EDSC'
@@ -1220,7 +1220,7 @@ describe('Collection', () => {
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/collection-drafts\.umm_json/)
+          .get(/collection-drafts\.umm_json/)
           .reply(200, {
             items: [{
               meta: {
@@ -1283,7 +1283,7 @@ describe('Collection', () => {
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/collections\.json/)
+          .get(/collections\.json/)
           .reply(200, {
             feed: {
               entry: [{
@@ -1346,7 +1346,7 @@ describe('Collection', () => {
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/collections\.json/)
+          .get(/collections\.json/)
           .reply(200, {
             feed: {
               entry: [{
@@ -1421,7 +1421,7 @@ describe('Collection', () => {
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .post(/collections\.json/)
+            .get(/collections\.json/)
             .reply(200, {
               feed: {
                 entry: [{
@@ -1477,7 +1477,7 @@ describe('Collection', () => {
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .post(/collections\.json/)
+            .get(/collections\.json/)
             .reply(200, {
               feed: {
                 entry: [{
@@ -1539,7 +1539,7 @@ describe('Collection', () => {
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .post(/collections\.json/)
+            .get(/collections\.json/)
             .reply(200, {
               feed: {
                 entry: [{
@@ -1561,7 +1561,7 @@ describe('Collection', () => {
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .post(/tools\.json/, 'concept_id[]=T100000-EDSC&concept_id[]=T100001-EDSC&page_size=2')
+            .get('/search/tools.json?concept_id[]=T100000-EDSC&concept_id[]=T100001-EDSC&page_size=2')
             .reply(200, {
               items: [{
                 concept_id: 'T100000-EDSC'
@@ -1575,7 +1575,7 @@ describe('Collection', () => {
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .post(/tools\.json/, 'concept_id[]=T100002-EDSC&concept_id[]=T100003-EDSC&page_size=2')
+            .get('/search/tools.json?concept_id[]=T100002-EDSC&concept_id[]=T100003-EDSC&page_size=2')
             .reply(200, {
               items: [{
                 concept_id: 'T100002-EDSC'
@@ -1637,7 +1637,7 @@ describe('Collection', () => {
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/collection-drafts\.umm_json/)
+          .get(/collection-drafts\.umm_json/)
           .reply(200, {
             items: [{
               meta: {
@@ -1701,7 +1701,7 @@ describe('Collection', () => {
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .post(/collections\.json/)
+            .get(/collections\.json/)
             .reply(200, {
               feed: {
                 entry: [{
@@ -1757,7 +1757,7 @@ describe('Collection', () => {
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .post(/collections\.json/)
+            .get(/collections\.json/)
             .reply(200, {
               feed: {
                 entry: [{
@@ -1819,7 +1819,7 @@ describe('Collection', () => {
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .post(/collections\.json/)
+            .get(/collections\.json/)
             .reply(200, {
               feed: {
                 entry: [{
@@ -1841,7 +1841,7 @@ describe('Collection', () => {
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .post(/variables\.json/, 'concept_id[]=V100000-EDSC&concept_id[]=V100001-EDSC&page_size=2')
+            .get('/search/variables.json?concept_id[]=V100000-EDSC&concept_id[]=V100001-EDSC&page_size=2')
             .reply(200, {
               items: [{
                 concept_id: 'V100000-EDSC'
@@ -1855,7 +1855,7 @@ describe('Collection', () => {
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .post(/variables\.json/, 'concept_id[]=V100002-EDSC&concept_id[]=V100003-EDSC&page_size=2')
+            .get('/search/variables.json?concept_id[]=V100002-EDSC&concept_id[]=V100003-EDSC&page_size=2')
             .reply(200, {
               items: [{
                 concept_id: 'V100002-EDSC'
@@ -1917,7 +1917,7 @@ describe('Collection', () => {
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/collection-drafts\.umm_json/)
+          .get(/collection-drafts\.umm_json/)
           .reply(200, {
             items: [{
               meta: {
@@ -1981,7 +1981,7 @@ describe('Collection', () => {
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .post(/collections\.json/)
+            .get(/collections\.json/)
             .reply(200, {
               feed: {
                 entry: [{
@@ -2037,7 +2037,7 @@ describe('Collection', () => {
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .post(/collections\.json/)
+            .get(/collections\.json/)
             .reply(200, {
               feed: {
                 entry: [{
@@ -2099,7 +2099,7 @@ describe('Collection', () => {
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .post(/collections\.json/)
+            .get(/collections\.json/)
             .reply(200, {
               feed: {
                 entry: [{
@@ -2115,7 +2115,7 @@ describe('Collection', () => {
                 }]
               }
             })
-            .post(/data-quality-summaries\.json/, 'concept_id[]=DQS100000-EDSC&concept_id[]=DQS100001-EDSC&page_size=2')
+            .get('/search/data-quality-summaries.json?concept_id[]=DQS100000-EDSC&concept_id[]=DQS100001-EDSC&page_size=2')
             .reply(200, {
               items: [{
                 concept_id: 'DQS100000-EDSC'
@@ -2124,7 +2124,7 @@ describe('Collection', () => {
               }]
             })
             // Second call is needed for the other collection's DQS call
-            .post(/data-quality-summaries\.json/, 'concept_id[]=DQS100002-EDSC&concept_id[]=DQS100003-EDSC&page_size=2')
+            .get('/search/data-quality-summaries.json?concept_id[]=DQS100002-EDSC&concept_id[]=DQS100003-EDSC&page_size=2')
             .reply(200, {
               items: [{
                 concept_id: 'DQS100002-EDSC'
@@ -2187,7 +2187,7 @@ describe('Collection', () => {
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/collection-drafts\.umm_json/)
+          .get(/collection-drafts\.umm_json/)
           .reply(200, {
             items: [{
               meta: {
@@ -2250,7 +2250,7 @@ describe('Collection', () => {
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/collections\.json/)
+          .get(/collections\.json/)
           .reply(200, {
             feed: {
               entry: [{
@@ -2314,7 +2314,7 @@ describe('Collection', () => {
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/collection-drafts\.umm_json/)
+          .get(/collection-drafts\.umm_json/)
           .reply(200, {
             items: [{
               meta: {
@@ -2377,7 +2377,7 @@ describe('Collection', () => {
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/collections\.json/)
+          .get(/collections\.json/)
           .reply(200, {
             feed: {
               entry: [{
@@ -2468,7 +2468,7 @@ describe('Collection', () => {
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/collections\.umm_json/)
+          .get(/collections\.umm_json/)
           .reply(200, {
             hits: 1,
             items: [{
@@ -2524,7 +2524,7 @@ describe('Collection', () => {
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/collection-drafts\.umm_json/)
+          .get(/collection-drafts\.umm_json/)
           .reply(200, {
             items: [{
               meta: {

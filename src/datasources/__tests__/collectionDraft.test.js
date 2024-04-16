@@ -75,12 +75,12 @@ describe('collectionDraft', () => {
   })
 
   test('catches errors received from mmtQuery', async () => {
-    nock(/example/)
+    nock(/example-mmt/)
       .get(/api\/collection_drafts/)
       .reply(500, {
         errors: ['HTTP Error']
       }, {
-        'cmr-request-id': 'abcd-1234-efgh-5678'
+        'CMR-Request-Id': 'abcd-1234-efgh-5678'
       })
 
     await expect(

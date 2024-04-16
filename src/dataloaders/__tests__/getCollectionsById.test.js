@@ -27,7 +27,7 @@ describe('getCollectionsById', () => {
         'CMR-Request-Id': 'abcd-1234-efgh-5678',
         'CMR-Search-After': '["abc", 123, 444]'
       })
-      .post(/granules\.json/)
+      .get(/granules\.json/)
       .reply(200, {
         feed: {
           entry: [
@@ -50,7 +50,7 @@ describe('getCollectionsById', () => {
         'CMR-Request-Id': 'abcd-1234-efgh-5678',
         'CMR-Search-After': '["abc", 123, 444]'
       })
-      .post(/collections\.json/)
+      .get(/collections\.json/)
       .reply(200, {
         feed: {
           entry: [
@@ -128,7 +128,7 @@ describe('getCollectionsById', () => {
         'CMR-Request-Id': 'abcd-1234-efgh-5678',
         'CMR-Search-After': '["abc", 123, 444]'
       })
-      .post(/granules\.json/)
+      .get(/granules\.json/)
       .reply(200, {
         feed: {
           entry: [
@@ -163,7 +163,7 @@ describe('getCollectionsById', () => {
         'CMR-Request-Id': 'abcd-1234-efgh-5678',
         'CMR-Search-After': '["abc", 123, 444]'
       })
-      .post(/collections\.json/)
+      .get(/collections\.json/)
       .reply(200, {
         feed: {
           entry: [
@@ -272,7 +272,7 @@ describe('getCollectionsById', () => {
         'CMR-Request-Id': 'abcd-1234-efgh-5678',
         'CMR-Search-After': '["abc", 123, 444]'
       })
-      .post(/granules\.json/)
+      .get(/granules\.json/)
       .reply(200, {
         feed: {
           entry: [
@@ -291,7 +291,7 @@ describe('getCollectionsById', () => {
         'CMR-Request-Id': 'abcd-1234-efgh-5678',
         'CMR-Search-After': '["abc", 123, 444]'
       })
-      .post(/collections\.json/)
+      .get(/collections\.json/)
       .reply(200, {
         feed: {
           entry: []

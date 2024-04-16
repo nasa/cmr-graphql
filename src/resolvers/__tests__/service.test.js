@@ -11,6 +11,7 @@ describe('Service', () => {
     process.env = { ...OLD_ENV }
 
     process.env.cmrRootUrl = 'http://example-cmr.com'
+    process.env.ummServiceVersion = '1.0.0'
   })
 
   afterEach(() => {
@@ -25,7 +26,7 @@ describe('Service', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/services\.umm_json/)
+        .get(/services\.umm_json/)
         .reply(200, {
           items: [{
             meta: {
@@ -123,7 +124,7 @@ describe('Service', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/services\.json/, 'page_size=2')
+        .get('/search/services.json?page_size=2')
         .reply(200, {
           items: [{
             concept_id: 'S100000-EDSC'
@@ -166,7 +167,7 @@ describe('Service', () => {
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .post(/services\.json/, 'concept_id=S100000-EDSC')
+            .get('/search/services.json?concept_id=S100000-EDSC')
             .reply(200, {
               items: [{
                 concept_id: 'S100000-EDSC'
@@ -201,7 +202,7 @@ describe('Service', () => {
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .post(/services\.json/, 'concept_id=S100000-EDSC')
+            .get('/search/services.json?concept_id=S100000-EDSC')
             .reply(200, {
               items: []
             })
@@ -278,7 +279,7 @@ describe('Service', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/services\.json/)
+        .get(/services\.json/)
         .reply(200, {
           items: [{
             concept_id: 'S100000-EDSC',
@@ -298,7 +299,7 @@ describe('Service', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/variables\.json/, 'concept_id[]=V100000-EDSC&concept_id[]=V100001-EDSC&page_size=2')
+        .get('/search/variables.json?concept_id[]=V100000-EDSC&concept_id[]=V100001-EDSC&page_size=2')
         .reply(200, {
           items: [{
             concept_id: 'V100000-EDSC'
@@ -312,7 +313,7 @@ describe('Service', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/variables\.json/, 'concept_id[]=V100002-EDSC&concept_id[]=V100003-EDSC&page_size=2')
+        .get('/search/variables.json?concept_id[]=V100002-EDSC&concept_id[]=V100003-EDSC&page_size=2')
         .reply(200, {
           items: [{
             concept_id: 'V100002-EDSC'
@@ -374,7 +375,7 @@ describe('Service', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/services\.json/)
+        .get(/services\.json/)
         .reply(200, {
           items: [{
             concept_id: 'S100000-EDSC'
@@ -388,7 +389,7 @@ describe('Service', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/variables\.json/, 'concept_id[]=V100000-EDSC&concept_id[]=V100001-EDSC&page_size=2')
+        .get('/search/variables.json?concept_id[]=V100000-EDSC&concept_id[]=V100001-EDSC&page_size=2')
         .reply(200, {
           items: [{
             concept_id: 'V100000-EDSC'
@@ -402,7 +403,7 @@ describe('Service', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/variables\.json/, 'concept_id[]=V100002-EDSC&concept_id[]=V100003-EDSC&page_size=2')
+        .get('/search/variables.json?concept_id[]=V100002-EDSC&concept_id[]=V100003-EDSC&page_size=2')
         .reply(200, {
           items: [{
             concept_id: 'V100002-EDSC'
@@ -457,7 +458,7 @@ describe('Service', () => {
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/services\.json/)
+          .get(/services\.json/)
           .reply(200, {
             items: [{
               concept_id: 'S100000-EDSC'
@@ -471,7 +472,7 @@ describe('Service', () => {
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/collections\.json/, 'page_size=20&service_concept_id=S100000-EDSC')
+          .get('/search/collections.json?page_size=20&service_concept_id=S100000-EDSC')
           .reply(200, {
             feed: {
               entry: [{
@@ -487,7 +488,7 @@ describe('Service', () => {
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/collections\.json/, 'page_size=20&service_concept_id=S100001-EDSC')
+          .get('/search/collections.json?page_size=20&service_concept_id=S100001-EDSC')
           .reply(200, {
             feed: {
               entry: [{
@@ -550,7 +551,7 @@ describe('Service', () => {
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/service-drafts\.umm_json/)
+          .get(/service-drafts\.umm_json/)
           .reply(200, {
             items: [{
               meta: {
@@ -615,7 +616,7 @@ describe('Service', () => {
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .post(/collections\.json/)
+            .get(/collections\.json/)
             .reply(200, {
               feed: {
                 entry: [{
@@ -627,7 +628,7 @@ describe('Service', () => {
               }
             })
             // The association between the collection and the service contains the order-option in the payload
-            .post(/services\.json/)
+            .get(/services\.json/)
             .reply(200, {
               items: [{
                 concept_id: 'S100000-EDSC',
@@ -676,14 +677,14 @@ describe('Service', () => {
                 }
               }]
             })
-            .post(/order-options\.json/)
+            .get(/order-options\.json/)
             .reply(200, {
               items: [{
                 concept_id: 'OO100000-EDSC'
               }]
             })
             // The second oderOption list being retrieved by the second service assoc to the coll
-            .post(/order-options\.json/)
+            .get(/order-options\.json/)
             .reply(200, {
               items: [{ concept_id: 'OO200000-EDSC' }]
             })
@@ -760,7 +761,7 @@ describe('Service', () => {
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .post(/collections\.json/)
+            .get(/collections\.json/)
             .reply(200, {
               feed: {
                 entry: [{
@@ -772,7 +773,7 @@ describe('Service', () => {
               }
             })
             // The association between the collection and the service contains the order-option in the payload
-            .post(/services\.json/)
+            .get(/services\.json/)
             .reply(200, {
               items: [{
                 concept_id: 'S100000-EDSC',
@@ -803,7 +804,7 @@ describe('Service', () => {
                 }
               }]
             })
-            .post(/order-options\.json/)
+            .get(/order-options\.json/)
             .reply(200, {
               items: [
                 { concept_id: 'OO100000-EDSC' }]
@@ -871,7 +872,7 @@ describe('Service', () => {
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .post(/collections\.json/)
+            .get(/collections\.json/)
             .reply(200, {
               feed: {
                 entry: [{
@@ -883,7 +884,7 @@ describe('Service', () => {
               }
             })
             // The association between the collection and the service contains the order-option in the payload
-            .post(/services\.json/)
+            .get(/services\.json/)
             .reply(200, {
               items: [{
                 concept_id: 'S100000-EDSC',
@@ -955,7 +956,7 @@ describe('Service', () => {
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .post(/collections\.json/)
+            .get(/collections\.json/)
             .reply(200, {
               feed: {
                 entry: [{
@@ -967,7 +968,7 @@ describe('Service', () => {
               }
             })
             // The association between the collection and the service contains the order-option in the payload
-            .post(/services\.json/)
+            .get(/services\.json/)
             .reply(200, {
               items: [{
                 concept_id: 'S100000-EDSC',
@@ -1039,7 +1040,7 @@ describe('Service', () => {
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .post(/collections\.json/)
+            .get(/collections\.json/)
             .reply(200, {
               feed: {
                 entry: [{
@@ -1058,7 +1059,7 @@ describe('Service', () => {
               }
             })
             // The association between the collection and the service contains the order-option in the payload
-            .post(/services\.json/)
+            .get(/services\.json/)
             .reply(200, {
               items: [{
                 concept_id: 'S100000-EDSC',
@@ -1132,7 +1133,7 @@ describe('Service', () => {
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .post(/collections\.json/)
+            .get(/collections\.json/)
             .reply(200, {
               feed: {
                 entry: [{
@@ -1195,7 +1196,7 @@ describe('Service', () => {
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/service-drafts\.umm_json/)
+          .get(/service-drafts\.umm_json/)
           .reply(200, {
             items: [{
               meta: {
@@ -1258,7 +1259,7 @@ describe('Service', () => {
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/services\.json/)
+          .get(/services\.json/)
           .reply(200, {
             items: [{
               concept_id: 'S100000-EDSC',
@@ -1289,7 +1290,7 @@ describe('Service', () => {
               }
             }]
           })
-          .post(/order-options\.json/)
+          .get(/order-options\.json/)
           .reply(200, {
             items: [{
               concept_id: 'OO100000-EDSC'
@@ -1351,7 +1352,7 @@ describe('Service', () => {
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/services\.json/)
+          .get(/services\.json/)
           .reply(200, {
             items: [{
               concept_id: 'S100000-EDSC'
@@ -1398,7 +1399,7 @@ describe('Service', () => {
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/services\.json/)
+          .get(/services\.json/)
           .reply(200, {
             items: [{
               concept_id: 'S100000-EDSC',
@@ -1417,7 +1418,7 @@ describe('Service', () => {
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/variables\.json/, 'concept_id[]=V100000-EDSC&concept_id[]=V100001-EDSC&page_size=2')
+          .get('/search/variables.json?concept_id[]=V100000-EDSC&concept_id[]=V100001-EDSC&page_size=2')
           .reply(200, {
             items: [{
               concept_id: 'V100000-EDSC'
@@ -1469,7 +1470,7 @@ describe('Service', () => {
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/service-drafts\.umm_json/)
+          .get(/service-drafts\.umm_json/)
           .reply(200, {
             items: [{
               meta: {
@@ -1533,7 +1534,7 @@ describe('Service', () => {
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/services\.json/)
+          .get(/services\.json/)
           .reply(200, {
             items: [{
               concept_id: 'S100000-EDSC',
@@ -1548,7 +1549,7 @@ describe('Service', () => {
               }
             }]
           })
-          .post(/services\.umm_json/)
+          .get(/services\.umm_json/)
           .reply(200, {
             items: [{
               meta: {
@@ -1599,7 +1600,7 @@ describe('Service', () => {
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/services\.json/)
+          .get(/services\.json/)
           .reply(200, {
             items: [{
               concept_id: 'S100000-EDSC',
@@ -1614,7 +1615,7 @@ describe('Service', () => {
               }
             }]
           })
-          .post(/services\.umm_json/)
+          .get(/services\.umm_json/)
           .reply(200, {
             items: [{
               meta: {
@@ -1659,7 +1660,7 @@ describe('Service', () => {
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/service-drafts\.umm_json/)
+          .get(/service-drafts\.umm_json/)
           .reply(200, {
             items: [{
               meta: {
