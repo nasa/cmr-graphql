@@ -28,7 +28,7 @@ describe('cmrQuery', () => {
       .defaultReplyHeaders({
         'CMR-Took': 7
       })
-      .post(/collections\.json/)
+      .get(/collections\.json/)
       .reply(200, {
         feed: {
           entry: [{
@@ -74,7 +74,7 @@ describe('cmrQuery', () => {
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         }
       })
-        .post(/collections\.umm_json/)
+        .get(/collections\.umm_json/)
         .reply(200, {
           feed: {
             entry: [{
@@ -113,7 +113,7 @@ describe('cmrQuery', () => {
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         }
       })
-        .post(/collections\.json/)
+        .get(/collections\.json/)
         .reply(200, {
           feed: {
             entry: [{
@@ -151,7 +151,7 @@ describe('cmrQuery', () => {
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         }
       })
-        .post(/collections\.json/)
+        .get(/collections\.json/)
         .reply(500, {
           errors: ['HTTP Error']
         })

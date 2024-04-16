@@ -47,7 +47,7 @@ describe('cmrIngest', () => {
         'Content-Type': 'application/vnd.nasa.cmr.umm+json; version=1.0'
       },
       options: {
-        queryPath: 'ingest/subscriptions/1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed'
+        path: 'ingest/subscriptions/1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed'
       }
     })
 
@@ -95,7 +95,7 @@ describe('cmrIngest', () => {
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         },
         options: {
-          queryPath: 'ingest/subscriptions/provided-native-id'
+          path: 'ingest/subscriptions/provided-native-id'
         }
       })
 
@@ -145,7 +145,7 @@ describe('cmrIngest', () => {
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         },
         options: {
-          queryPath: 'ingest/subscriptions/1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed'
+          path: 'ingest/subscriptions/1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed'
         }
       })
 

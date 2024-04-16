@@ -103,7 +103,7 @@ describe('draft#fetch', () => {
           'CMR-Request-Id': 'abcd-1234-efgh-5678',
           'CMR-Search-After': '["xyz", 789, 999]'
         })
-        .post(/tool-drafts\.json/)
+        .get(/tool-drafts\.json/)
         .reply(200, {
           items: [{
             concept_id: 'TD100000-EDSC',
@@ -141,7 +141,7 @@ describe('draft#fetch', () => {
             'CMR-Request-Id': 'abcd-1234-efgh-5678',
             'CMR-Search-After': '["xyz", 789, 999]'
           })
-          .post(/tool-drafts\.json/)
+          .get(/tool-drafts\.json/)
           .reply(200, {
             items: [{
               concept_id: 'TD100000-EDSC',
@@ -180,7 +180,7 @@ describe('draft#fetch', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/tool-drafts\.json/)
+        .get(/tool-drafts\.json/)
         .reply(200, {
           items: [{
             concept_id: 'TD100000-EDSC'
@@ -216,7 +216,7 @@ describe('draft#fetch', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/tool-drafts\.json/, 'concept_id=TD100000-EDSC')
+        .get('/search/tool-drafts.json?concept_id=TD100000-EDSC')
         .reply(200, {
           items: [{
             concept_id: 'TD100000-EDSC'
@@ -281,7 +281,7 @@ describe('draft#fetch', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/drafts\.umm_json/)
+        .get(/drafts\.umm_json/)
         .reply(200, {
           items: [{
             meta: {
@@ -316,7 +316,7 @@ describe('draft#fetch', () => {
 
   test('catches errors received from queryCmrDrafts', async () => {
     nock(/example-cmr/)
-      .post(/drafts/)
+      .get(/drafts/)
       .reply(500, {
         errors: ['HTTP Error']
       }, {

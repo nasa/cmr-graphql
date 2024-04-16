@@ -1,7 +1,6 @@
 import axios from 'axios'
 
-import snakeCaseKeys from 'snakecase-keys'
-
+import snakecaseKeys from 'snakecase-keys'
 import { downcaseKeys } from './downcaseKeys'
 import { pickIgnoringCase } from './pickIgnoringCase'
 import { prepKeysForCmr } from './prepKeysForCmr'
@@ -24,8 +23,7 @@ export const cmrQuery = ({
 }) => {
   const {
     format = 'json',
-    method = 'POST',
-    queryPath = `search/${conceptType}.${format}`
+    path = `search/${conceptType}.${format}`
   } = options
 
   // Default headers
@@ -43,19 +41,22 @@ export const cmrQuery = ({
     'CMR-Search-After'
   ])
 
-  const cmrParameters = prepKeysForCmr(snakeCaseKeys(params), nonIndexedKeys)
-
   const {
     'client-id': clientId,
     'cmr-request-id': requestId
   } = downcaseKeys(permittedHeaders)
 
   const requestConfiguration = {
-    data: cmrParameters,
     headers: permittedHeaders,
-    method,
-    url: `${process.env.cmrRootUrl}/${queryPath}`
+    method: 'GET',
+    url: `${process.env.cmrRootUrl}/${path}`
   }
+
+  // Append any query arguments based on provided params
+  const cmrParameters = prepKeysForCmr(snakecaseKeys(params), nonIndexedKeys)
+
+  // Join the current url and the query parameters
+  requestConfiguration.url = [requestConfiguration.url, cmrParameters].filter(Boolean).join('?')
 
   // Interceptors require an instance of axios
   const instance = axios.create()

@@ -113,7 +113,7 @@ export default class Subscription extends Concept {
     // Use the provided native id and provider id
     const { nativeId = uuidv4() } = params
 
-    super.ingest(casedKeys, requestedKeys, headers, { queryPath: `ingest/subscriptions/${nativeId}` })
+    super.ingest(casedKeys, requestedKeys, headers, { path: `ingest/subscriptions/${nativeId}` })
   }
 
   /**
@@ -129,6 +129,6 @@ export default class Subscription extends Concept {
 
     const { nativeId } = params
 
-    super.delete(data, requestedKeys, providedHeaders, { queryPath: `ingest/subscriptions/${nativeId}` })
+    super.delete(data, requestedKeys, providedHeaders, { path: `ingest/subscriptions/${nativeId}` })
   }
 }

@@ -14,6 +14,7 @@ export default {
     },
     orderOption: async (source, args, context, info) => {
       const { dataSources } = context
+
       const result = await dataSources.orderOptionSourceFetch(args, context, parseResolveInfo(info))
 
       const [firstResult] = result

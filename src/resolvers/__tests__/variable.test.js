@@ -34,7 +34,7 @@ describe('Variable', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/variables\.umm_json/)
+        .get(/variables\.umm_json/)
         .reply(200, {
           items: [{
             meta: {
@@ -156,7 +156,7 @@ describe('Variable', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/variables\.json/, 'page_size=2')
+        .get('/search/variables.json?page_size=2')
         .reply(200, {
           items: [{
             concept_id: 'V100000-EDSC'
@@ -199,7 +199,7 @@ describe('Variable', () => {
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .post(/variables\.json/, 'concept_id=V100000-EDSC')
+            .get('/search/variables.json?concept_id=V100000-EDSC')
             .reply(200, {
               items: [{
                 concept_id: 'V100000-EDSC',
@@ -240,7 +240,7 @@ describe('Variable', () => {
               'CMR-Took': 0,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .post(/variables\.json/, 'concept_id=V100000-EDSC')
+            .get('/search/variables.json?concept_id=V100000-EDSC')
             .reply(200, {
               items: []
             })
@@ -276,7 +276,7 @@ describe('Variable', () => {
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/variables\.json/)
+          .get(/variables\.json/)
           .reply(200, {
             items: [{
               concept_id: 'V100000-EDSC'
@@ -290,7 +290,7 @@ describe('Variable', () => {
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/collections\.json/, 'page_size=20&variable_concept_id=V100000-EDSC')
+          .get('/search/collections.json?page_size=20&variable_concept_id=V100000-EDSC')
           .reply(200, {
             feed: {
               entry: [{
@@ -306,7 +306,7 @@ describe('Variable', () => {
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/collections\.json/, 'page_size=20&variable_concept_id=V100001-EDSC')
+          .get('/search/collections.json?page_size=20&variable_concept_id=V100001-EDSC')
           .reply(200, {
             feed: {
               entry: [{
@@ -369,7 +369,7 @@ describe('Variable', () => {
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/variable-drafts\.umm_json/)
+          .get(/variable-drafts\.umm_json/)
           .reply(200, {
             items: [{
               meta: {
@@ -431,7 +431,7 @@ describe('Variable', () => {
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/variable-drafts\.umm_json/)
+          .get(/variable-drafts\.umm_json/)
           .reply(200, {
             items: [{
               meta: {
@@ -511,7 +511,7 @@ describe('Variable', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/collections\.json/)
+        .get(/collections\.json/)
         .reply(200, {
           feed: {
             entry: [{
@@ -526,7 +526,7 @@ describe('Variable', () => {
           'CMR-Request-Id': 'abcd-1234-efgh-5678',
           'CMR-Hits': 1
         })
-        .post(/variables\.json/)
+        .get(/variables\.json/)
         .reply(200, {
           items: [{
             concept_id: 'V10000-EDSC'

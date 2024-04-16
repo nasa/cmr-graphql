@@ -31,10 +31,10 @@ export default class Service extends Concept {
   }
 
   /**
-     * Set a value in the result set that a query has not requested but is necessary for other functionality
-     * @param {String} id Concept ID to set a value for within the result set
-     * @param {Object} item The item returned from the CMR json endpoint
-     */
+   * Set a value in the result set that a query has not requested but is necessary for other functionality
+   * @param {String} id Concept ID to set a value for within the result set
+   * @param {Object} item The item returned from the CMR json endpoint
+   */
   setEssentialUmmValues(id, item) {
     super.setEssentialUmmValues(id, item)
 

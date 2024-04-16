@@ -96,7 +96,7 @@ describe('tool#fetch', () => {
           'CMR-Request-Id': 'abcd-1234-efgh-5678',
           'CMR-Search-After': '["xyz", 789, 999]'
         })
-        .post(/tools\.umm_json/)
+        .get(/tools\.umm_json/)
         .reply(200, {
           items: [{
             meta: {
@@ -134,7 +134,7 @@ describe('tool#fetch', () => {
             'CMR-Request-Id': 'abcd-1234-efgh-5678',
             'CMR-Search-After': '["xyz", 789, 999]'
           })
-          .post(/tools\.umm_json/)
+          .get(/tools\.umm_json/)
           .reply(200, {
             items: [{
               meta: {
@@ -173,7 +173,7 @@ describe('tool#fetch', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/tools\.json/)
+        .get(/tools\.json/)
         .reply(200, {
           items: [{
             concept_id: 'T100000-EDSC'
@@ -205,7 +205,7 @@ describe('tool#fetch', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/tools\.json/, 'concept_id=T100000-EDSC')
+        .get('/search/tools.json?concept_id=T100000-EDSC')
         .reply(200, {
           items: [{
             concept_id: 'T100000-EDSC'
@@ -275,7 +275,7 @@ describe('tool#fetch', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/tools\.umm_json/)
+        .get(/tools\.umm_json/)
         .reply(200, {
           items: [{
             meta: {
@@ -310,7 +310,7 @@ describe('tool#fetch', () => {
 
   test('catches errors received from queryCmrTools', async () => {
     nock(/example-cmr/)
-      .post(/tools/)
+      .get(/tools/)
       .reply(500, {
         errors: ['HTTP Error']
       }, {

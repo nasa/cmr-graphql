@@ -25,7 +25,7 @@ describe('Tool', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/tools\.umm_json/)
+        .get(/tools\.umm_json/)
         .reply(200, {
           items: [{
             meta: {
@@ -162,7 +162,7 @@ describe('Tool', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/tools\.json/, 'page_size=2')
+        .get('/search/tools.json?page_size=2')
         .reply(200, {
           items: [{
             concept_id: 'T100000-EDSC'
@@ -205,7 +205,7 @@ describe('Tool', () => {
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .post(/tools\.json/, 'concept_id=T100000-EDSC')
+            .get('/search/tools.json?concept_id=T100000-EDSC')
             .reply(200, {
               items: [{
                 concept_id: 'T100000-EDSC'
@@ -240,7 +240,7 @@ describe('Tool', () => {
               'CMR-Took': 0,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .post(/tools\.json/, 'concept_id=T100000-EDSC')
+            .get('/search/tools.json?concept_id=T100000-EDSC')
             .reply(200, {
               items: []
             })
@@ -319,7 +319,7 @@ describe('Tool', () => {
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/tools\.json/)
+          .get(/tools\.json/)
           .reply(200, {
             items: [{
               concept_id: 'T100000-EDSC'
@@ -333,7 +333,7 @@ describe('Tool', () => {
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/collections\.json/, 'page_size=20&tool_concept_id=T100000-EDSC')
+          .get('/search/collections.json?page_size=20&tool_concept_id=T100000-EDSC')
           .reply(200, {
             feed: {
               entry: [{
@@ -349,7 +349,7 @@ describe('Tool', () => {
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/collections\.json/, 'page_size=20&tool_concept_id=T100001-EDSC')
+          .get('/search/collections.json?page_size=20&tool_concept_id=T100001-EDSC')
           .reply(200, {
             feed: {
               entry: [{
@@ -412,7 +412,7 @@ describe('Tool', () => {
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/tool-drafts\.umm_json/)
+          .get(/tool-drafts\.umm_json/)
           .reply(200, {
             items: [{
               meta: {

@@ -97,7 +97,7 @@ describe('Order Option', () => {
             'CMR-Request-Id': 'abcd-1234-efgh-5678',
             'CMR-Search-After': '["xyz", 789, 999]'
           })
-          .post(/order-options\.umm_json/)
+          .get(/order-options\.umm_json/)
           .reply(200, {
             items: [{
               meta: {
@@ -174,7 +174,7 @@ describe('Order Option', () => {
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/order-options\.json/)
+          .get(/order-options\.json/)
           .reply(200, {
             items: [{
               concept_id: 'OO100000-EDSC'
@@ -270,7 +270,7 @@ describe('Order Option', () => {
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .post(/order-options\.umm_json/)
+          .get(/order-options\.umm_json/)
           .reply(200, {
             items: [{
               meta: {
@@ -305,7 +305,7 @@ describe('Order Option', () => {
 
     test('Catches errors received from queryCmr', async () => {
       nock(/example-cmr/)
-        .post(/order-options/)
+        .get(/order-options/)
         .reply(500, {
           errors: ['HTTP Error']
         }, {

@@ -75,11 +75,9 @@ describe('collectionDraftProposal', () => {
 
   test('catches errors received from draftMmtQuery', async () => {
     nock(/example-dmmt/)
-      .get(/api\/collection_draft_proposals/)
+      .get(/collection_draft_proposals/)
       .reply(500, {
         errors: ['HTTP Error']
-      }, {
-        'cmr-request-id': 'abcd-1234-efgh-5678'
       })
 
     await expect(

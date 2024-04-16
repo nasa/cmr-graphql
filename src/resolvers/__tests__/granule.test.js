@@ -30,7 +30,7 @@ describe('Granule', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/granules\.json/, 'page_size=20&collection_concept_id=C100000-EDSC')
+        .get('/search/granules.json?page_size=20&collection_concept_id=C100000-EDSC')
         .reply(200, {
           feed: {
             entry: [{
@@ -63,7 +63,7 @@ describe('Granule', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/granules\.umm_json/, 'page_size=20&collection_concept_id=C100000-EDSC')
+        .get('/search/granules.umm_json?page_size=20&collection_concept_id=C100000-EDSC')
         .reply(200, {
           items: [{
             meta: {
@@ -170,7 +170,7 @@ describe('Granule', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/granules\.json/, 'page_size=2')
+        .get('/search/granules.json?page_size=2')
         .reply(200, {
           feed: {
             entry: [{
@@ -215,7 +215,7 @@ describe('Granule', () => {
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .post(/granules\.json/, 'concept_id=G100000-EDSC')
+            .get('/search/granules.json?concept_id=G100000-EDSC')
             .reply(200, {
               feed: {
                 entry: [{
@@ -252,7 +252,7 @@ describe('Granule', () => {
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .post(/granules\.json/, 'concept_id=G100000-EDSC')
+            .get('/search/granules.json?concept_id=G100000-EDSC')
             .reply(200, {
               feed: {
                 entry: []
@@ -287,7 +287,7 @@ describe('Granule', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/granules\.json/)
+        .get(/granules\.json/)
         .reply(200, {
           feed: {
             entry: [{
@@ -305,7 +305,7 @@ describe('Granule', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/collections\.json/)
+        .get(/collections\.json/)
         .reply(200, {
           feed: {
             entry: [{

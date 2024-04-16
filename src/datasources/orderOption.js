@@ -24,7 +24,9 @@ export const fetchOrderOption = async (params, context, parsedInfo) => {
 
 export const ingestOrderOption = async (args, context, parsedInfo) => {
   const { headers } = context
+
   const requestInfo = parseRequestedFields(parsedInfo, orderOptionKeyMap, 'orderOption')
+
   const {
     ingestKeys
   } = requestInfo

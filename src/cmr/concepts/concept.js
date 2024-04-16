@@ -519,9 +519,7 @@ export default class Concept {
     this.logKeyRequest(metaKeys, 'meta')
 
     if (jsonKeys.length > 0) {
-      const jsonHeaders = {
-        ...this.headers
-      }
+      const jsonHeaders = this.headers
 
       if (jsonSearchAfterIdentifier) {
         jsonHeaders['CMR-Search-After'] = jsonSearchAfterIdentifier
@@ -541,9 +539,7 @@ export default class Concept {
 
     // If any requested keys are umm keys, we need to make an additional request to cmr
     if (ummKeys.length > 0) {
-      const ummHeaders = {
-        ...this.headers
-      }
+      const ummHeaders = this.headers
 
       if (ummSearchAfterIdentifier) {
         ummHeaders['CMR-Search-After'] = ummSearchAfterIdentifier

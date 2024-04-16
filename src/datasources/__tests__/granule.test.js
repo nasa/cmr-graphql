@@ -102,7 +102,7 @@ describe('granule', () => {
           'CMR-Request-Id': 'abcd-1234-efgh-5678',
           'CMR-Search-After': '["abc", 123, 444]'
         })
-        .post(/granules\.json/)
+        .get(/granules\.json/)
         .reply(200, {
           feed: {
             entry: [{
@@ -119,7 +119,7 @@ describe('granule', () => {
           'CMR-Request-Id': 'abcd-1234-efgh-5678',
           'CMR-Search-After': '["xyz", 789, 999]'
         })
-        .post(/granules\.umm_json/)
+        .get(/granules\.umm_json/)
         .reply(200, {
           items: [{
             meta: {
@@ -160,7 +160,7 @@ describe('granule', () => {
             'CMR-Request-Id': 'abcd-1234-efgh-5678',
             'CMR-Search-After': '["abc", 123, 444]'
           })
-          .post(/granules\.json/)
+          .get(/granules\.json/)
           .reply(200, {
             feed: {
               entry: [{
@@ -177,7 +177,7 @@ describe('granule', () => {
             'CMR-Request-Id': 'abcd-1234-efgh-5678',
             'CMR-Search-After': '["xyz", 789, 999]'
           })
-          .post(/granules\.umm_json/)
+          .get(/granules\.umm_json/)
           .reply(200, {
             items: [{
               meta: {
@@ -217,7 +217,7 @@ describe('granule', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/granules\.json/)
+        .get(/granules\.json/)
         .reply(200, {
           feed: {
             entry: [{
@@ -251,7 +251,7 @@ describe('granule', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/granules\.json/)
+        .get(/granules\.json/)
         .reply(200, {
           feed: {
             entry: [{
@@ -317,7 +317,7 @@ describe('granule', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/granules\.json/)
+        .get(/granules\.json/)
         .reply(200, {
           feed: {
             entry: [{
@@ -424,7 +424,7 @@ describe('granule', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/granules\.json/)
+        .get(/granules\.json/)
         .reply(200, {
           feed: {
             entry: [{
@@ -440,7 +440,7 @@ describe('granule', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/granules\.umm_json/)
+        .get(/granules\.umm_json/)
         .reply(200, {
           items: [{
             meta: {
@@ -517,7 +517,7 @@ describe('granule', () => {
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
-        .post(/granules\.umm_json/)
+        .get(/granules\.umm_json/)
         .reply(200, {
           items: [{
             meta: {
@@ -552,7 +552,7 @@ describe('granule', () => {
 
   test('catches errors received from queryCmrGranules', async () => {
     nock(/example-cmr/)
-      .post(/granules/)
+      .get(/granules/)
       .reply(500, {
         errors: ['HTTP Error']
       }, {

@@ -5,9 +5,9 @@ import dataQualitySummaryKeyMap from '../utils/umm/dataQualitySummaryKeyMap.json
 import DataQualitySummary from '../cmr/concepts/dataQualitySummary'
 
 export default async (params, context, parsedInfo) => {
-  // This passes dataQualitySummary and will transform to the DataQualitySummary graphql type
-  const requestInfo = parseRequestedFields(parsedInfo, dataQualitySummaryKeyMap, 'dataQualitySummary')
   const { headers } = context
+
+  const requestInfo = parseRequestedFields(parsedInfo, dataQualitySummaryKeyMap, 'dataQualitySummary')
 
   const dataQualitySummary = new DataQualitySummary(headers, requestInfo, params)
 
