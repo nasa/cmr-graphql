@@ -7,12 +7,13 @@
   "ummKeyMappings": {
     "associationDetails": "meta.association-details",
     "conceptId": "meta.concept-id",
+    "deprecated": "umm.Deprecated",
     "description": "umm.Description",
     "form": "umm.Form",
     "name": "umm.Name",
     "nativeId": "meta.native-id",
+    "revisionDate": "meta.revision-date",
     "scope": "umm.Scope",
-    "sortKey": "umm.SortKey",
-    "deprecated": "umm.Deprecated"
+    "sortKey": "umm.SortKey"
   }
 }

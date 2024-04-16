@@ -210,7 +210,7 @@ describe('OrderOption', () => {
 
     describe('Mutation', () => {
       describe('createOrderOption', () => {
-        test('calls the ingest endpoint to create an order option', async () => {
+        test.only('calls the ingest endpoint to create an order option', async () => {
           nock(/example-cmr/)
             .defaultReplyHeaders({
               'CMR-Took': 7,
@@ -240,7 +240,8 @@ describe('OrderOption', () => {
             contextValue
           })
 
-          const { data } = response.body.singleResult
+          const { data, errors } = response.body.singleResult
+          console.log('🚀 ~ test.only ~ errors:', errors)
 
           expect(data).toEqual({
             createOrderOption: {

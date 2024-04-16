@@ -2,25 +2,31 @@ type OrderOption {
   "The list of concepts and any data on the relationship between this order option and other permitted concepts"
   associationDetails: JSON
 
-  "The concept id created by CMR for this orderOption"
+  "The concept ID created by CMR for this order option"
   conceptId: String!
 
-  "The description for this order option"
+  "Indicates if the definition is deprecated. Deprecated definitions will be returned to the client and will be considered valid when validating an order, however new order items cannot be added using the definition and existing order items cannot be updated using the definition. This flag is ignored when creating an option definition, however it will always be set and returned once the definition has been created."
+  deprecated: Boolean
+
+  "The description is a longer, human-readable description of the order option type or contents, intended for client display."
   description: String
 
-  "The ECHO Forms schema for this order option"
+  "Contents must conform to ECHO Forms schema. See the ECHO Forms Specification for more information."
   form: String
 
-  "The orderOption name."
+  "The name is a shortened name used to distinguish between other option definitions."
   name: String
 
-  "The native id to set on the order option."
+  "The native ID to set on the order option."
   nativeId: String
 
-  "The two levels of order options, `PROVIDER` or `SYSTEM`"
-  scope: String
+  "The revision date for the order option."
+  revisionDate: String
 
-  "The sort key is used to indicate the preferred display order among other definitions"
+  "There are two levels of order options, provider and system. Only administrators may add system level options and only providers may add provider level options."
+  scope: OrderOptionScopeType
+
+  "The sort key is used to indicate the preferred display order among other definitions."
   sortKey: String
 }
 
@@ -36,7 +42,7 @@ type OrderOptionList {
 }
 
 input OrderOptionsInput {
-  "The unique concept-id assigned to the order-option."
+  "The unique concept ID assigned to the order-option."
   conceptId: [String]
 
   "Cursor that points to the/a specific position in a list of requested records."
@@ -48,35 +54,32 @@ input OrderOptionsInput {
   "Zero based offset of individual results."
   offset: Int
 
-  "The provider id."
+  "The provider ID."
   providerId: [String]
 }
 
 input OrderOptionInput {
-  "The unique concept id assigned to the order-option."
+  "The unique concept ID assigned to the order-option."
   conceptId: [String]
-
-  "The provider id."
-  providerId: [String]
 }
 
 type Query {
   orderOption(
-    "Order option's query parameters"
+    "The order option query parameters."
     params: OrderOptionInput
   ): OrderOption
 
   orderOptions(
-    "Order option's query parameters"
+    "The order option query parameters."
     params: OrderOptionsInput
   ): OrderOptionList!
 }
 
 type OrderOptionMutationResponse {
-  "The concept id of the draft."
+  "The concept ID of the draft."
   conceptId: String!
 
-  "The revision id of the draft."
+  "The revision ID of the draft."
   revisionId: String!
 }
 
@@ -87,22 +90,22 @@ enum OrderOptionScopeType {
 
 type Mutation {
   createOrderOption(
-    "The order option description."
-    description: String!
+    "The description is a longer, human-readable description of the order option type or contents, intended for client display."
+    description: String
 
-    "The order option form."
-    form: String!
+    "Contents must conform to ECHO Forms schema. See the ECHO Forms Specification for more information."
+    form: String
 
-    "The native id for the order option."
+    "The native ID for the order option."
     nativeId: String
 
-    "The order option name."
-    name: String!
+    "The name is a shortened name used to distinguish between other option definitions. This field must be unique per provider and is restricted to 30 characters."
+    name: String
 
-    "The provider id for the order option."
+    "The provider ID for the order option."
     providerId: String!
 
-    "The two levels of order options, `PROVIDER` or `SYSTEM`"
+    "There are two levels of order options, provider and system. Only administrators may add system level options and only providers may add provider level options."
     scope: OrderOptionScopeType
 
     "The sort key is used to indicate the preferred display order among other definitions"
@@ -110,22 +113,25 @@ type Mutation {
   ): OrderOptionMutationResponse
 
   updateOrderOption(
-    "The order option description."
-    description: String!
+    "Indicates if the definition is deprecated. Deprecated definitions will be returned to the client and will be considered valid when validating an order, however new order items cannot be added using the definition and existing order items cannot be updated using the definition. This flag is ignored when creating an option definition, however it will always be set and returned once the definition has been created."
+    deprecated: Boolean
 
-    "The order option form."
-    form: String!
+    "The description is a longer, human-readable description of the order option type or contents, intended for client display."
+    description: String
 
-    "The order option name."
-    name: String!
+    "Contents must conform to ECHO Forms schema. See the ECHO Forms Specification for more information."
+    form: String
 
-    "The native id for the order option."
+    "The name is a shortened name used to distinguish between other option definitions. This field must be unique per provider and is restricted to 30 characters."
+    name: String
+
+    "The native ID for the order option."
     nativeId: String!
 
-    "The provider id for the order option."
+    "The provider ID for the order option."
     providerId: String!
 
-    "The two levels of order options, `PROVIDER` or `SYSTEM`"
+    "There are two levels of order options, provider and system. Only administrators may add system level options and only providers may add provider level options."
     scope: OrderOptionScopeType
 
     "The sort key is used to indicate the preferred display order among other definitions"
@@ -133,10 +139,10 @@ type Mutation {
   ): OrderOptionMutationResponse
 
   deleteOrderOption(
-    "The native id of the order option to be deleted."
+    "The native ID of the order option to be deleted."
     nativeId: String!
 
-    "The provider id of the order option to be deleted."
+    "The provider ID of the order option to be deleted."
     providerId: String!
   ): OrderOptionMutationResponse
 }
