@@ -79,7 +79,7 @@ When querying for multiple items there are three high level parameters that can 
 
 `cursor` tells CMR-GraphQL that you'd like to fetch the search after identifier out of the response header with the intent of harvesting data (or fetching multiple pages of results). To take advantage of the cursor you can then include it in subsequent queries until no data is returned.
 
-###### First Request:
+###### First Request
 
 ```gql
 {
@@ -104,8 +104,8 @@ Which will return something similar to the following:
       "items": [
         {
           "conceptId": "C1000000001-EXAMPLE"
-        },
-        ...
+        }
+      ]
     }
   }
 }
@@ -176,13 +176,14 @@ If you're querying single objects `count` is not available and therefore `items`
 
 Note that the response you get will match the structure of your query, meaning that in the event you've requested data from a list query you'll receive the results in an `items` array whereas with a single query request you will not.
 
-
 ## Usage
 
 Currently, this API supports the following functionality within NASA's Earthdata Ecosystem.
 
 ### Concepts (Objects)
+
 - [Collections](#collections)
+- [Data Quality Summaries](#data-quality-summaries)
 - [Granules](#granules)
 - [Grids](#grids)
 - [Order Options](#order-options)
@@ -192,16 +193,19 @@ Currently, this API supports the following functionality within NASA's Earthdata
 - [Variables](#variables)
 
 ### Drafts of concepts
+
 - [Drafts](#drafts)
 
 ### Associations between the supported concepts
+
 > Granules are not supported in this implementation, associations cannot be made between granules and any other concept
 
 - [Associations](#associations)
 
 ### Access controls and permissions pertaining to the supported concepts
-- [ACLs](#collections)
-- [Permissions](#collections)
+
+- [ACLs](#acls)
+- [Permissions](#permissions)
 
 #### Collections
 
@@ -209,7 +213,7 @@ A subset of supported arguments will automatically be sent to immediately adjace
 
 For all supported arguments and columns, see [the schema](src/types/collection.graphql).
 
-##### Example Queries
+##### Collection Queries
 
 ###### Query for a single collection
 
@@ -566,7 +570,7 @@ Variables:
 
 For all supported arguments and columns, see [the schema](src/types/variable.graphql).
 
-##### Grid Queries
+##### Variable Queries
 
 ###### Query for a single grid
 
@@ -599,7 +603,7 @@ For all supported arguments and columns, see [the schema](src/types/variable.gra
 
 For all supported arguments and columns, see [the schema](src/types/grid.graphql).
 
-##### Example Queries
+##### Grid Queries
 
 ###### Query for a singe grid
 
@@ -815,7 +819,7 @@ CMR-GraphQL queries CMR's GraphDB in order to find related collections on suppor
 
 We use [GraphQL interfaces](https://graphql.org/learn/schema/#interfaces) in order to return the different relationship types as siblings in the return object.
 
-##### Example Queries
+##### Related Collection Queries
 
 ```gql
 {
@@ -849,7 +853,7 @@ We use [GraphQL interfaces](https://graphql.org/learn/schema/#interfaces) in ord
 }
 ```
 
-##### Example Response
+##### Response
 
 ```json
 {
@@ -928,7 +932,7 @@ Variables:
 }
 ```
 
-##### Example Response
+##### Response
 
 ```json
   {
@@ -1002,7 +1006,7 @@ Variables:
 }
 ```
 
-##### Example Response
+##### Response
 
 ```json
   {
@@ -1043,7 +1047,7 @@ For all supported arguments and columns, see [the schema](src/types/draft.graphq
 
 The Draft type utilizes the `PreviewMetadata` union type, which means you can return any of the types supported by the union in the `previewMetadata` return field. You need to ensure that your `conceptType` parameter matches the `previewMetadata` type. In the examples below notice the `conceptType` parameter is `Tool`, and the syntax in the request of `... on Tool {`.
 
-##### Example Queries
+##### Draft Queries
 
 ###### Query for a single draft
 
@@ -1230,238 +1234,155 @@ Variables:
 ```
 
 #### Associations
+
 For all supported arguments and columns, see [the schema](src/types/association.graphql).
 
-<<<<<<< HEAD
-The association supports associating a Tool, Variable, or Service record to a collection.
-
-##### Association Query
-
-##### Associating a Tool to a Collection
-
-```gql
-Mutation CreateAssociation(
-  $conceptId: String!
-  $collectionConceptIds: [JSON]!
-  $conceptType: ConceptType!
-){
-  createAssociation(
-    conceptId: $conceptId
-    collectionConceptIds: $collectionConceptIds
-    conceptType: $conceptType
-    ) {
-    associatedItem
-    toolAssociation
-  }
-}
-```
-=======
 Associations are supported between any of the following concepts, and can be made to any/from any of the concepts
+
 - Tool
 - Variable
 - Service
 - Collections
-- Order Options 
+- Order Options
 
-##### Creating an Association
+##### Association Mutations
 
-###### To A Single Other Concept
-
-    mutation CreateAssociation(
-      $conceptId: String!
-      $associatedConceptId: String
-     ) {
-      createAssociation(
-        conceptId: $conceptId,
-        associatedConceptId: $associatedConceptId
-      ) {
-        associatedConceptId
-        conceptId
-        revisionId
-      }
-    }
-    
-variables:
->>>>>>> 49b11bd (GQL-38: Updates the Readme)
-
-Variables:
-
-```json
-{
-  "conceptId": "T1000000001-EXAMPLE",
-  "conceptType": "Tool",
-  "collectionConceptIds": [
-    {
-<<<<<<< HEAD
-      "conceptId": "C1000000001-EXAMPLE"
-=======
-      "conceptId": "C1000000001-EXAMPLE",
-      "associatedConceptId": "TL12000000-EXAMPLE"
->>>>>>> 49b11bd (GQL-38: Updates the Readme)
-    }
-  ]
-}
-```
-
-<<<<<<< HEAD
-##### Associating a Variable to a Collection
-
-Note for Variable association, nativeId and metadata are required params.
+###### Associating a concept to another concept
 
 ```gql
-Mutation CreateAssociation(
+mutation CreateAssociation(
   $conceptId: String!
-  $collectionConceptIds: [JSON]!
-  $conceptType: ConceptType!
-  $nativeId: String
-  $metadata: JSON
-){
+  $associatedConceptId: String
+  ) {
   createAssociation(
-    conceptId: $conceptId
-    collectionConceptIds: $collectionConceptIds
-    conceptType: $conceptType
-    nativeId: $nativeId
-    metadata: $metadata
-    ) {
-    associatedItem
-    variableAssociation
+    conceptId: $conceptId,
+    associatedConceptId: $associatedConceptId
+  ) {
+    associatedConceptId
+    conceptId
+    revisionId
   }
 }
 ```
-=======
-###### To Multiple Other Concepts
-
-    mutation CreateAssociation(
-      $conceptId: String!,
-      $associatedConceptIds: [String]
-     ) {
-      createAssociation(
-        associatedConceptIds: $associatedConceptIds
-      ) {
-        associatedConceptId
-        conceptId
-        revisionId
-      }
-    }
-    
-variables:
->>>>>>> 49b11bd (GQL-38: Updates the Readme)
 
 Variables:
 
 ```json
 {
-  "conceptId": "V1000000001-EXAMPLE",
-  "conceptType": "Variable",
-  "collectionConceptIds": [
-    {
-<<<<<<< HEAD
-      "conceptId": "C1000000001-EXAMPLE"
-=======
-      "conceptId": "C1000000001-EXAMPLE",
-      "associatedConceptIds": ["TL12000000-EXAMPLE", "TL12000001-EXAMPLE"]
->>>>>>> 49b11bd (GQL-38: Updates the Readme)
-    }
-  ],
-  "nativeId": "Variable native id",
-  "metadata": {}
+  "conceptId": "C1000000001-EXAMPLE",
+  "associatedConceptId": "TL12000000-EXAMPLE"
 }
 ```
 
-<<<<<<< HEAD
-##### Disassociation a Tool to a Collection (Delete)
-=======
-###### To One or More Other Concepts With Data
+###### Associating a concept to multiple other concepts
 
-    mutation CreateAssociation(
-      $conceptId: String!,
-      $associatedConceptData: JSON
-     ) {
-      createAssociation(
-        associatedConceptData: $associatedConceptData
-      ) {
-        associatedConceptId
-        conceptId
-        revisionId
-      }
-    }
-    
-variables:
-
-    {
-      "conceptId": "C1000000001-EXAMPLE",
-      "associatedConceptData": [{
-        "conceptId": "TL12000000-EXAMPLE",
-        "data": {
-          "namespace": {
-            "data": true
-          }
-        }
-      }, {
-        "conceptId": "TL12000001-EXAMPLE",
-        "data": {
-          "namespace": {
-            "data": false
-          }
-        }
-      }]
-    }
-
-##### Deleting an Association
-
-###### A Single Association
-
-    mutation DeleteAssociation(
-      $conceptId: String!,
-      $associatedConceptId: String
-    ) {
-      deleteAssociation(
-        conceptId: $conceptId,
-        associatedConceptId: $associatedConceptId
-      ) {
-        revisionId
-        conceptId
-        associatedConceptId
-      }
-    }
-    
-variables:
-
-    {
-      "conceptId": "C1000000001-EXAMPLE",
-      "associatedConceptId": "TL12000000-EXAMPLE"
-    }
-
-###### Multiple Associations
-
-    mutation DeleteAssociation(
-      $conceptId: String!,
-      $associatedConceptId: String
-    ) {
-      deleteAssociation(
-        conceptId: $conceptId,
-        associatedConceptId: $associatedConceptId
-      ) {
-        revisionId
-        conceptId
-        associatedConceptId
-      }
-    }
->>>>>>> 49b11bd (GQL-38: Updates the Readme)
-
+```gql
+mutation CreateAssociation(
+  $conceptId: String!,
+  $associatedConceptIds: [String]
+  ) {
+  createAssociation(
+    conceptId: $conceptId,
+    associatedConceptIds: $associatedConceptIds
+  ) {
+    associatedConceptId
+    conceptId
+    revisionId
+  }
+}
 ```
-Mutation DeleteAssociation(
-  $conceptId: String!
-  $collectionConceptIds: [JSON]!
-  $conceptType: ConceptType!
-){
+
+Variables:
+
+```json
+{
+  "conceptId": "C1000000001-EXAMPLE",
+  "associatedConceptIds": ["TL12000000-EXAMPLE", "TL12000001-EXAMPLE"]
+}
+```
+
+###### Associating a concept to other concepts with data
+
+```gql
+mutation CreateAssociation(
+  $conceptId: String!,
+  $associatedConceptData: JSON
+  ) {
+  createAssociation(
+    conceptId: $conceptId,
+    associatedConceptData: $associatedConceptData
+  ) {
+    associatedConceptId
+    conceptId
+    revisionId
+  }
+}
+```
+
+Variables:
+
+```json
+{
+  "conceptId": "C1000000001-EXAMPLE",
+  "associatedConceptData": [{
+    "conceptId": "TL12000000-EXAMPLE",
+    "data": {
+      "namespace": {
+        "data": true
+      }
+    }
+  }, {
+    "conceptId": "TL12000001-EXAMPLE",
+    "data": {
+      "namespace": {
+        "data": false
+      }
+    }
+  }]
+}
+```
+
+###### Deleting A Single Association
+
+```gql
+mutation DeleteAssociation(
+  $conceptId: String!,
+  $associatedConceptId: String
+) {
   deleteAssociation(
-    conceptId: $conceptId
-    collectionConceptIds: $collectionConceptIds
-    conceptType: $conceptType
-    ) {
-    associatedItem
-    toolAssociation
+    conceptId: $conceptId,
+    associatedConceptId: $associatedConceptId
+  ) {
+    revisionId
+    conceptId
+    associatedConceptId
+  }
+}
+```
+    
+Variables:
+
+```json
+{
+  "conceptId": "C1000000001-EXAMPLE",
+  "associatedConceptId": "TL12000000-EXAMPLE"
+}
+```
+
+###### Deleting Multiple Associations
+
+```gql
+mutation DeleteAssociation(
+  $conceptId: String!,
+  $associatedConceptId: String
+) {
+  deleteAssociation(
+    conceptId: $conceptId,
+    associatedConceptId: $associatedConceptId
+  ) {
+    revisionId
+    conceptId
+    associatedConceptId
   }
 }
 ```
@@ -1474,12 +1395,8 @@ Variables:
   "conceptType": "Tool",
   "collectionConceptIds": [
     {
-<<<<<<< HEAD
-      "conceptId": "C1000000001-EXAMPLE"
-=======
       "conceptId": "C1000000001-EXAMPLE",
       "associatedConceptIds": ["TL12000000-EXAMPLE", "TL12000001-EXAMPLE"]
->>>>>>> 49b11bd (GQL-38: Updates the Readme)
     }
   ]
 }
@@ -1510,7 +1427,7 @@ Variables:
 }
 ```
 
-##### Example ACL Query Response
+##### ACL Query Response
 
 ```json
 {
@@ -1563,7 +1480,7 @@ Variables:
 }
 ```
 
-##### Example ACLs Query Response
+##### ACLs Query Response
 
 ```json
 {
@@ -1673,7 +1590,7 @@ Variables:
 
 #### Permissions
 
-###### Searching by Concept ID
+##### Searching by Concept ID
 
 ```gql
 query GetPermissions($params: PermissionsInput) {
@@ -1749,8 +1666,7 @@ Variables:
 }
 ```
 
-
-#### Local graph database:
+#### Local graph database
 
 Normally running GraphQl with `serverless offline` will utilize the `(cmr.earthdata.nasa.gov/graphdb)` endpoint, to query against related collections and duplicate collections in the graph database. To send queries to a locally running graph database, we can use a docker gremlin-server that exposes an HTTP endpoint. This is launched by running
 
