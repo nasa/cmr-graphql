@@ -1,3 +1,6 @@
+import { cmrQuery } from '../utils/cmrQuery'
+import { findPreviousRevision } from '../utils/findPreviousRevision'
+import { getProviderFromConceptId } from '../utils/getProviderFromConceptId'
 import { parseRequestedFields } from '../utils/parseRequestedFields'
 
 import toolKeyMap from '../utils/umm/toolKeyMap.json'
@@ -19,6 +22,56 @@ export const fetchTools = async (params, context, parsedInfo) => {
 
   // Return a formatted JSON response
   return tool.getFormattedResponse()
+}
+
+export const restoreToolRevision = async (args, context, parsedInfo) => {
+  const { headers } = context
+
+  const requestInfo = parseRequestedFields(parsedInfo, toolKeyMap, 'tool')
+
+  const {
+    ingestKeys
+  } = requestInfo
+
+  const tool = new Tool(headers, requestInfo, args)
+
+  const {
+    conceptId,
+    revisionId
+  } = args
+
+  const previousRevisions = await cmrQuery({
+    conceptType: 'tools',
+    options: {
+      format: 'umm_json'
+    },
+    params: {
+      conceptId,
+      allRevisions: true
+    }
+  })
+
+  const { data: responseData } = previousRevisions
+
+  // Find the requested revision for the provided concept
+  const previousRevision = findPreviousRevision(responseData, revisionId)
+
+  const { meta, umm } = previousRevision
+
+  const { 'native-id': nativeId } = meta
+
+  // Query CMR
+  tool.ingest({
+    nativeId,
+    providerId: getProviderFromConceptId(conceptId),
+    ...umm
+  }, ingestKeys, headers)
+
+  // Parse the response from CMR
+  await tool.parseIngest(requestInfo)
+
+  // Return a formatted JSON response
+  return tool.getFormattedIngestResponse()
 }
 
 export const deleteTool = async (args, context, parsedInfo) => {

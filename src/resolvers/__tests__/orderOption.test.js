@@ -180,7 +180,7 @@ describe('OrderOption', () => {
               'CMR-Took': 0,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .get('/search/order-options.json?concept_id=OO100000-EDSC')
+            .get('/search/order-options.json?concept_id[]=OO100000-EDSC')
             .reply(200, {
               items: []
             })

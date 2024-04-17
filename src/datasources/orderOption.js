@@ -5,7 +5,6 @@ import orderOptionKeyMap from '../utils/umm/orderOptionKeyMap.json'
 import OrderOption from '../cmr/concepts/orderOption'
 
 export const fetchOrderOption = async (params, context, parsedInfo) => {
-  // This passes orderOption and will transform to the OrderOption graphql type
   const requestInfo = parseRequestedFields(parsedInfo, orderOptionKeyMap, 'orderOption')
 
   const { headers } = context
@@ -32,6 +31,7 @@ export const ingestOrderOption = async (args, context, parsedInfo) => {
   } = requestInfo
 
   const orderOption = new OrderOption(headers, requestInfo, args)
+
   // Query CMR
   orderOption.ingest(args, ingestKeys, headers)
 

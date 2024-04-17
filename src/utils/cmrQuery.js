@@ -16,7 +16,7 @@ import { prepKeysForCmr } from './prepKeysForCmr'
  */
 export const cmrQuery = ({
   conceptType,
-  headers,
+  headers = {},
   nonIndexedKeys = [],
   options = {},
   params
@@ -27,7 +27,10 @@ export const cmrQuery = ({
   } = options
 
   // Default headers
-  const defaultHeaders = {}
+  const defaultHeaders = {
+    Accept: 'application/json',
+    'Content-Type': 'application/json'
+  }
 
   // Merge default headers into the provided headers and then pick out only permitted values
   const permittedHeaders = pickIgnoringCase({

@@ -570,6 +570,77 @@ describe('Variable', () => {
       })
     })
 
+    describe('restoreVariableRevision', () => {
+      test('restores an old version of a variable', async () => {
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .get('/search/variables.umm_json?concept_id=V100000-EDSC&all_revisions=true')
+          .reply(200, {
+            items: [{
+              meta: {
+                'concept-id': 'V100000-EDSC',
+                'native-id': '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed',
+                'revision-id': 1
+              },
+              umm: {
+                EntryTitle: 'Tortor Elit Fusce Quam Risus'
+              }
+            }, {
+              meta: {
+                'concept-id': 'V100000-EDSC',
+                'native-id': '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed',
+                'revision-id': 2
+              },
+              umm: {
+                EntryTitle: 'Adipiscing Cras Etiam Venenatis'
+              }
+            }]
+          })
+
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .put('/ingest/providers/EDSC/variables/1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed')
+          .reply(200, {
+            'concept-id': 'V100000-EDSC',
+            'revision-id': '3'
+          })
+
+        const response = await server.executeOperation({
+          variables: {
+            revisionId: '1',
+            conceptId: 'V100000-EDSC'
+          },
+          query: `mutation RestoreVariableRevision (
+              $conceptId: String!
+              $revisionId: String!
+            ) {
+              restoreVariableRevision (
+                conceptId: $conceptId
+                revisionId: $revisionId
+              ) {
+                  conceptId
+                  revisionId
+                }
+              }`
+        }, {
+          contextValue
+        })
+
+        const { data } = response.body.singleResult
+
+        expect(data).toEqual({
+          restoreVariableRevision: {
+            conceptId: 'V100000-EDSC',
+            revisionId: '3'
+          }
+        })
+      })
+    })
+
     test('deleteVariable', async () => {
       nock(/example-cmr/)
         .defaultReplyHeaders({

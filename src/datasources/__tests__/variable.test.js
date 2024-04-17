@@ -2,6 +2,7 @@ import nock from 'nock'
 
 import {
   deleteVariable as variableSourceDelete,
+  restoreVariableRevision as variableSourceRestoreRevision,
   fetchVariables as variableSourceFetch
 } from '../variable'
 
@@ -332,6 +333,104 @@ describe('variable', () => {
         }
       }, requestInfo)
     ).rejects.toThrow(Error)
+  })
+})
+
+describe('restoreVariableRevision', () => {
+  const OLD_ENV = process.env
+
+  beforeEach(() => {
+    vi.resetAllMocks()
+
+    vi.restoreAllMocks()
+
+    process.env = { ...OLD_ENV }
+
+    process.env.cmrRootUrl = 'http://example-cmr.com'
+
+    // Default requestInfo
+    requestInfo = {
+      name: 'variableDelete',
+      alias: 'variableDelete',
+      args: {
+        conceptId: 'V100000-EDSC',
+        revisionId: '1'
+      },
+      fieldsByTypeName: {
+        VariableMutationResponse: {
+          conceptId: {
+            name: 'conceptId',
+            alias: 'conceptId',
+            args: {},
+            fieldsByTypeName: {}
+          },
+          revisionId: {
+            name: 'revisionId',
+            alias: 'revisionId',
+            args: {},
+            fieldsByTypeName: {}
+          }
+        }
+      }
+    }
+  })
+
+  afterEach(() => {
+    process.env = OLD_ENV
+  })
+
+  test('returns the CMR results', async () => {
+    nock(/example-cmr/)
+      .defaultReplyHeaders({
+        'CMR-Request-Id': 'abcd-1234-efgh-5678'
+      })
+      .get('/search/variables.umm_json?concept_id=V100000-EDSC&all_revisions=true')
+      .reply(200, {
+        items: [{
+          meta: {
+            'concept-id': 'V100000-EDSC',
+            'native-id': '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed',
+            'revision-id': 1
+          },
+          umm: {
+            LongName: 'Tortor Elit Fusce Quam Risus'
+          }
+        }, {
+          meta: {
+            'concept-id': 'V100000-EDSC',
+            'native-id': '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed',
+            'revision-id': 2
+          },
+          umm: {
+            LongName: 'Adipiscing Cras Etiam Venenatis'
+          }
+        }]
+      })
+
+    nock(/example-cmr/)
+      .defaultReplyHeaders({
+        'CMR-Request-Id': 'abcd-1234-efgh-5678'
+      })
+      .put('/ingest/providers/EDSC/variables/1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed')
+      .reply(200, {
+        'concept-id': 'V100000-EDSC',
+        'revision-id': '3'
+      })
+
+    const response = await variableSourceRestoreRevision({
+      revisionId: '1',
+      conceptId: 'V100000-EDSC'
+    }, {
+      headers: {
+        'Client-Id': 'eed-test-graphql',
+        'CMR-Request-Id': 'abcd-1234-efgh-5678'
+      }
+    }, requestInfo)
+
+    expect(response).toEqual({
+      conceptId: 'V100000-EDSC',
+      revisionId: '3'
+    })
   })
 })
 

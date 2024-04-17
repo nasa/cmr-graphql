@@ -30,11 +30,6 @@ describe('Draft concept', () => {
           })
 
           expect(draft.publishPath).toEqual('publish/CD100000-EDSC')
-          expect(draft.metadataSpecification).toEqual({
-            Name: 'UMM-C',
-            URL: 'https://cdn.earthdata.nasa.gov/umm/collection/v1.0.0',
-            Version: '1.0.0'
-          })
         })
       })
 
@@ -46,11 +41,6 @@ describe('Draft concept', () => {
           })
 
           expect(draft.publishPath).toEqual('publish/SD100000-EDSC')
-          expect(draft.metadataSpecification).toEqual({
-            Name: 'UMM-S',
-            URL: 'https://cdn.earthdata.nasa.gov/umm/service/v1.0.0',
-            Version: '1.0.0'
-          })
         })
       })
 
@@ -62,11 +52,6 @@ describe('Draft concept', () => {
           })
 
           expect(draft.publishPath).toEqual('publish/TD100000-EDSC')
-          expect(draft.metadataSpecification).toEqual({
-            Name: 'UMM-T',
-            URL: 'https://cdn.earthdata.nasa.gov/umm/tool/v1.0.0',
-            Version: '1.0.0'
-          })
         })
       })
 
@@ -78,11 +63,6 @@ describe('Draft concept', () => {
           })
 
           expect(draft.publishPath).toEqual('publish/VD100000-EDSC')
-          expect(draft.metadataSpecification).toEqual({
-            Name: 'UMM-Var',
-            URL: 'https://cdn.earthdata.nasa.gov/umm/variable/v1.0.0',
-            Version: '1.0.0'
-          })
         })
       })
 
@@ -94,11 +74,6 @@ describe('Draft concept', () => {
           })
 
           expect(draft.publishPath).toEqual('publish/CD100000-EDSC')
-          expect(draft.metadataSpecification).toEqual({
-            Name: undefined,
-            URL: 'https://cdn.earthdata.nasa.gov/umm/undefined/vundefined',
-            Version: undefined
-          })
         })
       })
     })

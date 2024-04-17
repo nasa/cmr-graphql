@@ -146,9 +146,18 @@ type Query {
 }
 
 type Mutation {
+  restoreServiceRevision (
+    "The unique concept id assigned to the service."
+    conceptId: String!
+
+    "The revision of the service."
+    revisionId: String!
+  ): ServiceMutationResponse
+
   deleteService (
     "Provider ID of the service."
     providerId: String!
+
     "The native id of a service."
     nativeId: String!
   ): ServiceMutationResponse
@@ -157,6 +166,7 @@ type Mutation {
 type ServiceMutationResponse {
   "The unique concept id assigned to the service."
   conceptId: String!
+
   "The revision of the service."
   revisionId: String!
 }

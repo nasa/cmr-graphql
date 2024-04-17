@@ -137,9 +137,18 @@ type Mutation {
     conceptId: String!
   ): VariableList
 
+  restoreVariableRevision (
+    "The unique concept id assigned to the variable."
+    conceptId: String!
+
+    "The revision of the variable."
+    revisionId: String!
+  ): VariableMutationResponse
+
   deleteVariable (
     "Provider ID of the variable."
     providerId: String!
+
     "The native id of a varialbe."
     nativeId: String!
   ): VariableMutationResponse
@@ -148,6 +157,7 @@ type Mutation {
 type VariableMutationResponse {
   "The unique concept id assigned to the variable."
   conceptId: String!
+
   "The revision of the variable."
   revisionId: String!
 }

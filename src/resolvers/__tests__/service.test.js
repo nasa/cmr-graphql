@@ -229,24 +229,96 @@ describe('Service', () => {
   })
 
   describe('Mutation', () => {
-    test('deleteService', async () => {
-      nock(/example-cmr/)
-        .defaultReplyHeaders({
-          'CMR-Took': 7,
-          'CMR-Request-Id': 'abcd-1234-efgh-5678'
-        })
-        .delete(/ingest\/providers\/EDSC\/services\/test-guid/)
-        .reply(201, {
-          'concept-id': 'S100000-EDSC',
-          'revision-id': '1'
+    describe('restoreServiceRevision', () => {
+      test('restores an old version of a service', async () => {
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .get('/search/services.umm_json?concept_id=S100000-EDSC&all_revisions=true')
+          .reply(200, {
+            items: [{
+              meta: {
+                'concept-id': 'S100000-EDSC',
+                'native-id': '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed',
+                'revision-id': 1
+              },
+              umm: {
+                EntryTitle: 'Tortor Elit Fusce Quam Risus'
+              }
+            }, {
+              meta: {
+                'concept-id': 'S100000-EDSC',
+                'native-id': '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed',
+                'revision-id': 2
+              },
+              umm: {
+                EntryTitle: 'Adipiscing Cras Etiam Venenatis'
+              }
+            }]
+          })
+
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .put('/ingest/providers/EDSC/services/1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed')
+          .reply(200, {
+            'concept-id': 'S100000-EDSC',
+            'revision-id': '3'
+          })
+
+        const response = await server.executeOperation({
+          variables: {
+            revisionId: '1',
+            conceptId: 'S100000-EDSC'
+          },
+          query: `mutation RestoreServiceRevision (
+              $conceptId: String!
+              $revisionId: String!
+            ) {
+              restoreServiceRevision (
+                conceptId: $conceptId
+                revisionId: $revisionId
+              ) {
+                  conceptId
+                  revisionId
+                }
+              }`
+        }, {
+          contextValue
         })
 
-      const response = await server.executeOperation({
-        variables: {
-          nativeId: 'test-guid',
-          providerId: 'EDSC'
-        },
-        query: `mutation DeleteService (
+        const { data } = response.body.singleResult
+
+        expect(data).toEqual({
+          restoreServiceRevision: {
+            conceptId: 'S100000-EDSC',
+            revisionId: '3'
+          }
+        })
+      })
+    })
+
+    describe('deleteService', () => {
+      test('deletes a service', async () => {
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .delete(/ingest\/providers\/EDSC\/services\/test-guid/)
+          .reply(201, {
+            'concept-id': 'S100000-EDSC',
+            'revision-id': '1'
+          })
+
+        const response = await server.executeOperation({
+          variables: {
+            nativeId: 'test-guid',
+            providerId: 'EDSC'
+          },
+          query: `mutation DeleteService (
             $providerId: String!
             $nativeId: String!
           ) {
@@ -258,16 +330,17 @@ describe('Service', () => {
                 revisionId
               }
             }`
-      }, {
-        contextValue
-      })
+        }, {
+          contextValue
+        })
 
-      const { data } = response.body.singleResult
-      expect(data).toEqual({
-        deleteService: {
-          conceptId: 'S100000-EDSC',
-          revisionId: '1'
-        }
+        const { data } = response.body.singleResult
+        expect(data).toEqual({
+          deleteService: {
+            conceptId: 'S100000-EDSC',
+            revisionId: '1'
+          }
+        })
       })
     })
   })

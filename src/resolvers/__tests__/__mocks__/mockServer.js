@@ -25,26 +25,39 @@ import maxItemsPerOrderSource from '../../../datasources/maxItemsPerOrder'
 import permissionSource from '../../../datasources/permission'
 import providerSource from '../../../datasources/provider'
 import serviceDraftSource from '../../../datasources/serviceDraft'
+import tagDefinitionSource from '../../../datasources/tagDefinition'
+import toolDraftSource from '../../../datasources/toolDraft'
+import variableDraftSource from '../../../datasources/variableDraft'
+
+import {
+  deleteTool as toolSourceDelete,
+  fetchTools as toolSourceFetch,
+  restoreToolRevision as toolSourceRestoreRevision
+} from '../../../datasources/tool'
+
+import {
+  deleteCollection as collectionSourceDelete,
+  fetchCollections as collectionSourceFetch,
+  restoreCollectionRevision as collectionSourceRestoreRevision
+} from '../../../datasources/collection'
+
+import {
+  deleteService as serviceSourceDelete,
+  fetchServices as serviceSourceFetch,
+  restoreServiceRevision as serviceSourceRestoreRevision
+} from '../../../datasources/service'
+
+import {
+  deleteVariable as variableSourceDelete,
+  fetchVariables as variableSourceFetch,
+  restoreVariableRevision as variableSourceRestoreRevision
+} from '../../../datasources/variable'
+
 import {
   deleteSubscription as subscriptionSourceDelete,
   fetchSubscription as subscriptionSourceFetch,
   ingestSubscription as subscriptionSourceIngest
 } from '../../../datasources/subscription'
-import tagDefinitionSource from '../../../datasources/tagDefinition'
-import {
-  deleteTool as toolSourceDelete,
-  fetchTools as toolSourceFetch
-} from '../../../datasources/tool'
-import {
-  deleteService as serviceSourceDelete,
-  fetchServices as serviceSourceFetch
-} from '../../../datasources/service'
-import {
-  deleteVariable as variableSourceDelete,
-  fetchVariables as variableSourceFetch
-} from '../../../datasources/variable'
-import toolDraftSource from '../../../datasources/toolDraft'
-import variableDraftSource from '../../../datasources/variableDraft'
 
 import {
   deleteDraft as draftSourceDelete,
@@ -52,11 +65,6 @@ import {
   ingestDraft as draftSourceIngest,
   publishDraft as draftSourcePublish
 } from '../../../datasources/draft'
-
-import {
-  deleteCollection as collectionSourceDelete,
-  fetchCollections as collectionSourceFetch
-} from '../../../datasources/collection'
 
 import {
   deleteOrderOption as orderOptionSourceDelete,
@@ -81,6 +89,7 @@ export const buildContextValue = (extraContext) => ({
     collectionDraftSource,
     collectionSourceDelete,
     collectionSourceFetch,
+    collectionSourceRestoreRevision,
     collectionVariableDraftsSource,
     dataQualitySummarySource,
     draftSourceDelete,
@@ -100,6 +109,7 @@ export const buildContextValue = (extraContext) => ({
     serviceDraftSource,
     serviceSourceDelete,
     serviceSourceFetch,
+    serviceSourceRestoreRevision,
     subscriptionSourceDelete,
     subscriptionSourceFetch,
     subscriptionSourceIngest,
@@ -107,9 +117,11 @@ export const buildContextValue = (extraContext) => ({
     toolDraftSource,
     toolSourceDelete,
     toolSourceFetch,
+    toolSourceRestoreRevision,
     variableDraftSource,
     variableSourceDelete,
-    variableSourceFetch
+    variableSourceFetch,
+    variableSourceRestoreRevision
   },
   headers: {
     'Client-Id': 'eed-test-graphql',

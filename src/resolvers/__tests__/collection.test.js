@@ -2624,46 +2624,119 @@ describe('Collection', () => {
   })
 
   describe('Mutation', () => {
-    test('deleteCollection', async () => {
-      nock(/example-cmr/)
-        .defaultReplyHeaders({
-          'CMR-Took': 7,
-          'CMR-Request-Id': 'abcd-1234-efgh-5678'
-        })
-        .delete(/ingest\/providers\/EDSC\/collections\/test-guid/)
-        .reply(201, {
-          'concept-id': 'C100000-EDSC',
-          'revision-id': '1'
-        })
-
-      const response = await server.executeOperation({
-        variables: {
-          nativeId: 'test-guid',
-          providerId: 'EDSC'
-        },
-        query: `mutation DeleteCollection (
-            $providerId: String!
-            $nativeId: String!
-          ) {
-            deleteCollection (
-              providerId: $providerId
-              nativeId: $nativeId
-            ) {
-                conceptId
-                revisionId
+    describe('restoreCollectionRevision', () => {
+      test('restores an old version of a collection', async () => {
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .get('/search/collections.umm_json?concept_id=C100000-EDSC&all_revisions=true')
+          .reply(200, {
+            items: [{
+              meta: {
+                'concept-id': 'C100000-EDSC',
+                'native-id': '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed',
+                'revision-id': 1
+              },
+              umm: {
+                EntryTitle: 'Tortor Elit Fusce Quam Risus'
               }
-            }`
-      }, {
-        contextValue
+            }, {
+              meta: {
+                'concept-id': 'C100000-EDSC',
+                'native-id': '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed',
+                'revision-id': 2
+              },
+              umm: {
+                EntryTitle: 'Adipiscing Cras Etiam Venenatis'
+              }
+            }]
+          })
+
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .put('/ingest/providers/EDSC/collections/1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed')
+          .reply(200, {
+            'concept-id': 'C100000-EDSC',
+            'revision-id': '3'
+          })
+
+        const response = await server.executeOperation({
+          variables: {
+            revisionId: '1',
+            conceptId: 'C100000-EDSC'
+          },
+          query: `mutation RestoreCollectionRevision (
+              $conceptId: String!
+              $revisionId: String!
+            ) {
+              restoreCollectionRevision (
+                conceptId: $conceptId
+                revisionId: $revisionId
+              ) {
+                  conceptId
+                  revisionId
+                }
+              }`
+        }, {
+          contextValue
+        })
+
+        const { data } = response.body.singleResult
+
+        expect(data).toEqual({
+          restoreCollectionRevision: {
+            conceptId: 'C100000-EDSC',
+            revisionId: '3'
+          }
+        })
       })
+    })
 
-      const { data } = response.body.singleResult
+    describe('deleteCollection', () => {
+      test('deletes a collection', async () => {
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .delete(/ingest\/providers\/EDSC\/collections\/test-guid/)
+          .reply(201, {
+            'concept-id': 'C100000-EDSC',
+            'revision-id': '1'
+          })
 
-      expect(data).toEqual({
-        deleteCollection: {
-          conceptId: 'C100000-EDSC',
-          revisionId: '1'
-        }
+        const response = await server.executeOperation({
+          variables: {
+            nativeId: 'test-guid',
+            providerId: 'EDSC'
+          },
+          query: `mutation DeleteCollection (
+              $providerId: String!
+              $nativeId: String!
+            ) {
+              deleteCollection (
+                providerId: $providerId
+                nativeId: $nativeId
+              ) {
+                  conceptId
+                  revisionId
+                }
+              }`
+        }, {
+          contextValue
+        })
+
+        const { data } = response.body.singleResult
+
+        expect(data).toEqual({
+          deleteCollection: {
+            conceptId: 'C100000-EDSC',
+            revisionId: '1'
+          }
+        })
       })
     })
   })

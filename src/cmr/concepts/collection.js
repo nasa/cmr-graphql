@@ -260,6 +260,40 @@ export default class Collection extends Concept {
   }
 
   /**
+   * Mutate the provided values from the user to meet expectations from CMR
+   * @param {Object} params Parameters provided by the client
+   * @returns The payload to send to CMR
+   */
+  mutateIngestParameters(params) {
+    const { env } = process
+    const { ummCollectionVersion } = env
+
+    return super.mutateIngestParameters({
+      ...params,
+      MetadataSpecification: {
+        URL: `https://cdn.earthdata.nasa.gov/umm/collection/v${ummCollectionVersion}`,
+        Name: 'UMM-C',
+        Version: ummCollectionVersion
+      }
+    })
+  }
+
+  /**
+   * Merge provided and default headers and ensure they are permitted
+   * @param {Object} providedHeaders Headers provided by the client
+   * @returns An object holding acceptable headers and their values
+   */
+  ingestHeaders(providedHeaders) {
+    const { env } = process
+    const { ummCollectionVersion } = env
+
+    return super.ingestHeaders({
+      ...providedHeaders,
+      'Content-Type': `application/vnd.nasa.cmr.umm+json; version=${ummCollectionVersion}`
+    })
+  }
+
+  /**
    * Rename fields, add fields, modify fields, etc
    * @param {Object} item The item returned from the CMR json endpoint
    */

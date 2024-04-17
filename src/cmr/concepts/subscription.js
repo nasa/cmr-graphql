@@ -14,12 +14,6 @@ export default class Subscription extends Concept {
    */
   constructor(headers, requestInfo, params) {
     super('subscriptions', headers, requestInfo, params)
-
-    this.metadataSpecification = {
-      URL: `https://cdn.earthdata.nasa.gov/umm/subscription/v${process.env.ummSubscriptionVersion}`,
-      Name: 'UMM-Sub',
-      Version: process.env.ummSubscriptionVersion
-    }
   }
 
   /**
@@ -86,6 +80,29 @@ export default class Subscription extends Concept {
   }
 
   /**
+   * Mutate the provided values from the user to meet expectations from CMR
+   * @param {Object} params Parameters provided by the client
+   * @returns The payload to send to CMR
+   */
+  mutateIngestParameters(params) {
+    const { env } = process
+    const { ummSubscriptionVersion } = env
+
+    const casedKeys = camelcaseKeys(params, {
+      pascalCase: true
+    })
+
+    return super.mutateIngestParameters({
+      ...casedKeys,
+      MetadataSpecification: {
+        URL: `https://cdn.earthdata.nasa.gov/umm/subscription/v${ummSubscriptionVersion}`,
+        Name: 'UMM-Sub',
+        Version: ummSubscriptionVersion
+      }
+    })
+  }
+
+  /**
    * Ingest the provided object into the CMR
    * @param {Object} data Parameters provided by the query
    * @param {Array} requestedKeys Keys requested by the query
@@ -94,26 +111,12 @@ export default class Subscription extends Concept {
   ingest(data, requestedKeys, providedHeaders) {
     const params = mergeParams(data)
 
-    // Default headers
-    const headers = {
-      ...providedHeaders,
-      Accept: 'application/json',
-      'Content-Type': `application/vnd.nasa.cmr.umm+json; version=${process.env.ummSubscriptionVersion}`
-    }
-
-    // Add MetadataSpecification to the data
-    // eslint-disable-next-line no-param-reassign
-    params.metadataSpecification = this.metadataSpecification
-
-    const casedKeys = camelcaseKeys(params, {
-      pascalCase: true,
-      exclude: ['nativeId']
-    })
-
     // Use the provided native id and provider id
     const { nativeId = uuidv4() } = params
 
-    super.ingest(casedKeys, requestedKeys, headers, { path: `ingest/subscriptions/${nativeId}` })
+    super.ingest(data, requestedKeys, providedHeaders, {
+      path: `ingest/subscriptions/${nativeId}`
+    })
   }
 
   /**

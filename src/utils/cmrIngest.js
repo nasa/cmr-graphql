@@ -1,7 +1,5 @@
 import axios from 'axios'
 
-import { v4 as uuidv4 } from 'uuid'
-
 import { downcaseKeys } from './downcaseKeys'
 import { pickIgnoringCase } from './pickIgnoringCase'
 
@@ -23,20 +21,10 @@ export const cmrIngest = ({
     Accept: 'application/json'
   }
 
-  // Use the provided native id and provider id
-  const { nativeId = uuidv4(), providerId } = data
-
-  // Remove native id as it is not a supported key in umm
-  // eslint-disable-next-line no-param-reassign
-  delete data.nativeId
-
-  // eslint-disable-next-line no-param-reassign
-  delete data.providerId
-
   // Default options
   const {
     method = 'PUT',
-    path = `ingest/providers/${providerId}/${conceptType}/${nativeId}`
+    path
   } = options
 
   // Merge default headers into the provided headers and then pick out only permitted values

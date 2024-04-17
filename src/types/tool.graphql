@@ -132,15 +132,25 @@ type Query {
   tool (
     "Tool query parameters"
     params: ToolInput
+
     "The unique concept id assigned to the tool."
     conceptId: String @deprecated(reason: "Use `params.conceptId`")
   ): Tool
 }
 
 type Mutation {
+  restoreToolRevision (
+    "The unique concept id assigned to the tool."
+    conceptId: String!
+
+    "The revision of the tool."
+    revisionId: String!
+  ): ToolMutationResponse
+
   deleteTool (
     "Provider ID of the tool."
     providerId: String!
+
     "The native id of a tool."
     nativeId: String!
   ): ToolMutationResponse

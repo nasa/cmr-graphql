@@ -2,6 +2,7 @@ import nock from 'nock'
 
 import {
   deleteCollection as collectionSourceDelete,
+  restoreCollectionRevision as collectionSourceRestoreRevision,
   fetchCollections as collectionSourceFetch
 } from '../collection'
 
@@ -645,7 +646,105 @@ describe('collection', () => {
   })
 })
 
-describe('collection#delete', () => {
+describe('restoreCollectionRevision', () => {
+  const OLD_ENV = process.env
+
+  beforeEach(() => {
+    vi.resetAllMocks()
+
+    vi.restoreAllMocks()
+
+    process.env = { ...OLD_ENV }
+
+    process.env.cmrRootUrl = 'http://example-cmr.com'
+
+    // Default requestInfo
+    requestInfo = {
+      name: 'collectionDelete',
+      alias: 'collectionDelete',
+      args: {
+        conceptId: 'C100000-EDSC',
+        revisionId: '1'
+      },
+      fieldsByTypeName: {
+        CollectionMutationResponse: {
+          conceptId: {
+            name: 'conceptId',
+            alias: 'conceptId',
+            args: {},
+            fieldsByTypeName: {}
+          },
+          revisionId: {
+            name: 'revisionId',
+            alias: 'revisionId',
+            args: {},
+            fieldsByTypeName: {}
+          }
+        }
+      }
+    }
+  })
+
+  afterEach(() => {
+    process.env = OLD_ENV
+  })
+
+  test('returns the CMR results', async () => {
+    nock(/example-cmr/)
+      .defaultReplyHeaders({
+        'CMR-Request-Id': 'abcd-1234-efgh-5678'
+      })
+      .get('/search/collections.umm_json?concept_id=C100000-EDSC&all_revisions=true')
+      .reply(200, {
+        items: [{
+          meta: {
+            'concept-id': 'C100000-EDSC',
+            'native-id': '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed',
+            'revision-id': 1
+          },
+          umm: {
+            EntryTitle: 'Tortor Elit Fusce Quam Risus'
+          }
+        }, {
+          meta: {
+            'concept-id': 'C100000-EDSC',
+            'native-id': '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed',
+            'revision-id': 2
+          },
+          umm: {
+            EntryTitle: 'Adipiscing Cras Etiam Venenatis'
+          }
+        }]
+      })
+
+    nock(/example-cmr/)
+      .defaultReplyHeaders({
+        'CMR-Request-Id': 'abcd-1234-efgh-5678'
+      })
+      .put('/ingest/providers/EDSC/collections/1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed')
+      .reply(200, {
+        'concept-id': 'C100000-EDSC',
+        'revision-id': '3'
+      })
+
+    const response = await collectionSourceRestoreRevision({
+      revisionId: '1',
+      conceptId: 'C100000-EDSC'
+    }, {
+      headers: {
+        'Client-Id': 'eed-test-graphql',
+        'CMR-Request-Id': 'abcd-1234-efgh-5678'
+      }
+    }, requestInfo)
+
+    expect(response).toEqual({
+      conceptId: 'C100000-EDSC',
+      revisionId: '3'
+    })
+  })
+})
+
+describe('deleteCollection', () => {
   const OLD_ENV = process.env
 
   beforeEach(() => {

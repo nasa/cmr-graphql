@@ -59,4 +59,38 @@ export default class Variable extends Concept {
 
     return super.fetchUmm(searchParams, ummKeys, ummHeaders)
   }
+
+  /**
+   * Mutate the provided values from the user to meet expectations from CMR
+   * @param {Object} params Parameters provided by the client
+   * @returns The payload to send to CMR
+   */
+  mutateIngestParameters(params) {
+    const { env } = process
+    const { ummVariableVersion } = env
+
+    return {
+      ...params,
+      MetadataSpecification: {
+        URL: `https://cdn.earthdata.nasa.gov/umm/variable/v${ummVariableVersion}`,
+        Name: 'UMM-Var',
+        Version: ummVariableVersion
+      }
+    }
+  }
+
+  /**
+   * Merge provided and default headers and ensure they are permitted
+   * @param {Object} providedHeaders Headers provided by the client
+   * @returns An object holding acceptable headers and their values
+   */
+  ingestHeaders(providedHeaders) {
+    const { env } = process
+    const { ummVariableVersion } = env
+
+    return super.ingestHeaders({
+      ...providedHeaders,
+      'Content-Type': `application/vnd.nasa.cmr.umm+json; version=${ummVariableVersion}`
+    })
+  }
 }

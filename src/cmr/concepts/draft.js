@@ -23,53 +23,6 @@ export default class Draft extends Concept {
     } = params
 
     this.publishPath = `publish/${draftConceptId}`
-
-    const {
-      ummCollectionVersion,
-      ummServiceVersion,
-      ummToolVersion,
-      ummVariableVersion
-    } = process.env
-
-    let ummType
-    let ummName
-    let ummVersion
-    switch (conceptType) {
-      case 'collection-drafts':
-        ummName = 'UMM-C'
-        ummType = 'collection'
-        ummVersion = ummCollectionVersion
-        break
-
-      case 'service-drafts':
-        ummName = 'UMM-S'
-        ummType = 'service'
-        ummVersion = ummServiceVersion
-        break
-
-      case 'tool-drafts':
-        ummName = 'UMM-T'
-        ummType = 'tool'
-        ummVersion = ummToolVersion
-        break
-
-      case 'variable-drafts':
-        ummName = 'UMM-Var'
-        ummType = 'variable'
-        ummVersion = ummVariableVersion
-        break
-
-      default:
-        break
-    }
-
-    // This needs to be the published version number, not draft version,
-    // so that when a user tries to publish the draft, it has the correct MetadataSpecification
-    this.metadataSpecification = {
-      URL: `https://cdn.earthdata.nasa.gov/umm/${ummType}/v${ummVersion}`,
-      Name: ummName,
-      Version: ummVersion
-    }
   }
 
   /**
@@ -183,56 +136,103 @@ export default class Draft extends Concept {
   }
 
   /**
-   * Ingest the provided object into the CMR
-   * @param {Object} data Parameters provided by the query
-   * @param {Array} requestedKeys Keys requested by the query
-   * @param {Object} providedHeaders Headers requested by the query
+   * Mutate the provided values from the user to meet expectations from CMR
+   * @param {Object} params Parameters provided by the client
+   * @returns The payload to send to CMR
    */
-  ingest(data, requestedKeys, providedHeaders) {
-    const { nativeId, providerId, ummVersion } = data
+  mutateIngestParameters(params) {
+    const { env } = process
+    const {
+      ummCollectionVersion,
+      ummServiceVersion,
+      ummToolVersion,
+      ummVariableVersion
+    } = env
 
-    if (!ummVersion) {
-      throw new Error('`ummVersion` is required when ingesting drafts.')
-    }
+    const { conceptType } = params
 
-    // Default headers
-    const defaultHeaders = {
-      Accept: 'application/json',
-      'Content-Type': `application/vnd.nasa.cmr.umm+json; version=${ummVersion}`
-    }
+    const metadataSpecificationByConceptType = {
+      'collection-drafts': {
+        ummName: 'UMM-C',
+        ummType: 'collection',
+        ummVersion: ummCollectionVersion
+      },
+      'service-drafts': {
+        ummName: 'UMM-S',
+        ummType: 'service',
+        ummVersion: ummServiceVersion
+      },
+      'tool-drafts': {
+        ummName: 'UMM-T',
+        ummType: 'tool',
+        ummVersion: ummToolVersion
+      },
 
-    // Merge default headers into the provided headers and then pick out only permitted values
-    const permittedHeaders = pickIgnoringCase({
-      ...defaultHeaders,
-      ...providedHeaders
-    }, [
-      'Accept',
-      'Authorization',
-      'Client-Id',
-      'Content-Type',
-      'CMR-Request-Id'
-    ])
-
-    const metadata = {
-      MetadataSpecification: this.metadataSpecification,
-      nativeId: data.nativeId,
-      ...data.metadata
-    }
-
-    // Construct the promise that will ingest data into CMR
-    this.response = cmrIngest({
-      conceptType: this.getConceptType(),
-      data: metadata,
-      headers: permittedHeaders,
-      options: {
-        method: 'PUT',
-        path: `ingest/providers/${providerId}/${this.getConceptType()}/${nativeId}`
+      'variable-drafts': {
+        ummName: 'UMM-Var',
+        ummType: 'variable',
+        ummVersion: ummVariableVersion
       }
+    }
+
+    const {
+      [`${conceptType.toLowerCase()}-drafts`]: specificationData
+    } = metadataSpecificationByConceptType
+
+    const {
+      ummName,
+      ummType,
+      ummVersion
+    } = specificationData
+
+    return super.mutateIngestParameters({
+      ...params.metadata,
+      MetadataSpecification: {
+        URL: `https://cdn.earthdata.nasa.gov/umm/${ummType}/v${ummVersion}`,
+        Name: ummName,
+        Version: ummVersion
+      }
+    })
+  }
+
+  /**
+   * Merge provided and default headers and ensure they are permitted
+   * @param {Object} providedHeaders Headers provided by the client
+   * @returns An object holding acceptable headers and their values
+   */
+  ingestHeaders(providedHeaders) {
+    const { env } = process
+    const {
+      ummCollectionVersion,
+      ummServiceVersion,
+      ummToolVersion,
+      ummVariableVersion
+    } = env
+
+    const { conceptType } = this.params
+
+    const ummVersionByConceptType = {
+      'collection-drafts': ummCollectionVersion,
+      'service-drafts': ummServiceVersion,
+      'tool-drafts': ummToolVersion,
+      'variable-drafts': ummVariableVersion
+    }
+
+    const {
+      [`${conceptType.toLowerCase()}-drafts`]: ummVersion
+    } = ummVersionByConceptType
+
+    return super.ingestHeaders({
+      ...providedHeaders,
+      'Content-Type': `application/vnd.nasa.cmr.umm+json; version=${ummVersion}`
     })
   }
 
   publish(data, requestedKeys, providedHeaders) {
     const { draftConceptId, nativeId, ummVersion } = data
+
+    // eslint-disable-next-line no-param-reassign
+    delete data.nativeId
 
     const params = mergeParams(data)
 

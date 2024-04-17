@@ -8,6 +8,8 @@ import {
   pick
 } from 'lodash'
 
+import { v4 as uuidv4 } from 'uuid'
+
 import { CONCEPT_TYPES } from '../../constants'
 
 import { cmrDelete } from '../../utils/cmrDelete'
@@ -16,6 +18,7 @@ import { cmrQuery } from '../../utils/cmrQuery'
 import { downcaseKeys } from '../../utils/downcaseKeys'
 import { mergeParams } from '../../utils/mergeParams'
 import { parseError } from '../../utils/parseError'
+import { pickIgnoringCase } from '../../utils/pickIgnoringCase'
 
 export default class Concept {
   /**
@@ -266,6 +269,11 @@ export default class Concept {
    */
   getPermittedJsonSearchParams() {
     return [
+      'concept_id',
+      'offset',
+      'page_size',
+      'sort_key',
+      'permitted_user',
       'all_revisions',
       'concept_id',
       'include_full_acl',
@@ -391,6 +399,24 @@ export default class Concept {
   }
 
   /**
+   * Merge provided and default headers and ensure they are permitted
+   * @param {Object} providedHeaders Headers provided by the client
+   * @returns An object holding acceptable headers and their values
+   */
+  ingestHeaders(providedHeaders) {
+    return pickIgnoringCase({
+      Accept: 'application/json',
+      ...providedHeaders
+    }, [
+      'Accept',
+      'Authorization',
+      'Client-Id',
+      'Content-Type',
+      'CMR-Request-Id'
+    ])
+  }
+
+  /**
    * Ingest the provided object into the CMR
    * @param {Object} data Parameters provided by the query
    * @param {Array} requestedKeys Keys requested by the query
@@ -399,16 +425,27 @@ export default class Concept {
   ingest(data, requestedKeys, providedHeaders, options) {
     const params = mergeParams(data)
 
+    const {
+      nativeId = uuidv4(),
+      providerId,
+      ...filteredParams
+    } = params
+
     this.logKeyRequest(requestedKeys, 'ingest')
 
-    const preparedParameters = this.mutateIngestParameters(params)
+    const preparedParameters = this.mutateIngestParameters(filteredParams)
+
+    const preparedHeaders = this.ingestHeaders(providedHeaders)
 
     // Construct the promise that will ingest data into CMR
     this.response = cmrIngest({
       conceptType: this.getConceptType(),
       data: preparedParameters,
-      headers: providedHeaders,
-      options
+      headers: preparedHeaders,
+      options: {
+        path: `ingest/providers/${providerId}/${this.getConceptType()}/${nativeId}`,
+        ...options
+      }
     })
   }
 

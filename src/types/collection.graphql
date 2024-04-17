@@ -1,160 +1,238 @@
 type Collection {
   "A brief description of the collection the metadata represents."
   abstract: String
+
   "Allows the author to constrain access to the collection. This includes any special restrictions, legal prerequisites, limitations and/or warnings on obtaining collection data. Some words that may be used in this element's value include: Public, In-house, Limited, None. The value field is used for special ACL rules (Access Control Lists (http://en.wikipedia.org/wiki/Access_control_list)). For example it can be used to hide metadata when it isn't ready for public consumption."
   accessConstraints: JSON
+
   "The data’s distinctive attributes of the collection (i.e. attributes used to describe the unique characteristics of the collection which extend beyond those defined)."
   additionalAttributes: JSON
+
   "The list of concepts and any data on the relationship between this collection and other permitted concepts"
   associationDetails: JSON
+
   "This element stores DOIs that are associated with the collection such as from campaigns and other related sources."
   associatedDois: JSON
+
   "Find collections matching 'archive_center' param value."
   archiveCenter: String
+
   "Allows authors to provide words or phrases outside of the controlled Science Keyword vocabulary, to further describe the collection."
   ancillaryKeywords: [String]
+
   "Allows a data provider to provide archive and distribution information up front to an end user, to help them decide if they can use the product."
   archiveAndDistributionInformation: JSON
+
   "Spatial coverage of the collection."
   boxes: [String]
+
   "True if the metadata contains browse imagery."
   browseFlag: Boolean
+
   "Data hosted in the cloud."
   cloudHosted: Boolean
+
   "The unique concept id assigned to the collection."
   conceptId: String!
+
   "Consortiums the collection is associated to."
   consortiums: [String]
+
   "Information required to properly cite the collection in professional scientific literature."
   collectionCitations: JSON
+
   "Data type of the collection, e.g. NEAR_REAL_TIME"
   collectionDataType: String
+
   "This element describes the production status of the data set."
   collectionProgress: String
+
   "Information about the personnel groups responsible for this collection and its metadata."
   contactGroups: JSON
+
   "Information about the personnel responsible for this collection and its metadata."
   contactPersons: JSON
+
   "Coordinate system of the metadata."
   coordinateSystem: String
+
   "Provider associated with the metadata."
   dataCenter: String @deprecated(reason: "Use `provider`.")
+
   "Information about the data centers responsible for this collection and its metadata."
   dataCenters: JSON
+
   "Dates related to activities involving the collection data."
   dataDates: JSON
+
   "Describes the language used in the preparation, storage, and description of the collection. It is the language of the collection data themselves.   It does not refer to the language used in the metadata record (although this may be the same language)."
   dataLanguage: String
+
   "This element allows end users to get direct access to data products that are stored in the Amazon Web Service (AWS) S3 buckets. The sub elements include S3 credentials end point and a documentation URL as well as bucket prefix names and an AWS region."
   directDistributionInformation: JSON
+
   "Formerly called Internal Directory Name (IDN) Node (IDN_Node). This element has been used historically by the GCMD internally to identify association, responsibility and/or ownership of the dataset, service or supplemental information. Note: This field only occurs in the DIF. When a DIF record is retrieved in the ECHO10 or ISO 19115 formats, this element will not be translated. The controlled vocabulary for directory names is maintained in the Keyword Management System (KMS)."
   directoryNames: JSON
+
   "This element stores the DOI (Digital Object Identifier) that identifies the collection. note: The values should start with the directory indicator which in ESDIS' case is 10.  If the DOI was registered through ESDIS, the beginning of the string should be 10.5067. The DOI URL is not stored here; it should be stored as a RelatedURL. The DOI organization that is responsible for creating the DOI is described in the Authority element. For ESDIS records the value of https://doi.org/ should be used. While this element is not required, NASA metadata providers are strongly encouraged to include DOI and DOI Authority for their collections."
   doi: JSON
+
   "The title of the collection described by the metadata."
   datasetId: String
+
   "Entry Title"
   entryTitle: String @deprecated(reason: "Use `title`.")
+
   "An array containing all of the different formats of the underlying data of a collection."
   nativeDataFormats: [String]
+
   "True if there are multiple supported formats for any services associated with the collection."
   hasFormats: Boolean
+
   "True if there are granules associated with the collection."
   hasGranules: Boolean
+
   "True if any of its associated services support spatial subsetting."
   hasSpatialSubsetting: Boolean
+
   "True if any of its associated services support temporal subsetting."
   hasTemporalSubsetting: Boolean
+
   "True if there are transformations (subset, interpolation or projection) in any of its associated services."
   hasTransforms: Boolean
+
   "True if there are variables associated with the collection."
   hasVariables: Boolean
+
   "Identifies the topic categories from the EN ISO 19115-1:2014 Geographic Information – Metadata – Part 1: Fundamentals (http://www.isotc211.org/) Topic Category Code List that pertain to this collection, based on the Science Keywords associated with the collection. An ISO Topic Category is a high-level thematic classification to assist in the grouping of and search for available collections. The controlled vocabulary for ISO topic categories is maintained in the Keyword Management System (KMS)."
   isoTopicCategories: [String]
+
   "This element is used to identify other services, collections, visualizations, granules, and other metadata types and resources that are associated with or dependent on the data described by the metadata. This element is also used to identify a parent metadata record if it exists. This usage should be reserved for instances where a group of metadata records are subsets that can be better represented by one parent metadata record, which describes the entire set. In some instances, a child may point to more than one parent. The EntryId is the same as the element described elsewhere in this document where it contains an ID and Version."
   metadataAssociations: JSON
+
   "Dates related to activities involving the metadata record itself."
   metadataDates: JSON
+
   "The language used in the metadata record."
   metadataLanguage: String
+
   "The format of original collection metadata (Known in CMR as original format)."
   metadataFormat: String
+
   "True if the data is available online."
   onlineAccessFlag: Boolean
+
   "Organizations associated with the metadata, including data centers."
   organizations: [String]
+
   "Original metadata format."
   originalFormat: String @deprecated(reason: "Use `metadataFormat`.")
+
   "Spatial coverage of the collection."
   lines: [String]
+
   "Controlled hierarchical keywords used to specify the spatial location of the collection.   The controlled vocabulary for spatial keywords is maintained in the Keyword Management System (KMS).  The Spatial Keyword hierarchy includes one or more of the following layers: Category (e.g., Continent), Type (e.g. Africa), Subregion1 (e.g., Central Africa), Subregion2 (e.g., Cameroon), and Subregion3. DetailedLocation exists outside the hierarchy."
   locationKeywords: JSON
+
   "For paleoclimate or geologic data, PaleoTemporalCoverage is the length of time represented by the data collected. PaleoTemporalCoverage should be used when the data spans time frames earlier than yyyy-mm-dd = 0001-01-01."
   paleoTemporalCoverages: JSON
+
   "Information about the relevant platform(s) used to acquire the data in the collection. The controlled vocabulary for platform types is maintained in the Keyword Management System (KMS), and includes Spacecraft, Aircraft, Vessel, Buoy, Platform, Station, Network, Human, etc."
   platforms: JSON
+
   "Spatial coverage of the collection."
   points: [String]
+
   "Spatial coverage of the collection."
   polygons: [[String]]
+
   "The name of the scientific program, field campaign, or project from which the data were collected."
   projects: JSON
+
   "The identity of the provider in the CMR."
   provider: String
+
   "Describes key bibliographic citations pertaining to the collection."
   publicationReferences: JSON
+
   "Free text description of the quality of the collection data."
   quality: String
+
   "The native id to set on the collection."
   nativeId: String!
+
   "The identifier for the processing level of the collection."
   processingLevel: JSON
+
   "An identifier indicating the level at which the data in the collection are processed, ranging from Level0 (raw instrument data at full resolution) to Level4 (model output or analysis results).  The value of Processing Level Id is chosen from a controlled vocabulary."
   processingLevelId: String @deprecated(reason: "Use `processingLevel`.")
+
   "Suggested usage or purpose for the collection data or service."
   purpose: String
+
   "Date which the Collection was last updated."
   revisionDate: String
+
   "The revision id of the Collection."
   revisionId: String
+
   "Describes any data/service related URLs that include project home pages, services, related data archives/servers, metadata extensions, direct links to online software packages, web mapping services, links to images, or other data."
   relatedUrls: JSON
+
   "Controlled Science Keywords describing the collection.  The controlled vocabulary for Science Keywords is maintained in the Keyword Management System (KMS)."
   scienceKeywords: JSON
+
   "Find collections matching any of the 'short_name' param values."
   shortName: String
+
   "Specifies the geographic and vertical (altitude, depth) coverage of the data."
   spatialExtent: JSON
+
   "The reference frame or system in which altitudes (elevations) are given. The information contains the datum name, distance units and encoding method, which provide the definition for the system. This field also stores the characteristics of the reference frame or system from which depths are measured. The additional information in the field is geometry reference data etc."
   spatialInformation: JSON
+
   "This element is reserved for NASA records only. A Standard Product is a product that has been vetted to ensure that they are complete, consistent, maintain integrity, and satifies the goals of the Earth Observing System mission. The NASA product owners have also commmitted to archiving and maintaining the data products. More information can be found here: https://earthdata.nasa.gov/eosdis/science-system-description/eosdis-standard-products."
   standardProduct: Boolean
+
   "The summary of intentions with which this collection was developed."
   summary: String @deprecated(reason: "Use `abstract`")
+
   "Tags associated with the collection. It includes sub-elements of tagKey and optional data which is in embedded JSON."
   tags: JSON
+
   "This class contains attributes which describe the temporal range of a specific collection. Temporal Extent includes a specification of the Temporal Range Type of the collection, which is one of Range Date Time, Single Date Time, or Periodic Date Time."
   temporalExtents: JSON
+
   "One or more words or phrases that describe the temporal resolution of the dataset."
   temporalKeywords: [String]
+
   "Name of the two-dimensional tiling system for the collection."
   tilingIdentificationSystems: JSON
+
   "Start time of the metadata."
   timeStart: String
+
   "End time of the metadata."
   timeEnd: String
+
   "The title of the collection described by the metadata."
   title: String
+
   "Raw UMM Metadata of the Collection Record."
   ummMetadata: JSON
+
   "Designed to protect privacy and/or intellectual property by allowing the author to specify how the collection may or may not be used after access is granted. This includes any special restrictions, legal prerequisites, terms and conditions, and/or limitations on using the item. Providers may request acknowledgement of the item from users and claim no responsibility for quality and completeness. Note: Use Constraints describe how the item may be used once access has been granted; and is distinct from Access Constraints, which refers to any constraints in accessing the item."
   useConstraints: JSON
+
   "Id of the user who modified/published record"
   userId: String
+
   "The version description of the collection."
   versionDescription: String
+
   "Provider defined version id of the collection."
   versionId: String @deprecated(reason: "Use `version`")
+
   "The Version of the collection."
   version: String
 
@@ -177,50 +255,73 @@ type Collection {
   granules (
     "Granules query parameters"
     params: GranulesInput
+
     "Bounding boxes define an area on the earth aligned with longitude and latitude. The Bounding box parameters must be 4 comma-separated numbers: lower left longitude, lower left latitude, upper right longitude, upper right latitude."
     boundingBox: [String] @deprecated(reason: "Use `params.boundingBox`")
+
     "Search by the browse only flag of the granule."
     browseOnly: Boolean @deprecated(reason: "Use `params.browseOnly`")
+
     "Circle defines a circle area on the earth with a center point and a radius. The center parameters must be 3 comma-separated numbers: longitude of the center point, latitude of the center point, radius of the circle in meters. The circle center cannot be on North or South pole. The radius of the circle must be between 10 and 6,000,000."
     circle: [String] @deprecated(reason: "Use `params.circle`")
+
     "Search granules by cloud cover min and max."
     cloudCover: JSON @deprecated(reason: "Use `params.cloudCover`")
+
     "The unique concept id assigned to the parent collection."
     collectionConceptId: String @deprecated(reason: "Use `params.collectionConceptId`")
+
     "The unique concept id assigned to the granule."
     conceptId: [String] @deprecated(reason: "Use `params.conceptId`")
+
     "Cursor that points to the/a specific position in a list of requested records."
     cursor: String @deprecated(reason: "Use `params.cursor`")
+
     "Search by the day/night flag of the granule."
     dayNightFlag: String @deprecated(reason: "Use `params.dayNightFlag`")
+
     "Search by the equator crossing date of the granule."
     equatorCrossingDate: JSON @deprecated(reason: "Use `params.equatorCrossingDate`")
+
     "Search by the equator crossing longitude of the granule."
     equatorCrossingLongitude: JSON @deprecated(reason: "Use `params.equatorCrossingLongitude`")
+
     "Exclude granules from results by echo_granule_id and/or concept_id."
     exclude: JSON @deprecated(reason: "Use `params.exclude`")
+
     "The number of granules requested by the user."
     limit: Int @deprecated(reason: "Use `params.limit`")
+
     "Search for granules that intersect with provided lines."
     line: [String] @deprecated(reason: "Use `params.line`")
+
     "Filter the links based on these types."
     linkTypes: [String] @deprecated(reason: "Use `params.linkTypes`")
+
     "Zero based offset of individual results."
     offset: Int @deprecated(reason: "Use `params.offset`")
+
     "Search by the online only flag of the granule."
     onlineOnly: Boolean @deprecated(reason: "Use `params.onlineOnly`")
+
     "Options to provide to CMR pertaining to and, or, and wildcard searching."
     options: JSON @deprecated(reason: "Use `params.options`")
+
     "Search for granules by orbit number min and max"
     orbitNumber: JSON @deprecated(reason: "Use `params.orbitNumber`")
+
     "Search using a point involves using a pair of values representing the point coordinates as parameters. The first value is the longitude and second value is the latitude."
     point: [String] @deprecated(reason: "Use `params.point`")
+
     "Polygon points are provided in counter-clockwise order. The last point should match the first point to close the polygon. The values are listed comma separated in longitude latitude order, i.e. lon1, lat1, lon2, lat2, lon3, lat3, and so on."
     polygon: [String] @deprecated(reason: "Use `params.polygon`")
+
     "One or more sort keys can be specified to impact searching. Fields can be prepended with a '-' to sort in descending order. Ascending order is the default but + can be used to explicitly request ascending."
     sortKey: [String] @deprecated(reason: "Use `params.sortKey`")
+
     "The temporal datetime has to be in yyyy-MM-ddTHH:mm:ssZ format."
     temporal: String @deprecated(reason: "Use `params.temporal`")
+
     "The 2D coordinate system associated with the collection"
     twoDCoordinateSystem: JSON @deprecated(reason: "Use `params.twoDCoordinateSystem`")
   ): GranuleList
@@ -228,12 +329,16 @@ type Collection {
   services (
     "Services query parameters"
     params: ServicesInput
+
     "The unique concept id assigned to the service."
     conceptId: [String] @deprecated(reason: "Use `params.conceptId`")
+
     "The number of services requested by the user."
     limit: Int @deprecated(reason: "Use `params.limit`")
+
     "Zero based offset of individual results."
     offset: Int @deprecated(reason: "Use `params.offset`")
+
     "The type of the service."
     type: String @deprecated(reason: "Use `params.type`")
   ): ServiceList
@@ -241,12 +346,16 @@ type Collection {
   subscriptions (
     "Subscriptions query parameters"
     params: SubscriptionsInput
+
     "The unique concept id assigned to the subscription."
     conceptId: [String] @deprecated(reason: "Use `params.conceptId`")
+
     "The number of services requested by the user."
     limit: Int @deprecated(reason: "Use `params.limit`")
+
     "Zero based offset of individual results."
     offset: Int @deprecated(reason: "Use `params.offset`")
+
     "The EDL userid of the subscriber."
     subscriberId: String @deprecated(reason: "Use `params.subscriberId`")
   ): SubscriptionList
@@ -258,10 +367,13 @@ type Collection {
   tools (
     "Tools query parameters"
     params: ToolsInput
+
     "The unique concept id assigned to the tool."
     conceptId: [String] @deprecated(reason: "Use `params.conceptId`")
+
     "The number of tools requested by the user."
     limit: Int @deprecated(reason: "Use `params.limit`")
+
     "Zero based offset of individual results."
     offset: Int @deprecated(reason: "Use `params.offset`")
   ): ToolList
@@ -269,12 +381,16 @@ type Collection {
   variables (
     "Variables query parameters"
     params: VariablesInput
+
     "The unique concept id assigned to the variable."
     conceptId: [String] @deprecated(reason: "Use `params.conceptId`")
+
     "The number of variables requested by the user."
     limit: Int @deprecated(reason: "Use `params.limit`")
+
     "Zero based offset of individual results."
     offset: Int @deprecated(reason: "Use `params.offset`")
+
     "The name of a variable."
     name: String @deprecated(reason: "Use `params.name`")
   ): VariableList
@@ -309,10 +425,13 @@ type DuplicateCollectionList {
 input RelatedCollectionsInput {
   "The size of the range GraphDB searches on. Defaults to 5"
   limit: Int
+
   "The beginning of the range GraphDB searches on"
   offset: Int
+
   "Filter the RelatedURL relationships by the Type property."
   relatedUrlType: [String]
+
   "Filter the RelatedURL relationships by the subtype property."
   relatedUrlSubtype: [String]
 }
@@ -320,12 +439,16 @@ input RelatedCollectionsInput {
 type RelatedCollection {
   "The unique concept id assigned to the collection."
   id: String
+
   "The DOI that identifies the collection."
   doi: String
+
   "The short name associated with the collection."
   shortName: String
+
   "The title of the collection described by the metadata."
   title: String
+
   "The list of relationships."
   relationships: [Relationship]
 }
@@ -345,12 +468,16 @@ type RelatedCollectionsList {
 type GraphDbRelatedUrl implements Relationship {
   "The type of relationship."
   relationshipType: String
+
   "The url of the related url."
   url: String
+
   "The description of the related url."
   description: String
+
   "A keyword describing the type of the online resource to this resource."
   type: String
+
   "A keyword describing the subtype of the online resource to this resource."
   subtype: String
 }
@@ -358,6 +485,7 @@ type GraphDbRelatedUrl implements Relationship {
 type GraphDbProject implements Relationship {
   "The type of relationship."
   relationshipType: String
+
   "The name of the project"
   name: String
 }
@@ -365,8 +493,10 @@ type GraphDbProject implements Relationship {
 type GraphDbPlatformInstrument implements Relationship {
   "The type of relationship."
   relationshipType: String
+
   "The name of the platform."
   platform: String
+
   "The name of the instrument."
   instrument: String
 }
@@ -374,10 +504,13 @@ type GraphDbPlatformInstrument implements Relationship {
 type CollectionList {
   "The number of hits for a given search."
   count: Int
+
   "Cursor that points to the/a specific position in a list of requested records."
   cursor: String
+
   "The list of collection search results."
   items: [Collection]
+
   "Facets are counts of unique values from fields within items matching search results."
   facets: JSON
 }
@@ -385,124 +518,181 @@ type CollectionList {
 input CollectionsInput {
   "The unique concept id assigned to the collection."
   conceptId: [String]
+
   "The consortium value of the collection."
   consortium: [String]
+
   "The DOI Value of the collection."
   doi: String
+
   "Cursor that points to the/a specific position in a list of requested records."
   cursor: String
+
   "Bounding boxes define an area on the earth aligned with longitude and latitude. The Bounding box parameters must be 4 comma-separated numbers: lower left longitude, lower left latitude, upper right longitude, upper right latitude."
   boundingBox: [String]
+
   "Circle defines a circle area on the earth with a center point and a radius. The center parameters must be 3 comma-separated numbers: longitude of the center point, latitude of the center point, radius of the circle in meters. The circle center cannot be on North or South pole. The radius of the circle must be between 10 and 6,000,000."
   circle: [String]
+
   "The cloud_hosted parameter can be set to 'true' or 'false'. When true, the results will be restricted to collections that have a DirectDistributionInformation element or have been tagged with gov.nasa.earthdatacloud.s3."
   cloudHosted: Boolean
+
   "Type of the collection."
   collectionDataType: [String]
+
   "The Entry Title of collection"
   entryTitle: String
+
   "Data center assigned to the collection."
   dataCenter: String
+
   "Data centers assigned to the collection."
   dataCenters: [String]
+
   "Data center assigned to the collection, in facet form."
   dataCenterH: [String]
+
   "Entry ID of the collection."
   entryId: [String]
+
   "The number of facets to return in each category."
   facetsSize: Int
+
   "The data format of the granules belonging to the collection."
   granuleDataFormat: String
+
   "The data format of the granules belonging to the collection, in facet form."
   granuleDataFormatH: [String]
+
   "When true, the results will be restricted to collections with granules or with the configured CWIC tag. When false, results will be restricted to collections without granules."
   hasGranulesOrCwic: Boolean
+
   "When has_granules is set to 'true' or 'false', results will be restricted to collections with or without granules, respectively."
   hasGranules: Boolean
+
   "When has_opendap_url is set to 'true' or 'false', results will be restricted to collections with or without OPeNDAP service RelatedURLs, respectively."
   hasOpendapUrl: Boolean
+
   "The horizontal data resolution of the data belonging to the collection."
   horizontalDataResolutionRange: [String]
+
   """
   If this parameter is set (e.g. includeFacets=v2), the results will include a new top level key `facets` that contains the facets related to the collection results.
   **NOTE**: This only requests the facets be returned by CMR, you will need to include `facets` in your query to have the results returned in the query.
   """
   includeFacets: String
+
   "If this parameter is set to 'true' this will include a flag indicating true or false if the collection has any granules at all."
   includeHasGranules: Boolean
+
   """
   If this parameter is set (e.g. includeTags=gov.nasa.earthdata.search.*,gov.nasa.echo.*), the collection results will contain an additional field 'tags' within each collection. The value of the tags field is a list of tag_keys that are associated with the collection. Only the tags with tag_key matching the values of include_tags parameter (with wildcard support) are included.
   **NOTE**: This only requests the tags be returned by CMR, you will need to include `tags` in your query to have the results returned in the query.
   """
   includeTags: String
+
   "Instrument associated with the collection."
   instrument: String
+
   "Instrument associated with the collection, in facet form."
   instrumentH: [String]
+
   "Keyword search value."
   keyword: String
+
   "The latency facet value of the collection."
   latency: [String]
+
   "The number of collections requested by the user."
   limit: Int
+
   "Search for collections that intersect with provided lines."
   line: [String]
+
   "Zero based offset of individual results."
   offset: Int
+
   "Options to provide to CMR pertaining to and, or, and wildcard searching."
   options: JSON
+
   "Which page to request from the current collection results."
   pageSize: Int
+
   "Platform associated with the collection."
   platform: String
+
   "Platform associated with the collection, in facet form."
   platformsH: JSON
+
   "Search using a point involves using a pair of values representing the point coordinates as parameters. The first value is the longitude and second value is the latitude."
   point: [String]
+
   "Polygon points are provided in counter-clockwise order. The last point should match the first point to close the polygon. The values are listed comma separated in longitude latitude order, i.e. lon1, lat1, lon2, lat2, lon3, lat3, and so on."
   polygon: [String]
+
   "An identifier indicating the level at which the data in the collection are processed, ranging from Level0 (raw instrument data at full resolution) to Level4 (model output or analysis results).  The value of Processing Level Id is chosen from a controlled vocabulary."
   processingLevelId: String
+
   "An identifier indicating the level at which the data in the collection are processed, ranging from Level0 (raw instrument data at full resolution) to Level4 (model output or analysis results), in facet form.  The value of Processing Level Id is chosen from a controlled vocabulary."
   processingLevelIdH: [String]
+
   "The project associated with the collection."
   project: String
+
   "The project associated with the collection, in facet form."
   projectH: [String]
+
   "The name of the provider associated with the collection."
   provider: String
+
   "The name of the providers associated with the collections."
   providers: [String]
+
   "The revision id of the collection"
   revisionDate: String
+
   "Science Keywords associated with the collection, in facet form."
   scienceKeywordsH: JSON
+
   "Science Keywords for searching term at all levels of the science keyword hierarchy."
   scienceKeywords: JSON
+
   "UMM Service concept id."
   serviceConceptId: String
+
   "UMM Service type."
   serviceType: [String]
+
   "The short name associated with the collection."
   shortName: String
+
   "An array of 'shortName' param values."
   shortNames: [String]
+
   "One or more sort keys can be specified to impact searching. Fields can be prepended with a '-' to sort in descending order. Ascending order is the default but + can be used to explicitly request ascending."
   sortKey: [String]
+
   "Keywords relating to spatial aspects of the collection."
   spatialKeyword: String
+
   "Tags associated with the collection."
   tagKey: [String]
+
   "The temporal datetime has to be in yyyy-MM-ddTHH:mm:ssZ format."
   temporal: String
+
   "Find collections which have a revision date starting at or after the provided datetime string in yyyy-MM-ddTHH:mm:ssZ format."
   updatedSince: String
+
   "The 2D coordinate system associated with the collection."
   twoDCoordinateSystemName: [String]
+
   "version of the collection."
   version: String
+
   "UMM Variable concept id."
   variableConceptId: String
+
   "Returns all revisions when set to true."
   allRevisions: Boolean
 }
@@ -510,8 +700,10 @@ input CollectionsInput {
 input CollectionInput {
   "The unique concept id assigned to the collection."
   conceptId: String!
+
   "If this parameter is set to 'true' this will include a flag indicating true or false if the collection has any granules at all."
   includeHasGranules: Boolean
+
   "If this parameter is set (e.g. include_tags=gov.nasa.earthdata.search.*,gov.nasa.echo.*), the collection results will contain an additional field 'tags' within each collection. The value of the tags field is a list of tag_keys that are associated with the collection. Only the tags with tag_key matching the values of include_tags parameter (with wildcard support) are included in the results."
   includeTags: String
 }
@@ -520,100 +712,145 @@ type Query {
   collections (
     "Collections query parameters"
     params: CollectionsInput
+
     "The unique concept id assigned to the collection."
     conceptId: [String] @deprecated(reason: "Use `params.conceptId`")
+
     "Cursor that points to the/a specific position in a list of requested records."
     cursor: String @deprecated(reason: "Use `params.cursor`")
+
     "Bounding boxes define an area on the earth aligned with longitude and latitude. The Bounding box params must be 4 comma-separated numbers: lower left longitude, lower left latitude, upper right longitude, upper right latitude."
     boundingBox: [String] @deprecated(reason: "Use `params.boundingBox`")
+
     "Circle defines a circle area on the earth with a center point and a radius. The center params must be 3 comma-separated numbers: longitude of the center point, latitude of the center point, radius of the circle in meters. The circle center cannot be on North or South pole. The radius of the circle must be between 10 and 6,000,000."
     circle: [String] @deprecated(reason: "Use `params.circle`")
+
     "The cloud_hosted parameter can be set to 'true' or 'false'. When true, the results will be restricted to collections that have a DirectDistributionInformation element or have been tagged with gov.nasa.earthdatacloud.s3."
     cloudHosted: Boolean @deprecated(reason: "Use `params.cloudHosted`")
+
     "Type of the collection"
     collectionDataType: [String] @deprecated(reason: "Use `params.collectionDataType`")
+
     "Entry Title"
     entryTitle: String
+
     "Data center assigned to the collection."
     dataCenter: String @deprecated(reason: "Use `params.dataCenter`")
+
     "Data center assigned to the collection, in facet form."
     dataCenterH: [String] @deprecated(reason: "Use `params.dataCenterH`")
+
     "The number of facets to return in each category."
     facetsSize: Int @deprecated(reason: "Use `params.facetsSize`")
+
     "The data format of the granules belonging to the collection."
     granuleDataFormat: String @deprecated(reason: "Use `params.granuleDataFormat`")
+
     "The data format of the granules belonging to the collection, in facet form."
     granuleDataFormatH: [String] @deprecated(reason: "Use `params.granuleDataFormatH`")
+
     "When true, the results will be restricted to collections with granules or with the configured CWIC tag. When false, results will be restricted to collections without granules."
     hasGranulesOrCwic: Boolean @deprecated(reason: "Use `params.hasGranulesOrCwic`")
+
     "When has_granules is set to 'true' or 'false', results will be restricted to collections with or without granules, respectively."
     hasGranules: Boolean @deprecated(reason: "Use `params.hasGranules`")
+
     "The horizontal data resolution of the data belonging to the collection."
     horizontalDataResolutionRange: [String] @deprecated(reason: "Use `params.horizontalDataResolutionRange`")
+
     """
     If this parameter is set (e.g. includeFacets=v2), the results will include a new top level key `facets` that contains the facets related to the collection results.
     **NOTE**: This only requests the facets be returned by CMR, you will need to include `facets` in your query to have the results returned in the query.
     """
     includeFacets: String @deprecated(reason: "Use `params.includeFacets`")
+
     "If this parameter is set to 'true' this will include a flag indicating true or false if the collection has any granules at all."
     includeHasGranules: Boolean @deprecated(reason: "Use `params.includeHasGranules`")
+
     """
     If this parameter is set (e.g. includeTags=gov.nasa.earthdata.search.*,gov.nasa.echo.*), the collection results will contain an additional field 'tags' within each collection. The value of the tags field is a list of tag_keys that are associated with the collection. Only the tags with tag_key matching the values of include_tags parameter (with wildcard support) are included.
     **NOTE**: This only requests the tags be returned by CMR, you will need to include `tags` in your query to have the results returned in the query.
     """
     includeTags: String @deprecated(reason: "Use `params.includeTags`")
+
     "Instrument associated with the collection."
     instrument: String @deprecated(reason: "Use `params.instrument`")
+
     "Instrument associated with the collection, in facet form."
     instrumentH: [String] @deprecated(reason: "Use `params.instrumentH`")
+
     "Keyword search value."
     keyword: String @deprecated(reason: "Use `params.keyword`")
+
     "The number of collections requested by the user."
     limit: Int @deprecated(reason: "Use `params.limit`")
+
     "Search for collections that intersect with provided lines."
     line: [String] @deprecated(reason: "Use `params.line`")
+
     "Zero based offset of individual results."
     offset: Int @deprecated(reason: "Use `params.offset`")
+
     "Options to provide to CMR pertaining to and, or, and wildcard searching."
     options: JSON @deprecated(reason: "Use `params.options`")
+
     "Which page to request from the current collection results."
     pageSize: Int @deprecated(reason: "Use `params.pageSize`")
+
     "Platform associated with the collection."
     platform: String @deprecated(reason: "Use `params.platform`")
+
     "Platform associated with the collection, in facet form."
     platformsH: JSON @deprecated(reason: "Use `params.platformsH`")
+
     "Search using a point involves using a pair of values representing the point coordinates as parameters. The first value is the longitude and second value is the latitude."
     point: [String] @deprecated(reason: "Use `params.point`")
+
     "Polygon points are provided in counter-clockwise order. The last point should match the first point to close the polygon. The values are listed comma separated in longitude latitude order, i.e. lon1, lat1, lon2, lat2, lon3, lat3, and so on."
     polygon: [String] @deprecated(reason: "Use `params.polygon`")
+
     "An identifier indicating the level at which the data in the collection are processed, ranging from Level0 (raw instrument data at full resolution) to Level4 (model output or analysis results).  The value of Processing Level Id is chosen from a controlled vocabulary."
     processingLevelId: String @deprecated(reason: "Use `params.processingLevelId`")
+
     "An identifier indicating the level at which the data in the collection are processed, ranging from Level0 (raw instrument data at full resolution) to Level4 (model output or analysis results), in facet form.  The value of Processing Level Id is chosen from a controlled vocabulary."
     processingLevelIdH: [String] @deprecated(reason: "Use `params.processingLevelIdH`")
+
     "The project associated with the collection."
     project: String @deprecated(reason: "Use `params.project`")
+
     "The project associated with the collection, in facet form."
     projectH: [String] @deprecated(reason: "Use `params.projectH`")
+
     "The name of the provider associated with the collection."
     provider: String @deprecated(reason: "Use `params.provider`")
+
     "Science Keywords associated with the collection, in facet form."
     scienceKeywordsH: JSON @deprecated(reason: "Use `params.scienceKeywordsH`")
+
     "UMM Service concept id."
     serviceConceptId: String @deprecated(reason: "Use `params.serviceConceptId`")
+
     "UMM Service type."
     serviceType: [String] @deprecated(reason: "Use `params.serviceType`")
+
     "The short name associated with the collection."
     shortName: String @deprecated(reason: "Use `params.shortName`")
+
     "One or more sort keys can be specified to impact searching. Fields can be prepended with a '-' to sort in descending order. Ascending order is the default but + can be used to explicitly request ascending."
     sortKey: [String] @deprecated(reason: "Use `params.sortKey`")
+
     "Keywords relating to spatial aspects of the collection."
     spatialKeyword: String @deprecated(reason: "Use `params.spatialKeyword`")
+
     "Tags associated with the collection."
     tagKey: [String] @deprecated(reason: "Use `params.tagKey`")
+
     "The temporal datetime has to be in yyyy-MM-ddTHH:mm:ssZ format."
     temporal: String @deprecated(reason: "Use `params.temporal`")
+
     "The 2D coordinate system associated with the collection"
     twoDCoordinateSystemName: [String] @deprecated(reason: "Use `params.twoDCoordinateSystemName`")
+
     "UMM Variable concept id."
     variableConceptId: String @deprecated(reason: "Use `params.variableConceptId`")
   ): CollectionList!
@@ -621,19 +858,31 @@ type Query {
   collection (
     "Collection query parameters"
     params: CollectionInput
+
     "The unique concept id assigned to the collection."
     conceptId: String @deprecated(reason: "Use `params.conceptId`")
+
     "If this parameter is set to 'true' this will include a flag indicating true or false if the collection has any granules at all."
     includeHasGranules: Boolean @deprecated(reason: "Use `params.includeHasGranules`")
+
     "If this parameter is set (e.g. include_tags=gov.nasa.earthdata.search.*,gov.nasa.echo.*), the collection results will contain an additional field 'tags' within each collection. The value of the tags field is a list of tag_keys that are associated with the collection. Only the tags with tag_key matching the values of include_tags parameter (with wildcard support) are included in the results."
     includeTags: String @deprecated(reason: "Use `params.includeTags`")
   ): Collection
 }
 
 type Mutation {
+  restoreCollectionRevision (
+    "The unique concept id assigned to the collection."
+    conceptId: String!
+
+    "The revision of the collection."
+    revisionId: String!
+  ): CollectionMutationResponse
+
   deleteCollection (
     "Provider ID of the collection."
     providerId: String!
+
     "The native id of a collection."
     nativeId: String!
   ): CollectionMutationResponse
@@ -642,6 +891,7 @@ type Mutation {
 type CollectionMutationResponse {
   "The unique concept id assigned to the collection."
   conceptId: String!
+
   "The revision of the collection."
   revisionId: String!
 }
