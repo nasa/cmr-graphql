@@ -26,6 +26,16 @@ export default {
   },
 
   Mutation: {
+    restoreServiceRevision: async (source, args, context, info) => {
+      const { dataSources } = context
+
+      return dataSources.serviceSourceRestoreRevision(
+        handlePagingParams(args),
+        context,
+        parseResolveInfo(info)
+      )
+    },
+
     deleteService: async (source, args, context, info) => {
       const { dataSources } = context
 

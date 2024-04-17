@@ -27,6 +27,16 @@ export default {
       )
     },
 
+    restoreVariableRevision: async (source, args, context, info) => {
+      const { dataSources } = context
+
+      return dataSources.variableSourceRestoreRevision(
+        handlePagingParams(args),
+        context,
+        parseResolveInfo(info)
+      )
+    },
+
     deleteVariable: async (source, args, context, info) => {
       const { dataSources } = context
 

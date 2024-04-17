@@ -14,6 +14,13 @@ describe('Draft', () => {
     process.env = { ...OLD_ENV }
 
     process.env.cmrRootUrl = 'http://example-cmr.com'
+
+    process.env.ummCollectionVersion = '1.0.0'
+    process.env.ummGranuleVersion = '1.0.0'
+    process.env.ummServiceVersion = '1.0.0'
+    process.env.ummSubscriptionVersion = '1.0.0'
+    process.env.ummToolVersion = '1.0.0'
+    process.env.ummVariableVersion = '1.0.0'
   })
 
   afterEach(() => {
@@ -283,7 +290,7 @@ describe('Draft', () => {
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .put(/ingest\/providers\/EDSC\/collection-drafts\/collection-1/)
+            .put('/ingest/providers/EDSC/collection-drafts/collection-1')
             .reply(201, {
               'concept-id': 'CD100000-EDSC',
               'revision-id': '1'

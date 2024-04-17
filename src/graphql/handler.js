@@ -37,21 +37,28 @@ import tagDefinitionSource from '../datasources/tagDefinition'
 import toolDraftSource from '../datasources/toolDraft'
 import variableDraftSource from '../datasources/variableDraft'
 
-import { deleteTool as toolSourceDelete, fetchTools as toolSourceFetch } from '../datasources/tool'
+import {
+  deleteTool as toolSourceDelete,
+  fetchTools as toolSourceFetch,
+  restoreToolRevision as toolSourceRestoreRevision
+} from '../datasources/tool'
 
 import {
   deleteCollection as collectionSourceDelete,
-  fetchCollections as collectionSourceFetch
+  fetchCollections as collectionSourceFetch,
+  restoreCollectionRevision as collectionSourceRestoreRevision
 } from '../datasources/collection'
 
 import {
   deleteService as serviceSourceDelete,
-  fetchServices as serviceSourceFetch
+  fetchServices as serviceSourceFetch,
+  restoreServiceRevision as serviceSourceRestoreRevision
 } from '../datasources/service'
 
 import {
   deleteVariable as variableSourceDelete,
-  fetchVariables as variableSourceFetch
+  fetchVariables as variableSourceFetch,
+  restoreVariableRevision as variableSourceRestoreRevision
 } from '../datasources/variable'
 
 import {
@@ -182,6 +189,7 @@ export default startServerAndCreateLambdaHandler(
           collectionDraftSource,
           collectionSourceDelete,
           collectionSourceFetch,
+          collectionSourceRestoreRevision,
           collectionVariableDraftsSource,
           dataQualitySummarySource,
           draftSourceDelete,
@@ -201,6 +209,7 @@ export default startServerAndCreateLambdaHandler(
           serviceDraftSource,
           serviceSourceDelete,
           serviceSourceFetch,
+          serviceSourceRestoreRevision,
           subscriptionSourceDelete,
           subscriptionSourceFetch,
           subscriptionSourceIngest,
@@ -208,7 +217,9 @@ export default startServerAndCreateLambdaHandler(
           toolDraftSource,
           toolSourceDelete,
           toolSourceFetch,
+          toolSourceRestoreRevision,
           variableDraftSource,
+          variableSourceRestoreRevision,
           variableSourceDelete,
           variableSourceFetch
         },

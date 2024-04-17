@@ -26,6 +26,16 @@ export default {
   },
 
   Mutation: {
+    restoreCollectionRevision: async (source, args, context, info) => {
+      const { dataSources } = context
+
+      return dataSources.collectionSourceRestoreRevision(
+        handlePagingParams(args),
+        context,
+        parseResolveInfo(info)
+      )
+    },
+
     deleteCollection: async (source, args, context, info) => {
       const { dataSources } = context
 

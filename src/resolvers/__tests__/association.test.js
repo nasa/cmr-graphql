@@ -218,7 +218,6 @@ describe('Association', () => {
 
           const { data, errors } = response.body.singleResult
 
-          console.log('errors', errors)
           expect(errors).toBeUndefined()
 
           expect(data).toEqual({

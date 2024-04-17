@@ -267,6 +267,77 @@ describe('Tool', () => {
   })
 
   describe('Mutation', () => {
+    describe('restoreToolRevision', () => {
+      test('restores an old version of a tool', async () => {
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .get('/search/tools.umm_json?concept_id=T100000-EDSC&all_revisions=true')
+          .reply(200, {
+            items: [{
+              meta: {
+                'concept-id': 'T100000-EDSC',
+                'native-id': '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed',
+                'revision-id': 1
+              },
+              umm: {
+                EntryTitle: 'Tortor Elit Fusce Quam Risus'
+              }
+            }, {
+              meta: {
+                'concept-id': 'T100000-EDSC',
+                'native-id': '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed',
+                'revision-id': 2
+              },
+              umm: {
+                EntryTitle: 'Adipiscing Cras Etiam Venenatis'
+              }
+            }]
+          })
+
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .put('/ingest/providers/EDSC/tools/1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed')
+          .reply(200, {
+            'concept-id': 'T100000-EDSC',
+            'revision-id': '3'
+          })
+
+        const response = await server.executeOperation({
+          variables: {
+            revisionId: '1',
+            conceptId: 'T100000-EDSC'
+          },
+          query: `mutation RestoreToolRevision (
+              $conceptId: String!
+              $revisionId: String!
+            ) {
+              restoreToolRevision (
+                conceptId: $conceptId
+                revisionId: $revisionId
+              ) {
+                  conceptId
+                  revisionId
+                }
+              }`
+        }, {
+          contextValue
+        })
+
+        const { data } = response.body.singleResult
+
+        expect(data).toEqual({
+          restoreToolRevision: {
+            conceptId: 'T100000-EDSC',
+            revisionId: '3'
+          }
+        })
+      })
+    })
+
     test('deleteTool', async () => {
       nock(/example-cmr/)
         .defaultReplyHeaders({

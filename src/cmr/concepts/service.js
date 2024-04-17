@@ -104,4 +104,38 @@ export default class Service extends Concept {
 
     return super.fetchUmm(searchParams, ummKeys, ummHeaders)
   }
+
+  /**
+   * Mutate the provided values from the user to meet expectations from CMR
+   * @param {Object} params Parameters provided by the client
+   * @returns The payload to send to CMR
+   */
+  mutateIngestParameters(params) {
+    const { env } = process
+    const { ummServiceVersion } = env
+
+    return super.mutateIngestParameters({
+      ...params,
+      MetadataSpecification: {
+        URL: `https://cdn.earthdata.nasa.gov/umm/service/v${ummServiceVersion}`,
+        Name: 'UMM-S',
+        Version: ummServiceVersion
+      }
+    })
+  }
+
+  /**
+   * Merge provided and default headers and ensure they are permitted
+   * @param {Object} providedHeaders Headers provided by the client
+   * @returns An object holding acceptable headers and their values
+   */
+  ingestHeaders(providedHeaders) {
+    const { env } = process
+    const { ummServiceVersion } = env
+
+    return super.ingestHeaders({
+      ...providedHeaders,
+      'Content-Type': `application/vnd.nasa.cmr.umm+json; version=${ummServiceVersion}`
+    })
+  }
 }

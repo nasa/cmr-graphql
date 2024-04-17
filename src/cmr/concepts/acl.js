@@ -141,7 +141,7 @@ export default class Acl extends Concept {
   create(data, requestedKeys, providedHeaders) {
     const params = mergeParams(data)
 
-    this.logKeyRequest(requestedKeys, 'create')
+    this.logKeyRequest(requestedKeys, 'ingest')
 
     // Construct the promise that will create the record in CMR
     this.response = accessControlRequest({
@@ -161,7 +161,7 @@ export default class Acl extends Concept {
   update(data, requestedKeys, providedHeaders) {
     const params = mergeParams(data)
 
-    this.logKeyRequest(requestedKeys, 'update')
+    this.logKeyRequest(requestedKeys, 'ingest')
 
     const { conceptId } = params
 
@@ -185,7 +185,7 @@ export default class Acl extends Concept {
   delete(data, requestedKeys, providedHeaders) {
     const params = mergeParams(data)
 
-    this.logKeyRequest(requestedKeys, 'delete')
+    this.logKeyRequest(requestedKeys, 'ingest')
 
     const { conceptId } = params
 

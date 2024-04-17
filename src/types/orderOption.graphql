@@ -60,7 +60,7 @@ input OrderOptionsInput {
 
 input OrderOptionInput {
   "The unique concept ID assigned to the order-option."
-  conceptId: [String]
+  conceptId: String
 }
 
 type Query {

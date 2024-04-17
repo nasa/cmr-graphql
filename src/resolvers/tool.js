@@ -22,6 +22,16 @@ export default {
   },
 
   Mutation: {
+    restoreToolRevision: async (source, args, context, info) => {
+      const { dataSources } = context
+
+      return dataSources.toolSourceRestoreRevision(
+        handlePagingParams(args),
+        context,
+        parseResolveInfo(info)
+      )
+    },
+
     deleteTool: async (source, args, context, info) => {
       const { dataSources } = context
 

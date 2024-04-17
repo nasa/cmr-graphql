@@ -214,7 +214,6 @@ describe('Subscription', () => {
         reqheaders: {
           accept: 'application/json',
           'client-id': 'eed-test-graphql',
-          'content-type': 'application/vnd.nasa.cmr.umm+json; version=1.1',
           'cmr-request-id': 'abcd-1234-efgh-5678'
         }
       })
@@ -275,7 +274,6 @@ describe('Subscription', () => {
         reqheaders: {
           accept: 'application/json',
           'client-id': 'eed-test-graphql',
-          'content-type': 'application/vnd.nasa.cmr.umm+json; version=1.1',
           'cmr-request-id': 'abcd-1234-efgh-5678'
         }
       })

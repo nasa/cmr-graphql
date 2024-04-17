@@ -1,6 +1,10 @@
 import nock from 'nock'
 
-import { deleteTool as toolSourceDelete, fetchTools as toolSourceFetch } from '../tool'
+import {
+  deleteTool as toolSourceDelete,
+  restoreToolRevision as toolSourceRestoreRevision,
+  fetchTools as toolSourceFetch
+} from '../tool'
 
 let requestInfo
 
@@ -332,7 +336,105 @@ describe('tool#fetch', () => {
   })
 })
 
-describe('subscription#delete', () => {
+describe('restoreToolRevision', () => {
+  const OLD_ENV = process.env
+
+  beforeEach(() => {
+    vi.resetAllMocks()
+
+    vi.restoreAllMocks()
+
+    process.env = { ...OLD_ENV }
+
+    process.env.cmrRootUrl = 'http://example-cmr.com'
+
+    // Default requestInfo
+    requestInfo = {
+      name: 'toolDelete',
+      alias: 'toolDelete',
+      args: {
+        conceptId: 'T100000-EDSC',
+        revisionId: '1'
+      },
+      fieldsByTypeName: {
+        ToolMutationResponse: {
+          conceptId: {
+            name: 'conceptId',
+            alias: 'conceptId',
+            args: {},
+            fieldsByTypeName: {}
+          },
+          revisionId: {
+            name: 'revisionId',
+            alias: 'revisionId',
+            args: {},
+            fieldsByTypeName: {}
+          }
+        }
+      }
+    }
+  })
+
+  afterEach(() => {
+    process.env = OLD_ENV
+  })
+
+  test('returns the CMR results', async () => {
+    nock(/example-cmr/)
+      .defaultReplyHeaders({
+        'CMR-Request-Id': 'abcd-1234-efgh-5678'
+      })
+      .get('/search/tools.umm_json?concept_id=T100000-EDSC&all_revisions=true')
+      .reply(200, {
+        items: [{
+          meta: {
+            'concept-id': 'T100000-EDSC',
+            'native-id': '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed',
+            'revision-id': 1
+          },
+          umm: {
+            LongName: 'Tortor Elit Fusce Quam Risus'
+          }
+        }, {
+          meta: {
+            'concept-id': 'T100000-EDSC',
+            'native-id': '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed',
+            'revision-id': 2
+          },
+          umm: {
+            LongName: 'Adipiscing Cras Etiam Venenatis'
+          }
+        }]
+      })
+
+    nock(/example-cmr/)
+      .defaultReplyHeaders({
+        'CMR-Request-Id': 'abcd-1234-efgh-5678'
+      })
+      .put('/ingest/providers/EDSC/tools/1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed')
+      .reply(200, {
+        'concept-id': 'T100000-EDSC',
+        'revision-id': '3'
+      })
+
+    const response = await toolSourceRestoreRevision({
+      revisionId: '1',
+      conceptId: 'T100000-EDSC'
+    }, {
+      headers: {
+        'Client-Id': 'eed-test-graphql',
+        'CMR-Request-Id': 'abcd-1234-efgh-5678'
+      }
+    }, requestInfo)
+
+    expect(response).toEqual({
+      conceptId: 'T100000-EDSC',
+      revisionId: '3'
+    })
+  })
+})
+
+describe('tool#delete', () => {
   const OLD_ENV = process.env
 
   beforeEach(() => {

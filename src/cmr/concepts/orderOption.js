@@ -1,8 +1,3 @@
-import { v4 as uuidv4 } from 'uuid'
-import camelcaseKeys from 'camelcase-keys'
-
-import { mergeParams } from '../../utils/mergeParams'
-
 import Concept from './concept'
 
 export default class OrderOption extends Concept {
@@ -16,12 +11,6 @@ export default class OrderOption extends Concept {
     // This concept uses the "-" character to delineate spaces in CMR we must pass it
     // in this form to fetch order option concepts from CMR
     super('order-options', headers, requestInfo, params)
-
-    this.metadataSpecification = {
-      URL: `https://cdn.earthdata.nasa.gov/generics/order-option/v${process.env.ummOrderOptionVersion}`,
-      Name: 'Order Option',
-      Version: process.env.ummOrderOptionVersion
-    }
   }
 
   /**
@@ -54,32 +43,36 @@ export default class OrderOption extends Concept {
   }
 
   /**
-   * Add the MetadataSpecification and ingest the provided object into the CMR
-   * @param {Object} data Parameters provided by the query
-   * @param {Array} requestedKeys Keys requested by the query
-   * @param {Object} providedHeaders Headers requested by the query
+   * Mutate the provided values from the user to meet expectations from CMR
+   * @param {Object} params Parameters provided by the client
+   * @returns The payload to send to CMR
    */
-  ingest(data, requestedKeys, providedHeaders) {
-    const params = mergeParams(data)
+  mutateIngestParameters(params) {
+    const { env } = process
+    const { ummOrderOptionVersion } = env
 
-    // Default headers
-    const headers = {
-      ...providedHeaders,
-      Accept: 'application/json',
-      'Content-Type': `application/vnd.nasa.cmr.umm+json; version=${process.env.ummOrderOptionVersion}`
+    return {
+      ...params,
+      MetadataSpecification: {
+        URL: `https://cdn.earthdata.nasa.gov/generics/order-option/v${ummOrderOptionVersion}`,
+        Name: 'Order Option',
+        Version: ummOrderOptionVersion
+      }
     }
+  }
 
-    // eslint-disable-next-line no-param-reassign
-    params.metadataSpecification = this.metadataSpecification
+  /**
+   * Merge provided and default headers and ensure they are permitted
+   * @param {Object} providedHeaders Headers provided by the client
+   * @returns An object holding acceptable headers and their values
+   */
+  ingestHeaders(providedHeaders) {
+    const { env } = process
+    const { ummOrderOptionVersion } = env
 
-    const casedKeys = camelcaseKeys(params, {
-      pascalCase: true,
-      exclude: ['nativeId', 'providerId']
+    return super.ingestHeaders({
+      ...providedHeaders,
+      'Content-Type': `application/vnd.nasa.cmr.umm+json; version=${ummOrderOptionVersion}`
     })
-
-    // Use the provided native id and provider id
-    const { nativeId = uuidv4(), providerId } = params
-
-    super.ingest(casedKeys, requestedKeys, headers, { queryPath: `ingest/providers/${providerId}/order-options/${nativeId}` })
   }
 }

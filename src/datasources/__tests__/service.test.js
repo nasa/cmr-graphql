@@ -2,6 +2,7 @@ import nock from 'nock'
 
 import {
   deleteService as serviceSourceDelete,
+  restoreServiceRevision as serviceSourceRestoreRevision,
   fetchServices as serviceSourceFetch
 } from '../service'
 
@@ -332,6 +333,104 @@ describe('service', () => {
         }
       }, requestInfo)
     ).rejects.toThrow(Error)
+  })
+})
+
+describe('restoreServiceRevision', () => {
+  const OLD_ENV = process.env
+
+  beforeEach(() => {
+    vi.resetAllMocks()
+
+    vi.restoreAllMocks()
+
+    process.env = { ...OLD_ENV }
+
+    process.env.cmrRootUrl = 'http://example-cmr.com'
+
+    // Default requestInfo
+    requestInfo = {
+      name: 'toolDelete',
+      alias: 'toolDelete',
+      args: {
+        conceptId: 'S100000-EDSC',
+        revisionId: '1'
+      },
+      fieldsByTypeName: {
+        ServiceMutationResponse: {
+          conceptId: {
+            name: 'conceptId',
+            alias: 'conceptId',
+            args: {},
+            fieldsByTypeName: {}
+          },
+          revisionId: {
+            name: 'revisionId',
+            alias: 'revisionId',
+            args: {},
+            fieldsByTypeName: {}
+          }
+        }
+      }
+    }
+  })
+
+  afterEach(() => {
+    process.env = OLD_ENV
+  })
+
+  test('returns the CMR results', async () => {
+    nock(/example-cmr/)
+      .defaultReplyHeaders({
+        'CMR-Request-Id': 'abcd-1234-efgh-5678'
+      })
+      .get('/search/services.umm_json?concept_id=S100000-EDSC&all_revisions=true')
+      .reply(200, {
+        items: [{
+          meta: {
+            'concept-id': 'S100000-EDSC',
+            'native-id': '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed',
+            'revision-id': 1
+          },
+          umm: {
+            LongName: 'Tortor Elit Fusce Quam Risus'
+          }
+        }, {
+          meta: {
+            'concept-id': 'S100000-EDSC',
+            'native-id': '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed',
+            'revision-id': 2
+          },
+          umm: {
+            LongName: 'Adipiscing Cras Etiam Venenatis'
+          }
+        }]
+      })
+
+    nock(/example-cmr/)
+      .defaultReplyHeaders({
+        'CMR-Request-Id': 'abcd-1234-efgh-5678'
+      })
+      .put('/ingest/providers/EDSC/services/1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed')
+      .reply(200, {
+        'concept-id': 'S100000-EDSC',
+        'revision-id': '3'
+      })
+
+    const response = await serviceSourceRestoreRevision({
+      revisionId: '1',
+      conceptId: 'S100000-EDSC'
+    }, {
+      headers: {
+        'Client-Id': 'eed-test-graphql',
+        'CMR-Request-Id': 'abcd-1234-efgh-5678'
+      }
+    }, requestInfo)
+
+    expect(response).toEqual({
+      conceptId: 'S100000-EDSC',
+      revisionId: '3'
+    })
   })
 })
 

@@ -394,17 +394,17 @@ describe('draft#ingest', () => {
         'CMR-Request-Id': 'abcd-1234-efgh-5678'
       })
       .put(/ingest\/providers\/EDSC\/tool-drafts\/test-guid/, JSON.stringify({
-        MetadataSpecification: {
-          URL: 'https://cdn.earthdata.nasa.gov/umm/tool/v1.0.0',
-          Name: 'UMM-T',
-          Version: '1.0.0'
-        },
         Name: 'mock name',
         URL: {
           URLContentType: 'DistributionURL',
           Type: 'GOTO WEB TOOL',
           Description: 'Landing Page',
           URLValue: 'https://example.com/'
+        },
+        MetadataSpecification: {
+          URL: 'https://cdn.earthdata.nasa.gov/umm/tool/v1.0.0',
+          Name: 'UMM-T',
+          Version: '1.0.0'
         }
       }))
       .reply(201, {
@@ -437,22 +437,6 @@ describe('draft#ingest', () => {
       conceptId: 'TD100000-EDSC',
       revisionId: '1'
     })
-  })
-
-  test('throws an error if ummVersion is not present', async () => {
-    await expect(
-      draftSourceIngest({
-        conceptType: 'Tool',
-        metadata: {},
-        nativeId: 'test-guid',
-        providerId: 'EDSC'
-      }, {
-        headers: {
-          'Client-Id': 'eed-test-graphql',
-          'CMR-Request-Id': 'abcd-1234-efgh-5678'
-        }
-      }, requestInfo)
-    ).rejects.toThrow(new Error('`ummVersion` is required when ingesting drafts.'))
   })
 
   test('catches errors received from ingestCmr', async () => {
@@ -625,7 +609,7 @@ describe('draft#publish', () => {
       .defaultReplyHeaders({
         'CMR-Request-Id': 'abcd-1234-efgh-5678'
       })
-      .put(/ingest\/publish\/CD100000-EDSC\/mock-native-id/, JSON.stringify({}))
+      .put(/ingest\/publish\/CD100000-EDSC\/mock-native-id/)
       .reply(201, {
         'concept-id': 'C100000-EDSC',
         'revision-id': '1'
