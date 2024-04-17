@@ -1,0 +1,13 @@
+coverage:
+  status:
+    project: 
+      default:
+        # ensure the project meets a coverage standard
+        target: 100%
+        threshold: 0%
+
+    patch:
+      default:
+        # ensure the patch itself (changes in the PR) also meets a coverage standard
+        target: 100%
+        threshold: 0%
