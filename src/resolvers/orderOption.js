@@ -6,7 +6,7 @@ export default {
     orderOptions: async (source, args, context, info) => {
       const { dataSources } = context
 
-      return dataSources.orderOptionSource(
+      return dataSources.orderOptionSourceFetch(
         handlePagingParams(args),
         context,
         parseResolveInfo(info)
@@ -14,11 +14,31 @@ export default {
     },
     orderOption: async (source, args, context, info) => {
       const { dataSources } = context
-      const result = await dataSources.orderOptionSource(args, context, parseResolveInfo(info))
+      const result = await dataSources.orderOptionSourceFetch(args, context, parseResolveInfo(info))
 
       const [firstResult] = result
 
       return firstResult
+    }
+  },
+
+  Mutation: {
+    createOrderOption: async (source, args, context, info) => {
+      const { dataSources } = context
+
+      return dataSources.orderOptionSourceIngest(args, context, parseResolveInfo(info))
+    },
+
+    updateOrderOption: async (source, args, context, info) => {
+      const { dataSources } = context
+
+      return dataSources.orderOptionSourceIngest(args, context, parseResolveInfo(info))
+    },
+
+    deleteOrderOption: async (source, args, context, info) => {
+      const { dataSources } = context
+
+      return dataSources.orderOptionSourceDelete(args, context, parseResolveInfo(info))
     }
   }
 }

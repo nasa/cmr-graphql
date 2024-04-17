@@ -107,7 +107,7 @@ export default {
         }
       }
 
-      return dataSources.orderOptionSource({
+      return dataSources.orderOptionSourceFetch({
         conceptId: orderOptionConceptIds,
         ...handlePagingParams(args, orderOptionConceptIds.length)
       }, context, parseResolveInfo(info))

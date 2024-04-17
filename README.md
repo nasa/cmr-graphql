@@ -84,43 +84,49 @@ When querying for multiple items there are three high level parameters that can 
 
 ###### First Request:
 
-    {
-      concept {
-        count
-        cursor
-        items {
-          conceptId
-        }
-      }
+```gql
+{
+  concept {
+    count
+    cursor
+    items {
+      conceptId
     }
+  }
+}
+```
 
 Which will return something similar to the following:
 
-    {
-      "data": {
-        "concept": {
-          "count": 2483,
-          "cursor": "eyJqc29uIjoiLTQ2OTA0MDY3NyJ9=",
-          "items": [
-            {
-              "conceptId": "C1000000001-EXAMPLE"
-            },
-            ...
-        }
-      }
+```json
+{
+  "data": {
+    "concept": {
+      "count": 2483,
+      "cursor": "eyJqc29uIjoiLTQ2OTA0MDY3NyJ9=",
+      "items": [
+        {
+          "conceptId": "C1000000001-EXAMPLE"
+        },
+        ...
     }
+  }
+}
+```
 
 ###### Subsequent Requests
 
-    {
-      concept(cursor: "eyJqc29uIjoiLTQ2OTA0MDY3NyJ9=") {
-        count
-        cursor
-        items {
-          conceptId
-        }
-      }
+```gql
+{
+  concept(cursor: "eyJqc29uIjoiLTQ2OTA0MDY3NyJ9=") {
+    count
+    cursor
+    items {
+      conceptId
     }
+  }
+}
+```
 
 A couple of things to keep in mind when using a cursor
 
@@ -133,37 +139,43 @@ When all results have been returned, the response will be an empty array and the
 
 `facets` will return the data provided by CMR determined by which facets you requested in your query. In order for this data to be provided by CMR you will need to include the `includeFacets` parameter in your query. For more information regarding facets refer to the [CMR documentation](https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html#facets). See below for a basic example:
 
-    {
-      collections(
-        includeFacets:"v2"
-      ) {
-        facets
-        items {
-          conceptId
-        }
-      }
+```gql
+{
+  collections(
+    includeFacets:"v2"
+  ) {
+    facets
+    items {
+      conceptId
     }
+  }
+}
+```
 
 ##### Items
 
 `items` is where you will provide the columns you'd like returned from CMR.
 
-    {
-      concept {
-        count
-        items {
-          conceptId
-        }
-      }
+```gql
+{
+  concept {
+    count
+    items {
+      conceptId
     }
+  }
+}
+```
 
 If you're querying single objects `count` is not available and therefore `items` isn't necessary -- you can simply list the columns you'd like returned from CMR as a direct child of your query.
 
-    {
-      concept {
-        conceptId
-      }
-    }
+```gql
+{
+  concept {
+    conceptId
+  }
+}
+```
 
 Note that the response you get will match the structure of your query, meaning that in the event you've requested data from a list query you'll receive the results in an `items` array whereas with a single query request you will not.
 
@@ -176,79 +188,83 @@ For all supported arguments and columns, see [the schema](src/types/collection.g
 
 ##### Example Queries
 
-###### Single
+###### Query for a single collection
 
-    {
-      collection(conceptId:"C1000000001-EXAMPLE") {
+```gql
+{
+  collection(conceptId:"C1000000001-EXAMPLE") {
+    title
+    granules {
+      count
+      items {
+        conceptId
         title
-        granules {
-          count
-          items {
-            conceptId
-            title
-          }
-        }
-        services {
-          count
-          items {
-            conceptId
-            type
-          }
-        }
-        tools {
-          count
-          items {
-            conceptId
-            supportedBrowsers
-          }
-        }
-        variables {
-          count
-          items {
-            conceptId
-            name
-          }
-        }
       }
     }
+    services {
+      count
+      items {
+        conceptId
+        type
+      }
+    }
+    tools {
+      count
+      items {
+        conceptId
+        supportedBrowsers
+      }
+    }
+    variables {
+      count
+      items {
+        conceptId
+        name
+      }
+    }
+  }
+}
+```
 
-###### Multiple
+###### Query for multiple collections
 
-    {
-      collections(
-        conceptId:["C1000000001-EXAMPLE", "C1000000002-EXAMPLE"]
-      ) {
+```gql
+{
+  collections(
+    conceptId:["C1000000001-EXAMPLE", "C1000000002-EXAMPLE"]
+  ) {
+    count
+    items {
+      title
+      granules {
+        count
+        title
+      }
+      services {
         count
         items {
-          title
-          granules {
-            count
-            title
-          }
-          services {
-            count
-            items {
-              conceptId
-              type
-            }
-          }
-          tools {
-            count
-            items {
-              conceptId
-              supportedBrowsers
-            }
-          }
-          variables {
-            count
-            items {
-              conceptId
-              name
-            }
-          }
+          conceptId
+          type
+        }
+      }
+      tools {
+        count
+        items {
+          conceptId
+          supportedBrowsers
+        }
+      }
+      variables {
+        count
+        items {
+          conceptId
+          name
         }
       }
     }
+  }
+}
+```
 
 #### Granules
 
@@ -266,113 +282,127 @@ A subset of the supported arguments for [Collections](#collections) will be pass
 
 For all supported arguments and columns, see [the schema](src/types/granule.graphql).
 
-##### Example Queries
+##### Granule Queries
 
-###### Single
+###### Query for a single granule
 
-    {
-      granule(conceptId:"G1000000001-EXAMPLE") {
-        conceptId
-        title
-      }
+```gql
+{
+  granule(conceptId:"G1000000001-EXAMPLE") {
+    conceptId
+    title
+  }
+}
+```
+
+###### Query for multiple granules
+
+```gql
+{
+  granules(collectionConceptId:"G1000000001-EXAMPLE") {
+    items {
+      conceptId
+      title
     }
-
-###### Multiple
-
-    {
-      granules(collectionConceptId:"G1000000001-EXAMPLE") {
-        items {
-          conceptId
-          title
-        }
-      }
-    }
-
+  }
+}
+```
 
 #### Services
 
 For all supported arguments and columns, see [the schema](src/types/service.graphql).
 
-##### Example Queries
+##### Service Queries
 
-###### Single
+###### Query for a single service
 
-    {
-      service(conceptId:"S1000000001-EXAMPLE") {
-        conceptId
-        type
-      }
+```gql
+{
+  service(conceptId:"S1000000001-EXAMPLE") {
+    conceptId
+    type
+  }
+}
+```
+
+###### Query for multiple services
+
+```gql
+{
+  services {
+    count
+    items {
+      conceptId
+      type
+      description
     }
-
-###### Multiple
-
-    {
-      services {
-        count
-        items {
-          conceptId
-          type
-          description
-        }
-      }
-    }
-
+  }
+}
+```
 
 #### Subscriptions
 
 For all supported arguments and columns, see [the schema](src/types/subscription.graphql).
 
-##### Example Queries
+##### Subscription Queries
 
-###### Single
+###### Query for a single subscription
 
-    {
-      subscription(conceptId:"SUB1000000001-EXAMPLE") {
-        conceptId
-        nativeId
-        query
-      }
-    }
+```gql
+{
+  subscription(conceptId:"SUB1000000001-EXAMPLE") {
+    conceptId
+    nativeId
+    query
+  }
+}
+```
 
 *To also retrieve details pertaining to the associated collection:*
 
-    {
-      subscription(conceptId:"SUB1000000001-EXAMPLE") {
-        conceptId
-        nativeId
-        query
-        collection {
-          title
-        }
-      }
+```gql
+{
+  subscription(conceptId:"SUB1000000001-EXAMPLE") {
+    conceptId
+    nativeId
+    query
+    collection {
+      title
     }
+  }
+}
+```
 
-###### Multiple
+###### Query for multiple subscriptions
 
-    {
-      subscriptions {
-        count
-        items {
-          conceptId
-          query
-        }
-      }
+```gql
+{
+  subscriptions {
+    count
+    items {
+      conceptId
+      query
     }
+  }
+}
+```
 
 *To also retrieve details pertaining to the associated collections:*
 
-    {
-      subscriptions {
-        count
-        items {
-          conceptId
-          query
-          collection {
-            title
-          }
-        }
+```gql
+{
+  subscriptions {
+    count
+    items {
+      conceptId
+      query
+      collection {
+        title
       }
     }
+  }
+}
+```
 
 ##### Mutations
 
@@ -380,147 +410,167 @@ For all supported arguments and columns, see [the schema](src/types/subscription
 
 If no `nativeId` is provided, CMR-GraphQL will generate a GUID and supply it.
 
-    mutation {
-      createSubscription(
-        collectionConceptId: "C1000000001-EXAMPLE"
-        name: "Example Subscription"
-        query: "polygon=-18,-78,-13,-74,-16,-73,-22,-77,-18,-78"
-        subscriberId: "username"
-      ) {
-        conceptId
-        revisionId
-      }
-    }
+```gql
+mutation {
+  createSubscription(
+    collectionConceptId: "C1000000001-EXAMPLE"
+    name: "Example Subscription"
+    query: "polygon=-18,-78,-13,-74,-16,-73,-22,-77,-18,-78"
+    subscriberId: "username"
+  ) {
+    conceptId
+    revisionId
+  }
+}
+```
 
 To set the `nativeId` to a desired value, simply provide it as an argument and it will be used.
 
-    mutation {
-      createSubscription(
-        collectionConceptId: "C1000000001-EXAMPLE"
-        name: "Example Subscription"
-        nativeId: "SUPPLIED-NATIVE-ID"
-        query: "polygon=-18,-78,-13,-74,-16,-73,-22,-77,-18,-78"
-        subscriberId: "username"
-      ) {
-        conceptId
-        revisionId
-      }
-    }
+```gql
+mutation {
+  createSubscription(
+    collectionConceptId: "C1000000001-EXAMPLE"
+    name: "Example Subscription"
+    nativeId: "SUPPLIED-NATIVE-ID"
+    query: "polygon=-18,-78,-13,-74,-16,-73,-22,-77,-18,-78"
+    subscriberId: "username"
+  ) {
+    conceptId
+    revisionId
+  }
+}
+```
 
 ##### Updating a Subscription
 
 CMR defines a record as unique based on the `nativeId`, in order to update a subscription supply a `nativeId` that belongs an existing record.
 
-    mutation {
-      updateSubscription(
-        collectionConceptId: "C1000000001-EXAMPLE"
-        name: "Example Subscription"
-        nativeId: "EXISTING-NATIVE-ID"
-        query: "polygon=-18,-78,-13,-74,-16,-73,-22,-77,-18,-78"
-        subscriberId: "username"
-      ) {
-        conceptId
-        revisionId
-      }
-    }
+```gql
+mutation {
+  updateSubscription(
+    collectionConceptId: "C1000000001-EXAMPLE"
+    name: "Example Subscription"
+    nativeId: "EXISTING-NATIVE-ID"
+    query: "polygon=-18,-78,-13,-74,-16,-73,-22,-77,-18,-78"
+    subscriberId: "username"
+  ) {
+    conceptId
+    revisionId
+  }
+}
+```
 
 **NOTES**:
 
-  - Due to the way in which CMR works, `createSubscription` and `updateSubscription` will operate identically when supplying an existing `nativeId` however, this may not always be the case so we encourage you to use the explicit `updateSubscription` mutation noted below.
+- Due to the way in which CMR works, `createSubscription` and `updateSubscription` will operate identically when supplying an existing `nativeId` however, this may not always be the case so we encourage you to use the explicit `updateSubscription` mutation noted below.
 
 ##### Deleting a Subscription
 
 CMR defines a record as unique based on the `nativeId`, in order to delete a subscription supply a `nativeId` that belongs an existing record.
 
-    mutation {
-      deleteSubscription(
-        conceptId: "SUB1000000001-EXAMPLE"
-        nativeId: "EXISTING-NATIVE-ID"
-      ) {
-        conceptId
-        revisionId
-      }
-    }
+```gql
+mutation {
+  deleteSubscription(
+    conceptId: "SUB1000000001-EXAMPLE"
+    nativeId: "EXISTING-NATIVE-ID"
+  ) {
+    conceptId
+    revisionId
+  }
+}
+```
 
 #### Tools
 
 For all supported arguments and columns, see [the schema](src/types/tool.graphql).
 
-##### Example Queries
+##### Tool Queries
 
-###### Single
+###### Query for a single tool
 
-    {
-      tool(conceptId:"T1000000001-EXAMPLE") {
-        conceptId
-        scienceKeywords
-        supportedBrowsers
-      }
+```gql
+{
+  tool(conceptId:"T1000000001-EXAMPLE") {
+    conceptId
+    scienceKeywords
+    supportedBrowsers
+  }
+}
+```
+
+###### Query for multiple tools
+
+```gql
+{
+  tools {
+    count
+    items {
+      conceptId
+      toolKeywords
+      supportedBrowsers
     }
-
-###### Multiple
-
-    {
-      tools {
-        count
-        items {
-          conceptId
-          toolKeywords
-          supportedBrowsers
-        }
-      }
-    }
+  }
+}
+```
 
 ###### Deleting a Tool
 
-    mutation DeleteTool(
-      $providerId: String!
-      $nativeId: String!
-    ) {
-      deleteTool(
-        providerId: $providerId
-        nativeId: $nativeId
-      ) {
-        conceptId
-        revisionId
-      }
-    }
+```gql
+mutation DeleteTool(
+  $providerId: String!
+  $nativeId: String!
+) {
+  deleteTool(
+    providerId: $providerId
+    nativeId: $nativeId
+  ) {
+    conceptId
+    revisionId
+  }
+}
+```
 
-variables:
+Variables:
 
-    {
-      "providerId": "EXAMPLE",
-      "nativeId": "tool-1"
-    }
+```json
+{
+  "providerId": "EXAMPLE",
+  "nativeId": "tool-1"
+}
+```
 
 #### Variables
 
 For all supported arguments and columns, see [the schema](src/types/variable.graphql).
 
-##### Example Queries
+##### Grid Queries
 
-###### Single
+###### Query for a single grid
 
-    {
-      variable(conceptId:"V1000000001-EXAMPLE") {
-        conceptId
-        scienceKeywords
-        variableType
-      }
+```gql
+{
+  variable(conceptId:"V1000000001-EXAMPLE") {
+    conceptId
+    scienceKeywords
+    variableType
+  }
+}
+```
+
+###### Query for multiple variables
+
+```gql
+{
+  variables {
+    count
+    items {
+      conceptId
+      scienceKeywords
+      variableType
     }
-
-###### Multiple
-
-    {
-      variables {
-        count
-        items {
-          conceptId
-          scienceKeywords
-          variableType
-        }
-      }
-    }
+  }
+}
+```
 
 #### Grids
 
@@ -528,118 +578,209 @@ For all supported arguments and columns, see [the schema](src/types/grid.graphql
 
 ##### Example Queries
 
-###### Single
+###### Query for a singe grid
 
-    {
-      grid(conceptId:"GRD1000000001-EXAMPLE") {
-        conceptId
-        title
-      }
+```gql
+{
+  grid(conceptId:"GRD1000000001-EXAMPLE") {
+    conceptId
+    title
+  }
+}
+```
+
+###### Query for multiple grids
+
+```gql
+{
+  grids {
+    items {
+      conceptId
+      name
+      longName
+      description
     }
+  }
+}
+```
 
-###### Multiple
-
-    {
-      grids {
-        items {
-          conceptId
-          name
-          longName
-          description
-        }
-      }
-    }
-
-#### Order-options
+#### Order Options
 
 For all supported arguments and columns, see [the schema](src/types/orderOption.graphql).
 
-##### Example Queries
+##### Order Option Queries
 
-###### Single
+###### Query for a single order option
 
-    {
-      query ($params: OrderOptionInput) {
-        orderOption(params: $params) {
-          associationDetails
-          conceptId
-          id
-          name
-          nativeId
-          description
-          form
-        }
-      }
+```gql
+{
+  query ($params: OrderOptionInput) {
+    orderOption(params: $params) {
+      associationDetails
+      conceptId
+      id
+      name
+      nativeId
+      description
+      form
     }
+  }
+}
+```
 
-variables:
+Variables:
 
-    {
-      "params": {
-        "conceptId": "OO1000000001-EXAMPLE"
-      }
+```json
+{
+  "params": {
+    "conceptId": "OO1000000001-EXAMPLE"
+  }
+}
+```
+
+###### Query for multiple order options
+
+```gql
+{
+  orderOptions {
+    count
+    items {
+      conceptId
+      name
+      nativeId
+      id
+      description
+      scope
+      form
+      sortKey
     }
+  }
+}
+```
 
-###### Multiple
+##### Order Option Mutations
 
-    {
-      orderOptions {
-        count
-        items {
-          conceptId
-          name
-          nativeId
-          id
-          description
-          scope
-          form
-          sortKey
-        }
-      }
-    }
+###### Creating an order option
 
-#### Data-Quality-Summaries
+Query:
+
+```gql
+mutation CreateOrderOption($description: String!, $name: String!, $providerId:
+String!, $form: String!, $nativeId: String) {
+  createOrderOption(description: $description, name: $name, providerId: $providerId, form: $form, nativeId: $nativeId) {
+    conceptId
+    revisionId
+  }
+}
+```
+
+Variables:
+
+```json
+{
+  "description": "This is a description",
+  "form": "This is the form",
+  "name": "This is another new name",
+  "nativeId": "test-native-id-2",
+  "providerId": "MMT_1",
+}
+```
+
+###### Updating an order option
+
+Query:
+
+```gql
+mutation UpdateOrderOption($providerId: String!, $description: String!, $form: String!, $nativeId: String!, $name: String!) {
+  updateOrderOption(providerId: $providerId, description: $description, form: $form, nativeId: $nativeId, name: $name) {
+    conceptId
+    revisionId
+  }
+}
+```
+
+Variables:
+
+```json
+{
+  "description": "This is a new description",
+  "form": "something new",
+  "name": "this is a name",
+  "nativeId": "collection1",
+  "providerId": "MMT_1",
+}
+```
+
+###### Deleting an order option
+
+Query:
+
+```gql
+mutation DeleteOrderOption($nativeId: String!, $providerId: String!) {
+  deleteOrderOption(nativeId: $nativeId, providerId: $providerId) {
+    conceptId
+    revisionId
+  }
+}
+```
+
+Variables:
+
+```json
+{
+  "nativeId": "b4876280-c7ff-41ab-b08f-af91369fe464",
+  "providerId": "MMT_1"
+}
+```
+
+#### Data Quality Summaries
 
 For all supported arguments and columns, see [the schema](src/types/dataQualitySummary.graphql).
 
-##### Example Queries
+##### Data Quality Summary Queries
 
-###### Single
+###### Query for a single data quality summary
 
-    {
-      query ($params: DataQualitySummaryInput) {
-        dataQualitySummary(params: $params) {
-          associationDetails
-          conceptId
-          id
-          name
-          nativeId
-          summary
-        }
-      }
+```gql
+{
+  query ($params: DataQualitySummaryInput) {
+    dataQualitySummary(params: $params) {
+      associationDetails
+      conceptId
+      id
+      name
+      nativeId
+      summary
     }
+  }
+}
+```
 
-variables:
+Variables:
 
-    {
-      "params": {
-        "conceptId": "DQS1000000001-EXAMPLE"
-      }
+```json
+{
+  "params": {
+    "conceptId": "DQS1000000001-EXAMPLE"
+  }
+}
+```
+
+###### Query for multiple data quality summaries
+
+```gql
+{
+  dataQualitySummaries {
+    items {
+      conceptId
+      associationDetails
+      name
+      summary
+      id
     }
-
-###### Multiple
-
-    {
-      dataQualitySummaries {
-        items {
-          conceptId
-          associationDetails
-          name
-          summary
-          id
-        }
-      }
-    }
+  }
+}
+```
 
 #### Related Collections
 
@@ -653,69 +794,73 @@ We use [GraphQL interfaces](https://graphql.org/learn/schema/#interfaces) in ord
 
 ##### Example Queries
 
-    {
-      conceptId
-      relatedCollections (
-        limit: 1
-      ) {
-        count
-        items {
-          id
-          title
-          doi
-          relationships {
-            relationshipType
-            ... on GraphDbProject {
-              name
-            }
-            ... on GraphDbPlatformInstrument {
-              platform
-              instrument
-            }
-            ... on GraphDbRelatedUrl {
-              url
-              description
-              type
-              subtype
-            }
-          }
+```gql
+{
+  conceptId
+  relatedCollections (
+    limit: 1
+  ) {
+    count
+    items {
+      id
+      title
+      doi
+      relationships {
+        relationshipType
+        ... on GraphDbProject {
+          name
+        }
+        ... on GraphDbPlatformInstrument {
+          platform
+          instrument
+        }
+        ... on GraphDbRelatedUrl {
+          url
+          description
+          type
+          subtype
         }
       }
     }
+  }
+}
+```
 
 ##### Example Response
 
-    {
-      "conceptId": "C1000000001-EXAMPLE",
-      "relatedCollections": {
-        "count": 18,
-        "items": [
+```json
+{
+  "conceptId": "C1000000001-EXAMPLE",
+  "relatedCollections": {
+    "count": 18,
+    "items": [
+      {
+        "id": "C2000000001-EXAMPLE",
+        "title": "Infrared Global Geostationary Composite Demo 4",
+        "doi": "10.5067/GHRC/AMSU-A/DATA303",
+        "relationships": [
           {
-            "id": "C2000000001-EXAMPLE",
-            "title": "Infrared Global Geostationary Composite Demo 4",
-            "doi": "10.5067/GHRC/AMSU-A/DATA303",
-            "relationships": [
-              {
-                "relationshipType": "platformInstrument",
-                "platform": "MTSAT-1R",
-                "instrument": "VISSR"
-              },
-              {
-                "relationshipType": "relatedUrl",
-                "url": "https://doi.org/10.5067/9LNYIYOBNBR5",
-                "description": "Another Related URL for Demo",
-                "type": "VIEW RELATED INFORMATION",
-                "subtype": "DATA RECIPE"
-              },
-              {
-                "relationshipType": "project",
-                "name": "Project2"
-              }
-            ]
+            "relationshipType": "platformInstrument",
+            "platform": "MTSAT-1R",
+            "instrument": "VISSR"
+          },
+          {
+            "relationshipType": "relatedUrl",
+            "url": "https://doi.org/10.5067/9LNYIYOBNBR5",
+            "description": "Another Related URL for Demo",
+            "type": "VIEW RELATED INFORMATION",
+            "subtype": "DATA RECIPE"
+          },
+          {
+            "relationshipType": "project",
+            "name": "Project2"
           }
         ]
       }
-    }
+    ]
+  }
+}
+```
 
 #### Generate Collection Variable Drafts
 
@@ -725,87 +870,16 @@ CMR-GraphQL queries an earthdata-varinfo lambda in order to generate collection 
 
 `generateVariableDrafts` will return collection generated variable drafts, using the earthdata-varinfo project(https://github.com/nasa/earthdata-varinfo)
 
-##### Example Queries
+##### Collection Variable Draft Queries
 
-    {
-      query Collection($params: CollectionInput) {
-        collection(params: $params) {
-          conceptId
-          generateVariableDrafts {
-            count
-            items {
-              dataType
-              definition
-              dimensions
-              longName
-              name
-              standardName
-              units
-              metadataSpecification
-            }
-          }
-        }
-      }
-    }
-
-variables:
-
-    {
-      "params": {
-        "conceptId": "C1000000001-EXAMPLE"
-      }
-    }
-
-##### Example Response
-
-     {
-      "data": {
-        "collection": {
-          "conceptId": "C1000000001-EXAMPLE",
-          "generateVariableDrafts": {
-            "count": 16,
-            "items": [
-              {
-                "dataType": "int32",
-                "definition": "Grid/time",
-                "dimensions": [
-                  {
-                    "Name": "Grid/time",
-                    "Size": 1,
-                    "Type": "TIME_DIMENSION"
-                  }
-                ],
-                "longName": "Grid/time",
-                "name": "Grid/time",
-                "standardName": "time",
-                "units": "seconds since 1970-01-01 00:00:00 UTC",
-                "metadataSpecification": {
-                  "URL": "https://cdn.earthdata.nasa.gov/umm/variable/v1.8.2",
-                  "Name": "UMM-Var",
-                  "Version": "1.8.2"
-                }
-              }
-            ]
-          }
-        }
-      }
-    }
-
-#### Publish Generated Collection Variable Drafts
-
-For all supported arguments and columns, see [the schema](src/types/variable.graphql).
-
-CMR-GraphQL queries an earthdata-varinfo lambda in order to generate and publish collection variable drafts. The resulting variables can be returned as part of the Variable type response.
-
-`publishVariableDrafts` will return collection generated variables, using the earthdata-varinfo project(https://github.com/nasa/earthdata-varinfo)
-
-##### Example Mutation
-
-    mutation PublishGeneratedVariables($conceptId: String!) {
-      publishGeneratedVariables(conceptId: $conceptId) {
+```gql
+{
+  query Collection($params: CollectionInput) {
+    collection(params: $params) {
+      conceptId
+      generateVariableDrafts {
         count
         items {
-          conceptId
           dataType
           definition
           dimensions
@@ -817,44 +891,128 @@ CMR-GraphQL queries an earthdata-varinfo lambda in order to generate and publish
         }
       }
     }
+  }
+}
+```
 
-    variables:
-    {
-      "conceptId": "C1000000001-EXAMPLE"
-    }
+Variables:
+
+```json
+{
+  "params": {
+    "conceptId": "C1000000001-EXAMPLE"
+  }
+}
+```
 
 ##### Example Response
 
-     {
-      "data": {
-        "publishGeneratedVariables": {
-          "count": 1,
-          "items": [
-            {
-              "conceptId": "V1000000001-EXAMPLE",
-              "dataType": "int32",
-              "definition": "Grid/time",
-              "dimensions": [
-                {
-                  "Name": "Grid/time",
-                  "Size": 1,
-                  "Type": "TIME_DIMENSION"
-                }
-              ],
-              "longName": "Grid/time",
-              "name": "Grid/time",
-              "standardName": "time",
-              "units": "seconds since 1970-01-01 00:00:00 UTC",
-              "metadataSpecification": {
-                "URL": "https://cdn.earthdata.nasa.gov/umm/variable/v1.8.2",
-                "Name": "UMM-Var",
-                "Version": "1.8.2"
+```json
+  {
+  "data": {
+    "collection": {
+      "conceptId": "C1000000001-EXAMPLE",
+      "generateVariableDrafts": {
+        "count": 16,
+        "items": [
+          {
+            "dataType": "int32",
+            "definition": "Grid/time",
+            "dimensions": [
+              {
+                "Name": "Grid/time",
+                "Size": 1,
+                "Type": "TIME_DIMENSION"
               }
+            ],
+            "longName": "Grid/time",
+            "name": "Grid/time",
+            "standardName": "time",
+            "units": "seconds since 1970-01-01 00:00:00 UTC",
+            "metadataSpecification": {
+              "URL": "https://cdn.earthdata.nasa.gov/umm/variable/v1.8.2",
+              "Name": "UMM-Var",
+              "Version": "1.8.2"
             }
-          ]
-        }
+          }
+        ]
       }
     }
+  }
+}
+```
+
+#### Publish Generated Collection Variable Drafts
+
+For all supported arguments and columns, see [the schema](src/types/variable.graphql).
+
+CMR-GraphQL queries an earthdata-varinfo lambda in order to generate and publish collection variable drafts. The resulting variables can be returned as part of the Variable type response.
+
+`publishVariableDrafts` will return collection generated variables, using the earthdata-varinfo project(https://github.com/nasa/earthdata-varinfo)
+
+##### Generate Collection Variable Drafts Mutation
+
+```gql
+mutation PublishGeneratedVariables($conceptId: String!) {
+  publishGeneratedVariables(conceptId: $conceptId) {
+    count
+    items {
+      conceptId
+      dataType
+      definition
+      dimensions
+      longName
+      name
+      standardName
+      units
+      metadataSpecification
+    }
+  }
+}
+```
+
+Variables:
+
+```json
+{
+  "conceptId": "C1000000001-EXAMPLE"
+}
+```
+
+##### Example Response
+
+```json
+  {
+  "data": {
+    "publishGeneratedVariables": {
+      "count": 1,
+      "items": [
+        {
+          "conceptId": "V1000000001-EXAMPLE",
+          "dataType": "int32",
+          "definition": "Grid/time",
+          "dimensions": [
+            {
+              "Name": "Grid/time",
+              "Size": 1,
+              "Type": "TIME_DIMENSION"
+            }
+          ],
+          "longName": "Grid/time",
+          "name": "Grid/time",
+          "standardName": "time",
+          "units": "seconds since 1970-01-01 00:00:00 UTC",
+          "metadataSpecification": {
+            "URL": "https://cdn.earthdata.nasa.gov/umm/variable/v1.8.2",
+            "Name": "UMM-Var",
+            "Version": "1.8.2"
+          }
+        }
+      ]
+    }
+  }
+}
+```
 
 #### Drafts
 
@@ -864,296 +1022,390 @@ The Draft type utilizes the `PreviewMetadata` union type, which means you can re
 
 ##### Example Queries
 
-###### Single
+###### Query for a single draft
 
-    query Draft($params: DraftInput) {
-      draft(params: $params) {
-        conceptId
-        conceptType
-        deleted
+```gql
+query Draft($params: DraftInput) {
+  draft(params: $params) {
+    conceptId
+    conceptType
+    deleted
+    name
+    nativeId
+    providerId
+    revisionDate
+    revisionId
+    ummMetadata
+    previewMetadata {
+      ... on Tool {
         name
-        nativeId
-        providerId
-        revisionDate
-        revisionId
-        ummMetadata
-        previewMetadata {
-          ... on Tool {
-            name
-            longName
-            collections {
-              count
-            }
-          }
+        longName
+        collections {
+          count
         }
       }
     }
+  }
+}
+```
 
-variables:
+Variables:
 
-    {
-      "params": {
-        "conceptId": "TD1000000001-EXAMPLE",
-        "conceptType": "Tool"
-      }
-    }
+```json
+{
+  "params": {
+    "conceptId": "TD1000000001-EXAMPLE",
+    "conceptType": "Tool"
+  }
+}
+```
 
-###### Multiple
+###### Query for multiple drafts
 
-    query Drafts($params: DraftsInput) {
-      drafts(params: $params) {
-        count
-        items {
-          conceptId
-          conceptType
-          deleted
+```gql
+query Drafts($params: DraftsInput) {
+  drafts(params: $params) {
+    count
+    items {
+      conceptId
+      conceptType
+      deleted
+      name
+      nativeId
+      providerId
+      revisionDate
+      revisionId
+      ummMetadata
+      previewMetadata {
+        ... on Tool {
           name
-          nativeId
-          providerId
-          revisionDate
-          revisionId
-          ummMetadata
-          previewMetadata {
-            ... on Tool {
-              name
-              longName
-              collections {
-                count
-              }
-            }
+          longName
+          collections {
+            count
           }
         }
       }
     }
+  }
+}
+```
 
-variables:
+Variables:
 
-    {
-      "params": {
-        "conceptType": "Tool"
-      }
-    }
+```json
+{
+  "params": {
+    "conceptType": "Tool"
+  }
+}
+```
 
 ###### Ingesting a draft
 
-    mutation IngestDraft(
-      $conceptType: DraftConceptType!
-      $metadata: JSON!
-      $nativeId: String!
-      $providerId: String!
-      $ummVersion: String!
-    ) {
-      ingestDraft(
-        conceptType: $conceptType
-        metadata: $metadata
-        nativeId: $nativeId
-        providerId: $providerId
-        ummVersion: $ummVersion
-      ) {
-        conceptId
-        revisionId
-        warnings
-        existingErrors
-      }
-    }
+```gql
+mutation IngestDraft(
+  $conceptType: DraftConceptType!
+  $metadata: JSON!
+  $nativeId: String!
+  $providerId: String!
+  $ummVersion: String!
+) {
+  ingestDraft(
+    conceptType: $conceptType
+    metadata: $metadata
+    nativeId: $nativeId
+    providerId: $providerId
+    ummVersion: $ummVersion
+  ) {
+    conceptId
+    revisionId
+    warnings
+    existingErrors
+  }
+}
+```
 
-variables:
+Variables:
 
-    {
-      "conceptType": "Tool",
-      "metadata": {
-        "Name": "Test Tool",
-        "MetadataSpecification": {
-          "URL": "https://cdn.earthdata.nasa.gov/umm/tool/v1.2.0",
-          "Name": "UMM-T",
-          "Version": "1.2.0"
-        }
-      },
-      "nativeId": "sampleNativeId",
-      "providerId": "EXAMPLE",
-      "ummVersion": "1.0.0"
+```json
+{
+  "conceptType": "Tool",
+  "metadata": {
+    "Name": "Test Tool",
+    "MetadataSpecification": {
+      "URL": "https://cdn.earthdata.nasa.gov/umm/tool/v1.2.0",
+      "Name": "UMM-T",
+      "Version": "1.2.0"
     }
+  },
+  "nativeId": "sampleNativeId",
+  "providerId": "EXAMPLE",
+  "ummVersion": "1.0.0"
+}
+```
 
 ###### Deleting a draft
 
-    mutation DeleteDraft(
-      $conceptType: DraftConceptType!
-      $nativeId: String!
-      $providerId: String!
-    ) {
-      deleteDraft(
-        conceptType: $conceptType
-        nativeId: $nativeId
-        providerId: $providerId
-      ) {
-        conceptId
-        revisionId
-        warnings
-        existingErrors
-      }
-    }
+```gql
+mutation DeleteDraft(
+  $conceptType: DraftConceptType!
+  $nativeId: String!
+  $providerId: String!
+) {
+  deleteDraft(
+    conceptType: $conceptType
+    nativeId: $nativeId
+    providerId: $providerId
+  ) {
+    conceptId
+    revisionId
+    warnings
+    existingErrors
+  }
+}
+```
 
-variables:
+Variables:
 
-    {
-      "conceptType": "Tool",
-      "nativeId": "tool-3",
-      "providerId": "EXAMPLE"
-    }
+```json
+{
+  "conceptType": "Tool",
+  "nativeId": "tool-3",
+  "providerId": "EXAMPLE"
+}
+```
 
 ###### Publishing a draft
 
-    mutation PublishDraft(
-      $draftConceptId: String!
-      $nativeId: String!
-      $ummVersion: String!
-    ) {
-      publishDraft(
-        draftConceptId: $draftConceptId
-        nativeId: $nativeId
-        ummVersion: $ummVersion
-      ) {
-        conceptId
-        revisionId
-        warnings
-        existingErrors
-      }
-    }
+```gql
+mutation PublishDraft(
+  $draftConceptId: String!
+  $nativeId: String!
+  $ummVersion: String!
+) {
+  publishDraft(
+    draftConceptId: $draftConceptId
+    nativeId: $nativeId
+    ummVersion: $ummVersion
+  ) {
+    conceptId
+    revisionId
+    warnings
+    existingErrors
+  }
+}
+```
 
-variables:
+Variables:
 
-    {
-      "draftConceptId": "TD1000000001-EXAMPLE",
-      "nativeId": "tool-1",
-      "ummVersion": "1.2.0"
-    }
-
+```json
+{
+  "draftConceptId": "TD1000000001-EXAMPLE",
+  "nativeId": "tool-1",
+  "ummVersion": "1.2.0"
+}
+```
 
 #### Associations
 For all supported arguments and columns, see [the schema](src/types/association.graphql).
 
-The association supports associating a Tool, Variable, or Service record to a collection. 
-##### Example Query
+The association supports associating a Tool, Variable, or Service record to a collection.
+
+##### Association Query
 
 ##### Associating a Tool to a Collection
-    Mutation CreateAssociation(
-      $conceptId: String!
-      $collectionConceptIds: [JSON]!
-      $conceptType: ConceptType!
-      ){
-        createAssociation(
-          conceptId: $conceptId
-          collectionConceptIds: $collectionConceptIds
-          conceptType: $conceptType
-          ) {
-          associatedItem
-          toolAssociation
-        }
-      }
 
-variables:
+```gql
+Mutation CreateAssociation(
+  $conceptId: String!
+  $collectionConceptIds: [JSON]!
+  $conceptType: ConceptType!
+){
+  createAssociation(
+    conceptId: $conceptId
+    collectionConceptIds: $collectionConceptIds
+    conceptType: $conceptType
+    ) {
+    associatedItem
+    toolAssociation
+  }
+}
+```
 
+Variables:
+
+```json
+{
+  "conceptId": "T1000000001-EXAMPLE",
+  "conceptType": "Tool",
+  "collectionConceptIds": [
     {
-      "conceptId": "T1000000001-EXAMPLE",
-      "conceptType": "Tool",
-      "collectionConceptIds": [
-        {
-          "conceptId": "C1000000001-EXAMPLE"
-        }
-      ]
+      "conceptId": "C1000000001-EXAMPLE"
     }
+  ]
+}
+```
 
 ##### Associating a Variable to a Collection
-  Note for Variable association, nativeId and metadata are required params.
 
-    Mutation CreateAssociation(
-      $conceptId: String!
-      $collectionConceptIds: [JSON]!
-      $conceptType: ConceptType!
-      $nativeId: String
-      $metadata: JSON
-      ){
-        createAssociation(
-          conceptId: $conceptId
-          collectionConceptIds: $collectionConceptIds
-          conceptType: $conceptType
-          nativeId: $nativeId
-          metadata: $metadata
-          ) {
-          associatedItem
-          variableAssociation
-        }
-      }
+Note for Variable association, nativeId and metadata are required params.
 
-variables:
+```gql
+Mutation CreateAssociation(
+  $conceptId: String!
+  $collectionConceptIds: [JSON]!
+  $conceptType: ConceptType!
+  $nativeId: String
+  $metadata: JSON
+){
+  createAssociation(
+    conceptId: $conceptId
+    collectionConceptIds: $collectionConceptIds
+    conceptType: $conceptType
+    nativeId: $nativeId
+    metadata: $metadata
+    ) {
+    associatedItem
+    variableAssociation
+  }
+}
+```
 
+Variables:
+
+```json
+{
+  "conceptId": "V1000000001-EXAMPLE",
+  "conceptType": "Variable",
+  "collectionConceptIds": [
     {
-      "conceptId": "V1000000001-EXAMPLE",
-      "conceptType": "Variable",
-      "collectionConceptIds": [
-        {
-          "conceptId": "C1000000001-EXAMPLE"
-        }
-      ],
-      "nativeId": "Variable native id",
-      "metadata": {} 
+      "conceptId": "C1000000001-EXAMPLE"
     }
+  ],
+  "nativeId": "Variable native id",
+  "metadata": {}
+}
+```
 
 ##### Disassociation a Tool to a Collection (Delete)
-    Mutation DeleteAssociation(
-      $conceptId: String!
-      $collectionConceptIds: [JSON]!
-      $conceptType: ConceptType!
-      ){
-        deleteAssociation(
-          conceptId: $conceptId
-          collectionConceptIds: $collectionConceptIds
-          conceptType: $conceptType
-          ) {
-          associatedItem
-          toolAssociation
-        }
-      }
 
-variables:
+```
+Mutation DeleteAssociation(
+  $conceptId: String!
+  $collectionConceptIds: [JSON]!
+  $conceptType: ConceptType!
+){
+  deleteAssociation(
+    conceptId: $conceptId
+    collectionConceptIds: $collectionConceptIds
+    conceptType: $conceptType
+    ) {
+    associatedItem
+    toolAssociation
+  }
+}
+```
 
+Variables:
+
+```json
+{
+  "conceptId": "TL12000000-EXAMPLE",
+  "conceptType": "Tool",
+  "collectionConceptIds": [
     {
-      "conceptId": "TL12000000-EXAMPLE",
-      "conceptType": "Tool",
-      "collectionConceptIds": [
-        {
-          "conceptId": "C1000000001-EXAMPLE"
-        }
-      ]
+      "conceptId": "C1000000001-EXAMPLE"
     }
+  ]
+}
+```
 
 #### ACLs
 
 For all supported arguments and columns, see [the schema](src/types/acl.graphql).
 
-##### Example Queries
+##### ACL Queries
 
-###### Single
+###### Query for a single ACL
 
-    query Acl($conceptId: String) {
-      acl(conceptId: $conceptId) {
-        name
-        groupPermissions
+```gql
+query Acl($conceptId: String) {
+  acl(conceptId: $conceptId) {
+    name
+    groupPermissions
+  }
+}
+```
+
+Variables:
+
+```json
+{
+  "conceptId": "ACL1000000001-EXAMPLE"
+}
+```
+
+##### Example ACL Query Response
+
+```json
+{
+  "data": {
+    "acl": {
+      "groupPermissions": [
+        {
+          "group_id": "ACL1000000001-EXAMPLE",
+          "permissions": [
+            "read"
+          ]
+        },
+        {
+          "group_id": "ACL1000000002-EXAMPLE",
+          "permissions": [
+            "read"
+          ]
+        }
+      ],
+      "providerIdentity": {
+        "target": "PROVIDER_CONTEXT",
+        "provider_id": "EXAMPLE"
       }
     }
-    
-variables:
+  }
+}
+```
 
-    {
-      "conceptId": "ACL1000000001-EXAMPLE"
+###### Query for multiple ACLs
+
+```gql
+query Acls($params: AclsInput) {
+  acls(params: $params) {
+    items {
+      systemIdentity
+      providerIdentity
     }
-    
+  }
+}
+```
 
-##### Example Response
+Variables:
 
-    {
-      "data": {
-        "acl": {
+```json
+{
+  "params": {
+    "permittedUser": "typical",
+    "target": "PROVIDER_CONTEXT"
+  }
+}
+```
+
+##### Example ACLs Query Response
+
+```json
+{
+  "data": {
+    "acls": {
+      "items": [
+        {
           "groupPermissions": [
             {
               "group_id": "ACL1000000001-EXAMPLE",
@@ -1173,191 +1425,164 @@ variables:
             "provider_id": "EXAMPLE"
           }
         }
-      }
+      ]
     }
+  }
+}
+```
 
-###### Multiple
-
-    query Acls($params: AclsInput) {
-      acls(params: $params) {
-        items {
-          systemIdentity
-          providerIdentity
-        }
-      }
-    }
-
-variables:
-
-    {
-      "params": {
-        "permittedUser": "typical",
-        "target": "PROVIDER_CONTEXT"
-      }
-    }
-
-##### Example Response
-
-    {
-      "data": {
-        "acls": {
-          "items": [
-            {
-              "groupPermissions": [
-                {
-                  "group_id": "ACL1000000001-EXAMPLE",
-                  "permissions": [
-                    "read"
-                  ]
-                },
-                {
-                  "group_id": "ACL1000000002-EXAMPLE",
-                  "permissions": [
-                    "read"
-                  ]
-                }
-              ],
-              "providerIdentity": {
-                "target": "PROVIDER_CONTEXT",
-                "provider_id": "EXAMPLE"
-              }
-            }
-          ]
-        }
-      }
-    }
-
-##### Mutations
+##### ACL Mutations
 
 ###### Creating an ACL
 
-    mutation CreateAcl(
-    	$groupPermissions: JSON
-        $catalogItemIdentity: JSON
-      ) {
-      createAcl(
-        groupPermissions: $groupPermissions
-        catalogItemIdentity: $catalogItemIdentity
-      ) {
-        revisionId
-        conceptId
-      }
-    }
+```gql
+mutation CreateAcl(
+  $groupPermissions: JSON
+    $catalogItemIdentity: JSON
+  ) {
+  createAcl(
+    groupPermissions: $groupPermissions
+    catalogItemIdentity: $catalogItemIdentity
+  ) {
+    revisionId
+    conceptId
+  }
+}
+```
 
 ###### Updating an ACL
 
-    mutation UpdateAcl(
-    	$conceptId: String!
-        $catalogItemIdentity: JSON
-        $groupPermissions: JSON
-    ) {
-      updateAcl(
-        conceptId: $conceptId
-        catalogItemIdentity: $catalogItemIdentity
-        groupPermissions: $groupPermissions
-      ) {
-	    revisionId
-	    conceptId
-      }
-    }
-    
-variables:
+```gql
+mutation UpdateAcl(
+  $conceptId: String!
+    $catalogItemIdentity: JSON
+    $groupPermissions: JSON
+) {
+  updateAcl(
+    conceptId: $conceptId
+    catalogItemIdentity: $catalogItemIdentity
+    groupPermissions: $groupPermissions
+  ) {
+  revisionId
+  conceptId
+  }
+}
+```
 
-    {
-      "conceptId": "ACL1000000001-EXAMPLE",
-      "catalogItemIdentity": {
-            "name": "ACL Example Renamed",
-            "provider_id": "EXAMPLE",
-            "granule_applicable": true
-        },
-        "groupPermissions": [{
-            "user_type": "guest",
-            "permissions": ["read"]
-        }
-      ]
+Variables:
+
+```json
+{
+  "conceptId": "ACL1000000001-EXAMPLE",
+  "catalogItemIdentity": {
+        "name": "ACL Example Renamed",
+        "provider_id": "EXAMPLE",
+        "granule_applicable": true
+    },
+    "groupPermissions": [{
+        "user_type": "guest",
+        "permissions": ["read"]
     }
+  ]
+}
+```
 
 ###### Deleting an ACL
 
-    mutation DeleteAcl($conceptId: String!) {
-      deleteAcl(conceptId: $conceptId) {
-        conceptId
-        revisionId
-      }
-    }
-    
-variables:
+```gql
+mutation DeleteAcl($conceptId: String!) {
+  deleteAcl(conceptId: $conceptId) {
+    conceptId
+    revisionId
+  }
+}
+```
 
-    {
-      "conceptId": "ACL1000000001-EXAMPLE"
-    }
+Variables:
+
+```json
+{
+  "conceptId": "ACL1000000001-EXAMPLE"
+}
+```
 
 #### Permissions
 
 ###### Searching by Concept ID
 
-    query GetPermissions($params: PermissionsInput) {
-      permissions(params: $params) {
-        count
-        items {
-          conceptId
-          permissions
-        }
-      }
+```gql
+query GetPermissions($params: PermissionsInput) {
+  permissions(params: $params) {
+    count
+    items {
+      conceptId
+      permissions
     }
-    
-variables:
+  }
+}
+```
 
-    {
-      "params": {
-        "userType": "registered",
-        "conceptId": "C1000000001-EXAMPLE"
-      }
-    }
-    
+Variables:
+
+```json
+{
+  "params": {
+    "userType": "registered",
+    "conceptId": "C1000000001-EXAMPLE"
+  }
+}
+```
+
 ###### Searching by System Object
 
-    query GetPermissions($params: PermissionsInput) {
-      permissions(params: $params) {
-        count
-        items {
-          systemObject
-          permissions
-        }
-      }
+```gql
+query GetPermissions($params: PermissionsInput) {
+  permissions(params: $params) {
+    count
+    items {
+      systemObject
+      permissions
     }
-    
-variables:
+  }
+}
+```
 
-    {
-      "params": {
-        "userType": "registered",
-        "systemObject": "USER"
-      }
-    }
+Variables:
+
+```json
+{
+  "params": {
+    "userType": "registered",
+    "systemObject": "USER"
+  }
+}
+```
 
 ###### Searching by Target & Provider
 
-    query GetPermissions($params: PermissionsInput) {
-      permissions(params: $params) {
-        count
-        items {
-          target
-          permissions
-        }
-      }
+```gql
+query GetPermissions($params: PermissionsInput) {
+  permissions(params: $params) {
+    count
+    items {
+      target
+      permissions
     }
-  
-variables:
-    
-    {
-      "params": {
-        "userType": "registered",
-        "target": "GROUP",
-        "provider": "EXAMPLE",
-      }
-    }
-    
+  }
+}
+```
+
+Variables:
+
+```json
+{
+  "params": {
+    "userType": "registered",
+    "target": "GROUP",
+    "provider": "EXAMPLE",
+  }
+}
+```
 
 
 #### Local graph database:

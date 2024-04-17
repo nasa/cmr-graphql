@@ -23,7 +23,6 @@ import graphDbDuplicateCollectionsSource from '../../../datasources/graphDbDupli
 import graphDbSource from '../../../datasources/graphDb'
 import gridSource from '../../../datasources/grid'
 import maxItemsPerOrderSource from '../../../datasources/maxItemsPerOrder'
-import orderOptionSource from '../../../datasources/orderOption'
 import permissionSource from '../../../datasources/permission'
 import providerSource from '../../../datasources/provider'
 import serviceDraftSource from '../../../datasources/serviceDraft'
@@ -60,6 +59,12 @@ import {
   fetchCollections as collectionSourceFetch
 } from '../../../datasources/collection'
 
+import {
+  deleteOrderOption as orderOptionSourceDelete,
+  fetchOrderOption as orderOptionSourceFetch,
+  ingestOrderOption as orderOptionSourceIngest
+} from '../../../datasources/orderOption'
+
 export const server = new ApolloServer({
   typeDefs,
   resolvers
@@ -88,7 +93,9 @@ export const buildContextValue = (extraContext) => ({
     graphDbSource,
     gridSource,
     maxItemsPerOrderSource,
-    orderOptionSource,
+    orderOptionSourceDelete,
+    orderOptionSourceFetch,
+    orderOptionSourceIngest,
     permissionSource,
     providerSource,
     serviceDraftSource,

@@ -47,7 +47,7 @@ export default class Concept {
       collectionConceptIds: 'collectionConceptId',
       conceptIds: 'conceptId',
       dataCenters: 'dataCenter',
-      providers: 'provider',
+      providerIds: 'providerId',
       shortNames: 'shortName'
     }
   }
@@ -266,17 +266,18 @@ export default class Concept {
    */
   getPermittedJsonSearchParams() {
     return [
-      'concept_id',
-      'offset',
-      'page_size',
-      'sort_key',
-      'permitted_user',
-      'include_full_acl',
       'all_revisions',
+      'concept_id',
+      'include_full_acl',
+      'offset',
+      'originator_id',
       'page_num',
-      'target',
+      'page_size',
+      'permitted_user',
+      'provider_id',
+      'sort_key',
       'tag_key',
-      'originator_id'
+      'target'
     ]
   }
 
@@ -285,10 +286,11 @@ export default class Concept {
    */
   getPermittedUmmSearchParams() {
     return [
+      'all_revisions',
       'concept_id',
       'offset',
       'page_size',
-      'all_revisions',
+      'provider_id',
       'sort_key'
     ]
   }
@@ -299,14 +301,15 @@ export default class Concept {
   getNonIndexedKeys() {
     return [
       'concept_id',
-      'offset',
-      'page_size',
-      'sort_key',
-      'permitted_user',
       'include_full_acl',
+      'offset',
       'page_num',
-      'target',
-      'tag_key'
+      'page_size',
+      'permitted_user',
+      'provider_id',
+      'sort_key',
+      'tag_key',
+      'target'
     ]
   }
 
