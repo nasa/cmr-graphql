@@ -58,8 +58,16 @@ export const cmrQuery = ({
   // Append any query arguments based on provided params
   const cmrParameters = prepKeysForCmr(snakecaseKeys(params), nonIndexedKeys)
 
-  // Join the current url and the query parameters
-  requestConfiguration.url = [requestConfiguration.url, cmrParameters].filter(Boolean).join('?')
+  const { env } = process
+  const { maximumQueryPathLength } = env
+
+  if (cmrParameters.length > maximumQueryPathLength) {
+    requestConfiguration.data = cmrParameters
+    requestConfiguration.method = 'POST'
+  } else {
+    // Join the current url and the query parameters
+    requestConfiguration.url = [requestConfiguration.url, cmrParameters].filter(Boolean).join('?')
+  }
 
   // Interceptors require an instance of axios
   const instance = axios.create()
