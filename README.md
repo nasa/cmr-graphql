@@ -293,6 +293,23 @@ For all supported arguments and columns, see [the schema](src/types/collection.g
 }
 ```
 
+###### Restore a previous revision of a collection
+
+```gql
+mutation RestoreCollectionRevision(
+  $conceptId: String!
+  $revisionId: String!
+) {
+  restoreCollectionRevision(
+    conceptId: $conceptId,
+    revisionId: $revisionId
+  ) {
+    revisionId
+    conceptId
+  }
+}
+```
+
 #### Granules
 
 For performance reasons, CMR requires that a collection be provided in order to query granules. While CMR supports multiple aliases for the collection CMR-GraphQL requires that it be called `collectionConceptId`; if this is not provided CMR will return an error. We don't enforce this in the schema because you can also use `conceptId` if you're looking for specific granules and schemas don't offer a means of offering conditional validations.
@@ -363,6 +380,23 @@ For all supported arguments and columns, see [the schema](src/types/service.grap
       type
       description
     }
+  }
+}
+```
+
+###### Restore a previous revision of a service
+
+```gql
+mutation RestoreServiceRevision(
+  $conceptId: String!
+  $revisionId: String!
+) {
+  restoreServiceRevision(
+    conceptId: $conceptId,
+    revisionId: $revisionId
+  ) {
+    revisionId
+    conceptId
   }
 }
 ```
@@ -566,6 +600,23 @@ Variables:
 }
 ```
 
+###### Restore a previous revision of a tool
+
+```gql
+mutation RestoreToolnRevision(
+  $conceptId: String!
+  $revisionId: String!
+) {
+  restoreToolRevision(
+    conceptId: $conceptId,
+    revisionId: $revisionId
+  ) {
+    revisionId
+    conceptId
+  }
+}
+```
+
 #### Variables
 
 For all supported arguments and columns, see [the schema](src/types/variable.graphql).
@@ -595,6 +646,23 @@ For all supported arguments and columns, see [the schema](src/types/variable.gra
       scienceKeywords
       variableType
     }
+  }
+}
+```
+
+###### Restore a previous revision of a variable
+
+```gql
+mutation RestoreVariableRevision(
+  $conceptId: String!
+  $revisionId: String!
+) {
+  restoreVariableRevision(
+    conceptId: $conceptId,
+    revisionId: $revisionId
+  ) {
+    revisionId
+    conceptId
   }
 }
 ```
