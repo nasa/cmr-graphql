@@ -3,35 +3,37 @@ import { RouterProvider } from 'react-router'
 import { Navigate, createBrowserRouter } from 'react-router-dom'
 
 import { useLazyQuery } from '@apollo/client'
-import Layout from './components/Layout/Layout'
 import DraftsPage from './pages/DraftsPage/DraftsPage'
-import Notifications from './components/Notifications/Notifications'
-import Page from './components/Page/Page'
-import PublishPreview from './components/PublishPreview/PublishPreview'
 import SearchPage from './pages/SearchPage/SearchPage'
 import HomePage from './pages/HomePage/HomePage'
-import AuthRequiredContainer from './components/AuthRequiredContainer/AuthRequiredContainer'
-import AuthCallbackContainer from './components/AuthCallbackContainer/AuthCallbackContainer'
 import ManageCollectionAssociation from './pages/ManageCollectionAssociation/ManageCollectionAssociation'
+
+import AuthCallbackContainer from './components/AuthCallbackContainer/AuthCallbackContainer'
+import AuthRequiredContainer from './components/AuthRequiredContainer/AuthRequiredContainer'
 import CollectionAssociationSearch from './components/CollectionAssociationSearch/CollectionAssociationSearch'
-import TemplateList from './components/TemplateList/TemplateList'
-
-import TemplateForm from './components/TemplateForm/TemplateForm'
-import TemplatePreview from './components/TemplatePreview/TemplatePreview'
-
+import Layout from './components/Layout/Layout'
+import Notifications from './components/Notifications/Notifications'
+import OrderOptionListPage from './pages/OrderOptionListPage/OrderOptionListPage'
+import OrderOptionPreview from './components/OrderOptionPreivew/OrderOptionPreview'
+import Page from './components/Page/Page'
+import PublishPreview from './components/PublishPreview/PublishPreview'
 import REDIRECTS from './constants/redirectsMap/redirectsMap'
+import RevisionList from './components/RevisionList/RevisionList'
+import TemplateForm from './components/TemplateForm/TemplateForm'
+import TemplateList from './components/TemplateList/TemplateList'
+import TemplatePreview from './components/TemplatePreview/TemplatePreview'
 
 import '../css/index.scss'
 
 import errorLogger from './utils/errorLogger'
-import useNotificationsContext from './hooks/useNotificationsContext'
-import { GET_ACLS } from './operations/queries/getAcls'
-import useAppContext from './hooks/useAppContext'
-import withProviders from './providers/withProviders/withProviders'
 import getPermittedUser from './utils/getPermittedUser'
-import RevisionList from './components/RevisionList/RevisionList'
-import OrderOptionList from './components/OrderOptionList/OrderOptionList'
-import OrderOptionPreview from './components/OrderOptionPreivew/OrderOptionPreview'
+
+import useAppContext from './hooks/useAppContext'
+import useNotificationsContext from './hooks/useNotificationsContext'
+
+import { GET_ACLS } from './operations/queries/getAcls'
+
+import withProviders from './providers/withProviders/withProviders'
 
 /**
  * Renders the `App` component
