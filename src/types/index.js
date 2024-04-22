@@ -9,6 +9,8 @@ import dataQualitySummary from './dataQualitySummary.graphql'
 import draft from './draft.graphql'
 import granule from './granule.graphql'
 import grid from './grid.graphql'
+import group from './group.graphql'
+import groupMember from './groupMember.graphql'
 import json from './json.graphql'
 import orderOption from './orderOption.graphql'
 import permission from './permission.graphql'
@@ -19,7 +21,6 @@ import subscription from './subscription.graphql'
 import tagDefinition from './tagDefinition.graphql'
 import tool from './tool.graphql'
 import toolDraft from './toolDraft.graphql'
-import userGroup from './userGroup.graphql'
 import variable from './variable.graphql'
 import variableDraft from './variableDraft.graphql'
 
@@ -34,6 +35,8 @@ export default mergeTypeDefs(
     draft,
     granule,
     grid,
+    group,
+    groupMember,
     json,
     orderOption,
     permission,
@@ -44,7 +47,6 @@ export default mergeTypeDefs(
     tagDefinition,
     tool,
     toolDraft,
-    userGroup,
     variable,
     variableDraft
   ],

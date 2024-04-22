@@ -189,7 +189,7 @@ Currently, this API supports the following functionality within NASA's Earthdata
 - [Services](#services)
 - [Subscriptions](#subscriptions)
 - [Tools](#tools)
-- [User Groups](#user-groups)
+- [Groups](#groups)
 - [Variables](#variables)
 
 ### Drafts of concepts
@@ -603,7 +603,7 @@ Variables:
 ###### Restore a previous revision of a tool
 
 ```gql
-mutation RestoreToolnRevision(
+mutation RestoreToolRevision(
   $conceptId: String!
   $revisionId: String!
 ) {
@@ -617,20 +617,20 @@ mutation RestoreToolnRevision(
 }
 ```
 
-#### User Groups
+#### Groups
 
-For all supported arguments and columns, see [the schema](src/types/userGroup.graphql).
+For all supported arguments and columns, see [the schema](src/types/group.graphql).
 
-##### User Group Queries
+##### Group Queries
 
-###### Query for a single user group
+###### Query for a single group
 
 Query:
 ```gql
-query UserGroup (
-  $params: UserGroupInput
+query Group (
+  $params: GroupInput
 ) {
-  userGroup (
+  group (
     params: $params
   ) {
     groupId
@@ -648,14 +648,14 @@ Variables:
 }
 ```
 
-###### Query for multiple user groups
+###### Query for multiple groups
 
 Query:
 ```gql
-query UserGroups (
-  $params: UserGroupsInput
+query Groups (
+  $params: GroupsInput
 ) {
-  userGroups (
+  groups (
     params: $params
   ) {
     count
@@ -672,23 +672,23 @@ Variables:
 {
   "params": {
     "tags": ["EXAMPLE"],
-    "name": "user-group-1"
+    "name": "group-1"
   }
 }
 ```
 
-##### User Group Mutations
+##### Group Mutations
 
-###### Creating a user group
+###### Creating a group
 
 Query:
 ```gql
-mutation CreateUserGroup (
+mutation CreateGroup (
   $name: String!
   $tag: String
   $description: String
 ) {
-  createUserGroup (
+  createGroup (
     name: $name
     tag: $tag
     description: $description
@@ -708,16 +708,16 @@ Variables:
 }
 ```
 
-###### Updating a user group
+###### Updating a group
 
 Query:
 ```gql
-mutation UpdateUserGroup (
-  $userGroupIdOrName: String!
+mutation UpdateGroup (
+  $id: String!
   $name: String
 ) {
-  updateUserGroup (
-    userGroupIdOrName: $userGroupIdOrName
+  updateGroup (
+    id: $id
     name: $name
   ) {
     groupId
@@ -729,19 +729,19 @@ mutation UpdateUserGroup (
 Variables:
 ```json
 {
-  "userGroupIdOrName": "1234-abcd-5678-efgh",
+  "id": "1234-abcd-5678-efgh",
   "name": "New Group Name"
 }
 ```
 
-###### Deleting a user group
+###### Deleting a group
 
 Query:
 ```gql
-mutation DeleteUserGroup (
+mutation DeleteGroup (
   $id: String!
 ) {
-  deleteUserGroup (
+  deleteGroup (
     id: $id
   )
 }
@@ -1100,7 +1100,7 @@ For all supported arguments and columns, see [the schema](src/types/collection.g
 
 CMR-GraphQL queries an earthdata-varinfo lambda in order to generate collection variable drafts. These generated variable drafts can be returned as part of the Collection type response.
 
-`generateVariableDrafts` will return collection generated variable drafts, using the earthdata-varinfo project(<https://github.com/nasa/earthdata-varinfo>)
+`generateVariableDrafts` will return collection generated variable drafts, using the earthdata-varinfo project(https://github.com/nasa/earthdata-varinfo)
 
 ##### Collection Variable Draft Queries
 
@@ -1180,7 +1180,7 @@ For all supported arguments and columns, see [the schema](src/types/variable.gra
 
 CMR-GraphQL queries an earthdata-varinfo lambda in order to generate and publish collection variable drafts. The resulting variables can be returned as part of the Variable type response.
 
-`publishVariableDrafts` will return collection generated variables, using the earthdata-varinfo project(<https://github.com/nasa/earthdata-varinfo>)
+`publishVariableDrafts` will return collection generated variables, using the earthdata-varinfo project(https://github.com/nasa/earthdata-varinfo)
 
 ##### Generate Collection Variable Drafts Mutation
 

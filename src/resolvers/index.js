@@ -9,6 +9,7 @@ import dataQualitySummaryResolver from './dataQualitySummary'
 import draftResolver from './draft'
 import granuleResolver from './granule'
 import gridResolver from './grid'
+import groupResolver from './group'
 import orderOptionResolver from './orderOption'
 import permissionResolver from './permission'
 import providerResolver from './provider'
@@ -18,7 +19,6 @@ import subscriptionResolver from './subscription'
 import tagDefinitionResolver from './tagDefinition'
 import toolDraftResolver from './toolDraft'
 import toolResolver from './tool'
-import userGroupResolver from './userGroup'
 import variableDraftResolver from './variableDraft'
 import variableResolver from './variable'
 
@@ -32,6 +32,7 @@ const resolvers = [
   draftResolver,
   granuleResolver,
   gridResolver,
+  groupResolver,
   orderOptionResolver,
   permissionResolver,
   providerResolver,
@@ -41,7 +42,6 @@ const resolvers = [
   tagDefinitionResolver,
   toolDraftResolver,
   toolResolver,
-  userGroupResolver,
   variableDraftResolver,
   variableResolver
 ]

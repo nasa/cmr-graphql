@@ -23,7 +23,12 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
   let requestedFields = []
 
   // CMR concepts which are multiple words i.e. order-option, data-quality-summary etc
-  const camelCasedConcepts = ['orderOption', 'dataQualitySummary', 'tagDefinition']
+  const camelCasedConcepts = [
+    'orderOption',
+    'dataQualitySummary',
+    'tagDefinition',
+    'groupMember'
+  ]
 
   let formattedConceptName = conceptName
 

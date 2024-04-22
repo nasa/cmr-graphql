@@ -4,6 +4,7 @@ import snakeCaseKeys from 'snakecase-keys'
 import { downcaseKeys } from './downcaseKeys'
 import { pickIgnoringCase } from './pickIgnoringCase'
 import { prepKeysForCmr } from './prepKeysForCmr'
+import { buildEdlGroupPath } from './buildEdlGroupPath'
 
 /**
  * Make a request to EDL and return the promise
@@ -11,11 +12,14 @@ import { prepKeysForCmr } from './prepKeysForCmr'
  * @param {Object} params.headers Headers to send to CMR
  * @param {String} params.method Method to make the request with
  * @param {Object} params.params Parameters to send to CMR
+ * @param {Object} params.url Request URL
  */
-export const userGroupsRequest = ({
+export const edlRequest = ({
   headers,
   method,
-  params
+  params,
+  pathType,
+  requestInfo
 }) => {
   let { params: requestParams } = params
 
@@ -37,11 +41,11 @@ export const userGroupsRequest = ({
     'CMR-Search-After'
   ])
 
-  const { id, userGroupIdOrName } = requestParams
+  const { id } = requestParams
 
   requestParams = {
     ...requestParams,
-    userGroupIdOrName: undefined
+    id: undefined
   }
 
   const nonIndexedKeys = ['user_ids', 'tags']
@@ -52,7 +56,11 @@ export const userGroupsRequest = ({
     'cmr-request-id': requestId
   } = downcaseKeys(permittedHeaders)
 
-  console.log(`Request ${requestId} from ${clientId} to [concept: userGroups] requested [format: json]`)
+  // Log out requested keys
+  const keys = requestInfo.jsonKeys.concat(requestInfo.metaKeys)
+  keys.forEach((key) => {
+    console.log(`Request ${requestId} from ${clientId} to [concept: groups] requested [format: json, key: ${key}]`)
+  })
 
   const requestConfiguration = {
     headers: permittedHeaders,
@@ -60,30 +68,11 @@ export const userGroupsRequest = ({
     url: process.env.ursRootUrl
   }
 
-  if (method === 'GET') {
-    if (userGroupIdOrName) {
-      // Find single user group
-      requestConfiguration.url += `/api/user_groups/${userGroupIdOrName}?${edlParameters}`
-    } else {
-      // Search user groups
-      requestConfiguration.url += `/api/user_groups/search?${edlParameters}`
-    }
-  }
-
-  if (method === 'POST') {
-    if (userGroupIdOrName) {
-      // Update user group
-      requestConfiguration.url += `/api/user_groups/${userGroupIdOrName}/update?${edlParameters}`
-    } else {
-      // Create user group
-      requestConfiguration.url += `/api/user_groups?${edlParameters}`
-    }
-  }
-
-  if (method === 'DELETE') {
-    // Delete user group
-    requestConfiguration.url += `/api/user_groups/${id}`
-  }
+  requestConfiguration.url += buildEdlGroupPath({
+    id,
+    params: edlParameters,
+    type: pathType
+  })
 
   // Interceptors require an instance of axios
   const instance = axios.create()
@@ -108,7 +97,7 @@ export const userGroupsRequest = ({
     const milliseconds = Math.round((end[0] * 1000) + (end[1] / 1000000))
     response.headers['request-duration'] = milliseconds
 
-    console.log(`Request ${requestId} from ${clientId} to [concept: userGroups] completed external request in [observed: ${milliseconds} ms]`)
+    console.log(`Request ${requestId} from ${clientId} to [concept: groups] completed external request in [observed: ${milliseconds} ms]`)
 
     return response
   })
