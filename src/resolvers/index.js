@@ -18,6 +18,7 @@ import subscriptionResolver from './subscription'
 import tagDefinitionResolver from './tagDefinition'
 import toolDraftResolver from './toolDraft'
 import toolResolver from './tool'
+import userGroupResolver from './userGroup'
 import variableDraftResolver from './variableDraft'
 import variableResolver from './variable'
 
@@ -40,6 +41,7 @@ const resolvers = [
   tagDefinitionResolver,
   toolDraftResolver,
   toolResolver,
+  userGroupResolver,
   variableDraftResolver,
   variableResolver
 ]

@@ -72,6 +72,14 @@ import {
   ingestOrderOption as orderOptionSourceIngest
 } from '../../../datasources/orderOption'
 
+import {
+  createUserGroup as userGroupSourceCreate,
+  deleteUserGroup as userGroupSourceDelete,
+  fetchUserGroup as userGroupSourceFetch,
+  searchUserGroup as userGroupSourceSearch,
+  updateUserGroup as userGroupSourceUpdate
+} from '../../../datasources/userGroup'
+
 export const server = new ApolloServer({
   typeDefs,
   resolvers
@@ -118,6 +126,11 @@ export const buildContextValue = (extraContext) => ({
     toolSourceDelete,
     toolSourceFetch,
     toolSourceRestoreRevision,
+    userGroupSourceCreate,
+    userGroupSourceDelete,
+    userGroupSourceFetch,
+    userGroupSourceSearch,
+    userGroupSourceUpdate,
     variableDraftSource,
     variableSourceDelete,
     variableSourceFetch,

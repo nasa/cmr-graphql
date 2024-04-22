@@ -25,9 +25,11 @@ export const parseError = (errorObj, {
       status
     } = response
 
-    statusCode = status;
+    statusCode = status
 
-    ({ errors: errorArray = ['Unknown Error'] } = data)
+    const { error = 'Unknown Error' } = data;
+
+    ({ errors: errorArray = [error] } = data)
 
     if (shouldLog) {
       // Log each error provided

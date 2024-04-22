@@ -19,6 +19,7 @@ import subscription from './subscription.graphql'
 import tagDefinition from './tagDefinition.graphql'
 import tool from './tool.graphql'
 import toolDraft from './toolDraft.graphql'
+import userGroup from './userGroup.graphql'
 import variable from './variable.graphql'
 import variableDraft from './variableDraft.graphql'
 
@@ -43,6 +44,7 @@ export default mergeTypeDefs(
     tagDefinition,
     tool,
     toolDraft,
+    userGroup,
     variable,
     variableDraft
   ],
