@@ -18,6 +18,13 @@ import {
   updateAcl as aclSourceUpdate
 } from '../datasources/acl'
 import {
+  createUserGroup as userGroupSourceCreate,
+  deleteUserGroup as userGroupSourceDelete,
+  fetchUserGroup as userGroupSourceFetch,
+  searchUserGroup as userGroupSourceSearch,
+  updateUserGroup as userGroupSourceUpdate
+} from '../datasources/userGroup'
+import {
   createAssociation as associationSourceCreate,
   deleteAssociation as associationSourceDelete
 } from '../datasources/association'
@@ -218,6 +225,11 @@ export default startServerAndCreateLambdaHandler(
           toolSourceDelete,
           toolSourceFetch,
           toolSourceRestoreRevision,
+          userGroupSourceCreate,
+          userGroupSourceDelete,
+          userGroupSourceFetch,
+          userGroupSourceSearch,
+          userGroupSourceUpdate,
           variableDraftSource,
           variableSourceRestoreRevision,
           variableSourceDelete,

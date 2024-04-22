@@ -110,7 +110,36 @@ describe('parseError', () => {
           })
         })
 
-        describe('with no errors array', () => {
+        describe('with a single error', () => {
+          test('it logs the error', () => {
+            const consoleMock = vi.spyOn(console, 'log')
+
+            const response = parseError({
+              response: {
+                data: {
+                  error: 'Mock error message'
+                },
+                status: 400
+              },
+              name: 'HTTP Error'
+            })
+
+            expect(consoleMock).toBeCalledTimes(1)
+            expect(consoleMock.mock.calls[0]).toEqual(['HTTP Error (400): Mock error message'])
+
+            expect(response).toEqual({
+              statusCode: 400,
+              body: JSON.stringify({
+                statusCode: 400,
+                errors: [
+                  'Mock error message'
+                ]
+              })
+            })
+          })
+        })
+
+        describe('with no error or errors array', () => {
           test('defaults to an array containing `Unknown Error`', () => {
             const consoleMock = vi.spyOn(console, 'log')
 

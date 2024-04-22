@@ -15,7 +15,7 @@ CMR-GraphQL is an API developed by [NASA](http://nasa.gov) [EOSDIS](https://eart
 > Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 > You may obtain a copy of the License at
 >
->    http://www.apache.org/licenses/LICENSE-2.0
+> http://www.apache.org/licenses/LICENSE-2.0
 >
 >Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 >WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
@@ -49,7 +49,6 @@ The local development environment for the static assets can be started by execut
     serverless offline
 
 This will run the application at [http://localhost:3003/dev/api](http://localhost:3003/dev/api)
-
 
 #### Optional Headers
 
@@ -190,6 +189,7 @@ Currently, this API supports the following functionality within NASA's Earthdata
 - [Services](#services)
 - [Subscriptions](#subscriptions)
 - [Tools](#tools)
+- [User Groups](#user-groups)
 - [Variables](#variables)
 
 ### Drafts of concepts
@@ -617,13 +617,150 @@ mutation RestoreToolnRevision(
 }
 ```
 
+#### User Groups
+
+For all supported arguments and columns, see [the schema](src/types/userGroup.graphql).
+
+##### User Group Queries
+
+###### Query for a single user group
+
+Query:
+```gql
+query UserGroup (
+  $params: UserGroupInput
+) {
+  userGroup (
+    params: $params
+  ) {
+    groupId
+    name
+  }
+}
+```
+
+Variables:
+```json
+{
+  "params": {
+    "tag": "EXAMPLE"
+  }
+}
+```
+
+###### Query for multiple user groups
+
+Query:
+```gql
+query UserGroups (
+  $params: UserGroupsInput
+) {
+  userGroups (
+    params: $params
+  ) {
+    count
+    items {
+      groupId
+      name
+    }
+  }
+}
+```
+
+Variables:
+```json
+{
+  "params": {
+    "tags": ["EXAMPLE"],
+    "name": "user-group-1"
+  }
+}
+```
+
+##### User Group Mutations
+
+###### Creating a user group
+
+Query:
+```gql
+mutation CreateUserGroup (
+  $name: String!
+  $tag: String
+  $description: String
+) {
+  createUserGroup (
+    name: $name
+    tag: $tag
+    description: $description
+  ) {
+    groupId
+    name
+  }
+}
+```
+
+Variables:
+```json
+{
+  "name": "Test Group",
+  "tag": "EXAMPLE",
+  "description": "Test group"
+}
+```
+
+###### Updating a user group
+
+Query:
+```gql
+mutation UpdateUserGroup (
+  $userGroupIdOrName: String!
+  $name: String
+) {
+  updateUserGroup (
+    userGroupIdOrName: $userGroupIdOrName
+    name: $name
+  ) {
+    groupId
+    name
+  }
+}
+```
+
+Variables:
+```json
+{
+  "userGroupIdOrName": "1234-abcd-5678-efgh",
+  "name": "New Group Name"
+}
+```
+
+###### Deleting a user group
+
+Query:
+```gql
+mutation DeleteUserGroup (
+  $id: String!
+) {
+  deleteUserGroup (
+    id: $id
+  )
+}
+```
+
+Variables:
+```json
+{
+  "id": "1234-abcd-5678-efgh"
+}
+```
+
 #### Variables
 
 For all supported arguments and columns, see [the schema](src/types/variable.graphql).
 
 ##### Variable Queries
 
-###### Query for a single grid
+###### Query for a single variable
 
 ```gql
 {
@@ -963,7 +1100,7 @@ For all supported arguments and columns, see [the schema](src/types/collection.g
 
 CMR-GraphQL queries an earthdata-varinfo lambda in order to generate collection variable drafts. These generated variable drafts can be returned as part of the Collection type response.
 
-`generateVariableDrafts` will return collection generated variable drafts, using the earthdata-varinfo project(https://github.com/nasa/earthdata-varinfo)
+`generateVariableDrafts` will return collection generated variable drafts, using the earthdata-varinfo project(<https://github.com/nasa/earthdata-varinfo>)
 
 ##### Collection Variable Draft Queries
 
@@ -1043,7 +1180,7 @@ For all supported arguments and columns, see [the schema](src/types/variable.gra
 
 CMR-GraphQL queries an earthdata-varinfo lambda in order to generate and publish collection variable drafts. The resulting variables can be returned as part of the Variable type response.
 
-`publishVariableDrafts` will return collection generated variables, using the earthdata-varinfo project(https://github.com/nasa/earthdata-varinfo)
+`publishVariableDrafts` will return collection generated variables, using the earthdata-varinfo project(<https://github.com/nasa/earthdata-varinfo>)
 
 ##### Generate Collection Variable Drafts Mutation
 
@@ -1427,7 +1564,7 @@ mutation DeleteAssociation(
   }
 }
 ```
-    
+
 Variables:
 
 ```json
