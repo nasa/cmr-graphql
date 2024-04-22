@@ -73,12 +73,13 @@ import {
 } from '../../../datasources/orderOption'
 
 import {
-  createUserGroup as userGroupSourceCreate,
-  deleteUserGroup as userGroupSourceDelete,
-  fetchUserGroup as userGroupSourceFetch,
-  searchUserGroup as userGroupSourceSearch,
-  updateUserGroup as userGroupSourceUpdate
-} from '../../../datasources/userGroup'
+  createGroup as groupSourceCreate,
+  deleteGroup as groupSourceDelete,
+  fetchGroup as groupSourceFetch,
+  listGroupMembers as groupSourceListMembers,
+  searchGroup as groupSourceSearch,
+  updateGroup as groupSourceUpdate
+} from '../../../datasources/group'
 
 export const server = new ApolloServer({
   typeDefs,
@@ -108,6 +109,12 @@ export const buildContextValue = (extraContext) => ({
     graphDbDuplicateCollectionsSource,
     graphDbSource,
     gridSource,
+    groupSourceCreate,
+    groupSourceDelete,
+    groupSourceFetch,
+    groupSourceListMembers,
+    groupSourceSearch,
+    groupSourceUpdate,
     maxItemsPerOrderSource,
     orderOptionSourceDelete,
     orderOptionSourceFetch,
@@ -126,11 +133,6 @@ export const buildContextValue = (extraContext) => ({
     toolSourceDelete,
     toolSourceFetch,
     toolSourceRestoreRevision,
-    userGroupSourceCreate,
-    userGroupSourceDelete,
-    userGroupSourceFetch,
-    userGroupSourceSearch,
-    userGroupSourceUpdate,
     variableDraftSource,
     variableSourceDelete,
     variableSourceFetch,

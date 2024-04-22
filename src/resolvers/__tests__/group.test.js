@@ -4,7 +4,7 @@ import { buildContextValue, server } from './__mocks__/mockServer'
 
 const contextValue = buildContextValue()
 
-describe('Association', () => {
+describe('Group', () => {
   const OLD_ENV = process.env
 
   beforeEach(() => {
@@ -18,7 +18,7 @@ describe('Association', () => {
   })
 
   describe('Query', () => {
-    describe('userGroups', () => {
+    describe('groups', () => {
       describe('when searching for user groups', () => {
         test('returns the matching user groups', async () => {
           nock(/example-urs/, {
@@ -49,10 +49,10 @@ describe('Association', () => {
                 name: 'Test'
               }
             },
-            query: `query UserGroups (
-              $params: UserGroupsInput
+            query: `query Groups (
+              $params: GroupsInput
             ) {
-              userGroups (
+              groups (
                 params: $params
               ) {
                 count
@@ -77,7 +77,7 @@ describe('Association', () => {
           expect(errors).toBeUndefined()
 
           expect(data).toEqual({
-            userGroups: {
+            groups: {
               count: 1,
               items: [{
                 groupId: '90336eb8-309c-44f5-aaa8-1672765b1195',
@@ -95,7 +95,7 @@ describe('Association', () => {
       })
     })
 
-    describe('userGroup', () => {
+    describe('group', () => {
       describe('when requesting a single user group', () => {
         test('returns the user group', async () => {
           nock(/example-urs/, {
@@ -107,7 +107,7 @@ describe('Association', () => {
             .defaultReplyHeaders({
               'CMR-Took': 7
             })
-            .get(/api\/user_groups\/Test\?tag=MMT_2/)
+            .get(/api\/user_groups\/90336eb8-309c-44f5-aaa8-1672765b1195/)
             .reply(200, {
               group_id: '90336eb8-309c-44f5-aaa8-1672765b1195',
               app_uid: 'mmt_test',
@@ -122,14 +122,13 @@ describe('Association', () => {
           const response = await server.executeOperation({
             variables: {
               params: {
-                tag: 'MMT_2',
-                userGroupIdOrName: 'Test'
+                id: '90336eb8-309c-44f5-aaa8-1672765b1195'
               }
             },
-            query: `query UserGroup (
-              $params: UserGroupInput
+            query: `query Group (
+              $params: GroupInput
             ) {
-              userGroup (
+              group (
                 params: $params
               ) {
                 groupId
@@ -147,12 +146,11 @@ describe('Association', () => {
           })
 
           const { data, errors } = response.body.singleResult
-          console.log('🚀 ~ test ~ errors:', errors)
 
           expect(errors).toBeUndefined()
 
           expect(data).toEqual({
-            userGroup: {
+            group: {
               groupId: '90336eb8-309c-44f5-aaa8-1672765b1195',
               appUid: 'mmt_test',
               clientId: '81FEem91NlTQreWv2UgtXQ',
@@ -169,7 +167,7 @@ describe('Association', () => {
   })
 
   describe('Mutation', () => {
-    describe('createUserGroup', () => {
+    describe('createGroup', () => {
       describe('when creating a new user group', () => {
         test('returns the user group', async () => {
           nock(/example-urs/, {
@@ -199,12 +197,12 @@ describe('Association', () => {
               tag: 'MMT_2',
               description: 'Just a test group'
             },
-            query: `mutation CreateUserGroup (
+            query: `mutation CreateGroup (
               $name: String!
               $tag: String
               $description: String
             ) {
-              createUserGroup (
+              createGroup (
                 name: $name
                 tag: $tag
                 description: $description
@@ -228,7 +226,7 @@ describe('Association', () => {
           expect(errors).toBeUndefined()
 
           expect(data).toEqual({
-            createUserGroup: {
+            createGroup: {
               groupId: '90336eb8-309c-44f5-aaa8-1672765b1195',
               appUid: 'mmt_test',
               clientId: '81FEem91NlTQreWv2UgtXQ',
@@ -243,7 +241,7 @@ describe('Association', () => {
       })
     })
 
-    describe('deleteUserGroup', () => {
+    describe('deleteGroup', () => {
       describe('when deleting a user group', () => {
         test('returns the updated user group', async () => {
           nock(/example-urs/, {
@@ -262,10 +260,10 @@ describe('Association', () => {
             variables: {
               id: '90336eb8-309c-44f5-aaa8-1672765b1195'
             },
-            query: `mutation DeleteUserGroup (
+            query: `mutation DeleteGroup (
               $id: String!
             ) {
-              deleteUserGroup (
+              deleteGroup (
                 id: $id
               )
             }`
@@ -278,13 +276,13 @@ describe('Association', () => {
           expect(errors).toBeUndefined()
 
           expect(data).toEqual({
-            deleteUserGroup: true
+            deleteGroup: true
           })
         })
       })
     })
 
-    describe('updateUserGroup', () => {
+    describe('updateGroup', () => {
       describe('when updating a user group', () => {
         test('returns true', async () => {
           nock(/example-urs/, {
@@ -324,15 +322,15 @@ describe('Association', () => {
 
           const response = await server.executeOperation({
             variables: {
-              userGroupIdOrName: '90336eb8-309c-44f5-aaa8-1672765b1195',
+              id: '90336eb8-309c-44f5-aaa8-1672765b1195',
               name: 'Test Group - Updated'
             },
-            query: `mutation UpdateUserGroup (
-              $userGroupIdOrName: String!
+            query: `mutation UpdateGroup (
+              $id: String!
               $name: String
             ) {
-              updateUserGroup (
-                userGroupIdOrName: $userGroupIdOrName
+              updateGroup (
+                id: $id
                 name: $name
               ) {
                 groupId
@@ -354,7 +352,7 @@ describe('Association', () => {
           expect(errors).toBeUndefined()
 
           expect(data).toEqual({
-            updateUserGroup: {
+            updateGroup: {
               groupId: '90336eb8-309c-44f5-aaa8-1672765b1195',
               appUid: 'mmt_test',
               clientId: '81FEem91NlTQreWv2UgtXQ',
@@ -363,6 +361,99 @@ describe('Association', () => {
               sharedUserGroup: false,
               createdBy: 'mmt_test',
               tag: 'MMT_2'
+            }
+          })
+        })
+      })
+    })
+  })
+
+  describe('Group', () => {
+    describe('members', () => {
+      describe('when request group members', () => {
+        test('returns a list of members', async () => {
+          nock(/example-urs/, {
+            reqheaders: {
+              'Client-Id': 'eed-test-graphql',
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            }
+          })
+            .defaultReplyHeaders({
+              'CMR-Took': 7
+            })
+            .get(/api\/user_groups\/90336eb8-309c-44f5-aaa8-1672765b1195/)
+            .reply(200, {
+              group_id: '90336eb8-309c-44f5-aaa8-1672765b1195',
+              app_uid: 'mmt_test',
+              client_id: '81FEem91NlTQreWv2UgtXQ',
+              name: 'Test Group',
+              description: 'Just a test group',
+              shared_user_group: false,
+              created_by: 'mmt_test',
+              tag: 'MMT_2'
+            })
+
+          nock(/example-urs/, {
+            reqheaders: {
+              'Client-Id': 'eed-test-graphql',
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            }
+          })
+            .defaultReplyHeaders({
+              'CMR-Took': 7
+            })
+            .get(/api\/user_groups\/group_members\/90336eb8-309c-44f5-aaa8-1672765b1195/)
+            .reply(200, {
+              users: [{
+                email_address: 'testuser@example.com',
+                first_name: 'test',
+                last_name: 'user',
+                uid: 'testuser'
+              }]
+            })
+
+          const response = await server.executeOperation({
+            variables: {
+              params: {
+                id: '90336eb8-309c-44f5-aaa8-1672765b1195'
+              }
+            },
+            query: `query Group (
+              $params: GroupInput
+            ) {
+              group (
+                params: $params
+              ) {
+                members {
+                  count
+                  items {
+                    uid
+                    firstName
+                    lastName
+                    emailAddress
+                  }
+                }
+              }
+            }`
+          }, {
+            contextValue
+          })
+
+          const { data, errors } = response.body.singleResult
+
+          expect(errors).toBeUndefined()
+
+          expect(data).toEqual({
+            group: {
+              members: {
+                count: 1,
+                items: [{
+                  emailAddress: 'testuser@example.com',
+                  firstName: 'test',
+                  lastName: 'user',
+                  uid: 'testuser'
+                }]
+              }
             }
           })
         })

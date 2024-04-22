@@ -1,17 +1,20 @@
 import camelcaseKeys from 'camelcase-keys'
 
-import { userGroupsRequest } from '../utils/userGroupsRequest'
+import { edlRequest } from '../utils/edlRequest'
 import { parseError } from '../utils/parseError'
+import { edlPathTypes } from '../constants'
 
-export const fetchUserGroup = async (params, context) => {
+export const fetchGroup = async (params, context, requestInfo) => {
   const { headers } = context
 
   try {
     // Send the request to EDL
-    const result = await userGroupsRequest({
+    const result = await edlRequest({
       headers,
       method: 'GET',
-      params
+      params,
+      pathType: edlPathTypes.FIND_GROUP,
+      requestInfo
     })
 
     // Format the returned data to match the schema
@@ -24,21 +27,23 @@ export const fetchUserGroup = async (params, context) => {
   }
 }
 
-export const searchUserGroup = async (params, context) => {
+export const searchGroup = async (params, context, requestInfo) => {
   const { headers } = context
 
   try {
     // Send the request to EDL
-    const result = await userGroupsRequest({
+    const result = await edlRequest({
       headers,
       method: 'GET',
-      params
+      params,
+      pathType: edlPathTypes.SEARCH_GROUPS,
+      requestInfo
     })
 
     // Format the returned data to match the schema
     const camelcasedData = camelcaseKeys(result.data, { deep: true })
 
-    // Include `count` and `items` to match the schema's UserGroupList
+    // Include `count` and `items` to match the schema's groupList
     return {
       count: camelcasedData.length,
       items: camelcasedData
@@ -51,15 +56,46 @@ export const searchUserGroup = async (params, context) => {
   }
 }
 
-export const createUserGroup = async (params, context) => {
+export const listGroupMembers = async (params, context, requestInfo) => {
   const { headers } = context
 
   try {
     // Send the request to EDL
-    const result = await userGroupsRequest({
+    const result = await edlRequest({
+      headers,
+      method: 'GET',
+      params,
+      pathType: edlPathTypes.FIND_MEMBERS,
+      requestInfo
+    })
+
+    // Format the returned data to match the schema
+    const camelcasedData = camelcaseKeys(result.data?.users, { deep: true })
+
+    // Include `count` and `items` to match the schema's groupList
+    return {
+      count: camelcasedData.length,
+      items: camelcasedData
+    }
+  } catch (error) {
+    return parseError(error, {
+      reThrowError: true,
+      provider: 'EDL'
+    })
+  }
+}
+
+export const createGroup = async (params, context, requestInfo) => {
+  const { headers } = context
+
+  try {
+    // Send the request to EDL
+    const result = await edlRequest({
       headers,
       method: 'POST',
-      params
+      params,
+      pathType: edlPathTypes.CREATE_GROUP,
+      requestInfo
     })
 
     // Format the returned data to match the schema
@@ -72,15 +108,17 @@ export const createUserGroup = async (params, context) => {
   }
 }
 
-export const deleteUserGroup = async (params, context) => {
+export const deleteGroup = async (params, context, requestInfo) => {
   const { headers } = context
 
   try {
     // Send the request to EDL
-    const result = await userGroupsRequest({
+    const result = await edlRequest({
       headers,
       method: 'DELETE',
-      params
+      params,
+      pathType: edlPathTypes.DELETE_GROUP,
+      requestInfo
     })
 
     return result.status === 200
@@ -92,23 +130,27 @@ export const deleteUserGroup = async (params, context) => {
   }
 }
 
-export const updateUserGroup = async (params, context) => {
+export const updateGroup = async (params, context, requestInfo) => {
   const { headers } = context
 
   try {
     // Send the request to EDL
     // This will throw an error if the request fails
-    await userGroupsRequest({
+    await edlRequest({
       headers,
       method: 'POST',
-      params
+      params,
+      pathType: edlPathTypes.UPDATE_GROUP,
+      requestInfo
     })
 
     // The update response does not include the group, so we have to query EDL again
-    const updatedGroup = await userGroupsRequest({
+    const updatedGroup = await edlRequest({
       headers,
       method: 'GET',
-      params
+      params,
+      pathType: edlPathTypes.FIND_GROUP,
+      requestInfo
     })
 
     // Format the returned data to match the schema

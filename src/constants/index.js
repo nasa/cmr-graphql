@@ -32,3 +32,15 @@ export const DRAFT_CONCEPT_ID_PREFIXES = {
   tool: 'TD',
   variable: 'VD'
 }
+
+/**
+ * Types of requests that can be send to EDL
+ */
+export const edlPathTypes = {
+  CREATE_GROUP: 'CREATE_GROUP',
+  DELETE_GROUP: 'DELETE_GROUP',
+  FIND_GROUP: 'FIND_GROUP',
+  FIND_MEMBERS: 'FIND_MEMBERS',
+  SEARCH_GROUPS: 'SEARCH_GROUPS',
+  UPDATE_GROUP: 'UPDATE_GROUP'
+}

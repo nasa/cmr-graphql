@@ -1,0 +1,21 @@
+type GroupMember {
+  "The unique ID of the user in EDL."
+  uid: String
+
+  "The user's first name."
+  firstName: String
+
+  "The user's last name."
+  lastName: String
+
+  "The user's email address."
+  emailAddress: String
+}
+
+type GroupMemberList {
+  "The number of hits for a given search."
+  count: Int
+
+  "The list of group member search results."
+  items: [GroupMember]
+}

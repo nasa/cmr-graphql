@@ -18,12 +18,13 @@ import {
   updateAcl as aclSourceUpdate
 } from '../datasources/acl'
 import {
-  createUserGroup as userGroupSourceCreate,
-  deleteUserGroup as userGroupSourceDelete,
-  fetchUserGroup as userGroupSourceFetch,
-  searchUserGroup as userGroupSourceSearch,
-  updateUserGroup as userGroupSourceUpdate
-} from '../datasources/userGroup'
+  createGroup as groupSourceCreate,
+  deleteGroup as groupSourceDelete,
+  fetchGroup as groupSourceFetch,
+  listGroupMembers as groupSourceListMembers,
+  searchGroup as groupSourceSearch,
+  updateGroup as groupSourceUpdate
+} from '../datasources/group'
 import {
   createAssociation as associationSourceCreate,
   deleteAssociation as associationSourceDelete
@@ -207,6 +208,12 @@ export default startServerAndCreateLambdaHandler(
           graphDbDuplicateCollectionsSource,
           graphDbSource,
           gridSource,
+          groupSourceCreate,
+          groupSourceDelete,
+          groupSourceFetch,
+          groupSourceListMembers,
+          groupSourceSearch,
+          groupSourceUpdate,
           maxItemsPerOrderSource,
           orderOptionSourceDelete,
           orderOptionSourceFetch,
@@ -225,11 +232,6 @@ export default startServerAndCreateLambdaHandler(
           toolSourceDelete,
           toolSourceFetch,
           toolSourceRestoreRevision,
-          userGroupSourceCreate,
-          userGroupSourceDelete,
-          userGroupSourceFetch,
-          userGroupSourceSearch,
-          userGroupSourceUpdate,
           variableDraftSource,
           variableSourceRestoreRevision,
           variableSourceDelete,

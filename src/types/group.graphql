@@ -1,0 +1,105 @@
+type Group {
+  "The unique id assigned to the group."
+  groupId: String!
+
+  "The UID of the application that created the group."
+  appUid: String
+
+  "The client ID of the application that created the group."
+  clientId: String
+
+  "Name of the group."
+  name: String!
+
+  "Description of the group."
+  description: String
+
+  "Is the group shared."
+  sharedUserGroup: Boolean
+
+  "Who created the group."
+  createdBy: String
+
+  "Tag for the group."
+  tag: String
+
+  ""
+  members: GroupMemberList
+}
+
+type GroupList {
+  "The number of hits for a given search."
+  count: Int
+
+  "The list of group search results."
+  items: [Group]
+}
+
+input GroupsInput {
+  "Parameter used to search for groups by name. Group names are comprised of letters and numbers with no spaces. Any group matching the passed in string will be returned."
+  name: String
+
+  "Parameter used to search for groups by user ids. Multiple user ids can be passed as a comma separated string or as an array. A group containing all users passed in will be returned."
+  userIds: [String]
+
+  "Parameter used to search for groups by tags. Multiple tags can be passed as a comma separated string or as an array. A group that matches any of the tags passed in will be returned. This is a wildcard search and will return groups where the parameter matches any of the group's tag field."
+  tags: [String]
+}
+
+input GroupInput {
+  "This value can either be group_id or the group name."
+  id: String!
+}
+
+type Query {
+  groups (
+    "User groups query parameters."
+    params: GroupsInput
+  ): GroupList!
+
+  group (
+    "User group query parameters."
+    params: GroupInput
+  ): Group
+}
+
+type Mutation {
+  createGroup (
+    "Required parameter used to set the name of the group. Group names are limited to having letters, numbers, periods, spaces, dashes, and underscores."
+    name: String!
+
+    "Optional parameter used set a description of the group. Unless this parameter is supplied, the description will be empty."
+    description: String
+
+    "Optional parameter used set a tag for the group. Unless this parameter is supplied, the tag will be empty."
+    tag: String
+
+    "Optional parameter used set the shared parameter in the group. Unless this parameter is supplied, the shared_user_group will be false by default."
+    sharedUserGroup: String
+
+    "Optional parameter used set the list of members assigned to the group. Values should be a string containing a comma-delimited list of members. Unless this parameter is supplied, the members list will be empty by default."
+    members: String
+  ): Group!
+
+  deleteGroup (
+    "The unique id assigned to the group."
+    id: String!
+  ): Boolean!
+
+  updateGroup (
+    "The unique id assigned to the group."
+    id: String!
+
+    "The new name of the group."
+    name: String
+
+    "The new description of the group."
+    description: String
+
+    "The new tag of the group."
+    newTag: String
+
+    "Update the group members list (optional parameter). Values passed here will replace the current list of members in the group. Values should be a string containing a comma-delimited list of members. An empty or blank value will signify a blank list of members and will erase the current existing list of members in the group."
+    members: String
+  ): Group!
+}
