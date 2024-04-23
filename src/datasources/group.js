@@ -4,6 +4,16 @@ import { edlRequest } from '../utils/edlRequest'
 import { parseError } from '../utils/parseError'
 import { edlPathTypes } from '../constants'
 
+/**
+ * Renames the provided `idField` within the `data` object to be the `id` field.
+ * @param {Object} data Object to update
+ * @param {String} idField Previous field that will be set to `id`
+ */
+const renameEdlId = (data, idField) => ({
+  ...data,
+  id: data[idField]
+})
+
 export const fetchGroup = async (params, context, requestInfo) => {
   const { headers } = context
 
@@ -18,7 +28,7 @@ export const fetchGroup = async (params, context, requestInfo) => {
     })
 
     // Format the returned data to match the schema
-    return camelcaseKeys(result.data, { deep: true })
+    return renameEdlId(camelcaseKeys(result.data, { deep: true }), 'groupId')
   } catch (error) {
     return parseError(error, {
       reThrowError: true,
@@ -43,10 +53,12 @@ export const searchGroup = async (params, context, requestInfo) => {
     // Format the returned data to match the schema
     const camelcasedData = camelcaseKeys(result.data, { deep: true })
 
+    const updatedData = camelcasedData.map((group) => renameEdlId(group, 'groupId'))
+
     // Include `count` and `items` to match the schema's groupList
     return {
-      count: camelcasedData.length,
-      items: camelcasedData
+      count: updatedData.length,
+      items: updatedData
     }
   } catch (error) {
     return parseError(error, {
@@ -72,10 +84,12 @@ export const listGroupMembers = async (params, context, requestInfo) => {
     // Format the returned data to match the schema
     const camelcasedData = camelcaseKeys(result.data?.users, { deep: true })
 
+    const updatedData = camelcasedData.map((group) => renameEdlId(group, 'uid'))
+
     // Include `count` and `items` to match the schema's groupList
     return {
-      count: camelcasedData.length,
-      items: camelcasedData
+      count: updatedData.length,
+      items: updatedData
     }
   } catch (error) {
     return parseError(error, {
@@ -99,7 +113,7 @@ export const createGroup = async (params, context, requestInfo) => {
     })
 
     // Format the returned data to match the schema
-    return camelcaseKeys(result.data, { deep: true })
+    return renameEdlId(camelcaseKeys(result.data, { deep: true }), 'groupId')
   } catch (error) {
     return parseError(error, {
       reThrowError: true,
@@ -133,13 +147,19 @@ export const deleteGroup = async (params, context, requestInfo) => {
 export const updateGroup = async (params, context, requestInfo) => {
   const { headers } = context
 
+  // The `tag` parameter should be `newTag in the EDL API, pull it out of params here and set it to newTag below.
+  const { tag, ...filteredParams } = params
+
   try {
     // Send the request to EDL
     // This will throw an error if the request fails
     await edlRequest({
       headers,
       method: 'POST',
-      params,
+      params: {
+        ...filteredParams,
+        newTag: tag
+      },
       pathType: edlPathTypes.UPDATE_GROUP,
       requestInfo
     })
@@ -154,7 +174,7 @@ export const updateGroup = async (params, context, requestInfo) => {
     })
 
     // Format the returned data to match the schema
-    return camelcaseKeys(updatedGroup.data, { deep: true })
+    return renameEdlId(camelcaseKeys(updatedGroup.data, { deep: true }), 'groupId')
   } catch (error) {
     return parseError(error, {
       reThrowError: true,

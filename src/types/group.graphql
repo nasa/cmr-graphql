@@ -1,6 +1,6 @@
 type Group {
   "The unique id assigned to the group."
-  groupId: String!
+  id: String!
 
   "The UID of the application that created the group."
   appUid: String
@@ -23,7 +23,7 @@ type Group {
   "Tag for the group."
   tag: String
 
-  ""
+  "List of members of the group."
   members: GroupMemberList
 }
 
@@ -47,7 +47,7 @@ input GroupsInput {
 }
 
 input GroupInput {
-  "This value can either be group_id or the group name."
+  "The unique id assigned to the group."
   id: String!
 }
 
@@ -97,7 +97,7 @@ type Mutation {
     description: String
 
     "The new tag of the group."
-    newTag: String
+    tag: String
 
     "Update the group members list (optional parameter). Values passed here will replace the current list of members in the group. Values should be a string containing a comma-delimited list of members. An empty or blank value will signify a blank list of members and will erase the current existing list of members in the group."
     members: String

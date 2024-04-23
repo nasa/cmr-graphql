@@ -24,12 +24,9 @@ describe('Group', () => {
           nock(/example-urs/, {
             reqheaders: {
               'Client-Id': 'eed-test-graphql',
-              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+              'X-Request-Id': 'abcd-1234-efgh-5678'
             }
           })
-            .defaultReplyHeaders({
-              'CMR-Took': 7
-            })
             .get(/api\/user_groups\/search/)
             .reply(200, [{
               group_id: '90336eb8-309c-44f5-aaa8-1672765b1195',
@@ -57,7 +54,7 @@ describe('Group', () => {
               ) {
                 count
                 items {
-                  groupId
+                  id
                   appUid
                   clientId
                   name
@@ -80,7 +77,7 @@ describe('Group', () => {
             groups: {
               count: 1,
               items: [{
-                groupId: '90336eb8-309c-44f5-aaa8-1672765b1195',
+                id: '90336eb8-309c-44f5-aaa8-1672765b1195',
                 appUid: 'mmt_test',
                 clientId: '81FEem91NlTQreWv2UgtXQ',
                 name: 'Test Group',
@@ -101,12 +98,9 @@ describe('Group', () => {
           nock(/example-urs/, {
             reqheaders: {
               'Client-Id': 'eed-test-graphql',
-              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+              'X-Request-Id': 'abcd-1234-efgh-5678'
             }
           })
-            .defaultReplyHeaders({
-              'CMR-Took': 7
-            })
             .get(/api\/user_groups\/90336eb8-309c-44f5-aaa8-1672765b1195/)
             .reply(200, {
               group_id: '90336eb8-309c-44f5-aaa8-1672765b1195',
@@ -131,7 +125,7 @@ describe('Group', () => {
               group (
                 params: $params
               ) {
-                groupId
+                id
                 appUid
                 clientId
                 name
@@ -151,7 +145,7 @@ describe('Group', () => {
 
           expect(data).toEqual({
             group: {
-              groupId: '90336eb8-309c-44f5-aaa8-1672765b1195',
+              id: '90336eb8-309c-44f5-aaa8-1672765b1195',
               appUid: 'mmt_test',
               clientId: '81FEem91NlTQreWv2UgtXQ',
               name: 'Test Group',
@@ -173,12 +167,9 @@ describe('Group', () => {
           nock(/example-urs/, {
             reqheaders: {
               'Client-Id': 'eed-test-graphql',
-              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+              'X-Request-Id': 'abcd-1234-efgh-5678'
             }
           })
-            .defaultReplyHeaders({
-              'CMR-Took': 7
-            })
             .post(/api\/user_groups/)
             .reply(200, {
               group_id: '90336eb8-309c-44f5-aaa8-1672765b1195',
@@ -207,7 +198,7 @@ describe('Group', () => {
                 tag: $tag
                 description: $description
               ) {
-                groupId
+                id
                 appUid
                 clientId
                 name
@@ -227,7 +218,7 @@ describe('Group', () => {
 
           expect(data).toEqual({
             createGroup: {
-              groupId: '90336eb8-309c-44f5-aaa8-1672765b1195',
+              id: '90336eb8-309c-44f5-aaa8-1672765b1195',
               appUid: 'mmt_test',
               clientId: '81FEem91NlTQreWv2UgtXQ',
               name: 'Test Group',
@@ -247,12 +238,9 @@ describe('Group', () => {
           nock(/example-urs/, {
             reqheaders: {
               'Client-Id': 'eed-test-graphql',
-              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+              'X-Request-Id': 'abcd-1234-efgh-5678'
             }
           })
-            .defaultReplyHeaders({
-              'CMR-Took': 7
-            })
             .delete(/api\/user_groups\/90336eb8-309c-44f5-aaa8-1672765b1195/)
             .reply(200)
 
@@ -288,12 +276,9 @@ describe('Group', () => {
           nock(/example-urs/, {
             reqheaders: {
               'Client-Id': 'eed-test-graphql',
-              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+              'X-Request-Id': 'abcd-1234-efgh-5678'
             }
           })
-            .defaultReplyHeaders({
-              'CMR-Took': 7
-            })
             .post(/api\/user_groups\/90336eb8-309c-44f5-aaa8-1672765b1195\/update/)
             .reply(200, {
               description: 'Successfully updated user group Test Group'
@@ -302,12 +287,9 @@ describe('Group', () => {
           nock(/example-urs/, {
             reqheaders: {
               'Client-Id': 'eed-test-graphql',
-              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+              'X-Request-Id': 'abcd-1234-efgh-5678'
             }
           })
-            .defaultReplyHeaders({
-              'CMR-Took': 7
-            })
             .get(/api\/user_groups\/90336eb8-309c-44f5-aaa8-1672765b1195/)
             .reply(200, {
               group_id: '90336eb8-309c-44f5-aaa8-1672765b1195',
@@ -333,7 +315,7 @@ describe('Group', () => {
                 id: $id
                 name: $name
               ) {
-                groupId
+                id
                 appUid
                 clientId
                 name
@@ -353,7 +335,7 @@ describe('Group', () => {
 
           expect(data).toEqual({
             updateGroup: {
-              groupId: '90336eb8-309c-44f5-aaa8-1672765b1195',
+              id: '90336eb8-309c-44f5-aaa8-1672765b1195',
               appUid: 'mmt_test',
               clientId: '81FEem91NlTQreWv2UgtXQ',
               name: 'Test Group - Updated',
@@ -375,12 +357,9 @@ describe('Group', () => {
           nock(/example-urs/, {
             reqheaders: {
               'Client-Id': 'eed-test-graphql',
-              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+              'X-Request-Id': 'abcd-1234-efgh-5678'
             }
           })
-            .defaultReplyHeaders({
-              'CMR-Took': 7
-            })
             .get(/api\/user_groups\/90336eb8-309c-44f5-aaa8-1672765b1195/)
             .reply(200, {
               group_id: '90336eb8-309c-44f5-aaa8-1672765b1195',
@@ -396,12 +375,9 @@ describe('Group', () => {
           nock(/example-urs/, {
             reqheaders: {
               'Client-Id': 'eed-test-graphql',
-              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+              'X-Request-Id': 'abcd-1234-efgh-5678'
             }
           })
-            .defaultReplyHeaders({
-              'CMR-Took': 7
-            })
             .get(/api\/user_groups\/group_members\/90336eb8-309c-44f5-aaa8-1672765b1195/)
             .reply(200, {
               users: [{
@@ -427,7 +403,7 @@ describe('Group', () => {
                 members {
                   count
                   items {
-                    uid
+                    id
                     firstName
                     lastName
                     emailAddress
@@ -451,7 +427,7 @@ describe('Group', () => {
                   emailAddress: 'testuser@example.com',
                   firstName: 'test',
                   lastName: 'user',
-                  uid: 'testuser'
+                  id: 'testuser'
                 }]
               }
             }

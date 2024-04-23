@@ -1,6 +1,6 @@
 type GroupMember {
   "The unique ID of the user in EDL."
-  uid: String
+  id: String
 
   "The user's first name."
   firstName: String

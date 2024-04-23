@@ -23,12 +23,9 @@ describe('edlRequest', () => {
       nock(/example-urs/, {
         reqheaders: {
           'Client-Id': 'eed-test-graphql',
-          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          'X-Request-Id': 'abcd-1234-efgh-5678'
         }
       })
-        .defaultReplyHeaders({
-          'CMR-Took': 7
-        })
         .get(/api\/user_groups\/search/)
         .reply(200, [{
           group_id: '90336eb8-309c-44f5-aaa8-1672765b1195',
@@ -44,7 +41,7 @@ describe('edlRequest', () => {
       const response = await edlRequest({
         headers: {
           'Client-Id': 'eed-test-graphql',
-          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          'X-Request-Id': 'abcd-1234-efgh-5678'
         },
         method: 'GET',
         params: {
@@ -89,12 +86,9 @@ describe('edlRequest', () => {
       nock(/example-urs/, {
         reqheaders: {
           'Client-Id': 'eed-test-graphql',
-          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          'X-Request-Id': 'abcd-1234-efgh-5678'
         }
       })
-        .defaultReplyHeaders({
-          'CMR-Took': 7
-        })
         .get(/api\/user_groups\/90336eb8-309c-44f5-aaa8-1672765b1195/)
         .reply(200, {
           group_id: '90336eb8-309c-44f5-aaa8-1672765b1195',
@@ -110,7 +104,7 @@ describe('edlRequest', () => {
       const response = await edlRequest({
         headers: {
           'Client-Id': 'eed-test-graphql',
-          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          'X-Request-Id': 'abcd-1234-efgh-5678'
         },
         method: 'GET',
         params: {
@@ -155,12 +149,9 @@ describe('edlRequest', () => {
       nock(/example-urs/, {
         reqheaders: {
           'Client-Id': 'eed-test-graphql',
-          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          'X-Request-Id': 'abcd-1234-efgh-5678'
         }
       })
-        .defaultReplyHeaders({
-          'CMR-Took': 7
-        })
         .get(/api\/user_groups\/group_members\/90336eb8-309c-44f5-aaa8-1672765b1195/)
         .reply(200, {
           users: [{
@@ -174,7 +165,7 @@ describe('edlRequest', () => {
       const response = await edlRequest({
         headers: {
           'Client-Id': 'eed-test-graphql',
-          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          'X-Request-Id': 'abcd-1234-efgh-5678'
         },
         method: 'GET',
         params: {
@@ -217,12 +208,9 @@ describe('edlRequest', () => {
       nock(/example-urs/, {
         reqheaders: {
           'Client-Id': 'eed-test-graphql',
-          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          'X-Request-Id': 'abcd-1234-efgh-5678'
         }
       })
-        .defaultReplyHeaders({
-          'CMR-Took': 7
-        })
         .post(/api\/user_groups/)
         .reply(200, {
           group_id: '90336eb8-309c-44f5-aaa8-1672765b1195',
@@ -238,7 +226,7 @@ describe('edlRequest', () => {
       const response = await edlRequest({
         headers: {
           'Client-Id': 'eed-test-graphql',
-          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          'X-Request-Id': 'abcd-1234-efgh-5678'
         },
         method: 'POST',
         params: {
@@ -283,12 +271,9 @@ describe('edlRequest', () => {
       nock(/example-urs/, {
         reqheaders: {
           'Client-Id': 'eed-test-graphql',
-          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          'X-Request-Id': 'abcd-1234-efgh-5678'
         }
       })
-        .defaultReplyHeaders({
-          'CMR-Took': 7
-        })
         .post(/api\/user_groups\/90336eb8-309c-44f5-aaa8-1672765b1195\/update/)
         .reply(200, {
           description: 'Successfully updated user group Test Group'
@@ -297,7 +282,7 @@ describe('edlRequest', () => {
       const response = await edlRequest({
         headers: {
           'Client-Id': 'eed-test-graphql',
-          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          'X-Request-Id': 'abcd-1234-efgh-5678'
         },
         method: 'POST',
         params: {
@@ -334,19 +319,16 @@ describe('edlRequest', () => {
       nock(/example-urs/, {
         reqheaders: {
           'Client-Id': 'eed-test-graphql',
-          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          'X-Request-Id': 'abcd-1234-efgh-5678'
         }
       })
-        .defaultReplyHeaders({
-          'CMR-Took': 7
-        })
         .delete(/api\/user_groups\/90336eb8-309c-44f5-aaa8-1672765b1195/)
         .reply(200)
 
       const response = await edlRequest({
         headers: {
           'Client-Id': 'eed-test-graphql',
-          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          'X-Request-Id': 'abcd-1234-efgh-5678'
         },
         method: 'DELETE',
         params: {
