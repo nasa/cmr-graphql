@@ -82,6 +82,7 @@ export default {
       if (isDraftConceptId(conceptId, 'service')) return null
 
       const { collections = [] } = associationDetails
+
       // If there are no associations to collections for this service
       if (!collections.length) {
         return {
@@ -92,7 +93,7 @@ export default {
 
       let filteredCollections = collections
 
-      // Order-options on the payload may be in under context of a specific collection to service association if a parent col was provided
+      // Order-options on the payload may be the under context of a specific collection to service association if a parent col was provided
       if (parentCollectionConceptId) {
         filteredCollections = collections.filter(
           (assoc) => assoc.conceptId.includes(parentCollectionConceptId)

@@ -32,6 +32,7 @@ export default class Provider extends Concept {
       jsonKeys.forEach((jsonKey) => {
         const cmrKey = kebabCase(jsonKey)
         const { [cmrKey]: keyValue } = normalizedItem
+
         // Snake case the key requested and any children of that key
         this.setItemValue(providerId, jsonKey, keyValue)
       })
