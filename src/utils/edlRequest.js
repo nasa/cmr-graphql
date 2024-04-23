@@ -1,10 +1,11 @@
 import axios from 'axios'
 import snakeCaseKeys from 'snakecase-keys'
 
+import { buildEdlGroupPath } from './buildEdlGroupPath'
 import { downcaseKeys } from './downcaseKeys'
+import { mergeParams } from './mergeParams'
 import { pickIgnoringCase } from './pickIgnoringCase'
 import { prepKeysForCmr } from './prepKeysForCmr'
-import { buildEdlGroupPath } from './buildEdlGroupPath'
 
 /**
  * Make a request to EDL and return the promise
@@ -24,7 +25,7 @@ export const edlRequest = ({
   let { params: requestParams } = params
 
   // For mutations, params are not nested
-  if (!requestParams) requestParams = params
+  requestParams = mergeParams({ ...params })
 
   // Default headers
   const defaultHeaders = {}
@@ -37,23 +38,17 @@ export const edlRequest = ({
     'Accept',
     'Authorization',
     'Client-Id',
-    'CMR-Request-Id',
-    'CMR-Search-After'
+    'X-Request-Id'
   ])
 
-  const { id } = requestParams
-
-  requestParams = {
-    ...requestParams,
-    id: undefined
-  }
+  const { id, ...filteredParams } = requestParams
 
   const nonIndexedKeys = ['user_ids', 'tags']
-  const edlParameters = prepKeysForCmr(snakeCaseKeys(requestParams), nonIndexedKeys)
+  const edlParameters = prepKeysForCmr(snakeCaseKeys(filteredParams), nonIndexedKeys)
 
   const {
     'client-id': clientId,
-    'cmr-request-id': requestId
+    'x-request-id': requestId
   } = downcaseKeys(permittedHeaders)
 
   // Log out requested keys

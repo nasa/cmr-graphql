@@ -633,7 +633,7 @@ query Group (
   group (
     params: $params
   ) {
-    groupId
+    id
     name
   }
 }
@@ -643,7 +643,7 @@ Variables:
 ```json
 {
   "params": {
-    "tag": "EXAMPLE"
+    "id": "EXAMPLE"
   }
 }
 ```
@@ -660,7 +660,7 @@ query Groups (
   ) {
     count
     items {
-      groupId
+      id
       name
     }
   }
@@ -693,7 +693,7 @@ mutation CreateGroup (
     tag: $tag
     description: $description
   ) {
-    groupId
+    id
     name
   }
 }
@@ -720,7 +720,7 @@ mutation UpdateGroup (
     id: $id
     name: $name
   ) {
-    groupId
+    id
     name
   }
 }

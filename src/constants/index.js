@@ -34,7 +34,7 @@ export const DRAFT_CONCEPT_ID_PREFIXES = {
 }
 
 /**
- * Types of requests that can be send to EDL
+ * Types of requests that can be sent to EDL
  */
 export const edlPathTypes = {
   CREATE_GROUP: 'CREATE_GROUP',

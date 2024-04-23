@@ -140,7 +140,8 @@ export const buildContextValue = (extraContext) => ({
   },
   headers: {
     'Client-Id': 'eed-test-graphql',
-    'CMR-Request-Id': 'abcd-1234-efgh-5678'
+    'CMR-Request-Id': 'abcd-1234-efgh-5678',
+    'X-Request-Id': 'abcd-1234-efgh-5678'
   },
   ...extraContext
 })

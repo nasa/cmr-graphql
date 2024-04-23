@@ -154,8 +154,11 @@ export default startServerAndCreateLambdaHandler(
       const context = {}
 
       // Default headers to be sent with every external request
+      // Set the CMR-Request-Id and X-Request-Id to the same value, different providers use different headers
+      const newRequestId = requestId || uuidv4()
       const requestHeaders = {
-        'CMR-Request-Id': requestId || uuidv4()
+        'CMR-Request-Id': newRequestId,
+        'X-Request-Id': newRequestId
       }
 
       // If the client has provided an EDL token supply it to CMR

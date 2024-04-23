@@ -20,7 +20,7 @@ describe('group', () => {
       })
 
       const params = {
-        groupIdOrName: 'mock-id'
+        id: 'mock-id'
       }
       const context = {
         headers: {}
@@ -48,7 +48,7 @@ describe('group', () => {
         })
 
         const params = {
-          groupIdOrName: 'mock-id'
+          id: 'mock-id'
         }
         const context = {
           headers: {}
@@ -319,8 +319,9 @@ describe('group', () => {
         })
 
       const params = {
-        groupIdOrName: 'mock-id',
-        description: 'Updated Description'
+        id: 'mock-id',
+        description: 'Updated Description',
+        tag: 'NEW_TAG'
       }
       const context = {
         headers: {}
@@ -337,7 +338,11 @@ describe('group', () => {
       expect(edlRequestMock).toHaveBeenCalledWith({
         headers: {},
         method: 'POST',
-        params,
+        params: {
+          ...params,
+          newTag: 'NEW_TAG',
+          tag: undefined
+        },
         pathType: edlPathTypes.UPDATE_GROUP
       })
 
@@ -356,7 +361,7 @@ describe('group', () => {
         })
 
         const params = {
-          groupIdOrName: 'mock-id',
+          id: 'mock-id',
           description: 'Updated Description'
         }
         const context = {
