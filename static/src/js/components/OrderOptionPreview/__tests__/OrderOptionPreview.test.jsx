@@ -1,12 +1,14 @@
 import { render, screen } from '@testing-library/react'
-import React from 'react'
+import React, { Suspense } from 'react'
 import { MockedProvider } from '@apollo/client/testing'
 import {
   MemoryRouter,
   Route,
   Routes
 } from 'react-router-dom'
+import * as router from 'react-router'
 import userEvent from '@testing-library/user-event'
+
 import AppContext from '../../../context/AppContext'
 import OrderOptionPreview from '../OrderOptionPreview'
 import { GET_ORDER_OPTION } from '../../../operations/queries/getOrderOption'
@@ -26,6 +28,7 @@ const setup = ({
     name: 'Mock order option',
     nativeId: '1234-abcd-5678-efgh',
     revisionDate: '2024-04-16T18:20:12.124Z',
+    revisionId: '1',
     scope: 'PROVIDER',
     sortKey: 'Mock',
     __typename: 'OrderOption'
@@ -65,7 +68,13 @@ const setup = ({
             >
               <Route
                 path=":conceptId"
-                element={<OrderOptionPreview />}
+                element={
+                  (
+                    <Suspense>
+                      <OrderOptionPreview />
+                    </Suspense>
+                  )
+                }
               />
             </Route>
           </Routes>
@@ -91,26 +100,46 @@ describe('OrderOptionPreview', () => {
     })
   })
 
-  describe('when getting order option results in a failure', () => {
+  describe('when the order option could not be returned after 5 tries', () => {
     test('calls error logger', async () => {
-      setup({
-        overrideMocks: [{
-          request: {
-            query: GET_ORDER_OPTION,
-            variables: {
-              params: {
-                conceptId: 'OO12000000-MMT_2'
-              }
+      const refetch = vi.fn()
+      const refetchRequest = {
+        request: {
+          query: GET_ORDER_OPTION,
+          variables: {
+            params: {
+              conceptId: 'OO12000000-MMT_2'
             }
+          }
+        },
+        result: {
+          data: {
+            orderOption: null
           },
-          error: new Error('An error occurred')
-        }]
+          fetch: refetch
+        }
+      }
+      setup({
+        overrideMocks: [
+          refetchRequest,
+          refetchRequest,
+          refetchRequest,
+          refetchRequest,
+          refetchRequest,
+          refetchRequest
+        ]
       })
 
+      // Need to wait for response 5 times so it can fetch the response 5 time
+      await waitForResponse()
+      await waitForResponse()
+      await waitForResponse()
+      await waitForResponse()
+      await waitForResponse()
       await waitForResponse()
 
       expect(errorLogger).toHaveBeenCalledTimes(1)
-      expect(errorLogger).toHaveBeenCalledWith('Unable to get Order Option', 'Order Option: getOrderOption')
+      expect(errorLogger).toHaveBeenCalledWith('Max retries allowed', 'OrderOptionPreview: getOrderOption Query')
     })
   })
 
@@ -136,19 +165,39 @@ describe('OrderOptionPreview', () => {
                 name: 'Mock order option',
                 nativeId: '1234-abcd-5678-efgh',
                 revisionDate: '2024-04-16T18:20:12.124Z',
+                revisionId: '1',
                 scope: 'PROVIDER',
                 sortKey: null,
                 __typename: 'OrderOption'
               }
             }
           }
-        }]
+        }
+        ]
       })
 
       await waitForResponse()
 
       expect(screen.getByText('<Blank Sort Key>')).toBeInTheDocument()
       expect(screen.getByText('false')).toBeInTheDocument()
+    })
+  })
+
+  describe('when clicking on Edit Order Option link', () => {
+    test('should navigate to /order-option/OO12000000-MMT_2/edit', async () => {
+      const navigateSpy = vi.fn()
+      vi.spyOn(router, 'useNavigate').mockImplementation(() => navigateSpy)
+
+      const { user } = setup({})
+
+      await waitForResponse()
+
+      const editLink = screen.getByRole('button', { name: 'Edit Order Option' })
+
+      await user.click(editLink)
+
+      expect(navigateSpy).toHaveBeenCalledTimes(1)
+      expect(navigateSpy).toHaveBeenCalledWith('/order-options/OO12000000-MMT_2/edit')
     })
   })
 })

@@ -16,6 +16,8 @@ import useAppContext from '../../hooks/useAppContext'
 import errorLogger from '../../utils/errorLogger'
 
 import Page from '../Page/Page'
+import parseError from '../../utils/parseError'
+import ErrorBanner from '../ErrorBanner/ErrorBanner'
 
 /**
  * Renders a OrderOptionPreview component
@@ -36,6 +38,7 @@ const OrderOptionPreview = () => {
   const navigate = useNavigate()
 
   const [retries, setRetries] = useState(0)
+  const [error, setError] = useState()
 
   const { data, refetch } = useSuspenseQuery(GET_ORDER_OPTION, {
     variables: {
@@ -58,7 +61,7 @@ const OrderOptionPreview = () => {
 
     if (retries >= 5) {
       errorLogger('Max retries allowed', 'OrderOptionPreview: getOrderOption Query')
-      throw new Error('Order Option could not be loaded.')
+      setError('Order Option could not be loaded.')
     }
   }, [orderOption, retries])
 
@@ -88,6 +91,16 @@ const OrderOptionPreview = () => {
 
   const handleEdit = () => {
     navigate(`/order-options/${conceptId}/edit`)
+  }
+
+  if (error) {
+    const message = parseError(error)
+
+    return (
+      <Page>
+        <ErrorBanner message={message} />
+      </Page>
+    )
   }
 
   return (

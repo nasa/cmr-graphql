@@ -153,13 +153,13 @@ const OrderOptionForm = () => {
 
           navigate(`/order-options/${orderOptionId}`)
         },
-        onError: (mutationError) => {
+        onError: () => {
           addNotification({
             message: 'Error creating Order Option',
             variant: 'danger'
           })
 
-          errorLogger(mutationError, 'OrderOptionForm: createOrderOptionMutation')
+          errorLogger('Error creating order option', 'OrderOptionForm: createOrderOptionMutation')
         }
       })
     } else {
@@ -181,13 +181,13 @@ const OrderOptionForm = () => {
 
           navigate(`/order-options/${conceptId}`)
         },
-        onError: (updateError) => {
+        onError: () => {
           addNotification({
             message: 'Error creating Order Option',
             variant: 'danger'
           })
 
-          errorLogger(updateError, 'OrderOptionForm: updateOrderOptionMutation')
+          errorLogger('Error updating order option', 'OrderOptionForm: updateOrderOptionMutation')
         }
       })
     }
