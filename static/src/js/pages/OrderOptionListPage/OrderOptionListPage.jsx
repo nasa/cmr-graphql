@@ -24,6 +24,14 @@ const OrderOptionListPage = () => {
           }
         ]
       }
+      headerActions={
+        [
+          {
+            label: 'New Order Option',
+            to: 'new'
+          }
+        ]
+      }
     >
       <ErrorBoundary>
         <Suspense fallback={<LoadingTable />}>

@@ -1,15 +1,17 @@
 import React, { useCallback } from 'react'
 import { useSuspenseQuery } from '@apollo/client'
 import { Col, Row } from 'react-bootstrap'
+import { Link, useSearchParams } from 'react-router-dom'
 import moment from 'moment'
-import { useSearchParams } from 'react-router-dom'
+
 import ControlledPaginatedContent from '../ControlledPaginatedContent/ControlledPaginatedContent'
-import Table from '../Table/Table'
 import EllipsisLink from '../EllipsisLink/EllipsisLink'
-import useAppContext from '../../hooks/useAppContext'
+import Table from '../Table/Table'
+
 import { GET_ORDER_OPTIONS } from '../../operations/queries/getOrderOptions'
 
 import { DATE_FORMAT } from '../../constants/dateFormat'
+import useAppContext from '../../hooks/useAppContext'
 
 /**
  * Renders a OrderOptionList component
@@ -22,6 +24,7 @@ import { DATE_FORMAT } from '../../constants/dateFormat'
  */
 const OrderOptionList = () => {
   const { user } = useAppContext()
+
   const { providerId } = user
 
   const [searchParams, setSearchParams] = useSearchParams()
@@ -59,6 +62,18 @@ const OrderOptionList = () => {
     )
   }, [])
 
+  const buildActionsCell = useCallback((cellData, rowData) => {
+    const { conceptId } = rowData
+
+    return (
+      <Row>
+        <Col className="col-auto">
+          <Link to={`/order-options/${conceptId}/edit`}>Edit</Link>
+        </Col>
+      </Row>
+    )
+  })
+
   const columns = [
     {
       dataKey: 'name',
@@ -82,6 +97,11 @@ const OrderOptionList = () => {
       title: 'Last Updated',
       className: 'col-auto',
       dataAccessorFn: (cellData) => moment(cellData).format(DATE_FORMAT)
+    },
+    {
+      title: 'Actions',
+      className: 'col-auto',
+      dataAccessorFn: buildActionsCell
     }
   ]
   const { orderOptions } = data
