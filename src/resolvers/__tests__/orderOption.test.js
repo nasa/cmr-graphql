@@ -453,34 +453,6 @@ describe('OrderOption', () => {
               }]
             })
 
-          // nock(/example-cmr/)
-          //   .defaultReplyHeaders({
-          //     'CMR-Took': 7,
-          //     'CMR-Request-Id': 'abcd-1234-efgh-5678'
-          //   })
-          //   .get('/search/collections.json?concept_id[]=C100000-EDSC&page_size=20')
-          //   .reply(200, {
-          //     feed: {
-          //       entry: [{
-          //         id: 'C100000-EDSC'
-          //       }]
-          //     }
-          //   })
-
-          // nock(/example-cmr/)
-          //   .defaultReplyHeaders({
-          //     'CMR-Took': 7,
-          //     'CMR-Request-Id': 'abcd-1234-efgh-5678'
-          //   })
-          //   .get('/search/collections.json?concept_id[]=C100001-EDSC&page_size=20')
-          //   .reply(200, {
-          //     feed: {
-          //       entry: [{
-          //         id: 'C100001-EDSC'
-          //       }]
-          //     }
-          //   })
-
           const response = await server.executeOperation({
             variables: {},
             query: `{
