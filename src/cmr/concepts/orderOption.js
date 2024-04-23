@@ -1,3 +1,4 @@
+import camelcaseKeys from 'camelcase-keys'
 import Concept from './concept'
 
 export default class OrderOption extends Concept {
@@ -51,8 +52,12 @@ export default class OrderOption extends Concept {
     const { env } = process
     const { ummOrderOptionVersion } = env
 
+    const casedKeys = camelcaseKeys(params, {
+      pascalCase: true
+    })
+
     return {
-      ...params,
+      ...casedKeys,
       MetadataSpecification: {
         URL: `https://cdn.earthdata.nasa.gov/generics/order-option/v${ummOrderOptionVersion}`,
         Name: 'Order Option',

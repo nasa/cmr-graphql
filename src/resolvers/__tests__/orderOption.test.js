@@ -180,7 +180,7 @@ describe('OrderOption', () => {
               'CMR-Took': 0,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .get('/search/order-options.json?concept_id[]=OO100000-EDSC')
+            .get('/search/order-options.json?concept_id=OO100000-EDSC')
             .reply(200, {
               items: []
             })
@@ -205,33 +205,84 @@ describe('OrderOption', () => {
         })
       })
     })
+  })
 
-    describe('Mutation', () => {
-      describe('createOrderOption', () => {
-        test('calls the ingest endpoint to create an order option', async () => {
+  describe('OrderOption', () => {
+    describe('collections', () => {
+      describe('when no keys are requested from the order option', () => {
+        test('returns collections when querying a published record', async () => {
           nock(/example-cmr/)
             .defaultReplyHeaders({
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .put('/ingest/providers/TEST/order-options/test-native-id-2')
+            .get(/order-options\.json/)
             .reply(200, {
-              'concept-id': 'OO12341234-TEST',
-              'revision-id': 1
+              items: [{
+                concept_id: 'OO100000-EDSC',
+                associations: {
+                  collections: ['C100000-EDSC']
+                },
+                associationDetails: {
+                  collections: [{
+                    concept_id: 'C100000-EDSC',
+                    data: {}
+                  }]
+                }
+              }, {
+                concept_id: 'OO100001-EDSC',
+                associations: {
+                  collections: ['C100001-EDSC']
+                },
+                associationDetails: {
+                  collections: [{
+                    concept_id: 'C100001-EDSC',
+                    data: {}
+                  }]
+                }
+              }]
+            })
+
+          nock(/example-cmr/)
+            .defaultReplyHeaders({
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .get('/search/collections.json?concept_id[]=C100000-EDSC&page_size=20')
+            .reply(200, {
+              feed: {
+                entry: [{
+                  id: 'C100000-EDSC'
+                }]
+              }
+            })
+
+          nock(/example-cmr/)
+            .defaultReplyHeaders({
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .get('/search/collections.json?concept_id[]=C100001-EDSC&page_size=20')
+            .reply(200, {
+              feed: {
+                entry: [{
+                  id: 'C100001-EDSC'
+                }]
+              }
             })
 
           const response = await server.executeOperation({
-            variables: {
-              description: 'This is a description',
-              name: 'This is another new name',
-              providerId: 'TEST',
-              nativeId: 'test-native-id-2',
-              form: 'This is the form'
-            },
-            query: `mutation CreateOrderOption($description: String!, $name: String!, $providerId: String!, $form: String!, $nativeId: String) {
-              createOrderOption(description: $description, name: $name, providerId: $providerId, form: $form, nativeId: $nativeId) {
-                conceptId
-                revisionId
+            variables: {},
+            query: `{
+              orderOptions {
+                items {
+                  conceptId
+                  collections {
+                    items {
+                      conceptId
+                    }
+                  }
+                }
               }
             }`
           }, {
@@ -241,39 +292,111 @@ describe('OrderOption', () => {
           const { data } = response.body.singleResult
 
           expect(data).toEqual({
-            createOrderOption: {
-              conceptId: 'OO12341234-TEST',
-              revisionId: '1'
+            orderOptions: {
+              items: [{
+                conceptId: 'OO100000-EDSC',
+                collections: {
+                  items: [{
+                    conceptId: 'C100000-EDSC'
+                  }]
+                }
+              }, {
+                conceptId: 'OO100001-EDSC',
+                collections: {
+                  items: [{
+                    conceptId: 'C100001-EDSC'
+                  }]
+                }
+              }]
             }
           })
         })
       })
 
-      describe('updateOrderOption', () => {
-        test('calls the ingest endpoint to update an order option', async () => {
+      describe('when only umm keys are requested from the order option', () => {
+        test('returns collections when querying a published record', async () => {
           nock(/example-cmr/)
             .defaultReplyHeaders({
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .put('/ingest/providers/TEST/order-options/test-native-id-2')
+            .get(/order-options\.umm_json/)
             .reply(200, {
-              'concept-id': 'OO12341234-TEST',
-              'revision-id': 2
+              items: [{
+                meta: {
+                  'concept-id': 'OO100000-EDSC',
+                  associations: {
+                    collections: ['C100000-EDSC']
+                  },
+                  'association-details': {
+                    collections: [{
+                      concept_id: 'C100000-EDSC',
+                      data: {}
+                    }]
+                  }
+                },
+                umm: {
+                  Form: '<Form />'
+                }
+              }, {
+                meta: {
+                  'concept-id': 'OO100001-EDSC',
+                  associations: {
+                    collections: ['C100001-EDSC']
+                  },
+                  'association-details': {
+                    collections: [{
+                      concept_id: 'C100001-EDSC',
+                      data: {}
+                    }]
+                  }
+                },
+                umm: {
+                  Form: '<Form />'
+                }
+              }]
+            })
+
+          nock(/example-cmr/)
+            .defaultReplyHeaders({
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .get('/search/collections.json?concept_id[]=C100000-EDSC&page_size=20')
+            .reply(200, {
+              feed: {
+                entry: [{
+                  id: 'C100000-EDSC'
+                }]
+              }
+            })
+
+          nock(/example-cmr/)
+            .defaultReplyHeaders({
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .get('/search/collections.json?concept_id[]=C100001-EDSC&page_size=20')
+            .reply(200, {
+              feed: {
+                entry: [{
+                  id: 'C100001-EDSC'
+                }]
+              }
             })
 
           const response = await server.executeOperation({
-            variables: {
-              description: 'This is a description',
-              name: 'This is another new name',
-              providerId: 'TEST',
-              nativeId: 'test-native-id-2',
-              form: 'This is the form'
-            },
-            query: `mutation UpdateOrderOption($description: String!, $name: String!, $providerId: String!, $form: String!, $nativeId: String!) {
-              updateOrderOption(description: $description, name: $name, providerId: $providerId, form: $form, nativeId: $nativeId) {
-                conceptId
-                revisionId
+            variables: {},
+            query: `{
+              orderOptions {
+                items {
+                  form
+                  collections {
+                    items {
+                      conceptId
+                    }
+                  }
+                }
               }
             }`
           }, {
@@ -283,36 +406,93 @@ describe('OrderOption', () => {
           const { data } = response.body.singleResult
 
           expect(data).toEqual({
-            updateOrderOption: {
-              conceptId: 'OO12341234-TEST',
-              revisionId: '2'
+            orderOptions: {
+              items: [{
+                form: '<Form />',
+                collections: {
+                  items: [{
+                    conceptId: 'C100000-EDSC'
+                  }]
+                }
+              }, {
+                form: '<Form />',
+                collections: {
+                  items: [{
+                    conceptId: 'C100001-EDSC'
+                  }]
+                }
+              }]
             }
           })
         })
       })
 
-      describe('deleteOrderOption', () => {
-        test('calls the ingest endpoint to delete an order option', async () => {
+      describe('when no associations are present', () => {
+        test('returns collections an empty result', async () => {
           nock(/example-cmr/)
             .defaultReplyHeaders({
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .delete('/ingest/providers/TEST/order-options/test-native-id-2')
+            .get(/order-options\.umm_json/)
             .reply(200, {
-              'concept-id': 'OO12341234-TEST',
-              'revision-id': 2
+              items: [{
+                meta: {
+                  'concept-id': 'OO100000-EDSC'
+                },
+                umm: {
+                  Form: '<Form />'
+                }
+              }, {
+                meta: {
+                  'concept-id': 'OO100001-EDSC'
+                },
+                umm: {
+                  Form: '<Form />'
+                }
+              }]
             })
 
+          // nock(/example-cmr/)
+          //   .defaultReplyHeaders({
+          //     'CMR-Took': 7,
+          //     'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          //   })
+          //   .get('/search/collections.json?concept_id[]=C100000-EDSC&page_size=20')
+          //   .reply(200, {
+          //     feed: {
+          //       entry: [{
+          //         id: 'C100000-EDSC'
+          //       }]
+          //     }
+          //   })
+
+          // nock(/example-cmr/)
+          //   .defaultReplyHeaders({
+          //     'CMR-Took': 7,
+          //     'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          //   })
+          //   .get('/search/collections.json?concept_id[]=C100001-EDSC&page_size=20')
+          //   .reply(200, {
+          //     feed: {
+          //       entry: [{
+          //         id: 'C100001-EDSC'
+          //       }]
+          //     }
+          //   })
+
           const response = await server.executeOperation({
-            variables: {
-              providerId: 'TEST',
-              nativeId: 'test-native-id-2'
-            },
-            query: `mutation DeleteOrderOption($nativeId: String!, $providerId: String!) {
-              deleteOrderOption(nativeId: $nativeId, providerId: $providerId) {
-                conceptId
-                revisionId
+            variables: {},
+            query: `{
+              orderOptions {
+                items {
+                  form
+                  collections {
+                    items {
+                      conceptId
+                    }
+                  }
+                }
               }
             }`
           }, {
@@ -322,11 +502,145 @@ describe('OrderOption', () => {
           const { data } = response.body.singleResult
 
           expect(data).toEqual({
-            deleteOrderOption: {
-              conceptId: 'OO12341234-TEST',
-              revisionId: '2'
+            orderOptions: {
+              items: [{
+                form: '<Form />',
+                collections: {
+                  items: null
+                }
+              }, {
+                form: '<Form />',
+                collections: {
+                  items: null
+                }
+              }]
             }
           })
+        })
+      })
+    })
+  })
+
+  describe('Mutation', () => {
+    describe('createOrderOption', () => {
+      test('calls the ingest endpoint to create an order option', async () => {
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .put('/ingest/providers/TEST/order-options/test-native-id-2')
+          .reply(200, {
+            'concept-id': 'OO12341234-TEST',
+            'revision-id': 1
+          })
+
+        const response = await server.executeOperation({
+          variables: {
+            description: 'This is a description',
+            name: 'This is another new name',
+            providerId: 'TEST',
+            nativeId: 'test-native-id-2',
+            form: 'This is the form'
+          },
+          query: `mutation CreateOrderOption($description: String!, $name: String!, $providerId: String!, $form: String!, $nativeId: String) {
+            createOrderOption(description: $description, name: $name, providerId: $providerId, form: $form, nativeId: $nativeId) {
+              conceptId
+              revisionId
+            }
+          }`
+        }, {
+          contextValue
+        })
+
+        const { data } = response.body.singleResult
+
+        expect(data).toEqual({
+          createOrderOption: {
+            conceptId: 'OO12341234-TEST',
+            revisionId: '1'
+          }
+        })
+      })
+    })
+
+    describe('updateOrderOption', () => {
+      test('calls the ingest endpoint to update an order option', async () => {
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .put('/ingest/providers/TEST/order-options/test-native-id-2')
+          .reply(200, {
+            'concept-id': 'OO12341234-TEST',
+            'revision-id': 2
+          })
+
+        const response = await server.executeOperation({
+          variables: {
+            description: 'This is a description',
+            name: 'This is another new name',
+            providerId: 'TEST',
+            nativeId: 'test-native-id-2',
+            form: 'This is the form'
+          },
+          query: `mutation UpdateOrderOption($description: String!, $name: String!, $providerId: String!, $form: String!, $nativeId: String!) {
+            updateOrderOption(description: $description, name: $name, providerId: $providerId, form: $form, nativeId: $nativeId) {
+              conceptId
+              revisionId
+            }
+          }`
+        }, {
+          contextValue
+        })
+
+        const { data } = response.body.singleResult
+
+        expect(data).toEqual({
+          updateOrderOption: {
+            conceptId: 'OO12341234-TEST',
+            revisionId: '2'
+          }
+        })
+      })
+    })
+
+    describe('deleteOrderOption', () => {
+      test('calls the ingest endpoint to delete an order option', async () => {
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .delete('/ingest/providers/TEST/order-options/test-native-id-2')
+          .reply(200, {
+            'concept-id': 'OO12341234-TEST',
+            'revision-id': 2
+          })
+
+        const response = await server.executeOperation({
+          variables: {
+            providerId: 'TEST',
+            nativeId: 'test-native-id-2'
+          },
+          query: `mutation DeleteOrderOption($nativeId: String!, $providerId: String!) {
+            deleteOrderOption(nativeId: $nativeId, providerId: $providerId) {
+              conceptId
+              revisionId
+            }
+          }`
+        }, {
+          contextValue
+        })
+
+        const { data } = response.body.singleResult
+
+        expect(data).toEqual({
+          deleteOrderOption: {
+            conceptId: 'OO12341234-TEST',
+            revisionId: '2'
+          }
         })
       })
     })
