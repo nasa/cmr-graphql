@@ -140,12 +140,16 @@ export default class Concept {
    * @param {Object} item The item returned from the CMR json endpoint
    */
   setEssentialJsonValues(id, item) {
-    const { association_details: associationDetails } = item
+    const { associations, association_details: associationDetails } = item
 
     const formattedAssociationDetails = camelcaseKeys(associationDetails, { deep: true })
 
     if (associationDetails) {
       this.setItemValue(id, 'associationDetails', formattedAssociationDetails)
+    }
+
+    if (associations) {
+      this.setItemValue(id, 'associations', associations)
     }
   }
 
@@ -154,7 +158,20 @@ export default class Concept {
    * @param {String} id Concept ID to set a value for within the result set
    * @param {Object} item The item returned from the CMR json endpoint
    */
-  setEssentialUmmValues() {}
+  setEssentialUmmValues(id, item) {
+    const { meta } = item
+    const { associations, 'association-details': associationDetails } = meta
+
+    const formattedAssociationDetails = camelcaseKeys(associationDetails, { deep: true })
+
+    if (associationDetails) {
+      this.setItemValue(id, 'associationDetails', formattedAssociationDetails)
+    }
+
+    if (associations) {
+      this.setItemValue(id, 'associations', associations)
+    }
+  }
 
   /**
    * Get the total number of records available for a given search across all endpoints. Also

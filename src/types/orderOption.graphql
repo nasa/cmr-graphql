@@ -23,11 +23,19 @@ type OrderOption {
   "The revision date for the order option."
   revisionDate: String
 
+  "The revision id for the order option."
+  revisionId: String
+
   "There are two levels of order options, provider and system. Only administrators may add system level options and only providers may add provider level options."
   scope: OrderOptionScopeType
 
   "The sort key is used to indicate the preferred display order among other definitions."
   sortKey: String
+
+  collections (
+    "Collections query parameters"
+    params: CollectionsInput
+  ): CollectionList
 }
 
 type OrderOptionList {
