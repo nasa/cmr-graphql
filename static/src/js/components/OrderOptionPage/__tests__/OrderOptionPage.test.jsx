@@ -10,7 +10,7 @@ import * as router from 'react-router'
 import userEvent from '@testing-library/user-event'
 
 import AppContext from '../../../context/AppContext'
-import OrderOptionPreview from '../OrderOptionPreview'
+import OrderOptionPreview from '../OrderOptionPage'
 import { GET_ORDER_OPTION } from '../../../operations/queries/getOrderOption'
 
 import errorLogger from '../../../utils/errorLogger'

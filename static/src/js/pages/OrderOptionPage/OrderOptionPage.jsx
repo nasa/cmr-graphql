@@ -2,19 +2,18 @@ import React, { Suspense } from 'react'
 
 import ErrorBoundary from '../../components/ErrorBoundary/ErrorBoundary'
 import LoadingTable from '../../components/LoadingTable/LoadingTable'
-import OrderOptionList from '../../components/OrderOptionList/OrderOptionList'
+import OrderOption from '../../components/OrderOptionPage/OrderOptionPage'
 import Page from '../../components/Page/Page'
 
 import useAppContext from '../../hooks/useAppContext'
 
-const OrderOptionListPage = () => {
-  const { setPageTitle, user } = useAppContext()
+const OrderOptionPage = () => {
+  const { user } = useAppContext()
   const { providerId } = user
-
-  setPageTitle(`${providerId} Order Options`)
 
   return (
     <Page
+      title={`${providerId} Order Options`}
       pageType="secondary"
       breadcrumbs={
         [
@@ -36,11 +35,11 @@ const OrderOptionListPage = () => {
     >
       <ErrorBoundary>
         <Suspense fallback={<LoadingTable />}>
-          <OrderOptionList />
+          <OrderOption />
         </Suspense>
       </ErrorBoundary>
     </Page>
   )
 }
 
-export default OrderOptionListPage
+export default OrderOptionPage

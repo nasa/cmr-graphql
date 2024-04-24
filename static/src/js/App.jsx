@@ -11,13 +11,11 @@ import ManageCollectionAssociation from './pages/ManageCollectionAssociation/Man
 import AuthCallbackContainer from './components/AuthCallbackContainer/AuthCallbackContainer'
 import AuthRequiredContainer from './components/AuthRequiredContainer/AuthRequiredContainer'
 import CollectionAssociationSearch from './components/CollectionAssociationSearch/CollectionAssociationSearch'
-import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary'
 import Layout from './components/Layout/Layout'
-import LoadingBanner from './components/LoadingBanner/LoadingBanner'
+// import LoadingBanner from './components/LoadingBanner/LoadingBanner'
 import Notifications from './components/Notifications/Notifications'
 import OrderOptionListPage from './pages/OrderOptionListPage/OrderOptionListPage'
-import OrderOptionPreview from './components/OrderOptionPreview/OrderOptionPreview'
-import OrderOptionForm from './components/OrderOptionForm/OrderOptionForm'
+import OrderOptionPage from './components/OrderOptionPage/OrderOptionPage'
 import Page from './components/Page/Page'
 import PublishPreview from './components/PublishPreview/PublishPreview'
 import REDIRECTS from './constants/redirectsMap/redirectsMap'
@@ -179,11 +177,11 @@ export const App = () => {
             },
             {
               path: '/order-options',
-              element: <OrderOptionList />
+              element: <OrderOptionListPage />
             },
             {
               path: '/order-options/:conceptId',
-              element: <OrderOptionPreview />
+              element: <OrderOptionPage />
             },
             {
               path: 'templates/:templateType',
