@@ -217,7 +217,7 @@ describe('Grid', () => {
               'CMR-Took': 0,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .get('/grids.json?concept_id=GRD100000-EDSC')
+            .get('/search/grids.json?concept_id=GRD100000-EDSC')
             .reply(200, {
               items: []
             })
