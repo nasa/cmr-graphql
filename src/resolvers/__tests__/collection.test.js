@@ -170,6 +170,7 @@ describe('Collection', () => {
               DataCenters: [],
               DataDates: [],
               DataLanguage: 'English',
+              DataMaturity: 'Validated',
               DirectDistributionInformation: {
                 region: 'us-east-2',
                 s3BucketAndObjectPrefixNames: ['TestBucketOrObjectPrefix'],
@@ -177,12 +178,35 @@ describe('Collection', () => {
                 s3CredentialsApiDocumentationUrl: 'https://DAACCredentialDocumentation.org'
               },
               DirectoryNames: [],
-              DOI: {},
+              DOI: {
+                DOI: '10.1234/NASA/Example.01',
+                PreviousVersion: {
+                  Version: 'A.1',
+                  Description: 'The version before this one',
+                  DOI: '10.1234/NASA/Example.02',
+                  Published: '2024-02-14T08:01:00Z'
+                }
+              },
+              FileNamingConvention: {
+                Convention: 'YYYY-MM-DD.Short-Name',
+                Description: 'ISO date followed by the short name'
+              },
               ISOTopicCategories: [],
               LocationKeywords: [],
               MetadataAssociations: [],
               MetadataDates: [],
               MetadataLanguage: 'English',
+              OtherIdentifiers: [
+                {
+                  Identifier: 'ECSE-1475-Internal',
+                  Type: 'Other',
+                  DescriptionOfOtherType: 'Jira number'
+                },
+                {
+                  Identifier: 'ECSE-1475-Internal',
+                  Type: 'ArchiveSetsNumber'
+                }
+              ],
               PaleoTemporalCoverages: [],
               Platforms: [{
                 Type: 'Not Specified',
@@ -210,10 +234,24 @@ describe('Collection', () => {
               Quality: 'Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.',
               RelatedUrls: [],
               ScienceKeywords: [],
-              SpatialExtent: {},
+              SpatialExtent: {
+                SpatialCoverageType: 'LUNAR',
+                GranuleSpatialRepresentation: 'CARTESIAN'
+              },
               SpatialInformation: {},
               StandardProduct: true,
-              TemporalExtents: [],
+              TemporalExtents: [
+                {
+                  EndsAtPresentFlag: false,
+                  SingleDateTimes: [
+                    '2024-02-14T13:14:15.000Z'
+                  ],
+                  TemporalResolution: {
+                    Unit: 'Year',
+                    Value: 42
+                  }
+                }
+              ],
               TemporalKeywords: [],
               TilingIdentificationSystems: {},
               UseConstraints: [],
@@ -238,8 +276,8 @@ describe('Collection', () => {
               ancillaryKeywords
               archiveAndDistributionInformation
               archiveCenter
-              associationDetails
               associatedDois
+              associationDetails
               boxes
               browseFlag
               cloudHosted
@@ -254,6 +292,7 @@ describe('Collection', () => {
               dataCenters
               dataDates
               dataLanguage
+              dataMaturity
               datasetId
               directDistributionInformation
               directoryNames
@@ -276,6 +315,7 @@ describe('Collection', () => {
               onlineAccessFlag
               organizations
               originalFormat
+              otherIdentifiers
               paleoTemporalCoverages
               platforms
               points
@@ -390,6 +430,7 @@ describe('Collection', () => {
             dataCenters: [],
             dataDates: [],
             dataLanguage: 'English',
+            dataMaturity: 'Validated',
             datasetId: 'Condimentum Quam Mattis Cursus Pharetra',
             directDistributionInformation: {
               region: 'us-east-2',
@@ -398,7 +439,15 @@ describe('Collection', () => {
               s3CredentialsApiDocumentationUrl: 'https://DAACCredentialDocumentation.org'
             },
             directoryNames: [],
-            doi: {},
+            doi: {
+              doi: '10.1234/NASA/Example.01',
+              previousVersion: {
+                description: 'The version before this one',
+                doi: '10.1234/NASA/Example.02',
+                published: '2024-02-14T08:01:00Z',
+                version: 'A.1'
+              }
+            },
             hasFormats: true,
             hasGranules: true,
             hasSpatialSubsetting: true,
@@ -415,6 +464,17 @@ describe('Collection', () => {
             nativeId: 'test-guid',
             nativeDataFormats: ['ASCII'],
             onlineAccessFlag: true,
+            otherIdentifiers: [
+              {
+                descriptionOfOtherType: 'Jira number',
+                identifier: 'ECSE-1475-Internal',
+                type: 'Other'
+              },
+              {
+                identifier: 'ECSE-1475-Internal',
+                type: 'ArchiveSetsNumber'
+              }
+            ],
             organizations: [],
             originalFormat: 'RISUS',
             paleoTemporalCoverages: [],
@@ -449,11 +509,25 @@ describe('Collection', () => {
             relatedUrls: [],
             scienceKeywords: [],
             shortName: 'LOREM-QUAM',
-            spatialExtent: {},
+            spatialExtent: {
+              granuleSpatialRepresentation: 'CARTESIAN',
+              spatialCoverageType: 'LUNAR'
+            },
             spatialInformation: {},
             standardProduct: true,
             tags: {},
-            temporalExtents: [],
+            temporalExtents: [
+              {
+                endsAtPresentFlag: false,
+                singleDateTimes: [
+                  '2024-02-14T13:14:15.000Z'
+                ],
+                temporalResolution: {
+                  unit: 'Year',
+                  value: 42
+                }
+              }
+            ],
             temporalKeywords: [],
             tilingIdentificationSystems: {},
             timeEnd: '2016-04-04T08:00:00.000Z',
