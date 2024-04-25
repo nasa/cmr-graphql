@@ -102,9 +102,7 @@ export default class DraftConcept extends Concept {
 
     const { ummKeys } = this.requestInfo
 
-    const ummHeaders = {
-      ...this.headers
-    }
+    const ummHeaders = this.headers
 
     // Construct the promise that will request data from the umm endpoint
     promises.push(

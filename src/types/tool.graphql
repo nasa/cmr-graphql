@@ -1,90 +1,139 @@
 type Tool {
   "Information about any constraints for accessing the downloadable tool or web user interface."
   accessConstraints: String
+
   "Words or phrases to further describe the downloadable tool or web user interface."
   ancillaryKeywords: JSON
+
   "The list of concepts and any data on the relationship between this tool and other permitted concepts"
   associationDetails: JSON
+
   "The unique concept id assigned to the tool."
   conceptId: String!
+
   "Group(s) to contact at an organization to get information about the web user interface or downloadable tool, including how the group may be contacted."
   contactGroups: JSON
+
   "This is the contact persons of the downloadable tool or web user interface."
   contactPersons: JSON
+
   "A brief description of the web user interface or downloadable tool. Note: This field allows lightweight markup language with plain text formatting syntax. Line breaks within the text are preserved."
   description: String
+
   "The Digital Object Identifier (DOI) of the web user interface or downloadable tool."
   doi: String
+
   "The native id of a tool."
   nativeId: String
+
   "This element describes the latest date when the tool was most recently pushed to production for support and maintenance. "
   lastUpdatedDate: String
+
   "The long name of the downloadable tool or web user interface."
   longName: String
+
   "Requires the client, or user, to add in schema information into every tool record. It includes the schema's name, version, and URL location. The information is controlled through enumerations at the end of this schema."
   metadataSpecification: JSON
+
   "The name of the downloadable tool or web user interface."
   name: String
+
   "The tool provider, or organization, or institution responsible for developing, archiving, and/or distributing the web user interface, software, or tool."
   organizations: JSON
+
   "This element contains information about a smart handoff from one web user interface to another."
   potentialAction: JSON
+
   "Provider ID of the Tool."
   providerId: String
+
   "Information about the quality of the downloadable tool or web user interface. This would include information about any quality assurance procedures followed in development. Note: This field allows lightweight markup language with plain text formatting syntax. Line breaks within the text are preserved."
   quality: JSON
+
   "A URL associated with the web user interface or downloadable tool, e.g., the home page for the tool provider which is responsible for the tool."
   relatedUrls: JSON
+
   "Date which the Tool was last updated."
   revisionDate: String
+
   "The revision id of the Tool."
   revisionId: String
+
   "This element contains information about a smart handoff from one web user interface to another."
   searchAction: JSON
+
   "The browser(s) and associated version supported by the web user interface."
   supportedBrowsers: JSON
+
   "The project element describes the list of input format names supported by the web user interface or downloadable tool."
   supportedInputFormats: JSON
+
   "The operating system(s) and associated version supported by the downloadable tool."
   supportedOperatingSystems: JSON
+
   "The project element describes the list of output format names supported by the web user interface or downloadable tool."
   supportedOutputFormats: JSON
+
   "The programming language(s) and associated version supported by the downloadable tool."
   supportedSoftwareLanguages: JSON
+
   "Allows for the specification of Earth Science keywords that are representative of the service, software, or tool being described. The controlled vocabulary for Science Keywords is maintained in the Keyword Management System (KMS)."
   toolKeywords: JSON
+
   "The type of the downloadable tool or web user interface."
   type: String
+
   "Raw UMM Metadata of the Tool Record."
   ummMetadata: JSON
+
   "The URL where you can directly access the web user interface or downloadable tool."
   url: JSON
+
   "Information on how the item (downloadable tool or web user interface) may or may not be used after access is granted. This includes any special restrictions, legal prerequisites, terms and conditions, and/or limitations on using the item. Providers may request acknowledgement of the item from users and claim no responsibility for quality and completeness."
   useConstraints: JSON
+
   "Id of the user who modified/published record"
   userId: String
+
   "The edition or version of the web user interface software, or tool. A value of 'NOT PROVIDED' may be used if the version is not available or unknown."
   version: String
+
   "This field provides users with information on what changes were included in the most recent version."
   versionDescription: String
+
+  "All revisions of this Tool."
+  revisions: ToolRevisionList
 
   collections (
     "Collections query parameters"
     params: CollectionsInput
+
     "The unique concept id assigned to the service."
     conceptId: [String] @deprecated(reason: "Use `params.conceptId`")
+
     "The number of collections requested by the user."
     limit: Int @deprecated(reason: "Use `params.limit`")
+
     "Zero based offset of individual results."
     offset: Int @deprecated(reason: "Use `params.offset`")
   ): CollectionList
 }
 
+type ToolRevisionList {
+  "The number of hits for a given search."
+  count: Int
+
+  "The list of tool search results."
+  items: [Tool]
+}
+
 type ToolList {
   "The number of hits for a given search."
   count: Int
+
   "Cursor that points to the/a specific position in a list of requested records."
   cursor: String
+
   "The list of service search results."
   items: [Tool]
 }
@@ -92,20 +141,24 @@ type ToolList {
 input ToolsInput {
   "The unique concept id assigned to the tool."
   conceptId: [String]
+
   "Cursor that points to the/a specific position in a list of requested records."
   cursor: String
+
   "Keyword search value."
   keyword: String
+
   "The number of tools requested by the user."
   limit: Int
+
   "Zero based offset of individual results."
   offset: Int
+
   "The name of the provider associated with the tool."
   provider: String
+
   "One or more sort keys can be specified to impact searching. Fields can be prepended with a '-' to sort in descending order. Ascending order is the default but + can be used to explicitly request ascending."
   sortKey: String
-  "Returns all revisions when set to true"
-  allRevisions: Boolean
 }
 
 input ToolInput {
@@ -117,14 +170,19 @@ type Query {
   tools (
     "Tools query parameters"
     params: ToolsInput
+
     "The unique concept id assigned to the tool."
     conceptId: [String] @deprecated(reason: "Use `params.conceptId`")
+
     "Cursor that points to the a specific position in a list of requested records."
     cursor: String @deprecated(reason: "Use `params.cursor`")
+
     "The number of servies requested by the user."
     limit: Int @deprecated(reason: "Use `params.limit`")
+
     "Zero based offset of individual results."
     offset: Int @deprecated(reason: "Use `params.offset`")
+
     "One or more sort keys can be specified to impact searching. Fields can be prepended with a '-' to sort in descending order. Ascending order is the default but + can be used to explicitly request ascending."
     sortKey: [String] @deprecated(reason: "Use `params.sortKey`")
   ): ToolList!
@@ -159,6 +217,7 @@ type Mutation {
 type ToolMutationResponse {
   "The unique concept id assigned to the tool."
   conceptId: String!
+
   "The revision of the tool."
   revisionId: String!
 }

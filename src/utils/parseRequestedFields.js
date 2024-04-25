@@ -39,6 +39,10 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
       formattedConceptName = conceptName.toLowerCase()
     }
 
+    if (name === 'revisions') {
+      formattedConceptName = `${conceptName}Revision`
+    }
+
     isList = true
     const {
       [`${upperFirst(formattedConceptName)}List`]: conceptListKeysRequested
@@ -123,10 +127,11 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
     if (
       (
         requestedFields.includes('granules')
-        || requestedFields.includes('subscriptions')
-        || requestedFields.includes('relatedCollections')
         || requestedFields.includes('duplicateCollections')
         || requestedFields.includes('generateVariableDrafts')
+        || requestedFields.includes('relatedCollections')
+        || requestedFields.includes('revisions')
+        || requestedFields.includes('subscriptions')
       )
        && !requestedFields.includes('conceptId')) {
       requestedFields.push('conceptId')
