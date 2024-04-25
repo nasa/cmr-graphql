@@ -74,6 +74,35 @@ describe('Variable', () => {
           }]
         })
 
+      nock(/example-cmr/)
+        .defaultReplyHeaders({
+          'CMR-Hits': 2,
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .get('/search/variables.umm_json?all_revisions=true&concept_id=V100000-EDSC')
+        .reply(200, {
+          items: [{
+            meta: {
+              'concept-id': 'V100000-EDSC',
+              'native-id': 'test-guid',
+              'revision-id': '2'
+            },
+            umm: {
+              Name: 'Cras mattis consectetur purus sit amet fermentum.'
+            }
+          }, {
+            meta: {
+              'concept-id': 'V100000-EDSC',
+              'native-id': 'test-guid',
+              'revision-id': '1'
+            },
+            umm: {
+              Name: 'Cras mattis consectetur purus sit amet fermentum.'
+            }
+          }]
+        })
+
       const response = await server.executeOperation({
         variables: {},
         query: `{
@@ -95,6 +124,12 @@ describe('Variable', () => {
               nativeId
               offset
               relatedUrls
+              revisions {
+                count
+                items {
+                  revisionId
+                }
+              }
               scale
               scienceKeywords
               sets
@@ -110,7 +145,9 @@ describe('Variable', () => {
         contextValue
       })
 
-      const { data } = response.body.singleResult
+      const { data, errors } = response.body.singleResult
+
+      expect(errors).toBeUndefined()
 
       expect(data).toEqual({
         variables: {
@@ -137,6 +174,17 @@ describe('Variable', () => {
             nativeId: 'test-guid',
             offset: 1.234,
             relatedUrls: [],
+            revisions: {
+              count: 2,
+              items: [
+                {
+                  revisionId: '2'
+                },
+                {
+                  revisionId: '1'
+                }
+              ]
+            },
             scale: 1.234,
             scienceKeywords: [],
             sets: [],

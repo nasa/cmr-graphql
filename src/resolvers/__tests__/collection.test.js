@@ -387,7 +387,9 @@ describe('Collection', () => {
         contextValue
       })
 
-      const { data } = response.body.singleResult
+      const { data, errors } = response.body.singleResult
+
+      expect(errors).toBeUndefined()
 
       expect(data).toEqual({
         collections: {

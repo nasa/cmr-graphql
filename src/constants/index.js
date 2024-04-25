@@ -17,10 +17,12 @@ export const CONCEPT_TYPES = [
 ]
 
 /**
- * List of supported pseudo fields, these fields aren't a real CMR concept, but are still supported by separate queries
+ * List of supported pseudo fields, these fields aren't a real CMR concept, but are still supported by separate queries.
+ * Adding the field to this list will keep it out of being added to `jsonKeys` and triggering a CMR json endpoint call.
  */
 export const PSEUDO_FIELDS = [
-  'maxItemsPerOrder'
+  'maxItemsPerOrder',
+  'revisions'
 ]
 
 /**
