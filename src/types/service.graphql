@@ -1,74 +1,113 @@
 type Service {
   "Information about any constraints for accessing the service, software, or tool."
   accessConstraints: String
+
   "Words or phrases to further describe the service, software, or tool."
   ancillaryKeywords: [String]
+
   "The list of concepts and any data on the relationship between this service and other permitted concepts"
   associationDetails: JSON
+  
   "The unique concept id assigned to the service."
   conceptId: String!
+
   "This is the contact groups of the service."
   contactGroups: JSON
+
   "This is the contact persons of the service."
   contactPersons: JSON
+
   "A brief description of the service."
   description: String
+
   "This element describes the latest date when the service was most recently pushed to production for support and maintenance."
   lastUpdatedDate: String
+
   "The long name of the service, software, or tool."
   longName: String
+
   "The maximum number of items permitted in a single order. Only for services that are type ECHO ORDERS."
   maxItemsPerOrder: Int
+
   "The name of the service, software, or tool."
   name: String
+
   "The native id to set on the service."
   nativeId: String!
+
   "This class describes the signature of the operational metadata provided by the service."
   operationMetadata: JSON
+
   "Provider ID of the service."
   providerId: String
+
   "Date which the Service was last updated."
   revisionDate: String
+
   "The revision id of the Service."
   revisionId: String
+
   "Web addresses used to get supported documentation or other related information link to the service."
   relatedUrls: JSON
+
   "Allows for the specification of Earth Science Service keywords that are representative of the service, software, or tool being described. The controlled vocabulary for Service Keywords is maintained in the Keyword Management System (KMS)."
   serviceKeywords: JSON
+
   "This element contains important information about the Unique Resource Locator for the service."
   serviceOptions: JSON
+
   "The service provider, or organization, or institution responsible for developing, archiving, and/or distributing the service, software, or tool."
   serviceOrganizations: JSON
+
   "List of input projection names supported by the service."
   supportedInputProjections: JSON
+
   "List of output projection names supported by the service."
   supportedOutputProjections: JSON
+
   "List of format name combinations which explicitly state which re-formatting options are available."
   supportedReformattings: JSON
+
   "Information about the quality of the service, software, or tool, or any quality assurance procedures followed in development."
   serviceQuality: JSON
+
   "The type of the service."
   type: String
+
   "Raw UMM Metadata of the Service Record."
   ummMetadata: JSON
+
   "Represents the Internet site where you can directly access the back-end service."
   url: JSON
+
   "Information on how the item (service, software, or tool) may or may not be used after access is granted. This includes any special restrictions, legal prerequisites, terms and conditions, and/or limitations on using the item. Providers may request acknowledgement of the item from users and claim no responsibility for quality and completeness."
   useConstraints: JSON
+
   "Id of the user who modified/published record"
   userId: String
+
   "The edition or version of the service."
   version: String
+
   "This field provides users with information on what changes were included in the most recent version."
   versionDescription: String
+
+  "Previous revisions of this Collection"
+  previousRevisions: [Collection]
+
+  "All revisions of this Service."
+  revisions: ServiceRevisionList
 
   collections (
     "Collections query parameters"
     params: CollectionsInput
+
     "The unique concept id assigned to the service."
     conceptId: [String] @deprecated(reason: "Use `params.conceptId`")
+
     "The number of collections requested by the user."
     limit: Int @deprecated(reason: "Use `params.limit`")
+
     "Zero based offset of individual results."
     offset: Int @deprecated(reason: "Use `params.offset`")
   ): CollectionList
@@ -84,11 +123,21 @@ type Service {
   ): VariableList
 }
 
+type ServiceRevisionList {
+  "The number of hits for a given search."
+  count: Int
+
+  "The list of service search results."
+  items: [Service]
+}
+
 type ServiceList {
   "The number of hits for a given search."
   count: Int
+
   "Cursor that points to the a specific position in a list of requested records."
   cursor: String
+
   "The list of service search results."
   items: [Service]
 }
@@ -96,22 +145,27 @@ type ServiceList {
 input ServicesInput {
   "The unique concept id assigned to the service."
   conceptId: [String]
+
   "Cursor that points to the/a specific position in a list of requested records."
   cursor: String
+
   "Keyword search value."
   keyword: String
+
   "The number of services requested by the user."
   limit: Int
+
   "Zero based offset of individual results."
   offset: Int
+
   "The name of the provider associated with the service."
   provider: String
+
   "The type of the service."
   type: String
+
   "One or more sort keys can be specified to impact searching. Fields can be prepended with a '-' to sort in descending order. Ascending order is the default but + can be used to explicitly request ascending."
   sortKey: String
-  "Returns all revisions when set to true"
-  allRevisions: Boolean
 }
 
 input ServiceInput {
@@ -123,16 +177,22 @@ type Query {
   services (
     "Services query parameters"
     params: ServicesInput
+
     "The unique concept id assigned to the service."
     conceptId: [String] @deprecated(reason: "Use `params.conceptId`")
+
     "Cursor that points to the a specific position in a list of requested records."
     cursor: String @deprecated(reason: "Use `params.cursor`")
+
     "The number of servies requested by the user."
     limit: Int @deprecated(reason: "Use `params.limit`")
+
     "Zero based offset of individual results."
     offset: Int @deprecated(reason: "Use `params.offset`")
+
     "The type of the service."
     type: String @deprecated(reason: "Use `params.type`")
+
     "One or more sort keys can be specified to impact searching. Fields can be prepended with a '-' to sort in descending order. Ascending order is the default but + can be used to explicitly request ascending."
     sortKey: [String] @deprecated(reason: "Use `params.sortKey`")
   ): ServiceList!
@@ -140,6 +200,7 @@ type Query {
   service (
     "Service query parameters"
     params: ServiceInput
+
     "The unique concept id assigned to the service."
     conceptId: String @deprecated(reason: "Use `params.conceptId`")
   ): Service

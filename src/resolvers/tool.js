@@ -40,6 +40,21 @@ export default {
   },
 
   Tool: {
+    revisions: async (source, args, context, info) => {
+      const { dataSources } = context
+
+      const { conceptId } = source
+
+      return dataSources.toolSourceFetch(
+        {
+          conceptId,
+          allRevisions: true
+        },
+        context,
+        parseResolveInfo(info)
+      )
+    },
+
     collections: async (source, args, context, info) => {
       const { dataSources } = context
 

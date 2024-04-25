@@ -48,6 +48,21 @@ export default {
   },
 
   Service: {
+    revisions: async (source, args, context, info) => {
+      const { dataSources } = context
+
+      const { conceptId } = source
+
+      return dataSources.serviceSourceFetch(
+        {
+          conceptId,
+          allRevisions: true
+        },
+        context,
+        parseResolveInfo(info)
+      )
+    },
+
     collections: async (source, args, context, info) => {
       const { dataSources } = context
 

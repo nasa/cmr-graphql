@@ -127,6 +127,7 @@ describe('Collection', () => {
             meta: {
               'concept-id': 'C100000-EDSC',
               'native-id': 'test-guid',
+              'revision-id': '2',
               'association-details': {
                 variables: [
                   {
@@ -263,6 +264,35 @@ describe('Collection', () => {
           }]
         })
 
+      nock(/example-cmr/)
+        .defaultReplyHeaders({
+          'CMR-Hits': 2,
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .get('/search/collections.umm_json?all_revisions=true&concept_id=C100000-EDSC')
+        .reply(200, {
+          items: [{
+            meta: {
+              'concept-id': 'C100000-EDSC',
+              'native-id': 'test-guid',
+              'revision-id': '2'
+            },
+            umm: {
+              Abstract: 'Cras mattis consectetur purus sit amet fermentum.'
+            }
+          }, {
+            meta: {
+              'concept-id': 'C100000-EDSC',
+              'native-id': 'test-guid',
+              'revision-id': '1'
+            },
+            umm: {
+              Abstract: 'Cras mattis consectetur purus sit amet fermentum.'
+            }
+          }]
+        })
+
       const response = await server.executeOperation({
         variables: {},
         query: `{
@@ -328,6 +358,12 @@ describe('Collection', () => {
               purpose
               quality
               relatedUrls
+              revisions {
+                count
+                items {
+                  revisionId
+                }
+              }
               scienceKeywords
               shortName
               spatialExtent
@@ -507,6 +543,17 @@ describe('Collection', () => {
             purpose: 'Mock Purpose',
             quality: 'Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.',
             relatedUrls: [],
+            revisions: {
+              count: 2,
+              items: [
+                {
+                  revisionId: '2'
+                },
+                {
+                  revisionId: '1'
+                }
+              ]
+            },
             scienceKeywords: [],
             shortName: 'LOREM-QUAM',
             spatialExtent: {

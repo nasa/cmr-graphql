@@ -48,6 +48,21 @@ export default {
   },
 
   Collection: {
+    revisions: async (source, args, context, info) => {
+      const { dataSources } = context
+
+      const { conceptId } = source
+
+      return dataSources.collectionSourceFetch(
+        {
+          conceptId,
+          allRevisions: true
+        },
+        context,
+        parseResolveInfo(info)
+      )
+    },
+
     granules: async (source, args, context, info) => {
       const { dataSources } = context
 
@@ -223,14 +238,8 @@ export default {
         return null
       }
 
-      const tagKeys = []
-
-      Object.keys(tags).map((key) => (
-        tagKeys.push(key)
-      ))
-
       const requestedParams = handlePagingParams({
-        tagKey: tagKeys
+        tagKey: Object.keys(tags)
       })
 
       return dataSources.tagDefinitionSource(

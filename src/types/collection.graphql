@@ -245,15 +245,22 @@ type Collection {
   "The Version of the collection."
   version: String
 
+  "All revisions of this Collection."
+  revisions: CollectionRevisionList
+
   relatedCollections (
     "Related Collections query parameters"
     params: RelatedCollectionsInput
+
     "The size of the range GraphDB searches on. Defaults to 5"
     limit: Int @deprecated(reason: "Use `params.limit`")
+
     "The beginning of the range GraphDB searches on"
     offset: Int @deprecated(reason: "Use `params.offset`")
+
     "Filter the RelatedURL relationships by the Type property."
     relatedUrlType: [String] @deprecated(reason: "Use `params.relatedUrlType`")
+
     "Filter the RelatedURL relationships by the subtype property."
     relatedUrlSubtype: [String] @deprecated(reason: "Use `params.relatedUrlSubtype`")
   ): RelatedCollectionsList
@@ -416,10 +423,13 @@ type Collection {
 type DuplicateCollection {
   "The unique concept id assigned to the collection."
   id: String
+
   "The DOI that identifies the collection."
   doi: String
+
   "The short name associated with the collection."
   shortName: String
+
   "The title of the collection described by the metadata."
   title: String
 }
@@ -427,6 +437,7 @@ type DuplicateCollection {
 type DuplicateCollectionList {
   "The number of duplicate collections available."
   count: Int
+
   "The list of duplicate collections."
   items: [DuplicateCollection]
 }
@@ -508,6 +519,14 @@ type GraphDbPlatformInstrument implements Relationship {
 
   "The name of the instrument."
   instrument: String
+}
+
+type CollectionRevisionList {
+  "The number of hits for a given search."
+  count: Int
+
+  "The list of collection search results."
+  items: [Collection]
 }
 
 type CollectionList {
@@ -657,7 +676,7 @@ input CollectionsInput {
   "The name of the providers associated with the collections."
   providers: [String]
 
-  "The revision id of the collection"
+  "The revision date of the collection"
   revisionDate: String
 
   "Science Keywords associated with the collection, in facet form."
@@ -701,9 +720,6 @@ input CollectionsInput {
 
   "UMM Variable concept id."
   variableConceptId: String
-
-  "Returns all revisions when set to true."
-  allRevisions: Boolean
 }
 
 input CollectionInput {
