@@ -286,20 +286,20 @@ export default class Concept {
    */
   getPermittedJsonSearchParams() {
     return [
-      'concept_id',
-      'offset',
-      'page_size',
-      'sort_key',
-      'permitted_user',
       'all_revisions',
       'concept_id',
+      'concept_id',
       'include_full_acl',
+      'offset',
       'offset',
       'originator_id',
       'page_num',
       'page_size',
+      'page_size',
+      'permitted_user',
       'permitted_user',
       'provider_id',
+      'sort_key',
       'sort_key',
       'tag_key',
       'target'
