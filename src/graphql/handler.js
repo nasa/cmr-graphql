@@ -134,9 +134,6 @@ const schema = applyMiddleware(
 )
 
 const server = new ApolloServer({
-  // // Passing types and resolvers to the server
-  // typeDefs,
-  // resolvers,
   schema,
   introspection: true,
   plugins: apolloPlugins

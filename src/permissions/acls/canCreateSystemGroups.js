@@ -4,9 +4,9 @@ import { hasPermission } from '../../utils/hasPermission'
 import { forbiddenError } from '../../utils/forbiddenError'
 
 /**
- * Check to see if the user can close an order for a given provider using
- * the cmr permissions api. In order to close an order, the user must have the create
- * permission on the PROVIDER_ORDER_CLOSURE target for the provider.
+ * Check to see if the user can create system groups using
+ * the cmr permissions api. In order to create system groups, the user must have the `create`
+ * permission on the GROUP system_object.
  * @method
  * @return {(true|ForbiddenError)}
  */

@@ -33,6 +33,8 @@ dockerRun() {
         -e "CMR_ROOT_URL=$bamboo_CMR_ROOT_URL" \
         -e "DMMT_SSL_CERT=$bamboo_DMMT_SSL_CERT" \
         -e "DRAFT_MMT_ROOT_URL=$bamboo_DRAFT_MMT_ROOT_URL" \
+        -e "EDL_CLIENT_ID=$bamboo_EDL_CLIENT_ID" \
+        -e "EDL_PASSWORD=$bamboo_EDL_PASSWORD" \
         -e "EDL_JWK=$bamboo_EDL_JWK" \
         -e "EDL_KEY_ID=$bamboo_EDL_KEY_ID" \
         -e "GRAPHDB_HOST=$bamboo_GRAPHDB_HOST" \
