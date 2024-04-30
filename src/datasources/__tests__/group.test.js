@@ -34,7 +34,7 @@ describe('group', () => {
 
       expect(edlRequestMock).toHaveBeenCalledTimes(1)
       expect(edlRequestMock).toHaveBeenCalledWith({
-        headers: {},
+        context,
         method: 'GET',
         params,
         pathType: edlPathTypes.FIND_GROUP
@@ -60,7 +60,7 @@ describe('group', () => {
 
         expect(edlRequestMock).toHaveBeenCalledTimes(1)
         expect(edlRequestMock).toHaveBeenCalledWith({
-          headers: {},
+          context,
           method: 'GET',
           params,
           pathType: edlPathTypes.FIND_GROUP
@@ -95,7 +95,7 @@ describe('group', () => {
 
       expect(edlRequestMock).toHaveBeenCalledTimes(1)
       expect(edlRequestMock).toHaveBeenCalledWith({
-        headers: {},
+        context,
         method: 'GET',
         params,
         pathType: edlPathTypes.SEARCH_GROUPS
@@ -121,7 +121,7 @@ describe('group', () => {
 
         expect(edlRequestMock).toHaveBeenCalledTimes(1)
         expect(edlRequestMock).toHaveBeenCalledWith({
-          headers: {},
+          context,
           method: 'GET',
           params,
           pathType: edlPathTypes.SEARCH_GROUPS
@@ -158,7 +158,7 @@ describe('group', () => {
 
       expect(edlRequestMock).toHaveBeenCalledTimes(1)
       expect(edlRequestMock).toHaveBeenCalledWith({
-        headers: {},
+        context,
         method: 'GET',
         params,
         pathType: edlPathTypes.FIND_MEMBERS
@@ -184,7 +184,7 @@ describe('group', () => {
 
         expect(edlRequestMock).toHaveBeenCalledTimes(1)
         expect(edlRequestMock).toHaveBeenCalledWith({
-          headers: {},
+          context,
           method: 'GET',
           params,
           pathType: edlPathTypes.FIND_MEMBERS
@@ -216,7 +216,7 @@ describe('group', () => {
 
       expect(edlRequestMock).toHaveBeenCalledTimes(1)
       expect(edlRequestMock).toHaveBeenCalledWith({
-        headers: {},
+        context,
         method: 'POST',
         params,
         pathType: edlPathTypes.CREATE_GROUP
@@ -242,7 +242,7 @@ describe('group', () => {
 
         expect(edlRequestMock).toHaveBeenCalledTimes(1)
         expect(edlRequestMock).toHaveBeenCalledWith({
-          headers: {},
+          context,
           method: 'POST',
           params,
           pathType: edlPathTypes.CREATE_GROUP
@@ -270,7 +270,7 @@ describe('group', () => {
 
       expect(edlRequestMock).toHaveBeenCalledTimes(1)
       expect(edlRequestMock).toHaveBeenCalledWith({
-        headers: {},
+        context,
         method: 'DELETE',
         params,
         pathType: edlPathTypes.DELETE_GROUP
@@ -296,7 +296,7 @@ describe('group', () => {
 
         expect(edlRequestMock).toHaveBeenCalledTimes(1)
         expect(edlRequestMock).toHaveBeenCalledWith({
-          headers: {},
+          context,
           method: 'DELETE',
           params,
           pathType: edlPathTypes.DELETE_GROUP
@@ -336,7 +336,7 @@ describe('group', () => {
 
       expect(edlRequestMock).toHaveBeenCalledTimes(2)
       expect(edlRequestMock).toHaveBeenCalledWith({
-        headers: {},
+        context,
         method: 'POST',
         params: {
           ...params,
@@ -347,7 +347,7 @@ describe('group', () => {
       })
 
       expect(edlRequestMock).toHaveBeenCalledWith({
-        headers: {},
+        context,
         method: 'GET',
         params,
         pathType: edlPathTypes.FIND_GROUP
@@ -374,7 +374,7 @@ describe('group', () => {
 
         expect(edlRequestMock).toHaveBeenCalledTimes(1)
         expect(edlRequestMock).toHaveBeenCalledWith({
-          headers: {},
+          context,
           method: 'POST',
           params,
           pathType: edlPathTypes.UPDATE_GROUP

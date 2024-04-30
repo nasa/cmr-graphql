@@ -10,18 +10,20 @@ import { prepKeysForCmr } from './prepKeysForCmr'
 /**
  * Make a request to EDL and return the promise
  * @param {Object} params
- * @param {Object} params.headers Headers to send to CMR
+ * @param {Object} params.context GraphQL context object
  * @param {String} params.method Method to make the request with
  * @param {Object} params.params Parameters to send to CMR
- * @param {Object} params.url Request URL
+ * @param {String} params.pathType Type of path, used to build correct EDL path for request
+ * @param {Object} params.requestInfo Parsed GraphQL request info
  */
 export const edlRequest = ({
-  headers,
+  context,
   method,
   params,
   pathType,
   requestInfo
 }) => {
+  const { headers, edlClientToken } = context
   let { params: requestParams } = params
 
   // For mutations, params are not nested
@@ -33,7 +35,8 @@ export const edlRequest = ({
   // Merge default headers into the provided headers and then pick out only permitted values
   const permittedHeaders = pickIgnoringCase({
     ...defaultHeaders,
-    ...headers
+    ...headers,
+    Authorization: `Bearer ${edlClientToken}`
   }, [
     'Accept',
     'Authorization',
