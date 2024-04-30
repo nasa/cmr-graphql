@@ -20,22 +20,25 @@ export const hasPermission = async (context, options = {}) => {
 
   // Fetch the permissions
   const userPermissions = await fetchPermissions(permissionOptions, context)
+  // Example `userPermissions`: { TARGET: [ 'read' ] }
 
   if (!userPermissions) return false
 
   // Create a map where the value indicates whether the permissions exists for
   // each key in the permissions object
-  const hasPermissionByTargetIdMap = Object.fromEntries(
-    Object.entries(userPermissions)
-      .map(([key, value]) => (
-        [
-          key,
-          castArray(permissions).every(
-            (perm) => value.includes(perm)
-          )
-        ]
-      ))
-  )
+  const userPermissionsEntries = Object.entries(userPermissions)
+  // Example `userPermissionsEntries`: [ [ 'TARGET', [ 'read' ] ] ]
+
+  const mappedEntries = userPermissionsEntries.map(([key, value]) => (
+    [
+      key,
+      castArray(permissions).every((permission) => value.includes(permission))
+    ]
+  ))
+  // Example `mappedEntries`: [ [ 'TARGET', true ] ]
+
+  const hasPermissionByTargetIdMap = Object.fromEntries(mappedEntries)
+  // Example `hasPermissionByTargetIdMap`: { TARGET: true }
 
   // Check if the function should return target ids. If so, return the entire object
   if (returnTargetIds) return hasPermissionByTargetIdMap
