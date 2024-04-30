@@ -39,9 +39,11 @@ describe('edlRequest', () => {
         }])
 
       const response = await edlRequest({
-        headers: {
-          'Client-Id': 'eed-test-graphql',
-          'X-Request-Id': 'abcd-1234-efgh-5678'
+        context: {
+          headers: {
+            'Client-Id': 'eed-test-graphql',
+            'X-Request-Id': 'abcd-1234-efgh-5678'
+          }
         },
         method: 'GET',
         params: {
@@ -102,9 +104,11 @@ describe('edlRequest', () => {
         })
 
       const response = await edlRequest({
-        headers: {
-          'Client-Id': 'eed-test-graphql',
-          'X-Request-Id': 'abcd-1234-efgh-5678'
+        context: {
+          headers: {
+            'Client-Id': 'eed-test-graphql',
+            'X-Request-Id': 'abcd-1234-efgh-5678'
+          }
         },
         method: 'GET',
         params: {
@@ -163,9 +167,11 @@ describe('edlRequest', () => {
         })
 
       const response = await edlRequest({
-        headers: {
-          'Client-Id': 'eed-test-graphql',
-          'X-Request-Id': 'abcd-1234-efgh-5678'
+        context: {
+          headers: {
+            'Client-Id': 'eed-test-graphql',
+            'X-Request-Id': 'abcd-1234-efgh-5678'
+          }
         },
         method: 'GET',
         params: {
@@ -224,9 +230,11 @@ describe('edlRequest', () => {
         })
 
       const response = await edlRequest({
-        headers: {
-          'Client-Id': 'eed-test-graphql',
-          'X-Request-Id': 'abcd-1234-efgh-5678'
+        context: {
+          headers: {
+            'Client-Id': 'eed-test-graphql',
+            'X-Request-Id': 'abcd-1234-efgh-5678'
+          }
         },
         method: 'POST',
         params: {
@@ -280,9 +288,11 @@ describe('edlRequest', () => {
         })
 
       const response = await edlRequest({
-        headers: {
-          'Client-Id': 'eed-test-graphql',
-          'X-Request-Id': 'abcd-1234-efgh-5678'
+        context: {
+          headers: {
+            'Client-Id': 'eed-test-graphql',
+            'X-Request-Id': 'abcd-1234-efgh-5678'
+          }
         },
         method: 'POST',
         params: {
@@ -326,9 +336,11 @@ describe('edlRequest', () => {
         .reply(200)
 
       const response = await edlRequest({
-        headers: {
-          'Client-Id': 'eed-test-graphql',
-          'X-Request-Id': 'abcd-1234-efgh-5678'
+        context: {
+          headers: {
+            'Client-Id': 'eed-test-graphql',
+            'X-Request-Id': 'abcd-1234-efgh-5678'
+          }
         },
         method: 'DELETE',
         params: {

@@ -15,12 +15,10 @@ const renameEdlId = (data, idField) => ({
 })
 
 export const fetchGroup = async (params, context, requestInfo) => {
-  const { headers } = context
-
   try {
     // Send the request to EDL
     const result = await edlRequest({
-      headers,
+      context,
       method: 'GET',
       params,
       pathType: edlPathTypes.FIND_GROUP,
@@ -38,12 +36,10 @@ export const fetchGroup = async (params, context, requestInfo) => {
 }
 
 export const searchGroup = async (params, context, requestInfo) => {
-  const { headers } = context
-
   try {
     // Send the request to EDL
     const result = await edlRequest({
-      headers,
+      context,
       method: 'GET',
       params,
       pathType: edlPathTypes.SEARCH_GROUPS,
@@ -69,12 +65,10 @@ export const searchGroup = async (params, context, requestInfo) => {
 }
 
 export const listGroupMembers = async (params, context, requestInfo) => {
-  const { headers } = context
-
   try {
     // Send the request to EDL
     const result = await edlRequest({
-      headers,
+      context,
       method: 'GET',
       params,
       pathType: edlPathTypes.FIND_MEMBERS,
@@ -100,12 +94,10 @@ export const listGroupMembers = async (params, context, requestInfo) => {
 }
 
 export const createGroup = async (params, context, requestInfo) => {
-  const { headers } = context
-
   try {
     // Send the request to EDL
     const result = await edlRequest({
-      headers,
+      context,
       method: 'POST',
       params,
       pathType: edlPathTypes.CREATE_GROUP,
@@ -123,12 +115,10 @@ export const createGroup = async (params, context, requestInfo) => {
 }
 
 export const deleteGroup = async (params, context, requestInfo) => {
-  const { headers } = context
-
   try {
     // Send the request to EDL
     const result = await edlRequest({
-      headers,
+      context,
       method: 'DELETE',
       params,
       pathType: edlPathTypes.DELETE_GROUP,
@@ -145,8 +135,6 @@ export const deleteGroup = async (params, context, requestInfo) => {
 }
 
 export const updateGroup = async (params, context, requestInfo) => {
-  const { headers } = context
-
   // The `tag` parameter should be `newTag in the EDL API, pull it out of params here and set it to newTag below.
   const { tag, ...filteredParams } = params
 
@@ -154,7 +142,7 @@ export const updateGroup = async (params, context, requestInfo) => {
     // Send the request to EDL
     // This will throw an error if the request fails
     await edlRequest({
-      headers,
+      context,
       method: 'POST',
       params: {
         ...filteredParams,
@@ -166,7 +154,7 @@ export const updateGroup = async (params, context, requestInfo) => {
 
     // The update response does not include the group, so we have to query EDL again
     const updatedGroup = await edlRequest({
-      headers,
+      context,
       method: 'GET',
       params,
       pathType: edlPathTypes.FIND_GROUP,

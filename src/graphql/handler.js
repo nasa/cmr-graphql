@@ -5,8 +5,9 @@ import {
 import { createStellateLoggerPlugin } from 'stellate/apollo-server'
 import { handlers, startServerAndCreateLambdaHandler } from '@as-integrations/aws-lambda'
 import { v4 as uuidv4 } from 'uuid'
-
 import DataLoader from 'dataloader'
+import { applyMiddleware } from 'graphql-middleware'
+import { makeExecutableSchema } from '@graphql-tools/schema'
 
 import resolvers from '../resolvers'
 import typeDefs from '../types'
@@ -93,6 +94,9 @@ import { verifyEDLJwt } from '../utils/verifyEDLJwt'
 
 import { getCollectionsById } from '../dataloaders/getCollectionsById'
 
+import permissions from '../permissions'
+import fetchEdlClientToken from '../utils/fetchEdlClientToken'
+
 const { env } = process
 
 // Initialize the plugins with those we always want enabled
@@ -121,13 +125,24 @@ if (!isOffline) {
   )
 }
 
+const schema = applyMiddleware(
+  makeExecutableSchema({
+    typeDefs,
+    resolvers
+  }),
+  permissions
+)
+
 const server = new ApolloServer({
-  // Passing types and resolvers to the server
-  typeDefs,
-  resolvers,
+  // // Passing types and resolvers to the server
+  // typeDefs,
+  // resolvers,
+  schema,
   introspection: true,
   plugins: apolloPlugins
 })
+
+let edlClientToken
 
 export default startServerAndCreateLambdaHandler(
   server,
@@ -187,6 +202,11 @@ export default startServerAndCreateLambdaHandler(
 
       requestHeaders.User = context.edlUsername
 
+      // If this lambda instance does not have a edlClient token, fetch one
+      if (!edlClientToken) {
+        edlClientToken = await fetchEdlClientToken()
+      }
+
       return {
         ...context,
         dataSources: {
@@ -240,8 +260,11 @@ export default startServerAndCreateLambdaHandler(
           variableSourceDelete,
           variableSourceFetch
         },
-        headers: requestHeaders,
-        collectionLoader: new DataLoader(getCollectionsById, { cacheKeyFn: (obj) => obj.conceptId })
+        edlClientToken,
+        collectionLoader: new DataLoader(getCollectionsById, {
+          cacheKeyFn: (obj) => obj.conceptId
+        }),
+        headers: requestHeaders
       }
     },
     middleware: [
