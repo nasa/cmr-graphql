@@ -558,12 +558,12 @@ describe('Service', () => {
           items: [{
             conceptId: 'S100000-EDSC',
             variables: {
-              items: null
+              items: []
             }
           }, {
             conceptId: 'S100001-EDSC',
             variables: {
-              items: null
+              items: []
             }
           }]
         }
@@ -1059,7 +1059,7 @@ describe('Service', () => {
                       {
                         conceptId: 'S100000-EDSC',
                         orderOptions: {
-                          items: null
+                          items: []
                         }
                       }
                     ]
@@ -1144,7 +1144,7 @@ describe('Service', () => {
                       {
                         conceptId: 'S100000-EDSC',
                         orderOptions: {
-                          items: null
+                          items: []
                         }
                       }
                     ]
@@ -1237,7 +1237,7 @@ describe('Service', () => {
                       {
                         conceptId: 'S100000-EDSC',
                         orderOptions: {
-                          items: null
+                          items: []
                         }
                       }
                     ]
@@ -1301,7 +1301,7 @@ describe('Service', () => {
                 {
                   conceptId: 'C100000-EDSC',
                   services: {
-                    items: null
+                    items: []
                   }
                 }
               ]
@@ -1505,7 +1505,7 @@ describe('Service', () => {
             items: [{
               conceptId: 'S100000-EDSC',
               orderOptions: {
-                items: null
+                items: []
               }
             }]
           }

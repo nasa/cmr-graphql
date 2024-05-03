@@ -478,12 +478,12 @@ describe('OrderOption', () => {
               items: [{
                 form: '<Form />',
                 collections: {
-                  items: null
+                  items: []
                 }
               }, {
                 form: '<Form />',
                 collections: {
-                  items: null
+                  items: []
                 }
               }]
             }
