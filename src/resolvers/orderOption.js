@@ -38,7 +38,7 @@ export default {
       if (!collections.length) {
         return {
           count: 0,
-          items: null
+          items: []
         }
       }
 

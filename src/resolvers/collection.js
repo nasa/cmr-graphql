@@ -159,7 +159,7 @@ export default {
       if (!dataQualitySummaryConceptIds.length) {
         return {
           count: 0,
-          items: null
+          items: []
         }
       }
 
@@ -198,7 +198,7 @@ export default {
       if (!services.length) {
         return {
           count: 0,
-          items: null
+          items: []
         }
       }
 
@@ -267,7 +267,7 @@ export default {
       if (!tools.length) {
         return {
           count: 0,
-          items: null
+          items: []
         }
       }
 
@@ -295,7 +295,7 @@ export default {
       if (!variables.length) {
         return {
           count: 0,
-          items: null
+          items: []
         }
       }
 

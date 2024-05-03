@@ -1009,12 +1009,12 @@ describe('Collection', () => {
               items: [{
                 conceptId: 'C100000-EDSC',
                 services: {
-                  items: null
+                  items: []
                 }
               }, {
                 conceptId: 'C100001-EDSC',
                 services: {
-                  items: null
+                  items: []
                 }
               }]
             }
@@ -1071,12 +1071,12 @@ describe('Collection', () => {
               items: [{
                 conceptId: 'C100000-EDSC',
                 services: {
-                  items: null
+                  items: []
                 }
               }, {
                 conceptId: 'C100001-EDSC',
                 services: {
-                  items: null
+                  items: []
                 }
               }]
             }
@@ -1580,12 +1580,12 @@ describe('Collection', () => {
               items: [{
                 conceptId: 'C100000-EDSC',
                 tools: {
-                  items: null
+                  items: []
                 }
               }, {
                 conceptId: 'C100001-EDSC',
                 tools: {
-                  items: null
+                  items: []
                 }
               }]
             }
@@ -1642,12 +1642,12 @@ describe('Collection', () => {
               items: [{
                 conceptId: 'C100000-EDSC',
                 tools: {
-                  items: null
+                  items: []
                 }
               }, {
                 conceptId: 'C100001-EDSC',
                 tools: {
-                  items: null
+                  items: []
                 }
               }]
             }
@@ -1860,12 +1860,12 @@ describe('Collection', () => {
               items: [{
                 conceptId: 'C100000-EDSC',
                 variables: {
-                  items: null
+                  items: []
                 }
               }, {
                 conceptId: 'C100001-EDSC',
                 variables: {
-                  items: null
+                  items: []
                 }
               }]
             }
@@ -1922,12 +1922,12 @@ describe('Collection', () => {
               items: [{
                 conceptId: 'C100000-EDSC',
                 variables: {
-                  items: null
+                  items: []
                 }
               }, {
                 conceptId: 'C100001-EDSC',
                 variables: {
-                  items: null
+                  items: []
                 }
               }]
             }
@@ -2140,12 +2140,12 @@ describe('Collection', () => {
               items: [{
                 conceptId: 'C100000-EDSC',
                 dataQualitySummaries: {
-                  items: null
+                  items: []
                 }
               }, {
                 conceptId: 'C100001-EDSC',
                 dataQualitySummaries: {
-                  items: null
+                  items: []
                 }
               }]
             }
@@ -2202,12 +2202,12 @@ describe('Collection', () => {
               items: [{
                 conceptId: 'C100000-EDSC',
                 dataQualitySummaries: {
-                  items: null
+                  items: []
                 }
               }, {
                 conceptId: 'C100001-EDSC',
                 dataQualitySummaries: {
-                  items: null
+                  items: []
                 }
               }]
             }
