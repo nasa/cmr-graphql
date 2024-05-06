@@ -51,6 +51,7 @@ export default class Concept {
       conceptIds: 'conceptId',
       dataCenters: 'dataCenter',
       providerIds: 'providerId',
+      permittedGroups: 'permittedGroup',
       shortNames: 'shortName'
     }
   }

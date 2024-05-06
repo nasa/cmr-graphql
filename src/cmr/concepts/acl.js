@@ -20,6 +20,16 @@ export default class Acl extends Concept {
   }
 
   /**
+   * Returns an array of keys that should not be indexed when sent to CMR
+   */
+  getNonIndexedKeys() {
+    return uniq([
+      ...super.getNonIndexedKeys(),
+      'permitted_group'
+    ])
+  }
+
+  /**
    * Parse and return the array of data from the nested response body
    * @param {Object} jsonResponse HTTP response from the CMR endpoint
    */
