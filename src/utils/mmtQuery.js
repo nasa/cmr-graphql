@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { snakeCase } from 'lodash'
+import snakeCase from 'lodash/snakeCase'
 
 import snakeCaseKeys from 'snakecase-keys'
 

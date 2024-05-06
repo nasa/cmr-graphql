@@ -1,7 +1,10 @@
+import kebabCase from 'lodash/kebabCase'
+import pick from 'lodash/pick'
 import snakecaseKeys from 'snakecase-keys'
-import { kebabCase, pick } from 'lodash'
+
 import { mergeParams } from '../../utils/mergeParams'
 import { providersQuery } from '../../utils/providersQuery'
+
 import Concept from './concept'
 
 export default class Provider extends Concept {

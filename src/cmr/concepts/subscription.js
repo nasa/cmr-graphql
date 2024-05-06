@@ -1,6 +1,8 @@
-import { v4 as uuidv4 } from 'uuid'
 import camelcaseKeys from 'camelcase-keys'
-import { uniq } from 'lodash'
+import uniq from 'lodash/uniq'
+
+import { v4 as uuidv4 } from 'uuid'
+
 import { mergeParams } from '../../utils/mergeParams'
 
 import Concept from './concept'

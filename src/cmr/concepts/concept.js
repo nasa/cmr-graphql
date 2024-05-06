@@ -2,11 +2,9 @@ import camelcaseKeys from 'camelcase-keys'
 import dasherize from 'dasherize'
 import snakeCaseKeys from 'snakecase-keys'
 
-import {
-  snakeCase,
-  get,
-  pick
-} from 'lodash'
+import get from 'lodash/get'
+import pick from 'lodash/pick'
+import snakeCase from 'lodash/snakeCase'
 
 import { v4 as uuidv4 } from 'uuid'
 

@@ -1,5 +1,5 @@
 import camelcaseKeys from 'camelcase-keys'
-import { uniq } from 'lodash'
+import uniq from 'lodash/uniq'
 
 import Concept from './concept'
 

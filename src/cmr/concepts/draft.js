@@ -1,6 +1,7 @@
 import camelcaseKeys from 'camelcase-keys'
 
-import { pick, uniq } from 'lodash'
+import pick from 'lodash/pick'
+import uniq from 'lodash/uniq'
 
 import { pickIgnoringCase } from '../../utils/pickIgnoringCase'
 import { mergeParams } from '../../utils/mergeParams'
