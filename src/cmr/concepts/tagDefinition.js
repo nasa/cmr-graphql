@@ -1,7 +1,9 @@
-import { pick } from 'lodash'
+import pick from 'lodash/pick'
 import snakecaseKeys from 'snakecase-keys'
+
 import { mergeParams } from '../../utils/mergeParams'
 import { tagDefinitionQuery } from '../../utils/tagDefinitionQuery'
+
 import Concept from './concept'
 
 export default class TagDefinition extends Concept {

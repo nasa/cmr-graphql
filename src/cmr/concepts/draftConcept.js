@@ -1,5 +1,6 @@
 import camelcaseKeys from 'camelcase-keys'
-import { get, pick } from 'lodash'
+import get from 'lodash/get'
+import pick from 'lodash/pick'
 import snakecaseKeys from 'snakecase-keys'
 
 import { mergeParams } from '../../utils/mergeParams'

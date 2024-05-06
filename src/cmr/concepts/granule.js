@@ -1,4 +1,5 @@
-import { uniq } from 'lodash'
+import uniq from 'lodash/uniq'
+
 import Concept from './concept'
 
 export default class Granule extends Concept {
