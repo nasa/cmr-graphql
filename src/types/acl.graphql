@@ -69,8 +69,11 @@ input AclsInput {
   "User is an URS user name corresponding to a member of a group that has access to an Acl."
   permittedUser: String
 
+  "Group that is permitted via this Acl."
+  permittedGroup: String
+
   "List of groups that are permitted via this Acl."
-  permittedGroup: [String]
+  permittedGroups: [String]
 
   "Provider that owns the Acl"
   provider: String
