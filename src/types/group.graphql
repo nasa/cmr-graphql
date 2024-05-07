@@ -42,8 +42,11 @@ input GroupsInput {
   "Parameter used to search for groups by user ids. Multiple user ids can be passed as a comma separated string or as an array. A group containing all users passed in will be returned."
   userIds: [String]
 
-  "Parameter used to search for groups by tags. Multiple tags can be passed as a comma separated string or as an array. A group that matches any of the tags passed in will be returned. This is a wildcard search and will return groups where the parameter matches any of the group's tag field."
+  "Parameter used to search for groups by tags. A group that matches any of the tags passed in will be returned. This field supports wildcard searches by setting `wildcardTags` to `true`."
   tags: [String]
+
+  "Setting to `true` will have the `tags` parameter act as a wildcard search, returning groups where the tag contains the provided tag. Setting to `false` will have the `tags` parameter be an exact search. Defaults to `false`."
+  wildcardTags: Boolean
 }
 
 input GroupInput {
