@@ -10,10 +10,6 @@ beforeEach(() => {
   }
 })
 
-global.fetch = vi.fn(() => Promise.resolve({
-  json: () => Promise.resolve()
-}))
-
 describe('Retrieving EDL Client Token', () => {
   test('returns token', async () => {
     nock(/example-urs/, 'grant_type=client_credentials')

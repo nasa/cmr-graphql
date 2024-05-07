@@ -96,6 +96,7 @@ import { getCollectionsById } from '../dataloaders/getCollectionsById'
 
 import permissions from '../permissions'
 import fetchEdlClientToken from '../utils/fetchEdlClientToken'
+import fetchLaunchpadEdlUid from '../utils/fetchLaunchpadEdlUid'
 
 const { env } = process
 
@@ -173,6 +174,11 @@ export default startServerAndCreateLambdaHandler(
         'X-Request-Id': newRequestId
       }
 
+      // If this lambda instance does not have a edlClient token, fetch one
+      if (!edlClientToken) {
+        edlClientToken = await fetchEdlClientToken()
+      }
+
       // If the client has provided an EDL token supply it to CMR
       if (bearerToken) {
         requestHeaders.Authorization = bearerToken
@@ -188,6 +194,14 @@ export default startServerAndCreateLambdaHandler(
           if (edlUsername) {
             context.edlUsername = edlUsername
           }
+        } else {
+          // Get the edlUsername from the launchpad endpoint
+          const [, launchpadToken] = bearerToken.split(' ')
+          const edlUsername = await fetchLaunchpadEdlUid(launchpadToken, edlClientToken)
+
+          if (edlUsername) {
+            context.edlUsername = edlUsername
+          }
         }
       }
 
@@ -198,11 +212,6 @@ export default startServerAndCreateLambdaHandler(
       ].filter(Boolean).join('-')
 
       requestHeaders.User = context.edlUsername
-
-      // If this lambda instance does not have a edlClient token, fetch one
-      if (!edlClientToken) {
-        edlClientToken = await fetchEdlClientToken()
-      }
 
       return {
         ...context,
