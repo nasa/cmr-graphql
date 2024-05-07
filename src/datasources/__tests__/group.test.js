@@ -70,35 +70,129 @@ describe('group', () => {
   })
 
   describe('searchGroup', () => {
-    test('returns the user groups', async () => {
-      const edlRequestMock = vi.spyOn(edlRequest, 'edlRequest').mockResolvedValue({
-        data: [{
-          mock_data: 'Mock Data'
-        }]
+    describe('when wildcardTags is true', () => {
+      test('returns the user groups', async () => {
+        const edlRequestMock = vi.spyOn(edlRequest, 'edlRequest').mockResolvedValue({
+          data: [{
+            group_id: 'mock-group-1',
+            tag: 'MMT_2'
+          }, {
+            group_id: 'mock-group-2',
+            tag: 'MMT_1'
+          }]
+        })
+
+        const params = {
+          tags: ['MMT'],
+          wildcardTags: true
+        }
+        const context = {
+          headers: {}
+        }
+
+        const result = await searchGroup(params, context)
+
+        expect(result).toEqual({
+          count: 2,
+          items: [{
+            groupId: 'mock-group-1',
+            id: 'mock-group-1',
+            tag: 'MMT_2'
+          }, {
+            groupId: 'mock-group-2',
+            id: 'mock-group-2',
+            tag: 'MMT_1'
+          }]
+        })
+
+        expect(edlRequestMock).toHaveBeenCalledTimes(1)
+        expect(edlRequestMock).toHaveBeenCalledWith({
+          context,
+          method: 'GET',
+          params,
+          pathType: edlPathTypes.SEARCH_GROUPS
+        })
       })
+    })
 
-      const params = {
-        tags: ['MMT_2']
-      }
-      const context = {
-        headers: {}
-      }
+    describe('when wildcardTags is false', () => {
+      test('returns the user groups', async () => {
+        const edlRequestMock = vi.spyOn(edlRequest, 'edlRequest').mockResolvedValue({
+          data: [{
+            group_id: 'mock-group-1',
+            tag: 'MMT_2'
+          }, {
+            group_id: 'mock-group-2',
+            tag: 'MMT_1'
+          }]
+        })
 
-      const result = await searchGroup(params, context)
+        const params = {
+          tags: ['MMT_2'],
+          wildcardTags: false
+        }
+        const context = {
+          headers: {}
+        }
 
-      expect(result).toEqual({
-        count: 1,
-        items: [{
-          mockData: 'Mock Data'
-        }]
+        const result = await searchGroup(params, context)
+
+        expect(result).toEqual({
+          count: 1,
+          items: [{
+            groupId: 'mock-group-1',
+            id: 'mock-group-1',
+            tag: 'MMT_2'
+          }]
+        })
+
+        expect(edlRequestMock).toHaveBeenCalledTimes(1)
+        expect(edlRequestMock).toHaveBeenCalledWith({
+          context,
+          method: 'GET',
+          params,
+          pathType: edlPathTypes.SEARCH_GROUPS
+        })
       })
+    })
 
-      expect(edlRequestMock).toHaveBeenCalledTimes(1)
-      expect(edlRequestMock).toHaveBeenCalledWith({
-        context,
-        method: 'GET',
-        params,
-        pathType: edlPathTypes.SEARCH_GROUPS
+    describe('when wildcardTags is undefined', () => {
+      test('returns the user groups', async () => {
+        const edlRequestMock = vi.spyOn(edlRequest, 'edlRequest').mockResolvedValue({
+          data: [{
+            group_id: 'mock-group-1',
+            tag: 'MMT_2'
+          }, {
+            group_id: 'mock-group-2',
+            tag: 'MMT_1'
+          }]
+        })
+
+        const params = {
+          tags: ['MMT_2']
+        }
+        const context = {
+          headers: {}
+        }
+
+        const result = await searchGroup(params, context)
+
+        expect(result).toEqual({
+          count: 1,
+          items: [{
+            groupId: 'mock-group-1',
+            id: 'mock-group-1',
+            tag: 'MMT_2'
+          }]
+        })
+
+        expect(edlRequestMock).toHaveBeenCalledTimes(1)
+        expect(edlRequestMock).toHaveBeenCalledWith({
+          context,
+          method: 'GET',
+          params,
+          pathType: edlPathTypes.SEARCH_GROUPS
+        })
       })
     })
 

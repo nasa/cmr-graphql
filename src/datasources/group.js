@@ -49,7 +49,22 @@ export const searchGroup = async (params, context, requestInfo) => {
     // Format the returned data to match the schema
     const camelcasedData = camelcaseKeys(result.data, { deep: true })
 
-    const updatedData = camelcasedData.map((group) => renameEdlId(group, 'groupId'))
+    const {
+      tags,
+      wildcardTags
+    } = params
+    let filteredData = camelcasedData
+
+    // EDL does a wildcard-ish search with the `tags` parameter, but that isn't ideal. By default we want
+    // the `tags` parameter to be exact, and the user should opt-in to a wildcard search by setting
+    // `wildcardTags` to `true`.
+    //
+    // If `wildcardTags` is falsey, narrow the results to exact matches of the `tags` parameter (if it exists).
+    if (tags && !wildcardTags) {
+      filteredData = camelcasedData.filter((group) => tags.includes(group.tag))
+    }
+
+    const updatedData = filteredData.map((group) => renameEdlId(group, 'groupId'))
 
     // Include `count` and `items` to match the schema's groupList
     return {
