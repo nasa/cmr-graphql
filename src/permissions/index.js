@@ -6,33 +6,34 @@ import {
 
 import { canReadSystemGroups } from './acls/canReadSystemGroups'
 import { canCreateSystemGroups } from './acls/canCreateSystemGroups'
-import { isLocalMMTAdmin } from './rules/isLocalMMTAdmin'
+
+import { isLocalMMT } from './rules/isLocalMMT'
 
 const permissions = shield(
   {
     Query: {
       // The `race` rule allows you to chain the rules so that execution stops once one of them returns.
-      // So if the `isLocalMMTAdmin` rule passes, don't bother checking the permissions of the user
+      // So if the `isLocalMMT` rule passes, don't bother checking the permissions of the user
       group: race(
-        isLocalMMTAdmin,
+        isLocalMMT,
         canReadSystemGroups
       ),
       groups: race(
-        isLocalMMTAdmin,
+        isLocalMMT,
         canReadSystemGroups
       )
     },
     Mutation: {
       createGroup: race(
-        isLocalMMTAdmin,
+        isLocalMMT,
         canCreateSystemGroups
       ),
       deleteGroup: race(
-        isLocalMMTAdmin,
+        isLocalMMT,
         canCreateSystemGroups
       ),
       updateGroup: race(
-        isLocalMMTAdmin,
+        isLocalMMT,
         canCreateSystemGroups
       )
     }
