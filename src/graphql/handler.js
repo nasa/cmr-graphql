@@ -196,12 +196,11 @@ export default startServerAndCreateLambdaHandler(
           }
         } else {
           // Get the edlUsername from the launchpad endpoint
-          const [, launchpadToken] = bearerToken.split(' ')
-
           let edlUsername
+
           // If we don't have a token, don't try to call EDL
-          if (launchpadToken) {
-            edlUsername = await fetchLaunchpadEdlUid(launchpadToken, edlClientToken)
+          if (bearerToken) {
+            edlUsername = await fetchLaunchpadEdlUid(bearerToken, edlClientToken)
           }
 
           if (edlUsername) {
