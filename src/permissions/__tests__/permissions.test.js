@@ -6,7 +6,8 @@ import permissions from '../index'
 
 import { canReadSystemGroups } from '../acls/canReadSystemGroups'
 import { canCreateSystemGroups } from '../acls/canCreateSystemGroups'
-import { isLocalMMTAdmin } from '../rules/isLocalMMTAdmin'
+
+import { isLocalMMT } from '../rules/isLocalMMT'
 
 vi.mock('graphql-shield', async () => {
   const original = await vi.importActual('graphql-shield')
@@ -23,25 +24,25 @@ describe('permissions', () => {
     expect(shield.mock.calls[0][0]).toEqual({
       Query: {
         group: race(
-          isLocalMMTAdmin,
+          isLocalMMT,
           canReadSystemGroups
         ),
         groups: race(
-          isLocalMMTAdmin,
+          isLocalMMT,
           canReadSystemGroups
         )
       },
       Mutation: {
         createGroup: race(
-          isLocalMMTAdmin,
+          isLocalMMT,
           canCreateSystemGroups
         ),
         deleteGroup: race(
-          isLocalMMTAdmin,
+          isLocalMMT,
           canCreateSystemGroups
         ),
         updateGroup: race(
-          isLocalMMTAdmin,
+          isLocalMMT,
           canCreateSystemGroups
         )
       }

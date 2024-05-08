@@ -1,6 +1,6 @@
-import { isLocalMMTAdmin } from '../isLocalMMTAdmin'
+import { isLocalMMT } from '../isLocalMMT'
 
-describe('isLocalMMTAdmin', () => {
+describe('isLocalMMT', () => {
   const OLD_ENV = process.env
 
   beforeEach(() => {
@@ -14,7 +14,7 @@ describe('isLocalMMTAdmin', () => {
   test('returns true if the request is offline and has the admin token', async () => {
     process.env.IS_OFFLINE = true
 
-    const result = await isLocalMMTAdmin.resolve(
+    const result = await isLocalMMT.resolve(
       null,
       {},
       {
@@ -30,7 +30,7 @@ describe('isLocalMMTAdmin', () => {
   test('returns false if the request is offline but a real token is passed', async () => {
     process.env.IS_OFFLINE = true
 
-    const result = await isLocalMMTAdmin.resolve(
+    const result = await isLocalMMT.resolve(
       null,
       {},
       {
@@ -46,7 +46,7 @@ describe('isLocalMMTAdmin', () => {
   test('returns false if the request is not offline', async () => {
     process.env.IS_OFFLINE = false
 
-    const result = await isLocalMMTAdmin.resolve(
+    const result = await isLocalMMT.resolve(
       null,
       {},
       {
