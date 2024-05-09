@@ -1,5 +1,7 @@
 import { parseResolveInfo } from 'graphql-parse-resolve-info'
+import camelcaseKeys from 'camelcase-keys'
 import { handlePagingParams } from '../utils/handlePagingParams'
+import { parseRequestedFields } from '../utils/parseRequestedFields'
 
 export default {
   Query: {
@@ -36,6 +38,37 @@ export default {
       const { dataSources } = context
 
       return dataSources.aclSourceDelete(args, context, parseResolveInfo(info))
+    }
+  },
+
+  Acl: {
+    groupPermissions: async (source) => {
+      const { groupPermissions } = source
+
+      const camelcasedData = camelcaseKeys(groupPermissions, { deep: true })
+
+      return {
+        count: groupPermissions.length,
+        items: camelcasedData
+      }
+    }
+  },
+  GroupPermissions: {
+    group: async (source, args, context, info) => {
+      const { dataSources } = context
+      const resolvedInfo = parseResolveInfo(info)
+      const requestInfo = parseRequestedFields(resolvedInfo, {}, 'group')
+      const { groupId: id } = source
+
+      if (!id) {
+        return null
+      }
+
+      return dataSources.groupSourceFetch(
+        { id },
+        context,
+        requestInfo
+      )
     }
   }
 }

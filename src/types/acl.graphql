@@ -15,7 +15,7 @@ type Acl {
   location: String
 
   "List of groups and their permissions to the catalog item associated with this Acl."
-  groupPermissions: JSON
+  groupPermissions: GroupPermissionList
 
   "The GUID from Legacy Services that was used during migrations, this value should no longer be referenced."
   legacyGuid: String @deprecated(reason: "This field was temporary and is being deprecated.")
@@ -33,6 +33,27 @@ type Acl {
   acl: JSON @deprecated(reason: "Deprecating in favor of `groupPermissions`, `legacyGuid`, `catalogItemIdentity`.")
 }
 
+type GroupPermissionList {
+  "The number of hits for a given search."
+  count: Int
+
+  "The list of group search results."
+  items: [GroupPermissions]
+}
+
+type GroupPermissions {
+  "Type of permissions"
+  permissions: [String]
+
+  "A user type of the group"
+  userType: String
+
+  group (
+    "User group query parameters."
+    params: GroupInput
+  ): Group
+}
+  
 type AclList {
   "The number of hits for a given search."
   count: Int
@@ -41,7 +62,7 @@ type AclList {
   cursor: String
 
   "The list of acl search results."
-  items: [Acl]  
+  items: [Acl]
 }
 
 enum IdentityType {
