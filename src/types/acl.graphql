@@ -82,6 +82,9 @@ input AclsInput {
   "The size of the range GraphDB searches on. Defaults to 20."
   limit: Int
 
+  "Zero based offset of individual results."
+  offset: Int
+  
   "User is an URS user name corresponding to a member of a group that has access to an Acl."
   permittedUser: String
 

@@ -57,10 +57,18 @@ export default {
       const { dataSources } = context
       const resolvedInfo = parseResolveInfo(info)
       const requestInfo = parseRequestedFields(resolvedInfo, {}, 'group')
+
+      const { jsonKeys } = requestInfo
+
       const { groupId: id } = source
 
       if (!id) {
         return null
+      }
+
+      // If only id field is requested, returns the groupId from the previous result
+      if (jsonKeys.includes('id') && jsonKeys.length === 1) {
+        return { id }
       }
 
       return dataSources.groupSourceFetch(

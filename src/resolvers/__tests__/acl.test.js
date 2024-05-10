@@ -130,109 +130,199 @@ describe('Acl', () => {
     })
 
     describe('Query group permission', () => {
-      test('return group permission result', async () => {
-        nock(/example-cmr/)
-          .defaultReplyHeaders({
-            'CMR-Hits': 1,
-            'CMR-Took': 7,
-            'CMR-Request-Id': 'abcd-1234-efgh-5678'
-          })
-          .get(/access-control\/acls/)
-          .reply(200, {
-            items: [
-              {
-                concept_id: 'ACL100000-EDSC',
-                revision_id: 1,
-                identity_type: 'Catalog Item',
-                name: 'Mock Test Name',
-                location: 'Mock Location',
-                acl: {
-                  group_permissions: [
-                    {
-                      permissions: [
-                        'read'
-                      ],
-                      group_id: '90336eb8-309c-44f5-aaa8-1672765b1195'
-                    }
-                  ]
+      describe('when id and name are requested for groups', () => {
+        test('return group permission result with id and name', async () => {
+          nock(/example-cmr/)
+            .defaultReplyHeaders({
+              'CMR-Hits': 1,
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .get(/access-control\/acls/)
+            .reply(200, {
+              items: [
+                {
+                  concept_id: 'ACL100000-EDSC',
+                  revision_id: 1,
+                  identity_type: 'Catalog Item',
+                  name: 'Mock Test Name',
+                  location: 'Mock Location',
+                  acl: {
+                    group_permissions: [
+                      {
+                        permissions: [
+                          'read'
+                        ],
+                        group_id: '90336eb8-309c-44f5-aaa8-1672765b1195'
+                      }
+                    ]
+                  }
                 }
-              }
-            ]
-          })
+              ]
+            })
 
-        nock(/example-urs/, {
-          reqheaders: {
-            'Client-Id': 'eed-test-graphql',
-            'X-Request-Id': 'abcd-1234-efgh-5678'
-          }
-        })
-          .get(/api\/user_groups\/90336eb8-309c-44f5-aaa8-1672765b1195/)
-          .reply(200, {
-            group_id: '90336eb8-309c-44f5-aaa8-1672765b1195',
-            app_uid: 'mmt_test',
-            client_id: '81FEem91NlTQreWv2UgtXQ',
-            name: 'Test Group',
-            description: 'Just a test group',
-            shared_user_group: false,
-            created_by: 'mmt_test',
-            tag: 'MMT_2'
+          nock(/example-urs/, {
+            reqheaders: {
+              'Client-Id': 'eed-test-graphql',
+              'X-Request-Id': 'abcd-1234-efgh-5678'
+            }
           })
+            .get(/api\/user_groups\/90336eb8-309c-44f5-aaa8-1672765b1195/)
+            .reply(200, {
+              group_id: '90336eb8-309c-44f5-aaa8-1672765b1195',
+              app_uid: 'mmt_test',
+              client_id: '81FEem91NlTQreWv2UgtXQ',
+              name: 'Test Group',
+              description: 'Just a test group',
+              shared_user_group: false,
+              created_by: 'mmt_test',
+              tag: 'MMT_2'
+            })
 
-        const response = await server.executeOperation({
-          variables: {},
-          query: `
-              query GetAcls($params: AclsInput) {
-                acls(params: $params) {
-                  items {
-                    catalogItemIdentity
-                    conceptId
-                    groupPermissions {
-                      groupPermission {
-                        permissions
-                        userType
-                        group {
-                          id
-                          name
+          const response = await server.executeOperation({
+            variables: {},
+            query: `
+                query GetAcls($params: AclsInput) {
+                  acls(params: $params) {
+                    items {
+                      catalogItemIdentity
+                      conceptId
+                      groupPermissions {
+                        groupPermission {
+                          permissions
+                          userType
+                          group {
+                            id
+                            name
+                          }
                         }
                       }
+                      identityType
+                      location
+                      name
+                      revisionId
                     }
-                    identityType
-                    location
-                    name
-                    revisionId
+                  }
+                }`
+
+          }, {
+            contextValue
+          })
+
+          const { data, errors } = response.body.singleResult
+
+          expect(errors).toBeUndefined()
+
+          expect(data).toEqual({
+            acls: {
+              items: [{
+                catalogItemIdentity: null,
+                conceptId: 'ACL100000-EDSC',
+                groupPermissions: {
+                  groupPermission: [{
+                    permissions: ['read'],
+                    userType: null,
+                    group: {
+                      id: '90336eb8-309c-44f5-aaa8-1672765b1195',
+                      name: 'Test Group'
+                    }
+                  }]
+                },
+                identityType: 'Catalog Item',
+                location: 'Mock Location',
+                name: 'Mock Test Name',
+                revisionId: 1
+              }]
+            }
+          })
+        })
+      })
+
+      describe('when only id is requested groups', () => {
+        test('return group permission result with id', async () => {
+          nock(/example-cmr/)
+            .defaultReplyHeaders({
+              'CMR-Hits': 1,
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .get(/access-control\/acls/)
+            .reply(200, {
+              items: [
+                {
+                  concept_id: 'ACL100000-EDSC',
+                  revision_id: 1,
+                  identity_type: 'Catalog Item',
+                  name: 'Mock Test Name',
+                  location: 'Mock Location',
+                  acl: {
+                    group_permissions: [
+                      {
+                        permissions: [
+                          'read'
+                        ],
+                        group_id: '90336eb8-309c-44f5-aaa8-1672765b1195'
+                      }
+                    ]
                   }
                 }
-              }`
+              ]
+            })
 
-        }, {
-          contextValue
-        })
-
-        const { data, errors } = response.body.singleResult
-
-        expect(errors).toBeUndefined()
-
-        expect(data).toEqual({
-          acls: {
-            items: [{
-              catalogItemIdentity: null,
-              conceptId: 'ACL100000-EDSC',
-              groupPermissions: {
-                groupPermission: [{
-                  permissions: ['read'],
-                  userType: null,
-                  group: {
-                    id: '90336eb8-309c-44f5-aaa8-1672765b1195',
-                    name: 'Test Group'
+          const response = await server.executeOperation({
+            variables: {},
+            query: `
+                query GetAcls($params: AclsInput) {
+                  acls(params: $params) {
+                    items {
+                      catalogItemIdentity
+                      conceptId
+                      groupPermissions {
+                        groupPermission {
+                          permissions
+                          userType
+                          group {
+                            id
+                          }
+                        }
+                      }
+                      identityType
+                      location
+                      name
+                      revisionId
+                    }
                   }
-                }]
-              },
-              identityType: 'Catalog Item',
-              location: 'Mock Location',
-              name: 'Mock Test Name',
-              revisionId: 1
-            }]
-          }
+                }`
+
+          }, {
+            contextValue
+          })
+
+          const { data, errors } = response.body.singleResult
+
+          expect(errors).toBeUndefined()
+
+          expect(data).toEqual({
+            acls: {
+              items: [{
+                catalogItemIdentity: null,
+                conceptId: 'ACL100000-EDSC',
+                groupPermissions: {
+                  groupPermission: [{
+                    permissions: ['read'],
+                    userType: null,
+                    group: {
+                      id: '90336eb8-309c-44f5-aaa8-1672765b1195'
+                    }
+                  }]
+                },
+                identityType: 'Catalog Item',
+                location: 'Mock Location',
+                name: 'Mock Test Name',
+                revisionId: 1
+              }]
+            }
+          })
         })
       })
     })

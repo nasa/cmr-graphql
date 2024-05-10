@@ -112,9 +112,10 @@ export default class Acl extends Concept {
     return [
       'concept_id',
       'group_permission',
-      'identity_type',
       'id',
+      'identity_type',
       'include_full_acl',
+      'offset',
       'page_size',
       'permitted_concept_id',
       'permitted_group',
