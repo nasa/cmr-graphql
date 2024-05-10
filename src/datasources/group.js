@@ -53,6 +53,7 @@ export const searchGroup = async (params, context, requestInfo) => {
 
     const { params: searchParams } = params
     const {
+      excludeTags,
       limit = 20,
       offset = 0,
       tags,
@@ -67,6 +68,11 @@ export const searchGroup = async (params, context, requestInfo) => {
     // If `wildcardTags` is falsey, narrow the results to exact matches of the `tags` parameter (if it exists).
     if (tags && !wildcardTags) {
       filteredData = camelcasedData.filter((group) => tags.includes(group.tag))
+    }
+
+    // If the `excludeTags` parameter is included, only return groups that do not match the values provided
+    if (excludeTags) {
+      filteredData = filteredData.filter((group) => !excludeTags.includes(group.tag))
     }
 
     // Fake paging until EDL supports paging parameters

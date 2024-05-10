@@ -253,6 +253,55 @@ describe('group', () => {
       })
     })
 
+    describe('when excludeTags is provided', () => {
+      test('returns the user groups', async () => {
+        const edlRequestMock = vi.spyOn(edlRequest, 'edlRequest').mockResolvedValue({
+          data: [{
+            group_id: 'mock-group-1',
+            tag: 'MMT_2'
+          }, {
+            group_id: 'mock-group-2',
+            tag: 'MMT_2'
+          }, {
+            group_id: 'mock-group-3',
+            tag: 'MMT_1'
+          }]
+        })
+
+        const params = {
+          params: {
+            excludeTags: ['MMT_1']
+          }
+        }
+        const context = {
+          headers: {}
+        }
+
+        const result = await searchGroup(params, context)
+
+        expect(result).toEqual({
+          count: 2,
+          items: [{
+            groupId: 'mock-group-1',
+            id: 'mock-group-1',
+            tag: 'MMT_2'
+          }, {
+            groupId: 'mock-group-2',
+            id: 'mock-group-2',
+            tag: 'MMT_2'
+          }]
+        })
+
+        expect(edlRequestMock).toHaveBeenCalledTimes(1)
+        expect(edlRequestMock).toHaveBeenCalledWith({
+          context,
+          method: 'GET',
+          params,
+          pathType: edlPathTypes.SEARCH_GROUPS
+        })
+      })
+    })
+
     describe('when the request errors', () => {
       test('calls parseError', async () => {
         const edlRequestMock = vi.spyOn(edlRequest, 'edlRequest').mockImplementation(async () => {
