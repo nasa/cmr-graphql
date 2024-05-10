@@ -48,12 +48,11 @@ export default {
       const camelcasedData = camelcaseKeys(groupPermissions, { deep: true })
 
       return {
-        count: groupPermissions.length,
-        items: camelcasedData
+        groupPermission: camelcasedData
       }
     }
   },
-  GroupPermissions: {
+  GroupPermission: {
     group: async (source, args, context, info) => {
       const { dataSources } = context
       const resolvedInfo = parseResolveInfo(info)

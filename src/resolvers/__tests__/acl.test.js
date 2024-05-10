@@ -71,8 +71,7 @@ describe('Acl', () => {
                 catalogItemIdentity
                 conceptId
                 groupPermissions {
-                  count
-                  items {
+                  groupPermission {
                     permissions
                     userType
                     group {
@@ -106,8 +105,7 @@ describe('Acl', () => {
             },
             conceptId: 'ACL100000-EDSC',
             groupPermissions: {
-              count: 2,
-              items: [{
+              groupPermission: [{
                 permissions: [
                   'read'
                 ],
@@ -189,8 +187,7 @@ describe('Acl', () => {
                     catalogItemIdentity
                     conceptId
                     groupPermissions {
-                      count
-                      items {
+                      groupPermission {
                         permissions
                         userType
                         group {
@@ -221,8 +218,7 @@ describe('Acl', () => {
               catalogItemIdentity: null,
               conceptId: 'ACL100000-EDSC',
               groupPermissions: {
-                count: 1,
-                items: [{
+                groupPermission: [{
                   permissions: ['read'],
                   userType: null,
                   group: {

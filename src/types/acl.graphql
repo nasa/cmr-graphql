@@ -34,24 +34,19 @@ type Acl {
 }
 
 type GroupPermissionList {
-  "The number of hits for a given search."
-  count: Int
-
   "The list of group search results."
-  items: [GroupPermissions]
+  groupPermission: [GroupPermission]
 }
 
-type GroupPermissions {
-  "Type of permissions"
+type GroupPermission {
+  "List of individual permissions this Group has to the Acl."
   permissions: [String]
 
-  "A user type of the group"
+  "The type of user this Acl applies to."
   userType: String
 
-  group (
-    "User group query parameters."
-    params: GroupInput
-  ): Group
+  "The group information for this permission"
+  group: Group
 }
   
 type AclList {
