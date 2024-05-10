@@ -83,8 +83,10 @@ describe('group', () => {
         })
 
         const params = {
-          tags: ['MMT'],
-          wildcardTags: true
+          params: {
+            tags: ['MMT'],
+            wildcardTags: true
+          }
         }
         const context = {
           headers: {}
@@ -128,8 +130,10 @@ describe('group', () => {
         })
 
         const params = {
-          tags: ['MMT_2'],
-          wildcardTags: false
+          params: {
+            tags: ['MMT_2'],
+            wildcardTags: false
+          }
         }
         const context = {
           headers: {}
@@ -169,7 +173,9 @@ describe('group', () => {
         })
 
         const params = {
-          tags: ['MMT_2']
+          params: {
+            tags: ['MMT_2']
+          }
         }
         const context = {
           headers: {}
@@ -182,6 +188,57 @@ describe('group', () => {
           items: [{
             groupId: 'mock-group-1',
             id: 'mock-group-1',
+            tag: 'MMT_2'
+          }]
+        })
+
+        expect(edlRequestMock).toHaveBeenCalledTimes(1)
+        expect(edlRequestMock).toHaveBeenCalledWith({
+          context,
+          method: 'GET',
+          params,
+          pathType: edlPathTypes.SEARCH_GROUPS
+        })
+      })
+    })
+
+    describe('when there are more than 1 page of results', () => {
+      test('returns the user groups limited', async () => {
+        const edlRequestMock = vi.spyOn(edlRequest, 'edlRequest').mockResolvedValue({
+          data: [{
+            group_id: 'mock-group-1',
+            tag: 'MMT_2'
+          }, {
+            group_id: 'mock-group-2',
+            tag: 'MMT_2'
+          }, {
+            group_id: 'mock-group-3',
+            tag: 'MMT_2'
+          }]
+        })
+
+        const params = {
+          params: {
+            tags: ['MMT_2'],
+            limit: 2,
+            offset: 0
+          }
+        }
+        const context = {
+          headers: {}
+        }
+
+        const result = await searchGroup(params, context)
+
+        expect(result).toEqual({
+          count: 3,
+          items: [{
+            groupId: 'mock-group-1',
+            id: 'mock-group-1',
+            tag: 'MMT_2'
+          }, {
+            groupId: 'mock-group-2',
+            id: 'mock-group-2',
             tag: 'MMT_2'
           }]
         })

@@ -47,6 +47,12 @@ input GroupsInput {
 
   "Setting to `true` will have the `tags` parameter act as a wildcard search, returning groups where the tag contains the provided tag. Setting to `false` will have the `tags` parameter be an exact search. Defaults to `false`."
   wildcardTags: Boolean
+
+  "The number of groups requested by the user."
+  limit: Int
+
+  "Zero based offset of individual results."
+  offset: Int
 }
 
 input GroupInput {
