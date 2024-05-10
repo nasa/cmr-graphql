@@ -46,13 +46,18 @@ export const searchGroup = async (params, context, requestInfo) => {
       requestInfo
     })
 
-    // Format the returned data to match the schema
-    const camelcasedData = camelcaseKeys(result.data, { deep: true })
+    const { data: groups } = result
 
+    // Format the returned data to match the schema
+    const camelcasedData = camelcaseKeys(groups, { deep: true })
+
+    const { params: searchParams } = params
     const {
+      limit = 20,
+      offset = 0,
       tags,
       wildcardTags
-    } = params
+    } = searchParams
     let filteredData = camelcasedData
 
     // EDL does a wildcard-ish search with the `tags` parameter, but that isn't ideal. By default we want
@@ -64,11 +69,16 @@ export const searchGroup = async (params, context, requestInfo) => {
       filteredData = camelcasedData.filter((group) => tags.includes(group.tag))
     }
 
-    const updatedData = filteredData.map((group) => renameEdlId(group, 'groupId'))
+    // Fake paging until EDL supports paging parameters
+    const limitedData = filteredData.slice(offset, offset + limit)
+
+    // Update the data to use `id` instead of `groupId`
+    const updatedData = limitedData.map((group) => renameEdlId(group, 'groupId'))
 
     // Include `count` and `items` to match the schema's groupList
     return {
-      count: updatedData.length,
+      // Return the full length before our fake paging
+      count: filteredData.length,
       items: updatedData
     }
   } catch (error) {
