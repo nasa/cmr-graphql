@@ -2,6 +2,7 @@ type Acl {
   "The unique concept id assigned to the Acl."
   conceptId: String
 
+  
   "The revision id for the Acl."
   revisionId: Int
 
@@ -21,7 +22,7 @@ type Acl {
   legacyGuid: String @deprecated(reason: "This field was temporary and is being deprecated.")
 
   "Identifies sets of catalog items (collections and granules) owned by a provider."
-  catalogItemIdentity: JSON
+  catalogItemIdentity: CatalogItemIdentity
 
   "Identifies a system level thing in the CMR."
   systemIdentity: JSON
@@ -31,6 +32,26 @@ type Acl {
 
   "Full JSON of the Acl."
   acl: JSON @deprecated(reason: "Deprecating in favor of `groupPermissions`, `legacyGuid`, `catalogItemIdentity`.")
+}
+
+type CatalogItemIdentity {
+  "Is collection applicable for a ACL"
+  collectionApplicable: Boolean
+  
+  "Is granule applicable for a ACL"
+  granuleApplicable: Boolean
+  
+  "The name of the ACL"
+  name: String
+
+  "The provider id of the ACL"
+  providerId: String
+
+  "The collection associated with the ACL"
+  collections (
+    "Collections query parameters"
+    params: CollectionsInput
+  ): CollectionList
 }
 
 type GroupPermissionList {

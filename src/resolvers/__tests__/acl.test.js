@@ -68,7 +68,12 @@ describe('Acl', () => {
           query GetAcls($params: AclsInput) {
             acls(params: $params) {
               items {
-                catalogItemIdentity
+                catalogItemIdentity {
+                  name
+                  providerId
+                  granuleApplicable
+                  collectionApplicable
+                }
                 conceptId
                 groupPermissions {
                   groupPermission {
@@ -99,9 +104,9 @@ describe('Acl', () => {
           items: [{
             catalogItemIdentity: {
               name: 'Mock test',
-              provider_id: 'TEST_123',
-              collection_applicable: true,
-              granule_applicable: true
+              providerId: 'TEST_123',
+              collectionApplicable: true,
+              granuleApplicable: true
             },
             conceptId: 'ACL100000-EDSC',
             groupPermissions: {
@@ -155,7 +160,13 @@ describe('Acl', () => {
                         ],
                         group_id: '90336eb8-309c-44f5-aaa8-1672765b1195'
                       }
-                    ]
+                    ],
+                    catalog_item_identity: {
+                      name: 'Mock test',
+                      provider_id: 'TEST_123',
+                      collection_applicable: true,
+                      granule_applicable: true
+                    }
                   }
                 }
               ]
@@ -185,7 +196,12 @@ describe('Acl', () => {
                 query GetAcls($params: AclsInput) {
                   acls(params: $params) {
                     items {
-                      catalogItemIdentity
+                      catalogItemIdentity {
+                        name
+                        providerId
+                        granuleApplicable
+                        collectionApplicable
+                      }
                       conceptId
                       groupPermissions {
                         groupPermission {
@@ -216,7 +232,12 @@ describe('Acl', () => {
           expect(data).toEqual({
             acls: {
               items: [{
-                catalogItemIdentity: null,
+                catalogItemIdentity: {
+                  name: 'Mock test',
+                  providerId: 'TEST_123',
+                  collectionApplicable: true,
+                  granuleApplicable: true
+                },
                 conceptId: 'ACL100000-EDSC',
                 groupPermissions: {
                   groupPermission: [{
@@ -263,7 +284,14 @@ describe('Acl', () => {
                         ],
                         group_id: '90336eb8-309c-44f5-aaa8-1672765b1195'
                       }
-                    ]
+                    ],
+                    catalog_item_identity: {
+                      name: 'Mock test',
+                      provider_id: 'TEST_123',
+                      collection_applicable: true,
+                      collection_identifier: null,
+                      granule_applicable: true
+                    }
                   }
                 }
               ]
@@ -275,7 +303,15 @@ describe('Acl', () => {
                 query GetAcls($params: AclsInput) {
                   acls(params: $params) {
                     items {
-                      catalogItemIdentity
+                      catalogItemIdentity {
+                        collections {
+                          count
+                        }
+                        name
+                        providerId
+                        granuleApplicable
+                        collectionApplicable
+                      }
                       conceptId
                       groupPermissions {
                         groupPermission {
@@ -305,7 +341,13 @@ describe('Acl', () => {
           expect(data).toEqual({
             acls: {
               items: [{
-                catalogItemIdentity: null,
+                catalogItemIdentity: {
+                  name: 'Mock test',
+                  providerId: 'TEST_123',
+                  collections: null,
+                  collectionApplicable: true,
+                  granuleApplicable: true
+                },
                 conceptId: 'ACL100000-EDSC',
                 groupPermissions: {
                   groupPermission: [{
@@ -320,6 +362,123 @@ describe('Acl', () => {
                 location: 'Mock Location',
                 name: 'Mock Test Name',
                 revisionId: 1
+              }]
+            }
+          })
+        })
+      })
+    })
+
+    describe('Query Catalog Item Identity', () => {
+      describe('when the acl has collectionIdentifier', () => {
+        test('returns collection information', async () => {
+          nock(/example-cmr/)
+            .defaultReplyHeaders({
+              'CMR-Hits': 1,
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .get(/access-control\/acls/)
+            .reply(200, {
+              items: [
+                {
+                  concept_id: 'ACL100000-EDSC',
+                  revision_id: 1,
+                  identity_type: 'Catalog Item',
+                  name: 'Mock Test Name',
+                  location: 'Mock Location',
+                  acl: {
+                    group_permissions: [
+                      {
+                        permissions: [
+                          'read'
+                        ],
+                        group_id: '90336eb8-309c-44f5-aaa8-1672765b1195'
+                      }
+                    ],
+                    catalog_item_identity: {
+                      name: 'Mock test',
+                      provider_id: 'TEST_123',
+                      collection_applicable: true,
+                      collection_identifier: {
+                        concept_ids: ['C120042746-MMT_2']
+                      },
+                      granule_applicable: true
+                    }
+                  }
+                }
+              ]
+            })
+
+          nock(/example-cmr/)
+            .defaultReplyHeaders({
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .get('/search/collections.umm_json?concept_id[]=C120042746-MMT_2&page_size=20')
+            .reply(200, {
+              items: [{
+                meta: {
+                  'concept-id': 'C120042746-MMT_2',
+                  'revision-id': '1'
+                },
+                umm: {
+                  ShortName: 'Cras mattis consectetur purus sit amet fermentum.',
+                  Version: '1'
+                }
+              }]
+            })
+
+          const response = await server.executeOperation({
+            variables: {},
+            query: `
+              query GetAcls($params: AclsInput) {
+                acls(params: $params) {
+                  items {
+                    catalogItemIdentity {
+                      collections {
+                        items {
+                          shortName
+                          version
+                        }
+                      }
+                      name
+                      providerId
+                      granuleApplicable
+                      collectionApplicable
+                    }
+                    conceptId
+                  }
+                }
+              }`
+
+          }, {
+            contextValue
+          })
+
+          const { data, errors } = response.body.singleResult
+
+          expect(errors).toBeUndefined()
+
+          expect(data).toEqual({
+            acls: {
+              items: [{
+                catalogItemIdentity: {
+                  name: 'Mock test',
+                  providerId: 'TEST_123',
+                  collectionApplicable: true,
+                  collections: {
+                    items: [
+                      {
+                        shortName: 'Cras mattis consectetur purus sit amet fermentum.',
+                        version: '1'
+                      }
+
+                    ]
+                  },
+                  granuleApplicable: true
+                },
+                conceptId: 'ACL100000-EDSC'
               }]
             }
           })

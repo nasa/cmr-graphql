@@ -50,7 +50,30 @@ export default {
       return {
         groupPermission: camelcasedData
       }
+    },
+
+    catalogItemIdentity: async (source) => {
+      const { catalogItemIdentity } = source
+
+      const camelcasedData = camelcaseKeys(catalogItemIdentity, { deep: true })
+
+      const {
+        collectionApplicable,
+        collectionIdentifier,
+        granuleApplicable,
+        name,
+        providerId
+      } = camelcasedData
+
+      return {
+        collectionApplicable,
+        collectionIdentifier,
+        granuleApplicable,
+        name,
+        providerId
+      }
     }
+
   },
   GroupPermission: {
     group: async (source, args, context, info) => {
@@ -76,6 +99,26 @@ export default {
         context,
         requestInfo
       )
+    }
+  },
+
+  CatalogItemIdentity: {
+    collections: async (source, args, context, info) => {
+      const { dataSources } = context
+      const { collectionIdentifier } = source
+
+      if (!collectionIdentifier) {
+        return null
+      }
+
+      const { conceptIds } = collectionIdentifier
+
+      const requestedParams = handlePagingParams({
+        conceptId: conceptIds,
+        ...args
+      })
+
+      return dataSources.collectionSourceFetch(requestedParams, context, parseResolveInfo(info))
     }
   }
 }
