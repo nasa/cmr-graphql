@@ -38,16 +38,29 @@ type CatalogItemIdentity {
   "Is collection applicable for a ACL"
   collectionApplicable: Boolean
   
+  "The collection information"
+  collectionIdentifier: CollectionIdentifier
+
   "Is granule applicable for a ACL"
   granuleApplicable: Boolean
   
+  "The granule information"
+  granuleIdentifier: JSON
+
   "The name of the ACL"
   name: String
 
   "The provider id of the ACL"
   providerId: String
+}
 
-  "The collection associated with the ACL"
+type CollectionIdentifier {
+  "The access constraint of the ACL"
+  accessValue: JSON
+
+  "The temporal constraint of the ACL"
+  temporal: JSON
+
   collections (
     "Collections query parameters"
     params: CollectionsInput

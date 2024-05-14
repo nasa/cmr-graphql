@@ -61,6 +61,7 @@ export default {
         collectionApplicable,
         collectionIdentifier,
         granuleApplicable,
+        granuleIdentifier,
         name,
         providerId
       } = camelcasedData
@@ -69,6 +70,7 @@ export default {
         collectionApplicable,
         collectionIdentifier,
         granuleApplicable,
+        granuleIdentifier,
         name,
         providerId
       }
@@ -102,16 +104,14 @@ export default {
     }
   },
 
-  CatalogItemIdentity: {
+  CollectionIdentifier: {
     collections: async (source, args, context, info) => {
       const { dataSources } = context
-      const { collectionIdentifier } = source
+      const { conceptIds } = source
 
-      if (!collectionIdentifier) {
+      if (conceptIds.length === 0) {
         return null
       }
-
-      const { conceptIds } = collectionIdentifier
 
       const requestedParams = handlePagingParams({
         conceptId: conceptIds,

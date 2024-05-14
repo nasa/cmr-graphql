@@ -304,9 +304,6 @@ describe('Acl', () => {
                   acls(params: $params) {
                     items {
                       catalogItemIdentity {
-                        collections {
-                          count
-                        }
                         name
                         providerId
                         granuleApplicable
@@ -344,7 +341,6 @@ describe('Acl', () => {
                 catalogItemIdentity: {
                   name: 'Mock test',
                   providerId: 'TEST_123',
-                  collections: null,
                   collectionApplicable: true,
                   granuleApplicable: true
                 },
@@ -436,16 +432,18 @@ describe('Acl', () => {
                 acls(params: $params) {
                   items {
                     catalogItemIdentity {
-                      collections {
-                        items {
-                          shortName
-                          version
-                        }
-                      }
                       name
                       providerId
                       granuleApplicable
                       collectionApplicable
+                      collectionIdentifier{
+                        collections {
+                          items {
+                            shortName
+                            version
+                          }
+                        }
+                      }
                     }
                     conceptId
                   }
@@ -464,22 +462,99 @@ describe('Acl', () => {
             acls: {
               items: [{
                 catalogItemIdentity: {
+                  collectionApplicable: true,
+                  granuleApplicable: true,
                   name: 'Mock test',
                   providerId: 'TEST_123',
-                  collectionApplicable: true,
-                  collections: {
-                    items: [
-                      {
-                        shortName: 'Cras mattis consectetur purus sit amet fermentum.',
-                        version: '1'
-                      }
-
-                    ]
-                  },
-                  granuleApplicable: true
+                  collectionIdentifier: {
+                    collections: {
+                      items: [
+                        {
+                          shortName: 'Cras mattis consectetur purus sit amet fermentum.',
+                          version: '1'
+                        }
+                      ]
+                    }
+                  }
                 },
                 conceptId: 'ACL100000-EDSC'
               }]
+            }
+          })
+        })
+      })
+
+      describe('when the acl does not have collections', () => {
+        test('returns null for collections', async () => {
+          nock(/example-cmr/)
+            .defaultReplyHeaders({
+              'CMR-Hits': 1,
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .get(/access-control\/acls/)
+            .reply(200, {
+              items: [
+                {
+                  acl: {
+                    catalog_item_identity: {
+                      name: 'Mock test',
+                      provider_id: 'TEST_123',
+                      collection_applicable: true,
+                      collection_identifier: {
+                        concept_ids: []
+                      },
+                      granule_applicable: true
+                    }
+                  }
+                }
+              ]
+            })
+
+          const response = await server.executeOperation({
+            variables: {},
+            query: `
+                  query GetAcls($params: AclsInput) {
+                    acls(params: $params) {
+                      items {
+                        catalogItemIdentity {
+                          name
+                          collectionIdentifier{
+                            collections {
+                              count
+                            }
+                          }
+                          providerId
+                          granuleApplicable
+                          collectionApplicable
+                        }
+                      }
+                    }
+                  }`
+
+          }, {
+            contextValue
+          })
+
+          const { data, errors } = response.body.singleResult
+
+          expect(errors).toBeUndefined()
+
+          expect(data).toEqual({
+            acls: {
+              items: [
+                {
+                  catalogItemIdentity: {
+                    collectionApplicable: true,
+                    collectionIdentifier: {
+                      collections: null
+                    },
+                    granuleApplicable: true,
+                    name: 'Mock test',
+                    providerId: 'TEST_123'
+                  }
+                }
+              ]
             }
           })
         })
