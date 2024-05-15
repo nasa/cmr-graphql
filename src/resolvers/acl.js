@@ -47,9 +47,7 @@ export default {
 
       const camelcasedData = camelcaseKeys(groupPermissions, { deep: true })
 
-      return {
-        groupPermission: camelcasedData
-      }
+      return camelcasedData
     },
 
     catalogItemIdentity: async (source) => {

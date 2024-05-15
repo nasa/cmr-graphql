@@ -76,13 +76,11 @@ describe('Acl', () => {
                 }
                 conceptId
                 groupPermissions {
-                  groupPermission {
-                    permissions
-                    userType
-                    group {
-                      id
-                      name
-                    }
+                  permissions
+                  userType
+                  group {
+                    id
+                    name
                   }
                 }
                 identityType
@@ -109,22 +107,20 @@ describe('Acl', () => {
               granuleApplicable: true
             },
             conceptId: 'ACL100000-EDSC',
-            groupPermissions: {
-              groupPermission: [{
-                permissions: [
-                  'read'
-                ],
-                userType: 'guest',
-                group: null
-              },
-              {
-                permissions: [
-                  'read'
-                ],
-                userType: 'registered',
-                group: null
-              }]
+            groupPermissions: [{
+              permissions: [
+                'read'
+              ],
+              userType: 'guest',
+              group: null
             },
+            {
+              permissions: [
+                'read'
+              ],
+              userType: 'registered',
+              group: null
+            }],
             identityType: 'Catalog Item',
             location: 'Mock Location',
             name: 'Mock Test Name',
@@ -204,13 +200,11 @@ describe('Acl', () => {
                       }
                       conceptId
                       groupPermissions {
-                        groupPermission {
-                          permissions
-                          userType
-                          group {
-                            id
-                            name
-                          }
+                        permissions
+                        userType
+                        group {
+                          id
+                          name
                         }
                       }
                       identityType
@@ -239,16 +233,14 @@ describe('Acl', () => {
                   granuleApplicable: true
                 },
                 conceptId: 'ACL100000-EDSC',
-                groupPermissions: {
-                  groupPermission: [{
-                    permissions: ['read'],
-                    userType: null,
-                    group: {
-                      id: '90336eb8-309c-44f5-aaa8-1672765b1195',
-                      name: 'Test Group'
-                    }
-                  }]
-                },
+                groupPermissions: [{
+                  permissions: ['read'],
+                  userType: null,
+                  group: {
+                    id: '90336eb8-309c-44f5-aaa8-1672765b1195',
+                    name: 'Test Group'
+                  }
+                }],
                 identityType: 'Catalog Item',
                 location: 'Mock Location',
                 name: 'Mock Test Name',
@@ -311,12 +303,10 @@ describe('Acl', () => {
                       }
                       conceptId
                       groupPermissions {
-                        groupPermission {
-                          permissions
-                          userType
-                          group {
-                            id
-                          }
+                        permissions
+                        userType
+                        group {
+                          id
                         }
                       }
                       identityType
@@ -345,15 +335,13 @@ describe('Acl', () => {
                   granuleApplicable: true
                 },
                 conceptId: 'ACL100000-EDSC',
-                groupPermissions: {
-                  groupPermission: [{
-                    permissions: ['read'],
-                    userType: null,
-                    group: {
-                      id: '90336eb8-309c-44f5-aaa8-1672765b1195'
-                    }
-                  }]
-                },
+                groupPermissions: [{
+                  permissions: ['read'],
+                  userType: null,
+                  group: {
+                    id: '90336eb8-309c-44f5-aaa8-1672765b1195'
+                  }
+                }],
                 identityType: 'Catalog Item',
                 location: 'Mock Location',
                 name: 'Mock Test Name',

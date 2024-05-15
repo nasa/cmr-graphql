@@ -16,7 +16,7 @@ type Acl {
   location: String
 
   "List of groups and their permissions to the catalog item associated with this Acl."
-  groupPermissions: GroupPermissionList
+  groupPermissions: [GroupPermission]
 
   "The GUID from Legacy Services that was used during migrations, this value should no longer be referenced."
   legacyGuid: String @deprecated(reason: "This field was temporary and is being deprecated.")
@@ -65,11 +65,6 @@ type CollectionIdentifier {
     "Collections query parameters"
     params: CollectionsInput
   ): CollectionList
-}
-
-type GroupPermissionList {
-  "The list of group search results."
-  groupPermission: [GroupPermission]
 }
 
 type GroupPermission {
