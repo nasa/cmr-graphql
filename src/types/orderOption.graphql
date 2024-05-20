@@ -20,6 +20,9 @@ type OrderOption {
   "The native ID to set on the order option."
   nativeId: String
 
+  "The provider ID to set on the order option."
+  providerId: String
+
   "The revision date for the order option."
   revisionDate: String
 
