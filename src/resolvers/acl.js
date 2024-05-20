@@ -62,10 +62,17 @@ export default {
         }
       })
 
+      const params = {
+        params: {
+          limit: 1000,
+          name: ''
+        }
+      }
+
       if (groupIds.length > 0) {
         // Gets all groups from EDL
         const result = await dataSources.groupSourceSearch(
-          { name: '' },
+          params,
           context,
           requestInfo
         )

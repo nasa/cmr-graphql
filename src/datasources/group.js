@@ -58,7 +58,7 @@ export const searchGroup = async (params, context, requestInfo) => {
       offset = 0,
       tags,
       wildcardTags
-    } = searchParams || {}
+    } = searchParams
     let filteredData = camelcasedData
 
     // EDL does a wildcard-ish search with the `tags` parameter, but that isn't ideal. By default we want
