@@ -97,7 +97,7 @@ export default class Acl extends Concept {
 
     return {
       ...item,
-      group_permissions: groupPermissions,
+      groups: groupPermissions,
       catalog_item_identity: catalogItemIdentity,
       legacy_guid: legacyGuid,
       provider_identity: providerIdentity,

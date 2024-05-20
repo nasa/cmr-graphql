@@ -42,12 +42,64 @@ export default {
   },
 
   Acl: {
-    groupPermissions: async (source) => {
-      const { groupPermissions } = source
+    groups: async (source, args, context, info) => {
+      const { dataSources } = context
+      const resolvedInfo = parseResolveInfo(info)
+      const requestInfo = parseRequestedFields(resolvedInfo, {}, 'aclGroup')
 
-      const camelcasedData = camelcaseKeys(groupPermissions, { deep: true })
+      const { groups } = source
 
-      return camelcasedData
+      const aclGroupResponse = camelcaseKeys(groups, { deep: true })
+
+      const groupIds = []
+
+      // Checks to see if there are groupId
+      Object.values(aclGroupResponse).forEach((value) => {
+        const { groupId, userType } = value
+
+        if (groupId && !userType) {
+          groupIds.push(groupId)
+        }
+      })
+
+      if (groupIds.length > 0) {
+        // Gets all groups from EDL
+        const result = await dataSources.groupSourceSearch(
+          { name: '' },
+          context,
+          requestInfo
+        )
+
+        const filteredData = result.items.filter((item) => groupIds.includes(item.id))
+
+        // Creates a map based on groupId
+        const edlResponseMap = new Map()
+        filteredData.forEach((item) => {
+          edlResponseMap.set(item.id, item)
+        })
+
+        // Combine the arrays based on matching groupId
+        const combinedGroupResponse = aclGroupResponse.map((item) => {
+          if (item.groupId && edlResponseMap.has(item.groupId)) {
+            return {
+              ...item,
+              ...edlResponseMap.get(item.groupId)
+            }
+          }
+
+          return item
+        })
+
+        return {
+          count: combinedGroupResponse.length,
+          items: combinedGroupResponse
+        }
+      }
+
+      return {
+        count: aclGroupResponse.length,
+        items: aclGroupResponse
+      }
     },
 
     catalogItemIdentity: async (source) => {
@@ -59,53 +111,38 @@ export default {
         collectionApplicable,
         collectionIdentifier,
         granuleApplicable,
-        granuleIdentifier,
-        name,
-        providerId
+        granuleIdentifier
       } = camelcasedData
+
+      const { conceptIds } = collectionIdentifier || {}
+
+      if (conceptIds) {
+        delete collectionIdentifier.conceptIds
+        delete collectionIdentifier.entryTitles
+      }
 
       return {
         collectionApplicable,
         collectionIdentifier,
         granuleApplicable,
-        granuleIdentifier,
-        name,
-        providerId
+        granuleIdentifier
       }
-    }
+    },
 
-  },
-  GroupPermission: {
-    group: async (source, args, context, info) => {
+    collections: async (source, args, context, info) => {
+      const { catalogItemIdentity } = source
+
       const { dataSources } = context
-      const resolvedInfo = parseResolveInfo(info)
-      const requestInfo = parseRequestedFields(resolvedInfo, {}, 'group')
 
-      const { jsonKeys } = requestInfo
-
-      const { groupId: id } = source
-
-      if (!id) {
+      if (!catalogItemIdentity) {
         return null
       }
 
-      // If only id field is requested, returns the groupId from the previous result
-      if (jsonKeys.includes('id') && jsonKeys.length === 1) {
-        return { id }
-      }
+      const camelcasedData = camelcaseKeys(catalogItemIdentity, { deep: true })
 
-      return dataSources.groupSourceFetch(
-        { id },
-        context,
-        requestInfo
-      )
-    }
-  },
+      const { collectionIdentifier } = camelcasedData
 
-  CollectionIdentifier: {
-    collections: async (source, args, context, info) => {
-      const { dataSources } = context
-      const { conceptIds } = source
+      const { conceptIds } = collectionIdentifier
 
       if (conceptIds.length === 0) {
         return null

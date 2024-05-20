@@ -69,17 +69,15 @@ describe('Acl', () => {
             acls(params: $params) {
               items {
                 catalogItemIdentity {
-                  name
-                  providerId
                   granuleApplicable
                   collectionApplicable
                 }
                 conceptId
-                groupPermissions {
-                  permissions
-                  userType
-                  group {
-                    id
+                groups {
+                  items {
+                    permissions
+                    userType
+                    groupId
                     name
                   }
                 }
@@ -99,33 +97,39 @@ describe('Acl', () => {
       expect(errors).toBeUndefined()
       expect(data).toEqual({
         acls: {
-          items: [{
-            catalogItemIdentity: {
-              name: 'Mock test',
-              providerId: 'TEST_123',
-              collectionApplicable: true,
-              granuleApplicable: true
-            },
-            conceptId: 'ACL100000-EDSC',
-            groupPermissions: [{
-              permissions: [
-                'read'
-              ],
-              userType: 'guest',
-              group: null
-            },
+          items: [
             {
-              permissions: [
-                'read'
-              ],
-              userType: 'registered',
-              group: null
-            }],
-            identityType: 'Catalog Item',
-            location: 'Mock Location',
-            name: 'Mock Test Name',
-            revisionId: 1
-          }]
+              catalogItemIdentity: {
+                collectionApplicable: true,
+                granuleApplicable: true
+              },
+              conceptId: 'ACL100000-EDSC',
+              groups: {
+                items: [
+                  {
+                    groupId: null,
+                    name: null,
+                    permissions: [
+                      'read'
+                    ],
+                    userType: 'guest'
+                  },
+                  {
+                    groupId: null,
+                    name: null,
+                    permissions: [
+                      'read'
+                    ],
+                    userType: 'registered'
+                  }
+                ]
+              },
+              identityType: 'Catalog Item',
+              location: 'Mock Location',
+              name: 'Mock Test Name',
+              revisionId: 1
+            }
+          ]
         }
       })
     })
@@ -155,14 +159,13 @@ describe('Acl', () => {
                           'read'
                         ],
                         group_id: '90336eb8-309c-44f5-aaa8-1672765b1195'
+                      },
+                      {
+                        permissions: [
+                          'read'
+                        ]
                       }
-                    ],
-                    catalog_item_identity: {
-                      name: 'Mock test',
-                      provider_id: 'TEST_123',
-                      collection_applicable: true,
-                      granule_applicable: true
-                    }
+                    ]
                   }
                 }
               ]
@@ -174,8 +177,8 @@ describe('Acl', () => {
               'X-Request-Id': 'abcd-1234-efgh-5678'
             }
           })
-            .get(/api\/user_groups\/90336eb8-309c-44f5-aaa8-1672765b1195/)
-            .reply(200, {
+            .get(/api\/user_groups\/search/)
+            .reply(200, [{
               group_id: '90336eb8-309c-44f5-aaa8-1672765b1195',
               app_uid: 'mmt_test',
               client_id: '81FEem91NlTQreWv2UgtXQ',
@@ -184,7 +187,7 @@ describe('Acl', () => {
               shared_user_group: false,
               created_by: 'mmt_test',
               tag: 'MMT_2'
-            })
+            }])
 
           const response = await server.executeOperation({
             variables: {},
@@ -192,127 +195,25 @@ describe('Acl', () => {
                 query GetAcls($params: AclsInput) {
                   acls(params: $params) {
                     items {
-                      catalogItemIdentity {
-                        name
-                        providerId
-                        granuleApplicable
-                        collectionApplicable
-                      }
                       conceptId
-                      groupPermissions {
-                        permissions
-                        userType
-                        group {
-                          id
+                      groups {
+                        items {
+                          permissions
+                          userType
+                          groupId
                           name
                         }
                       }
                       identityType
                       location
                       name
-                      revisionId
-                    }
-                  }
-                }`
-
-          }, {
-            contextValue
-          })
-
-          const { data, errors } = response.body.singleResult
-
-          expect(errors).toBeUndefined()
-
-          expect(data).toEqual({
-            acls: {
-              items: [{
-                catalogItemIdentity: {
-                  name: 'Mock test',
-                  providerId: 'TEST_123',
-                  collectionApplicable: true,
-                  granuleApplicable: true
-                },
-                conceptId: 'ACL100000-EDSC',
-                groupPermissions: [{
-                  permissions: ['read'],
-                  userType: null,
-                  group: {
-                    id: '90336eb8-309c-44f5-aaa8-1672765b1195',
-                    name: 'Test Group'
-                  }
-                }],
-                identityType: 'Catalog Item',
-                location: 'Mock Location',
-                name: 'Mock Test Name',
-                revisionId: 1
-              }]
-            }
-          })
-        })
-      })
-
-      describe('when only id is requested groups', () => {
-        test('return group permission result with id', async () => {
-          nock(/example-cmr/)
-            .defaultReplyHeaders({
-              'CMR-Hits': 1,
-              'CMR-Took': 7,
-              'CMR-Request-Id': 'abcd-1234-efgh-5678'
-            })
-            .get(/access-control\/acls/)
-            .reply(200, {
-              items: [
-                {
-                  concept_id: 'ACL100000-EDSC',
-                  revision_id: 1,
-                  identity_type: 'Catalog Item',
-                  name: 'Mock Test Name',
-                  location: 'Mock Location',
-                  acl: {
-                    group_permissions: [
-                      {
-                        permissions: [
-                          'read'
-                        ],
-                        group_id: '90336eb8-309c-44f5-aaa8-1672765b1195'
-                      }
-                    ],
-                    catalog_item_identity: {
-                      name: 'Mock test',
-                      provider_id: 'TEST_123',
-                      collection_applicable: true,
-                      collection_identifier: null,
-                      granule_applicable: true
-                    }
-                  }
-                }
-              ]
-            })
-
-          const response = await server.executeOperation({
-            variables: {},
-            query: `
-                query GetAcls($params: AclsInput) {
-                  acls(params: $params) {
-                    items {
-                      catalogItemIdentity {
-                        name
-                        providerId
-                        granuleApplicable
-                        collectionApplicable
-                      }
-                      conceptId
-                      groupPermissions {
-                        permissions
-                        userType
-                        group {
-                          id
+                      revisionId,
+                      collections {
+                        items {
+                          shortName
+                          version
                         }
                       }
-                      identityType
-                      location
-                      name
-                      revisionId
                     }
                   }
                 }`
@@ -328,20 +229,28 @@ describe('Acl', () => {
           expect(data).toEqual({
             acls: {
               items: [{
-                catalogItemIdentity: {
-                  name: 'Mock test',
-                  providerId: 'TEST_123',
-                  collectionApplicable: true,
-                  granuleApplicable: true
-                },
+                collections: null,
                 conceptId: 'ACL100000-EDSC',
-                groupPermissions: [{
-                  permissions: ['read'],
-                  userType: null,
-                  group: {
-                    id: '90336eb8-309c-44f5-aaa8-1672765b1195'
-                  }
-                }],
+                groups: {
+                  items: [
+                    {
+                      groupId: '90336eb8-309c-44f5-aaa8-1672765b1195',
+                      name: 'Test Group',
+                      permissions: [
+                        'read'
+                      ],
+                      userType: null
+                    },
+                    {
+                      groupId: null,
+                      name: null,
+                      permissions: [
+                        'read'
+                      ],
+                      userType: null
+                    }
+                  ]
+                },
                 identityType: 'Catalog Item',
                 location: 'Mock Location',
                 name: 'Mock Test Name',
@@ -420,17 +329,13 @@ describe('Acl', () => {
                 acls(params: $params) {
                   items {
                     catalogItemIdentity {
-                      name
-                      providerId
                       granuleApplicable
                       collectionApplicable
-                      collectionIdentifier{
-                        collections {
-                          items {
-                            shortName
-                            version
-                          }
-                        }
+                    }
+                    collections {
+                      items {
+                        shortName
+                        version
                       }
                     }
                     conceptId
@@ -451,19 +356,15 @@ describe('Acl', () => {
               items: [{
                 catalogItemIdentity: {
                   collectionApplicable: true,
-                  granuleApplicable: true,
-                  name: 'Mock test',
-                  providerId: 'TEST_123',
-                  collectionIdentifier: {
-                    collections: {
-                      items: [
-                        {
-                          shortName: 'Cras mattis consectetur purus sit amet fermentum.',
-                          version: '1'
-                        }
-                      ]
+                  granuleApplicable: true
+                },
+                collections: {
+                  items: [
+                    {
+                      shortName: 'Cras mattis consectetur purus sit amet fermentum.',
+                      version: '1'
                     }
-                  }
+                  ]
                 },
                 conceptId: 'ACL100000-EDSC'
               }]
@@ -486,8 +387,6 @@ describe('Acl', () => {
                 {
                   acl: {
                     catalog_item_identity: {
-                      name: 'Mock test',
-                      provider_id: 'TEST_123',
                       collection_applicable: true,
                       collection_identifier: {
                         concept_ids: []
@@ -506,15 +405,11 @@ describe('Acl', () => {
                     acls(params: $params) {
                       items {
                         catalogItemIdentity {
-                          name
-                          collectionIdentifier{
-                            collections {
-                              count
-                            }
-                          }
-                          providerId
                           granuleApplicable
                           collectionApplicable
+                        }
+                        collections {
+                          count
                         }
                       }
                     }
@@ -534,13 +429,9 @@ describe('Acl', () => {
                 {
                   catalogItemIdentity: {
                     collectionApplicable: true,
-                    collectionIdentifier: {
-                      collections: null
-                    },
-                    granuleApplicable: true,
-                    name: 'Mock test',
-                    providerId: 'TEST_123'
-                  }
+                    granuleApplicable: true
+                  },
+                  collections: null
                 }
               ]
             }

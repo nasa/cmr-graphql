@@ -2,7 +2,6 @@ type Acl {
   "The unique concept id assigned to the Acl."
   conceptId: String
 
-  
   "The revision id for the Acl."
   revisionId: Int
 
@@ -16,7 +15,7 @@ type Acl {
   location: String
 
   "List of groups and their permissions to the catalog item associated with this Acl."
-  groupPermissions: [GroupPermission]
+  groups: AclGroupList
 
   "The GUID from Legacy Services that was used during migrations, this value should no longer be referenced."
   legacyGuid: String @deprecated(reason: "This field was temporary and is being deprecated.")
@@ -32,6 +31,12 @@ type Acl {
 
   "Full JSON of the Acl."
   acl: JSON @deprecated(reason: "Deprecating in favor of `groupPermissions`, `legacyGuid`, `catalogItemIdentity`.")
+
+  collections (
+    "Collections query parameters"
+    params: CollectionsInput
+  ) : CollectionList
+
 }
 
 type CatalogItemIdentity {
@@ -39,43 +44,56 @@ type CatalogItemIdentity {
   collectionApplicable: Boolean
   
   "The collection information"
-  collectionIdentifier: CollectionIdentifier
+  collectionIdentifier: JSON
 
   "Is granule applicable for a ACL"
   granuleApplicable: Boolean
   
   "The granule information"
   granuleIdentifier: JSON
+}
 
-  "The name of the ACL"
+type AclGroupList {
+  "The number of hits for a given search."
+  count: Int
+
+  "The list of group search results."
+  items: [AclGroup]
+}
+
+type AclGroup {
+  "The unique id assigned to the group."
+  groupId: String
+
+  "The UID of the application that created the group."
+  appUid: String
+
+  "The client ID of the application that created the group."
+  clientId: String
+
+  "Name of the group."
   name: String
 
-  "The provider id of the ACL"
-  providerId: String
-}
+  "Description of the group."
+  description: String
 
-type CollectionIdentifier {
-  "The access constraint of the ACL"
-  accessValue: JSON
+  "Is the group shared."
+  sharedUserGroup: Boolean
 
-  "The temporal constraint of the ACL"
-  temporal: JSON
+  "Who created the group."
+  createdBy: String
 
-  collections (
-    "Collections query parameters"
-    params: CollectionsInput
-  ): CollectionList
-}
+  "Tag for the group."
+  tag: String
 
-type GroupPermission {
+  "List of members of the group."
+  members: GroupMemberList
+
   "List of individual permissions this Group has to the Acl."
   permissions: [String]
 
   "The type of user this Acl applies to."
   userType: String
-
-  "The group information for this permission"
-  group: Group
 }
   
 type AclList {
