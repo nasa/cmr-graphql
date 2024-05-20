@@ -132,15 +132,19 @@ export default {
     collections: async (source, args, context, info) => {
       const { catalogItemIdentity } = source
 
-      const { dataSources } = context
-
       if (!catalogItemIdentity) {
         return null
       }
 
+      const { dataSources } = context
+
       const camelcasedData = camelcaseKeys(catalogItemIdentity, { deep: true })
 
       const { collectionIdentifier } = camelcasedData
+
+      if (!collectionIdentifier) {
+        return null
+      }
 
       const { conceptIds } = collectionIdentifier
 

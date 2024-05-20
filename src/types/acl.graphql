@@ -63,7 +63,7 @@ type AclGroupList {
 
 type AclGroup {
   "The unique id assigned to the group."
-  groupId: String
+  id: String
 
   "The UID of the application that created the group."
   appUid: String

@@ -77,7 +77,7 @@ describe('Acl', () => {
                   items {
                     permissions
                     userType
-                    groupId
+                    id
                     name
                   }
                 }
@@ -107,7 +107,7 @@ describe('Acl', () => {
               groups: {
                 items: [
                   {
-                    groupId: null,
+                    id: null,
                     name: null,
                     permissions: [
                       'read'
@@ -115,7 +115,7 @@ describe('Acl', () => {
                     userType: 'guest'
                   },
                   {
-                    groupId: null,
+                    id: null,
                     name: null,
                     permissions: [
                       'read'
@@ -200,7 +200,7 @@ describe('Acl', () => {
                         items {
                           permissions
                           userType
-                          groupId
+                          id
                           name
                         }
                       }
@@ -223,7 +223,6 @@ describe('Acl', () => {
           })
 
           const { data, errors } = response.body.singleResult
-          console.log('🚀 ~ test ~ errors:', errors)
 
           expect(errors).toBeUndefined()
 
@@ -235,7 +234,7 @@ describe('Acl', () => {
                 groups: {
                   items: [
                     {
-                      groupId: '90336eb8-309c-44f5-aaa8-1672765b1195',
+                      id: '90336eb8-309c-44f5-aaa8-1672765b1195',
                       name: 'Test Group',
                       permissions: [
                         'read'
@@ -243,7 +242,7 @@ describe('Acl', () => {
                       userType: null
                     },
                     {
-                      groupId: null,
+                      id: null,
                       name: null,
                       permissions: [
                         'read'
@@ -392,6 +391,69 @@ describe('Acl', () => {
                       collection_identifier: {
                         concept_ids: []
                       },
+                      granule_applicable: true
+                    }
+                  }
+                }
+              ]
+            })
+
+          const response = await server.executeOperation({
+            variables: {},
+            query: `
+                  query GetAcls($params: AclsInput) {
+                    acls(params: $params) {
+                      items {
+                        catalogItemIdentity {
+                          granuleApplicable
+                          collectionApplicable
+                        }
+                        collections {
+                          count
+                        }
+                      }
+                    }
+                  }`
+
+          }, {
+            contextValue
+          })
+
+          const { data, errors } = response.body.singleResult
+
+          expect(errors).toBeUndefined()
+
+          expect(data).toEqual({
+            acls: {
+              items: [
+                {
+                  catalogItemIdentity: {
+                    collectionApplicable: true,
+                    granuleApplicable: true
+                  },
+                  collections: null
+                }
+              ]
+            }
+          })
+        })
+      })
+
+      describe('when the acl does not have collectionIdentifier', () => {
+        test('returns null for collections', async () => {
+          nock(/example-cmr/)
+            .defaultReplyHeaders({
+              'CMR-Hits': 1,
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .get(/access-control\/acls/)
+            .reply(200, {
+              items: [
+                {
+                  acl: {
+                    catalog_item_identity: {
+                      collection_applicable: true,
                       granule_applicable: true
                     }
                   }
