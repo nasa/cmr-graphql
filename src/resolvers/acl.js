@@ -118,7 +118,8 @@ export default {
         collectionApplicable,
         collectionIdentifier,
         granuleApplicable,
-        granuleIdentifier
+        granuleIdentifier,
+        providerId
       } = camelcasedData
 
       const { conceptIds } = collectionIdentifier || {}
@@ -132,7 +133,8 @@ export default {
         collectionApplicable,
         collectionIdentifier,
         granuleApplicable,
-        granuleIdentifier
+        granuleIdentifier,
+        providerId
       }
     },
 

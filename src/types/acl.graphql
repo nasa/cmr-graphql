@@ -51,6 +51,9 @@ type CatalogItemIdentity {
   
   "The granule information"
   granuleIdentifier: JSON
+
+  "The provider id of the permission"
+  providerId: String
 }
 
 type AclGroupList {
