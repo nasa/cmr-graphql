@@ -1,6 +1,9 @@
 import { parseResolveInfo } from 'graphql-parse-resolve-info'
+
 import camelcaseKeys from 'camelcase-keys'
-import { isEmpty } from 'lodash'
+
+import isEmpty from 'lodash/isEmpty'
+
 import { handlePagingParams } from '../utils/handlePagingParams'
 import { parseRequestedFields } from '../utils/parseRequestedFields'
 
