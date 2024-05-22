@@ -260,6 +260,97 @@ describe('Acl', () => {
           })
         })
       })
+
+      describe('when id, permission and userType are requested for groups', () => {
+        test('return group permission result with id, permission and userType', async () => {
+          nock(/example-cmr/)
+            .defaultReplyHeaders({
+              'CMR-Hits': 1,
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .get(/access-control\/acls/)
+            .reply(200, {
+              items: [
+                {
+                  concept_id: 'ACL100000-EDSC',
+                  revision_id: 1,
+                  identity_type: 'Catalog Item',
+                  name: 'Mock Test Name',
+                  location: 'Mock Location',
+                  acl: {
+                    group_permissions: [
+                      {
+                        permissions: [
+                          'read'
+                        ],
+                        group_id: '90336eb8-309c-44f5-aaa8-1672765b1195',
+                        user_type: 'guest'
+                      },
+                      {
+                        permissions: [
+                          'read'
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            })
+
+          const response = await server.executeOperation({
+            variables: {},
+            query: `
+                query GetAcls($params: AclsInput) {
+                  acls(params: $params) {
+                    items {
+                      conceptId
+                      groups {
+                        items {
+                          permissions
+                          userType
+                          id
+                        }
+                      }
+                    }
+                  }
+                }`
+
+          }, {
+            contextValue
+          })
+
+          const { data, errors } = response.body.singleResult
+
+          expect(errors).toBeUndefined()
+
+          expect(data).toEqual({
+            acls: {
+              items: [{
+                conceptId: 'ACL100000-EDSC',
+                groups: {
+                  items: [
+                    {
+                      id: '90336eb8-309c-44f5-aaa8-1672765b1195',
+                      permissions: [
+                        'read'
+                      ],
+                      userType: 'guest'
+                    },
+                    {
+                      id: null,
+                      permissions: [
+                        'read'
+                      ],
+                      userType: null
+                    }
+                  ]
+                }
+              }]
+            }
+          })
+        })
+      })
     })
 
     describe('Query Catalog Item Identity', () => {

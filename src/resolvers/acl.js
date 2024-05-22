@@ -1,5 +1,6 @@
 import { parseResolveInfo } from 'graphql-parse-resolve-info'
 import camelcaseKeys from 'camelcase-keys'
+import { isEmpty } from 'lodash'
 import { handlePagingParams } from '../utils/handlePagingParams'
 import { parseRequestedFields } from '../utils/parseRequestedFields'
 
@@ -51,16 +52,32 @@ export default {
 
       const aclGroupResponse = camelcaseKeys(groups, { deep: true })
 
-      const groupIds = []
+      const sourceKeys = ['id', 'permissions', 'userType']
 
-      // Checks to see if there are groupId
-      Object.values(aclGroupResponse).forEach((value) => {
-        const { groupId, userType } = value
+      const { jsonKeys } = requestInfo
 
-        if (groupId && !userType) {
-          groupIds.push(groupId)
+      // If all the keys requested are in the source, return the source
+      if (jsonKeys.every((requestedKey) => sourceKeys.includes(requestedKey))) {
+        return {
+          count: aclGroupResponse.length,
+          items: aclGroupResponse.map((group) => {
+            const { groupId, ...originalGroup } = group
+
+            if (groupId) {
+              return {
+                ...originalGroup,
+                id: groupId
+              }
+            }
+
+            return originalGroup
+          })
         }
-      })
+      }
+
+      const groupIds = aclGroupResponse
+        .filter((groupResponse) => groupResponse.groupId && groupResponse.userType == null)
+        .map((groupResponse) => groupResponse.groupId)
 
       const params = {
         params: {
@@ -103,6 +120,13 @@ export default {
         }
       }
 
+      /*
+        When the group only has permission and userType
+        [
+          { permissions: [ 'read' ], userType: 'guest' },
+          { permissions: [ 'read' ], userType: 'registered' }
+        ]
+      */
       return {
         count: aclGroupResponse.length,
         items: aclGroupResponse
@@ -141,7 +165,7 @@ export default {
     collections: async (source, args, context, info) => {
       const { catalogItemIdentity } = source
 
-      if (!catalogItemIdentity) {
+      if (isEmpty(catalogItemIdentity)) {
         return null
       }
 
@@ -151,7 +175,7 @@ export default {
 
       const { collectionIdentifier } = camelcasedData
 
-      if (!collectionIdentifier) {
+      if (isEmpty(collectionIdentifier)) {
         return null
       }
 
