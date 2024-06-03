@@ -481,6 +481,8 @@ interface Relationship {
 type RelatedCollectionsList {
   "The number of related collections available."
   count: Int
+  "Cursor that points to the/a specific position in a list of requested records."
+  cursor: String
   "The list of related collections."
   items: [RelatedCollection]
 }
