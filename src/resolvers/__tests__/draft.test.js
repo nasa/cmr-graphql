@@ -1330,58 +1330,6 @@ describe('Draft', () => {
             }
           })
         })
-
-        test('returns an error when collection concept id not provided', async () => {
-          nock(/example-cmr/, {
-            reqheaders: {
-              accept: 'application/json',
-              'client-id': 'eed-test-graphql',
-              'content-type': 'application/vnd.nasa.cmr.umm+json; version=1.0.0',
-              'cmr-request-id': 'abcd-1234-efgh-5678'
-            }
-          })
-            .defaultReplyHeaders({
-              'CMR-Took': 7,
-              'CMR-Request-Id': 'abcd-1234-efgh-5678'
-            })
-            .put(/ingest\/publish\/TD100000-EDSC\/tool-1/)
-            .reply(201, {
-              'concept-id': 'T100000-EDSC',
-              'revision-id': '1'
-            })
-
-          const response = await server.executeOperation({
-            variables: {
-              draftConceptId: 'TD100000-EDSC',
-              nativeId: 'tool-1',
-              ummVersion: '1.0.0',
-              collectionConceptId: 'C100000-EDSC'
-            },
-            query: `mutation PublishDraft(
-                    $draftConceptId: String!
-                    $nativeId: String!
-                    $ummVersion: String!
-                    $collectionConceptId: String
-                  ) {
-                    publishDraft(
-                      draftConceptId: $draftConceptId
-                      nativeId: $nativeId
-                      ummVersion: $ummVersion
-                      collectionConceptId: $collectionConceptId
-                    ) {
-                      conceptId
-                      revisionId
-                      warnings
-                      existingErrors
-                    }
-                  }`
-          }, {
-            contextValue
-          })
-          const { errors } = response.body.singleResult
-          const { message } = errors[0]
-          expect(message).toEqual('Invalid Argument, collectionConceptId. Collection Concept ID is only required when publishing a Variable Draft.')
-        })
       })
     })
   })
@@ -1784,20 +1732,17 @@ describe('Draft', () => {
             variables: {
               draftConceptId: 'VD100000-EDSC',
               nativeId: 'variable-1',
-              ummVersion: '1.0.0',
-              collectionConceptId: 'C100000-EDSC'
+              ummVersion: '1.0.0'
             },
             query: `mutation PublishDraft(
               $draftConceptId: String!
               $nativeId: String!
               $ummVersion: String!
-              $collectionConceptId: String
             ) {
               publishDraft(
                 draftConceptId: $draftConceptId
                 nativeId: $nativeId
                 ummVersion: $ummVersion
-                collectionConceptId: $collectionConceptId
               ) {
                 conceptId
                 revisionId
@@ -1819,55 +1764,6 @@ describe('Draft', () => {
               existingErrors: null
             }
           })
-        })
-
-        test('returns an error when collection concept id not provided', async () => {
-          nock(/example-cmr/, {
-            reqheaders: {
-              accept: 'application/json',
-              'client-id': 'eed-test-graphql',
-              'content-type': 'application/vnd.nasa.cmr.umm+json; version=1.0.0',
-              'cmr-request-id': 'abcd-1234-efgh-5678'
-            }
-          })
-            .defaultReplyHeaders({
-              'CMR-Took': 7,
-              'CMR-Request-Id': 'abcd-1234-efgh-5678'
-            })
-            .put(/ingest\/publish\/VD100000-EDSC\/variable-1/)
-            .reply(201, {
-              'concept-id': 'V100000-EDSC',
-              'revision-id': '1'
-            })
-
-          const response = await server.executeOperation({
-            variables: {
-              draftConceptId: 'VD100000-EDSC',
-              nativeId: 'variable-1',
-              ummVersion: '1.0.0'
-            },
-            query: `mutation PublishDraft(
-                    $draftConceptId: String!
-                    $nativeId: String!
-                    $ummVersion: String!
-                  ) {
-                    publishDraft(
-                      draftConceptId: $draftConceptId
-                      nativeId: $nativeId
-                      ummVersion: $ummVersion
-                    ) {
-                      conceptId
-                      revisionId
-                      warnings
-                      existingErrors
-                    }
-                  }`
-          }, {
-            contextValue
-          })
-          const { errors } = response.body.singleResult
-          const { message } = errors[0]
-          expect(message).toEqual('collectionConceptId required. When publishing a Variable Draft, an associated Collection Concept Id is required')
         })
       })
     })
