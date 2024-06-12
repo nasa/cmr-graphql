@@ -93,8 +93,6 @@ type Mutation {
     nativeId: String!
     "UMM Version of the record being published."
     ummVersion: String!
-    "Associated Collection concept-id "
-    collectionConceptId: String
   ): PublishDraftMutationResponse
 }
 
