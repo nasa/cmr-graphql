@@ -87,7 +87,7 @@ export default {
 
       const { dataSources } = context
 
-      const a = await dataSources.aclSourceFetch(
+      return dataSources.aclSourceFetch(
         handlePagingParams({
           ...args,
           permittedGroup: groupId
@@ -95,8 +95,6 @@ export default {
         context,
         parseResolveInfo(info)
       )
-
-      return a
     }
   }
 }
