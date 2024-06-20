@@ -11,6 +11,7 @@ describe('Group', () => {
     process.env = { ...OLD_ENV }
 
     process.env.ursRootUrl = 'http://example-urs.com'
+    process.env.cmrRootUrl = 'http://example-cmr.com'
   })
 
   afterEach(() => {
@@ -432,6 +433,152 @@ describe('Group', () => {
               }
             }
           })
+        })
+      })
+    })
+
+    describe('acls', () => {
+      test('requests and returns a list of acls for this group', async () => {
+        nock(/example-urs/, {
+          reqheaders: {
+            'Client-Id': 'eed-test-graphql',
+            'X-Request-Id': 'abcd-1234-efgh-5678'
+          }
+        })
+          .get(/api\/user_groups\/90336eb8-309c-44f5-aaa8-1672765b1195/)
+          .reply(200, {
+            group_id: '90336eb8-309c-44f5-aaa8-1672765b1195',
+            app_uid: 'mmt_test',
+            client_id: '81FEem91NlTQreWv2UgtXQ',
+            name: 'Test Group',
+            description: 'Just a test group',
+            shared_user_group: false,
+            created_by: 'mmt_test',
+            tag: 'MMT_2'
+          })
+
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Hits': 1,
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .get('/access-control/acls?include_full_acl=true&page_size=25&permitted_group=90336eb8-309c-44f5-aaa8-1672765b1195')
+          .reply(200, {
+            items: [
+              {
+                concept_id: 'ACL100000-EDSC',
+                revision_id: 1,
+                identity_type: 'Catalog Item',
+                name: 'Mock Test Name',
+                location: 'Mock Location',
+                acl: {
+                  group_permissions: [
+                    {
+                      permissions: [
+                        'read'
+                      ],
+                      group_id: '90336eb8-309c-44f5-aaa8-1672765b1195'
+                    }
+                  ],
+                  catalog_item_identity: {
+                    name: 'Mock test',
+                    provider_id: 'TEST_123',
+                    collection_applicable: true,
+                    collection_identifier: {
+                      concept_ids: ['C120042746-MMT_2']
+                    },
+                    granule_applicable: true
+                  }
+                }
+              }
+            ]
+          })
+
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .get('/search/collections.umm_json?concept_id[]=C120042746-MMT_2&page_size=20')
+          .reply(200, {
+            items: [{
+              meta: {
+                'concept-id': 'C120042746-MMT_2',
+                'revision-id': '1'
+              },
+              umm: {
+                ShortName: 'Cras mattis consectetur purus sit amet fermentum.',
+                Version: '1'
+              }
+            }]
+          })
+
+        const response = await server.executeOperation({
+          variables: {
+            groupParams: {
+              id: '90336eb8-309c-44f5-aaa8-1672765b1195'
+            },
+            groupAclsParams: {
+              limit: 25
+            }
+          },
+          query: `query Group (
+              $groupParams: GroupInput
+              $groupAclsParams: GroupAclsInput
+            ) {
+              group (
+                params: $groupParams
+              ) {
+                id
+                acls (
+                  params: $groupAclsParams
+                ) {
+                  items {
+                    catalogItemIdentity {
+                      granuleApplicable
+                      collectionApplicable
+                    }
+                    collections {
+                      items {
+                        shortName
+                        version
+                      }
+                    }
+                    conceptId
+                  }
+                }
+              }
+            }`
+        }, {
+          contextValue
+        })
+
+        const { data, errors } = response.body.singleResult
+
+        expect(errors).toBeUndefined()
+
+        expect(data).toEqual({
+          group: {
+            acls: {
+              items: [{
+                catalogItemIdentity: {
+                  collectionApplicable: true,
+                  granuleApplicable: true
+                },
+                collections: {
+                  items: [
+                    {
+                      shortName: 'Cras mattis consectetur purus sit amet fermentum.',
+                      version: '1'
+                    }
+                  ]
+                },
+                conceptId: 'ACL100000-EDSC'
+              }]
+            },
+            id: '90336eb8-309c-44f5-aaa8-1672765b1195'
+          }
         })
       })
     })

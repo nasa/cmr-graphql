@@ -1,5 +1,6 @@
 import { parseResolveInfo } from 'graphql-parse-resolve-info'
 import { parseRequestedFields } from '../utils/parseRequestedFields'
+import { handlePagingParams } from '../utils/handlePagingParams'
 
 export default {
   Query: {
@@ -79,6 +80,23 @@ export default {
         context,
         requestInfo
       )
+    },
+
+    acls: async (source, args, context, info) => {
+      const { groupId } = source
+
+      const { dataSources } = context
+
+      const a = await dataSources.aclSourceFetch(
+        handlePagingParams({
+          ...args,
+          permittedGroup: groupId
+        }),
+        context,
+        parseResolveInfo(info)
+      )
+
+      return a
     }
   }
 }

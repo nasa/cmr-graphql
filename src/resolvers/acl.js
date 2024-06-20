@@ -137,7 +137,7 @@ export default {
     },
 
     catalogItemIdentity: async (source) => {
-      const { catalogItemIdentity } = source
+      const { catalogItemIdentity = {} } = source
 
       const camelcasedData = camelcaseKeys(catalogItemIdentity, { deep: true })
 
