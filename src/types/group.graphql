@@ -25,6 +25,20 @@ type Group {
 
   "List of members of the group."
   members: GroupMemberList
+
+  "List of Acls this group belongs to."
+  acls (
+    "Group acls query parameters."
+    params: GroupAclsInput
+  ): AclList
+}
+
+input GroupAclsInput {
+  "The number of Acls to return."
+  limit: Int
+
+  "Zero based offset of individual results."
+  offset: Int
 }
 
 type GroupList {

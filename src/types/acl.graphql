@@ -36,7 +36,6 @@ type Acl {
     "Collections query parameters"
     params: CollectionsInput
   ) : CollectionList
-
 }
 
 type CatalogItemIdentity {
@@ -129,7 +128,7 @@ input AclsInput {
   "Type of the object being controlled."
   identityType: IdentityType
 
-  "The size of the range GraphDB searches on. Defaults to 20."
+  "The number of Acls to return."
   limit: Int
 
   "Zero based offset of individual results."
