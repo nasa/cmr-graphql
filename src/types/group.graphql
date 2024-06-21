@@ -33,7 +33,16 @@ type Group {
   ): AclList
 }
 
+enum IdentityType {
+  system
+  provider
+  catalog_item
+}
+
 input GroupAclsInput {
+  "Type of the object being controlled."
+  identityType: IdentityType
+
   "The number of Acls to return."
   limit: Int
 

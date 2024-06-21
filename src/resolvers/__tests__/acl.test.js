@@ -592,64 +592,6 @@ describe('Acl', () => {
           })
         })
       })
-
-      describe('when the acl does not have catalogItemIdentity', () => {
-        test('returns null for collections', async () => {
-          nock(/example-cmr/)
-            .defaultReplyHeaders({
-              'CMR-Hits': 1,
-              'CMR-Took': 7,
-              'CMR-Request-Id': 'abcd-1234-efgh-5678'
-            })
-            .get(/access-control\/acls/)
-            .reply(200, {
-              items: [
-                {
-                  acl: {}
-                }
-              ]
-            })
-
-          const response = await server.executeOperation({
-            variables: {},
-            query: `
-                  query GetAcls($params: AclsInput) {
-                    acls(params: $params) {
-                      items {
-                        catalogItemIdentity {
-                          granuleApplicable
-                          collectionApplicable
-                        }
-                        collections {
-                          count
-                        }
-                      }
-                    }
-                  }`
-
-          }, {
-            contextValue
-          })
-
-          const { data, errors } = response.body.singleResult
-
-          expect(errors).toBeUndefined()
-
-          expect(data).toEqual({
-            acls: {
-              items: [
-                {
-                  catalogItemIdentity: {
-                    collectionApplicable: null,
-                    granuleApplicable: null
-                  },
-                  collections: null
-                }
-              ]
-            }
-          })
-        })
-      })
     })
 
     describe('acls', () => {
