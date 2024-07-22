@@ -13,18 +13,25 @@ import { forbiddenError } from '../../utils/forbiddenError'
 export const canCreateSystemGroups = rule()(async (parent, params, context) => {
   const { edlUsername } = context
 
-  if (
-    await hasPermission(
-      context,
-      {
-        permissions: 'create',
-        permissionOptions: {
-          user_id: edlUsername,
-          system_object: 'GROUP'
-        }
-      }
-    )
-  ) return true
+  const { tag } = params
 
-  return forbiddenError('Not authorized to perform [create] on system object [GROUP]')
+  // If the tag is CMR, perform check to see if the user has access to system group.
+  if (tag === 'CMR') {
+    if (
+      await hasPermission(
+        context,
+        {
+          permissions: 'create',
+          permissionOptions: {
+            user_id: edlUsername,
+            system_object: 'GROUP'
+          }
+        }
+      )
+    ) return true
+
+    return forbiddenError('Not authorized to perform [create] on system object [GROUP]')
+  }
+
+  return false
 })
