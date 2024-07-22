@@ -33,5 +33,5 @@ export const canCreateSystemGroups = rule()(async (parent, params, context) => {
     return forbiddenError('Not authorized to perform [create] on system object [GROUP]')
   }
 
-  return false
+  return true
 })

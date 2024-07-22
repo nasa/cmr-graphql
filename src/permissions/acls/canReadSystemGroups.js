@@ -13,7 +13,7 @@ import { forbiddenError } from '../../utils/forbiddenError'
 export const canReadSystemGroups = rule()(async (parent, params, context) => {
   const { edlUsername } = context
 
-  const { params: requestedParams } = params
+  const { params: requestedParams = {} } = params
 
   const { tags } = requestedParams
 

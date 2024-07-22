@@ -16,7 +16,7 @@ export const canCreateProviderGroups = rule()(async (parent, params, context) =>
   const { tag } = params
 
   // If tag, perform check to see if the user has access to the given provider.
-  if (tag) {
+  if (tag && tag !== 'CMR') {
     if (
       await hasPermission(
         context,
@@ -34,5 +34,5 @@ export const canCreateProviderGroups = rule()(async (parent, params, context) =>
     return forbiddenError('Not authorized to perform [create] on provider object [GROUP]')
   }
 
-  return true
+  return false
 })
