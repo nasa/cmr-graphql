@@ -13,18 +13,29 @@ import { forbiddenError } from '../../utils/forbiddenError'
 export const canReadSystemGroups = rule()(async (parent, params, context) => {
   const { edlUsername } = context
 
-  if (
-    await hasPermission(
-      context,
-      {
-        permissions: 'read',
-        permissionOptions: {
-          user_id: edlUsername,
-          system_object: 'GROUP'
-        }
-      }
-    )
-  ) return true
+  const { params: requestedParams = {} } = params
 
-  return forbiddenError('Not authorized to perform [read] on system object [GROUP]')
+  const { tags } = requestedParams
+
+  const isSystemPermission = tags?.includes('CMR')
+
+  // If the tags includes CMR (SYSTEM) check if the user has access to read system groups
+  if (isSystemPermission) {
+    if (
+      await hasPermission(
+        context,
+        {
+          permissions: 'read',
+          permissionOptions: {
+            user_id: edlUsername,
+            system_object: 'GROUP'
+          }
+        }
+      )
+    ) return true
+
+    return forbiddenError('Not authorized to perform [read] on system object [GROUP]')
+  }
+
+  return true
 })

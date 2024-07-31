@@ -4,8 +4,9 @@ import { race, shield } from 'graphql-shield'
 // eslint-disable-next-line no-unused-vars
 import permissions from '../index'
 
-import { canReadSystemGroups } from '../acls/canReadSystemGroups'
+import { canCreateProviderGroups } from '../acls/canCreateProviderGroups'
 import { canCreateSystemGroups } from '../acls/canCreateSystemGroups'
+import { canReadSystemGroups } from '../acls/canReadSystemGroups'
 
 import { isLocalMMT } from '../rules/isLocalMMT'
 
@@ -35,7 +36,8 @@ describe('permissions', () => {
       Mutation: {
         createGroup: race(
           isLocalMMT,
-          canCreateSystemGroups
+          canCreateProviderGroups,
+          canCreateSystemGroups,
         ),
         deleteGroup: race(
           isLocalMMT,
@@ -43,7 +45,8 @@ describe('permissions', () => {
         ),
         updateGroup: race(
           isLocalMMT,
-          canCreateSystemGroups
+          canCreateProviderGroups,
+          canCreateSystemGroups,
         )
       }
     })
