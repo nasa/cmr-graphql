@@ -8,6 +8,7 @@ import { canReadSystemGroups } from './acls/canReadSystemGroups'
 import { canCreateSystemGroups } from './acls/canCreateSystemGroups'
 
 import { isLocalMMT } from './rules/isLocalMMT'
+import { canCreateProviderGroups } from './acls/canCreateProviderGroups'
 
 const permissions = shield(
   {
@@ -26,7 +27,8 @@ const permissions = shield(
     Mutation: {
       createGroup: race(
         isLocalMMT,
-        canCreateSystemGroups
+        canCreateProviderGroups,
+        canCreateSystemGroups,
       ),
       deleteGroup: race(
         isLocalMMT,
@@ -34,7 +36,8 @@ const permissions = shield(
       ),
       updateGroup: race(
         isLocalMMT,
-        canCreateSystemGroups
+        canCreateProviderGroups,
+        canCreateSystemGroups,
       )
     }
   },
