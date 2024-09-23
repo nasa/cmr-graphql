@@ -29,7 +29,7 @@ export default class Concept {
   constructor(conceptType, headers = {}, requestInfo = {}, params = {}) {
     // Set properties for data available during instantiation
     this.conceptType = conceptType
-    this.headers = headers
+    this.headers = { ...headers }
     this.requestInfo = requestInfo
 
     // Defaults the result set to an empty object
