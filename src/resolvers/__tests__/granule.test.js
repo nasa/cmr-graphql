@@ -207,6 +207,88 @@ describe('Granule', () => {
       })
     })
 
+    describe('when a cursor is provided and a sub query is made', () => {
+      test('it does not pass the search-after header to the sub query', async () => {
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678',
+            'CMR-Hits': 2,
+            'CMR-Search-After': '["lpcloud",1379184663236,2241977196]'
+          })
+          .matchHeader('cmr-search-after', '["lpcloud",1379184663236,2241977196]')
+          .get('/search/granules.json?page_size=20')
+          .reply(200, {
+            feed: {
+              entry: [{
+                id: 'G100000-EDSC',
+                collection_concept_id: 'C100000-EDSC'
+              }, {
+                id: 'G100001-EDSC',
+                collection_concept_id: 'C100000-EDSC'
+              }]
+            }
+          })
+
+        // `badheaders` will fulfill request only if the header is missing
+        nock(/example-cmr/, { badheaders: ['cmr-search-after'] })
+          .defaultReplyHeaders({
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .get('/search/collections.json?concept_id[]=C100000-EDSC&page_size=1')
+          .reply(200, {
+            feed: {
+              entry: [{
+                id: 'C100000-EDSC'
+              }]
+            }
+          })
+
+        const response = await server.executeOperation({
+          variables: {
+            params: {
+              cursor: 'eyJqc29uIjoiW1wibHBjbG91ZFwiLDEzNzkxODQ2NjMyMzYsMjI0MTk3NzE5Nl0iLCJ1bW0iOiJbXCJscGNsb3VkXCIsMTM3OTE4NDY2MzIzNiwyMjQxOTc3MTk2XSJ9'
+            }
+          },
+          query: `query getGranules($params: GranulesInput) {
+            granules(params: $params) {
+              count
+              cursor
+              items {
+                conceptId
+                collection {
+                  conceptId
+                }
+              }
+            }
+          }`
+        }, {
+          contextValue
+        })
+
+        const { data } = response.body.singleResult
+
+        expect(data).toEqual({
+          granules: {
+            count: 2,
+            cursor: 'eyJqc29uIjoiW1wibHBjbG91ZFwiLDEzNzkxODQ2NjMyMzYsMjI0MTk3NzE5Nl0ifQ==',
+            items: [{
+              collection: {
+                conceptId: 'C100000-EDSC'
+              },
+              conceptId: 'G100000-EDSC'
+            }, {
+              collection: {
+                conceptId: 'C100000-EDSC'
+              },
+              conceptId: 'G100001-EDSC'
+            }]
+          }
+        })
+      })
+    })
+
     describe('granule', () => {
       describe('with results', () => {
         test('returns results', async () => {
