@@ -29,6 +29,8 @@ export default class Concept {
   constructor(conceptType, headers = {}, requestInfo = {}, params = {}) {
     // Set properties for data available during instantiation
     this.conceptType = conceptType
+
+    // Make a copy of headers so that new additional headers do not get propogated to any sub query calls
     this.headers = { ...headers }
     this.requestInfo = requestInfo
 
