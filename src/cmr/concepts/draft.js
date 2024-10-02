@@ -271,7 +271,7 @@ export default class Draft extends Concept {
       data: prepDataForCmr,
       headers: permittedHeaders,
       options: {
-        path: `ingest/publish/${draftConceptId}/${nativeId}`
+        path: `ingest/publish/${draftConceptId}/${encodeURIComponent(nativeId)}`
       }
     })
   }

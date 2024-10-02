@@ -633,6 +633,36 @@ describe('draft#publish', () => {
     })
   })
 
+  test('handles native ids with special characters', async () => {
+    nock(/example/)
+      .defaultReplyHeaders({
+        'CMR-Request-Id': 'abcd-1234-efgh-5678'
+      })
+      .put(/ingest\/publish\/CD100000-EDSC\/mock-native%2Fid/)
+      .reply(201, {
+        'concept-id': 'C100000-EDSC',
+        'revision-id': '1'
+      })
+
+    // Native id includes a / so ensure it gets encoded before sending to CMR.
+    const response = await draftSourcePublish({
+      draftConceptId: 'CD100000-EDSC',
+      nativeId: 'mock-native/id',
+      providerId: 'EDSC',
+      ummVersion: '1.0.0'
+    }, {
+      headers: {
+        'Client-Id': 'eed-test-graphql',
+        'CMR-Request-Id': 'abcd-1234-efgh-5678'
+      }
+    }, requestInfo)
+
+    expect(response).toEqual({
+      conceptId: 'C100000-EDSC',
+      revisionId: '1'
+    })
+  })
+
   test('catches errors received from ingestCmr', async () => {
     nock(/example/)
       .put(/ingest\/publish\/CD100000-EDSC\/mock-native-id/, JSON.stringify({}))
