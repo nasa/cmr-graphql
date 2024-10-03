@@ -269,7 +269,8 @@ export default startServerAndCreateLambdaHandler(
         collectionLoader: new DataLoader(getCollectionsById, {
           cacheKeyFn: (obj) => obj.conceptId
         }),
-        headers: requestHeaders
+        headers: requestHeaders,
+        requestId: newRequestId
       }
     },
     middleware: [
