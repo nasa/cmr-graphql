@@ -454,7 +454,7 @@ export default class Concept {
       data: preparedParameters,
       headers: preparedHeaders,
       options: {
-        path: `ingest/providers/${providerId}/${this.getConceptType()}/${nativeId}`,
+        path: `ingest/providers/${providerId}/${this.getConceptType()}/${encodeURIComponent(nativeId)}`,
         ...options
       }
     })

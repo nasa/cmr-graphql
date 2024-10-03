@@ -439,6 +439,57 @@ describe('draft#ingest', () => {
     })
   })
 
+  test('handles native ids with special characters', async () => {
+    nock(/example-cmr/)
+      .defaultReplyHeaders({
+        'CMR-Request-Id': 'abcd-1234-efgh-5678'
+      })
+      .put(/ingest\/providers\/EDSC\/tool-drafts\/test-guid%2Ftest-slash/, JSON.stringify({
+        Name: 'mock name',
+        URL: {
+          URLContentType: 'DistributionURL',
+          Type: 'GOTO WEB TOOL',
+          Description: 'Landing Page',
+          URLValue: 'https://example.com/'
+        },
+        MetadataSpecification: {
+          URL: 'https://cdn.earthdata.nasa.gov/umm/tool/v1.0.0',
+          Name: 'UMM-T',
+          Version: '1.0.0'
+        }
+      }))
+      .reply(201, {
+        'concept-id': 'TD100000-EDSC',
+        'revision-id': '1'
+      })
+
+    const response = await draftSourceIngest({
+      conceptType: 'Tool',
+      metadata: {
+        Name: 'mock name',
+        URL: {
+          URLContentType: 'DistributionURL',
+          Type: 'GOTO WEB TOOL',
+          Description: 'Landing Page',
+          URLValue: 'https://example.com/'
+        }
+      },
+      nativeId: 'test-guid/test-slash',
+      providerId: 'EDSC',
+      ummVersion: '1.0.0'
+    }, {
+      headers: {
+        'Client-Id': 'eed-test-graphql',
+        'CMR-Request-Id': 'abcd-1234-efgh-5678'
+      }
+    }, requestInfo)
+
+    expect(response).toEqual({
+      conceptId: 'TD100000-EDSC',
+      revisionId: '1'
+    })
+  })
+
   test('catches errors received from ingestCmr', async () => {
     nock(/example-cmr/)
       .put(/ingest\/providers\/EDSC\/tool-drafts\/test-guid/)
@@ -536,6 +587,34 @@ describe('draft#delete', () => {
     })
   })
 
+  test('handles native ids with special characters', async () => {
+    nock(/example-cmr/)
+      .defaultReplyHeaders({
+        'CMR-Request-Id': 'abcd-1234-efgh-5678'
+      })
+      .delete(/ingest\/providers\/EDSC\/tool-drafts\/test-guid%2Ftest-slash/)
+      .reply(201, {
+        'concept-id': 'TD100000-EDSC',
+        'revision-id': '1'
+      })
+
+    const response = await draftSourceDelete({
+      conceptType: 'Tool',
+      nativeId: 'test-guid/test-slash',
+      providerId: 'EDSC'
+    }, {
+      headers: {
+        'Client-Id': 'eed-test-graphql',
+        'CMR-Request-Id': 'abcd-1234-efgh-5678'
+      }
+    }, requestInfo)
+
+    expect(response).toEqual({
+      conceptId: 'TD100000-EDSC',
+      revisionId: '1'
+    })
+  })
+
   test('catches errors received from cmrDelete', async () => {
     nock(/example-cmr/)
       .delete(/ingest\/providers\/EDSC\/tool-drafts\/test-guid/)
@@ -618,6 +697,36 @@ describe('draft#publish', () => {
     const response = await draftSourcePublish({
       draftConceptId: 'CD100000-EDSC',
       nativeId: 'mock-native-id',
+      providerId: 'EDSC',
+      ummVersion: '1.0.0'
+    }, {
+      headers: {
+        'Client-Id': 'eed-test-graphql',
+        'CMR-Request-Id': 'abcd-1234-efgh-5678'
+      }
+    }, requestInfo)
+
+    expect(response).toEqual({
+      conceptId: 'C100000-EDSC',
+      revisionId: '1'
+    })
+  })
+
+  test('handles native ids with special characters', async () => {
+    nock(/example/)
+      .defaultReplyHeaders({
+        'CMR-Request-Id': 'abcd-1234-efgh-5678'
+      })
+      .put(/ingest\/publish\/CD100000-EDSC\/mock-native-id%2Ftest-slash/)
+      .reply(201, {
+        'concept-id': 'C100000-EDSC',
+        'revision-id': '1'
+      })
+
+    // Native id includes a / so ensure it gets encoded before sending to CMR.
+    const response = await draftSourcePublish({
+      draftConceptId: 'CD100000-EDSC',
+      nativeId: 'mock-native-id/test-slash',
       providerId: 'EDSC',
       ummVersion: '1.0.0'
     }, {
