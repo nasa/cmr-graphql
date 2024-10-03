@@ -469,6 +469,50 @@ describe('subscription#ingest', () => {
     })
   })
 
+  test('handles native ids with special characters', async () => {
+    nock(/example-cmr/)
+      .defaultReplyHeaders({
+        'CMR-Request-Id': 'abcd-1234-efgh-5678'
+      })
+      .put(/ingest\/subscriptions\/test-guid%2Ftest-slash/, JSON.stringify({
+        CollectionConceptId: 'C100000-EDSC',
+        EmailAddress: 'test@example.com',
+        Name: 'Test Subscription',
+        Query: 'polygon=-18,-78,-13,-74,-16,-73,-22,-77,-18,-78',
+        SubscriberId: 'testuser',
+        MetadataSpecification: {
+          URL: 'https://cdn.earthdata.nasa.gov/umm/subscription/v1.0.0',
+          Name: 'UMM-Sub',
+          Version: '1.0.0'
+        }
+      }))
+      .reply(201, {
+        'concept-id': 'SUB100000-EDSC',
+        'revision-id': '1'
+      })
+
+    const response = await subscriptionSourceIngest({
+      params: {
+        collectionConceptId: 'C100000-EDSC',
+        emailAddress: 'test@example.com',
+        name: 'Test Subscription',
+        nativeId: 'test-guid/test-slash',
+        query: 'polygon=-18,-78,-13,-74,-16,-73,-22,-77,-18,-78',
+        subscriberId: 'testuser'
+      }
+    }, {
+      headers: {
+        'Client-Id': 'eed-test-graphql',
+        'CMR-Request-Id': 'abcd-1234-efgh-5678'
+      }
+    }, requestInfo)
+
+    expect(response).toEqual({
+      conceptId: 'SUB100000-EDSC',
+      revisionId: '1'
+    })
+  })
+
   test('catches errors received from ingestCmr', async () => {
     nock(/example-cmr/)
       .put(/ingest\/subscriptions\/1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed/)
@@ -568,6 +612,35 @@ describe('subscription#delete', () => {
         conceptId: 'SUB100000-EDSC',
         revisionId: '1'
       })
+    })
+  })
+
+  test('handles native ids with special characters', async () => {
+    nock(/example-cmr/)
+      .defaultReplyHeaders({
+        'CMR-Request-Id': 'abcd-1234-efgh-5678'
+      })
+      .delete(/ingest\/subscriptions\/test-guid%2Ftest-slash/)
+      .reply(201, {
+        'concept-id': 'SUB100000-EDSC',
+        'revision-id': '1'
+      })
+
+    const response = await subscriptionSourceDelete({
+      params: {
+        conceptId: 'SUB100000-EDSC',
+        nativeId: 'test-guid/test-slash'
+      }
+    }, {
+      headers: {
+        'Client-Id': 'eed-test-graphql',
+        'CMR-Request-Id': 'abcd-1234-efgh-5678'
+      }
+    }, requestInfo)
+
+    expect(response).toEqual({
+      conceptId: 'SUB100000-EDSC',
+      revisionId: '1'
     })
   })
 
