@@ -175,4 +175,6 @@ type SubscriptionMutationResponse {
   conceptId: String
   "The revision of the subscription."
   revisionId: String
+  "The native id of the subscription."
+  nativeId: String
 }

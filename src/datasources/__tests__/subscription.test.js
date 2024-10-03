@@ -384,6 +384,7 @@ describe('subscription#ingest', () => {
         .defaultReplyHeaders({
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
+        .matchHeader('Content-Type', 'application/vnd.nasa.cmr.umm+json')
         .put(/ingest\/subscriptions\/1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed/, JSON.stringify({
           CollectionConceptId: 'C100000-EDSC',
           EmailAddress: 'test@example.com',
@@ -429,6 +430,7 @@ describe('subscription#ingest', () => {
         .defaultReplyHeaders({
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
+        .matchHeader('Content-Type', 'application/vnd.nasa.cmr.umm+json')
         .put(/ingest\/subscriptions\/test-guid/, JSON.stringify({
           CollectionConceptId: 'C100000-EDSC',
           EmailAddress: 'test@example.com',
@@ -516,6 +518,7 @@ describe('subscription#ingest', () => {
   test('catches errors received from ingestCmr', async () => {
     nock(/example-cmr/)
       .put(/ingest\/subscriptions\/1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed/)
+      .matchHeader('Content-Type', 'application/vnd.nasa.cmr.umm+json')
       .reply(500, {
         errors: ['HTTP Error']
       }, {

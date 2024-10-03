@@ -116,7 +116,12 @@ export default class Subscription extends Concept {
     // Use the provided native id and provider id
     const { nativeId = uuidv4() } = params
 
-    super.ingest(data, requestedKeys, providedHeaders, {
+    const headers = {
+      ...providedHeaders,
+      'Content-Type': 'application/vnd.nasa.cmr.umm+json'
+    }
+
+    super.ingest(data, requestedKeys, headers, {
       path: `ingest/subscriptions/${encodeURIComponent(nativeId)}`
     })
   }
