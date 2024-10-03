@@ -32,7 +32,7 @@ export const cmrDelete = async ({
 
   // Default options
   const {
-    path = `ingest/providers/${providerId}/${conceptType}/${nativeId}`
+    path = `ingest/providers/${providerId}/${conceptType}/${encodeURIComponent(nativeId)}`
   } = options
 
   // Merge default headers into the provided headers and then pick out only permitted values
