@@ -64,6 +64,7 @@ describe('Collection', () => {
               coordinate_system: 'CARTESIAN',
               data_center: 'PORTA',
               dataset_id: 'Condimentum Quam Mattis Cursus Pharetra',
+              entry_id: 'LOREM-QUAM_1.0.0',
               has_formats: true,
               has_granules: true,
               has_spatial_subsetting: true,
@@ -327,6 +328,7 @@ describe('Collection', () => {
               directDistributionInformation
               directoryNames
               doi
+              entryId
               hasFormats
               hasGranules
               hasSpatialSubsetting
@@ -486,6 +488,7 @@ describe('Collection', () => {
                 version: 'A.1'
               }
             },
+            entryId: 'LOREM-QUAM_1.0.0',
             hasFormats: true,
             hasGranules: true,
             hasSpatialSubsetting: true,
