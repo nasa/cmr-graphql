@@ -86,6 +86,9 @@ type Collection {
   "Entry Title"
   entryTitle: String @deprecated(reason: "Use `title`.")
 
+  "Entry Id is the concatenation of short name, an underscore, and version of the corresponding collection"
+  entryId: String
+
   "The File Naming Convention refers to the naming convention of the data set's (Collection's) data files along with a description of the granule file construction."
   fileNamingConvention: JSON
 
