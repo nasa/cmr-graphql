@@ -17,6 +17,7 @@ export default async (params, context, parsedInfo) => {
   // Parse the response from CMR
   await granule.parse(requestInfo)
 
-  // Return a formatted JSON response
+  await granule.validateResponse(requestInfo)
+
   return granule.getFormattedResponse()
 }

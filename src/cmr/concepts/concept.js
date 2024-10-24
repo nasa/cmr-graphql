@@ -180,15 +180,8 @@ export default class Concept {
    */
   getItemCount() {
     const { jsonKeys = [], ummKeys = [] } = this.requestInfo
-
     if (jsonKeys.length) {
       if (ummKeys.length) {
-        // If both json and umm keys are being requested ensure that each endpoint
-        // returned the same number of results
-        if (this.jsonItemCount !== this.ummItemCount) {
-          throw new Error(`Inconsistent data prevented GraphQL from correctly parsing results (JSON Hits: ${this.jsonItemCount}, UMM Hits: ${this.ummItemCount})`)
-        }
-
         // Both endpoints returned the same value, return either value here
         return this.ummItemCount
       }
@@ -203,6 +196,130 @@ export default class Concept {
     }
 
     return 0
+  }
+
+  async fetchWithRetry(missingIds, keys, fetchFunction, parseFunction, retryCount = 0) {
+    const MAX_RETRIES = 1
+    const RETRY_DELAY = 1000
+
+    const response = await fetchFunction(missingIds, keys)
+    const fetchedItems = parseFunction(response)
+
+    if (missingIds.length === fetchedItems.length) {
+      return { fetchedItems }
+    }
+
+    if (retryCount < MAX_RETRIES) {
+      console.log(`Retry ${retryCount + 1}: ${missingIds} were missing. Retrying...`)
+
+      await new Promise((resolve) => { setTimeout(resolve, RETRY_DELAY) })
+
+      return this.fetchWithRetry(missingIds, keys, fetchFunction, parseFunction, retryCount + 1)
+    }
+
+    throw new Error(`Inconsistent data prevented GraphQL from correctly parsing results (JSON Hits: ${this.jsonItemCount}, UMM Hits: ${this.ummItemCount})`)
+  }
+
+  async validateResponse() {
+    const response = await this.getResponse()
+    const { jsonKeys, ummKeys } = this.requestInfo
+
+    const [jsonResponse, ummResponse] = response
+
+    // If both json and umm keys are being requested ensure that each endpoint
+    // returned the same number of results
+    if (jsonKeys.length && ummKeys.length) {
+      if (this.jsonItemCount === this.ummItemCount) {
+        return true
+      }
+
+      const parsedJsonResponse = this.parseJsonBody(jsonResponse)
+      const parsedUmmResponse = this.parseUmmBody(ummResponse)
+
+      const jsonIds = parsedJsonResponse.map((item) => item.concept_id)
+      const ummIds = parsedUmmResponse.map((item) => item.meta['concept-id'])
+
+      // If the number of concept ids in umm and json match, it mean the same number of items from both endpoint.
+      // This suggests that the data is consistent, so we can consider the response is valid
+      if (ummIds.length === jsonIds.length) {
+        return true
+      }
+
+      // Handles the case where umm data has missing items.
+      // Attempts to fetch the missing UMM data and add the missing items to existing items
+      if (ummIds.length < jsonIds.length) {
+        const missingUmmIds = jsonIds.filter((id) => !ummIds.includes(id))
+
+        const { fetchedItems } = await this.fetchWithRetry(
+          missingUmmIds,
+          ummKeys,
+          (params, keys) => this.fetchUmm(params, keys),
+          (parsedResponse) => this.parseUmmBody(parsedResponse)
+        )
+
+        const currentItems = this.getItems()
+
+        this.setUmmItemCount(ummIds.length + fetchedItems.length)
+
+        fetchedItems.forEach((ummItem) => {
+          const { umm, meta } = ummItem
+          const conceptId = meta['concept-id']
+
+          // Find the corresponding item key in the current items
+          // The key starts with the concept ID (e.g., 'G100000-EDSC-0')
+          const itemKey = Object.keys(currentItems).find((key) => key.startsWith(conceptId))
+
+          // Convert the UMM data to camelCase and iterate over each key-value pair and
+          // Sets each UMM field in the corresponding item
+          Object.entries(camelcaseKeys(umm)).forEach(([key, value]) => {
+            this.setItemValue(
+              itemKey,
+              key,
+              value
+            )
+          })
+        })
+      }
+
+      // Handles the case where JSON data has missing items.
+      // Attempts to fetch the missing JSON data and add the missing items to existing items
+      if (jsonIds.length < ummIds.length) {
+        const missingJsonIds = ummIds.filter((id) => !jsonIds.includes(id))
+
+        const { fetchedItems } = await this.fetchWithRetry(
+          missingJsonIds,
+          jsonKeys,
+          (params, keys) => this.fetchJson(params, keys),
+          (parsedResponse) => this.parseJsonBody(parsedResponse)
+        )
+
+        const currentItems = this.getItems()
+
+        this.setJsonItemCount(jsonIds.length + fetchedItems.length)
+
+        fetchedItems.forEach((item) => {
+          const normalizedItem = this.normalizeJsonItem(item)
+
+          // Find the corresponding item key in the current items
+          // The key starts with the concept ID (e.g., 'G100000-EDSC-0')
+          const itemKey = Object.keys(currentItems).find(
+            (key) => key.startsWith(normalizedItem.concept_id)
+          )
+
+          // Convert the json data to camelCase and iterate over each key-value pair and
+          // Sets each json field in the corresponding item
+          Object.entries(camelcaseKeys(item)).forEach(([key, value]) => {
+            this.setItemValue(
+              itemKey,
+              key,
+              value
+            )
+          })
+        })
+      }
+    }
+
+    return true
   }
 
   /**
