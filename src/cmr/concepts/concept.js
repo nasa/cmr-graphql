@@ -198,6 +198,14 @@ export default class Concept {
     return 0
   }
 
+  /**
+   * Fetches missing items for a umm or json endpoint with retry logic
+   * @param {Array} missingIds - Array of concept IDs for missing items
+   * @param {Array} keys - Array of requested keys to fetch for each item (ummKeys or jsonKeys)
+   * @param {Function} fetchFunction - Function to fetch data from CMR (fetchUmm or fetchJson)
+   * @param {Function} parseFunction - Function to parse the fetched data
+   * @param {Integer} retryCount - Current retry attempt count
+   */
   async fetchWithRetry(missingIds, keys, fetchFunction, parseFunction, retryCount = 0) {
     const MAX_RETRIES = 1
     const RETRY_DELAY = 1000
@@ -220,9 +228,12 @@ export default class Concept {
     throw new Error(`Inconsistent data prevented GraphQL from correctly parsing results (JSON Hits: ${this.jsonItemCount}, UMM Hits: ${this.ummItemCount})`)
   }
 
+  /**
+   * Validates the response from CMR and handles inconsistencies between JSON and UMM data
+   */
   async validateResponse() {
     const response = await this.getResponse()
-    const { jsonKeys, ummKeys } = this.requestInfo
+    const { jsonKeys, ummKeys, ummKeyMappings } = this.requestInfo
 
     const [jsonResponse, ummResponse] = response
 
@@ -261,23 +272,16 @@ export default class Concept {
 
         this.setUmmItemCount(ummIds.length + fetchedItems.length)
 
-        fetchedItems.forEach((ummItem) => {
-          const { umm, meta } = ummItem
+        fetchedItems.forEach((item) => {
+          const { meta } = item
           const conceptId = meta['concept-id']
 
-          // Find the corresponding item key in the current items
-          // The key starts with the concept ID (e.g., 'G100000-EDSC-0')
+          const normalizedItem = this.normalizeUmmItem(item)
           const itemKey = Object.keys(currentItems).find((key) => key.startsWith(conceptId))
 
-          // Convert the UMM data to camelCase and iterate over each key-value pair and
-          // Sets each UMM field in the corresponding item
-          Object.entries(camelcaseKeys(umm)).forEach(([key, value]) => {
-            this.setItemValue(
-              itemKey,
-              key,
-              value
-            )
-          })
+          this.setEssentialUmmValues(itemKey, normalizedItem)
+
+          this.setUmmItems(item, itemKey, ummKeys, ummKeyMappings)
         })
       }
 
@@ -306,15 +310,7 @@ export default class Concept {
             (key) => key.startsWith(normalizedItem.concept_id)
           )
 
-          // Convert the json data to camelCase and iterate over each key-value pair and
-          // Sets each json field in the corresponding item
-          Object.entries(camelcaseKeys(item)).forEach(([key, value]) => {
-            this.setItemValue(
-              itemKey,
-              key,
-              value
-            )
-          })
+          this.setJsonItems(itemKey, jsonKeys, normalizedItem)
         })
       }
     }
@@ -825,6 +821,23 @@ export default class Concept {
   }
 
   /**
+   * Sets JSON item values in the result set based on requested keys
+   * @param {String} itemKey - Unique identifier for the item being processed
+   * @param {Array} jsonKeys - Array of JSON keys requested in the GraphQL query
+   * @param {Object} item - Raw item data received from the CMR JSON endpoint
+   */
+  setJsonItems(itemKey, jsonKeys, item) {
+    jsonKeys.forEach((jsonKey) => {
+      const cmrKey = snakeCase(jsonKey)
+
+      const { [cmrKey]: keyValue } = item
+
+      // Snake case the key requested and any children of that key
+      this.setItemValue(itemKey, jsonKey, keyValue)
+    })
+  }
+
+  /**
    * Parses the response from the json endpoint
    * @param {Object} jsonResponse HTTP response from the CMR endpoint
    * @param {Array} jsonKeys Array of the keys requested in the query
@@ -849,14 +862,71 @@ export default class Concept {
 
       this.setEssentialJsonValues(itemKey, normalizedItem)
 
-      jsonKeys.forEach((jsonKey) => {
-        const cmrKey = snakeCase(jsonKey)
+      this.setJsonItems(itemKey, jsonKeys, normalizedItem)
+    })
+  }
 
-        const { [cmrKey]: keyValue } = normalizedItem
+  /**
+   * Sets UMM item values to the result set
+   * @param {Object} item - Raw item data received from the CMR UMM endpoint
+   * @param {String} itemKey - Unique identifier for the item being processed
+   * @param {Array} ummKeys - Array of UMM keys requested in the GraphQL query
+   * @param {Object} ummKeyMappings - Object mapping UMM keys to their paths in the CMR response
+   */
+  setUmmItems(item, itemKey, ummKeys, ummKeyMappings) {
+    ummKeys.forEach((ummKey) => {
+      // Use lodash.get to retrieve a value from the umm response given the
+      // path we've defined above
+      let keyValue = get(item, ummKeyMappings[ummKey])
 
-        // Snake case the key requested and any children of that key
-        this.setItemValue(itemKey, jsonKey, keyValue)
-      })
+      // If the raw `ummMetadata` was requested return that value unaltered
+      if (ummKey === 'ummMetadata') {
+        this.setItemValue(
+          itemKey,
+          ummKey,
+          keyValue
+        )
+
+        return
+      }
+
+      // If the UMM Key is `previewMetadata`, we need to combine the `meta` and `umm` fields
+      // This ensures all the keys are available for the PreviewMetadata union type
+      if (ummKey === 'previewMetadata') {
+        keyValue = {
+          ...item.umm,
+          ...item.meta
+        }
+      }
+
+      if (keyValue != null) {
+        const camelCasedObject = camelcaseKeys({ [ummKey]: keyValue }, {
+          deep: true,
+          exclude: ['RelatedURLs']
+        })
+
+        // CamelcaseKey converts RelatedURLs to relatedUrLs, so excluding RelatedURLs above.
+        // This will remove RelatedURLs and create a new
+        // key called relatedUrls and assign the value to it so MMT and graphql response matches.
+        if (ummKey === 'previewMetadata') {
+          const { previewMetadata } = camelCasedObject
+          camelCasedObject.previewMetadata = {
+            ...previewMetadata,
+            relatedUrls: previewMetadata.RelatedURLs
+          }
+
+          delete camelCasedObject.previewMetadata.RelatedURLs
+        }
+
+        // Camel case all of the keys of this object (ummKey is already camel cased)
+        const { [ummKey]: camelCasedValue } = camelCasedObject
+
+        this.setItemValue(
+          itemKey,
+          ummKey,
+          camelCasedValue
+        )
+      }
     })
   }
 
@@ -890,61 +960,7 @@ export default class Concept {
 
       this.setEssentialUmmValues(itemKey, normalizedItem)
 
-      // Loop through the requested umm keys
-      ummKeys.forEach((ummKey) => {
-        // Use lodash.get to retrieve a value from the umm response given the
-        // path we've defined above
-        let keyValue = get(item, ummKeyMappings[ummKey])
-
-        // If the raw `ummMetadata` was requested return that value unaltered
-        if (ummKey === 'ummMetadata') {
-          this.setItemValue(
-            itemKey,
-            ummKey,
-            keyValue
-          )
-
-          return
-        }
-
-        // If the UMM Key is `previewMetadata`, we need to combine the `meta` and `umm` fields
-        // This ensures all the keys are available for the PreviewMetadata union type
-        if (ummKey === 'previewMetadata') {
-          keyValue = {
-            ...item.umm,
-            ...item.meta
-          }
-        }
-
-        if (keyValue != null) {
-          const camelCasedObject = camelcaseKeys({ [ummKey]: keyValue }, {
-            deep: true,
-            exclude: ['RelatedURLs']
-          })
-
-          // CamelcaseKey converts RelatedURLs to relatedUrLs, so excluding RelatedURLs above.
-          // This will remove RelatedURLs and create a new
-          // key called relatedUrls and assign the value to it so MMT and graphql response matches.
-          if (ummKey === 'previewMetadata') {
-            const { previewMetadata } = camelCasedObject
-            camelCasedObject.previewMetadata = {
-              ...previewMetadata,
-              relatedUrls: previewMetadata.RelatedURLs
-            }
-
-            delete camelCasedObject.previewMetadata.RelatedURLs
-          }
-
-          // Camel case all of the keys of this object (ummKey is already camel cased)
-          const { [ummKey]: camelCasedValue } = camelCasedObject
-
-          this.setItemValue(
-            itemKey,
-            ummKey,
-            camelCasedValue
-          )
-        }
-      })
+      this.setUmmItems(item, itemKey, ummKeys, ummKeyMappings,)
     })
   }
 
