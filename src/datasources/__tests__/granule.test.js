@@ -731,7 +731,6 @@ describe('granule', () => {
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           }
         }, requestInfo)
-        // Console.log('🚀 ~ expect ~ response:', response)
 
         expect(response).toEqual({
           count: 3,
