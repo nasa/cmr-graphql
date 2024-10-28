@@ -56,7 +56,7 @@ const permissions = shield(
       const { extensions } = thrownThing
       const { code } = extensions
 
-      // Surfaces cmr errors ONLY to mmt
+      // Surfaces cmr errors to mmt
       if (code === 'CMR_ERROR') {
         allowExternalErrorsBoolean = false
       }
