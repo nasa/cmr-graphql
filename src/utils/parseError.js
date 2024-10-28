@@ -32,8 +32,9 @@ export const parseError = (errorObj, {
     ({ errors: errorArray = [error] } = data)
 
     if (shouldLog) {
-      // Log each error provided. Account for when error is a string and
-      // for when error is an object with both path and [errors]
+      // Returns a new array based on what kind of message the user
+      // has received. Accounts for both an array of errors as well as
+      // an array of objects with both a path and array of errors.
       errorArray = errorArray.map((message) => {
         if (typeof message === 'string') {
           console.log(`${name} (${statusCode}): ${message}`)
