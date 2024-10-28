@@ -208,9 +208,12 @@ export default class Concept {
    */
   async fetchWithRetry(missingIds, keys, fetchFunction, parseFunction, retryCount = 0) {
     const {
-      maxRetries,
-      retryDelay
+      maxRetries: maxRetriesEnv,
+      retryDelay: retryDelayEnv
     } = process.env
+
+    const maxRetries = parseInt(maxRetriesEnv, 10)
+    const retryDelay = parseInt(retryDelayEnv, 10)
 
     const response = await fetchFunction(missingIds, keys)
     const fetchedItems = parseFunction(response)
