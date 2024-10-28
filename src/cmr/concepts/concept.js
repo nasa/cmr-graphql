@@ -207,8 +207,10 @@ export default class Concept {
    * @param {Integer} retryCount - Current retry attempt count
    */
   async fetchWithRetry(missingIds, keys, fetchFunction, parseFunction, retryCount = 0) {
-    const MAX_RETRIES = 1
-    const RETRY_DELAY = 1000
+    const {
+      maxRetries,
+      retryDelay
+    } = process.env
 
     const response = await fetchFunction(missingIds, keys)
     const fetchedItems = parseFunction(response)
@@ -217,10 +219,10 @@ export default class Concept {
       return { fetchedItems }
     }
 
-    if (retryCount < MAX_RETRIES) {
+    if (retryCount < maxRetries) {
       console.log(`Retry ${retryCount + 1}: ${missingIds} were missing. Retrying...`)
 
-      await new Promise((resolve) => { setTimeout(resolve, RETRY_DELAY) })
+      await new Promise((resolve) => { setTimeout(resolve, retryDelay) })
 
       return this.fetchWithRetry(missingIds, keys, fetchFunction, parseFunction, retryCount + 1)
     }

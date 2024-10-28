@@ -378,6 +378,9 @@ describe('granule', () => {
 
   describe('with json and umm keys', () => {
     beforeEach(() => {
+      process.env.maxRetries = 1
+      process.env.retryDelay = 1000
+
       // Overwrite default requestInfo
       requestInfo = {
         name: 'granules',
