@@ -32,7 +32,7 @@ const contextValue = {
 }
 
 describe('fallbackError', () => {
-  test('throws an error with the requestId present', async () => {
+  test('throws an error with the requestId present (cmr-error)', async () => {
     vi.spyOn(hasPermission, 'hasPermission').mockResolvedValue(true)
 
     const server = setupServer()
@@ -58,6 +58,45 @@ describe('fallbackError', () => {
     const variables = {
       params: {
         tags: ['CMR']
+      }
+    }
+
+    const result = await server.executeOperation({
+      query,
+      variables
+    }, {
+      contextValue
+    })
+
+    expect(result.body.singleResult.errors[0].message).toEqual('Cannot destructure property \'code\' of \'((cov_1is6xnfz3i(...).s[4]++) , extensions)\' as it is undefined.')
+  })
+
+  test('throws a general error for non-cmr error', async () => {
+    vi.spyOn(hasPermission, 'hasPermission').mockResolvedValue(true)
+
+    const server = setupServer()
+
+    const query = gql`
+      query Groups (
+        $params: GroupsInput
+      ) {
+        groups (
+          params: $params
+        ) {
+          count
+          items {
+            id
+            name
+            description
+            tag
+          }
+        }
+      }
+    `
+
+    const variables = {
+      params: {
+        tags: ['other']
       }
     }
 
