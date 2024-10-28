@@ -10,6 +10,8 @@ import { canCreateSystemGroups } from './acls/canCreateSystemGroups'
 import { isLocalMMT } from './rules/isLocalMMT'
 import { canCreateProviderGroups } from './acls/canCreateProviderGroups'
 
+let allowExternalErrorsBoolean = process.env.IS_OFFLINE
+
 const permissions = shield(
   {
     Query: {
@@ -45,11 +47,19 @@ const permissions = shield(
     fallbackRule: allow,
 
     // Only allow the external errors when running in the local DEV environment
-    allowExternalErrors: process.env.IS_OFFLINE,
+    // OR when there is a CMR_ERROR a user needs to read
+    allowExternalErrors: allowExternalErrorsBoolean,
 
     // `fallbackError` displays a useful message to the user containing a requestId, rather than the default "Not Authorized!" GraphQL Shield error.
     fallbackError: async (thrownThing, parent, args, context) => {
       const { requestId } = context
+      const { extensions } = thrownThing
+      const { code } = extensions
+
+      // Surfaces cmr errors ONLY to mmt
+      if (code === 'CMR_ERROR') {
+        allowExternalErrorsBoolean = false
+      }
 
       throw new Error(`An unknown error occurred. Please refer to the ID ${requestId} when contacting Earthdata Operations (support@earthdata.nasa.gov).`)
     }

@@ -33,8 +33,19 @@ export const parseError = (errorObj, {
 
     if (shouldLog) {
       // Log each error provided
-      errorArray.forEach((message) => {
-        console.log(`${name} (${statusCode}): ${message}`)
+      errorArray = errorArray.map((message) => {
+        if (typeof message === 'string') {
+          console.log(`${name} (${statusCode}): ${message}`)
+
+          return message
+        }
+
+        console.log(`${name} (${statusCode}): ${JSON.stringify(message)}`)
+
+        const { path, errors } = message
+        const parsedErrorPath = path.map((item) => (typeof item === 'number' ? `[${item}] > ` : item)).join('')
+
+        return [`Location: ${parsedErrorPath}`, errors]
       })
     }
   } else {
