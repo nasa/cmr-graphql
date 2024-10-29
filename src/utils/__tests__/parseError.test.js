@@ -147,7 +147,7 @@ describe('parseError', () => {
               response: {
                 data: {
                   errors: [{
-                    path: [ 'Platforms', 0, 'ComposedOf' ],
+                    path: ['Platforms', 0, 'ComposedOf'],
                     errors: [
                       'Composed Of must be unique. This contains duplicates named [ATM].'
                     ]
@@ -159,8 +159,8 @@ describe('parseError', () => {
             })
 
             expect(consoleMock).toBeCalledTimes(1)
-            expect(consoleMock.mock.calls[0]).toEqual([`CMR Error (422): {\"path\":[\"Platforms\",0,\"ComposedOf\"],\"errors\":[\"Composed Of must be unique. This contains duplicates named [ATM].\"]}`])
-
+            // eslint-disable-next-line quotes
+            expect(consoleMock.mock.calls[0]).toEqual([`CMR Error (422): {"path":["Platforms",0,"ComposedOf"],"errors":["Composed Of must be unique. This contains duplicates named [ATM]."]}`])
             expect(response).toEqual({
               statusCode: 422,
               body: JSON.stringify({
