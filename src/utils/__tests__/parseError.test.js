@@ -139,6 +139,40 @@ describe('parseError', () => {
           })
         })
 
+        describe('with a path and error array within errors', () => {
+          test('it parses the error correclty', () => {
+            const consoleMock = vi.spyOn(console, 'log')
+
+            const response = parseError({
+              response: {
+                data: {
+                  errors: [{
+                    path: [ 'Platforms', 0, 'ComposedOf' ],
+                    errors: [
+                      'Composed Of must be unique. This contains duplicates named [ATM].'
+                    ]
+                  }]
+                },
+                status: 422
+              },
+              name: 'CMR Error'
+            })
+
+            expect(consoleMock).toBeCalledTimes(1)
+            expect(consoleMock.mock.calls[0]).toEqual([`CMR Error (422): {\"path\":[\"Platforms\",0,\"ComposedOf\"],\"errors\":[\"Composed Of must be unique. This contains duplicates named [ATM].\"]}`])
+
+            expect(response).toEqual({
+              statusCode: 422,
+              body: JSON.stringify({
+                statusCode: 422,
+                errors: [
+                  ['Location: Platforms[0] > ComposedOf', ['Composed Of must be unique. This contains duplicates named [ATM].']]
+                ]
+              })
+            })
+          })
+        })
+
         describe('with no error or errors array', () => {
           test('defaults to an array containing `Unknown Error`', () => {
             const consoleMock = vi.spyOn(console, 'log')
