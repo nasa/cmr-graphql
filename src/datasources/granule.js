@@ -17,6 +17,9 @@ export default async (params, context, parsedInfo) => {
   // Parse the response from CMR
   await granule.parse(requestInfo)
 
+  // Validates consistency between JSON and UMM data, if present
+  await granule.validateResponse(requestInfo)
+
   // Return a formatted JSON response
   return granule.getFormattedResponse()
 }

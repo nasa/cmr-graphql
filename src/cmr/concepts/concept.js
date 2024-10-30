@@ -180,15 +180,8 @@ export default class Concept {
    */
   getItemCount() {
     const { jsonKeys = [], ummKeys = [] } = this.requestInfo
-
     if (jsonKeys.length) {
       if (ummKeys.length) {
-        // If both json and umm keys are being requested ensure that each endpoint
-        // returned the same number of results
-        if (this.jsonItemCount !== this.ummItemCount) {
-          throw new Error(`Inconsistent data prevented GraphQL from correctly parsing results (JSON Hits: ${this.jsonItemCount}, UMM Hits: ${this.ummItemCount})`)
-        }
-
         // Both endpoints returned the same value, return either value here
         return this.ummItemCount
       }
@@ -203,6 +196,131 @@ export default class Concept {
     }
 
     return 0
+  }
+
+  /**
+   * Fetches missing items for a umm or json endpoint with retry logic
+   * @param {Array} missingIds - Array of concept IDs for missing items
+   * @param {Array} keys - Array of requested keys to fetch for each item (ummKeys or jsonKeys)
+   * @param {Function} fetchFunction - Function to fetch data from CMR (fetchUmm or fetchJson)
+   * @param {Function} parseFunction - Function to parse the fetched data
+   * @param {Integer} retryCount - Current retry attempt count
+   */
+  async fetchWithRetry(missingIds, keys, fetchFunction, parseFunction, retryCount = 0) {
+    const {
+      maxRetries: maxRetriesEnv,
+      retryDelay: retryDelayEnv
+    } = process.env
+
+    const maxRetries = parseInt(maxRetriesEnv, 10)
+    const retryDelay = parseInt(retryDelayEnv, 10)
+
+    const response = await fetchFunction(missingIds, keys)
+    const fetchedItems = parseFunction(response)
+
+    if (missingIds.length === fetchedItems.length) {
+      return { fetchedItems }
+    }
+
+    if (retryCount < maxRetries) {
+      console.log(`Retry ${retryCount + 1}: ${missingIds} were missing. Retrying...`)
+
+      await new Promise((resolve) => { setTimeout(resolve, retryDelay) })
+
+      return this.fetchWithRetry(missingIds, keys, fetchFunction, parseFunction, retryCount + 1)
+    }
+
+    throw new Error(`Inconsistent data prevented GraphQL from correctly parsing results (JSON Hits: ${this.jsonItemCount}, UMM Hits: ${this.ummItemCount})`)
+  }
+
+  /**
+   * Validates the response from CMR and handles inconsistencies between JSON and UMM data
+   */
+  async validateResponse() {
+    const response = await this.getResponse()
+    const { jsonKeys, ummKeys, ummKeyMappings } = this.requestInfo
+
+    const [jsonResponse, ummResponse] = response
+
+    // If both json and umm keys are being requested ensure that each endpoint
+    // returned the same number of results
+    if (jsonKeys.length && ummKeys.length) {
+      if (this.jsonItemCount === this.ummItemCount) {
+        return true
+      }
+
+      const parsedJsonResponse = this.parseJsonBody(jsonResponse)
+      const parsedUmmResponse = this.parseUmmBody(ummResponse)
+
+      const jsonIds = parsedJsonResponse.map((item) => item.concept_id)
+      const ummIds = parsedUmmResponse.map((item) => item.meta['concept-id'])
+
+      // If the number of concept ids in umm and json match, it mean the same number of items from both endpoint.
+      // This suggests that the data is consistent, so we can consider the response is valid
+      if (ummIds.length === jsonIds.length) {
+        return true
+      }
+
+      // Handles the case where umm data has missing items.
+      // Attempts to fetch the missing UMM data and add the missing items to existing items
+      if (ummIds.length < jsonIds.length) {
+        const missingUmmIds = jsonIds.filter((id) => !ummIds.includes(id))
+
+        const { fetchedItems } = await this.fetchWithRetry(
+          missingUmmIds,
+          ummKeys,
+          (params, keys) => this.fetchUmm(params, keys),
+          (parsedResponse) => this.parseUmmBody(parsedResponse)
+        )
+
+        const currentItems = this.getItems()
+
+        this.setUmmItemCount(ummIds.length + fetchedItems.length)
+
+        fetchedItems.forEach((item) => {
+          const { meta } = item
+          const conceptId = meta['concept-id']
+
+          const normalizedItem = this.normalizeUmmItem(item)
+          const itemKey = Object.keys(currentItems).find((key) => key.startsWith(conceptId))
+
+          this.setEssentialUmmValues(itemKey, normalizedItem)
+
+          this.setUmmItems(item, itemKey, ummKeys, ummKeyMappings)
+        })
+      }
+
+      // Handles the case where JSON data has missing items.
+      // Attempts to fetch the missing JSON data and add the missing items to existing items
+      if (jsonIds.length < ummIds.length) {
+        const missingJsonIds = ummIds.filter((id) => !jsonIds.includes(id))
+
+        const { fetchedItems } = await this.fetchWithRetry(
+          missingJsonIds,
+          jsonKeys,
+          (params, keys) => this.fetchJson(params, keys),
+          (parsedResponse) => this.parseJsonBody(parsedResponse)
+        )
+
+        const currentItems = this.getItems()
+
+        this.setJsonItemCount(jsonIds.length + fetchedItems.length)
+
+        fetchedItems.forEach((item) => {
+          const normalizedItem = this.normalizeJsonItem(item)
+
+          // Find the corresponding item key in the current items
+          // The key starts with the concept ID (e.g., 'G100000-EDSC-0')
+          const itemKey = Object.keys(currentItems).find(
+            (key) => key.startsWith(normalizedItem.concept_id)
+          )
+
+          this.setJsonItems(itemKey, jsonKeys, normalizedItem)
+        })
+      }
+    }
+
+    return true
   }
 
   /**
@@ -708,6 +826,23 @@ export default class Concept {
   }
 
   /**
+   * Sets JSON item values in the result set based on requested keys
+   * @param {String} itemKey - Unique identifier for the item being processed
+   * @param {Array} jsonKeys - Array of JSON keys requested in the GraphQL query
+   * @param {Object} item - Raw item data received from the CMR JSON endpoint
+   */
+  setJsonItems(itemKey, jsonKeys, item) {
+    jsonKeys.forEach((jsonKey) => {
+      const cmrKey = snakeCase(jsonKey)
+
+      const { [cmrKey]: keyValue } = item
+
+      // Snake case the key requested and any children of that key
+      this.setItemValue(itemKey, jsonKey, keyValue)
+    })
+  }
+
+  /**
    * Parses the response from the json endpoint
    * @param {Object} jsonResponse HTTP response from the CMR endpoint
    * @param {Array} jsonKeys Array of the keys requested in the query
@@ -732,14 +867,71 @@ export default class Concept {
 
       this.setEssentialJsonValues(itemKey, normalizedItem)
 
-      jsonKeys.forEach((jsonKey) => {
-        const cmrKey = snakeCase(jsonKey)
+      this.setJsonItems(itemKey, jsonKeys, normalizedItem)
+    })
+  }
 
-        const { [cmrKey]: keyValue } = normalizedItem
+  /**
+   * Sets UMM item values to the result set
+   * @param {Object} item - Raw item data received from the CMR UMM endpoint
+   * @param {String} itemKey - Unique identifier for the item being processed
+   * @param {Array} ummKeys - Array of UMM keys requested in the GraphQL query
+   * @param {Object} ummKeyMappings - Object mapping UMM keys to their paths in the CMR response
+   */
+  setUmmItems(item, itemKey, ummKeys, ummKeyMappings) {
+    ummKeys.forEach((ummKey) => {
+      // Use lodash.get to retrieve a value from the umm response given the
+      // path we've defined above
+      let keyValue = get(item, ummKeyMappings[ummKey])
 
-        // Snake case the key requested and any children of that key
-        this.setItemValue(itemKey, jsonKey, keyValue)
-      })
+      // If the raw `ummMetadata` was requested return that value unaltered
+      if (ummKey === 'ummMetadata') {
+        this.setItemValue(
+          itemKey,
+          ummKey,
+          keyValue
+        )
+
+        return
+      }
+
+      // If the UMM Key is `previewMetadata`, we need to combine the `meta` and `umm` fields
+      // This ensures all the keys are available for the PreviewMetadata union type
+      if (ummKey === 'previewMetadata') {
+        keyValue = {
+          ...item.umm,
+          ...item.meta
+        }
+      }
+
+      if (keyValue != null) {
+        const camelCasedObject = camelcaseKeys({ [ummKey]: keyValue }, {
+          deep: true,
+          exclude: ['RelatedURLs']
+        })
+
+        // CamelcaseKey converts RelatedURLs to relatedUrLs, so excluding RelatedURLs above.
+        // This will remove RelatedURLs and create a new
+        // key called relatedUrls and assign the value to it so MMT and graphql response matches.
+        if (ummKey === 'previewMetadata') {
+          const { previewMetadata } = camelCasedObject
+          camelCasedObject.previewMetadata = {
+            ...previewMetadata,
+            relatedUrls: previewMetadata.RelatedURLs
+          }
+
+          delete camelCasedObject.previewMetadata.RelatedURLs
+        }
+
+        // Camel case all of the keys of this object (ummKey is already camel cased)
+        const { [ummKey]: camelCasedValue } = camelCasedObject
+
+        this.setItemValue(
+          itemKey,
+          ummKey,
+          camelCasedValue
+        )
+      }
     })
   }
 
@@ -773,61 +965,7 @@ export default class Concept {
 
       this.setEssentialUmmValues(itemKey, normalizedItem)
 
-      // Loop through the requested umm keys
-      ummKeys.forEach((ummKey) => {
-        // Use lodash.get to retrieve a value from the umm response given the
-        // path we've defined above
-        let keyValue = get(item, ummKeyMappings[ummKey])
-
-        // If the raw `ummMetadata` was requested return that value unaltered
-        if (ummKey === 'ummMetadata') {
-          this.setItemValue(
-            itemKey,
-            ummKey,
-            keyValue
-          )
-
-          return
-        }
-
-        // If the UMM Key is `previewMetadata`, we need to combine the `meta` and `umm` fields
-        // This ensures all the keys are available for the PreviewMetadata union type
-        if (ummKey === 'previewMetadata') {
-          keyValue = {
-            ...item.umm,
-            ...item.meta
-          }
-        }
-
-        if (keyValue != null) {
-          const camelCasedObject = camelcaseKeys({ [ummKey]: keyValue }, {
-            deep: true,
-            exclude: ['RelatedURLs']
-          })
-
-          // CamelcaseKey converts RelatedURLs to relatedUrLs, so excluding RelatedURLs above.
-          // This will remove RelatedURLs and create a new
-          // key called relatedUrls and assign the value to it so MMT and graphql response matches.
-          if (ummKey === 'previewMetadata') {
-            const { previewMetadata } = camelCasedObject
-            camelCasedObject.previewMetadata = {
-              ...previewMetadata,
-              relatedUrls: previewMetadata.RelatedURLs
-            }
-
-            delete camelCasedObject.previewMetadata.RelatedURLs
-          }
-
-          // Camel case all of the keys of this object (ummKey is already camel cased)
-          const { [ummKey]: camelCasedValue } = camelCasedObject
-
-          this.setItemValue(
-            itemKey,
-            ummKey,
-            camelCasedValue
-          )
-        }
-      })
+      this.setUmmItems(item, itemKey, ummKeys, ummKeyMappings,)
     })
   }
 

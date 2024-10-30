@@ -378,6 +378,9 @@ describe('granule', () => {
 
   describe('with json and umm keys', () => {
     beforeEach(() => {
+      process.env.maxRetries = '1'
+      process.env.retryDelay = '1000'
+
       // Overwrite default requestInfo
       requestInfo = {
         name: 'granules',
@@ -471,6 +474,653 @@ describe('granule', () => {
           browseFlag: true,
           granuleUr: 'GLDAS_CLSM025_D.2.0:GLDAS_CLSM025_D.A19480101.020.nc4'
         }]
+      })
+    })
+
+    describe('when JSON and UMM hit counts differ, but returned items match', () => {
+      test('return the parsed granule results', async () => {
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Hits': 85,
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .get(/granules\.json/)
+          .reply(200, {
+            feed: {
+              entry: [{
+                id: 'G100000-EDSC',
+                browse_flag: true
+              }]
+            }
+          })
+
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Hits': 84,
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .get(/granules\.umm_json/)
+          .reply(200, {
+            items: [{
+              meta: {
+                'concept-id': 'G100000-EDSC'
+              },
+              umm: {
+                GranuleUR: 'GLDAS_CLSM025_D.2.0:GLDAS_CLSM025_D.A19480101.020.nc4'
+              }
+            }]
+          })
+
+        const response = await granuleDatasource({
+          params: {
+            concept_id: 'G100000-EDSC'
+          }
+        }, {
+          headers: {
+            'Client-Id': 'eed-test-graphql',
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          }
+        }, requestInfo)
+
+        expect(response).toEqual({
+          count: 84,
+          cursor: null,
+          items: [{
+            conceptId: 'G100000-EDSC',
+            browseFlag: true,
+            granuleUr: 'GLDAS_CLSM025_D.2.0:GLDAS_CLSM025_D.A19480101.020.nc4'
+          }]
+        })
+      })
+    })
+
+    describe('when JSON and UMM hit counts differ and umm item count differ', () => {
+      test('should fetch missing UMM data and return combined results with correct counts', async () => {
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Hits': 3,
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .get(/granules\.json/)
+          .reply(200, {
+            feed: {
+              entry: [
+                {
+                  id: 'G100000-EDSC',
+                  browse_flag: true
+                },
+                {
+                  id: 'G100001-EDSC',
+                  browse_flag: true
+                },
+                {
+                  id: 'G100002-EDSC',
+                  browse_flag: true
+                }
+              ]
+            }
+          })
+
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Hits': 1,
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .get(/granules\.umm_json/)
+          .reply(200, {
+            items: [{
+              meta: {
+                'concept-id': 'G100000-EDSC'
+              },
+              umm: {
+                GranuleUR: 'GLDAS_CLSM025_D.2.0:GLDAS_CLSM025_D.A19480101.020.nc4'
+              }
+            }]
+          })
+
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Hits': 2,
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .get(/granules\.umm_json/)
+          .reply(200, {
+            items: [
+              {
+                meta: {
+                  'concept-id': 'G100001-EDSC'
+                },
+                umm: {
+                  GranuleUR: 'GLDAS_CLSM025_D.2.0:GLDAS_CLSM025_D.A19480101.021.nc4'
+                }
+              },
+              {
+                meta: {
+                  'concept-id': 'G100002-EDSC'
+                },
+                umm: {
+                  GranuleUR: 'GLDAS_CLSM025_D.2.0:GLDAS_CLSM025_D.A19480101.022.nc4'
+                }
+              }
+            ]
+          })
+
+        const response = await granuleDatasource({
+          params: {
+            concept_id: 'G100000-EDSC'
+          }
+        }, {
+          headers: {
+            'Client-Id': 'eed-test-graphql',
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          }
+        }, requestInfo)
+
+        expect(response).toEqual({
+          count: 3,
+          cursor: null,
+          items: [
+            {
+              conceptId: 'G100000-EDSC',
+              browseFlag: true,
+              granuleUr: 'GLDAS_CLSM025_D.2.0:GLDAS_CLSM025_D.A19480101.020.nc4'
+            },
+            {
+              conceptId: 'G100001-EDSC',
+              browseFlag: true,
+              granuleUr: 'GLDAS_CLSM025_D.2.0:GLDAS_CLSM025_D.A19480101.021.nc4'
+            },
+            {
+              conceptId: 'G100002-EDSC',
+              browseFlag: true,
+              granuleUr: 'GLDAS_CLSM025_D.2.0:GLDAS_CLSM025_D.A19480101.022.nc4'
+            }
+          ]
+        })
+      })
+    })
+
+    describe('when JSON and UMM hit counts differ and json item count differ', () => {
+      test('should fetch missing JSON data and return combined results with correct count', async () => {
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Hits': 1,
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .get(/granules\.json/)
+          .reply(200, {
+            feed: {
+              entry: [
+                {
+                  id: 'G100000-EDSC',
+                  browse_flag: true
+                }
+              ]
+            }
+          })
+
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Hits': 3,
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .get(/granules\.umm_json/)
+          .reply(200, {
+            items: [
+              {
+                meta: {
+                  'concept-id': 'G100000-EDSC'
+                },
+                umm: {
+                  GranuleUR: 'GLDAS_CLSM025_D.2.0:GLDAS_CLSM025_D.A19480101.020.nc4'
+                }
+              },
+              {
+                meta: {
+                  'concept-id': 'G100001-EDSC'
+                },
+                umm: {
+                  GranuleUR: 'GLDAS_CLSM025_D.2.0:GLDAS_CLSM025_D.A19480101.021.nc4'
+                }
+              },
+              {
+                meta: {
+                  'concept-id': 'G100002-EDSC'
+                },
+                umm: {
+                  GranuleUR: 'GLDAS_CLSM025_D.2.0:GLDAS_CLSM025_D.A19480101.022.nc4'
+                }
+              }
+
+            ]
+          })
+
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Hits': 3,
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .get(/granules\.json/)
+          .reply(200, {
+            feed: {
+              entry: [
+                {
+                  id: 'G100001-EDSC',
+                  browse_flag: true
+                },
+                {
+                  id: 'G100002-EDSC',
+                  browse_flag: true
+                }
+              ]
+            }
+          })
+
+        const response = await granuleDatasource({
+          params: {
+            concept_id: 'G100000-EDSC'
+          }
+        }, {
+          headers: {
+            'Client-Id': 'eed-test-graphql',
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          }
+        }, requestInfo)
+
+        expect(response).toEqual({
+          count: 3,
+          cursor: null,
+          items: [
+            {
+              conceptId: 'G100000-EDSC',
+              browseFlag: true,
+              granuleUr: 'GLDAS_CLSM025_D.2.0:GLDAS_CLSM025_D.A19480101.020.nc4'
+            },
+            {
+              conceptId: 'G100001-EDSC',
+              browseFlag: true,
+              granuleUr: 'GLDAS_CLSM025_D.2.0:GLDAS_CLSM025_D.A19480101.021.nc4'
+            },
+            {
+              conceptId: 'G100002-EDSC',
+              browseFlag: true,
+              granuleUr: 'GLDAS_CLSM025_D.2.0:GLDAS_CLSM025_D.A19480101.022.nc4'
+            }
+          ]
+        })
+      })
+    })
+
+    describe('when first retry does not get all of missing umm concepts', () => {
+      test('should fetch missing concepts again and return combined result', async () => {
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Hits': 3,
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .get(/granules\.json/)
+          .reply(200, {
+            feed: {
+              entry: [
+                {
+                  id: 'G100000-EDSC',
+                  browse_flag: true
+                },
+                {
+                  id: 'G100001-EDSC',
+                  browse_flag: true
+                },
+                {
+                  id: 'G100002-EDSC',
+                  browse_flag: true
+                }
+              ]
+            }
+          })
+
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Hits': 1,
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .get(/granules\.umm_json/)
+          .reply(200, {
+            items: [{
+              meta: {
+                'concept-id': 'G100000-EDSC'
+              },
+              umm: {
+                GranuleUR: 'GLDAS_CLSM025_D.2.0:GLDAS_CLSM025_D.A19480101.020.nc4'
+              }
+            }]
+          })
+
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Hits': 1,
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .get(/granules\.umm_json/)
+          .reply(200, {
+            items: [
+              {
+                meta: {
+                  'concept-id': 'G100001-EDSC'
+                },
+                umm: {
+                  GranuleUR: 'GLDAS_CLSM025_D.2.0:GLDAS_CLSM025_D.A19480101.021.nc4'
+                }
+              }
+            ]
+          })
+
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Hits': 2,
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .get(/granules\.umm_json/)
+          .reply(200, {
+            items: [
+              {
+                meta: {
+                  'concept-id': 'G100001-EDSC'
+                },
+                umm: {
+                  GranuleUR: 'GLDAS_CLSM025_D.2.0:GLDAS_CLSM025_D.A19480101.021.nc4'
+                }
+              },
+              {
+                meta: {
+                  'concept-id': 'G100002-EDSC'
+                },
+                umm: {
+                  GranuleUR: 'GLDAS_CLSM025_D.2.0:GLDAS_CLSM025_D.A19480101.022.nc4'
+                }
+              }
+            ]
+          })
+
+        const response = await granuleDatasource({
+          params: {
+            concept_id: 'G100000-EDSC'
+          }
+        }, {
+          headers: {
+            'Client-Id': 'eed-test-graphql',
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          }
+        }, requestInfo)
+
+        expect(response).toEqual({
+          count: 3,
+          cursor: null,
+          items: [
+            {
+              conceptId: 'G100000-EDSC',
+              browseFlag: true,
+              granuleUr: 'GLDAS_CLSM025_D.2.0:GLDAS_CLSM025_D.A19480101.020.nc4'
+            },
+            {
+              conceptId: 'G100001-EDSC',
+              browseFlag: true,
+              granuleUr: 'GLDAS_CLSM025_D.2.0:GLDAS_CLSM025_D.A19480101.021.nc4'
+            },
+            {
+              conceptId: 'G100002-EDSC',
+              browseFlag: true,
+              granuleUr: 'GLDAS_CLSM025_D.2.0:GLDAS_CLSM025_D.A19480101.022.nc4'
+            }
+          ]
+        })
+      })
+    })
+
+    describe('when first retry does not get all of missing json concepts', () => {
+      test('should fetch missing concepts again and return combined result', async () => {
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Hits': 1,
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .get(/granules\.json/)
+          .reply(200, {
+            feed: {
+              entry: [
+                {
+                  id: 'G100000-EDSC',
+                  browse_flag: true
+                }
+              ]
+            }
+          })
+
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Hits': 3,
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .get(/granules\.umm_json/)
+          .reply(200, {
+            items: [
+              {
+                meta: {
+                  'concept-id': 'G100000-EDSC'
+                },
+                umm: {
+                  GranuleUR: 'GLDAS_CLSM025_D.2.0:GLDAS_CLSM025_D.A19480101.020.nc4'
+                }
+              },
+              {
+                meta: {
+                  'concept-id': 'G100001-EDSC'
+                },
+                umm: {
+                  GranuleUR: 'GLDAS_CLSM025_D.2.0:GLDAS_CLSM025_D.A19480101.021.nc4'
+                }
+              },
+              {
+                meta: {
+                  'concept-id': 'G100002-EDSC'
+                },
+                umm: {
+                  GranuleUR: 'GLDAS_CLSM025_D.2.0:GLDAS_CLSM025_D.A19480101.022.nc4'
+                }
+              }
+
+            ]
+          })
+
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Hits': 1,
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .get(/granules\.json/)
+          .reply(200, {
+            feed: {
+              entry: [
+                {
+                  id: 'G100000-EDSC',
+                  browse_flag: true
+                }
+              ]
+            }
+          })
+
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Hits': 1,
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .get(/granules\.json/)
+          .reply(200, {
+            feed: {
+              entry: [
+                {
+                  id: 'G100001-EDSC',
+                  browse_flag: true
+                },
+                {
+                  id: 'G100002-EDSC',
+                  browse_flag: true
+                }
+              ]
+            }
+          })
+
+        const response = await granuleDatasource({
+          params: {
+            concept_id: 'G100000-EDSC'
+          }
+        }, {
+          headers: {
+            'Client-Id': 'eed-test-graphql',
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          }
+        }, requestInfo)
+
+        expect(response).toEqual({
+          count: 3,
+          cursor: null,
+          items: [
+            {
+              conceptId: 'G100000-EDSC',
+              browseFlag: true,
+              granuleUr: 'GLDAS_CLSM025_D.2.0:GLDAS_CLSM025_D.A19480101.020.nc4'
+            },
+            {
+              conceptId: 'G100001-EDSC',
+              browseFlag: true,
+              granuleUr: 'GLDAS_CLSM025_D.2.0:GLDAS_CLSM025_D.A19480101.021.nc4'
+            },
+            {
+              conceptId: 'G100002-EDSC',
+              browseFlag: true,
+              granuleUr: 'GLDAS_CLSM025_D.2.0:GLDAS_CLSM025_D.A19480101.022.nc4'
+            }
+          ]
+        })
+      })
+    })
+
+    describe('when JSON and UMM hit counts differ and max retry attempts are reached', () => {
+      test('throws an error after max retries', async () => {
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Hits': 1,
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .get(/granules\.json/)
+          .reply(200, {
+            feed: {
+              entry: [
+                {
+                  id: 'G100000-EDSC',
+                  browse_flag: true
+                }
+              ]
+            }
+          })
+
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Hits': 3,
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .get(/granules\.umm_json/)
+          .reply(200, {
+            items: [
+              {
+                meta: {
+                  'concept-id': 'G100000-EDSC'
+                },
+                umm: {
+                  GranuleUR: 'GLDAS_CLSM025_D.2.0:GLDAS_CLSM025_D.A19480101.020.nc4'
+                }
+              },
+              {
+                meta: {
+                  'concept-id': 'G100001-EDSC'
+                },
+                umm: {
+                  GranuleUR: 'GLDAS_CLSM025_D.2.0:GLDAS_CLSM025_D.A19480101.021.nc4'
+                }
+              },
+              {
+                meta: {
+                  'concept-id': 'G100002-EDSC'
+                },
+                umm: {
+                  GranuleUR: 'GLDAS_CLSM025_D.2.0:GLDAS_CLSM025_D.A19480101.022.nc4'
+                }
+              }
+
+            ]
+          })
+
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Hits': 1,
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .get(/granules\.json/)
+          .reply(200, {
+            feed: {
+              entry: [
+                {
+                  id: 'G100000-EDSC',
+                  browse_flag: true
+                }
+              ]
+            }
+          })
+
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Hits': 1,
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .get(/granules\.json/)
+          .reply(200, {
+            feed: {
+              entry: [
+                {
+                  id: 'G100001-EDSC',
+                  browse_flag: true
+                }
+              ]
+            }
+          })
+
+        await expect(granuleDatasource({
+          params: { concept_id: 'G100000-EDSC' }
+        }, {
+          headers: {
+            'Client-Id': 'eed-test-graphql',
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          }
+        }, requestInfo)).rejects.toThrow('Inconsistent data prevented GraphQL from correctly parsing results')
       })
     })
   })
