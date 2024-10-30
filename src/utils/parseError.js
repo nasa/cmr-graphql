@@ -32,9 +32,22 @@ export const parseError = (errorObj, {
     ({ errors: errorArray = [error] } = data)
 
     if (shouldLog) {
-      // Log each error provided
-      errorArray.forEach((message) => {
-        console.log(`${name} (${statusCode}): ${message}`)
+      // Returns a new array based on what kind of message the user
+      // has received. Accounts for both an array of errors as well as
+      // an array of objects with both a path and array of errors.
+      errorArray = errorArray.map((message) => {
+        if (typeof message === 'string') {
+          console.log(`${name} (${statusCode}): ${message}`)
+
+          return message
+        }
+
+        console.log(`${name} (${statusCode}): ${JSON.stringify(message)}`)
+
+        const { path, errors } = message
+        const parsedErrorPath = path.map((item) => (typeof item === 'number' ? `[${item}] > ` : item)).join('')
+
+        return [`Location: ${parsedErrorPath}`, errors]
       })
     }
   } else {

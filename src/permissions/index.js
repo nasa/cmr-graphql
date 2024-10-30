@@ -50,6 +50,13 @@ const permissions = shield(
     // `fallbackError` displays a useful message to the user containing a requestId, rather than the default "Not Authorized!" GraphQL Shield error.
     fallbackError: async (thrownThing, parent, args, context) => {
       const { requestId } = context
+      const { extensions = {} } = thrownThing || {}
+      const { code } = extensions
+
+      // Returns cmr errors to the user
+      if (code === 'CMR_ERROR') {
+        return thrownThing
+      }
 
       throw new Error(`An unknown error occurred. Please refer to the ID ${requestId} when contacting Earthdata Operations (support@earthdata.nasa.gov).`)
     }
