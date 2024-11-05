@@ -343,8 +343,10 @@ describe('granule', () => {
 
       const response = await granuleDatasource(
         {
-          collectionConceptId: 'C100000-EDSC',
-          linkTypes: ['data', 's3']
+          params: {
+            collectionConceptId: 'C100000-EDSC',
+            linkTypes: ['data', 's3']
+          }
         },
         {
           headers: {
