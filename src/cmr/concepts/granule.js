@@ -2,6 +2,8 @@ import uniq from 'lodash/uniq'
 
 import Concept from './concept'
 
+import { mergeParams } from '../../utils/mergeParams'
+
 export default class Granule extends Concept {
   /**
    * Instantiates a Granule object
@@ -134,7 +136,7 @@ export default class Granule extends Concept {
     // eslint-disable-next-line no-param-reassign
     item.concept_id = conceptId
 
-    const { linkTypes = [] } = this.params
+    const { linkTypes = [] } = mergeParams(this.params)
 
     // If linkTypes parameter was included and links field was requested, filter the links based on linkTypes
     if (linkTypes.length && links.length) {
