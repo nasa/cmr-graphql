@@ -193,6 +193,7 @@ export default class Collection extends Concept {
       'short_name',
       'sort_key',
       'spatial_keyword',
+      'standard_product',
       'tag_key',
       'tool_concept_id',
       'two_d_coordinate_system_name',
