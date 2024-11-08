@@ -29,6 +29,7 @@
     "dataDates": "umm.DataDates",
     "dataLanguage": "umm.DataLanguage",
     "dataMaturity": "umm.DataMaturity",
+    "deleted": "meta.deleted",
     "directDistributionInformation": "umm.DirectDistributionInformation",
     "directoryNames": "umm.DirectoryNames",
     "doi": "umm.DOI",

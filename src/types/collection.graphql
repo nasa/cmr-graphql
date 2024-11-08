@@ -71,6 +71,9 @@ type Collection {
   "The Data Maturity element is used to inform users on where the collection is in a collection's life cycle."
   dataMaturity: String
 
+  "True if revision has been deleted"
+  deleted: Boolean
+
   "This element allows end users to get direct access to data products that are stored in the Amazon Web Service (AWS) S3 buckets. The sub elements include S3 credentials end point and a documentation URL as well as bucket prefix names and an AWS region."
   directDistributionInformation: JSON
 

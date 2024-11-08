@@ -14,6 +14,9 @@ type Variable {
   "The definition of the variable."
   definition: String
 
+  "True if revision has been deleted"
+  deleted: Boolean
+
   "A variable consists of one or more dimensions. An example of a dimension name is 'XDim'. An example of a dimension size is '1200'. Variables are rarely one dimensional."
   dimensions: JSON
 

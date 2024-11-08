@@ -10,6 +10,7 @@
     "conceptId": "meta.concept-id",
     "dataType": "umm.DataType",
     "definition": "umm.Definition",
+    "deleted": "meta.deleted",
     "dimensions": "umm.Dimensions",
     "fillValues": "umm.FillValues",
     "indexRanges": "umm.IndexRanges",
