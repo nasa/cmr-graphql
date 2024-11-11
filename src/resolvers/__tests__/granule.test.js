@@ -36,13 +36,13 @@ describe('Granule', () => {
             entry: [{
               boxes: [],
               browse_flag: false,
-              cloud_cover: 25,
+              cloud_cover: '25.3',
               collection_concept_id: 'C100000-EDSC',
               coordinate_system: 'CARTESIAN',
               data_center: 'Tortor Lorem',
               dataset_id: 'Condimentum Ullamcorper Malesuada Sollicitudin',
               day_night_flag: 'BOTH',
-              granule_size: 525.0454,
+              granule_size: '525.0454',
               id: 'G100000-EDSC',
               links: [],
               online_access_flag: true,
@@ -71,7 +71,7 @@ describe('Granule', () => {
               'native-id': 'test-guid'
             },
             umm: {
-              CloudCover: 25,
+              CloudCover: 25.3,
               DataGranule: {},
               GranuleUR: 'parturient-etiam-malesuada',
               MeasuredParameters: {},
@@ -134,7 +134,7 @@ describe('Granule', () => {
             boxes: [],
             browseFlag: false,
             collectionConceptId: 'C100000-EDSC',
-            cloudCover: 25,
+            cloudCover: 25.3,
             conceptId: 'G100000-EDSC',
             coordinateSystem: 'CARTESIAN',
             dataCenter: 'Tortor Lorem',
