@@ -527,12 +527,43 @@ type GraphDbPlatformInstrument implements Relationship {
   instrument: String
 }
 
+type TombstonedCollectionMetadata {
+  "The concept id of the draft."
+  conceptId: String!
+
+  "The concept type of the draft."
+  conceptType: String
+
+  "True if revision has been deleted"
+  deleted: Boolean
+
+  "The data format of the collection"
+  format: String
+
+  "The native id of the draft."
+  nativeId: String
+
+  "Provider ID of the draft."
+  providerId: String
+
+  "The revision id of the draft."
+  revisionId: String
+
+  "Date which the draft was last updated."
+  revisionDate: String
+
+  "Id of the user who modified/published record"
+  userId: String
+}
+
+union CollectionRevisionListItem = Collection | TombstonedCollectionMetadata
+
 type CollectionRevisionList {
   "The number of hits for a given search."
   count: Int
 
   "The list of collection search results."
-  items: [Collection]
+  items: [CollectionRevisionListItem]
 }
 
 type CollectionList {
