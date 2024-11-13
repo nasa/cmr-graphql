@@ -129,6 +129,8 @@ input GranulesInput {
   provider: [String]
   "Search for granules using the readable_granule_name parameter."
   readableGranuleName: [String]
+  "Search by the short name of the granule."
+  shortName: [String]
   "One or more sort keys can be specified to impact searching. Fields can be prepended with a '-' to sort in descending order. Ascending order is the default but + can be used to explicitly request ascending."
   sortKey: [String]
   "The temporal datetime has to be in yyyy-MM-ddTHH:mm:ssZ format."

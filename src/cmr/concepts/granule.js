@@ -45,6 +45,7 @@ export default class Granule extends Concept {
       'polygon',
       'provider',
       'readable_granule_name',
+      'short_name',
       'sort_key',
       'temporal',
       'two_d_coordinate_system'
@@ -78,6 +79,7 @@ export default class Granule extends Concept {
       'polygon',
       'provider',
       'readable_granule_name',
+      'short_name',
       'sort_key',
       'temporal',
       'two_d_coordinate_system'
@@ -102,6 +104,7 @@ export default class Granule extends Concept {
       'polygon',
       'provider',
       'readable_granule_name',
+      'short_name',
       'sort_key'
     ])
   }
