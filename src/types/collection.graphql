@@ -706,6 +706,9 @@ input CollectionsInput {
   "Keywords relating to spatial aspects of the collection."
   spatialKeyword: String
 
+  "Boolean to query for collections in the Standard Product portal"
+  standardProduct: Boolean
+
   "Tags associated with the collection."
   tagKey: [String]
 
