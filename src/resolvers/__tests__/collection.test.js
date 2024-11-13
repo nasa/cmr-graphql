@@ -267,7 +267,7 @@ describe('Collection', () => {
 
       nock(/example-cmr/)
         .defaultReplyHeaders({
-          'CMR-Hits': 2,
+          'CMR-Hits': 3,
           'CMR-Took': 7,
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
         })
@@ -277,7 +277,8 @@ describe('Collection', () => {
             meta: {
               'concept-id': 'C100000-EDSC',
               'native-id': 'test-guid',
-              'revision-id': '2'
+              'revision-id': '3',
+              deleted: false
             },
             umm: {
               Abstract: 'Cras mattis consectetur purus sit amet fermentum.'
@@ -286,7 +287,15 @@ describe('Collection', () => {
             meta: {
               'concept-id': 'C100000-EDSC',
               'native-id': 'test-guid',
-              'revision-id': '1'
+              'revision-id': '2',
+              deleted: true
+            }
+          }, {
+            meta: {
+              'concept-id': 'C100000-EDSC',
+              'native-id': 'test-guid',
+              'revision-id': '1',
+              deleted: false
             },
             umm: {
               Abstract: 'Cras mattis consectetur purus sit amet fermentum.'
@@ -549,8 +558,11 @@ describe('Collection', () => {
             quality: 'Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.',
             relatedUrls: [],
             revisions: {
-              count: 2,
+              count: 3,
               items: [
+                {
+                  revisionId: '3'
+                },
                 {
                   revisionId: '2'
                 },
