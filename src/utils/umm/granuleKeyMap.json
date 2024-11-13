@@ -4,6 +4,7 @@
     "conceptId"
   ],
   "ummKeyMappings": {
+    "additionalAttributes": "umm.AdditionalAttributes",
     "cloudCover": "umm.CloudCover",
     "conceptId": "meta.concept-id",
     "dataGranule": "umm.DataGranule",

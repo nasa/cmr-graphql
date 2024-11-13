@@ -1,4 +1,6 @@
 type Granule {
+  "Reference to an additional attribute in the parent collection. The attribute reference may contain a granule specific value that will override the value in the parent collection for this granule. An attribute with the same name must exist in the parent collection."
+  additionalAttributes: JSON
   "A list of boxes representing spatial coverage."
   boxes: [String]
   "Boolean value displaying whether or not a granule has browse imagery."
@@ -73,6 +75,8 @@ type GranuleList {
 }
 
 input GranulesInput {
+  "Find granules by additional attribute. For full syntax reference see CMR documentation. https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html#g-additional-attribute"
+  attribute: [String]
   "Bounding boxes define an area on the earth aligned with longitude and latitude. The Bounding box parameters must be 4 comma-separated numbers: lower left longitude, lower left latitude, upper right longitude, upper right latitude."
   boundingBox: [String]
   "Search by the browse only flag of the granule."

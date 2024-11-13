@@ -24,6 +24,7 @@ export default class Granule extends Concept {
   getPermittedJsonSearchParams() {
     return [
       ...super.getPermittedJsonSearchParams(),
+      'attribute',
       'bounding_box',
       'browse_only',
       'circle',
@@ -56,6 +57,7 @@ export default class Granule extends Concept {
   getPermittedUmmSearchParams() {
     return [
       ...super.getPermittedUmmSearchParams(),
+      'attribute',
       'bounding_box',
       'browse_only',
       'circle',
@@ -88,6 +90,7 @@ export default class Granule extends Concept {
   getNonIndexedKeys() {
     return uniq([
       ...super.getNonIndexedKeys(),
+      'attribute',
       'bounding_box',
       'circle',
       'collection_concept_id',
