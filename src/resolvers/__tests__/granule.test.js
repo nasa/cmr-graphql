@@ -71,6 +71,10 @@ describe('Granule', () => {
               'native-id': 'test-guid'
             },
             umm: {
+              AdditionalAttributes: [{
+                Name: 'Mock Attribute Name',
+                Values: ['Mock Attribute Value']
+              }],
               CloudCover: 25.3,
               DataGranule: {},
               GranuleUR: 'parturient-etiam-malesuada',
@@ -90,6 +94,7 @@ describe('Granule', () => {
           granules(params: { collectionConceptId: "C100000-EDSC" }) {
             count
             items {
+              additionalAttributes
               boxes
               browseFlag
               cloudCover
@@ -131,6 +136,10 @@ describe('Granule', () => {
         granules: {
           count: 1,
           items: [{
+            additionalAttributes: [{
+              name: 'Mock Attribute Name',
+              values: ['Mock Attribute Value']
+            }],
             boxes: [],
             browseFlag: false,
             collectionConceptId: 'C100000-EDSC',
