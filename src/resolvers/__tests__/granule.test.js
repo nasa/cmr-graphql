@@ -68,7 +68,8 @@ describe('Granule', () => {
           items: [{
             meta: {
               'concept-id': 'G100000-EDSC',
-              'native-id': 'test-guid'
+              'native-id': 'test-guid',
+              'revision-date': '2016-04-04T20:00:00.000Z'
             },
             umm: {
               AdditionalAttributes: [{
@@ -117,6 +118,7 @@ describe('Granule', () => {
               producerGranuleId
               providerDates
               relatedUrls
+              revisionDate
               spatialExtent
               temporalExtent
               timeEnd
@@ -162,6 +164,7 @@ describe('Granule', () => {
             producerGranuleId: 'ornare-cursus-ultricies-nibh',
             providerDates: {},
             relatedUrls: [],
+            revisionDate: '2016-04-04T20:00:00.000Z',
             spatialExtent: {},
             temporalExtent: {},
             timeEnd: '2016-04-04T08:00:00.000Z',

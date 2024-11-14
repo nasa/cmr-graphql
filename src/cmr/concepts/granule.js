@@ -30,6 +30,7 @@ export default class Granule extends Concept {
       'circle',
       'cloud_cover',
       'collection_concept_id',
+      'created_at',
       'cycle',
       'day_night_flag',
       'entry_id',
@@ -43,12 +44,15 @@ export default class Granule extends Concept {
       'passes',
       'point',
       'polygon',
+      'production_date',
       'provider',
       'readable_granule_name',
+      'revision_date',
       'short_name',
       'sort_key',
       'temporal',
-      'two_d_coordinate_system'
+      'two_d_coordinate_system',
+      'updated_since'
     ]
   }
 
@@ -64,6 +68,7 @@ export default class Granule extends Concept {
       'circle',
       'cloud_cover',
       'collection_concept_id',
+      'created_at',
       'cycle',
       'day_night_flag',
       'entry_id',
@@ -77,12 +82,15 @@ export default class Granule extends Concept {
       'passes',
       'point',
       'polygon',
+      'production_date',
       'provider',
       'readable_granule_name',
+      'revision_date',
       'short_name',
       'sort_key',
       'temporal',
-      'two_d_coordinate_system'
+      'two_d_coordinate_system',
+      'updated_since'
     ]
   }
 
@@ -97,13 +105,16 @@ export default class Granule extends Concept {
       'circle',
       'collection_concept_id',
       'concept_id',
+      'created_at',
       'entry_id',
       'exclude',
       'line',
       'point',
       'polygon',
+      'production_date',
       'provider',
       'readable_granule_name',
+      'revision_date',
       'short_name',
       'sort_key'
     ])

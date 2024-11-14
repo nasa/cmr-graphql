@@ -14,6 +14,7 @@
     "orbitCalculatedSpatialDomains": "umm.OrbitCalculatedSpatialDomains",
     "providerDates": "umm.ProviderDates",
     "relatedUrls": "umm.RelatedUrls",
+    "revisionDate": "meta.revision-date",
     "spatialExtent": "umm.SpatialExtent",
     "temporalExtent": "umm.TemporalExtent"
   }
