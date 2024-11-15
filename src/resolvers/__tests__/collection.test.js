@@ -712,8 +712,8 @@ describe('Collection', () => {
     })
 
     describe('collection', () => {
-      describe('when calling revisions returns a revision tombstone', () => {
-        test('returns results', async () => {
+      describe('when retrieving revisions that contain tombstones', () => {
+        test('includes them in the results', async () => {
           nock(/example-cmr/)
             .defaultReplyHeaders({
               'CMR-Hits': 1,
