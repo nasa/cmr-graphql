@@ -334,7 +334,7 @@ export default class Collection extends Concept {
    * @param {Object} item The item returned from the CMR umm endpoint
    */
   normalizeUmmItem(item) {
-    const { umm } = item
+    const { umm = {} } = item
 
     const { ArchiveAndDistributionInformation: archiveAndDistributionInformation = {} } = umm
 
