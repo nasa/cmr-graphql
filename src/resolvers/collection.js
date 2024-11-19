@@ -273,7 +273,7 @@ export default {
 
       return dataSources.toolSourceFetch({
         conceptId: toolConceptIds,
-        ...handlePagingParams(args, tools.length)
+        ...handlePagingParams(args)
       }, context, parseResolveInfo(info))
     },
     variables: async (source, args, context, info) => {
@@ -301,7 +301,7 @@ export default {
 
       return dataSources.variableSourceFetch({
         conceptId: variableConceptIds,
-        ...handlePagingParams(args, variables.length)
+        ...handlePagingParams(args)
       }, context, parseResolveInfo(info))
     }
   },
