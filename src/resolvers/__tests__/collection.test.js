@@ -708,108 +708,108 @@ describe('Collection', () => {
             collection: null
           })
         })
+      })
 
-        describe('when retrieving revisions that contain tombstones', () => {
-          test('includes them in the results', async () => {
-            nock(/example-cmr/)
-              .defaultReplyHeaders({
-                'CMR-Hits': 1,
-                'CMR-Took': 7,
-                'CMR-Request-Id': 'abcd-1234-efgh-5678'
-              })
-              .get(/collections\.json/)
-              .reply(200, {
-                feed: {
-                  entry: [{
-                    id: 'C100001-EDSC'
-                  }],
-                  facets: {}
+      describe('when retrieving revisions that contain tombstones', () => {
+        test('includes them in the results', async () => {
+          nock(/example-cmr/)
+            .defaultReplyHeaders({
+              'CMR-Hits': 1,
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .get(/collections\.json/)
+            .reply(200, {
+              feed: {
+                entry: [{
+                  id: 'C100001-EDSC'
+                }],
+                facets: {}
+              }
+            })
+
+          nock(/example-cmr/)
+            .defaultReplyHeaders({
+              'CMR-Hits': 3,
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .get('/search/collections.umm_json?all_revisions=true&concept_id=C100001-EDSC')
+            .reply(200, {
+              items: [{
+                meta: {
+                  'concept-id': 'C100001-EDSC',
+                  'revision-id': '3',
+                  deleted: false
+                },
+                umm: {
+                  Abstract: 'Cras mattis consectetur purus sit amet fermentum.'
                 }
-              })
+              }, {
+                meta: {
+                  'concept-id': 'C100001-EDSC',
+                  'revision-id': '2',
+                  deleted: true
+                }
+              }, {
+                meta: {
+                  'concept-id': 'C100001-EDSC',
+                  'revision-id': '1',
+                  deleted: false
+                },
+                umm: {
+                  Abstract: 'Cras mattis consectetur purus sit amet fermentum.'
+                }
+              }]
+            })
 
-            nock(/example-cmr/)
-              .defaultReplyHeaders({
-                'CMR-Hits': 3,
-                'CMR-Took': 7,
-                'CMR-Request-Id': 'abcd-1234-efgh-5678'
-              })
-              .get('/search/collections.umm_json?all_revisions=true&concept_id=C100001-EDSC')
-              .reply(200, {
-                items: [{
-                  meta: {
-                    'concept-id': 'C100001-EDSC',
-                    'revision-id': '3',
-                    deleted: false
-                  },
-                  umm: {
-                    Abstract: 'Cras mattis consectetur purus sit amet fermentum.'
-                  }
-                }, {
-                  meta: {
-                    'concept-id': 'C100001-EDSC',
-                    'revision-id': '2',
-                    deleted: true
-                  }
-                }, {
-                  meta: {
-                    'concept-id': 'C100001-EDSC',
-                    'revision-id': '1',
-                    deleted: false
-                  },
-                  umm: {
-                    Abstract: 'Cras mattis consectetur purus sit amet fermentum.'
-                  }
-                }]
-              })
-
-            const response = await server.executeOperation({
-              variables: {},
-              query: `{
-                collections {
-                  count
-                  facets
-                  items {
-                    conceptId
-                    revisions {
-                      count
-                      items {
-                        revisionId
-                      }
+          const response = await server.executeOperation({
+            variables: {},
+            query: `{
+              collections {
+                count
+                facets
+                items {
+                  conceptId
+                  revisions {
+                    count
+                    items {
+                      revisionId
                     }
                   }
                 }
-              }`
-            }, {
-              contextValue
-            })
-
-            const { data, errors } = response.body.singleResult
-
-            expect(errors).toBeUndefined()
-
-            expect(data).toEqual({
-              collections: {
-                count: 1,
-                facets: {},
-                items: [{
-                  conceptId: 'C100001-EDSC',
-                  revisions: {
-                    count: 3,
-                    items: [
-                      {
-                        revisionId: '3'
-                      },
-                      {
-                        revisionId: '2'
-                      },
-                      {
-                        revisionId: '1'
-                      }
-                    ]
-                  }
-                }]
               }
-            })
+            }`
+          }, {
+            contextValue
+          })
+
+          const { data, errors } = response.body.singleResult
+
+          expect(errors).toBeUndefined()
+
+          expect(data).toEqual({
+            collections: {
+              count: 1,
+              facets: {},
+              items: [{
+                conceptId: 'C100001-EDSC',
+                revisions: {
+                  count: 3,
+                  items: [
+                    {
+                      revisionId: '3'
+                    },
+                    {
+                      revisionId: '2'
+                    },
+                    {
+                      revisionId: '1'
+                    }
+                  ]
+                }
+              }]
+            }
           })
         })
       })
@@ -1791,7 +1791,7 @@ describe('Collection', () => {
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .get('/search/tools.json?concept_id[]=T100000-EDSC&concept_id[]=T100001-EDSC&page_size=2')
+            .get('/search/tools.json?concept_id[]=T100000-EDSC&concept_id[]=T100001-EDSC&page_size=20')
             .reply(200, {
               items: [{
                 concept_id: 'T100000-EDSC'
@@ -1805,7 +1805,7 @@ describe('Collection', () => {
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .get('/search/tools.json?concept_id[]=T100002-EDSC&concept_id[]=T100003-EDSC&page_size=2')
+            .get('/search/tools.json?concept_id[]=T100002-EDSC&concept_id[]=T100003-EDSC&page_size=20')
             .reply(200, {
               items: [{
                 concept_id: 'T100002-EDSC'
@@ -2071,7 +2071,7 @@ describe('Collection', () => {
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .get('/search/variables.json?concept_id[]=V100000-EDSC&concept_id[]=V100001-EDSC&page_size=2')
+            .get('/search/variables.json?concept_id[]=V100000-EDSC&concept_id[]=V100001-EDSC&page_size=20')
             .reply(200, {
               items: [{
                 concept_id: 'V100000-EDSC'
@@ -2085,7 +2085,7 @@ describe('Collection', () => {
               'CMR-Took': 7,
               'CMR-Request-Id': 'abcd-1234-efgh-5678'
             })
-            .get('/search/variables.json?concept_id[]=V100002-EDSC&concept_id[]=V100003-EDSC&page_size=2')
+            .get('/search/variables.json?concept_id[]=V100002-EDSC&concept_id[]=V100003-EDSC&page_size=20')
             .reply(200, {
               items: [{
                 concept_id: 'V100002-EDSC'
