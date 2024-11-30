@@ -12,6 +12,7 @@
     "conceptId": "meta.concept-id",
     "contactGroups": "umm.ContactGroups",
     "contactPersons": "umm.ContactPersons",
+    "deleted": "meta.deleted",
     "description": "umm.Description",
     "lastUpdatedDate": "umm.LastUpdatedDate",
     "longName": "umm.LongName",

@@ -17,6 +17,9 @@ type Service {
   "This is the contact persons of the service."
   contactPersons: JSON
 
+  "True if revision has been deleted"
+  deleted: Boolean
+
   "A brief description of the service."
   description: String
 

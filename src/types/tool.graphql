@@ -17,6 +17,9 @@ type Tool {
   "This is the contact persons of the downloadable tool or web user interface."
   contactPersons: JSON
 
+  "True if revision has been deleted"
+  deleted: Boolean
+
   "A brief description of the web user interface or downloadable tool. Note: This field allows lightweight markup language with plain text formatting syntax. Line breaks within the text are preserved."
   description: String
 

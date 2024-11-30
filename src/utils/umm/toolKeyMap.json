@@ -11,6 +11,7 @@
     "conceptId": "meta.concept-id",
     "contactGroups": "umm.ContactGroups",
     "contactPersons": "umm.ContactPersons",
+    "deleted": "meta.deleted",
     "description": "umm.Description",
     "doi": "umm.DOI",
     "lastUpdatedDate": "umm.LastUpdatedDate",

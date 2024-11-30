@@ -46,7 +46,13 @@ export default {
       )
     }
   },
+  CollectionRevisionListItem: {
+    __resolveType: (source) => {
+      const { deleted } = source
 
+      return deleted ? 'TombstonedCollectionMetadata' : 'Collection'
+    }
+  },
   Collection: {
     revisions: async (source, args, context, info) => {
       const { dataSources } = context
