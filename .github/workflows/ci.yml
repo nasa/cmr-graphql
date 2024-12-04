@@ -69,6 +69,12 @@ jobs:
       uses: codecov/codecov-action@v4
       env:
         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+  tests-passed:
+    needs: ['jest', 'python-test']
+    runs-on: ubuntu-latest
+    steps:
+    - name: All Tests Have Passed
+      run: 'echo true'
 
   python-test:
     runs-on: ubuntu-latest
@@ -90,7 +96,7 @@ jobs:
         working-directory: ./src/earthdataVarinfo
   deploy:
     if: success() && github.ref == 'refs/heads/main' # only run on main success
-    needs: [jest, python-test] # only run after jest and python-test jobs complete
+    needs: [tests-passed] # only run after all test jobs complete
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
