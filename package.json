@@ -9,20 +9,8 @@
   },
   "maintainers": [
     {
-      "name": "Ryan Abbott",
-      "email": "ryan@element84.com"
-    },
-    {
-      "name": "Matthew Crouch",
-      "email": "matthew@element84.com"
-    },
-    {
-      "name": "Trevor Lang",
-      "email": "trevor@element84.com"
-    },
-    {
-      "name": "Mark Schmele",
-      "email": "mark.h.schmele@nasa.gov"
+      "name": "Earthdata Search",
+      "email": "support@earthdata.nasa.gov"
     }
   ],
   "scripts": {
