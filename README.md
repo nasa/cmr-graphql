@@ -40,10 +40,20 @@ CMR-GraphQL uses a few environment variables for configuring runtime options:
 |MMT_ROOT_URL||URL to ping when retrieving metadata from MMT e.g. https://mmt.earthdata.nasa.gov|
 |DRAFT_MMT_ROOT_URL||URL to ping when retrieving draft metadata from Draft MMT e.g. https://draftmmt.earthdata.nasa.gov|
 |LAMBDA_TIMEOUT|30|Number of seconds to set the Lambda timeout to.|
-|EDL_KEY_ID, EDL_JWK, EDL_CLIENT_ID|For facilitating EDL connection -- obtain these from a dev|
+|EDL_KEY_ID, EDL_JWK, EDL_CLIENT_ID, EDL_PASSWORD| .bash or .zshrc file|For facilitating EDL connection -- obtain these from a dev and upload. After making changes, remember to run $ source ~/.zshrc|
 
+### Local Environment Spin-Up
+If using cmr-graphql in conjunction with MMT, setup local CMR database with the [instructions found here](https://github.com/nasa/mmt/tree/main). Then utilize one of the following commands depending on the 
+environment you wish to point graphql towards. You do not need quotations around any variables EXCEPT for UAT's EDL_PASSWORD.
+
+|Environment|CLI|
+|-|-|
+|Local| $ CMR_ROOT_URL=http://localhost:4000 EDL_CLIENT_ID=SIT Client ID EDL_PASSWORD=SIT Password npm start|
+|SIT| $ EDL_CLIENT_ID=SIT Client ID EDL_PASSWORD=SIT Password npm start
+|UAT| $ CMR_ROOT_URL=https://cmr.uat.earthdata.nasa.gov EDL_CLIENT_ID=UAT Client Id EDL_PASSWORD='UAT Password' URS_ROOT_URL=https://uat.urs.earthdata.nasa.gov npm start
+
+When using Apollo Studio, you should be able to do queries without needing a token. Mutations will require you utilize the token provided to you at the URS_ROOT_URL. Once aquired, go to Headers, select "+ New header". Header Key = Authorization and value = Bearer urs.token
 ### Serverless Framework
-
 The local development environment for the static assets can be started by executing the command below in the project root directory:
 
     serverless offline
