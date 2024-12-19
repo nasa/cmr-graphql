@@ -1,6 +1,5 @@
 # [CMR-GraphQL](https://graphql.earthdata.nasa.gov/api)
 
-[![serverless](http://public.serverless.com/badges/v3.svg)](http://www.serverless.com)
 ![Build Status](https://github.com/nasa/cmr-graphql/workflows/CI/badge.svg?branch=main)
 [![codecov](https://codecov.io/gh/nasa/cmr-graphql/branch/main/graph/badge.svg?token=VZiaLjxD2m)](https://codecov.io/gh/nasa/cmr-graphql)
 
@@ -22,15 +21,34 @@ CMR-GraphQL is an API developed by [NASA](http://nasa.gov) [EOSDIS](https://eart
 
 ## Application Installation
 
-Before running the application you'll want to ensure that all necessary packages are installed by running:
+### Prerequisites
 
-   npm install
+- Docker
+- aws-sam-cli (`brew install aws-sam-cli`)
 
-You will also need Python3.9+ (Ideally installed in a virtual environment) to query the collection generateVariableDrafts field. Run the following to ensure proper operation of this query.
+### Application
+
+To install Node dependencies:
+
+    npm install
+
+You will also need Python3.11+ (Ideally installed in a virtual environment) to query the collection generateVariableDrafts field. Run the following to ensure proper operation of this query.
 
     python3 -m venv .venv
     source .venv/bin/activate
     pip install -r requirements.txt
+
+### Environment Variables
+
+We use [dotenvx](https://github.com/dotenvx/dotenvx) to manage multiple `.env` files for various environments. See `.env.EXAMPLE` for an example config, or ask a team member for the full files.
+
+If you want to run any environment locally you will need to create the following files
+
+- .env.prod
+- .env.uat
+- .env.sit
+- .env.local
+  - For running a local copy of CMR
 
 CMR-GraphQL uses a few environment variables for configuring runtime options:
 
@@ -39,16 +57,17 @@ CMR-GraphQL uses a few environment variables for configuring runtime options:
 |CMR_ROOT_URL||URL to ping when retrieving metadata from CMR e.g. https://cmr.earthdata.nasa.gov|
 |MMT_ROOT_URL||URL to ping when retrieving metadata from MMT e.g. https://mmt.earthdata.nasa.gov|
 |DRAFT_MMT_ROOT_URL||URL to ping when retrieving draft metadata from Draft MMT e.g. https://draftmmt.earthdata.nasa.gov|
-|LAMBDA_TIMEOUT|30|Number of seconds to set the Lambda timeout to.|
-|EDL_KEY_ID, EDL_JWK, EDL_CLIENT_ID|For facilitating EDL connection -- obtain these from a dev|
+|EDL_KEY_ID, EDL_JWK, EDL_CLIENT_ID, EDL_PASSWORD||For facilitating EDL connection -- obtain these from a dev|
 
-### Serverless Framework
+### Running in developement
 
-The local development environment for the static assets can be started by executing the command below in the project root directory:
+To run locally, with Docker running and aws-sam-cli installed, run
 
-    serverless offline
+    npm run start-prod
 
-This will run the application at [http://localhost:3003/dev/api](http://localhost:3003/dev/api)
+This will run the `cdk synth` command on `cdk/graphql` to build the application locally, and start the AWS SAM CLI pointing to that local build. As you make changes the `cdk synth` command will run and update the running local API.
+
+This application will be available at [http://127.0.0.1:3013/api](http://127.0.0.1:3013/api)
 
 #### Optional Headers
 
@@ -1873,7 +1892,7 @@ Variables:
 
 #### Local graph database
 
-Normally running GraphQl with `serverless offline` will utilize the `(cmr.earthdata.nasa.gov/graphdb)` endpoint, to query against related collections and duplicate collections in the graph database. To send queries to a locally running graph database, we can use a docker gremlin-server that exposes an HTTP endpoint. This is launched by running
+We use a graph database to query against related collections and duplicate collections. To send queries to a locally running graph database, we can use a docker gremlin-server that exposes an HTTP endpoint. This is launched by running
 
 `docker run -it -p 8182:8182 tinkerpop/gremlin-server conf gremlin-server-rest-modern.yaml`
 
