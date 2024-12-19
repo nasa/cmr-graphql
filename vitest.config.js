@@ -11,7 +11,9 @@ export default defineConfig({
     coverage: {
       enabled: true,
       exclude: [
-        '**/handler.js'
+        'cdk',
+        '**/handler.js',
+        'tmp'
       ],
       provider: 'istanbul',
       reporter: ['text', 'lcov', 'clover', 'json'],
