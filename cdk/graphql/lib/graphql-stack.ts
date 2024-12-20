@@ -128,17 +128,23 @@ export class GraphqlStack extends cdk.Stack {
       logGroupName: `/aws/lambda/${this.stackName}-earthdataVarinfo${logGroupSuffix}`,
     });
 
+    // In production, we build the lambda with build-python.sh
+    let earthdataVarinfoCode = lambda.Code.fromAsset('../../src/earthdataVarinfo');
+    if (NODE_ENV === 'development') {
+      // In development, build the lambda with the Python bundling image
+      earthdataVarinfoCode = lambda.Code.fromAsset('../../src/earthdataVarinfo', {
+        bundling: {
+          command: [
+            'bash', '-c',
+            'pip install -r requirements.txt -t /asset-output && cp -au . /asset-output',
+          ],
+          image: lambda.Runtime.PYTHON_3_11.bundlingImage,
+        }
+      });
+    }
+
     const earthdataVarinfoLambdaFunction = new lambda.Function(this, 'EarthdataVarinfoLambdaFunction', {
-      // TODO does this work in dev?
-      code: lambda.Code.fromAsset('../../src/earthdataVarinfo', {// I switched this to happen in deploy_bamboo.sh during deployments
-        // bundling: {
-        //   command: [
-        //     'bash', '-c',
-        //     'pip install -r requirements.txt -t /asset-output && cp -au . /asset-output',
-        //   ],
-        //   image: lambda.Runtime.PYTHON_3_11.bundlingImage,
-        // }
-      }),
+      code: earthdataVarinfoCode,
       currentVersionOptions: {
         removalPolicy: cdk.RemovalPolicy.RETAIN
       },

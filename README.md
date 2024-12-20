@@ -32,11 +32,13 @@ To install Node dependencies:
 
     npm install
 
-You will also need Python3.11+ (Ideally installed in a virtual environment) to query the collection generateVariableDrafts field. Run the following to ensure proper operation of this query.
+Note: The generateVariableDrafts is currently not working in the development environment. These steps do not work with the CDK changes.
 
-    python3 -m venv .venv
-    source .venv/bin/activate
-    pip install -r requirements.txt
+    You will also need Python3.11+ (Ideally installed in a virtual environment) to query the collection generateVariableDrafts field. Run the following to ensure proper operation of this query.
+
+        python3 -m venv .venv
+        source .venv/bin/activate
+        pip install -r requirements.txt
 
 ### Environment Variables
 
