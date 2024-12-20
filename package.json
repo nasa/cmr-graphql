@@ -16,17 +16,15 @@
   "scripts comments": {
     "preinstall": "install dependencies for the application stack",
     "run-synth": "generate the CloudFormation template and bundle assets for the application stack",
-    "start-dev": "start the local API Gateway with the generated CloudFormation template",
     "watch": "run run-synth on file changes",
     "prestart": "run run-synth before starting the local API Gateway to ensure the application is bundled"
   },
   "scripts": {
     "preinstall": "cd cdk/graphql && npm ci",
     "run-synth": "cd cdk/graphql && npm run cdk synth -- --quiet",
-    "start-dev": "sam local start-api -t ./cdk/graphql/cdk.out/graphql-dev.template.json --warm-containers LAZY --port 3013",
     "watch": "onchange 'src/**' -- npm run run-synth",
     "prestart": "npm run run-synth",
-    "start": "start-server-and-test start-dev 'http-get://localhost:3013/api' watch",
+    "start": "./bin/start-and-watch.sh",
     "start-prod": "dotenvx run -f .env.prod -- npm run start",
     "start-uat": "dotenvx run -f .env.uat -- npm run start",
     "start-sit": "dotenvx run -f .env.sit -- npm run start",
@@ -45,7 +43,6 @@
     "nock": "^13.5.4",
     "onchange": "^7.1.0",
     "snyk": "^1.1283.0",
-    "start-server-and-test": "^2.0.9",
     "vitest": "^1.4.0"
   },
   "dependencies": {
