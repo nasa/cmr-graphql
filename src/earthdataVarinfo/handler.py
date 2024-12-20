@@ -1,12 +1,6 @@
 """Module providing access to environment variables"""
 import os
 
-# Needed by serverless python requirements because we are setting zip to true
-try:
-  import unzip_requirements
-except ImportError:
-  pass
-
 from varinfo.generate_umm_var import generate_collection_umm_var
 
 def main(event, context):

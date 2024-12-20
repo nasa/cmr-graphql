@@ -2,7 +2,7 @@
   "name": "cmr-graphql",
   "root": true,
   "version": "1.0.0",
-  "description": "Serverless Framework Implementation of GraphQL",
+  "description": "GraphQL API for NASA's Common Metadata Repository",
   "graphdoc": {
     "endpoint": "http://localhost:3013/graphql",
     "output": "./doc/schema"
@@ -13,11 +13,27 @@
       "email": "support@earthdata.nasa.gov"
     }
   ],
+  "scripts comments": {
+    "preinstall": "install dependencies for the application stack",
+    "run-synth": "generate the CloudFormation template and bundle assets for the application stack",
+    "watch": "run run-synth on file changes",
+    "prestart": "run run-synth before starting the local API Gateway to ensure the application is bundled"
+  },
   "scripts": {
-    "start": "serverless offline start",
+    "preinstall": "cd cdk/graphql && npm ci",
+    "run-synth": "cd cdk/graphql && npm run cdk synth -- --quiet",
+    "watch": "onchange 'src/**' -- npm run run-synth",
+    "prestart": "npm run run-synth",
+    "start": "./bin/start-and-watch.sh",
+    "start-prod": "dotenvx run -f .env.prod -- npm run start",
+    "start-uat": "dotenvx run -f .env.uat -- npm run start",
+    "start-sit": "dotenvx run -f .env.sit -- npm run start",
+    "start-local": "dotenvx run -f .env.local -- npm run start",
     "test": "vitest --config vitest.config.js",
     "silent-test": "vitest --config vitest.config.js --silent",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "deploy-infrastructure": "cd cdk/graphql-infrastructure && npm ci --include=dev && npm run cdk deploy -- --progress events --require-approval never",
+    "deploy-application": "cd cdk/graphql && npm ci --include=dev && npm run cdk deploy -- --progress events --require-approval never"
   },
   "devDependencies": {
     "@rollup/plugin-graphql": "^2.0.4",
@@ -25,6 +41,7 @@
     "aws-sdk-client-mock": "^4.0.0",
     "esbuild": "^0.20.2",
     "nock": "^13.5.4",
+    "onchange": "^7.1.0",
     "snyk": "^1.1283.0",
     "vitest": "^1.4.0"
   },
@@ -36,6 +53,7 @@
     "@babel/core": "^7.24.3",
     "@babel/eslint-parser": "^7.24.1",
     "@babel/preset-env": "^7.24.3",
+    "@dotenvx/dotenvx": "^1.31.0",
     "@edsc/eslint-config": "^0.0.5",
     "@graphql-tools/merge": "^9.0.3",
     "@graphql-tools/schema": "^10.0.3",
@@ -63,11 +81,6 @@
     "jwks-rsa": "^3.1.0",
     "lodash": "^4.17.21",
     "qs": "^6.12.0",
-    "serverless": "^3.38.0",
-    "serverless-esbuild": "^1.52.1",
-    "serverless-offline": "^13.3.3",
-    "serverless-plugin-log-subscription": "^2.2.1",
-    "serverless-python-requirements": "github:william-valencia/serverless-python-requirements#master",
     "snakecase-keys": "^6.0.0",
     "stellate": "^2.11.1",
     "uuid": "^9.0.1"
