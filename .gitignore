@@ -28,3 +28,11 @@ junit.xml
 __pycache__/
 *.py[cod]
 *$py.class
+
+Dockerfile
+.dockerignore
+.env
+.env.prod
+.env.uat
+.env.sit
+.env.local
