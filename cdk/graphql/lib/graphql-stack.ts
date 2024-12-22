@@ -179,7 +179,7 @@ export class GraphqlStack extends cdk.Stack {
       logDestinationArn: LOG_DESTINATION_ARN,
       logGroupSuffix,
       runtime,
-      s3Sources: ['graphql_apigw_3'],
+      s3Sources: [`graphql_apigw${logGroupSuffix}`],
       securityGroups: [lambdaSecurityGroup],
       stageName: STAGE_NAME,
       vpc
