@@ -27,6 +27,7 @@ docker build -t $dockerTag .
 # Convenience function to invoke `docker run` with appropriate env vars instead of baking them into image
 dockerRun() {
   docker run \
+    -e "API_GATEWAY_DEPLOYMENT_ID=$bamboo_API_GATEWAY_DEPLOYMENT_ID" \
     -e "AWS_ACCESS_KEY_ID=$bamboo_AWS_ACCESS_KEY_ID" \
     -e "AWS_ACCOUNT=$bamboo_AWS_ACCOUNT" \
     -e "AWS_SECRET_ACCESS_KEY=$bamboo_AWS_SECRET_ACCESS_KEY" \

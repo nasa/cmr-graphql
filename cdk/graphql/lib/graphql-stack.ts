@@ -14,6 +14,7 @@ export interface GraphqlStackProps extends cdk.StackProps {
 const logGroupSuffix = ''
 
 const {
+  API_GATEWAY_DEPLOYMENT_ID = `ApiGatewayDeployment${new Date().getTime()}`,
   CLOUDFRONT_BUCKET_NAME = 'local-bucket',
   LOG_DESTINATION_ARN = 'local-arn',
   NODE_ENV = 'development',
@@ -88,7 +89,7 @@ export class GraphqlStack extends cdk.Stack {
     });
 
     const apiGateway = new application.ApiGateway(this, 'ApiGateway', {
-      apiDeploymentId: 'ApiGatewayDeployment1733429505952',
+      apiDeploymentId: API_GATEWAY_DEPLOYMENT_ID,
       apiName: `${STAGE_NAME}-graphql`,
       stageName: STAGE_NAME,
     })
