@@ -12,7 +12,7 @@ describe('Test getLambdaConfig', () => {
   })
 
   test('when offline endpoint is configured', () => {
-    process.env.IS_OFFLINE = true
+    process.env.AWS_SAM_LOCAL = 'true'
 
     const lambdaConfig = getLambdaConfig()
     expect(lambdaConfig.endpoint).toEqual('http://localhost:3014')
@@ -20,7 +20,7 @@ describe('Test getLambdaConfig', () => {
   })
 
   test('when online endpoint is configured', () => {
-    process.env.IS_OFFLINE = false
+    process.env.AWS_SAM_LOCAL = 'false'
 
     const lambdaConfig = getLambdaConfig()
     expect(lambdaConfig.endpoint).toEqual(undefined)

@@ -10,11 +10,10 @@ export interface GraphqlStackProps extends cdk.StackProps {
 }
 
 // `logGroupSuffix` is used during the initial migration from serverless to CDK to avoid name conflicts
-// const logGroupSuffix = '_2'
+// const logGroupSuffix = '_cdk'
 const logGroupSuffix = ''
 
 const {
-  API_GATEWAY_DEPLOYMENT_ID = `ApiGatewayDeployment${new Date().getTime()}`,
   CLOUDFRONT_BUCKET_NAME = 'local-bucket',
   LOG_DESTINATION_ARN = 'local-arn',
   NODE_ENV = 'development',
@@ -45,7 +44,7 @@ const environment = {
   ummToolVersion: '1.2.0',
   ummVariableVersion: '1.9.0',
   maximumQueryPathLength: '1500',
-  stage: STAGE_NAME,
+  stage: STAGE_NAME
 }
 
 // NodeJS bundling options
@@ -89,7 +88,7 @@ export class GraphqlStack extends cdk.Stack {
     });
 
     const apiGateway = new application.ApiGateway(this, 'ApiGateway', {
-      apiDeploymentId: API_GATEWAY_DEPLOYMENT_ID,
+      apiDeploymentId: 'ApiGatewayDeployment',
       apiName: `${STAGE_NAME}-graphql`,
       stageName: STAGE_NAME,
     })
@@ -179,7 +178,7 @@ export class GraphqlStack extends cdk.Stack {
       logDestinationArn: LOG_DESTINATION_ARN,
       logGroupSuffix,
       runtime,
-      s3Sources: [`graphql_apigw${logGroupSuffix}`],
+      s3Sources: ['graphql_apigw'],
       securityGroups: [lambdaSecurityGroup],
       stageName: STAGE_NAME,
       vpc

@@ -16,7 +16,7 @@ describe('isOfflineMMT', () => {
 
   describe('when running offline with the local MMT token', () => {
     test('returns true', async () => {
-      process.env.IS_OFFLINE = true
+      process.env.AWS_SAM_LOCAL = 'true'
       const token = await isOfflineMMT('ABC-1')
 
       expect(token).toEqual(true)
@@ -25,7 +25,7 @@ describe('isOfflineMMT', () => {
 
   describe('when running online with the local MMT token', () => {
     test('returns false', async () => {
-      process.env.IS_OFFLINE = false
+      process.env.AWS_SAM_LOCAL = 'false'
       const token = await isOfflineMMT('ABC-1')
 
       expect(token).toEqual(false)
@@ -34,7 +34,7 @@ describe('isOfflineMMT', () => {
 
   describe('when running online a regular token', () => {
     test('returns false', async () => {
-      process.env.IS_OFFLINE = false
+      process.env.AWS_SAM_LOCAL = 'false'
       const token = await isOfflineMMT('mock-token')
 
       expect(token).toEqual(false)

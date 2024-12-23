@@ -30,7 +30,7 @@ describe('fetchLaunchpadEdlUid', () => {
   })
 
   test('returns null for the local MMT', async () => {
-    process.env.IS_OFFLINE = true
+    process.env.AWS_SAM_LOCAL = 'true'
     const token = await fetchLaunchpadEdlUid('ABC-1', 'mock-client-token')
 
     expect(token).toBeNull()

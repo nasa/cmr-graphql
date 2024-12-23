@@ -108,10 +108,10 @@ const apolloPlugins = [
   })
 ]
 
-const { IS_OFFLINE: isOffline } = env
+const { AWS_SAM_LOCAL: awsSamLocal } = env
 
 // Only utilize stellate in deployed environments
-if (!isOffline) {
+if (awsSamLocal !== 'true') {
   const {
     stellateAppName,
     stellateKey
@@ -148,6 +148,7 @@ export default startServerAndCreateLambdaHandler(
   {
     context: async ({ event }) => {
       const { body, headers } = event
+      console.log('🚀 ~ file: handler ~ process.env:', process.env)
 
       const { operationName } = JSON.parse(body)
 
