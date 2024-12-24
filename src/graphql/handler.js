@@ -148,7 +148,6 @@ export default startServerAndCreateLambdaHandler(
   {
     context: async ({ event }) => {
       const { body, headers } = event
-      console.log('🚀 ~ file: handler ~ process.env:', process.env)
 
       const { operationName } = JSON.parse(body)
 

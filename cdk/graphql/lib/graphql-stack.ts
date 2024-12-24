@@ -88,7 +88,6 @@ export class GraphqlStack extends cdk.Stack {
     });
 
     const apiGateway = new application.ApiGateway(this, 'ApiGateway', {
-      apiDeploymentId: 'ApiGatewayDeployment',
       apiName: `${STAGE_NAME}-graphql`,
       stageName: STAGE_NAME,
     })
