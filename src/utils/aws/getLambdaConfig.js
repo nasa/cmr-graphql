@@ -9,9 +9,9 @@ export const getLambdaConfig = () => {
   }
 
   const { env } = process
-  const { IS_OFFLINE: isOffline } = env
+  const { AWS_SAM_LOCAL: awsSamLocal } = env
 
-  if (isOffline) {
+  if (awsSamLocal === 'true') {
     config.endpoint = 'http://localhost:3014'
   }
 

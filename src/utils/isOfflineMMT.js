@@ -3,4 +3,4 @@
  * @param {String} token User token to check
  * @returns Boolean
  */
-export const isOfflineMMT = (token) => process.env.IS_OFFLINE && token === 'ABC-1'
+export const isOfflineMMT = (token) => process.env.AWS_SAM_LOCAL === 'true' && token === 'ABC-1'
