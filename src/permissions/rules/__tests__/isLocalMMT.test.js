@@ -12,7 +12,7 @@ describe('isLocalMMT', () => {
   })
 
   test('returns true if the request is offline and has the admin token', async () => {
-    process.env.IS_OFFLINE = true
+    process.env.AWS_SAM_LOCAL = 'true'
 
     const result = await isLocalMMT.resolve(
       null,
@@ -28,7 +28,7 @@ describe('isLocalMMT', () => {
   })
 
   test('returns false if the request is offline but a real token is passed', async () => {
-    process.env.IS_OFFLINE = true
+    process.env.AWS_SAM_LOCAL = 'true'
 
     const result = await isLocalMMT.resolve(
       null,
@@ -44,7 +44,7 @@ describe('isLocalMMT', () => {
   })
 
   test('returns false if the request is not offline', async () => {
-    process.env.IS_OFFLINE = false
+    process.env.AWS_SAM_LOCAL = 'false'
 
     const result = await isLocalMMT.resolve(
       null,

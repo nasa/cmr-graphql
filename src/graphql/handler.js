@@ -108,10 +108,10 @@ const apolloPlugins = [
   })
 ]
 
-const { IS_OFFLINE: isOffline } = env
+const { AWS_SAM_LOCAL: awsSamLocal } = env
 
 // Only utilize stellate in deployed environments
-if (!isOffline) {
+if (awsSamLocal !== 'true') {
   const {
     stellateAppName,
     stellateKey

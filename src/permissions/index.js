@@ -45,7 +45,7 @@ const permissions = shield(
     fallbackRule: allow,
 
     // Only allow the external errors when running in the local DEV environment
-    allowExternalErrors: process.env.IS_OFFLINE,
+    allowExternalErrors: process.env.AWS_SAM_LOCAL === 'true',
 
     // `fallbackError` displays a useful message to the user containing a requestId, rather than the default "Not Authorized!" GraphQL Shield error.
     fallbackError: async (thrownThing, parent, args, context) => {
