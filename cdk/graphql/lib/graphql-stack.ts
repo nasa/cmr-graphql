@@ -33,6 +33,8 @@ const environment = {
   graphdbHost: process.env.GRAPHDB_HOST || 'http://localhost',
   graphdbPath: process.env.GRAPHDB_PATH || 'gremlin',
   graphdbPort: process.env.GRAPHDB_PORT || '8182',
+  maxRetries: process.env.MAX_RETRIES || '1',
+  retryDelay: process.env.RETRY_DELAY || '1000',
   stellateAppName: process.env.STELLATE_APP_NAME!,
   stellateKey: process.env.STELLATE_KEY!,
   lambdaTimeout: process.env.LAMBDA_TIMEOUT || '30',
