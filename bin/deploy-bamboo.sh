@@ -51,6 +51,7 @@ dockerRun() {
     -e "STELLATE_KEY=$bamboo_STELLATE_KEY" \
     -e "SUBNET_ID_A=$bamboo_SUBNET_ID_A" \
     -e "SUBNET_ID_B=$bamboo_SUBNET_ID_B" \
+    -e "URS_ROOT_URL=$bamboo_URS_ROOT_URL" \
     -e "VPC_ID=$bamboo_VPC_ID" \
     $dockerTag "$@"
 }
