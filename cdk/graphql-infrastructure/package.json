@@ -20,7 +20,7 @@
     "typescript": "~5.6.3"
   },
   "dependencies": {
-    "@edsc/cdk-utils": "^0.0.4",
+    "@edsc/cdk-utils": "^0.0.5",
     "aws-cdk-lib": "^2.173.2",
     "constructs": "^10.0.0"
   }
