@@ -13,7 +13,8 @@ export default defineConfig({
       exclude: [
         'cdk',
         '**/handler.js',
-        'tmp'
+        'tmp',
+        'bin'
       ],
       provider: 'istanbul',
       reporter: ['text', 'lcov', 'clover', 'json'],
