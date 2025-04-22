@@ -147,7 +147,8 @@ export default class Draft extends Concept {
       ummCollectionVersion,
       ummServiceVersion,
       ummToolVersion,
-      ummVariableVersion
+      ummVariableVersion,
+      ummVisualizationVersion
     } = env
 
     const { conceptType } = params
@@ -168,11 +169,15 @@ export default class Draft extends Concept {
         ummType: 'tool',
         ummVersion: ummToolVersion
       },
-
       'variable-drafts': {
         ummName: 'UMM-Var',
         ummType: 'variable',
         ummVersion: ummVariableVersion
+      },
+      'visualization-drafts': {
+        ummName: 'Visualization',
+        ummType: 'visualization',
+        ummVersion: ummVisualizationVersion
       }
     }
 
@@ -207,7 +212,8 @@ export default class Draft extends Concept {
       ummCollectionVersion,
       ummServiceVersion,
       ummToolVersion,
-      ummVariableVersion
+      ummVariableVersion,
+      ummVisualizationVersion
     } = env
 
     const { conceptType } = this.params
@@ -216,7 +222,8 @@ export default class Draft extends Concept {
       'collection-drafts': ummCollectionVersion,
       'service-drafts': ummServiceVersion,
       'tool-drafts': ummToolVersion,
-      'variable-drafts': ummVariableVersion
+      'variable-drafts': ummVariableVersion,
+      'visualization-drafts': ummVisualizationVersion
     }
 
     const {

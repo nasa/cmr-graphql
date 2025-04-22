@@ -97,6 +97,7 @@ export default class Collection extends Concept {
       'tool_concept_id',
       'two_d_coordinate_system_name',
       'variable_concept_id',
+      'visualization_concept_id',
       'version'
     ]
   }
@@ -154,6 +155,7 @@ export default class Collection extends Concept {
       'tool_concept_id',
       'two_d_coordinate_system_name',
       'variable_concept_id',
+      'visualization_concept_id',
       'version'
     ]
   }

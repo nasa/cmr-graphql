@@ -409,6 +409,7 @@ export default class Concept {
       'concept_id',
       'include_full_acl',
       'offset',
+      'options',
       'originator_id',
       'page_size',
       'permitted_user',
@@ -427,6 +428,7 @@ export default class Concept {
       'all_revisions',
       'concept_id',
       'offset',
+      'options',
       'page_size',
       'provider_id',
       'sort_key'

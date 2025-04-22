@@ -23,6 +23,7 @@ import tool from './tool.graphql'
 import toolDraft from './toolDraft.graphql'
 import variable from './variable.graphql'
 import variableDraft from './variableDraft.graphql'
+import visualization from './visualization.graphql'
 
 export default mergeTypeDefs(
   [
@@ -48,7 +49,8 @@ export default mergeTypeDefs(
     tool,
     toolDraft,
     variable,
-    variableDraft
+    variableDraft,
+    visualization
   ],
   { all: true },
 )

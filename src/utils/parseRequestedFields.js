@@ -133,6 +133,7 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
         || requestedFields.includes('relatedCollections')
         || requestedFields.includes('revisions')
         || requestedFields.includes('subscriptions')
+        || requestedFields.includes('visualizations')
       )
        && !requestedFields.includes('conceptId')) {
       requestedFields.push('conceptId')

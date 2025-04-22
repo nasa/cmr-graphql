@@ -13,7 +13,8 @@ export const CONCEPT_TYPES = [
   'services',
   'subscriptions',
   'tools',
-  'variables'
+  'variables',
+  'visualizations'
 ]
 
 /**
@@ -32,7 +33,8 @@ export const DRAFT_CONCEPT_ID_PREFIXES = {
   collection: 'CD',
   service: 'SD',
   tool: 'TD',
-  variable: 'VD'
+  variable: 'VD',
+  visualization: 'VISD'
 }
 
 /**
