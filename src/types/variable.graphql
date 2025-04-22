@@ -85,10 +85,11 @@ type Variable {
 
   "Specify basic type of a variable."
   variableType: String
-  
+
   "All revisions of this Variable."
   revisions: VariableRevisionList
 
+  "Returns the list of collections associated with the variable."
   collections (
     "Collections query parameters"
     params: CollectionsInput
@@ -155,6 +156,7 @@ input VariableInput {
 }
 
 type Query {
+  "Query for a list of Variables."
   variables (
     "Variables query parameters"
     params: VariablesInput
@@ -178,6 +180,7 @@ type Query {
     sortKey: [String] @deprecated(reason: "Use `params.sortKey`")
   ): VariableList!
 
+  "Query for a single Variable."
   variable (
     "Variable query parameters"
     params: VariableInput
@@ -188,12 +191,13 @@ type Query {
 }
 
 type Mutation {
+  "Publish generated variables."
   publishGeneratedVariables (
     "The collection concept Id."
     conceptId: String!
-
   ): VariableList
 
+  "Restore a variable revision."
   restoreVariableRevision (
     "The unique concept id assigned to the variable."
     conceptId: String!
@@ -202,6 +206,7 @@ type Mutation {
     revisionId: String!
   ): VariableMutationResponse
 
+  "Delete a variable."
   deleteVariable (
     "Provider ID of the variable."
     providerId: String!
