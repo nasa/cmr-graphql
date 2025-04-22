@@ -14,7 +14,8 @@ export default defineConfig({
         'cdk',
         '**/handler.js',
         'tmp',
-        'bin'
+        'bin',
+        '*magidoc*'
       ],
       provider: 'istanbul',
       reporter: ['text', 'lcov', 'clover', 'json'],
