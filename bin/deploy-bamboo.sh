@@ -46,6 +46,7 @@ dockerRun() {
     -e "LOG_DESTINATION_ARN=$bamboo_LOG_DESTINATION_ARN" \
     -e "MMT_ROOT_URL=$bamboo_MMT_ROOT_URL" \
     -e "NODE_ENV=production" \
+    -e "SITE_BUCKET=$bamboo_SITE_BUCKET" \
     -e "STAGE_NAME=$bamboo_STAGE_NAME" \
     -e "STELLATE_APP_NAME=$bamboo_STELLATE_APP_NAME" \
     -e "STELLATE_KEY=$bamboo_STELLATE_KEY" \
@@ -60,9 +61,13 @@ dockerRun() {
 #######################################
 
 # Deploy AWS Infrastructure Resources
-echo 'Deploying AWS Infrastructure Resources...'
-dockerRun npm run deploy-infrastructure
+# echo 'Deploying AWS Infrastructure Resources...'
+# dockerRun npm run deploy-infrastructure
 
-# Deploy AWS Application Resources
-echo 'Deploying AWS Application Resources...'
-dockerRun npm run deploy-application
+# # Deploy AWS Application Resources
+# echo 'Deploying AWS Application Resources...'
+# dockerRun npm run deploy-application
+
+# Deploy static assets
+echo 'Deploying static assets to S3...'
+dockerRun npm run deploy-static

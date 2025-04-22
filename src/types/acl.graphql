@@ -11,7 +11,7 @@ type Acl {
   "The name of the Acl."
   name: String
 
-  "An URL to retrieve the Acl."  
+  "An URL to retrieve the Acl."
   location: String
 
   "List of groups and their permissions to the catalog item associated with this Acl."
@@ -32,6 +32,7 @@ type Acl {
   "Full JSON of the Acl."
   acl: JSON @deprecated(reason: "Deprecating in favor of `groupPermissions`, `legacyGuid`, `catalogItemIdentity`.")
 
+  "Returns the list of collections associated with this Acl."
   collections (
     "Collections query parameters"
     params: CollectionsInput
@@ -41,13 +42,13 @@ type Acl {
 type CatalogItemIdentity {
   "Is collection applicable for a ACL"
   collectionApplicable: Boolean
-  
+
   "The collection information"
   collectionIdentifier: JSON
 
   "Is granule applicable for a ACL"
   granuleApplicable: Boolean
-  
+
   "The granule information"
   granuleIdentifier: JSON
 
@@ -97,7 +98,7 @@ type AclGroup {
   "The type of user this Acl applies to."
   userType: String
 }
-  
+
 type AclList {
   "The number of hits for a given search."
   count: Int
@@ -133,7 +134,7 @@ input AclsInput {
 
   "Zero based offset of individual results."
   offset: Int
-  
+
   "User is an URS user name corresponding to a member of a group that has access to an Acl."
   permittedUser: String
 
@@ -154,11 +155,13 @@ input AclsInput {
 }
 
 type Query {
+  "Query for Acls."
   acls(
     "Acls query parameters"
     params: AclsInput
   ): AclList!
 
+  "Query for a single Acl."
   acl(
     "Acl query parameters"
     conceptId: String
@@ -174,6 +177,7 @@ type AclMutationResponse {
 }
 
 type Mutation {
+  "Create a new Acl."
   createAcl (
     "Identifies sets of catalog items (collections and granules) owned by a provider."
     catalogItemIdentity: JSON
@@ -188,6 +192,7 @@ type Mutation {
     groupPermissions: JSON
   ): AclMutationResponse
 
+  "Update an existing Acl."
   updateAcl (
     "Identifies sets of catalog items (collections and granules) owned by a provider."
     catalogItemIdentity: JSON
@@ -205,6 +210,7 @@ type Mutation {
     groupPermissions: JSON
   ): AclMutationResponse
 
+  "Delete an existing Acl."
   deleteAcl (
     "Concept ID of the Acl to be deleted."
     conceptId: String!

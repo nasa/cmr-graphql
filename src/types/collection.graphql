@@ -251,6 +251,7 @@ type Collection {
   "All revisions of this Collection."
   revisions: CollectionRevisionList
 
+  "Returns the list of collections related to this collection."
   relatedCollections (
     "Related Collections query parameters"
     params: RelatedCollectionsInput
@@ -271,6 +272,17 @@ type Collection {
   "Returns possible duplicate collections based on matching metadata"
   duplicateCollections: DuplicateCollectionList
 
+  """
+  Returns the list of granules associated with the collection.
+
+  A subset of the supported arguments for Collections will be passed through to the granule query by default. Those arguments are as follows:
+
+  - boundingBox
+  - circle
+  - point
+  - polygon
+  - temporal
+  """
   granules (
     "Granules query parameters"
     params: GranulesInput
@@ -345,6 +357,7 @@ type Collection {
     twoDCoordinateSystem: JSON @deprecated(reason: "Use `params.twoDCoordinateSystem`")
   ): GranuleList
 
+  "Returns the list of services associated with the collection."
   services (
     "Services query parameters"
     params: ServicesInput
@@ -362,6 +375,7 @@ type Collection {
     type: String @deprecated(reason: "Use `params.type`")
   ): ServiceList
 
+  "Returns the list of subscriptions associated with the collection."
   subscriptions (
     "Subscriptions query parameters"
     params: SubscriptionsInput
@@ -379,10 +393,12 @@ type Collection {
     subscriberId: String @deprecated(reason: "Use `params.subscriberId`")
   ): SubscriptionList
 
+  "Returns the list of tag definitions associated with the collection."
   tagDefinitions (
     params: TagDefinitionsInput
   ): TagDefinitionList
 
+  "Returns the list of tools associated with the collection."
   tools (
     "Tools query parameters"
     params: ToolsInput
@@ -397,6 +413,7 @@ type Collection {
     offset: Int @deprecated(reason: "Use `params.offset`")
   ): ToolList
 
+  "Returns the list of variables associated with the collection."
   variables (
     "Variables query parameters"
     params: VariablesInput
@@ -423,6 +440,7 @@ type Collection {
   "Generates variable drafts on the collection using earthdata-varinfo"
   generateVariableDrafts: VariableDraftList
 
+  "Returns the list of data quality summaries associated with the collection."
   dataQualitySummaries (
     "dataQualitySummary query parameters"
     params: DataQualitySummariesInput
@@ -746,6 +764,7 @@ input CollectionInput {
 }
 
 type Query {
+  "Query for collections"
   collections (
     "Collections query parameters"
     params: CollectionsInput
@@ -769,7 +788,7 @@ type Query {
     collectionDataType: [String] @deprecated(reason: "Use `params.collectionDataType`")
 
     "Entry Title"
-    entryTitle: String
+    entryTitle: String @deprecated(reason: "Use `params.entryTitle`")
 
     "Data center assigned to the collection."
     dataCenter: String @deprecated(reason: "Use `params.dataCenter`")
@@ -892,6 +911,7 @@ type Query {
     variableConceptId: String @deprecated(reason: "Use `params.variableConceptId`")
   ): CollectionList!
 
+  "Query for a single collection"
   collection (
     "Collection query parameters"
     params: CollectionInput
@@ -908,6 +928,7 @@ type Query {
 }
 
 type Mutation {
+  "Restores a collection to a previous revision."
   restoreCollectionRevision (
     "The unique concept id assigned to the collection."
     conceptId: String!
@@ -916,6 +937,7 @@ type Mutation {
     revisionId: String!
   ): CollectionMutationResponse
 
+  "Deletes a collection."
   deleteCollection (
     "Provider ID of the collection."
     providerId: String!

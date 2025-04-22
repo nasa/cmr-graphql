@@ -7,7 +7,7 @@ type Service {
 
   "The list of concepts and any data on the relationship between this service and other permitted concepts"
   associationDetails: JSON
-  
+
   "The unique concept id assigned to the service."
   conceptId: String!
 
@@ -98,6 +98,7 @@ type Service {
   "All revisions of this Service."
   revisions: ServiceRevisionList
 
+  "Returns a list of associated collections."
   collections (
     "Collections query parameters"
     params: CollectionsInput
@@ -112,11 +113,13 @@ type Service {
     offset: Int @deprecated(reason: "Use `params.offset`")
   ): CollectionList
 
+  "Returns a list of associated order options."
   orderOptions (
     "Order option's query parameters"
     params: OrderOptionsInput
   ): OrderOptionList
 
+  "Returns a list of associated variables."
   variables (
     "Variables query parameters"
     params: VariablesInput
@@ -174,6 +177,7 @@ input ServiceInput {
 }
 
 type Query {
+  "Query for a list of Services."
   services (
     "Services query parameters"
     params: ServicesInput
@@ -197,6 +201,7 @@ type Query {
     sortKey: [String] @deprecated(reason: "Use `params.sortKey`")
   ): ServiceList!
 
+  "Query for a single Service."
   service (
     "Service query parameters"
     params: ServiceInput
@@ -207,6 +212,7 @@ type Query {
 }
 
 type Mutation {
+  "Restore a service revision."
   restoreServiceRevision (
     "The unique concept id assigned to the service."
     conceptId: String!
@@ -215,6 +221,7 @@ type Mutation {
     revisionId: String!
   ): ServiceMutationResponse
 
+  "Delete a service."
   deleteService (
     "Provider ID of the service."
     providerId: String!

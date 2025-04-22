@@ -1,12 +1,16 @@
 type Provider {
   "The provider id"
   providerId: String
+
   "The provider short name"
   shortName: String
+
   "The provider CMR only flag"
   cmrOnly: Boolean
+
   "The provider small flag"
   small: Boolean
+
   "The consortiums associated with the provider"
   consortiums: String
 }
@@ -14,10 +18,12 @@ type Provider {
 type ProviderList {
   "The number of providers."
   count: Int
+
   "The list of provider results."
   items: [Provider]
 }
 
 type Query {
+  "Query for a list of providers."
   providers: ProviderList!
 }
