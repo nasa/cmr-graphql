@@ -34,7 +34,7 @@ describe('subscription#fetch', () => {
             alias: 'items',
             args: {},
             fieldsByTypeName: {
-              Subscription: {
+              CMRSubscription: {
                 conceptId: {
                   name: 'conceptId',
                   alias: 'conceptId',
@@ -73,7 +73,7 @@ describe('subscription#fetch', () => {
               alias: 'items',
               args: {},
               fieldsByTypeName: {
-                Subscription: {
+                CMRSubscription: {
                   conceptId: {
                     name: 'conceptId',
                     alias: 'conceptId',
@@ -253,7 +253,7 @@ describe('subscription#fetch', () => {
               alias: 'items',
               args: {},
               fieldsByTypeName: {
-                Subscription: {
+                CMRSubscription: {
                   emailAddress: {
                     name: 'emailAddress',
                     alias: 'emailAddress',
