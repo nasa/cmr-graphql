@@ -28,7 +28,7 @@ export default {
     }
   },
 
-  CollectionSubscription: {
+  CMRSubscription: {
     collection: async (source, args, context, info) => {
       const { dataSources } = context
 
