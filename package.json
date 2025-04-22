@@ -34,14 +34,18 @@
     "silent-test": "vitest --config vitest.config.js --silent",
     "lint": "eslint .",
     "deploy-infrastructure": "cd cdk/graphql-infrastructure && npm ci --include=dev && npm run cdk deploy -- --progress events --require-approval never",
-    "deploy-application": "cd cdk/graphql && npm ci --include=dev && npm run cdk deploy -- --progress events --require-approval never"
+    "deploy-application": "cd cdk/graphql && npm ci --include=dev && npm run cdk deploy -- --progress events --require-approval never",
+    "predeploy-static": "npm ci --include=dev && npm i -g pnpm && npx @magidoc/cli@6.2.0 generate --clean true --stacktrace",
+    "deploy-static": "cd cdk/graphql-docs && npm ci --include=dev && npm run cdk deploy -- --progress events --require-approval never"
   },
   "devDependencies": {
+    "@magidoc/cli": "^6.2.0",
     "@rollup/plugin-graphql": "^2.0.4",
     "@vitest/coverage-istanbul": "^1.4.0",
     "aws-sdk-client-mock": "^4.0.0",
     "concurrently": "^9.1.2",
     "esbuild": "^0.20.2",
+    "handlebars": "^4.7.8",
     "nock": "^13.5.4",
     "onchange": "^7.1.0",
     "snyk": "^1.1283.0",

@@ -1,58 +1,80 @@
-type Subscription {
+type CollectionSubscription {
   "The concept id of the parent CMR collection."
   collectionConceptId: String
+
   "The unique concept id assigned to the subscription."
   conceptId: String!
+
   "The date the subscription was created."
   creationDate: String
+
   "The email address that notifications will be delivered to."
   emailAddress: String
+
   "The name of a subscription."
   name: String
+
   "The native id of a subscription."
   nativeId: String
+
   "The provider associated with this subscription."
   providerId: String
+
   "The query used to retrieve data for the subscription."
   query: String
+
   "The date the subscription was updated."
   revisionDate: String
+
   "The revision associated with this subscription."
   revisionId: String
+
   "The EDL userid of the subscriber."
   subscriberId: String
+
   "The type of the subscription."
   type: String
 
+  "The collection associated with this subscription."
   collection: Collection
 }
 
 type SubscriptionList {
   "The number of hits for a given search."
   count: Int
+
   "Cursor that points to the/a specific position in a list of requested records."
   cursor: String
+
   "The list of subscription search results."
-  items: [Subscription]
+  items: [CollectionSubscription]
 }
 
 input SubscriptionsInput {
   "The concept id of the parent CMR collection."
   collectionConceptId: String
+
   "The unique concept id assigned to the subscription."
   conceptId: [String]
+
   "Cursor that points to the/a specific position in a list of requested records."
   cursor: String
+
   "The number of subscriptions requested by the user."
   limit: Int
+
   "The name of a subscription."
   name: String
+
   "The provider associated with this subscription."
   provider: String
+
   "The userid of the subscriber."
   subscriberId: String
+
   "Zero based offset of individual results."
   offset: Int
+
   "The type of the subscription."
   type: String
 }
@@ -63,46 +85,62 @@ input SubscriptionInput {
 }
 
 type Query {
+  "Query for a list of Subscriptions."
   subscriptions (
     "Subscriptions query parameters"
     params: SubscriptionsInput
+
     "The concept id of the parent CMR collection."
     collectionConceptId: String @deprecated(reason: "Use `params.collectionConceptId`")
+
     "The unique concept id assigned to the subscription."
     conceptId: [String] @deprecated(reason: "Use `params.conceptId`")
+
     "Cursor that points to the a specific position in a list of requested records."
     cursor: String @deprecated(reason: "Use `params.cursor`")
+
     "The number of subscriptions requested by the user."
     limit: Int @deprecated(reason: "Use `params.limit`")
+
     "The name of a subscription."
     name: String @deprecated(reason: "Use `params.name`")
+
     "The provider associated with this subscription."
     provider: String @deprecated(reason: "Use `params.provider`")
+
     "The userid of the subscriber."
     subscriberId: String @deprecated(reason: "Use `params.subscriberId`")
+
     "Zero based offset of individual results."
     offset: Int @deprecated(reason: "Use `params.offset`")
   ): SubscriptionList!
 
+  "Query for a single Subscription."
   subscription (
     "Subscription query parameters"
     params: SubscriptionInput
+
     "The unique concept id assigned to the subscription."
     conceptId: String @deprecated(reason: "Use `params.conceptId`")
-  ): Subscription
+  ): CollectionSubscription
 }
 
 input CreateSubscriptionInput {
   "The concept id of the parent CMR collection."
   collectionConceptId: String
+
   "The email address that notifications will be delivered to."
   name: String!
-  "The native id to set on the subscription."
+
+  "The native id to set on the subscription. If no value is provided, a new native id will be generated."
   nativeId: String
+
   "The EDL userid of the subscriber."
   subscriberId: String
+
   "The query used to retrieve data for the subscription."
   query: String!
+
   "The type of the subscription."
   type: String!
 }
@@ -110,14 +148,19 @@ input CreateSubscriptionInput {
 input UpdateSubscriptionInput {
   "The concept id of the parent CMR collection."
   collectionConceptId: String
+
   "The email address that notifications will be delivered to."
   name: String!
+
   "The native id to set on the subscription."
   nativeId: String!
+
   "The EDL userid of the subscriber."
   subscriberId: String
+
   "The query used to retrieve data for the subscription."
   query: String!
+
   "The type of the subscription."
   type: String!
 }
@@ -125,46 +168,62 @@ input UpdateSubscriptionInput {
 input DeleteSubscriptionInput {
   "The concept id of the subscription."
   conceptId: String!
+
   "The native id of the subscription."
   nativeId: String!
 }
 
 type Mutation {
+  "Create a new subscription."
   createSubscription (
     "Create Subscription mutation parameters"
     params: CreateSubscriptionInput
+
     "The concept id of the parent CMR collection."
     collectionConceptId: String @deprecated(reason: "Use `params.collectionConceptId`")
+
     "The email address that notifications will be delivered to."
     name: String @deprecated(reason: "Use `params.name`")
+
     "The native id to set on the subscription."
     nativeId: String @deprecated(reason: "Use `params.nativeId`")
+
     "The EDL userid of the subscriber."
     subscriberId: String @deprecated(reason: "Use `params.subscriberId`")
+
     "The query used to retrieve data for the subscription."
     query: String @deprecated(reason: "Use `params.query`")
   ): SubscriptionMutationResponse
 
+  "Update an existing subscription."
   updateSubscription (
     "Update Subscription mutation parameters"
     params: UpdateSubscriptionInput
+
     "The concept id of the parent CMR collection."
     collectionConceptId: String @deprecated(reason: "Use `params.collectionConceptId`")
+
     "The email address that notifications will be delivered to."
     name: String @deprecated(reason: "Use `params.name`")
+
     "The native id to set on the subscription."
     nativeId: String @deprecated(reason: "Use `params.nativeId`")
+
     "The EDL userid of the subscriber."
     subscriberId: String @deprecated(reason: "Use `params.subscriberId`")
+
     "The query used to retrieve data for the subscription."
     query: String @deprecated(reason: "Use `params.query`")
   ): SubscriptionMutationResponse
 
+  "Delete an existing subscription."
   deleteSubscription (
     "Delete Subscription mutation parameters"
     params: DeleteSubscriptionInput
+
     "The concept id of the subscription."
     conceptId: String @deprecated(reason: "Use `params.conceptId`")
+
     "The native id of the subscription."
     nativeId: String @deprecated(reason: "Use `params.nativeId`")
   ): SubscriptionMutationResponse
@@ -173,8 +232,10 @@ type Mutation {
 type SubscriptionMutationResponse {
   "The unique concept id assigned to the subscription."
   conceptId: String
+
   "The revision of the subscription."
   revisionId: String
+
   "The native id of the subscription."
   nativeId: String
 }

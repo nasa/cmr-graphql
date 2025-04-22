@@ -1,46 +1,67 @@
 type VariableDraft {
   "Any additional identifiers of a variable."
   additionalIdentifiers: JSON
+
   "Specify data type of a variable. These types can be either: uint8, uint16, etc."
   dataType: String
+
   "The definition of the variable."
   definition: String
+
   "A variable consists of one or more dimensions. An example of a dimension name is 'XDim'. An example of a dimension size is '1200'. Variables are rarely one dimensional."
   dimensions: JSON
+
   "The fill value of the variable in the data file. It is generally a value which falls outside the valid range. For example, if the valid range is '0, 360', the fill value may be '-1'. The fill value type is data provider-defined. For example, 'Out of Valid Range'."
   fillValues: JSON
+
   "This element describes the x and y dimension ranges for this variable. Typically these values are 2 latitude and longitude ranges, but they don't necessarily have to be."
   indexRanges: JSON
+
   "Describes a store (zarr) where a variable has been separated from its original data files and saved as its own entity."
   instanceInformation: JSON
+
   "The expanded or long name related to the variable Name."
   longName: String
+
   "The measurement information of a variable."
   measurementIdentifiers: JSON
+
   "The name of a variable."
   name: String
+
   "The offset is the value which is either added to or subtracted from all values in the stored data field in order to obtain the original values. May be used together with Scale. An example of an offset is '0.49'."
   offset: Float
+
   "A described URL associated with the a web resource, or interface. e.g., the home page for the variable provider."
   relatedUrls: JSON
+
   "The sampling information of a variable."
   samplingIdentifiers: JSON
+
   "The scale is the numerical factor by which all values in the stored data field are multiplied in order to obtain the original values. May be used together with Offset. An example of a scale factor is '0.002'."
   scale: Float
+
   "Controlled Science Keywords describing the collection. The controlled vocabulary for Science Keywords is maintained in the Keyword Management System (KMS)."
   scienceKeywords: JSON
+
   "The set information of a variable. The variable is grouped within a set. The set is defined by the name, type, size and index. For example, Name: 'Data_Fields', Type: 'General', Size: '15', Index: '7' for the case of the variable named 'LST_Day_1km'."
   sets: JSON
+
   "This is the more formal or scientific name, .e.g., the CF Standard Name."
   standardName: String
+
   "The units associated with a variable."
   units: String
+
   "Valid ranges of variable data values."
   validRanges: JSON
+
   "Specifies the sub type of a variable."
   variableSubType: String
+
   "Specify basic type of a variable."
   variableType: String
+
   "Metadata Specification"
   metadataSpecification: JSON
 }
@@ -48,6 +69,7 @@ type VariableDraft {
 type VariableDraftList {
   "The number of variable drafts."
   count: Int
+
   "The list of variable drafts."
   items: [VariableDraft]
 }
@@ -58,6 +80,7 @@ input VariableDraftInput {
 }
 
 type Query {
+  "Query for a variable draft."
   variableDraft (
     params: VariableDraftInput
   ): VariableDraft

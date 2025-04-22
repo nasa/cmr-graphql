@@ -28,7 +28,7 @@ export default {
     }
   },
 
-  Subscription: {
+  CollectionSubscription: {
     collection: async (source, args, context, info) => {
       const { dataSources } = context
 
