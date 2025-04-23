@@ -84,3 +84,11 @@ We use a graph database to query against related collections and duplicate colle
 as well as altering the `gremlinPath` in `(src/utils/cmrGraphDb.js)` to the localhost address the gremlin server is running on.
 
 We may add data to this local graph database with http POST requests to the gremlin-server.
+
+### Local documentation site
+
+To run a local server for the documentation page run
+
+    npm run docs
+
+If you want the docs to run introspection against your local server, update `magidoc.mjs` to use the local URL and be sure to start your server before running the docs command.

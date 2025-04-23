@@ -33,6 +33,7 @@
     "test": "vitest --config vitest.config.js",
     "silent-test": "vitest --config vitest.config.js --silent",
     "lint": "eslint .",
+    "docs": "magidoc dev --package-manager npm",
     "deploy-infrastructure": "cd cdk/graphql-infrastructure && npm ci --include=dev && npm run cdk deploy -- --progress events --require-approval never",
     "deploy-application": "cd cdk/graphql && npm ci --include=dev && npm run cdk deploy -- --progress events --require-approval never",
     "predeploy-static": "npm ci --include=dev && npm i -g pnpm && npx @magidoc/cli@6.2.0 generate --clean true --stacktrace",
