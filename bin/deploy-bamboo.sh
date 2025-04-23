@@ -61,12 +61,12 @@ dockerRun() {
 #######################################
 
 # Deploy AWS Infrastructure Resources
-# echo 'Deploying AWS Infrastructure Resources...'
-# dockerRun npm run deploy-infrastructure
+echo 'Deploying AWS Infrastructure Resources...'
+dockerRun npm run deploy-infrastructure
 
-# # Deploy AWS Application Resources
-# echo 'Deploying AWS Application Resources...'
-# dockerRun npm run deploy-application
+# Deploy AWS Application Resources
+echo 'Deploying AWS Application Resources...'
+dockerRun npm run deploy-application
 
 # Deploy static assets
 echo 'Deploying static assets to S3...'
