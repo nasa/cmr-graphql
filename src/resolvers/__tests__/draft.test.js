@@ -21,6 +21,7 @@ describe('Draft', () => {
     process.env.ummSubscriptionVersion = '1.0.0'
     process.env.ummToolVersion = '1.0.0'
     process.env.ummVariableVersion = '1.0.0'
+    process.env.ummVisualizationVersion = '1.0.0'
   })
 
   afterEach(() => {
@@ -1769,6 +1770,446 @@ describe('Draft', () => {
     })
   })
 
+  describe('Visualization drafts', () => {
+    describe('Query', () => {
+      test('all draft fields', async () => {
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Hits': 1,
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .get(/visualization-drafts\.umm_json/)
+          .reply(200, {
+            hits: 1,
+            items: [{
+              meta: {
+                'concept-id': 'VISD00000-EDSC',
+                'concept-type': 'visualization-draft',
+                deleted: false,
+                'native-id': 'test-guid',
+                'provider-id': 'EDSC',
+                'revision-date': '2022-05-27T15:18:00.920Z',
+                'revision-id': '1'
+              },
+              umm: {
+                Name: 'Test Draft'
+              }
+            }]
+          })
+
+        const response = await server.executeOperation({
+          variables: {
+            params: {
+              conceptId: 'VISD00000-EDSC',
+              conceptType: 'Visualization'
+            }
+          },
+          query: `query Draft($params: DraftInput) {
+            draft(params: $params) {
+              conceptId
+              conceptType
+              deleted
+              name
+              nativeId
+              providerId
+              revisionDate
+              revisionId
+              ummMetadata
+              previewMetadata {
+                ... on Visualization {
+                  conceptId
+                  name
+                }
+              }
+            }
+          }`
+        }, {
+          contextValue
+        })
+
+        const { data, errors } = response.body.singleResult
+
+        expect(errors).toBeUndefined()
+
+        expect(data).toEqual({
+          draft: {
+            conceptId: 'VISD00000-EDSC',
+            conceptType: 'visualization-draft',
+            deleted: false,
+            previewMetadata: {
+              conceptId: 'VISD00000-EDSC',
+              name: 'Test Draft'
+            },
+            name: 'Test Draft',
+            nativeId: 'test-guid',
+            providerId: 'EDSC',
+            revisionDate: '2022-05-27T15:18:00.920Z',
+            revisionId: '1',
+            ummMetadata: {
+              Name: 'Test Draft'
+            }
+          }
+        })
+      })
+
+      test('drafts', async () => {
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Hits': 2,
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .get(/visualization-drafts\.umm_json/)
+          .reply(200, {
+            hits: 2,
+            items: [{
+              meta: {
+                'concept-id': 'VISD00000-EDSC',
+                'concept-type': 'visualization-draft',
+                deleted: false,
+                'native-id': 'test-guid',
+                'provider-id': 'EDSC',
+                'revision-date': '2022-05-27T15:18:00.920Z',
+                'revision-id': '1'
+              },
+              umm: {
+                Name: 'Test Draft'
+              }
+            }, {
+              meta: {
+                'concept-id': 'VISD00001-EDSC',
+                'concept-type': 'visualization-draft',
+                deleted: false,
+                'native-id': 'test-guid-1',
+                'provider-id': 'EDSC',
+                'revision-date': '2022-05-29T15:18:00.920Z',
+                'revision-id': '1'
+              },
+              umm: {
+                Name: 'Test Draft 2'
+              }
+            }]
+          })
+
+        const response = await server.executeOperation({
+          variables: {
+            params: {
+              conceptType: 'Visualization'
+            }
+          },
+          query: `query Drafts($params: DraftsInput) {
+            drafts(params: $params) {
+              count
+              items {
+                conceptId
+                previewMetadata {
+                  ... on Visualization {
+                    conceptId
+                    name
+                  }
+                }
+              }
+            }
+          }`
+        }, {
+          contextValue
+        })
+
+        const { data, errors } = response.body.singleResult
+
+        expect(errors).toBeUndefined()
+
+        expect(data).toEqual({
+          drafts: {
+            count: 2,
+            items: [{
+              conceptId: 'VISD00000-EDSC',
+              previewMetadata: {
+                conceptId: 'VISD00000-EDSC',
+                name: 'Test Draft'
+              }
+            }, {
+              conceptId: 'VISD00001-EDSC',
+              previewMetadata: {
+                conceptId: 'VISD00001-EDSC',
+                name: 'Test Draft 2'
+              }
+            }]
+          }
+        })
+      })
+
+      describe('draft', () => {
+        describe('with results', () => {
+          test('returns results', async () => {
+            nock(/example-cmr/)
+              .defaultReplyHeaders({
+                'CMR-Hits': 1,
+                'CMR-Took': 7,
+                'CMR-Request-Id': 'abcd-1234-efgh-5678'
+              })
+              .get('/search/visualization-drafts.json?concept_id=VISD00000-EDSC')
+              .reply(200, {
+                items: [{
+                  concept_id: 'VISD00000-EDSC'
+                }]
+              })
+
+            const response = await server.executeOperation({
+              variables: {
+                params: {
+                  conceptId: 'VISD00000-EDSC',
+                  conceptType: 'Visualization'
+                }
+              },
+              query: `query Draft($params: DraftInput) {
+                draft(params: $params) {
+                  conceptId
+                }
+              }`
+            }, {
+              contextValue
+            })
+
+            const { data } = response.body.singleResult
+
+            expect(data).toEqual({
+              draft: {
+                conceptId: 'VISD00000-EDSC'
+              }
+            })
+          })
+        })
+
+        describe('with no results', () => {
+          test('returns no results', async () => {
+            nock(/example-cmr/)
+              .defaultReplyHeaders({
+                'CMR-Took': 0,
+                'CMR-Request-Id': 'abcd-1234-efgh-5678'
+              })
+              .get('/search/visualization-drafts.json?concept_id=VISD00000-EDSC')
+              .reply(200, {
+                items: []
+              })
+
+            const response = await server.executeOperation({
+              variables: {
+                params: {
+                  conceptId: 'VISD00000-EDSC',
+                  conceptType: 'Visualization'
+                }
+              },
+              query: `query Draft($params: DraftInput) {
+                draft(params: $params) {
+                  conceptId
+                }
+              }`
+            }, {
+              contextValue
+            })
+
+            const { data } = response.body.singleResult
+
+            expect(data).toEqual({
+              draft: null
+            })
+          })
+        })
+      })
+    })
+
+    describe('Mutation', () => {
+      describe('ingestDraft', () => {
+        test('returns the cmr result', async () => {
+          nock(/example-cmr/, {
+            reqheaders: {
+              accept: 'application/json',
+              'client-id': 'eed-test-graphql',
+              'content-type': 'application/vnd.nasa.cmr.umm+json; version=1.0.0',
+              'cmr-request-id': 'abcd-1234-efgh-5678'
+            }
+          })
+            .defaultReplyHeaders({
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .put(/ingest\/providers\/EDSC\/visualization-drafts\/visualization-1/)
+            .reply(201, {
+              'concept-id': 'VISD00000-EDSC',
+              'revision-id': '1'
+            })
+
+          const response = await server.executeOperation({
+            variables: {
+              conceptType: 'Visualization',
+              metadata: {
+                Name: 'Mock Visualization'
+              },
+              nativeId: 'visualization-1',
+              providerId: 'EDSC',
+              ummVersion: '1.0.0'
+            },
+            query: `mutation IngestDraft(
+              $conceptType: DraftConceptType!
+              $metadata: JSON!
+              $nativeId: String!
+              $providerId: String!
+              $ummVersion: String!
+            ) {
+              ingestDraft(
+                conceptType: $conceptType
+                metadata: $metadata
+                nativeId: $nativeId
+                providerId: $providerId
+                ummVersion: $ummVersion
+              ) {
+                conceptId
+                revisionId
+                warnings
+                existingErrors
+              }
+            }`
+          }, {
+            contextValue
+          })
+
+          const { data, errors } = response.body.singleResult
+
+          expect(errors).toBeUndefined()
+
+          expect(data).toEqual({
+            ingestDraft: {
+              conceptId: 'VISD00000-EDSC',
+              revisionId: '1',
+              warnings: null,
+              existingErrors: null
+            }
+          })
+        })
+      })
+
+      describe('deleteDraft', () => {
+        test('returns the cmr result', async () => {
+          nock(/example-cmr/, {
+            reqheaders: {
+              accept: 'application/json',
+              'client-id': 'eed-test-graphql',
+              'content-type': 'application/vnd.nasa.cmr.umm+json',
+              'cmr-request-id': 'abcd-1234-efgh-5678'
+            }
+          })
+            .defaultReplyHeaders({
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .delete(/ingest\/providers\/EDSC\/visualization-drafts\/visualization-1/)
+            .reply(201, {
+              'concept-id': 'VISD00000-EDSC',
+              'revision-id': '2'
+            })
+
+          const response = await server.executeOperation({
+            variables: {
+              conceptType: 'Visualization',
+              nativeId: 'visualization-1',
+              providerId: 'EDSC'
+            },
+            query: `mutation DeleteDraft(
+              $conceptType: DraftConceptType!
+              $nativeId: String!
+              $providerId: String!
+            ) {
+              deleteDraft(
+                conceptType: $conceptType
+                nativeId: $nativeId
+                providerId: $providerId
+              ) {
+                conceptId
+                revisionId
+                warnings
+                existingErrors
+              }
+            }`
+          }, {
+            contextValue
+          })
+
+          const { data } = response.body.singleResult
+
+          expect(data).toEqual({
+            deleteDraft: {
+              conceptId: 'VISD00000-EDSC',
+              revisionId: '2',
+              warnings: null,
+              existingErrors: null
+            }
+          })
+        })
+      })
+
+      describe('publishDraft', () => {
+        test('returns the cmr result', async () => {
+          nock(/example-cmr/, {
+            reqheaders: {
+              accept: 'application/json',
+              'client-id': 'eed-test-graphql',
+              'content-type': 'application/vnd.nasa.cmr.umm+json; version=1.0.0',
+              'cmr-request-id': 'abcd-1234-efgh-5678'
+            }
+          })
+            .defaultReplyHeaders({
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .put(/ingest\/publish\/VISD00000-EDSC\/visualization-1/)
+            .reply(201, {
+              'concept-id': 'V100000-EDSC',
+              'revision-id': '1'
+            })
+
+          const response = await server.executeOperation({
+            variables: {
+              draftConceptId: 'VISD00000-EDSC',
+              nativeId: 'visualization-1',
+              ummVersion: '1.0.0'
+            },
+            query: `mutation PublishDraft(
+              $draftConceptId: String!
+              $nativeId: String!
+              $ummVersion: String!
+            ) {
+              publishDraft(
+                draftConceptId: $draftConceptId
+                nativeId: $nativeId
+                ummVersion: $ummVersion
+              ) {
+                conceptId
+                revisionId
+                warnings
+                existingErrors
+              }
+            }`
+          }, {
+            contextValue
+          })
+
+          const { data } = response.body.singleResult
+
+          expect(data).toEqual({
+            publishDraft: {
+              conceptId: 'V100000-EDSC',
+              revisionId: '1',
+              warnings: null,
+              existingErrors: null
+            }
+          })
+        })
+      })
+    })
+  })
+
   describe('PreviewMetadata', () => {
     describe('__resolveType', () => {
       test('returns Collection when the conceptId starts with CD', () => {
@@ -1801,6 +2242,14 @@ describe('Draft', () => {
 
         const result = resolveType({ conceptId: 'VD' })
         expect(result).toEqual('Variable')
+      })
+
+      test('returns Visualization when the conceptId starts with VISD', () => {
+        const { PreviewMetadata: previewMetadata } = resolvers
+        const { __resolveType: resolveType } = previewMetadata
+
+        const result = resolveType({ conceptId: 'VISD' })
+        expect(result).toEqual('Visualization')
       })
 
       test('returns null when the conceptId is not a draft', () => {

@@ -2203,6 +2203,286 @@ describe('Collection', () => {
       })
     })
 
+    describe('visualizations', () => {
+      describe('no associations are present in the metadata', () => {
+        test('doesn\'t query for or return visualizations', async () => {
+          nock(/example-cmr/)
+            .defaultReplyHeaders({
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .get(/collections\.json/)
+            .reply(200, {
+              feed: {
+                entry: [{
+                  id: 'C100000-EDSC'
+                }, {
+                  id: 'C100001-EDSC'
+                }]
+              }
+            })
+
+          const response = await server.executeOperation({
+            variables: {},
+            query: `{
+              collections {
+                items {
+                  conceptId
+                  visualizations {
+                    items {
+                      conceptId
+                    }
+                  }
+                }
+              }
+            }`
+          }, {
+            contextValue
+          })
+
+          const { data } = response.body.singleResult
+
+          expect(data).toEqual({
+            collections: {
+              items: [{
+                conceptId: 'C100000-EDSC',
+                visualizations: {
+                  items: []
+                }
+              }, {
+                conceptId: 'C100001-EDSC',
+                visualizations: {
+                  items: []
+                }
+              }]
+            }
+          })
+        })
+      })
+
+      describe('associations are present in the metadata but not visualization associations', () => {
+        test('doesn\'t query for or return visualizations', async () => {
+          nock(/example-cmr/)
+            .defaultReplyHeaders({
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .get(/collections\.json/)
+            .reply(200, {
+              feed: {
+                entry: [{
+                  id: 'C100000-EDSC',
+                  association_details: {
+                    variables: [{ concept_id: 'V100000-EDSC' }]
+                  }
+                }, {
+                  id: 'C100001-EDSC',
+                  association_details: {
+                    variables: [{ concept_id: 'V100000-EDSC' }]
+                  }
+                }]
+              }
+            })
+
+          const response = await server.executeOperation({
+            variables: {},
+            query: `{
+              collections {
+                items {
+                  conceptId
+                  visualizations {
+                    items {
+                      conceptId
+                    }
+                  }
+                }
+              }
+            }`
+          }, {
+            contextValue
+          })
+
+          const { data } = response.body.singleResult
+
+          expect(data).toEqual({
+            collections: {
+              items: [{
+                conceptId: 'C100000-EDSC',
+                visualizations: {
+                  items: []
+                }
+              }, {
+                conceptId: 'C100001-EDSC',
+                visualizations: {
+                  items: []
+                }
+              }]
+            }
+          })
+        })
+      })
+
+      describe('when visualization associations are present in the metadata', () => {
+        test('queries for and returns visualizations', async () => {
+          nock(/example-cmr/)
+            .defaultReplyHeaders({
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .get(/collections\.json/)
+            .reply(200, {
+              feed: {
+                entry: [{
+                  id: 'C100000-EDSC',
+                  association_details: {
+                    visualizations: [{ concept_id: 'VIS100000-EDSC' }, { concept_id: 'VIS100001-EDSC' }]
+                  }
+                }, {
+                  id: 'C100001-EDSC',
+                  association_details: {
+                    visualizations: [{ concept_id: 'VIS100002-EDSC' }, { concept_id: 'VIS100003-EDSC' }]
+                  }
+                }]
+              }
+            })
+
+          nock(/example-cmr/)
+            .defaultReplyHeaders({
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .get('/search/visualizations.json?concept_id[]=VIS100000-EDSC&concept_id[]=VIS100001-EDSC&page_size=20')
+            .reply(200, {
+              items: [{
+                concept_id: 'VIS100000-EDSC'
+              }, {
+                concept_id: 'VIS100001-EDSC'
+              }]
+            })
+
+          nock(/example-cmr/)
+            .defaultReplyHeaders({
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .get('/search/visualizations.json?concept_id[]=VIS100002-EDSC&concept_id[]=VIS100003-EDSC&page_size=20')
+            .reply(200, {
+              items: [{
+                concept_id: 'VIS100002-EDSC'
+              }, {
+                concept_id: 'VIS100003-EDSC'
+              }]
+            })
+
+          const response = await server.executeOperation({
+            variables: {},
+            query: `{
+              collections {
+                items {
+                  conceptId
+                  visualizations {
+                    items {
+                      conceptId
+                    }
+                  }
+                }
+              }
+            }`
+          }, {
+            contextValue
+          })
+
+          const { data } = response.body.singleResult
+
+          expect(data).toEqual({
+            collections: {
+              items: [{
+                conceptId: 'C100000-EDSC',
+                visualizations: {
+                  items: [{
+                    conceptId: 'VIS100000-EDSC'
+                  }, {
+                    conceptId: 'VIS100001-EDSC'
+                  }]
+                }
+              }, {
+                conceptId: 'C100001-EDSC',
+                visualizations: {
+                  items: [{
+                    conceptId: 'VIS100002-EDSC'
+                  }, {
+                    conceptId: 'VIS100003-EDSC'
+                  }]
+                }
+              }]
+            }
+          })
+        })
+      })
+
+      test('returns null when querying a draft', async () => {
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Hits': 2,
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .get(/collection-drafts\.umm_json/)
+          .reply(200, {
+            items: [{
+              meta: {
+                'concept-id': 'CD100000-EDSC'
+              },
+              umm: {}
+            }, {
+              meta: {
+                'concept-id': 'CD100001-EDSC'
+              },
+              umm: {}
+            }]
+          })
+
+        const response = await server.executeOperation({
+          variables: {
+            params: {
+              conceptType: 'Collection'
+            }
+          },
+          query: `query Drafts($params: DraftsInput) {
+            drafts(params: $params) {
+              items {
+                previewMetadata {
+                  ... on Collection {
+                    visualizations {
+                      count
+                    }
+                  }
+                }
+              }
+            }
+          }`
+        }, {
+          contextValue
+        })
+
+        const { data } = response.body.singleResult
+
+        expect(data).toEqual({
+          drafts: {
+            items: [{
+              previewMetadata: {
+                visualizations: null
+              }
+            }, {
+              previewMetadata: {
+                visualizations: null
+              }
+            }]
+          }
+        })
+      })
+    })
+
     describe('data-quality-summaries', () => {
       describe('no associations are present in the metadata', () => {
         test('doesn\'t query for or return data-quality-summaries', async () => {

@@ -54,6 +54,12 @@ import {
 } from '../../../datasources/variable'
 
 import {
+  deleteVisualization as visualizationSourceDelete,
+  fetchVisualizations as visualizationSourceFetch,
+  restoreVisualizationRevision as visualizationSourceRestoreRevision
+} from '../../../datasources/visualization'
+
+import {
   deleteSubscription as subscriptionSourceDelete,
   fetchSubscription as subscriptionSourceFetch,
   ingestSubscription as subscriptionSourceIngest
@@ -136,7 +142,10 @@ export const buildContextValue = (extraContext) => ({
     variableDraftSource,
     variableSourceDelete,
     variableSourceFetch,
-    variableSourceRestoreRevision
+    variableSourceRestoreRevision,
+    visualizationSourceDelete,
+    visualizationSourceFetch,
+    visualizationSourceRestoreRevision
   },
   headers: {
     'Client-Id': 'eed-test-graphql',

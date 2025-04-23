@@ -71,6 +71,12 @@ import {
 } from '../datasources/variable'
 
 import {
+  deleteVisualization as visualizationSourceDelete,
+  fetchVisualizations as visualizationSourceFetch,
+  restoreVisualizationRevision as visualizationSourceRestoreRevision
+} from '../datasources/visualization'
+
+import {
   deleteSubscription as subscriptionSourceDelete,
   fetchSubscription as subscriptionSourceFetch,
   ingestSubscription as subscriptionSourceIngest
@@ -261,9 +267,12 @@ export default startServerAndCreateLambdaHandler(
           toolSourceFetch,
           toolSourceRestoreRevision,
           variableDraftSource,
-          variableSourceRestoreRevision,
           variableSourceDelete,
-          variableSourceFetch
+          variableSourceFetch,
+          variableSourceRestoreRevision,
+          visualizationSourceDelete,
+          visualizationSourceFetch,
+          visualizationSourceRestoreRevision
         },
         edlClientToken,
         collectionLoader: new DataLoader(getCollectionsById, {

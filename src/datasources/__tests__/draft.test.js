@@ -353,6 +353,7 @@ describe('draft#ingest', () => {
     process.env.ummServiceVersion = '1.0.0'
     process.env.ummToolVersion = '1.0.0'
     process.env.ummVariableVersion = '1.0.0'
+    process.env.ummVisualizationVersion = '1.0.0'
 
     // Default requestInfo
     requestInfo = {
@@ -513,6 +514,52 @@ describe('draft#ingest', () => {
         }
       }, requestInfo)
     ).rejects.toThrow(Error)
+  })
+
+  describe('when ingesting a visualization draft', () => {
+    test('inserts the ConceptIds field into the draft', async () => {
+      nock(/example-cmr/)
+        .defaultReplyHeaders({
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .put(/ingest\/providers\/EDSC\/visualization-drafts\/test-guid/, JSON.stringify({
+          Name: 'mock name',
+          MetadataSpecification: {
+            URL: 'https://cdn.earthdata.nasa.gov/umm/visualization/v1.0.0',
+            Name: 'Visualization',
+            Version: '1.0.0'
+          },
+          // This field gets inserted into the record, and the test will fail without it
+          ConceptIds: [{
+            Type: 'STD',
+            Value: 'C12345-GRAPHQL'
+          }]
+        }))
+        .reply(201, {
+          'concept-id': 'VISD100000-EDSC',
+          'revision-id': '1'
+        })
+
+      const response = await draftSourceIngest({
+        conceptType: 'Visualization',
+        metadata: {
+          Name: 'mock name'
+        },
+        nativeId: 'test-guid',
+        providerId: 'EDSC',
+        ummVersion: '1.0.0'
+      }, {
+        headers: {
+          'Client-Id': 'eed-test-graphql',
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        }
+      }, requestInfo)
+
+      expect(response).toEqual({
+        conceptId: 'VISD100000-EDSC',
+        revisionId: '1'
+      })
+    })
   })
 })
 

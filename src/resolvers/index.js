@@ -21,6 +21,7 @@ import toolDraftResolver from './toolDraft'
 import toolResolver from './tool'
 import variableDraftResolver from './variableDraft'
 import variableResolver from './variable'
+import visualizationResolver from './visualization'
 
 const resolvers = [
   aclResolver,
@@ -43,7 +44,8 @@ const resolvers = [
   toolDraftResolver,
   toolResolver,
   variableDraftResolver,
-  variableResolver
+  variableResolver,
+  visualizationResolver
 ]
 
 export default mergeResolvers(resolvers)

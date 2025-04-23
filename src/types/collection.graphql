@@ -414,6 +414,12 @@ type Collection {
     name: String @deprecated(reason: "Use `params.name`")
   ): VariableList
 
+  "Returns a list of associated visualizations."
+  visualizations (
+    "Visualizations query parameters"
+    params: VisualizationsInput
+  ): VisualizationList
+
   "Generates variable drafts on the collection using earthdata-varinfo"
   generateVariableDrafts: VariableDraftList
 

@@ -1,5 +1,5 @@
-"PreviewMetadata can be either a Collection, Service, Tool or Variable."
-union PreviewMetadata = Collection | Service | Tool | Variable
+"PreviewMetadata can be either a Collection, Service, Tool, Variable, or Visualization."
+union PreviewMetadata = Collection | Service | Tool | Variable | Visualization
 
 "DraftConceptType must be one of the enum values."
 enum DraftConceptType {
@@ -7,6 +7,7 @@ enum DraftConceptType {
   Service
   Tool
   Variable
+  Visualization
 }
 
 type DraftMutationResponse {

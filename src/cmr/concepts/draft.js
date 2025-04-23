@@ -147,7 +147,8 @@ export default class Draft extends Concept {
       ummCollectionVersion,
       ummServiceVersion,
       ummToolVersion,
-      ummVariableVersion
+      ummVariableVersion,
+      ummVisualizationVersion
     } = env
 
     const { conceptType } = params
@@ -168,11 +169,15 @@ export default class Draft extends Concept {
         ummType: 'tool',
         ummVersion: ummToolVersion
       },
-
       'variable-drafts': {
         ummName: 'UMM-Var',
         ummType: 'variable',
         ummVersion: ummVariableVersion
+      },
+      'visualization-drafts': {
+        ummName: 'Visualization',
+        ummType: 'visualization',
+        ummVersion: ummVisualizationVersion
       }
     }
 
@@ -186,14 +191,26 @@ export default class Draft extends Concept {
       ummVersion
     } = specificationData
 
-    return super.mutateIngestParameters({
+    const paramsToIngest = {
       ...params.metadata,
       MetadataSpecification: {
         URL: `https://cdn.earthdata.nasa.gov/umm/${ummType}/v${ummVersion}`,
         Name: ummName,
         Version: ummVersion
       }
-    })
+    }
+
+    if (ummName === 'Visualization') {
+      // ConceptIds is currently required for UMM-Vis, but will be removed in the future.
+      // For now, we will add a dummy value to satisfy the CMR validations.
+      // This will be removed when the field is removed from the schema.
+      paramsToIngest.ConceptIds = [{
+        Type: 'STD',
+        Value: 'C12345-GRAPHQL'
+      }]
+    }
+
+    return super.mutateIngestParameters(paramsToIngest)
   }
 
   /**
@@ -207,7 +224,8 @@ export default class Draft extends Concept {
       ummCollectionVersion,
       ummServiceVersion,
       ummToolVersion,
-      ummVariableVersion
+      ummVariableVersion,
+      ummVisualizationVersion
     } = env
 
     const { conceptType } = this.params
@@ -216,7 +234,8 @@ export default class Draft extends Concept {
       'collection-drafts': ummCollectionVersion,
       'service-drafts': ummServiceVersion,
       'tool-drafts': ummToolVersion,
-      'variable-drafts': ummVariableVersion
+      'variable-drafts': ummVariableVersion,
+      'visualization-drafts': ummVisualizationVersion
     }
 
     const {

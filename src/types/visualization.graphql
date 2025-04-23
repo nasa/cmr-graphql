@@ -1,0 +1,157 @@
+type Visualization {
+  "The unique concept id assigned to the visualization."
+  conceptId: String!
+
+  "A human readable description of the visualization written using HTML notation for advanced text.  The goal is to create descriptions for the science-minded public that may have an interest in finding out what the visualization shows, why it’s important, how it was created, etc..."
+  description: String
+
+  "How this visualization is generated."
+  generation: JSON
+
+  "The unique identifier for the visualization."
+  identifier: String
+
+  "Requires the client, or user, to add in schema information into every visualization record. It includes the schema's name, version, and URL location. The information is controlled through enumerations at the end of this schema."
+  metadataSpecification: JSON
+
+  "A name of the visualization."
+  name: String
+
+  "The native id of a visualization."
+  nativeId: String
+
+  "Date which the Visualization was last updated."
+  revisionDate: String
+
+  "The revision id of the Visualization."
+  revisionId: String
+
+  "The list of revisions for the visualization."
+  revisions: VisualizationRevisionList
+
+  "Earth Science keywords that are representative of the data being visualized. The controlled vocabulary for Science Keywords is maintained in the Keyword Management System (KMS)."
+  scienceKeywords: JSON
+
+  "The spatial extent of the visualization."
+  spatialExtent: JSON
+
+  "Identify and specify visualization product."
+  specification: JSON
+
+  "A short descriptive subtitle of the visualization."
+  subtitle: String
+
+  "This class contains attributes which describe the temporal range of a specific layer. Temporal Extent includes a specification of the Temporal Range Type of the collection, which is one of Range Date Time, Single Date Time, or Periodic Date Time"
+  temporalExtent: JSON
+
+  "A short descriptive title of the visualization."
+  title: String
+
+  "Raw UMM Metadata of the Visualization Record."
+  ummMetadata: JSON
+
+  "The type of visualization, `tiles` or `maps`."
+  visualizationType: String
+
+  "Returns a list of associated collections."
+  collections (
+    "Collections query parameters"
+    params: CollectionsInput
+  ): CollectionList
+}
+
+type VisualizationRevisionList {
+  "The number of hits for a given search."
+  count: Int
+
+  "The list of visualization search results."
+  items: [Visualization]
+}
+
+type VisualizationList {
+  "The number of hits for a given search."
+  count: Int
+
+  "Cursor that points to a specific position in a list of requested records."
+  cursor: String
+
+  "The list of visualization search results."
+  items: [Visualization]
+}
+
+input VisualizationsInput {
+  "The unique concept id assigned to the visualization."
+  conceptId: [String]
+
+  "Cursor that points to a specific position in a list of requested records."
+  cursor: String
+
+  "The number of visualizations requested by the user."
+  limit: Int
+
+  "The native id of the visualization."
+  nativeId: String
+
+  "The name of the visualization."
+  name: String
+
+  "Zero based offset of individual results."
+  offset: Int
+
+  "The name of the provider associated with the visualization."
+  provider: String
+
+  "One or more sort keys can be specified to impact searching. Fields can be prepended with a '-' to sort in descending order. Ascending order is the default but + can be used to explicitly request ascending."
+  sortKey: [String]
+
+  "The title of the visualization."
+  title: String
+
+  "The type of visualization."
+  visualizationType: String
+}
+
+input VisualizationInput {
+  "The concept id of the visualization."
+  conceptId: String!
+}
+
+type Query {
+  "Get a list of visualizations."
+  visualizations (
+    "Visualization query parameters"
+    params: VisualizationsInput
+  ): VisualizationList!
+
+  "Get a visualization."
+  visualization (
+    "Visualization query parameters"
+    params: VisualizationInput
+  ): Visualization
+}
+
+type Mutation {
+  restoreVisualizationRevision (
+    "The unique concept id assigned to the visualization."
+    conceptId: String!
+
+    "The revision of the visualization."
+    revisionId: String!
+  ): VisualizationMutationResponse
+
+  deleteVisualization (
+    "Provider ID of the visualization."
+    providerId: String!
+
+    "The native id of a visualization."
+    nativeId: String!
+  ): VisualizationMutationResponse
+}
+
+type VisualizationMutationResponse {
+  "The unique concept id assigned to the visualization."
+  conceptId: String!
+
+  "The revision of the visualization."
+  revisionId: String!
+}
