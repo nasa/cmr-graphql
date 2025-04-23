@@ -2244,7 +2244,7 @@ describe('Draft', () => {
         expect(result).toEqual('Variable')
       })
 
-      test('returns Visualization when the conceptId starts with VID', () => {
+      test('returns Visualization when the conceptId starts with VISD', () => {
         const { PreviewMetadata: previewMetadata } = resolvers
         const { __resolveType: resolveType } = previewMetadata
 

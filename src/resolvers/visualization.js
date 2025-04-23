@@ -82,7 +82,7 @@ export default {
       // Find the associated collections
       const { collections = [] } = associationDetails
 
-      // If there are no associations to collections for this order option
+      // If there are no associations to collections for this visualization
       if (!collections.length) {
         return {
           count: 0,
