@@ -28,8 +28,7 @@ export default {
     staticAssets: './magidoc/assets',
     options: {
       appTitle: 'CMR GraphQL',
-      // TODO get a pretty logo from Trevor
-      appLogo: 'https://www.nasa.gov/wp-content/themes/nasa/assets/images/nasa-logo.svg',
+      appLogo: '/cmr-graphql-logo.svg',
       appFavicon: '/favicon.ico',
       pages,
       externalLinks: [
