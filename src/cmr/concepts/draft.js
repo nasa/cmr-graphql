@@ -191,14 +191,26 @@ export default class Draft extends Concept {
       ummVersion
     } = specificationData
 
-    return super.mutateIngestParameters({
+    const paramsToIngest = {
       ...params.metadata,
       MetadataSpecification: {
         URL: `https://cdn.earthdata.nasa.gov/umm/${ummType}/v${ummVersion}`,
         Name: ummName,
         Version: ummVersion
       }
-    })
+    }
+
+    if (ummName === 'Visualization') {
+      // ConceptIds is currently required for UMM-Vis, but will be removed in the future.
+      // For now, we will add a dummy value to satisfy the CMR validations.
+      // This will be removed when the field is removed from the schema.
+      paramsToIngest.ConceptIds = [{
+        Type: 'STD',
+        Value: 'C12345-GRAPHQL'
+      }]
+    }
+
+    return super.mutateIngestParameters(paramsToIngest)
   }
 
   /**

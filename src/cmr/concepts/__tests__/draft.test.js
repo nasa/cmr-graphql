@@ -66,6 +66,17 @@ describe('Draft concept', () => {
         })
       })
 
+      describe('when the conceptType is visualization-drafts', () => {
+        test('sets the ingestPath and metadataSpecification correctly', () => {
+          const draft = new Draft('visualization-drafts', {}, {}, {
+            draftConceptId: 'VISD100000-EDSC',
+            providerId: 'EDSC'
+          })
+
+          expect(draft.publishPath).toEqual('publish/VISD100000-EDSC')
+        })
+      })
+
       describe('when the conceptType is not a supported draft', () => {
         test('sets the ingestPath and metadataSpecification correctly', () => {
           const draft = new Draft('bad-drafts', {}, {}, {

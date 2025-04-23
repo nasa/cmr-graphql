@@ -32,7 +32,7 @@ type Visualization {
   "Earth Science keywords that are representative of the data being visualized. The controlled vocabulary for Science Keywords is maintained in the Keyword Management System (KMS)."
   scienceKeywords: JSON
 
-  "TBD"
+  "The spatial extent of the visualization."
   spatialExtent: JSON
 
   "Identify and specify visualization product."
@@ -50,9 +50,10 @@ type Visualization {
   "Raw UMM Metadata of the Tool Record."
   ummMetadata: JSON
 
-  "TBD"
+  "The type of visualization, `tiles` or `maps`."
   visualizationType: String
 
+  "Returns a list of associated collections."
   collections (
     "Collections query parameters"
     params: CollectionsInput
@@ -96,8 +97,6 @@ input VisualizationsInput {
 
   "Zero based offset of individual results."
   offset: Int
-
-  options: JSON
 
   "The name of the provider associated with the visualization."
   provider: String
