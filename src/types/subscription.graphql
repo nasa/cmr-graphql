@@ -1,4 +1,4 @@
-type CMRSubscription {
+type SearchSubscription {
   "The concept id of the parent CMR collection."
   collectionConceptId: String
 
@@ -47,7 +47,7 @@ type SubscriptionList {
   cursor: String
 
   "The list of subscription search results."
-  items: [CMRSubscription]
+  items: [SearchSubscription]
 }
 
 input SubscriptionsInput {
@@ -122,7 +122,7 @@ type Query {
 
     "The unique concept id assigned to the subscription."
     conceptId: String @deprecated(reason: "Use `params.conceptId`")
-  ): CMRSubscription
+  ): SearchSubscription
 }
 
 input CreateSubscriptionInput {

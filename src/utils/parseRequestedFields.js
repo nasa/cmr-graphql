@@ -78,15 +78,15 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
   if (fieldsByTypeName) {
     // Subscriptions are special because they are a reserved word in GraphQL
     // and cannot be used as a type name. So when `subscription` is used as a type name
-    // we need to use `CMRSubscription` instead.
-    let subscriptionConceptName = conceptName
+    // we need to use `SearchSubscription` instead.
+    let normalizedConceptName = conceptName
 
     if (conceptName === 'subscription') {
-      subscriptionConceptName = 'CMRSubscription'
+      normalizedConceptName = 'SearchSubscription'
     }
 
     const {
-      [upperFirst(subscriptionConceptName)]: conceptKeysRequested
+      [upperFirst(normalizedConceptName)]: conceptKeysRequested
     } = fieldsByTypeName
 
     if (conceptKeysRequested) {
