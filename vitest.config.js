@@ -15,7 +15,8 @@ export default defineConfig({
         '**/handler.js',
         'tmp',
         'bin',
-        '*magidoc*'
+        '*magidoc*',
+        'docs'
       ],
       provider: 'istanbul',
       reporter: ['text', 'lcov', 'clover', 'json'],
