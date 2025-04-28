@@ -20,6 +20,9 @@ type Visualization {
   "The native id of a visualization."
   nativeId: String
 
+  "Provider ID of the Visualization."
+  providerId: String
+
   "Date which the Visualization was last updated."
   revisionDate: String
 
