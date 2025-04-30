@@ -264,6 +264,7 @@ describe('Visualization', () => {
               metadataSpecification
               name
               nativeId
+              providerId
               revisionDate
               revisionId
               revisions {
@@ -318,6 +319,7 @@ describe('Visualization', () => {
             },
             name: 'MODIS_Terra_Corrected_Reflectance_TrueColor',
             nativeId: 'tiles',
+            providerId: 'EDSC',
             revisionDate: '2025-03-18VIS19:22:44.814Z',
             revisionId: '3',
             revisions: {
