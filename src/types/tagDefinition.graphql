@@ -1,12 +1,16 @@
 type TagDefinition {
   "A concept id associated with the tag"
   conceptId: String
+
   "A revision id associated with the tag"
   revisionId: String
+
   "A free text specifying the key of the tag"
   tagKey: String
+
   "A description of the tag"
   description: String
+
   "The id of the user that created the tag"
   originatorId: String
 }
@@ -19,11 +23,13 @@ type TagDefinitionList {
 input TagDefinitionsInput {
   "The unique tag keys"
   tagKey: [String]
+
   "The id of the user that created the tag"
   originatorId: String
 }
 
 type Query {
+  "Query for a list of tag definitions."
   tagDefinitions(
     "Tag key"
     params: TagDefinitionsInput

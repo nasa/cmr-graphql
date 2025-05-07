@@ -36,3 +36,4 @@ Dockerfile
 .env.uat
 .env.sit
 .env.local
+docs
