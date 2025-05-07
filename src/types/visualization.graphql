@@ -45,7 +45,7 @@ type Visualization {
   subtitle: String
 
   "This class contains attributes which describe the temporal range of a specific layer. Temporal Extent includes a specification of the Temporal Range Type of the collection, which is one of Range Date Time, Single Date Time, or Periodic Date Time"
-  temporalExtent: JSON
+  temporalExtents: JSON
 
   "A short descriptive title of the visualization."
   title: String

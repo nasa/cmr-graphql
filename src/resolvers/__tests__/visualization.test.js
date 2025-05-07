@@ -98,7 +98,8 @@ describe('Visualization', () => {
                   Category: 'EARTH SCIENCE',
                   Topic: 'SPECTRAL/ENGINEERING',
                   Term: 'VISIBLE WAVELENGTHS',
-                  VariableLevel1: 'REFLECTANCE'
+                  VariableLevel1: 'REFLECTANCE',
+                  DetailedVariable: 'foo'
                 },
                 {
                   Category: 'EARTH SCIENCE',
@@ -277,7 +278,7 @@ describe('Visualization', () => {
               spatialExtent
               specification
               subtitle
-              temporalExtent
+              temporalExtents
               title
               ummMetadata
               visualizationType
@@ -326,7 +327,21 @@ describe('Visualization', () => {
               count: 2,
               items: [{ revisionId: '2' }, { revisionId: '1' }]
             },
-            scienceKeywords: null,
+            scienceKeywords: [
+              {
+                category: 'EARTH SCIENCE',
+                topic: 'SPECTRAL/ENGINEERING',
+                term: 'VISIBLE WAVELENGTHS',
+                variableLevel1: 'REFLECTANCE',
+                detailedVariable: 'foo'
+              },
+              {
+                category: 'EARTH SCIENCE',
+                topic: 'ATMOSPHERIC OPTICS',
+                term: 'ATMOSPHERIC TRANSMITTANCE',
+                variableLevel1: 'ATMOSPHERIC TRANSPARENCY'
+              }
+            ],
             spatialExtent: {
               granuleSpatialRepresentation: 'GEODETIC',
               horizontalSpatialDomain: {
@@ -391,7 +406,13 @@ describe('Visualization', () => {
               }
             },
             subtitle: 'Terra / MODIS',
-            temporalExtent: null,
+            temporalExtents: [{
+              rangeDateTimes: [{
+                beginningDateTime: '2002-05-01T00:00:00Z',
+                endingDateTime: '2023-12-31T23:59:59Z'
+              }],
+              endsAtPresentFlag: true
+            }],
             title: 'FOO UPDATE MODIS Terra Corrected Reflectance (True Color)',
             ummMetadata: {
               ConceptIds: [{
@@ -422,7 +443,8 @@ describe('Visualization', () => {
                 Category: 'EARTH SCIENCE',
                 Topic: 'SPECTRAL/ENGINEERING',
                 Term: 'VISIBLE WAVELENGTHS',
-                VariableLevel1: 'REFLECTANCE'
+                VariableLevel1: 'REFLECTANCE',
+                DetailedVariable: 'foo'
               }, {
                 Category: 'EARTH SCIENCE',
                 Topic: 'ATMOSPHERIC OPTICS',
