@@ -4,17 +4,31 @@ import * as s3Deployment from 'aws-cdk-lib/aws-s3-deployment'
 import { Construct } from 'constructs'
 
 const {
-  SITE_BUCKET = 'mock-bucket'
+  DOCS_BUCKET = 'mock-docs-bucket',
+  LANDING_PAGE_BUCKET = 'mock-landing-pagebucket'
 } = process.env
 
 export class GraphqlDocsStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    const destinationBucket = s3.Bucket.fromBucketName(this, 'SiteBucket', SITE_BUCKET)
+    // Deploy the landing page to S3
+    const landingPageDestinationBucket = s3.Bucket.fromBucketName(this, 'LandingPageBucket', LANDING_PAGE_BUCKET)
+    new s3Deployment.BucketDeployment(this, 'LandingPageWebsite', {
+      destinationBucket: landingPageDestinationBucket,
+      sources: [
+        s3Deployment.Source.asset('../../landing-page')
+      ],
+      include: ['*'],
+      cacheControl: [
+        s3Deployment.CacheControl.maxAge(cdk.Duration.days(365))
+      ]
+    })
 
-    new s3Deployment.BucketDeployment(this, 'WebsiteAssets', {
-      destinationBucket,
+    // Deploy the docs to S3
+    const docsDestinationBucket = s3.Bucket.fromBucketName(this, 'DocsBucket', DOCS_BUCKET)
+    new s3Deployment.BucketDeployment(this, 'DocsWebsite', {
+      destinationBucket: docsDestinationBucket,
       sources: [
         s3Deployment.Source.asset('../../docs')
       ],
