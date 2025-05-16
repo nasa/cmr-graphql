@@ -42,6 +42,7 @@ dockerRun() {
     -e "GRAPHDB_HOST=$bamboo_GRAPHDB_HOST" \
     -e "GRAPHDB_PATH=$bamboo_GRAPHDB_PATH" \
     -e "GRAPHDB_PORT=$bamboo_GRAPHDB_PORT" \
+    -e "GTM_ID=$bamboo_GTM_ID" \
     -e "LAMBDA_TIMEOUT=$bamboo_LAMBDA_TIMEOUT" \
     -e "LOG_DESTINATION_ARN=$bamboo_LOG_DESTINATION_ARN" \
     -e "MMT_ROOT_URL=$bamboo_MMT_ROOT_URL" \
@@ -54,6 +55,7 @@ dockerRun() {
     -e "SUBNET_ID_A=$bamboo_SUBNET_ID_A" \
     -e "SUBNET_ID_B=$bamboo_SUBNET_ID_B" \
     -e "URS_ROOT_URL=$bamboo_URS_ROOT_URL" \
+    -e "VERSION=$RELEASE_VERSION" \
     -e "VPC_ID=$bamboo_VPC_ID" \
     $dockerTag "$@"
 }
