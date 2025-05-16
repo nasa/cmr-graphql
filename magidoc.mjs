@@ -24,12 +24,13 @@ export default {
     // url: 'http://127.0.0.1:3013/api'
   },
   website: {
-    template: 'carbon-multi-page',
+    template: './magidoc-template',
     staticAssets: './magidoc/assets',
     options: {
       appTitle: 'CMR GraphQL',
       appLogo: '/cmr-graphql-logo.svg',
-      appFavicon: '/favicon.ico',
+      appFavicon: `https://cmr${env}.earthdata.nasa.gov/search/favicon.ico`,
+      siteRoot: '/docs',
       pages,
       externalLinks: [
         {
