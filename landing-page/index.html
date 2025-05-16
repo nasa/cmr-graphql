@@ -16,7 +16,7 @@
     <meta name="google-site-verification" content="5kcma5msOSY2RixJaI2JfwUp6Ev_Lh5IVQHCUDnMG3k" />
 
     <!-- Google Tag Manager -->
-    <!-- <script>
+    <script>
     (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push(
 
     {'gtm.start': new Date().getTime(),event:'gtm.js'}
@@ -24,8 +24,8 @@
     );var f=d.getElementsByTagName(s)[0],
     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-WNP7MLF');
-    </script> -->
+    })(window,document,'script','dataLayer','{{gtmId}}');
+    </script>
     <!-- End Google Tag Manager -->
 
     <link rel="shortcut icon" href="https://cmr.earthdata.nasa.gov:443/search/favicon.ico">
@@ -36,12 +36,6 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,300" rel="stylesheet" type="text/css">
     <link href="https://cmr.earthdata.nasa.gov:443/search/site/css/eui.css" rel="stylesheet" />
     <link href="https://cmr.earthdata.nasa.gov:443/search/site/css/cmr.css" rel="stylesheet" />
-
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
 
     <!-- We participate in the US government's analytics program. See the data at analytics.usa.gov. -->
     <script async type="text/javascript" src="https://dap.digitalgov.gov/Universal-Federated-Analytics-Min.js?agency=NASA&subagency=GSFC" id="_fed_an_ua_tag"></script>
@@ -55,19 +49,19 @@
 
   <body class="eui-layout docs">
     <!-- Google Tag Manager (noscript) -->
-    <!-- <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WNP7MLF"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript> -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{gtmId}}"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
 
     <header class="doc-mast">
       <div class="container">
         <div class="eui-masthead-logo eui-application-logo">
-          <h1><a href="https://graphql.sit.earthdata.nasa.gov/api">CMR GraphQL</a></h1>
+          <h1><a href="{{graphqlHost}}/api">CMR GraphQL</a></h1>
         </div>
 
         <nav class="main-nav" role="navigation">
           <ul class="main-nav-list">
-            <li><a href="https://graphql.sit.earthdata.nasa.gov/docs">Documentation</a></li>
+            <li><a href="{{graphqlHost}}/docs">Documentation</a></li>
             <li><a href="https://github.com/nasa/cmr-graphql">GitHub</a></li>
           </ul>
         </nav>
@@ -92,8 +86,8 @@
           </p>
 
           <p class="align-c">
-            <a href="https://graphql.sit.earthdata.nasa.gov/docs" class="eui-btn--green">View Documentation</a>
-            <a href="https://graphql.sit.earthdata.nasa.gov/api" class="eui-btn">Access the API</a>
+            <a href="{{graphqlHost}}/docs" class="eui-btn--green">View Documentation</a>
+            <a href="{{graphqlHost}}/api" class="eui-btn">Access the API</a>
             <a href="https://github.com/nasa/cmr-graphql" class="eui-btn">Explore on GitHub</a>
           </p>
         </div>
@@ -109,7 +103,7 @@
               <li><a href="https://www.nasa.gov/about/highlights/HP_Privacy.html">NASA Privacy Policy</a></li>
               <li><a href="https://www.usa.gov/">USA.gov</a></li>
               <li><a href="javascript:feedback.showForm();">Feedback</a></li>
-              <li style="float: right;"><span class="version badge eui-badge--md">v25.2.1-:shrug:</span></li>
+              <li style="float: right;"><span class="version badge eui-badge--md">v{{version}}</span></li>
           </ul>
         </nav>
       </div>

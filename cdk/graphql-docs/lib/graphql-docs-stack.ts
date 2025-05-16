@@ -17,7 +17,7 @@ export class GraphqlDocsStack extends cdk.Stack {
     new s3Deployment.BucketDeployment(this, 'LandingPageWebsite', {
       destinationBucket: landingPageDestinationBucket,
       sources: [
-        s3Deployment.Source.asset('../../landing-page')
+        s3Deployment.Source.asset('../../landing-page-build')
       ],
       include: ['*'],
       cacheControl: [

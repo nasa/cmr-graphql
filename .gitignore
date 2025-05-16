@@ -37,3 +37,4 @@ Dockerfile
 .env.sit
 .env.local
 docs
+landing-page-build
