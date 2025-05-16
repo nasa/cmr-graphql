@@ -1,36 +1,52 @@
 type Grid {
   "The list of concepts and any data on the relationship between this DQS and other permitted concepts."
   associationDetails: JSON
+
   "The additional attribute to the grid."
   additionalAttribute: JSON
+
   "The unique concept id assigned to the grid."
   conceptId: String!
+
   "The contact mechanisms for this grid"
   contactMechanisms: JSON
+
   "The description for this grid"
   description: String
+
   "The dimension size for this grid"
   dimensionSize: JSON
+
   "The definition of the grid"
   gridDefinition: JSON
+
   "The expanded or long name related to the grid name."
   longName: String
+
   "The metadata date for this record"
   metadataDate: JSON
+
   "The metadata specification for this grid"
   metadataSpecification: JSON
+
   "The name for this grid"
   name: String
+
   "The organization that this grid belongs to"
   organization: JSON
+
   "The urls related to this grid"
   relatedUrls: JSON
+
   "The resolution for this grid"
   resolution: JSON
+
   "The grid's spatial extent"
   spatialExtent: JSON
+
   "The records scale extent"
   scaleExtent: JSON
+
   "The version for this grid record"
   version: String
 }
@@ -38,8 +54,10 @@ type Grid {
 type GridList {
   "The number of hits for a given search."
   count: Int
+
   "Cursor that points to the/a specific position in a list of requested records."
   cursor: String
+
   "The list of grid search results."
   items: [Grid]
 }
@@ -47,10 +65,13 @@ type GridList {
 input GridsInput {
   "The unique concept id assigned to the grid."
   conceptId: [String]
+
   "Cursor that points to the/a specific position in a list of requested records."
   cursor: String
+
   "The number of grids requested by the user."
   limit: Int
+
   "Zero based offset of individual results."
   offset: Int
 }
@@ -61,11 +82,13 @@ input GridInput {
 }
 
 type Query {
+  "Query for Grids."
   grids(
     "Grids query parameters"
     params: GridsInput
   ): GridList!
 
+  "Query for a single Grid."
   grid(
     "Grid query parameters"
     params: GridInput

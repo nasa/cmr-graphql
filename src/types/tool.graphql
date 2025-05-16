@@ -104,6 +104,7 @@ type Tool {
   "All revisions of this Tool."
   revisions: ToolRevisionList
 
+  "Returns a list of associated collections."
   collections (
     "Collections query parameters"
     params: CollectionsInput
@@ -167,6 +168,7 @@ input ToolInput {
 }
 
 type Query {
+  "Query for a list of Tools."
   tools (
     "Tools query parameters"
     params: ToolsInput
@@ -187,6 +189,7 @@ type Query {
     sortKey: [String] @deprecated(reason: "Use `params.sortKey`")
   ): ToolList!
 
+  "Query for a single Tool."
   tool (
     "Tool query parameters"
     params: ToolInput
@@ -197,6 +200,7 @@ type Query {
 }
 
 type Mutation {
+  "Restore a tool revision."
   restoreToolRevision (
     "The unique concept id assigned to the tool."
     conceptId: String!
@@ -205,6 +209,7 @@ type Mutation {
     revisionId: String!
   ): ToolMutationResponse
 
+  "Delete a tool."
   deleteTool (
     "Provider ID of the tool."
     providerId: String!
