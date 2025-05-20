@@ -69,6 +69,7 @@ export default {
       if (isDraftConceptId(conceptId, 'tool')) return 'Tool'
       if (isDraftConceptId(conceptId, 'variable')) return 'Variable'
       if (isDraftConceptId(conceptId, 'visualization')) return 'Visualization'
+      if (isDraftConceptId(conceptId, 'citation')) return 'Citation'
 
       return null
     }

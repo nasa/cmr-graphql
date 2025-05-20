@@ -1,0 +1,133 @@
+type Citation {
+  "The name of the cited The name of the cited resource"
+  name: String
+
+  "The identifier for the resource, e.g., DOI, ISBN, ARK"
+  identifier: String
+
+  "The type of identifier used"
+  identifierType: String
+
+  "URI used to resolve the identifier"
+  resolutionAuthority: String
+
+  "List of identifiers that this resource cites, refers to, or is identical to"
+  relatedIdentifiers: JSON
+
+  "Citation metadata for the resource"
+  citationMetadata: JSON
+
+  "Citation abstract"
+  abstract: String
+
+  "GCMD science keywords"
+  scienceKeywords: JSON
+
+  "The unique concept id assigned to the citation."
+  conceptId: String!
+
+  "The native id of a to citation."
+  nativeId: String
+}
+
+type CitationList {
+  "The number of hits for a given search."
+  count: Int
+
+  "Cursor that points to the/a specific position in a list of requested records."
+  cursor: String
+
+  "The list of service search results."
+  items: [Citation]
+}
+
+input CitationsInput {
+  "Author Names"
+  authorName: String
+
+  "Author ORCID"
+  authorOrcid: String
+
+  "The unique concept id assigned to the citation"
+  conceptId: [String]
+
+  "Journal or Conference Name"
+  container: String
+
+  "Cursor that points to the/a specific position in a list of requested records."
+  cursor: String
+
+  "The type of identifier used"
+  identifierType: String
+
+  "The identifier for the cited resource, e.g., DOI, ISBN, ARK"
+  identifier: String
+
+  "Science Keywords in keywords"
+  keyword: String
+
+  "The number of tools requested by the user."
+  limit: Int
+
+  "The value of the Name field in Citation Draft metadata"
+  name: String
+
+  "The native id assigned to the citation"
+  nativeId: String
+
+  "Zero based offset of individual results."
+  offset: Int
+
+  "The name of the provider associated with the citation."
+  provider: String
+
+  "Related Identifiers (dataset DOIs)"
+  relatedIdentifier: String
+
+  "The nature of the relationship between the cited resource and the collection"
+  relationshipType: String
+
+  "Citation Title"
+  title: String
+
+  "Resource Type"
+  type: String
+
+  "Publication Year"
+  Year: Int
+}
+
+input CitationInput {
+  "The unique concept id assigned to the citation"
+  conceptId: String
+}
+
+type CitationMutationResponse {
+  "The unique concept id assigned to the citation."
+  conceptId: String!
+
+  "The revision of the citation."
+  revisionId: String!
+}
+
+type Query {
+  citations (
+    "Citations query parameters"
+    params: CitationsInput
+  ): CitationList!
+
+  citation (
+    "Citation query parameters"
+    params: CitationInput
+  ): Citation
+}
+
+type Mutation {
+  deleteCitation (
+    "Provider ID of the citation."
+    providerId: String!
+
+    "The native id of a citation."
+    nativeId: String!
+  ): CitationMutationResponse
+}

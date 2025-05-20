@@ -1,0 +1,17 @@
+{
+  "sharedKeys": [
+    "conceptId"
+  ],
+  "ummKeyMappings": {
+    "abstract": "umm.Abstract",
+    "citationMetadata": "umm.CitationMetadata",
+    "conceptId": "meta.concept-id",
+    "identifier": "umm.Identifier",
+    "identifierType": "umm.IdentifierType",
+    "name": "umm.Name",
+    "nativeId": "meta.native-id",
+    "relatedIdentifiers": "umm.RelatedIdentifiers",
+    "resolutionAuthority": "umm.ResolutionAuthority",
+    "scienceKeywords": "umm.ScienceKeywords"
+  }
+}

@@ -2,6 +2,7 @@
  * List of supported CMR concept types or objects that will require overrides to the user input internally
  */
 export const CONCEPT_TYPES = [
+  'citations',
   'collections',
   'dataQualitySummaries',
   'duplicateCollections',
@@ -30,6 +31,7 @@ export const PSEUDO_FIELDS = [
  * Draft concept ID prefixes
  */
 export const DRAFT_CONCEPT_ID_PREFIXES = {
+  citation: 'CITD',
   collection: 'CD',
   service: 'SD',
   tool: 'TD',

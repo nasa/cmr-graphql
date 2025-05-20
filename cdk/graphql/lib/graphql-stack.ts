@@ -39,6 +39,7 @@ const environment = {
   stellateKey: process.env.STELLATE_KEY!,
   lambdaTimeout: process.env.LAMBDA_TIMEOUT || '30',
   ummCollectionVersion: '1.18.4',
+  ummCitationVersion: '1.0.0',
   ummGranuleVersion: '1.6.5',
   ummOrderOptionVersion: '1.0.0',
   ummServiceVersion: '1.5.3',
