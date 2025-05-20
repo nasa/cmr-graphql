@@ -87,11 +87,13 @@ input GroupInput {
 }
 
 type Query {
+  "Query for Groups."
   groups (
     "User groups query parameters."
     params: GroupsInput
   ): GroupList!
 
+  "Query for a single Group."
   group (
     "User group query parameters."
     params: GroupInput
@@ -99,6 +101,7 @@ type Query {
 }
 
 type Mutation {
+  "Create a new group."
   createGroup (
     "Required parameter used to set the name of the group. Group names are limited to having letters, numbers, periods, spaces, dashes, and underscores."
     name: String!
@@ -116,11 +119,13 @@ type Mutation {
     members: String
   ): Group!
 
+  "Delete a group."
   deleteGroup (
     "The unique id assigned to the group."
     id: String!
   ): Boolean!
 
+  "Update a group."
   updateGroup (
     "The unique id assigned to the group."
     id: String!

@@ -35,6 +35,7 @@ type OrderOption {
   "The sort key is used to indicate the preferred display order among other definitions."
   sortKey: String
 
+  "Return a list of associated collections for this order option."
   collections (
     "Collections query parameters"
     params: CollectionsInput
@@ -75,11 +76,13 @@ input OrderOptionInput {
 }
 
 type Query {
+  "Query for a single Order Option."
   orderOption(
     "The order option query parameters."
     params: OrderOptionInput
   ): OrderOption
 
+  "Query for Order Options."
   orderOptions(
     "The order option query parameters."
     params: OrderOptionsInput
@@ -100,6 +103,7 @@ enum OrderOptionScopeType {
 }
 
 type Mutation {
+  "Create a new order option."
   createOrderOption(
     "The description is a longer, human-readable description of the order option type or contents, intended for client display."
     description: String
@@ -123,6 +127,7 @@ type Mutation {
     sortKey: String
   ): OrderOptionMutationResponse
 
+  "Update an existing order option."
   updateOrderOption(
     "Indicates if the definition is deprecated. Deprecated definitions will be returned to the client and will be considered valid when validating an order, however new order items cannot be added using the definition and existing order items cannot be updated using the definition. This flag is ignored when creating an option definition, however it will always be set and returned once the definition has been created."
     deprecated: Boolean
@@ -149,6 +154,7 @@ type Mutation {
     sortKey: String
   ): OrderOptionMutationResponse
 
+  "Delete an existing order option."
   deleteOrderOption(
     "The native ID of the order option to be deleted."
     nativeId: String!

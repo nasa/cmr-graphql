@@ -76,8 +76,17 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
   // If a plural query is being performed, and the user has not requested any
   // fields (e.g. only count) then fieldsByTypeName will be undefined and we can ignore it
   if (fieldsByTypeName) {
+    // Subscriptions are special because they are a reserved word in GraphQL
+    // and cannot be used as a type name. So when `subscription` is used as a type name
+    // we need to use `SearchSubscription` instead.
+    let normalizedConceptName = conceptName
+
+    if (conceptName === 'subscription') {
+      normalizedConceptName = 'SearchSubscription'
+    }
+
     const {
-      [upperFirst(conceptName)]: conceptKeysRequested
+      [upperFirst(normalizedConceptName)]: conceptKeysRequested
     } = fieldsByTypeName
 
     if (conceptKeysRequested) {

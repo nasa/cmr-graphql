@@ -13,33 +13,46 @@ enum DraftConceptType {
 type DraftMutationResponse {
   "The concept id of the draft."
   conceptId: String!
+
   "The revision id of the draft."
   revisionId: String!
+
   "Warnings returned from ingesting the draft."
   warnings: [JSON]
+
   "Existing errors in the draft."
   existingErrors: [JSON]
 }
 
+"The Draft type utilizes the `PreviewMetadata` union type, which means you can return any of the types supported by the union in the previewMetadata return field. You need to ensure that your conceptType parameter matches the previewMetadata type. For example, If the conceptType parameter is `Tool`, and the syntax in the request will be `... on Tool {`."
 type Draft {
   "The concept id of the draft."
   conceptId: String
+
   "The concept type of the draft."
   conceptType: String
+
   "If the draft has been deleted."
   deleted: Boolean
+
   "Name of the draft."
   name: String
+
   "The native id of the draft."
   nativeId: String
+
   "Provider ID of the draft."
   providerId: String
+
   "Date which the draft was last updated."
   revisionDate: String
+
   "The revision id of the draft."
   revisionId: String
+
   "The Metadata Preview compatible metadata of the draft."
   previewMetadata: PreviewMetadata
+
   "Raw UMM Metadata of the draft."
   ummMetadata: JSON
 }
@@ -47,8 +60,10 @@ type Draft {
 type DraftList {
   "The number of hits for a given search."
   count: Int
+
   "Cursor that points to the a specific position in a list of requested records."
   cursor: String
+
   "The list of draft search results."
   items: [Draft]
 }
@@ -56,42 +71,57 @@ type DraftList {
 type PublishDraftMutationResponse {
   "The concept id of the draft."
   conceptId: String!
+
   "The revision id of the draft."
   revisionId: String!
+
   "Warnings returned from ingesting the draft."
   warnings: [JSON]
+
   "Existing errors in the draft."
   existingErrors: [JSON]
 }
 
 type Mutation {
+  "Ingest a draft."
   ingestDraft (
     "The concept type of the draft."
     conceptType: DraftConceptType!
+
     "UMM Metadata of the draft to ingest."
     metadata: JSON!
+
     "The native id of the draft."
     nativeId: String!
+
     "Provider ID of the draft."
     providerId: String!
+
     "UMM Version of the metadata being ingested."
     ummVersion: String!
   ): DraftMutationResponse
 
+  "Delete a draft."
   deleteDraft (
     "The concept type of the draft."
     conceptType: DraftConceptType!
+
     "The native id of the draft."
     nativeId: String!
+
     "Provider ID of the draft."
     providerId: String!
+
   ): DraftMutationResponse
 
+  "Publish a draft."
   publishDraft (
     "Concept ID of the draft to be published."
     draftConceptId: String!
+
     "New Native ID for the published record."
     nativeId: String!
+
     "UMM Version of the record being published."
     ummVersion: String!
   ): PublishDraftMutationResponse
@@ -100,8 +130,10 @@ type Mutation {
 input DraftInput {
   "The concept type of the draft."
   conceptType: DraftConceptType!
+
   "The concept id of the draft."
   conceptId: String!
+
   "UMM Version of the draft."
   ummVersion: String
 }
@@ -109,34 +141,46 @@ input DraftInput {
 input DraftsInput {
   "The concept type of the draft."
   conceptType: DraftConceptType!
+
   "The concept id of the draft."
   conceptId: [String]
+
   "Cursor that points to the/a specific position in a list of requested records."
   cursor: String
+
   "The number of draft requested by the user."
   limit: Int
+
   "The name of the draft."
   name: [String]
+
   "The native id of the draft."
   nativeId: [String]
+
   "Zero based offset of individual results."
   offset: Int
+
   "Options to provide to CMR pertaining to and, or, and wildcard searching."
   options: JSON
+
   "The name of the provider associated with the draft."
   provider: [String]
+
   "One or more sort keys can be specified to impact searching. Fields can be prepended with a '-' to sort in descending order. Ascending order is the default but + can be used to explicitly request ascending."
   sortKey: [String]
+
   "UMM Version of the draft."
   ummVersion: String
 }
 
 type Query {
+  "Query for a single Draft."
   draft (
     "Draft query parameters"
     params: DraftInput
   ): Draft
 
+  "Query for Drafts."
   drafts (
     "Drafts query parameters"
     params: DraftsInput

@@ -34,7 +34,7 @@ describe('subscription#fetch', () => {
             alias: 'items',
             args: {},
             fieldsByTypeName: {
-              Subscription: {
+              SearchSubscription: {
                 conceptId: {
                   name: 'conceptId',
                   alias: 'conceptId',
@@ -73,7 +73,7 @@ describe('subscription#fetch', () => {
               alias: 'items',
               args: {},
               fieldsByTypeName: {
-                Subscription: {
+                SearchSubscription: {
                   conceptId: {
                     name: 'conceptId',
                     alias: 'conceptId',
@@ -253,7 +253,7 @@ describe('subscription#fetch', () => {
               alias: 'items',
               args: {},
               fieldsByTypeName: {
-                Subscription: {
+                SearchSubscription: {
                   emailAddress: {
                     name: 'emailAddress',
                     alias: 'emailAddress',
@@ -308,7 +308,7 @@ describe('subscription#fetch', () => {
     })
   })
 
-  test('catches errors received from queryCmrSubscriptions', async () => {
+  test('catches errors received from querySearchSubscriptions', async () => {
     nock(/example-cmr/)
       .get(/subscriptions/)
       .reply(500, {
