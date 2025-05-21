@@ -335,8 +335,9 @@ export default class Collection extends Concept {
    */
   normalizeUmmItem(item) {
     const { umm = {} } = item
+    const ummObject = umm == null ? {} : umm
 
-    const { ArchiveAndDistributionInformation: archiveAndDistributionInformation = {} } = umm
+    const { ArchiveAndDistributionInformation: archiveAndDistributionInformation = {} } = ummObject
 
     let fileDistributionInformation = [];
 
