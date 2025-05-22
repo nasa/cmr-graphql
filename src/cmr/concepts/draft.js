@@ -144,6 +144,7 @@ export default class Draft extends Concept {
   mutateIngestParameters(params) {
     const { env } = process
     const {
+      ummCitationVersion,
       ummCollectionVersion,
       ummServiceVersion,
       ummToolVersion,
@@ -154,6 +155,11 @@ export default class Draft extends Concept {
     const { conceptType } = params
 
     const metadataSpecificationByConceptType = {
+      'citation-drafts': {
+        ummName: 'Citation',
+        ummType: 'citation',
+        ummVersion: ummCitationVersion
+      },
       'collection-drafts': {
         ummName: 'UMM-C',
         ummType: 'collection',
@@ -210,6 +216,14 @@ export default class Draft extends Concept {
       }]
     }
 
+    if (ummName === 'Citation') {
+      paramsToIngest.MetadataSpecification = {
+        URL: `https://cdn.earthdata.nasa.gov/generics/citation/v${ummCitationVersion}`,
+        Name: 'Citation',
+        Version: ummCitationVersion
+      }
+    }
+
     return super.mutateIngestParameters(paramsToIngest)
   }
 
@@ -221,6 +235,7 @@ export default class Draft extends Concept {
   ingestHeaders(providedHeaders) {
     const { env } = process
     const {
+      ummCitationVersion,
       ummCollectionVersion,
       ummServiceVersion,
       ummToolVersion,
@@ -231,6 +246,7 @@ export default class Draft extends Concept {
     const { conceptType } = this.params
 
     const ummVersionByConceptType = {
+      'citation-drafts': ummCitationVersion,
       'collection-drafts': ummCollectionVersion,
       'service-drafts': ummServiceVersion,
       'tool-drafts': ummToolVersion,

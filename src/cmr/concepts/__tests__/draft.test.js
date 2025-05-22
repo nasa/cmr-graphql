@@ -77,6 +77,17 @@ describe('Draft concept', () => {
         })
       })
 
+      describe('when the conceptType is citation-draft', () => {
+        test('set the ingestPath and metadataSpecification correctly', () => {
+          const draft = new Draft('citation=metadata', {}, {}, {
+            draftConceptId: 'CITD100000-EDSC',
+            providerId: 'EDSC'
+          })
+
+          expect(draft.publishPath).toEqual('publish/CITD100000-EDSC')
+        })
+      })
+
       describe('when the conceptType is not a supported draft', () => {
         test('sets the ingestPath and metadataSpecification correctly', () => {
           const draft = new Draft('bad-drafts', {}, {}, {

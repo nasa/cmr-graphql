@@ -5,6 +5,7 @@ import associationResolver from './association'
 import collectionDraftProposalResolver from './collectionDraftProposal'
 import collectionDraftResolver from './collectionDraft'
 import collectionResolver from './collection'
+import citationResolver from './citation'
 import dataQualitySummaryResolver from './dataQualitySummary'
 import draftResolver from './draft'
 import granuleResolver from './granule'
@@ -29,6 +30,7 @@ const resolvers = [
   collectionDraftProposalResolver,
   collectionDraftResolver,
   collectionResolver,
+  citationResolver,
   dataQualitySummaryResolver,
   draftResolver,
   granuleResolver,

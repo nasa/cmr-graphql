@@ -354,6 +354,7 @@ describe('draft#ingest', () => {
     process.env.ummToolVersion = '1.0.0'
     process.env.ummVariableVersion = '1.0.0'
     process.env.ummVisualizationVersion = '1.0.0'
+    process.env.ummCitationVersion = '1.0.0'
 
     // Default requestInfo
     requestInfo = {
@@ -557,6 +558,47 @@ describe('draft#ingest', () => {
 
       expect(response).toEqual({
         conceptId: 'VISD100000-EDSC',
+        revisionId: '1'
+      })
+    })
+  })
+
+  describe('when ingesting a citation draft', () => {
+    test('inserts the citation conceptID field into the draft', async () => {
+      nock(/example-cmr/)
+        .defaultReplyHeaders({
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .put(/ingest\/providers\/EDSC\/citation-drafts\/test-guid/, JSON.stringify({
+          Name: 'mock name',
+          MetadataSpecification: {
+            URL: 'https://cdn.earthdata.nasa.gov/generics/citation/v1.0.0',
+            Name: 'Citation',
+            Version: '1.0.0'
+          }
+        }))
+        .reply(201, {
+          'concept-id': 'CITD100000-EDSC',
+          'revision-id': '1'
+        })
+
+      const response = await draftSourceIngest({
+        conceptType: 'Citation',
+        metadata: {
+          Name: 'mock name'
+        },
+        nativeId: 'test-guid',
+        providerId: 'EDSC',
+        ummVersion: '1.0.0'
+      }, {
+        headers: {
+          'Client-Id': 'eed-test-graphql',
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        }
+      }, requestInfo)
+
+      expect(response).toEqual({
+        conceptId: 'CITD100000-EDSC',
         revisionId: '1'
       })
     })
