@@ -335,8 +335,10 @@ export default class Collection extends Concept {
    */
   normalizeUmmItem(item) {
     const { umm = {} } = item
+    // When a record exists in Elastic but, not Oracle in CMR umm will be null
+    const ummObject = umm || {}
 
-    const { ArchiveAndDistributionInformation: archiveAndDistributionInformation = {} } = umm
+    const { ArchiveAndDistributionInformation: archiveAndDistributionInformation = {} } = ummObject
 
     let fileDistributionInformation = [];
 
