@@ -813,6 +813,111 @@ describe('Collection', () => {
           })
         })
       })
+
+      describe('when retrieving revisions that may contain umm:null', () => {
+        test('includes them in the results', async () => {
+          nock(/example-cmr/)
+            .defaultReplyHeaders({
+              'CMR-Hits': 1,
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .get(/collections\.json/)
+            .reply(200, {
+              feed: {
+                entry: [{
+                  id: 'C100001-EDSC'
+                }],
+                facets: {}
+              }
+            })
+
+          nock(/example-cmr/)
+            .defaultReplyHeaders({
+              'CMR-Hits': 3,
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .get('/search/collections.umm_json?all_revisions=true&concept_id=C100001-EDSC')
+            .reply(200, {
+              items: [{
+                meta: {
+                  'concept-id': 'C100001-EDSC',
+                  'revision-id': '3',
+                  deleted: false
+                },
+                umm: {
+                  Abstract: 'Cras mattis consectetur purus sit amet fermentum.'
+                }
+              }, {
+                meta: {
+                  'concept-id': 'C100001-EDSC',
+                  'revision-id': '2',
+                  deleted: false
+                },
+                umm: null
+              }, {
+                meta: {
+                  'concept-id': 'C100001-EDSC',
+                  'revision-id': '1',
+                  deleted: false
+                },
+                umm: {
+                  Abstract: 'Cras mattis consectetur purus sit amet fermentum.'
+                }
+              }]
+            })
+
+          const response = await server.executeOperation({
+            variables: {},
+            query: `{
+              collections {
+                count
+                facets
+                items {
+                  conceptId
+                  revisions {
+                    count
+                    items {
+                      revisionId
+                    }
+                  }
+                }
+              }
+            }`
+          }, {
+            contextValue
+          })
+
+          const { data, errors } = response.body.singleResult
+
+          expect(errors).toBeUndefined()
+
+          expect(data).toEqual({
+            collections: {
+              count: 1,
+              facets: {},
+              items: [{
+                conceptId: 'C100001-EDSC',
+                revisions: {
+                  count: 3,
+                  items: [
+                    {
+                      revisionId: '3'
+                    },
+                    {
+                      revisionId: '2'
+                    },
+                    {
+                      revisionId: '1'
+                    }
+                  ]
+                }
+              }]
+            }
+          })
+        })
+      })
     })
   })
 
