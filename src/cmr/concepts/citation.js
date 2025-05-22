@@ -17,6 +17,30 @@ export default class Citation extends Concept {
     return items
   }
 
+  /**
+   * Returns an array of keys representing supported search params for the json endpoint
+   */
+  getPermittedJsonSearchParams() {
+    return [
+      ...super.getPermittedJsonSearchParams(),
+      'author-name',
+      'author-orcid',
+      'container',
+      'identifier-type',
+      'identifier',
+      'keyword',
+      'name',
+      'native-id',
+      'provider',
+      'related-identifier',
+      'relationship-type',
+      'resolution-authority',
+      'title',
+      'type',
+      'year',
+    ]
+  }
+
   /** 
    * Returns an array of keys representing supported search params for the umm endpoint
    */

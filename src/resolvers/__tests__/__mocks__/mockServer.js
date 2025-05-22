@@ -36,6 +36,11 @@ import {
 } from '../../../datasources/tool'
 
 import {
+  deleteCitation as citationSourceDelete,
+  fetchCitations as citationSourceFetch,
+} from '../../../datasources/citation'
+
+import {
   deleteCollection as collectionSourceDelete,
   fetchCollections as collectionSourceFetch,
   restoreCollectionRevision as collectionSourceRestoreRevision
@@ -100,6 +105,8 @@ export const buildContextValue = (extraContext) => ({
     aclSourceUpdate,
     associationSourceCreate,
     associationSourceDelete,
+    citationSourceDelete,
+    citationSourceFetch,
     collectionDraftProposalSource,
     collectionDraftSource,
     collectionSourceDelete,

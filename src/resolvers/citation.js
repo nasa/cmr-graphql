@@ -6,12 +6,11 @@ export default {
     citations: async (source, args, context, info) => {
       const { dataSources } = context
       
-      return dataSources.citationSource(handlePagingParams(args), context, parseResolveInfo(info))
+      return dataSources.citationSourceFetch(handlePagingParams(args), context, parseResolveInfo(info))
     },
     citation: async (source, args, context, info) => {
       const { dataSources } = context
-
-      const result = await dataSources.citationSource(args, context, parseResolveInfo(info))
+      const result = await dataSources.citationSourceFetch(args, context, parseResolveInfo(info))
 
       const [firstResult] = result
 
@@ -21,9 +20,13 @@ export default {
 
   Mutation: {
     deleteCitation: async (source, args, context, info) => {
-        handlePagingParams(args),
-        context,
-        parseResolveInfo(info)
+        const { dataSources } = context
+
+        return dataSources.citationSourceDelete(
+          handlePagingParams(args),
+          context,
+          parseResolveInfo(info)
+        )
     }
   }
 }
