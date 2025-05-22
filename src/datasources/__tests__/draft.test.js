@@ -564,7 +564,7 @@ describe('draft#ingest', () => {
   })
 
   describe('when ingesting a citation draft', () => {
-    test('inserts the citation conceptID field into the draft', async () => { 
+    test('inserts the citation conceptID field into the draft', async () => {
       nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -575,7 +575,7 @@ describe('draft#ingest', () => {
             URL: 'https://cdn.earthdata.nasa.gov/generics/citation/v1.0.0',
             Name: 'Citation',
             Version: '1.0.0'
-          },
+          }
         }))
         .reply(201, {
           'concept-id': 'CITD100000-EDSC',
@@ -601,7 +601,7 @@ describe('draft#ingest', () => {
         conceptId: 'CITD100000-EDSC',
         revisionId: '1'
       })
-     })
+    })
   })
 })
 

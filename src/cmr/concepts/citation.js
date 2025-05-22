@@ -1,4 +1,4 @@
-import Concept from "./concept";
+import Concept from './concept'
 
 export default class Citation extends Concept {
   constructor(headers, requestInfo, params) {
@@ -37,11 +37,11 @@ export default class Citation extends Concept {
       'resolution-authority',
       'title',
       'type',
-      'year',
+      'year'
     ]
   }
 
-  /** 
+  /**
    * Returns an array of keys representing supported search params for the umm endpoint
    */
   getPermittedUmmSearchParams() {
@@ -61,7 +61,7 @@ export default class Citation extends Concept {
       'resolution-authority',
       'title',
       'type',
-      'year',
+      'year'
     ]
   }
 
@@ -81,5 +81,4 @@ export default class Citation extends Concept {
 
     return ummResponse
   }
-
 }

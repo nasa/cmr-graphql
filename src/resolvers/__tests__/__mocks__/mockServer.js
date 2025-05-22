@@ -37,7 +37,7 @@ import {
 
 import {
   deleteCitation as citationSourceDelete,
-  fetchCitations as citationSourceFetch,
+  fetchCitations as citationSourceFetch
 } from '../../../datasources/citation'
 
 import {

@@ -1,4 +1,4 @@
-import nock from "nock"
+import nock from 'nock'
 
 import { buildContextValue, server } from './__mocks__/mockServer'
 
@@ -18,7 +18,7 @@ describe('Citation', () => {
   })
 
   describe('Query', () => {
-    test('all citation fields', async () => { 
+    test('all citation fields', async () => {
       nock(/example-cmr/)
         .defaultReplyHeaders({
           'CMR-Hits': 1,
@@ -36,7 +36,7 @@ describe('Citation', () => {
               provider_id: 'EDSC',
               native_id: 'test',
               name: 'mock-citation',
-              title: 'mock-title',
+              title: 'mock-title'
             }
           ]
         })
@@ -49,79 +49,79 @@ describe('Citation', () => {
         })
         .get(/citations\.umm_json/)
         .reply(200, {
-          items:[{
+          items: [{
             meta: {
-              "revision-id": 3,
-              "deleted": false,
-              "provider-id": "DEMO_PROV",
-              "user-id": "EDSC",
-              "native-id": "test",
-              "concept-id": "CIT100000-EDSC",
-              "revision-date": "2025-05-07T15:32:54.675Z",
-              "concept-type": "citation"
+              'revision-id': 3,
+              deleted: false,
+              'provider-id': 'DEMO_PROV',
+              'user-id': 'EDSC',
+              'native-id': 'test',
+              'concept-id': 'CIT100000-EDSC',
+              'revision-date': '2025-05-07T15:32:54.675Z',
+              'concept-type': 'citation'
             },
             umm: {
-              "ResolutionAuthority": "https://doi.org",
-              "ScienceKeywords": [
+              ResolutionAuthority: 'https://doi.org',
+              ScienceKeywords: [
                 {
-                  "Category": "EARTH SCIENCE",
-                  "Topic": "ATMOSPHERE",
-                  "Term": "AIR QUALITY",
-                  "VariableLevel1": "NITROGEN DIOXIDE"
+                  Category: 'EARTH SCIENCE',
+                  Topic: 'ATMOSPHERE',
+                  Term: 'AIR QUALITY',
+                  VariableLevel1: 'NITROGEN DIOXIDE'
                 },
                 {
-                  "Category": "EARTH SCIENCE",
-                  "Topic": "HUMAN DIMENSIONS",
-                  "Term": "PUBLIC HEALTH",
-                  "VariableLevel1": "ENVIRONMENTAL IMPACTS"
+                  Category: 'EARTH SCIENCE',
+                  Topic: 'HUMAN DIMENSIONS',
+                  Term: 'PUBLIC HEALTH',
+                  VariableLevel1: 'ENVIRONMENTAL IMPACTS'
                 }
               ],
-              "RelatedIdentifiers": [
+              RelatedIdentifiers: [
                 {
-                  "RelationshipType": "Cites",
-                  "RelatedIdentifierType": "DOI",
-                  "RelatedIdentifier": "10.5067/MODIS/MOD08_M3.061",
-                  "RelatedResolutionAuthority": "https://doi.org"
+                  RelationshipType: 'Cites',
+                  RelatedIdentifierType: 'DOI',
+                  RelatedIdentifier: '10.5067/MODIS/MOD08_M3.061',
+                  RelatedResolutionAuthority: 'https://doi.org'
                 },
                 {
-                  "RelationshipType": "Refers",
-                  "RelatedIdentifierType": "DOI",
-                  "RelatedIdentifier": "10.5067/MEASURES/AEROSOLS/DATA203",
-                  "RelatedResolutionAuthority": "https://doi.org"
+                  RelationshipType: 'Refers',
+                  RelatedIdentifierType: 'DOI',
+                  RelatedIdentifier: '10.5067/MEASURES/AEROSOLS/DATA203',
+                  RelatedResolutionAuthority: 'https://doi.org'
                 }
               ],
-              "Abstract": "The global pandemic caused by the coronavirus disease 2019 (COVID-19) led to never-before-seen reductions in urban and industrial activities, along with associated emissions to the environment. This has created an unprecedented opportunity to study atmospheric composition in the absence of its usual drivers. We have combined surface-level nitrogen dioxide (NO2) observations from air quality monitoring stations across the globe with satellite measurements and machine learning techniques to analyze NO2 variations from the initial strict lockdowns through the restrictions that continued into fall 2020. Our analysis shows that the restrictions led to significant decreases in NO2 concentrations globally through 2020.",
-              "Name": "Citation-Name",
-              "IdentifierType": "DOI",
-              "Identifier": "10.1029/2021JD034797",
-              "CitationMetadata": {
-                "Type": "journal-article",
-                "Volume": "126",
-                "Publisher": "American Geophysical Union",
-                "Number": "20",
-                "Title": "Global Impact of COVID-19 Restrictions on the Atmospheric Concentrations of Nitrogen Dioxide and Ozone",
-                "Container": "Journal of Geophysical Research: Atmospheres",
-                "Year": 2021,
-                "Author": [
+              Abstract: 'The global pandemic caused by the coronavirus disease 2019 (COVID-19) led to never-before-seen reductions in urban and industrial activities, along with associated emissions to the environment. This has created an unprecedented opportunity to study atmospheric composition in the absence of its usual drivers. We have combined surface-level nitrogen dioxide (NO2) observations from air quality monitoring stations across the globe with satellite measurements and machine learning techniques to analyze NO2 variations from the initial strict lockdowns through the restrictions that continued into fall 2020. Our analysis shows that the restrictions led to significant decreases in NO2 concentrations globally through 2020.',
+              Name: 'Citation-Name',
+              IdentifierType: 'DOI',
+              Identifier: '10.1029/2021JD034797',
+              CitationMetadata: {
+                Type: 'journal-article',
+                Volume: '126',
+                Publisher: 'American Geophysical Union',
+                Number: '20',
+                Title: 'Global Impact of COVID-19 Restrictions on the Atmospheric Concentrations of Nitrogen Dioxide and Ozone',
+                Container: 'Journal of Geophysical Research: Atmospheres',
+                Year: 2021,
+                Author: [
                   {
-                    "ORCID": "0000-0003-2541-6634",
-                    "Given": "Christoph A.",
-                    "Family": "Keller",
-                    "Sequence": "first"
+                    ORCID: '0000-0003-2541-6634',
+                    Given: 'Christoph A.',
+                    Family: 'Keller',
+                    Sequence: 'first'
                   },
                   {
-                    "ORCID": "0000-0002-6194-7454",
-                    "Given": "K. Emma",
-                    "Family": "Knowland",
-                    "Sequence": "additional"
+                    ORCID: '0000-0002-6194-7454',
+                    Given: 'K. Emma',
+                    Family: 'Knowland',
+                    Sequence: 'additional'
                   }
                 ],
-                "Pages": "e2021JD034797"
+                Pages: 'e2021JD034797'
               },
-              "MetadataSpecification": {
-                "URL": "https://cdn.earthdata.nasa.gov/generics/citation/v1.0.0",
-                "Name": "Citation",
-                "Version": "1.0.0"
+              MetadataSpecification: {
+                URL: 'https://cdn.earthdata.nasa.gov/generics/citation/v1.0.0',
+                Name: 'Citation',
+                Version: '1.0.0'
               }
             }
           }]
@@ -156,7 +156,7 @@ describe('Citation', () => {
           }]
         })
 
-        const response = await server.executeOperation({
+      const response = await server.executeOperation({
         variables: {},
         query: `{
           citations {
@@ -180,7 +180,7 @@ describe('Citation', () => {
       })
 
       const { data, errors } = response.body.singleResult
-      console.log("🚀 ~ test ~ errors:", errors)
+      console.log('🚀 ~ test ~ errors:', errors)
 
       expect(errors).toBeUndefined()
 
@@ -189,109 +189,109 @@ describe('Citation', () => {
           count: 1,
           items: [
             {
-              "name": "Citation-Name",
-              "identifier": "10.1029/2021JD034797",
-              "identifierType": "DOI",
-              "resolutionAuthority": "https://doi.org",
-              "relatedIdentifiers": [
+              name: 'Citation-Name',
+              identifier: '10.1029/2021JD034797',
+              identifierType: 'DOI',
+              resolutionAuthority: 'https://doi.org',
+              relatedIdentifiers: [
                 {
-                  "relationshipType": "Cites",
-                  "relatedIdentifierType": "DOI",
-                  "relatedIdentifier": "10.5067/MODIS/MOD08_M3.061",
-                  "relatedResolutionAuthority": "https://doi.org"
+                  relationshipType: 'Cites',
+                  relatedIdentifierType: 'DOI',
+                  relatedIdentifier: '10.5067/MODIS/MOD08_M3.061',
+                  relatedResolutionAuthority: 'https://doi.org'
                 },
                 {
-                  "relationshipType": "Refers",
-                  "relatedIdentifierType": "DOI",
-                  "relatedIdentifier": "10.5067/MEASURES/AEROSOLS/DATA203",
-                  "relatedResolutionAuthority": "https://doi.org"
+                  relationshipType: 'Refers',
+                  relatedIdentifierType: 'DOI',
+                  relatedIdentifier: '10.5067/MEASURES/AEROSOLS/DATA203',
+                  relatedResolutionAuthority: 'https://doi.org'
                 }
               ],
-              "citationMetadata": {
-                "type": "journal-article",
-                "volume": "126",
-                "publisher": "American Geophysical Union",
-                "number": "20",
-                "title": "Global Impact of COVID-19 Restrictions on the Atmospheric Concentrations of Nitrogen Dioxide and Ozone",
-                "container": "Journal of Geophysical Research: Atmospheres",
-                "year": 2021,
-                "author": [
+              citationMetadata: {
+                type: 'journal-article',
+                volume: '126',
+                publisher: 'American Geophysical Union',
+                number: '20',
+                title: 'Global Impact of COVID-19 Restrictions on the Atmospheric Concentrations of Nitrogen Dioxide and Ozone',
+                container: 'Journal of Geophysical Research: Atmospheres',
+                year: 2021,
+                author: [
                   {
-                    "orcid": "0000-0003-2541-6634",
-                    "given": "Christoph A.",
-                    "family": "Keller",
-                    "sequence": "first"
+                    orcid: '0000-0003-2541-6634',
+                    given: 'Christoph A.',
+                    family: 'Keller',
+                    sequence: 'first'
                   },
                   {
-                    "orcid": "0000-0002-6194-7454",
-                    "given": "K. Emma",
-                    "family": "Knowland",
-                    "sequence": "additional"
+                    orcid: '0000-0002-6194-7454',
+                    given: 'K. Emma',
+                    family: 'Knowland',
+                    sequence: 'additional'
                   }
                 ],
-                "pages": "e2021JD034797"
+                pages: 'e2021JD034797'
               },
-              "abstract": "The global pandemic caused by the coronavirus disease 2019 (COVID-19) led to never-before-seen reductions in urban and industrial activities, along with associated emissions to the environment. This has created an unprecedented opportunity to study atmospheric composition in the absence of its usual drivers. We have combined surface-level nitrogen dioxide (NO2) observations from air quality monitoring stations across the globe with satellite measurements and machine learning techniques to analyze NO2 variations from the initial strict lockdowns through the restrictions that continued into fall 2020. Our analysis shows that the restrictions led to significant decreases in NO2 concentrations globally through 2020.",
-              "scienceKeywords": [
+              abstract: 'The global pandemic caused by the coronavirus disease 2019 (COVID-19) led to never-before-seen reductions in urban and industrial activities, along with associated emissions to the environment. This has created an unprecedented opportunity to study atmospheric composition in the absence of its usual drivers. We have combined surface-level nitrogen dioxide (NO2) observations from air quality monitoring stations across the globe with satellite measurements and machine learning techniques to analyze NO2 variations from the initial strict lockdowns through the restrictions that continued into fall 2020. Our analysis shows that the restrictions led to significant decreases in NO2 concentrations globally through 2020.',
+              scienceKeywords: [
                 {
-                  "category": "EARTH SCIENCE",
-                  "topic": "ATMOSPHERE",
-                  "term": "AIR QUALITY",
-                  "variableLevel1": "NITROGEN DIOXIDE"
+                  category: 'EARTH SCIENCE',
+                  topic: 'ATMOSPHERE',
+                  term: 'AIR QUALITY',
+                  variableLevel1: 'NITROGEN DIOXIDE'
                 },
                 {
-                  "category": "EARTH SCIENCE",
-                  "topic": "HUMAN DIMENSIONS",
-                  "term": "PUBLIC HEALTH",
-                  "variableLevel1": "ENVIRONMENTAL IMPACTS"
+                  category: 'EARTH SCIENCE',
+                  topic: 'HUMAN DIMENSIONS',
+                  term: 'PUBLIC HEALTH',
+                  variableLevel1: 'ENVIRONMENTAL IMPACTS'
                 }
               ],
-              "conceptId": "CIT100000-EDSC",
-              "nativeId": "test"
+              conceptId: 'CIT100000-EDSC',
+              nativeId: 'test'
             }
           ]
         }
       })
-     })
+    })
 
-     describe('citations', () => {
-       describe('with results', () => {
-         test('returns results', async () => { 
-            nock(/example-cmr/)
-              .defaultReplyHeaders({
-                'CMR-Took': 7,
-                'CMR-Request-Id': 'abcd-1234-efgh-5678'
-              })
-              .get('/search/citations.json?concept_id=CIT100000-EDSC')
-              .reply(200, {
-                items: [{
-                  concept_id: 'CIT100000-EDSC'
-                }]
-              })
+    describe('citations', () => {
+      describe('with results', () => {
+        test('returns results', async () => {
+          nock(/example-cmr/)
+            .defaultReplyHeaders({
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .get('/search/citations.json?concept_id=CIT100000-EDSC')
+            .reply(200, {
+              items: [{
+                concept_id: 'CIT100000-EDSC'
+              }]
+            })
 
-              const response = await server.executeOperation({
-                variables: {},
-                query: `{
+          const response = await server.executeOperation({
+            variables: {},
+            query: `{
                   citation (params: { conceptId: "CIT100000-EDSC" }) {
                     conceptId
                   }
                 }`
-              }, {
-                contextValue
-              })
-              
-            const { data, errors } = response.body.singleResult
-
-            expect(errors).toBeUndefined()
-
-            expect(data).toEqual({
-              citation: {
-                conceptId: 'CIT100000-EDSC'
-              }
-            })
+          }, {
+            contextValue
           })
-       })
-     }) 
+
+          const { data, errors } = response.body.singleResult
+
+          expect(errors).toBeUndefined()
+
+          expect(data).toEqual({
+            citation: {
+              conceptId: 'CIT100000-EDSC'
+            }
+          })
+        })
+      })
+    })
   })
 
   describe('Mutation', () => {
@@ -336,9 +336,6 @@ describe('Citation', () => {
           revisionId: '2'
         }
       })
-
     })
   })
-  
-  
 })

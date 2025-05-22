@@ -1,11 +1,11 @@
 import citationKeyMap from '../utils/umm/citationKeyMap.json'
 
-import { parseRequestedFields } from "../utils/parseRequestedFields"
+import { parseRequestedFields } from '../utils/parseRequestedFields'
 import Citation from '../cmr/concepts/citation'
 
-export const fetchCitations =  async (params, context, parsedInfo) => {
+export const fetchCitations = async (params, context, parsedInfo) => {
   const { headers } = context
-  
+
   const requestInfo = parseRequestedFields(parsedInfo, citationKeyMap, 'citation')
 
   const citation = new Citation(headers, requestInfo, params)
@@ -21,7 +21,7 @@ export const fetchCitations =  async (params, context, parsedInfo) => {
 }
 
 export const deleteCitation = async (args, context, parsedInfo) => {
-  const { header } = context 
+  const { header } = context
 
   const requestInfo = parseRequestedFields(parsedInfo, citationKeyMap, 'citation')
 

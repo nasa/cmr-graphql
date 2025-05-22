@@ -216,7 +216,7 @@ export default class Draft extends Concept {
       }]
     }
 
-    if(ummName === 'Citation') {
+    if (ummName === 'Citation') {
       paramsToIngest.MetadataSpecification = {
         URL: `https://cdn.earthdata.nasa.gov/generics/citation/v${ummCitationVersion}`,
         Name: 'Citation',
