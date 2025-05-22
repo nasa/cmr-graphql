@@ -180,7 +180,6 @@ describe('Citation', () => {
       })
 
       const { data, errors } = response.body.singleResult
-      console.log('🚀 ~ test ~ errors:', errors)
 
       expect(errors).toBeUndefined()
 
