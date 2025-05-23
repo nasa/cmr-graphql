@@ -117,7 +117,7 @@ export default async (
 
   // Useful for debugging!
   // console.log('GraphDB query', JSON.parse(query))
-  // console.log('GraphDB Response result: ', JSON.stringify(result, null, 2))
+  console.log('GraphDB Response result: ', JSON.stringify(result, null, 2))
 
   const { data: resultData } = result
   const { '@value': dataValues } = resultData

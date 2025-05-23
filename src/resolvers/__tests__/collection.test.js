@@ -2903,10 +2903,6 @@ describe('Collection', () => {
                         title
                         id
                       }
-                      ... on GraphDbScienceKeyword {
-                        level
-                        value
-                      }  
                     }
                   }
                 }
@@ -3224,6 +3220,26 @@ describe('Collection', () => {
 
         const result = resolveType({ relationshipType: 'platformInstrument' })
         expect(result).toEqual('GraphDbPlatformInstrument')
+      })
+    })
+
+    describe('When the object has the citation relationshipType', () => {
+      test('returns the correct type', () => {
+        const { Relationship: relationship } = resolvers
+        const { __resolveType: resolveType } = relationship
+
+        const result = resolveType({ relationshipType: 'citation' })
+        expect(result).toEqual('GraphDbCitation')
+      })
+    })
+
+    describe('When the object has the scienceKeyword relationshipType', () => {
+      test('returns the correct type', () => {
+        const { Relationship: relationship } = resolvers
+        const { __resolveType: resolveType } = relationship
+
+        const result = resolveType({ relationshipType: 'scienceKeyword' })
+        expect(result).toEqual('GraphDbScienceKeyword')
       })
     })
 
