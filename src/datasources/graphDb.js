@@ -66,41 +66,40 @@ export default async (
   // Retrieve the user groups from EDL to filter the query
   const userGroups = await getUserPermittedGroups(headers, edlUsername)
 
-  // IMPORTANT: userGroups must be an array format like ["guest", "registered"]
-  // If it returns a string, ensure it's properly formatted for the within() clause
   const query = JSON.stringify({
     gremlin: `
-      g.V()
-      .has('collection', 'id', '${conceptId}')
-      .where(__.values('permittedGroups').unfold().is(within(${userGroups})))
-      .as('start')
-      .both()
-      ${intermediateNodeFilter}
-      .as('intermediate')
-      .both()
-      .hasLabel('collection')
-      .has('id', neq('${conceptId}'))
-      .as('end')
-      .group()
-      .by(select('end').values('id'))
-      .by(
-        select('start', 'intermediate', 'end')
-        .by(valueMap(true))
-        .fold()
-      )
-      .unfold()
-      .project('id', 'paths', 'count')
-      .by(keys)
-      .by(select(values))
-      .by(select(values).count(local))
-      .order()
-      .by('count', desc)
+    g.V()
+    .has('collection', 'id', '${conceptId}')
+    .where(__.values('permittedGroups').unfold().is(within(${userGroups})))
+    .as('start')
+    .both()
+    ${intermediateNodeFilter}
+    .as('intermediate')
+    .both()
+    .hasLabel('collection')
+    .has('id', neq('${conceptId}'))
+    .where(__.values('permittedGroups').unfold().is(within(${userGroups})))
+    .as('end')
+    .group()
+    .by(select('end').values('id'))
+    .by(
+      select('start', 'intermediate', 'end')
+      .by(valueMap(true))
       .fold()
-      .as('allResults')
-      .project('totalRelatedCollections', 'relatedCollections')
-      .by(count(local))
-      .by(range(local, ${offset}, ${offset + limit}))
-    `
+    )
+    .unfold()
+    .project('id', 'paths', 'count')
+    .by(keys)
+    .by(select(values))
+    .by(select(values).count(local))
+    .order()
+    .by('count', desc)
+    .fold()
+    .as('allResults')
+    .project('totalRelatedCollections', 'relatedCollections')
+    .by(count(local))
+    .by(range(local, ${offset}, ${offset + limit}))
+  `
   })
 
   const { data } = await cmrGraphDb({

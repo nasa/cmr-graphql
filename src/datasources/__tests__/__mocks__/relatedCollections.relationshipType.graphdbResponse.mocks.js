@@ -8,261 +8,1560 @@ export default {
           '@value': [
             'totalRelatedCollections',
             {
-              '@type': 'g:BulkSet',
-              '@value': [
-                {
-                  '@type': 'g:Int64',
-                  '@value': 34
-                },
-                {
-                  '@type': 'g:Int64',
-                  '@value': 1
-                }
-              ]
+              '@type': 'g:Int64',
+              '@value': 21
             },
             'relatedCollections',
             {
-              '@type': 'g:BulkSet',
+              '@type': 'g:List',
               '@value': [
                 {
-                  '@type': 'g:List',
+                  '@type': 'g:Map',
                   '@value': [
+                    'id',
+                    'C1200000013-PROV3',
+                    'paths',
                     {
-                      '@type': 'g:Map',
+                      '@type': 'g:List',
                       '@value': [
-                        'C1200000014-PROV1',
                         {
                           '@type': 'g:Map',
                           '@value': [
-                            'paths',
+                            'start',
                             {
-                              '@type': 'g:List',
+                              '@type': 'g:Map',
                               '@value': [
                                 {
-                                  '@type': 'g:Path',
-                                  '@value': {
-                                    labels: {
+                                  '@type': 'g:T',
+                                  '@value': 'id'
+                                },
+                                {
+                                  '@type': 'g:Int64',
+                                  '@value': 556
+                                },
+                                {
+                                  '@type': 'g:T',
+                                  '@value': 'label'
+                                },
+                                'collection',
+                                'providerId',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'PROV2'
+                                  ]
+                                },
+                                'permittedGroups',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    {
                                       '@type': 'g:List',
                                       '@value': [
-                                        {
-                                          '@type': 'g:Set',
-                                          '@value': [
-                                            'start'
-                                          ]
-                                        },
-                                        {
-                                          '@type': 'g:Set',
-                                          '@value': [
-                                            'intermediateNode'
-                                          ]
-                                        },
-                                        {
-                                          '@type': 'g:Set',
-                                          '@value': []
-                                        }
-                                      ]
-                                    },
-                                    objects: {
-                                      '@type': 'g:List',
-                                      '@value': [
-                                        {
-                                          '@type': 'g:Map',
-                                          '@value': [
-                                            {
-                                              '@type': 'g:T',
-                                              '@value': 'id'
-                                            },
-                                            {
-                                              '@type': 'g:Int64',
-                                              '@value': 391
-                                            },
-                                            {
-                                              '@type': 'g:T',
-                                              '@value': 'label'
-                                            },
-                                            'collection',
-                                            'providerId',
-                                            {
-                                              '@type': 'g:List',
-                                              '@value': [
-                                                'PROV1'
-                                              ]
-                                            },
-                                            'permittedGroups',
-                                            {
-                                              '@type': 'g:List',
-                                              '@value': [
-                                                {
-                                                  '@type': 'g:List',
-                                                  '@value': [
-                                                    'guest',
-                                                    'registered'
-                                                  ]
-                                                }
-                                              ]
-                                            },
-                                            'id',
-                                            {
-                                              '@type': 'g:List',
-                                              '@value': [
-                                                'C1200000041-PROV1'
-                                              ]
-                                            },
-                                            'abstract',
-                                            {
-                                              '@type': 'g:List',
-                                              '@value': [
-                                                "CERES_EBAF-TOA_Edition4.1 is the Clouds and the Earth's Radiant Energy System (CERES) Energy Balanced and Filled (EBAF) Top-of-Atmosphere (TOA) Monthly means data in netCDF format Edition 4.1 data product. Data was collected using the CERES Scanner instruments on both the Terra and Aqua platforms. Data collection for this product is ongoing.  CERES_EBAF-TOA_Edition4.1 data are monthly and climatological averages of TOA clear-sky (spatially complete) fluxes and all-sky fluxes, where the TOA net flux is constrained to the ocean heat storage. EBAF-TOA provides some basic cloud properties derived from Moderate-Resolution Imaging Spectroradiometer (MODIS) alongside TOA fluxes. Observed fluxes are obtained using cloud properties derived from narrow-band imagers onboard both Earth Observing System (EOS) Terra and Aqua satellites as well as geostationary satellites to more fully model the diurnal cycle of clouds. The computations are also based on meteorological assimilation data from the Goddard Earth Observing System (GEOS) Versions 5.4.1 models. Unlike other CERES Level 3 clear-sky regional data sets that contain clear-sky data gaps, the clear-sky fluxes in the EBAF-TOA product are regionally complete. The EBAF-TOA product is the CERES project's best estimate of the fluxes based on all available satellite platforms and input data.   CERES is a key component of the Earth Observing System (EOS) program. The CERES instruments provide radiometric measurements of the Earth's atmosphere from three broadband channels. The CERES missions are a follow-on to the successful Earth Radiation Budget Experiment (ERBE) mission. The first CERES instrument, the proto flight model (PFM), was launched on November 27, 1997, as part of the Tropical Rainfall Measuring Mission (TRMM). Two CERES instruments (FM1 and FM2) were launched into polar orbit onboard the Earth Observing System (EOS) flagship Terra on December 18, 1999. Two additional CERES instruments (FM3 and FM4) were launched onboard Earth Observing System (EOS) Aqua on May 4, 2002. The CERES FM5 instrument was launched onboard the Suomi National Polar-orbiting Partnership (NPP) satellite on October 28, 2011. The newest CERES instrument (FM6) was launched onboard the Joint Polar-Orbiting Satellite System 1 (JPSS-1) satellite, now called NOAA-20, on November 18, 2017."
-                                              ]
-                                            },
-                                            'title',
-                                            {
-                                              '@type': 'g:List',
-                                              '@value': [
-                                                'CERES Energy Balanced and Filled (EBAF) TOA Monthly means data in netCDF Edition4.1'
-                                              ]
-                                            },
-                                            'shortName',
-                                            {
-                                              '@type': 'g:List',
-                                              '@value': [
-                                                'CERES_EBAF-TOA'
-                                              ]
-                                            },
-                                            'doi',
-                                            {
-                                              '@type': 'g:List',
-                                              '@value': [
-                                                '10.5067/TERRA-AQUA/CERES/EBAF-TOA_L3B004.1'
-                                              ]
-                                            }
-                                          ]
-                                        },
-                                        {
-                                          '@type': 'g:Map',
-                                          '@value': [
-                                            {
-                                              '@type': 'g:T',
-                                              '@value': 'id'
-                                            },
-                                            {
-                                              '@type': 'g:Int64',
-                                              '@value': 70
-                                            },
-                                            {
-                                              '@type': 'g:T',
-                                              '@value': 'label'
-                                            },
-                                            'scienceKeyword',
-                                            'level',
-                                            {
-                                              '@type': 'g:List',
-                                              '@value': [
-                                                'term'
-                                              ]
-                                            },
-                                            'value',
-                                            {
-                                              '@type': 'g:List',
-                                              '@value': [
-                                                'CLOUDS'
-                                              ]
-                                            }
-                                          ]
-                                        },
-                                        {
-                                          '@type': 'g:Map',
-                                          '@value': [
-                                            {
-                                              '@type': 'g:T',
-                                              '@value': 'id'
-                                            },
-                                            {
-                                              '@type': 'g:Int64',
-                                              '@value': 666
-                                            },
-                                            {
-                                              '@type': 'g:T',
-                                              '@value': 'label'
-                                            },
-                                            'collection',
-                                            'providerId',
-                                            {
-                                              '@type': 'g:List',
-                                              '@value': [
-                                                'PROV1'
-                                              ]
-                                            },
-                                            'permittedGroups',
-                                            {
-                                              '@type': 'g:List',
-                                              '@value': [
-                                                {
-                                                  '@type': 'g:List',
-                                                  '@value': [
-                                                    'guest',
-                                                    'registered'
-                                                  ]
-                                                }
-                                              ]
-                                            },
-                                            'id',
-                                            {
-                                              '@type': 'g:List',
-                                              '@value': [
-                                                'C1200000014-PROV1'
-                                              ]
-                                            },
-                                            'abstract',
-                                            {
-                                              '@type': 'g:List',
-                                              '@value': [
-                                                "CER_GEO_Ed4_MET11_NH_V01.2 is the Satellite Cloud and Radiation Property retrieval System (SatCORPS) Clouds and the Earth's Radiant Energy System (CERES) Geostationary Satellite (GEO) Edition 4 Meteosat-11 over the Northern Hemisphere (NH) Version 1.2 data product. Data was collected using the Spinning Enhanced Visible and Infrared Imager (SEVIRI) Instrument on the Meteosat-11 platform. Data collection for this product is in progress.   This data set comprises cloud micro-physical and radiation properties derived hourly from Meteosat-11 geostationary satellite imager data using the Langley Research Center (LaRC) SATCORPS algorithms supporting the CERES project. Each active geostationary satellite's cloud microphysical and radiation properties are merged to create hourly global cloud properties that estimate fluxes between CERES instrument measurements to account for the changing diurnal cycle. The data set is arranged as files for each hour and in netCDF-4 format. The observations are at 4 km resolution (at nadir) and are sub-sampled to 8 km.  CERES is a key Earth Observing System (EOS) program component. The CERES instruments provide radiometric measurements of the Earth's atmosphere from three broadband channels. The CERES missions follow the successful Earth Radiation Budget Experiment (ERBE) mission. The first CERES instrument, the proto flight model (PFM), was launched on November 27, 1997, as part of the Tropical Rainfall Measuring Mission (TRMM). Two CERES instruments (FM1 and FM2) were launched into polar orbit onboard the Earth Observing System (EOS) flagship Terra on December 18, 1999. Two additional CERES instruments (FM3 and FM4) were launched onboard Earth Observing System (EOS) Aqua on May 4, 2002. The CERES FM5 instrument was launched onboard the Suomi National Polar-orbiting Partnership (NPP) satellite on October 28, 2011. The newest CERES instrument (FM6) was launched onboard the Joint Polar-Orbiting Satellite System 1 (JPSS-1) satellite, now called NOAA-20, on November 18, 2017."
-                                              ]
-                                            },
-                                            'title',
-                                            {
-                                              '@type': 'g:List',
-                                              '@value': [
-                                                'SatCORPS CERES GEO Edition 4 Meteosat-11 Northern Hemisphere Version 1.2'
-                                              ]
-                                            },
-                                            'shortName',
-                                            {
-                                              '@type': 'g:List',
-                                              '@value': [
-                                                'CER_GEO_Ed4_MET11_NH'
-                                              ]
-                                            },
-                                            'doi',
-                                            {
-                                              '@type': 'g:List',
-                                              '@value': [
-                                                '10.5067/MET11/CERES/GEO_ED4_NH_V01.2'
-                                              ]
-                                            }
-                                          ]
-                                        }
+                                        'guest',
+                                        'registered'
                                       ]
                                     }
-                                  }
+                                  ]
+                                },
+                                'id',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'C1200000058-PROV2'
+                                  ]
+                                },
+                                'abstract',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'This is a sample collection for SHORT_NAME_46_1747953520 created at 2025-05-22T22:38:40.305Z'
+                                  ]
+                                },
+                                'title',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'Entry Title 46 1747953520'
+                                  ]
+                                },
+                                'shortName',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'SHORT_NAME_46_1747953520'
+                                  ]
+                                },
+                                'doi',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    '10.5067/TestSHORT_NAME_46_1747953520_1747953520'
+                                  ]
                                 }
                               ]
                             },
-                            'relationshipCount',
+                            'intermediate',
                             {
-                              '@type': 'g:Int64',
-                              '@value': 1
+                              '@type': 'g:Map',
+                              '@value': [
+                                {
+                                  '@type': 'g:T',
+                                  '@value': 'id'
+                                },
+                                {
+                                  '@type': 'g:Int64',
+                                  '@value': 22
+                                },
+                                {
+                                  '@type': 'g:T',
+                                  '@value': 'label'
+                                },
+                                'scienceKeyword',
+                                'variableLevel1',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'CARBON MONOXIDE'
+                                  ]
+                                },
+                                'level',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'variable'
+                                  ]
+                                }
+                              ]
+                            },
+                            'end',
+                            {
+                              '@type': 'g:Map',
+                              '@value': [
+                                {
+                                  '@type': 'g:T',
+                                  '@value': 'id'
+                                },
+                                {
+                                  '@type': 'g:Int64',
+                                  '@value': 0
+                                },
+                                {
+                                  '@type': 'g:T',
+                                  '@value': 'label'
+                                },
+                                'collection',
+                                'providerId',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'PROV3'
+                                  ]
+                                },
+                                'permittedGroups',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    {
+                                      '@type': 'g:List',
+                                      '@value': [
+                                        'guest',
+                                        'registered'
+                                      ]
+                                    }
+                                  ]
+                                },
+                                'id',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'C1200000013-PROV3'
+                                  ]
+                                },
+                                'abstract',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'This is a sample collection for SHORT_NAME_1_1747953491 created at 2025-05-22T22:38:11.248Z'
+                                  ]
+                                },
+                                'title',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'Entry Title 1 1747953491'
+                                  ]
+                                },
+                                'shortName',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'SHORT_NAME_1_1747953491'
+                                  ]
+                                },
+                                'doi',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    '10.5067/TestSHORT_NAME_1_1747953491_1747953491'
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          '@type': 'g:Map',
+                          '@value': [
+                            'start',
+                            {
+                              '@type': 'g:Map',
+                              '@value': [
+                                {
+                                  '@type': 'g:T',
+                                  '@value': 'id'
+                                },
+                                {
+                                  '@type': 'g:Int64',
+                                  '@value': 556
+                                },
+                                {
+                                  '@type': 'g:T',
+                                  '@value': 'label'
+                                },
+                                'collection',
+                                'providerId',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'PROV2'
+                                  ]
+                                },
+                                'permittedGroups',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    {
+                                      '@type': 'g:List',
+                                      '@value': [
+                                        'guest',
+                                        'registered'
+                                      ]
+                                    }
+                                  ]
+                                },
+                                'id',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'C1200000058-PROV2'
+                                  ]
+                                },
+                                'abstract',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'This is a sample collection for SHORT_NAME_46_1747953520 created at 2025-05-22T22:38:40.305Z'
+                                  ]
+                                },
+                                'title',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'Entry Title 46 1747953520'
+                                  ]
+                                },
+                                'shortName',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'SHORT_NAME_46_1747953520'
+                                  ]
+                                },
+                                'doi',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    '10.5067/TestSHORT_NAME_46_1747953520_1747953520'
+                                  ]
+                                }
+                              ]
+                            },
+                            'intermediate',
+                            {
+                              '@type': 'g:Map',
+                              '@value': [
+                                {
+                                  '@type': 'g:T',
+                                  '@value': 'id'
+                                },
+                                {
+                                  '@type': 'g:Int64',
+                                  '@value': 668
+                                },
+                                {
+                                  '@type': 'g:T',
+                                  '@value': 'label'
+                                },
+                                'citation',
+                                'identifier',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'ark:/13030/tf16p17479'
+                                  ]
+                                },
+                                'providerId',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'PROV3'
+                                  ]
+                                },
+                                'name',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'Archival Earth Science Resource 16'
+                                  ]
+                                },
+                                'id',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'CIT1200000078-PROV3'
+                                  ]
+                                },
+                                'identifierType',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'ARK'
+                                  ]
+                                },
+                                'abstract',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'This is a randomly generated citation for demonstration purposes. Created at 2025-05-22T22:38:45.689Z.'
+                                  ]
+                                },
+                                'title',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'Archival Earth Science Resource 16 - Research Publication 16'
+                                  ]
+                                }
+                              ]
+                            },
+                            'end',
+                            {
+                              '@type': 'g:Map',
+                              '@value': [
+                                {
+                                  '@type': 'g:T',
+                                  '@value': 'id'
+                                },
+                                {
+                                  '@type': 'g:Int64',
+                                  '@value': 0
+                                },
+                                {
+                                  '@type': 'g:T',
+                                  '@value': 'label'
+                                },
+                                'collection',
+                                'providerId',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'PROV3'
+                                  ]
+                                },
+                                'permittedGroups',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    {
+                                      '@type': 'g:List',
+                                      '@value': [
+                                        'guest',
+                                        'registered'
+                                      ]
+                                    }
+                                  ]
+                                },
+                                'id',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'C1200000013-PROV3'
+                                  ]
+                                },
+                                'abstract',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'This is a sample collection for SHORT_NAME_1_1747953491 created at 2025-05-22T22:38:11.248Z'
+                                  ]
+                                },
+                                'title',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'Entry Title 1 1747953491'
+                                  ]
+                                },
+                                'shortName',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'SHORT_NAME_1_1747953491'
+                                  ]
+                                },
+                                'doi',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    '10.5067/TestSHORT_NAME_1_1747953491_1747953491'
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          '@type': 'g:Map',
+                          '@value': [
+                            'start',
+                            {
+                              '@type': 'g:Map',
+                              '@value': [
+                                {
+                                  '@type': 'g:T',
+                                  '@value': 'id'
+                                },
+                                {
+                                  '@type': 'g:Int64',
+                                  '@value': 556
+                                },
+                                {
+                                  '@type': 'g:T',
+                                  '@value': 'label'
+                                },
+                                'collection',
+                                'providerId',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'PROV2'
+                                  ]
+                                },
+                                'permittedGroups',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    {
+                                      '@type': 'g:List',
+                                      '@value': [
+                                        'guest',
+                                        'registered'
+                                      ]
+                                    }
+                                  ]
+                                },
+                                'id',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'C1200000058-PROV2'
+                                  ]
+                                },
+                                'abstract',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'This is a sample collection for SHORT_NAME_46_1747953520 created at 2025-05-22T22:38:40.305Z'
+                                  ]
+                                },
+                                'title',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'Entry Title 46 1747953520'
+                                  ]
+                                },
+                                'shortName',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'SHORT_NAME_46_1747953520'
+                                  ]
+                                },
+                                'doi',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    '10.5067/TestSHORT_NAME_46_1747953520_1747953520'
+                                  ]
+                                }
+                              ]
+                            },
+                            'intermediate',
+                            {
+                              '@type': 'g:Map',
+                              '@value': [
+                                {
+                                  '@type': 'g:T',
+                                  '@value': 'id'
+                                },
+                                {
+                                  '@type': 'g:Int64',
+                                  '@value': 1285
+                                },
+                                {
+                                  '@type': 'g:T',
+                                  '@value': 'label'
+                                },
+                                'citation',
+                                'identifier',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    '10.5067/SAMPLE/DATA.43.1747953532'
+                                  ]
+                                },
+                                'providerId',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'PROV1'
+                                  ]
+                                },
+                                'name',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'Earth Science Dataset 43'
+                                  ]
+                                },
+                                'id',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'CIT1200000105-PROV1'
+                                  ]
+                                },
+                                'identifierType',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'DOI'
+                                  ]
+                                },
+                                'abstract',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'This is a randomly generated citation for demonstration purposes. Created at 2025-05-22T22:38:52.088Z.'
+                                  ]
+                                },
+                                'title',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'Earth Science Dataset 43 - Research Publication 43'
+                                  ]
+                                }
+                              ]
+                            },
+                            'end',
+                            {
+                              '@type': 'g:Map',
+                              '@value': [
+                                {
+                                  '@type': 'g:T',
+                                  '@value': 'id'
+                                },
+                                {
+                                  '@type': 'g:Int64',
+                                  '@value': 0
+                                },
+                                {
+                                  '@type': 'g:T',
+                                  '@value': 'label'
+                                },
+                                'collection',
+                                'providerId',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'PROV3'
+                                  ]
+                                },
+                                'permittedGroups',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    {
+                                      '@type': 'g:List',
+                                      '@value': [
+                                        'guest',
+                                        'registered'
+                                      ]
+                                    }
+                                  ]
+                                },
+                                'id',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'C1200000013-PROV3'
+                                  ]
+                                },
+                                'abstract',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'This is a sample collection for SHORT_NAME_1_1747953491 created at 2025-05-22T22:38:11.248Z'
+                                  ]
+                                },
+                                'title',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'Entry Title 1 1747953491'
+                                  ]
+                                },
+                                'shortName',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'SHORT_NAME_1_1747953491'
+                                  ]
+                                },
+                                'doi',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    '10.5067/TestSHORT_NAME_1_1747953491_1747953491'
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          '@type': 'g:Map',
+                          '@value': [
+                            'start',
+                            {
+                              '@type': 'g:Map',
+                              '@value': [
+                                {
+                                  '@type': 'g:T',
+                                  '@value': 'id'
+                                },
+                                {
+                                  '@type': 'g:Int64',
+                                  '@value': 556
+                                },
+                                {
+                                  '@type': 'g:T',
+                                  '@value': 'label'
+                                },
+                                'collection',
+                                'providerId',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'PROV2'
+                                  ]
+                                },
+                                'permittedGroups',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    {
+                                      '@type': 'g:List',
+                                      '@value': [
+                                        'guest',
+                                        'registered'
+                                      ]
+                                    }
+                                  ]
+                                },
+                                'id',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'C1200000058-PROV2'
+                                  ]
+                                },
+                                'abstract',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'This is a sample collection for SHORT_NAME_46_1747953520 created at 2025-05-22T22:38:40.305Z'
+                                  ]
+                                },
+                                'title',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'Entry Title 46 1747953520'
+                                  ]
+                                },
+                                'shortName',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'SHORT_NAME_46_1747953520'
+                                  ]
+                                },
+                                'doi',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    '10.5067/TestSHORT_NAME_46_1747953520_1747953520'
+                                  ]
+                                }
+                              ]
+                            },
+                            'intermediate',
+                            {
+                              '@type': 'g:Map',
+                              '@value': [
+                                {
+                                  '@type': 'g:T',
+                                  '@value': 'id'
+                                },
+                                {
+                                  '@type': 'g:Int64',
+                                  '@value': 805
+                                },
+                                {
+                                  '@type': 'g:T',
+                                  '@value': 'label'
+                                },
+                                'citation',
+                                'identifier',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'ark:/13030/tf36p17479'
+                                  ]
+                                },
+                                'providerId',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'PROV1'
+                                  ]
+                                },
+                                'name',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'Archival Earth Science Resource 36'
+                                  ]
+                                },
+                                'id',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'CIT1200000098-PROV1'
+                                  ]
+                                },
+                                'identifierType',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'ARK'
+                                  ]
+                                },
+                                'abstract',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'This is a randomly generated citation for demonstration purposes. Created at 2025-05-22T22:38:50.507Z.'
+                                  ]
+                                },
+                                'title',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'Archival Earth Science Resource 36 - Research Publication 36'
+                                  ]
+                                }
+                              ]
+                            },
+                            'end',
+                            {
+                              '@type': 'g:Map',
+                              '@value': [
+                                {
+                                  '@type': 'g:T',
+                                  '@value': 'id'
+                                },
+                                {
+                                  '@type': 'g:Int64',
+                                  '@value': 0
+                                },
+                                {
+                                  '@type': 'g:T',
+                                  '@value': 'label'
+                                },
+                                'collection',
+                                'providerId',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'PROV3'
+                                  ]
+                                },
+                                'permittedGroups',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    {
+                                      '@type': 'g:List',
+                                      '@value': [
+                                        'guest',
+                                        'registered'
+                                      ]
+                                    }
+                                  ]
+                                },
+                                'id',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'C1200000013-PROV3'
+                                  ]
+                                },
+                                'abstract',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'This is a sample collection for SHORT_NAME_1_1747953491 created at 2025-05-22T22:38:11.248Z'
+                                  ]
+                                },
+                                'title',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'Entry Title 1 1747953491'
+                                  ]
+                                },
+                                'shortName',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'SHORT_NAME_1_1747953491'
+                                  ]
+                                },
+                                'doi',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    '10.5067/TestSHORT_NAME_1_1747953491_1747953491'
+                                  ]
+                                }
+                              ]
                             }
                           ]
                         }
                       ]
+                    },
+                    'count',
+                    {
+                      '@type': 'g:Int64',
+                      '@value': 4
                     }
                   ]
                 },
                 {
-                  '@type': 'g:Int64',
-                  '@value': 1
+                  '@type': 'g:Map',
+                  '@value': [
+                    'id',
+                    'C1200000035-PROV2',
+                    'paths',
+                    {
+                      '@type': 'g:List',
+                      '@value': [
+                        {
+                          '@type': 'g:Map',
+                          '@value': [
+                            'start',
+                            {
+                              '@type': 'g:Map',
+                              '@value': [
+                                {
+                                  '@type': 'g:T',
+                                  '@value': 'id'
+                                },
+                                {
+                                  '@type': 'g:Int64',
+                                  '@value': 556
+                                },
+                                {
+                                  '@type': 'g:T',
+                                  '@value': 'label'
+                                },
+                                'collection',
+                                'providerId',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'PROV2'
+                                  ]
+                                },
+                                'permittedGroups',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    {
+                                      '@type': 'g:List',
+                                      '@value': [
+                                        'guest',
+                                        'registered'
+                                      ]
+                                    }
+                                  ]
+                                },
+                                'id',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'C1200000058-PROV2'
+                                  ]
+                                },
+                                'abstract',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'This is a sample collection for SHORT_NAME_46_1747953520 created at 2025-05-22T22:38:40.305Z'
+                                  ]
+                                },
+                                'title',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'Entry Title 46 1747953520'
+                                  ]
+                                },
+                                'shortName',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'SHORT_NAME_46_1747953520'
+                                  ]
+                                },
+                                'doi',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    '10.5067/TestSHORT_NAME_46_1747953520_1747953520'
+                                  ]
+                                }
+                              ]
+                            },
+                            'intermediate',
+                            {
+                              '@type': 'g:Map',
+                              '@value': [
+                                {
+                                  '@type': 'g:T',
+                                  '@value': 'id'
+                                },
+                                {
+                                  '@type': 'g:Int64',
+                                  '@value': 836
+                                },
+                                {
+                                  '@type': 'g:T',
+                                  '@value': 'label'
+                                },
+                                'citation',
+                                'identifier',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'ark:/13030/tf4p17479'
+                                  ]
+                                },
+                                'providerId',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'PROV1'
+                                  ]
+                                },
+                                'name',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'Archival Earth Science Resource 4'
+                                  ]
+                                },
+                                'id',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'CIT1200000066-PROV1'
+                                  ]
+                                },
+                                'identifierType',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'ARK'
+                                  ]
+                                },
+                                'abstract',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'This is a randomly generated citation for demonstration purposes. Created at 2025-05-22T22:38:42.967Z.'
+                                  ]
+                                },
+                                'title',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'Archival Earth Science Resource 4 - Research Publication 4'
+                                  ]
+                                }
+                              ]
+                            },
+                            'end',
+                            {
+                              '@type': 'g:Map',
+                              '@value': [
+                                {
+                                  '@type': 'g:T',
+                                  '@value': 'id'
+                                },
+                                {
+                                  '@type': 'g:Int64',
+                                  '@value': 257
+                                },
+                                {
+                                  '@type': 'g:T',
+                                  '@value': 'label'
+                                },
+                                'collection',
+                                'providerId',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'PROV2'
+                                  ]
+                                },
+                                'permittedGroups',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    {
+                                      '@type': 'g:List',
+                                      '@value': [
+                                        'guest',
+                                        'registered'
+                                      ]
+                                    }
+                                  ]
+                                },
+                                'id',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'C1200000035-PROV2'
+                                  ]
+                                },
+                                'abstract',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'This is a sample collection for SHORT_NAME_23_1747953511 created at 2025-05-22T22:38:31.407Z'
+                                  ]
+                                },
+                                'title',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'Entry Title 23 1747953511'
+                                  ]
+                                },
+                                'shortName',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'SHORT_NAME_23_1747953511'
+                                  ]
+                                },
+                                'doi',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    '10.5067/TestSHORT_NAME_23_1747953511_1747953511'
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          '@type': 'g:Map',
+                          '@value': [
+                            'start',
+                            {
+                              '@type': 'g:Map',
+                              '@value': [
+                                {
+                                  '@type': 'g:T',
+                                  '@value': 'id'
+                                },
+                                {
+                                  '@type': 'g:Int64',
+                                  '@value': 556
+                                },
+                                {
+                                  '@type': 'g:T',
+                                  '@value': 'label'
+                                },
+                                'collection',
+                                'providerId',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'PROV2'
+                                  ]
+                                },
+                                'permittedGroups',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    {
+                                      '@type': 'g:List',
+                                      '@value': [
+                                        'guest',
+                                        'registered'
+                                      ]
+                                    }
+                                  ]
+                                },
+                                'id',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'C1200000058-PROV2'
+                                  ]
+                                },
+                                'abstract',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'This is a sample collection for SHORT_NAME_46_1747953520 created at 2025-05-22T22:38:40.305Z'
+                                  ]
+                                },
+                                'title',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'Entry Title 46 1747953520'
+                                  ]
+                                },
+                                'shortName',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'SHORT_NAME_46_1747953520'
+                                  ]
+                                },
+                                'doi',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    '10.5067/TestSHORT_NAME_46_1747953520_1747953520'
+                                  ]
+                                }
+                              ]
+                            },
+                            'intermediate',
+                            {
+                              '@type': 'g:Map',
+                              '@value': [
+                                {
+                                  '@type': 'g:T',
+                                  '@value': 'id'
+                                },
+                                {
+                                  '@type': 'g:Int64',
+                                  '@value': 935
+                                },
+                                {
+                                  '@type': 'g:T',
+                                  '@value': 'label'
+                                },
+                                'citation',
+                                'identifier',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    '978-0-22-17479-5'
+                                  ]
+                                },
+                                'providerId',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'PROV2'
+                                  ]
+                                },
+                                'name',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'Earth Science Book 22'
+                                  ]
+                                },
+                                'id',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'CIT1200000084-PROV2'
+                                  ]
+                                },
+                                'identifierType',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'ISBN'
+                                  ]
+                                },
+                                'abstract',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'This is a randomly generated citation for demonstration purposes. Created at 2025-05-22T22:38:47.300Z.'
+                                  ]
+                                },
+                                'title',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'Earth Science Book 22 - Research Publication 22'
+                                  ]
+                                }
+                              ]
+                            },
+                            'end',
+                            {
+                              '@type': 'g:Map',
+                              '@value': [
+                                {
+                                  '@type': 'g:T',
+                                  '@value': 'id'
+                                },
+                                {
+                                  '@type': 'g:Int64',
+                                  '@value': 257
+                                },
+                                {
+                                  '@type': 'g:T',
+                                  '@value': 'label'
+                                },
+                                'collection',
+                                'providerId',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'PROV2'
+                                  ]
+                                },
+                                'permittedGroups',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    {
+                                      '@type': 'g:List',
+                                      '@value': [
+                                        'guest',
+                                        'registered'
+                                      ]
+                                    }
+                                  ]
+                                },
+                                'id',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'C1200000035-PROV2'
+                                  ]
+                                },
+                                'abstract',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'This is a sample collection for SHORT_NAME_23_1747953511 created at 2025-05-22T22:38:31.407Z'
+                                  ]
+                                },
+                                'title',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'Entry Title 23 1747953511'
+                                  ]
+                                },
+                                'shortName',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'SHORT_NAME_23_1747953511'
+                                  ]
+                                },
+                                'doi',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    '10.5067/TestSHORT_NAME_23_1747953511_1747953511'
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          '@type': 'g:Map',
+                          '@value': [
+                            'start',
+                            {
+                              '@type': 'g:Map',
+                              '@value': [
+                                {
+                                  '@type': 'g:T',
+                                  '@value': 'id'
+                                },
+                                {
+                                  '@type': 'g:Int64',
+                                  '@value': 556
+                                },
+                                {
+                                  '@type': 'g:T',
+                                  '@value': 'label'
+                                },
+                                'collection',
+                                'providerId',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'PROV2'
+                                  ]
+                                },
+                                'permittedGroups',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    {
+                                      '@type': 'g:List',
+                                      '@value': [
+                                        'guest',
+                                        'registered'
+                                      ]
+                                    }
+                                  ]
+                                },
+                                'id',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'C1200000058-PROV2'
+                                  ]
+                                },
+                                'abstract',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'This is a sample collection for SHORT_NAME_46_1747953520 created at 2025-05-22T22:38:40.305Z'
+                                  ]
+                                },
+                                'title',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'Entry Title 46 1747953520'
+                                  ]
+                                },
+                                'shortName',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'SHORT_NAME_46_1747953520'
+                                  ]
+                                },
+                                'doi',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    '10.5067/TestSHORT_NAME_46_1747953520_1747953520'
+                                  ]
+                                }
+                              ]
+                            },
+                            'intermediate',
+                            {
+                              '@type': 'g:Map',
+                              '@value': [
+                                {
+                                  '@type': 'g:T',
+                                  '@value': 'id'
+                                },
+                                {
+                                  '@type': 'g:Int64',
+                                  '@value': 1285
+                                },
+                                {
+                                  '@type': 'g:T',
+                                  '@value': 'label'
+                                },
+                                'citation',
+                                'identifier',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    '10.5067/SAMPLE/DATA.43.1747953532'
+                                  ]
+                                },
+                                'providerId',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'PROV1'
+                                  ]
+                                },
+                                'name',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'Earth Science Dataset 43'
+                                  ]
+                                },
+                                'id',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'CIT1200000105-PROV1'
+                                  ]
+                                },
+                                'identifierType',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'DOI'
+                                  ]
+                                },
+                                'abstract',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'This is a randomly generated citation for demonstration purposes. Created at 2025-05-22T22:38:52.088Z.'
+                                  ]
+                                },
+                                'title',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'Earth Science Dataset 43 - Research Publication 43'
+                                  ]
+                                }
+                              ]
+                            },
+                            'end',
+                            {
+                              '@type': 'g:Map',
+                              '@value': [
+                                {
+                                  '@type': 'g:T',
+                                  '@value': 'id'
+                                },
+                                {
+                                  '@type': 'g:Int64',
+                                  '@value': 257
+                                },
+                                {
+                                  '@type': 'g:T',
+                                  '@value': 'label'
+                                },
+                                'collection',
+                                'providerId',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'PROV2'
+                                  ]
+                                },
+                                'permittedGroups',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    {
+                                      '@type': 'g:List',
+                                      '@value': [
+                                        'guest',
+                                        'registered'
+                                      ]
+                                    }
+                                  ]
+                                },
+                                'id',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'C1200000035-PROV2'
+                                  ]
+                                },
+                                'abstract',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'This is a sample collection for SHORT_NAME_23_1747953511 created at 2025-05-22T22:38:31.407Z'
+                                  ]
+                                },
+                                'title',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'Entry Title 23 1747953511'
+                                  ]
+                                },
+                                'shortName',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    'SHORT_NAME_23_1747953511'
+                                  ]
+                                },
+                                'doi',
+                                {
+                                  '@type': 'g:List',
+                                  '@value': [
+                                    '10.5067/TestSHORT_NAME_23_1747953511_1747953511'
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    'count',
+                    {
+                      '@type': 'g:Int64',
+                      '@value': 3
+                    }
+                  ]
                 }
               ]
             }

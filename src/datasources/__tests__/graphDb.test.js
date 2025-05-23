@@ -24,7 +24,7 @@ describe('graphDb', () => {
     name: 'relatedCollections',
     alias: 'relatedCollections',
     args: {
-      limit: 1
+      limit: 2
     },
     fieldsByTypeName: {
       RelatedCollectionsList: {
@@ -86,7 +86,7 @@ describe('graphDb', () => {
           alias: 'relatedCollections',
           args: {
             params: {
-              limit: 1
+              limit: 2
             }
           },
           fieldsByTypeName: {
@@ -170,7 +170,7 @@ describe('graphDb', () => {
         const response = await graphDbDatasource(
           { conceptId: 'C1200000058-PROV2' },
           {
-            limit: 1
+            limit: 2
           },
           {
             headers: {
@@ -192,7 +192,7 @@ describe('graphDb', () => {
           name: 'relatedCollections',
           alias: 'relatedCollections',
           args: {
-            limit: 1
+            limit: 2
           },
           fieldsByTypeName: {
             RelatedCollectionsList: {
@@ -275,7 +275,7 @@ describe('graphDb', () => {
         const response = await graphDbDatasource(
           { conceptId: 'C1200000058-PROV2' },
           {
-            limit: 1
+            limit: 2
           },
           {
             headers: {
@@ -297,7 +297,7 @@ describe('graphDb', () => {
           name: 'relatedCollections',
           alias: 'relatedCollections',
           args: {
-            limit: 1
+            limit: 2
           },
           fieldsByTypeName: {
             RelatedCollectionsList: {
@@ -394,7 +394,7 @@ describe('graphDb', () => {
         const response = await graphDbDatasource(
           { conceptId: 'C1200000058-PROV2' },
           {
-            limit: 1
+            limit: 2
           },
           {
             headers: {
@@ -416,7 +416,7 @@ describe('graphDb', () => {
           name: 'relatedCollections',
           alias: 'relatedCollections',
           args: {
-            limit: 1
+            limit: 2
           },
           fieldsByTypeName: {
             RelatedCollectionsList: {
@@ -485,7 +485,7 @@ describe('graphDb', () => {
         const response = await graphDbDatasource(
           { conceptId: 'C1200000058-PROV2' },
           {
-            limit: 1
+            limit: 2
           },
           {
             headers: {
@@ -507,7 +507,7 @@ describe('graphDb', () => {
           name: 'relatedCollections',
           alias: 'relatedCollections',
           args: {
-            limit: 1
+            limit: 2
           },
           fieldsByTypeName: {
             RelatedCollectionsList: {
@@ -557,7 +557,7 @@ describe('graphDb', () => {
         const response = await graphDbDatasource(
           { conceptId: 'C1200000058-PROV2' },
           {
-            limit: 1
+            limit: 2
           },
           {
             headers: {
@@ -579,7 +579,7 @@ describe('graphDb', () => {
           name: 'relatedCollections',
           alias: 'relatedCollections',
           args: {
-            limit: 1
+            limit: 2
           },
           fieldsByTypeName: {
             RelatedCollectionsList: {
@@ -621,7 +621,7 @@ describe('graphDb', () => {
         const response = await graphDbDatasource(
           { conceptId: 'C1200000058-PROV2' },
           {
-            limit: 1
+            limit: 2
           },
           {
             headers: {
@@ -658,7 +658,7 @@ describe('graphDb', () => {
         const response = await graphDbDatasource(
           { conceptId: 'C1200000058-PROV2' },
           {
-            limit: 1
+            limit: 2
           },
           {
             headers: {
@@ -694,7 +694,7 @@ describe('graphDb', () => {
         const response = await graphDbDatasource(
           { conceptId: 'C1200000058-PROV2' },
           {
-            limit: 1
+            limit: 2
           },
           {
             headers: {
@@ -706,8 +706,18 @@ describe('graphDb', () => {
           defaultParsedInfo
         )
         expect(response).toEqual({
-          count: 0,
-          items: []
+          count: [
+            {
+              '@value': 0
+            }
+          ],
+          items: [
+            {
+              id: undefined,
+              relationshipCount: 0,
+              relationships: []
+            }
+          ]
         })
 
         expect(scope.isDone()).toBe(true)

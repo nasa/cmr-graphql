@@ -1,12 +1,9 @@
 export default {
-  count: 34,
+  count: 21,
   items: [
     {
-      id: 'C1200000014-PROV1',
-      abstract: "CER_GEO_Ed4_MET11_NH_V01.2 is the Satellite Cloud and Radiation Property retrieval System (SatCORPS) Clouds and the Earth's Radiant Energy System (CERES) Geostationary Satellite (GEO) Edition 4 Meteosat-11 over the Northern Hemisphere (NH) Version 1.2 data product. Data was collected using the Spinning Enhanced Visible and Infrared Imager (SEVIRI) Instrument on the Meteosat-11 platform. Data collection for this product is in progress.   This data set comprises cloud micro-physical and radiation properties derived hourly from Meteosat-11 geostationary satellite imager data using the Langley Research Center (LaRC) SATCORPS algorithms supporting the CERES project. Each active geostationary satellite's cloud microphysical and radiation properties are merged to create hourly global cloud properties that estimate fluxes between CERES instrument measurements to account for the changing diurnal cycle. The data set is arranged as files for each hour and in netCDF-4 format. The observations are at 4 km resolution (at nadir) and are sub-sampled to 8 km.  CERES is a key Earth Observing System (EOS) program component. The CERES instruments provide radiometric measurements of the Earth's atmosphere from three broadband channels. The CERES missions follow the successful Earth Radiation Budget Experiment (ERBE) mission. The first CERES instrument, the proto flight model (PFM), was launched on November 27, 1997, as part of the Tropical Rainfall Measuring Mission (TRMM). Two CERES instruments (FM1 and FM2) were launched into polar orbit onboard the Earth Observing System (EOS) flagship Terra on December 18, 1999. Two additional CERES instruments (FM3 and FM4) were launched onboard Earth Observing System (EOS) Aqua on May 4, 2002. The CERES FM5 instrument was launched onboard the Suomi National Polar-orbiting Partnership (NPP) satellite on October 28, 2011. The newest CERES instrument (FM6) was launched onboard the Joint Polar-Orbiting Satellite System 1 (JPSS-1) satellite, now called NOAA-20, on November 18, 2017.",
-      title: 'SatCORPS CERES GEO Edition 4 Meteosat-11 Northern Hemisphere Version 1.2',
-      shortName: 'CER_GEO_Ed4_MET11_NH',
-      doi: '10.5067/MET11/CERES/GEO_ED4_NH_V01.2',
+      id: 'C1200000013-PROV3',
+      providerId: 'PROV3',
       permittedGroups: {
         '@type': 'g:List',
         '@value': [
@@ -14,14 +11,96 @@ export default {
           'registered'
         ]
       },
-      providerId: 'PROV1',
+      abstract: 'This is a sample collection for SHORT_NAME_1_1747953491 created at 2025-05-22T22:38:11.248Z',
+      title: 'Entry Title 1 1747953491',
+      shortName: 'SHORT_NAME_1_1747953491',
+      doi: '10.5067/TestSHORT_NAME_1_1747953491_1747953491',
       relationships: [
         {
           relationshipType: 'scienceKeyword',
-          level: 'term',
-          value: 'CLOUDS'
+          variableLevel1: 'CARBON MONOXIDE',
+          level: 'variable'
+        },
+        {
+          relationshipType: 'citation',
+          identifier: 'ark:/13030/tf16p17479',
+          providerId: 'PROV3',
+          name: 'Archival Earth Science Resource 16',
+          id: 'CIT1200000078-PROV3',
+          identifierType: 'ARK',
+          abstract: 'This is a randomly generated citation for demonstration purposes. Created at 2025-05-22T22:38:45.689Z.',
+          title: 'Archival Earth Science Resource 16 - Research Publication 16'
+        },
+        {
+          relationshipType: 'citation',
+          identifier: '10.5067/SAMPLE/DATA.43.1747953532',
+          providerId: 'PROV1',
+          name: 'Earth Science Dataset 43',
+          id: 'CIT1200000105-PROV1',
+          identifierType: 'DOI',
+          abstract: 'This is a randomly generated citation for demonstration purposes. Created at 2025-05-22T22:38:52.088Z.',
+          title: 'Earth Science Dataset 43 - Research Publication 43'
+        },
+        {
+          relationshipType: 'citation',
+          identifier: 'ark:/13030/tf36p17479',
+          providerId: 'PROV1',
+          name: 'Archival Earth Science Resource 36',
+          id: 'CIT1200000098-PROV1',
+          identifierType: 'ARK',
+          abstract: 'This is a randomly generated citation for demonstration purposes. Created at 2025-05-22T22:38:50.507Z.',
+          title: 'Archival Earth Science Resource 36 - Research Publication 36'
         }
-      ]
+      ],
+      relationshipCount: 4
+    },
+    {
+      id: 'C1200000035-PROV2',
+      providerId: 'PROV2',
+      permittedGroups: {
+        '@type': 'g:List',
+        '@value': [
+          'guest',
+          'registered'
+        ]
+      },
+      abstract: 'This is a sample collection for SHORT_NAME_23_1747953511 created at 2025-05-22T22:38:31.407Z',
+      title: 'Entry Title 23 1747953511',
+      shortName: 'SHORT_NAME_23_1747953511',
+      doi: '10.5067/TestSHORT_NAME_23_1747953511_1747953511',
+      relationships: [
+        {
+          relationshipType: 'citation',
+          identifier: 'ark:/13030/tf4p17479',
+          providerId: 'PROV1',
+          name: 'Archival Earth Science Resource 4',
+          id: 'CIT1200000066-PROV1',
+          identifierType: 'ARK',
+          abstract: 'This is a randomly generated citation for demonstration purposes. Created at 2025-05-22T22:38:42.967Z.',
+          title: 'Archival Earth Science Resource 4 - Research Publication 4'
+        },
+        {
+          relationshipType: 'citation',
+          identifier: '978-0-22-17479-5',
+          providerId: 'PROV2',
+          name: 'Earth Science Book 22',
+          id: 'CIT1200000084-PROV2',
+          identifierType: 'ISBN',
+          abstract: 'This is a randomly generated citation for demonstration purposes. Created at 2025-05-22T22:38:47.300Z.',
+          title: 'Earth Science Book 22 - Research Publication 22'
+        },
+        {
+          relationshipType: 'citation',
+          identifier: '10.5067/SAMPLE/DATA.43.1747953532',
+          providerId: 'PROV1',
+          name: 'Earth Science Dataset 43',
+          id: 'CIT1200000105-PROV1',
+          identifierType: 'DOI',
+          abstract: 'This is a randomly generated citation for demonstration purposes. Created at 2025-05-22T22:38:52.088Z.',
+          title: 'Earth Science Dataset 43 - Research Publication 43'
+        }
+      ],
+      relationshipCount: 3
     }
   ]
 }
