@@ -2894,19 +2894,19 @@ describe('Collection', () => {
                     doi
                     relationships {
                       relationshipType
-                      ... on GraphDbProject {
-                        name
+                      ... on GraphDbScienceKeyword {
+                        level
+                        value
+                        variableLevel1
                       }
-                      ... on GraphDbPlatformInstrument {
-                        platform
-                        instrument
+                      ... on GraphDbCitation {
+                        title
+                        id
                       }
-                      ... on GraphDbRelatedUrl {
-                        url
-                        description
-                        type
-                        subtype
-                      }
+                      ... on GraphDbScienceKeyword {
+                        level
+                        value
+                      }  
                     }
                   }
                 }

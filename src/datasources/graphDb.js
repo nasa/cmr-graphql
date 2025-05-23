@@ -19,7 +19,6 @@ export default async (
   parsedInfo
 ) => {
   const { conceptId } = source
-
   const { edlUsername, headers } = context
 
   // Parse the request info to find the requested types in the query
@@ -36,79 +35,32 @@ export default async (
   const queryParams = mergeParams(params)
   const {
     limit = 20,
-    offset = 0,
-    relatedUrlSubtype,
-    relatedUrlType
+    offset = 0
   } = queryParams
 
-  const relatedUrlFilters = []
-  let filters = ''
-
-  const includedLabels = []
-  if (Object.keys(relationshipsFields).includes('GraphDbProject')) {
-    includedLabels.push('project')
-  }
-
-  if (Object.keys(relationshipsFields).includes('GraphDbPlatformInstrument')) {
-    includedLabels.push('platformInstrument')
-  }
-
-  if (Object.keys(relationshipsFields).includes('GraphDbRelatedUrl')) {
-    includedLabels.push('relatedUrl')
-  }
-
+  // Check which relationship types were requested
   const relationshipTypeRequested = Object.keys(relationshipFields).includes('relationshipType')
 
-  if (
-    includedLabels.includes('relatedUrl')
-    && (relatedUrlType || relatedUrlSubtype)
-  ) {
-    // If the relatedUrl type was requested, filter relatedUrls based on the GraphQL query parameters
-    if (relatedUrlType && !relatedUrlSubtype) {
-      relatedUrlFilters.push(`has('relatedUrl', 'type', within('${relatedUrlType.join('\',\'')}'))`)
+  // Determine which intermediate nodes to include
+  let intermediateNodeFilter = '.hasLabel("citation", "scienceKeyword")'
+
+  // Check if we need to filter by specific relationship types
+  if (relationshipTypeRequested) {
+    const includedTypes = []
+
+    // Add citation and scienceKeyword based on requested fields
+    if (Object.keys(relationshipsFields).includes('GraphDbCitation')) {
+      includedTypes.push('citation')
     }
 
-    if (relatedUrlSubtype && !relatedUrlType) {
-      relatedUrlFilters.push(`has('relatedUrl', 'subtype', within("${relatedUrlSubtype.join('","')}"))`)
+    if (Object.keys(relationshipsFields).includes('GraphDbScienceKeyword')) {
+      includedTypes.push('scienceKeyword')
     }
 
-    // If both type and subtype are provided we need to AND those params together, while still ORing the other relationship vertex types
-    if (relatedUrlType && relatedUrlSubtype) {
-      relatedUrlFilters.push(`
-        and(
-          has('relatedUrl', 'type', within('${relatedUrlType.join('\',\'')}')),
-          has('relatedUrl', 'subtype', within("${relatedUrlSubtype.join('","')}"))
-        )
-      `)
+    // If specific types are requested, update the filter
+    if (includedTypes.length > 0) {
+      intermediateNodeFilter = `.hasLabel('${includedTypes.join("','")}')`
     }
-
-    // Need to OR the relatedUrl filters with the other labels requested
-    const otherLabels = includedLabels.filter((label) => label !== 'relatedUrl')
-    if (relationshipTypeRequested) {
-      filters = `
-      .or(
-        ${relatedUrlFilters.join()},
-        hasLabel('project','platformInstrument')
-      )
-      `
-    } else if (otherLabels.length > 0) {
-      filters = `
-      .or(
-        ${relatedUrlFilters.join()},
-        hasLabel('${otherLabels.join("','")}')
-      )
-      `
-    } else {
-      filters = `.${relatedUrlFilters.join()}`
-    }
-  } else if (includedLabels.length === 0 || relationshipTypeRequested) {
-    // If no relationship labels are included or if relationshipType was requested, filter by all relationships
-    filters = ".hasLabel('project','platformInstrument','relatedUrl')"
-  } else {
-    // Default to returning all values for those relationship labels that were requested
-    filters = `
-      .hasLabel('${includedLabels.join("','")}')
-    `
   }
 
   // Retrieve the user groups from EDL to filter the query
@@ -116,51 +68,43 @@ export default async (
 
   const query = JSON.stringify({
     gremlin: `
-    g
-    .V()
-    .has('collection', 'id', '${conceptId}')
-    .has('permittedGroups', within(${userGroups}))
-    .bothE()
-    .inV()
-    ${filters}
-    .bothE()
-    .outV()
-    .hasLabel('collection')
-    .has('permittedGroups', within(${userGroups}))
-    .has('id', neq('${conceptId}'))
-    .group()
-    .by('id')
+  g.V()
+  .has('collection', 'id', '${conceptId}')
+  .where(__.values('permittedGroups').unfold().is(within(${userGroups})))
+  .as('start')
+  .both()
+  ${intermediateNodeFilter}
+  .as('intermediateNode')
+  .both()
+  .hasLabel('collection')
+  .where(neq('start'))
+  .group()
+  .by('id')
+  .by(
+    project('paths', 'relationshipCount')
     .by(
-      simplePath()
-      .path()
+      path()
+      .from('start')
       .by(valueMap(true))
       .fold()
-      .as('pathValues')
-      .project('relationshipValues', 'relationshipCount')
-      .by(select('pathValues'))
-      .by(
-        unfold()
-        .count()
-      )
     )
-    .order(local)
-    .by(
-      select(values)
-      .select('relationshipCount'), desc
-    )
-    .sideEffect(
-      unfold()
-      .count()
-      .aggregate('totalRelatedCollections')
-    )
-    .sideEffect(
-      unfold()
-      .range(${offset}, ${offset + limit})
-      .fold()
-      .aggregate('relatedCollections')
-    )
-    .cap('totalRelatedCollections', 'relatedCollections')
-    `
+    .by(count(local))
+  )
+  .order(local)
+  .by(select(values).select('relationshipCount'), desc)
+  .sideEffect(
+    unfold()
+    .count()
+    .aggregate('totalRelatedCollections')
+  )
+  .sideEffect(
+    unfold()
+    .range(${offset}, ${offset + limit})
+    .fold()
+    .aggregate('relatedCollections')
+  )
+  .cap('totalRelatedCollections', 'relatedCollections')
+  `
   })
 
   const { data } = await cmrGraphDb({
@@ -190,8 +134,6 @@ export default async (
 
     // Parse the count object
     const { '@value': totalRelatedCollectionsMap } = totalRelatedCollectionsBulkSet;
-
-    // The first value returned holds the total count
     ([{ '@value': totalRelatedCollectionsCount }] = totalRelatedCollectionsMap)
 
     // Parse the collection values
@@ -204,57 +146,51 @@ export default async (
       const { '@value': conceptIdMappingValues } = conceptIdMapping
 
       const {
-        relationshipValues: relationshipValuesList
+        paths: pathsList
       } = fromPairs(chunk(conceptIdMappingValues, 2))
 
-      const { '@value': relationshipValues } = relationshipValuesList
+      const { '@value': pathValues } = pathsList
 
       const relationshipsArray = []
       const relatedCollectionValues = {}
 
-      relationshipValues.forEach((relationshipValue) => {
-        const { '@value': relationshipPathValue } = relationshipValue
-        const { objects } = relationshipPathValue
-
+      pathValues.forEach((pathValue) => {
+        const { '@value': path } = pathValue
+        const { objects } = path
         const { '@value': objectValueList } = objects
 
-        // The following describes the indices inside objectValueList:
-        // objectValueList[0] is starting collection vertex
-        // objectValueList[1] is the edge going out of the starting collection vertex
-        // objectValueList[2] is relationship vertex (project, documenation, platformInstrument)
-        // objectValueList[3] is the edge going out of the relationship vertex
-        // objectValueList[4] is related collection vertex
+        // Parse the intermediate node (citation or scienceKeyword)
+        const { '@value': intermediateNodeMap } = objectValueList[1] // The intermediate node
+        const intermediateNodePairs = chunk(intermediateNodeMap, 2)
 
-        // Parse the relationship vertex (objectValueList[2]) for values
-        const { '@value': relationshipVertexMap } = objectValueList[2]
-        const relationshipVertexPairs = chunk(relationshipVertexMap, 2)
-        let relationshipLabel
+        let relationshipType
         const relationshipVertexValues = {}
-        relationshipVertexPairs.forEach((pair) => {
+
+        intermediateNodePairs.forEach((pair) => {
           const [key, value] = pair
 
           if (isObject(key)) {
             const { '@value': keyMap } = key
 
             if (keyMap === 'label') {
-              relationshipLabel = value
-              relationshipVertexValues.relationshipType = relationshipLabel
+              relationshipType = value
+              relationshipVertexValues.relationshipType = relationshipType
             }
 
             return
           }
 
-          const { '@value': relationshipVertexValueMap } = value
-
-          const [relationshipVertexValue] = relationshipVertexValueMap
-          relationshipVertexValues[key] = relationshipVertexValue
+          const { '@value': valueMap } = value
+          const [actualValue] = valueMap
+          relationshipVertexValues[key] = actualValue
         })
 
         relationshipsArray.push(relationshipVertexValues)
 
-        // Parse the related collection vertex (objectValueList[4]) for values
-        const { '@value': relatedCollectionVertexMap } = objectValueList[4]
+        // Parse the related collection vertex
+        const { '@value': relatedCollectionVertexMap } = objectValueList[2] // The related collection
         const relatedCollectionVertexPairs = chunk(relatedCollectionVertexMap, 2)
+
         relatedCollectionVertexPairs.forEach((pair) => {
           const [key, value] = pair
 
@@ -262,10 +198,9 @@ export default async (
             return
           }
 
-          const { '@value': relatedCollectionVertexValueMap } = value
-
-          const [relatedCollectionVertexValue] = relatedCollectionVertexValueMap
-          relatedCollectionValues[key] = relatedCollectionVertexValue
+          const { '@value': valueMap } = value
+          const [actualValue] = valueMap
+          relatedCollectionValues[key] = actualValue
         })
       })
 

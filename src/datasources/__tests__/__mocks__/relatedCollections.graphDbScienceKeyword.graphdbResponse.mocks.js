@@ -12,7 +12,7 @@ export default {
               '@value': [
                 {
                   '@type': 'g:Int64',
-                  '@value': 34
+                  '@value': 1
                 },
                 {
                   '@type': 'g:Int64',
@@ -30,7 +30,7 @@ export default {
                     {
                       '@type': 'g:Map',
                       '@value': [
-                        'C1200000014-PROV1',
+                        'C1200000013-PROV3',
                         {
                           '@type': 'g:Map',
                           '@value': [
@@ -74,7 +74,7 @@ export default {
                                             },
                                             {
                                               '@type': 'g:Int64',
-                                              '@value': 391
+                                              '@value': 556
                                             },
                                             {
                                               '@type': 'g:T',
@@ -85,7 +85,7 @@ export default {
                                             {
                                               '@type': 'g:List',
                                               '@value': [
-                                                'PROV1'
+                                                'PROV2'
                                               ]
                                             },
                                             'permittedGroups',
@@ -105,35 +105,35 @@ export default {
                                             {
                                               '@type': 'g:List',
                                               '@value': [
-                                                'C1200000041-PROV1'
+                                                'C1200000058-PROV2'
                                               ]
                                             },
                                             'abstract',
                                             {
                                               '@type': 'g:List',
                                               '@value': [
-                                                "CERES_EBAF-TOA_Edition4.1 is the Clouds and the Earth's Radiant Energy System (CERES) Energy Balanced and Filled (EBAF) Top-of-Atmosphere (TOA) Monthly means data in netCDF format Edition 4.1 data product. Data was collected using the CERES Scanner instruments on both the Terra and Aqua platforms. Data collection for this product is ongoing.  CERES_EBAF-TOA_Edition4.1 data are monthly and climatological averages of TOA clear-sky (spatially complete) fluxes and all-sky fluxes, where the TOA net flux is constrained to the ocean heat storage. EBAF-TOA provides some basic cloud properties derived from Moderate-Resolution Imaging Spectroradiometer (MODIS) alongside TOA fluxes. Observed fluxes are obtained using cloud properties derived from narrow-band imagers onboard both Earth Observing System (EOS) Terra and Aqua satellites as well as geostationary satellites to more fully model the diurnal cycle of clouds. The computations are also based on meteorological assimilation data from the Goddard Earth Observing System (GEOS) Versions 5.4.1 models. Unlike other CERES Level 3 clear-sky regional data sets that contain clear-sky data gaps, the clear-sky fluxes in the EBAF-TOA product are regionally complete. The EBAF-TOA product is the CERES project's best estimate of the fluxes based on all available satellite platforms and input data.   CERES is a key component of the Earth Observing System (EOS) program. The CERES instruments provide radiometric measurements of the Earth's atmosphere from three broadband channels. The CERES missions are a follow-on to the successful Earth Radiation Budget Experiment (ERBE) mission. The first CERES instrument, the proto flight model (PFM), was launched on November 27, 1997, as part of the Tropical Rainfall Measuring Mission (TRMM). Two CERES instruments (FM1 and FM2) were launched into polar orbit onboard the Earth Observing System (EOS) flagship Terra on December 18, 1999. Two additional CERES instruments (FM3 and FM4) were launched onboard Earth Observing System (EOS) Aqua on May 4, 2002. The CERES FM5 instrument was launched onboard the Suomi National Polar-orbiting Partnership (NPP) satellite on October 28, 2011. The newest CERES instrument (FM6) was launched onboard the Joint Polar-Orbiting Satellite System 1 (JPSS-1) satellite, now called NOAA-20, on November 18, 2017."
+                                                'This is a sample collection for SHORT_NAME_46_1747953520 created at 2025-05-22T22:38:40.305Z'
                                               ]
                                             },
                                             'title',
                                             {
                                               '@type': 'g:List',
                                               '@value': [
-                                                'CERES Energy Balanced and Filled (EBAF) TOA Monthly means data in netCDF Edition4.1'
+                                                'Entry Title 46 1747953520'
                                               ]
                                             },
                                             'shortName',
                                             {
                                               '@type': 'g:List',
                                               '@value': [
-                                                'CERES_EBAF-TOA'
+                                                'SHORT_NAME_46_1747953520'
                                               ]
                                             },
                                             'doi',
                                             {
                                               '@type': 'g:List',
                                               '@value': [
-                                                '10.5067/TERRA-AQUA/CERES/EBAF-TOA_L3B004.1'
+                                                '10.5067/TestSHORT_NAME_46_1747953520_1747953520'
                                               ]
                                             }
                                           ]
@@ -147,25 +147,25 @@ export default {
                                             },
                                             {
                                               '@type': 'g:Int64',
-                                              '@value': 70
+                                              '@value': 22
                                             },
                                             {
                                               '@type': 'g:T',
                                               '@value': 'label'
                                             },
                                             'scienceKeyword',
+                                            'variableLevel1',
+                                            {
+                                              '@type': 'g:List',
+                                              '@value': [
+                                                'CARBON MONOXIDE'
+                                              ]
+                                            },
                                             'level',
                                             {
                                               '@type': 'g:List',
                                               '@value': [
-                                                'term'
-                                              ]
-                                            },
-                                            'value',
-                                            {
-                                              '@type': 'g:List',
-                                              '@value': [
-                                                'CLOUDS'
+                                                'variable'
                                               ]
                                             }
                                           ]
@@ -179,7 +179,7 @@ export default {
                                             },
                                             {
                                               '@type': 'g:Int64',
-                                              '@value': 666
+                                              '@value': 0
                                             },
                                             {
                                               '@type': 'g:T',
@@ -190,7 +190,7 @@ export default {
                                             {
                                               '@type': 'g:List',
                                               '@value': [
-                                                'PROV1'
+                                                'PROV3'
                                               ]
                                             },
                                             'permittedGroups',
@@ -210,35 +210,35 @@ export default {
                                             {
                                               '@type': 'g:List',
                                               '@value': [
-                                                'C1200000014-PROV1'
+                                                'C1200000013-PROV3'
                                               ]
                                             },
                                             'abstract',
                                             {
                                               '@type': 'g:List',
                                               '@value': [
-                                                "CER_GEO_Ed4_MET11_NH_V01.2 is the Satellite Cloud and Radiation Property retrieval System (SatCORPS) Clouds and the Earth's Radiant Energy System (CERES) Geostationary Satellite (GEO) Edition 4 Meteosat-11 over the Northern Hemisphere (NH) Version 1.2 data product. Data was collected using the Spinning Enhanced Visible and Infrared Imager (SEVIRI) Instrument on the Meteosat-11 platform. Data collection for this product is in progress.   This data set comprises cloud micro-physical and radiation properties derived hourly from Meteosat-11 geostationary satellite imager data using the Langley Research Center (LaRC) SATCORPS algorithms supporting the CERES project. Each active geostationary satellite's cloud microphysical and radiation properties are merged to create hourly global cloud properties that estimate fluxes between CERES instrument measurements to account for the changing diurnal cycle. The data set is arranged as files for each hour and in netCDF-4 format. The observations are at 4 km resolution (at nadir) and are sub-sampled to 8 km.  CERES is a key Earth Observing System (EOS) program component. The CERES instruments provide radiometric measurements of the Earth's atmosphere from three broadband channels. The CERES missions follow the successful Earth Radiation Budget Experiment (ERBE) mission. The first CERES instrument, the proto flight model (PFM), was launched on November 27, 1997, as part of the Tropical Rainfall Measuring Mission (TRMM). Two CERES instruments (FM1 and FM2) were launched into polar orbit onboard the Earth Observing System (EOS) flagship Terra on December 18, 1999. Two additional CERES instruments (FM3 and FM4) were launched onboard Earth Observing System (EOS) Aqua on May 4, 2002. The CERES FM5 instrument was launched onboard the Suomi National Polar-orbiting Partnership (NPP) satellite on October 28, 2011. The newest CERES instrument (FM6) was launched onboard the Joint Polar-Orbiting Satellite System 1 (JPSS-1) satellite, now called NOAA-20, on November 18, 2017."
+                                                'This is a sample collection for SHORT_NAME_1_1747953491 created at 2025-05-22T22:38:11.248Z'
                                               ]
                                             },
                                             'title',
                                             {
                                               '@type': 'g:List',
                                               '@value': [
-                                                'SatCORPS CERES GEO Edition 4 Meteosat-11 Northern Hemisphere Version 1.2'
+                                                'Entry Title 1 1747953491'
                                               ]
                                             },
                                             'shortName',
                                             {
                                               '@type': 'g:List',
                                               '@value': [
-                                                'CER_GEO_Ed4_MET11_NH'
+                                                'SHORT_NAME_1_1747953491'
                                               ]
                                             },
                                             'doi',
                                             {
                                               '@type': 'g:List',
                                               '@value': [
-                                                '10.5067/MET11/CERES/GEO_ED4_NH_V01.2'
+                                                '10.5067/TestSHORT_NAME_1_1747953491_1747953491'
                                               ]
                                             }
                                           ]
