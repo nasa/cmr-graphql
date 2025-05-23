@@ -2,6 +2,7 @@ export default {
   count: 1,
   items: [
     {
+      id: 'C1200000013-PROV3',
       providerId: 'PROV3',
       permittedGroups: {
         '@type': 'g:List',
@@ -10,7 +11,6 @@ export default {
           'registered'
         ]
       },
-      id: 'C1200000013-PROV3',
       abstract: 'This is a sample collection for SHORT_NAME_1_1747953491 created at 2025-05-22T22:38:11.248Z',
       title: 'Entry Title 1 1747953491',
       shortName: 'SHORT_NAME_1_1747953491',
@@ -21,7 +21,8 @@ export default {
           variableLevel1: 'CARBON MONOXIDE',
           level: 'variable'
         }
-      ]
+      ],
+      relationshipCount: 1
     }
   ]
 }
