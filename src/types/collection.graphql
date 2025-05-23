@@ -512,6 +512,52 @@ type RelatedCollectionsList {
   items: [RelatedCollection]
 }
 
+type GraphDbCitation implements Relationship {
+  "The type of relationship."
+  relationshipType: String
+
+  "The title of the citation"
+  title: String
+
+  "The identifier of the citation"
+  identifier: String
+
+  "The abstract of the citation"
+  abstract: String
+
+  "The provider of the citation"
+  providerId: String
+
+  "The identifier type of the citation"
+  identifierType: String
+
+  "The concept id of the citation"
+  id: String
+}
+
+type GraphDbScienceKeyword implements Relationship {
+  "The type of relationship."
+  relationshipType: String
+
+  "The value of the science keyword"
+  value: String
+
+  "The level of the science keyword"
+  level: String
+
+  "Variable level 1 information"
+  variableLevel1: String
+
+  "Variable level 2 information"
+  variableLevel2: String
+
+  "Variable level 3 information"
+  variableLevel3: String
+
+  "Detailed Variable information"
+  detailedVariable: String
+}
+
 type GraphDbRelatedUrl implements Relationship {
   "The type of relationship."
   relationshipType: String

@@ -350,6 +350,14 @@ export default {
         return 'GraphDbPlatformInstrument'
       }
 
+      if (object.relationshipType === 'citation') {
+        return 'GraphDbCitation'
+      }
+
+      if (object.relationshipType === 'scienceKeyword') {
+        return 'GraphDbScienceKeyword'
+      }
+
       return null
     }
   }
