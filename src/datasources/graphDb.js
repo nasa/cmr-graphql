@@ -68,42 +68,42 @@ export default async (
 
   const query = JSON.stringify({
     gremlin: `
-  g.V()
-  .has('collection', 'id', '${conceptId}')
-  .where(__.values('permittedGroups').unfold().is(within(${userGroups})))
-  .as('start')
-  .both()
-  ${intermediateNodeFilter}
-  .as('intermediateNode')
-  .both()
-  .hasLabel('collection')
-  .where(neq('start'))
-  .group()
-  .by('id')
-  .by(
-    project('paths', 'relationshipCount')
+    g.V()
+    .has('collection', 'id', '${conceptId}')
+    .where(__.values('permittedGroups').unfold().is(within(${userGroups})))
+    .as('start')
+    .both()
+    ${intermediateNodeFilter}
+    .as('intermediateNode')
+    .both()
+    .hasLabel('collection')
+    .where(neq('start'))
+    .group()
+    .by('id')
     .by(
-      path()
-      .from('start')
-      .by(valueMap(true))
-      .fold()
+      project('paths', 'relationshipCount')
+      .by(
+        path()
+        .from('start')
+        .by(valueMap(true))
+        .fold()
+      )
+      .by(count(local))
     )
-    .by(count(local))
-  )
-  .order(local)
-  .by(select(values).select('relationshipCount'), desc)
-  .sideEffect(
-    unfold()
-    .count()
-    .aggregate('totalRelatedCollections')
-  )
-  .sideEffect(
-    unfold()
-    .range(${offset}, ${offset + limit})
-    .fold()
-    .aggregate('relatedCollections')
-  )
-  .cap('totalRelatedCollections', 'relatedCollections')
+    .order(local)
+    .by(select(values).select('relationshipCount'), desc)
+    .sideEffect(
+      unfold()
+      .count()
+      .aggregate('totalRelatedCollections')
+    )
+    .sideEffect(
+      unfold()
+      .range(${offset}, ${offset + limit})
+      .fold()
+      .aggregate('relatedCollections')
+    )
+    .cap('totalRelatedCollections', 'relatedCollections')
   `
   })
 
@@ -117,7 +117,7 @@ export default async (
 
   // Useful for debugging!
   // console.log('GraphDB query', JSON.parse(query))
-  console.log('GraphDB Response result: ', JSON.stringify(result, null, 2))
+  // console.log('GraphDB Response result: ', JSON.stringify(result, null, 2))
 
   const { data: resultData } = result
   const { '@value': dataValues } = resultData
