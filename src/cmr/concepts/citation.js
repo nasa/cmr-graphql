@@ -74,7 +74,7 @@ export default class Citation extends Concept {
   fetchUmm(searchParams, ummKeys, headers) {
     const ummHeaders = {
       ...headers,
-      Accept: 'application/vnd.nasa.cmr.umm_results+json'
+      Accept: `application/vnd.nasa.cmr.umm_results+json; version=${process.env.ummCitationVersion}`
     }
 
     const ummResponse = super.fetchUmm(searchParams, ummKeys, ummHeaders)
