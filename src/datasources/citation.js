@@ -21,7 +21,7 @@ export const fetchCitations = async (params, context, parsedInfo) => {
 }
 
 export const deleteCitation = async (args, context, parsedInfo) => {
-  const { header } = context
+  const { headers } = context
 
   const requestInfo = parseRequestedFields(parsedInfo, citationKeyMap, 'citation')
 
@@ -29,10 +29,10 @@ export const deleteCitation = async (args, context, parsedInfo) => {
     ingestKeys
   } = requestInfo
 
-  const citation = new Citation(header, requestInfo, args)
+  const citation = new Citation(headers, requestInfo, args)
 
   // Contact CMR
-  citation.delete(args, ingestKeys, header)
+  citation.delete(args, ingestKeys, headers)
 
   // Parse the response from CMR
   await citation.parseDelete(requestInfo)
