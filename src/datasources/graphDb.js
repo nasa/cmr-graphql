@@ -44,8 +44,6 @@ export default async (
   let filters = ''
 
   const includedLabels = []
-
-  // Check for all relationship types
   if (Object.keys(relationshipsFields).includes('GraphDbProject')) {
     includedLabels.push('project')
   }
@@ -81,7 +79,7 @@ export default async (
       relatedUrlFilters.push(`has('relatedUrl', 'subtype', within("${relatedUrlSubtype.join('","')}"))`)
     }
 
-    // If both type and subtype are provided we need to AND those params together
+    // If both type and subtype are provided we need to AND those params together, while still ORing the other relationship vertex types
     if (relatedUrlType && relatedUrlSubtype) {
       relatedUrlFilters.push(`
         and(
@@ -94,7 +92,6 @@ export default async (
     // Need to OR the relatedUrl filters with the other labels requested
     const otherLabels = includedLabels.filter((label) => label !== 'relatedUrl')
     if (relationshipTypeRequested) {
-      // Include all relationship types when relationshipType is requested
       filters = `
       .or(
         ${relatedUrlFilters.join()},
@@ -130,9 +127,11 @@ export default async (
     .V()
     .has('collection', 'id', '${conceptId}')
     .has('permittedGroups', within(${userGroups}))
-    .both()
+    .bothE()
+    .otherV()
     ${filters}
-    .both()
+    .bothE()
+    .otherV()
     .hasLabel('collection')
     .has('permittedGroups', within(${userGroups}))
     .has('id', neq('${conceptId}'))
@@ -226,14 +225,15 @@ export default async (
 
         const { '@value': objectValueList } = objects
 
-        // The following describes the indices inside objectValueList:
-        // When using .both():
+        // The following describes the indices inside objectValueList (all relationship types follow this pattern):
         // objectValueList[0] is starting collection vertex
-        // objectValueList[1] is relationship vertex (project, platformInstrument, relatedUrl, citation, scienceKeyword)
-        // objectValueList[2] is related collection vertex
+        // objectValueList[1] is the edge going out of the starting collection vertex
+        // objectValueList[2] is relationship vertex (project, platformInstrument, scienceKeyword, relatedUrl, citation)
+        // objectValueList[3] is the edge going out of the relationship vertex
+        // objectValueList[4] is related collection vertex
 
-        // Parse the relationship vertex (objectValueList[1]) for values
-        const { '@value': relationshipVertexMap } = objectValueList[1]
+        // Parse the relationship vertex (objectValueList[2]) for values
+        const { '@value': relationshipVertexMap } = objectValueList[2]
         const relationshipVertexPairs = chunk(relationshipVertexMap, 2)
         let relationshipLabel
         const relationshipVertexValues = {}
@@ -259,8 +259,8 @@ export default async (
 
         relationshipsArray.push(relationshipVertexValues)
 
-        // Parse the related collection vertex (objectValueList[2]) for values
-        const { '@value': relatedCollectionVertexMap } = objectValueList[2]
+        // Parse the related collection vertex (objectValueList[4]) for values
+        const { '@value': relatedCollectionVertexMap } = objectValueList[4]
         const relatedCollectionVertexPairs = chunk(relatedCollectionVertexMap, 2)
         relatedCollectionVertexPairs.forEach((pair) => {
           const [key, value] = pair

@@ -2,27 +2,20 @@ export default {
   count: 1,
   items: [
     {
-      id: 'C1200000013-PROV3',
-      providerId: 'PROV3',
-      permittedGroups: {
-        '@type': 'g:List',
-        '@value': [
-          'guest',
-          'registered'
-        ]
-      },
-      abstract: 'This is a sample collection for SHORT_NAME_1_1747953491 created at 2025-05-22T22:38:11.248Z',
-      title: 'Entry Title 1 1747953491',
-      shortName: 'SHORT_NAME_1_1747953491',
-      doi: '10.5067/TestSHORT_NAME_1_1747953491_1747953491',
+      providerId: 'PROV2',
+      permittedGroups: 'guest',
+      id: 'C1200000013-PROV2',
+      abstract: 'This is a sample collection for SHORT_NAME_1_1748885314 created at 2025-06-02T17:28:34.091Z',
+      title: 'Entry Title 1 1748885314',
+      shortName: 'SHORT_NAME_1_1748885314',
+      doi: '10.5067/TestSHORT_NAME_1_1748885314_1748885314',
       relationships: [
         {
           relationshipType: 'scienceKeyword',
-          variableLevel1: 'CARBON MONOXIDE',
-          level: 'variable'
+          level: 'term',
+          value: 'INSECTS'
         }
-      ],
-      relationshipCount: 1
+      ]
     }
   ]
 }

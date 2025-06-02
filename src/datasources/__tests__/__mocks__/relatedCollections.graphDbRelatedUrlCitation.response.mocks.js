@@ -1,5 +1,5 @@
 export default {
-  count: 1,
+  count: 7,
   items: [
     {
       providerId: 'PROV3',
@@ -10,6 +10,12 @@ export default {
       shortName: 'SHORT_NAME_5_1748885319',
       doi: '10.5067/TestSHORT_NAME_5_1748885319_1748885319',
       relationships: [
+        {
+          relationshipType: 'relatedUrl',
+          description: 'Service capabilities document',
+          type: 'GET CAPABILITIES',
+          url: 'https://data.nasa.gov/lpdaac/services?request=GetCapabilities'
+        },
         {
           relationshipType: 'citation',
           identifier: '10.5067/SAMPLE/DATA.3.1748885323',
