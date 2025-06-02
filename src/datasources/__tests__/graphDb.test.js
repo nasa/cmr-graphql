@@ -244,7 +244,10 @@ describe('graphDb', () => {
             const hasOtherLabels = gremlinQuery.includes("hasLabel('project','platformInstrument','citation','scienceKeyword')")
             const hasOtherV = gremlinQuery.includes('.otherV()')
 
-            return hasOrClause && hasAndClause && hasRelatedUrlType && hasRelatedUrlSubtype && hasOtherLabels && hasOtherV
+            return (
+              hasOrClause && hasAndClause && hasRelatedUrlType
+              && hasRelatedUrlSubtype && hasOtherLabels && hasOtherV
+            )
           })
           .reply(200, relatedCollectionsRelatedUrlTypeAndSubtypeGraphdbResponseMocks)
 
@@ -936,7 +939,7 @@ describe('graphDb', () => {
         }
       })
 
-      test('returns a result with only all types', async () => {
+      test('returns a result with all types', async () => {
         const getUserGroups = vi.spyOn(getUserPermittedGroups, 'getUserPermittedGroups')
         getUserGroups.mockImplementationOnce(() => (''))
 
@@ -947,10 +950,10 @@ describe('graphDb', () => {
 
             const hasOrClause = gremlinQuery.includes('.or(')
             const hasRelatedUrlType = gremlinQuery.includes("has('relatedUrl', 'type', within('VIEW RELATED INFORMATION'))")
-            const hasAllTypesExceptCitationScienceKeyword = gremlinQuery.includes("hasLabel('project','platformInstrument','citation','scienceKeyword')")
+            const hasAllTypes = gremlinQuery.includes("hasLabel('project','platformInstrument','citation','scienceKeyword')")
             const hasOtherV = gremlinQuery.includes('.otherV()')
 
-            return hasOrClause && hasRelatedUrlType && hasAllTypesExceptCitationScienceKeyword && hasOtherV
+            return hasOrClause && hasRelatedUrlType && hasAllTypes && hasOtherV
           })
           .reply(200, relatedCollectionsGraphDbRelatedUrlRelationshipTypeGraphdbResponseMocks)
 
