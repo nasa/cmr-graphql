@@ -36,6 +36,7 @@ dockerRun() {
     -e "DOCKER_DEFAULT_PLATFORM=linux/amd64" \
     -e "DRAFT_MMT_ROOT_URL=$bamboo_DRAFT_MMT_ROOT_URL" \
     -e "EDL_CLIENT_ID=$bamboo_EDL_CLIENT_ID" \
+    -e "EDL_UID=$bamboo_EDL_UID" \
     -e "EDL_JWK=$bamboo_EDL_JWK" \
     -e "EDL_KEY_ID=$bamboo_EDL_KEY_ID" \
     -e "EDL_PASSWORD=$bamboo_EDL_PASSWORD" \
