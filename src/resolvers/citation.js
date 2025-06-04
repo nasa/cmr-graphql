@@ -14,7 +14,11 @@ export default {
     },
     citation: async (source, args, context, info) => {
       const { dataSources } = context
-      const result = await dataSources.citationSourceFetch(args, context, parseResolveInfo(info))
+      const result = await dataSources.citationSourceFetch(
+        args,
+        context,
+        parseResolveInfo(info)
+      )
 
       const [firstResult] = result
 
