@@ -5,6 +5,7 @@ import association from './association.graphql'
 import collection from './collection.graphql'
 import collectionDraft from './collectionDraft.graphql'
 import collectionDraftProposal from './collectionDraftProposal.graphql'
+import citation from './citation.graphql'
 import dataQualitySummary from './dataQualitySummary.graphql'
 import draft from './draft.graphql'
 import granule from './granule.graphql'
@@ -32,6 +33,7 @@ export default mergeTypeDefs(
     collection,
     collectionDraft,
     collectionDraftProposal,
+    citation,
     dataQualitySummary,
     draft,
     granule,
