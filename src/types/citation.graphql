@@ -1,5 +1,5 @@
 type Citation {
-  "The name of the cited The name of the cited resource"
+  "The name of the cited resource"
   name: String
 
   "The identifier for the resource, e.g., DOI, ISBN, ARK"
