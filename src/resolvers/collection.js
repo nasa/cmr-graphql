@@ -168,6 +168,21 @@ export default {
         ...handlePagingParams(args, dataQualitySummaryConceptIds.length)
       }, context, parseResolveInfo(info))
     },
+    associatedCitations: async (source, args, context, info) => {
+      const { dataSources } = context
+      const { conceptId } = source
+
+      // If the concept being returned is a draft, there will be no associations,
+      // return null to avoid an extra call to CMR
+      if (isDraftConceptId(conceptId, 'collection')) return null
+
+      return dataSources.graphDbAssociatedCitations(
+        source,
+        args,
+        context,
+        parseResolveInfo(info)
+      )
+    },
     duplicateCollections: async (source, args, context) => {
       const { dataSources } = context
 

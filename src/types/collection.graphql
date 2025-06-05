@@ -445,6 +445,53 @@ type Collection {
     "dataQualitySummary query parameters"
     params: DataQualitySummariesInput
   ): DataQualitySummaryList
+
+  "Returns the list of associated citations."
+associatedCitations(
+    "Associated citations query parameters"
+    params: AssociatedCitationsInput
+
+    "Cursor for pagination"
+    cursor: String @deprecated(reason: "Use params.cursor")
+
+    "Number of citations to return"
+    limit: Int @deprecated(reason: "Use params.limit")
+
+    "Offset for pagination"
+    offset: Int @deprecated(reason: "Use params.offset")
+
+    "Depth of citation association traversal (1-3)"
+    depth: Int @deprecated(reason: "Use params.depth")
+
+    "Filter by identifier type"
+    identifierType: [String] @deprecated(reason: "Use params.identifierType")
+
+    "Filter by provider ID"
+    providerId: [String] @deprecated(reason: "Use params.providerId")
+  ): CitationList
+}
+
+input AssociatedCitationsInput {
+  "Cursor for pagination"
+  cursor: String
+  
+  "Number of citations to return"
+  limit: Int
+  
+  "Offset for pagination" 
+  offset: Int
+  
+  "Depth of citation association traversal (1-3)"
+  depth: Int
+  
+  "Filter by identifier type"
+  identifierType: [String]
+
+  "Filter by relationship type"
+  relationshipType: [String]
+  
+  "Filter by provider ID"
+  providerId: [String]
 }
 
 type DuplicateCollection {
