@@ -23,6 +23,12 @@ import relatedCollectionsRelatedUrlTypeResponseMocks from './__mocks__/relatedCo
 import relatedCollectionsRelationshipTypeGraphdbResponseMocks from './__mocks__/relatedCollections.relationshipType.graphdbResponse.mocks'
 import relatedCollectionsRelationshipTypeResponseMocks from './__mocks__/relatedCollections.relationshipType.response.mocks'
 import relatedCollectionsResponseEmptyMocks from './__mocks__/relatedCollections.response.empty.mocks'
+import relatedCollectionsGraphDbCitationGraphdbResponseMocks from './__mocks__/relatedCollections.graphDbCitation.graphdbResponse.mocks'
+import relatedCollectionsGraphDbCitationResponseMocks from './__mocks__/relatedCollections.graphDbCitation.response.mocks'
+import relatedCollectionsGraphDbScienceKeywordGraphdbResponseMocks from './__mocks__/relatedCollections.graphDbScienceKeyword.graphdbResponse.mocks'
+import relatedCollectionsGraphDbScienceKeywordResponseMocks from './__mocks__/relatedCollections.graphDbScienceKeyword.response.mocks'
+import relatedCollectionsGraphDbRelatedUrlCitationGraphdbResponseMocks from './__mocks__/relatedCollections.graphDbRelatedUrlCitation.graphdbResponse.mocks'
+import relatedCollectionsGraphDbRelatedUrlCitationResponseMocks from './__mocks__/relatedCollections.graphDbRelatedUrlCitation.response.mocks'
 import * as getUserPermittedGroups from '../../utils/getUserPermittedGroups'
 
 let parsedInfo
@@ -149,10 +155,17 @@ describe('graphDb', () => {
         getUserGroups.mockImplementationOnce(() => (''))
 
         nock(/example-graphdb/)
-          .post(
-            () => true,
-            /\.or\(.+has\('relatedUrl', 'type', within\('VIEW RELATED INFORMATION'\)\),.+hasLabel\('project','platformInstrument'\)/
-          )
+          .post('/', (body) => {
+            const parsedBody = typeof body === 'string' ? JSON.parse(body) : body
+            const gremlinQuery = parsedBody?.gremlin || ''
+
+            const hasOrClause = gremlinQuery.includes('.or(')
+            const hasRelatedUrlType = gremlinQuery.includes("has('relatedUrl', 'type', within('VIEW RELATED INFORMATION'))")
+            const hasAllTypes = gremlinQuery.includes("hasLabel('project','platformInstrument','citation','scienceKeyword')")
+            const hasOtherV = gremlinQuery.includes('.otherV()')
+
+            return hasOrClause && hasRelatedUrlType && hasAllTypes && hasOtherV
+          })
           .reply(200, relatedCollectionsRelatedUrlTypeGraphdbResponseMocks)
 
         const response = await graphDbDatasource(
@@ -181,10 +194,17 @@ describe('graphDb', () => {
         getUserGroups.mockImplementationOnce(() => (''))
 
         nock(/example-graphdb/)
-          .post(
-            () => true,
-            /\.or\(.+has\('relatedUrl', 'subtype', within\(\\"USER'S GUIDE\\"\)\),.+hasLabel\('project','platformInstrument'\)/
-          )
+          .post('/', (body) => {
+            const parsedBody = typeof body === 'string' ? JSON.parse(body) : body
+            const gremlinQuery = parsedBody?.gremlin || ''
+
+            const hasOrClause = gremlinQuery.includes('.or(')
+            const hasRelatedUrlSubtype = gremlinQuery.includes('has(\'relatedUrl\', \'subtype\', within("USER\'S GUIDE"))')
+            const hasOtherLabels = gremlinQuery.includes("hasLabel('project','platformInstrument','citation','scienceKeyword')")
+            const hasOtherV = gremlinQuery.includes('.otherV()')
+
+            return hasOrClause && hasRelatedUrlSubtype && hasOtherLabels && hasOtherV
+          })
           .reply(200, relatedCollectionsRelatedUrlSubtypeGraphdbResponseMocks)
 
         const response = await graphDbDatasource(
@@ -213,10 +233,22 @@ describe('graphDb', () => {
         getUserGroups.mockImplementationOnce(() => (''))
 
         nock(/example-graphdb/)
-          .post(
-            () => true,
-            /\.or\(.+and\(.+has\('relatedUrl', 'type', within\('VIEW RELATED INFORMATION'\)\),.+has\('relatedUrl', 'subtype', within\(\\"USER'S GUIDE\\"\)\).+\).+hasLabel\('project','platformInstrument'\)/
-          )
+          .post('/', (body) => {
+            const parsedBody = typeof body === 'string' ? JSON.parse(body) : body
+            const gremlinQuery = parsedBody?.gremlin || ''
+
+            const hasOrClause = gremlinQuery.includes('.or(')
+            const hasAndClause = gremlinQuery.includes('and(')
+            const hasRelatedUrlType = gremlinQuery.includes("has('relatedUrl', 'type', within('VIEW RELATED INFORMATION'))")
+            const hasRelatedUrlSubtype = gremlinQuery.includes('has(\'relatedUrl\', \'subtype\', within("USER\'S GUIDE"))')
+            const hasOtherLabels = gremlinQuery.includes("hasLabel('project','platformInstrument','citation','scienceKeyword')")
+            const hasOtherV = gremlinQuery.includes('.otherV()')
+
+            return (
+              hasOrClause && hasAndClause && hasRelatedUrlType
+              && hasRelatedUrlSubtype && hasOtherLabels && hasOtherV
+            )
+          })
           .reply(200, relatedCollectionsRelatedUrlTypeAndSubtypeGraphdbResponseMocks)
 
         const response = await graphDbDatasource(
@@ -311,7 +343,15 @@ describe('graphDb', () => {
         getUserGroups.mockImplementationOnce(() => (''))
 
         nock(/example-graphdb/)
-          .post(() => true, /\.hasLabel\('project'\)/)
+          .post('/', (body) => {
+            const parsedBody = typeof body === 'string' ? JSON.parse(body) : body
+            const gremlinQuery = parsedBody?.gremlin || ''
+
+            const hasProjectLabel = gremlinQuery.includes(".hasLabel('project')")
+            const hasOtherV = gremlinQuery.includes('.otherV()')
+
+            return hasProjectLabel && hasOtherV
+          })
           .reply(200, relatedCollectionsGraphDbProjectGraphdbResponseMocks)
 
         const response = await graphDbDatasource(
@@ -408,7 +448,15 @@ describe('graphDb', () => {
         getUserGroups.mockImplementationOnce(() => (''))
 
         nock(/example-graphdb/)
-          .post(() => true, /\.hasLabel\('platformInstrument'\)/)
+          .post('/', (body) => {
+            const parsedBody = typeof body === 'string' ? JSON.parse(body) : body
+            const gremlinQuery = parsedBody?.gremlin || ''
+
+            const hasPlatformInstrumentLabel = gremlinQuery.includes(".hasLabel('platformInstrument')")
+            const hasOtherV = gremlinQuery.includes('.otherV()')
+
+            return hasPlatformInstrumentLabel && hasOtherV
+          })
           .reply(200, relatedCollectionsGraphDbPlatformInstrumentGraphdbResponseMocks)
 
         const response = await graphDbDatasource(
@@ -517,7 +565,15 @@ describe('graphDb', () => {
         getUserGroups.mockImplementationOnce(() => (''))
 
         nock(/example-graphdb/)
-          .post(() => true, /\.hasLabel\('relatedUrl'\)/)
+          .post('/', (body) => {
+            const parsedBody = typeof body === 'string' ? JSON.parse(body) : body
+            const gremlinQuery = parsedBody?.gremlin || ''
+
+            const hasRelatedUrlLabel = gremlinQuery.includes(".hasLabel('relatedUrl')")
+            const hasOtherV = gremlinQuery.includes('.otherV()')
+
+            return hasRelatedUrlLabel && hasOtherV
+          })
           .reply(200, relatedCollectionsGraphDbRelatedUrlGraphdbResponseMocks)
 
         const response = await graphDbDatasource(
@@ -629,10 +685,15 @@ describe('graphDb', () => {
         getUserGroups.mockImplementationOnce(() => (''))
 
         nock(/example-graphdb/)
-          .post(
-            () => true,
-            /\.has\('relatedUrl', 'type', within\('VIEW RELATED INFORMATION'\)\)/
-          )
+          .post('/', (body) => {
+            const parsedBody = typeof body === 'string' ? JSON.parse(body) : body
+            const gremlinQuery = parsedBody?.gremlin || ''
+
+            const hasRelatedUrlType = gremlinQuery.includes("has('relatedUrl', 'type', within('VIEW RELATED INFORMATION'))")
+            const hasOtherV = gremlinQuery.includes('.otherV()')
+
+            return hasRelatedUrlType && hasOtherV
+          })
           .reply(200, relatedCollectionsGraphDbRelatedUrlGraphdbResponseMocks)
 
         const response = await graphDbDatasource(
@@ -753,10 +814,17 @@ describe('graphDb', () => {
         getUserGroups.mockImplementationOnce(() => (''))
 
         nock(/example-graphdb/)
-          .post(
-            () => true,
-            /\.or\(.+has\('relatedUrl', 'type', within\('VIEW RELATED INFORMATION'\)\),.+hasLabel\('project'\)/
-          )
+          .post('/', (body) => {
+            const parsedBody = typeof body === 'string' ? JSON.parse(body) : body
+            const gremlinQuery = parsedBody?.gremlin || ''
+
+            const hasOrClause = gremlinQuery.includes('.or(')
+            const hasRelatedUrlType = gremlinQuery.includes("has('relatedUrl', 'type', within('VIEW RELATED INFORMATION'))")
+            const hasProjectLabel = gremlinQuery.includes("hasLabel('project')")
+            const hasOtherV = gremlinQuery.includes('.otherV()')
+
+            return hasOrClause && hasRelatedUrlType && hasProjectLabel && hasOtherV
+          })
           .reply(200, relatedCollectionsGraphDbRelatedUrlProjectGraphdbResponseMocks)
 
         const response = await graphDbDatasource(
@@ -871,15 +939,22 @@ describe('graphDb', () => {
         }
       })
 
-      test('returns a result with only all types', async () => {
+      test('returns a result with all types', async () => {
         const getUserGroups = vi.spyOn(getUserPermittedGroups, 'getUserPermittedGroups')
         getUserGroups.mockImplementationOnce(() => (''))
 
         nock(/example-graphdb/)
-          .post(
-            () => true,
-            /\.or\(.+has\('relatedUrl', 'type', within\('VIEW RELATED INFORMATION'\)\),.+hasLabel\('project','platformInstrument'\)/
-          )
+          .post('/', (body) => {
+            const parsedBody = typeof body === 'string' ? JSON.parse(body) : body
+            const gremlinQuery = parsedBody?.gremlin || ''
+
+            const hasOrClause = gremlinQuery.includes('.or(')
+            const hasRelatedUrlType = gremlinQuery.includes("has('relatedUrl', 'type', within('VIEW RELATED INFORMATION'))")
+            const hasAllTypes = gremlinQuery.includes("hasLabel('project','platformInstrument','citation','scienceKeyword')")
+            const hasOtherV = gremlinQuery.includes('.otherV()')
+
+            return hasOrClause && hasRelatedUrlType && hasAllTypes && hasOtherV
+          })
           .reply(200, relatedCollectionsGraphDbRelatedUrlRelationshipTypeGraphdbResponseMocks)
 
         const response = await graphDbDatasource(
@@ -899,6 +974,353 @@ describe('graphDb', () => {
         )
 
         expect(response).toEqual(relatedCollectionsGraphDbRelatedUrlRelationshipTypeResponseMocks)
+      })
+    })
+
+    describe('When only GraphDbCitation is requested', () => {
+      beforeEach(() => {
+        parsedInfo = {
+          name: 'relatedCollections',
+          alias: 'relatedCollections',
+          args: {
+            limit: 1
+          },
+          fieldsByTypeName: {
+            RelatedCollectionsList: {
+              count: {
+                name: 'count',
+                alias: 'count',
+                args: {},
+                fieldsByTypeName: {}
+              },
+              items: {
+                name: 'items',
+                alias: 'items',
+                args: {},
+                fieldsByTypeName: {
+                  RelatedCollection: {
+                    id: {
+                      name: 'id',
+                      alias: 'id',
+                      args: {},
+                      fieldsByTypeName: {}
+                    },
+                    title: {
+                      name: 'title',
+                      alias: 'title',
+                      args: {},
+                      fieldsByTypeName: {}
+                    },
+                    doi: {
+                      name: 'doi',
+                      alias: 'doi',
+                      args: {},
+                      fieldsByTypeName: {}
+                    },
+                    relationships: {
+                      name: 'relationships',
+                      alias: 'relationships',
+                      args: {},
+                      fieldsByTypeName: {
+                        Relationship: {},
+                        GraphDbCitation: {
+                          title: {
+                            name: 'title',
+                            alias: 'title',
+                            args: {},
+                            fieldsByTypeName: {}
+                          },
+                          id: {
+                            name: 'id',
+                            alias: 'id',
+                            args: {},
+                            fieldsByTypeName: {}
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      })
+
+      test('returns a result with only citation types', async () => {
+        const getUserGroups = vi.spyOn(getUserPermittedGroups, 'getUserPermittedGroups')
+        getUserGroups.mockImplementationOnce(() => (''))
+
+        nock(/example-graphdb/)
+          .post('/', (body) => {
+            const parsedBody = typeof body === 'string' ? JSON.parse(body) : body
+            const gremlinQuery = parsedBody?.gremlin || ''
+
+            const hasCitationLabel = gremlinQuery.includes(".hasLabel('citation')")
+            const hasOtherV = gremlinQuery.includes('.otherV()')
+
+            return hasCitationLabel && hasOtherV
+          })
+          .reply(200, relatedCollectionsGraphDbCitationGraphdbResponseMocks)
+
+        const response = await graphDbDatasource(
+          { conceptId: 'C100000-EDSC' },
+          {
+            limit: 1
+          },
+          {
+            headers: {
+              'Client-Id': 'eed-test-graphql',
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            },
+            edlUsername: 'edlUsername'
+          },
+          parsedInfo
+        )
+
+        expect(response).toEqual(relatedCollectionsGraphDbCitationResponseMocks)
+      })
+    })
+
+    describe('When only GraphDbScienceKeyword is requested', () => {
+      beforeEach(() => {
+        parsedInfo = {
+          name: 'relatedCollections',
+          alias: 'relatedCollections',
+          args: {
+            limit: 1
+          },
+          fieldsByTypeName: {
+            RelatedCollectionsList: {
+              count: {
+                name: 'count',
+                alias: 'count',
+                args: {},
+                fieldsByTypeName: {}
+              },
+              items: {
+                name: 'items',
+                alias: 'items',
+                args: {},
+                fieldsByTypeName: {
+                  RelatedCollection: {
+                    id: {
+                      name: 'id',
+                      alias: 'id',
+                      args: {},
+                      fieldsByTypeName: {}
+                    },
+                    title: {
+                      name: 'title',
+                      alias: 'title',
+                      args: {},
+                      fieldsByTypeName: {}
+                    },
+                    doi: {
+                      name: 'doi',
+                      alias: 'doi',
+                      args: {},
+                      fieldsByTypeName: {}
+                    },
+                    relationships: {
+                      name: 'relationships',
+                      alias: 'relationships',
+                      args: {},
+                      fieldsByTypeName: {
+                        Relationship: {},
+                        GraphDbScienceKeyword: {
+                          value: {
+                            name: 'value',
+                            alias: 'value',
+                            args: {},
+                            fieldsByTypeName: {}
+                          },
+                          level: {
+                            name: 'level',
+                            alias: 'level',
+                            args: {},
+                            fieldsByTypeName: {}
+                          },
+                          variableLevel1: {
+                            name: 'variableLevel1',
+                            alias: 'variableLevel1',
+                            args: {},
+                            fieldsByTypeName: {}
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      })
+
+      test('returns a result with only scienceKeyword types', async () => {
+        const getUserGroups = vi.spyOn(getUserPermittedGroups, 'getUserPermittedGroups')
+        getUserGroups.mockImplementationOnce(() => (''))
+
+        nock(/example-graphdb/)
+          .post('/', (body) => {
+            const parsedBody = typeof body === 'string' ? JSON.parse(body) : body
+            const gremlinQuery = parsedBody?.gremlin || ''
+
+            const hasScienceKeywordLabel = gremlinQuery.includes(".hasLabel('scienceKeyword')")
+            const hasOtherV = gremlinQuery.includes('.otherV()')
+
+            return hasScienceKeywordLabel && hasOtherV
+          })
+          .reply(200, relatedCollectionsGraphDbScienceKeywordGraphdbResponseMocks)
+
+        const response = await graphDbDatasource(
+          { conceptId: 'C100000-EDSC' },
+          {
+            limit: 1
+          },
+          {
+            headers: {
+              'Client-Id': 'eed-test-graphql',
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            },
+            edlUsername: 'edlUsername'
+          },
+          parsedInfo
+        )
+
+        expect(response).toEqual(relatedCollectionsGraphDbScienceKeywordResponseMocks)
+      })
+    })
+
+    describe('When multiple relationship types including new ones are requested', () => {
+      beforeEach(() => {
+        parsedInfo = {
+          name: 'relatedCollections',
+          alias: 'relatedCollections',
+          args: {
+            limit: 1
+          },
+          fieldsByTypeName: {
+            RelatedCollectionsList: {
+              count: {
+                name: 'count',
+                alias: 'count',
+                args: {},
+                fieldsByTypeName: {}
+              },
+              items: {
+                name: 'items',
+                alias: 'items',
+                args: {},
+                fieldsByTypeName: {
+                  RelatedCollection: {
+                    id: {
+                      name: 'id',
+                      alias: 'id',
+                      args: {},
+                      fieldsByTypeName: {}
+                    },
+                    title: {
+                      name: 'title',
+                      alias: 'title',
+                      args: {},
+                      fieldsByTypeName: {}
+                    },
+                    doi: {
+                      name: 'doi',
+                      alias: 'doi',
+                      args: {},
+                      fieldsByTypeName: {}
+                    },
+                    relationships: {
+                      name: 'relationships',
+                      alias: 'relationships',
+                      args: {},
+                      fieldsByTypeName: {
+                        Relationship: {},
+                        GraphDbRelatedUrl: {
+                          url: {
+                            name: 'url',
+                            alias: 'url',
+                            args: {},
+                            fieldsByTypeName: {}
+                          },
+                          description: {
+                            name: 'description',
+                            alias: 'description',
+                            args: {},
+                            fieldsByTypeName: {}
+                          },
+                          type: {
+                            name: 'type',
+                            alias: 'type',
+                            args: {},
+                            fieldsByTypeName: {}
+                          },
+                          subtype: {
+                            name: 'subtype',
+                            alias: 'subtype',
+                            args: {},
+                            fieldsByTypeName: {}
+                          }
+                        },
+                        GraphDbCitation: {
+                          title: {
+                            name: 'title',
+                            alias: 'title',
+                            args: {},
+                            fieldsByTypeName: {}
+                          },
+                          id: {
+                            name: 'id',
+                            alias: 'id',
+                            args: {},
+                            fieldsByTypeName: {}
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      })
+
+      test('returns a result with relatedUrl and citation types', async () => {
+        const getUserGroups = vi.spyOn(getUserPermittedGroups, 'getUserPermittedGroups')
+        getUserGroups.mockImplementationOnce(() => (''))
+
+        nock(/example-graphdb/)
+          .post('/', (body) => {
+            const parsedBody = typeof body === 'string' ? JSON.parse(body) : body
+            const gremlinQuery = parsedBody?.gremlin || ''
+
+            const hasProjectCitationLabels = gremlinQuery.includes(".hasLabel('relatedUrl','citation')")
+            const hasOtherV = gremlinQuery.includes('.otherV()')
+
+            return hasProjectCitationLabels && hasOtherV
+          })
+          .reply(200, relatedCollectionsGraphDbRelatedUrlCitationGraphdbResponseMocks)
+
+        const response = await graphDbDatasource(
+          { conceptId: 'C100000-EDSC' },
+          {
+            limit: 1
+          },
+          {
+            headers: {
+              'Client-Id': 'eed-test-graphql',
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            },
+            edlUsername: 'edlUsername'
+          },
+          parsedInfo
+        )
+
+        expect(response).toEqual(relatedCollectionsGraphDbRelatedUrlCitationResponseMocks)
       })
     })
 
@@ -965,12 +1387,20 @@ describe('graphDb', () => {
         }
       })
 
-      test('returns a result with only all relationship types', async () => {
+      test('returns a result with all relationship types', async () => {
         const getUserGroups = vi.spyOn(getUserPermittedGroups, 'getUserPermittedGroups')
         getUserGroups.mockImplementationOnce(() => (''))
 
         nock(/example-graphdb/)
-          .post(() => true, /\.hasLabel\('project','platformInstrument','relatedUrl'\)/)
+          .post('/', (body) => {
+            const parsedBody = typeof body === 'string' ? JSON.parse(body) : body
+            const gremlinQuery = parsedBody?.gremlin || ''
+
+            const hasAllRelationshipTypes = gremlinQuery.includes(".hasLabel('project','platformInstrument','relatedUrl','citation','scienceKeyword')")
+            const hasOtherV = gremlinQuery.includes('.otherV()')
+
+            return hasAllRelationshipTypes && hasOtherV
+          })
           .reply(200, relatedCollectionsRelationshipTypeGraphdbResponseMocks)
 
         const response = await graphDbDatasource(
@@ -991,89 +1421,96 @@ describe('graphDb', () => {
         expect(response).toEqual(relatedCollectionsRelationshipTypeResponseMocks)
       })
     })
-  })
 
-  describe('When relationships aren\'t requested', () => {
-    beforeEach(() => {
-      parsedInfo = {
-        name: 'relatedCollections',
-        alias: 'relatedCollections',
-        args: {
-          limit: 1
-        },
-        fieldsByTypeName: {
-          RelatedCollectionsList: {
-            count: {
-              name: 'count',
-              alias: 'count',
-              args: {},
-              fieldsByTypeName: {}
-            },
-            items: {
-              name: 'items',
-              alias: 'items',
-              args: {},
-              fieldsByTypeName: {
-                RelatedCollection: {
-                  id: {
-                    name: 'id',
-                    alias: 'id',
-                    args: {},
-                    fieldsByTypeName: {}
-                  },
-                  title: {
-                    name: 'title',
-                    alias: 'title',
-                    args: {},
-                    fieldsByTypeName: {}
+    describe('When relationships aren\'t requested', () => {
+      beforeEach(() => {
+        parsedInfo = {
+          name: 'relatedCollections',
+          alias: 'relatedCollections',
+          args: {
+            limit: 1
+          },
+          fieldsByTypeName: {
+            RelatedCollectionsList: {
+              count: {
+                name: 'count',
+                alias: 'count',
+                args: {},
+                fieldsByTypeName: {}
+              },
+              items: {
+                name: 'items',
+                alias: 'items',
+                args: {},
+                fieldsByTypeName: {
+                  RelatedCollection: {
+                    id: {
+                      name: 'id',
+                      alias: 'id',
+                      args: {},
+                      fieldsByTypeName: {}
+                    },
+                    title: {
+                      name: 'title',
+                      alias: 'title',
+                      args: {},
+                      fieldsByTypeName: {}
+                    }
                   }
                 }
               }
             }
           }
         }
-      }
-    })
+      })
 
-    test('returns a result with all relationship types', async () => {
-      const getUserGroups = vi.spyOn(getUserPermittedGroups, 'getUserPermittedGroups')
-      getUserGroups.mockImplementationOnce(() => (''))
+      test('returns a result with all relationship types', async () => {
+        const getUserGroups = vi.spyOn(getUserPermittedGroups, 'getUserPermittedGroups')
+        getUserGroups.mockImplementationOnce(() => (''))
 
-      nock(/example-graphdb/)
-        .post(() => true, /\.hasLabel\('project','platformInstrument','relatedUrl'\)/)
-        .reply(200, relatedCollectionsNoRelationshipsGraphDbResponseMock)
+        nock(/example-graphdb/)
+          .post('/', (body) => {
+            const parsedBody = typeof body === 'string' ? JSON.parse(body) : body
+            const gremlinQuery = parsedBody?.gremlin || ''
 
-      const response = await graphDbDatasource(
-        { conceptId: 'C100000-EDSC' },
-        {
-          limit: 1
-        },
-        {
-          headers: {
-            'Client-Id': 'eed-test-graphql',
-            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            const hasAllRelationshipTypes = gremlinQuery.includes(".hasLabel('project','platformInstrument','relatedUrl','citation','scienceKeyword')")
+            const hasOtherV = gremlinQuery.includes('.otherV()')
+
+            return hasAllRelationshipTypes && hasOtherV
+          })
+          .reply(200, relatedCollectionsNoRelationshipsGraphDbResponseMock)
+
+        const response = await graphDbDatasource(
+          { conceptId: 'C100000-EDSC' },
+          {
+            limit: 1
           },
-          edlUsername: 'edlUsername'
-        },
-        parsedInfo
-      )
+          {
+            headers: {
+              'Client-Id': 'eed-test-graphql',
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            },
+            edlUsername: 'edlUsername'
+          },
+          parsedInfo
+        )
 
-      expect(response).toEqual(relatedCollectionsNoRelationshipsResponseMock)
+        expect(response).toEqual(relatedCollectionsNoRelationshipsResponseMock)
+      })
     })
   })
 
   describe('Testing permitted groups on related collections', () => {
     test('Testing that permitted groups is in the post request', async () => {
       nock(/example-graphdb/)
-        .post(() => true, (body) => {
-          const { gremlin: gremlinQuery } = body
+        .post('/', (body) => {
+          const parsedBody = typeof body === 'string' ? JSON.parse(body) : body
+          const gremlinQuery = parsedBody?.gremlin || ''
 
-          const correctGremlin = gremlinQuery.includes('within(\'groupid1\',\'groupid2\',\'registered\',\'guest\')')
-          if (correctGremlin) {
-            return true
-          }
+          const hasCorrectPermittedGroups = gremlinQuery.includes('within(\'groupid1\',\'groupid2\',\'registered\',\'guest\')')
+          const hasOtherV = gremlinQuery.includes('.otherV()')
 
-          return false
+          return hasCorrectPermittedGroups && hasOtherV
         })
         .reply(200, relatedCollectionsRelationshipTypeGraphdbResponseMocks)
 
@@ -1121,16 +1558,14 @@ describe('graphDb', () => {
 
     test('Mocking the response for a client not being in any groups, and retrieving no related collections', async () => {
       nock(/example-graphdb/)
-        .post(() => true, (body) => {
-          const { gremlin: gremlinQuery } = body
+        .post('/', (body) => {
+          const parsedBody = typeof body === 'string' ? JSON.parse(body) : body
+          const gremlinQuery = parsedBody?.gremlin || ''
 
-          const correctGremlin = gremlinQuery.includes('within(\'registered\',\'guest\')')
+          const hasCorrectPermittedGroups = gremlinQuery.includes('within(\'registered\',\'guest\')')
+          const hasOtherV = gremlinQuery.includes('.otherV()')
 
-          if (correctGremlin) {
-            return true
-          }
-
-          return false
+          return hasCorrectPermittedGroups && hasOtherV
         })
         .reply(200, relatedCollectionsResponseEmptyMocks)
 

@@ -27,6 +27,7 @@ const environment = {
   ursRootUrl: process.env.URS_ROOT_URL || 'https://sit.urs.earthdata.nasa.gov',
   dmmtSslCert: process.env.DMMT_SSL_CERT!,
   edlClientId: process.env.EDL_CLIENT_ID!,
+  edlUid: process.env.EDL_UID!,
   edlPassword: process.env.EDL_PASSWORD!,
   edlJwk: process.env.EDL_JWK!,
   edlKeyId: process.env.EDL_KEY_ID!,

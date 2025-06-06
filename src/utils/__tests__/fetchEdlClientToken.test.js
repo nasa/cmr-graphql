@@ -4,7 +4,7 @@ import fetchEdlClientToken from '../fetchEdlClientToken'
 
 beforeEach(() => {
   process.env = {
-    edlClientId: 'mock-client',
+    edlUid: 'mock-client',
     edlPassword: 'mock-password',
     ursRootUrl: 'https://example-urs.com'
   }

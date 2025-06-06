@@ -6,13 +6,13 @@ import axios from 'axios'
  */
 const fetchEdlClientToken = async () => {
   const {
-    edlClientId,
+    edlUid,
     edlPassword,
     ursRootUrl
   } = process.env
 
   const url = `${ursRootUrl}/oauth/token`
-  const authorizationHeader = `Basic ${Buffer.from(`${edlClientId}:${edlPassword}`).toString('base64')}`
+  const authorizationHeader = `Basic ${Buffer.from(`${edlUid}:${edlPassword}`).toString('base64')}`
 
   const response = await axios.post(url, 'grant_type=client_credentials', {
     headers: {

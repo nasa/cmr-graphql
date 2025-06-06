@@ -2894,18 +2894,14 @@ describe('Collection', () => {
                     doi
                     relationships {
                       relationshipType
-                      ... on GraphDbProject {
-                        name
+                      ... on GraphDbScienceKeyword {
+                        level
+                        value
+                        variableLevel1
                       }
-                      ... on GraphDbPlatformInstrument {
-                        platform
-                        instrument
-                      }
-                      ... on GraphDbRelatedUrl {
-                        url
-                        description
-                        type
-                        subtype
+                      ... on GraphDbCitation {
+                        title
+                        id
                       }
                     }
                   }
@@ -3224,6 +3220,26 @@ describe('Collection', () => {
 
         const result = resolveType({ relationshipType: 'platformInstrument' })
         expect(result).toEqual('GraphDbPlatformInstrument')
+      })
+    })
+
+    describe('When the object has the citation relationshipType', () => {
+      test('returns the correct type', () => {
+        const { Relationship: relationship } = resolvers
+        const { __resolveType: resolveType } = relationship
+
+        const result = resolveType({ relationshipType: 'citation' })
+        expect(result).toEqual('GraphDbCitation')
+      })
+    })
+
+    describe('When the object has the scienceKeyword relationshipType', () => {
+      test('returns the correct type', () => {
+        const { Relationship: relationship } = resolvers
+        const { __resolveType: resolveType } = relationship
+
+        const result = resolveType({ relationshipType: 'scienceKeyword' })
+        expect(result).toEqual('GraphDbScienceKeyword')
       })
     })
 

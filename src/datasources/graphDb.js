@@ -19,7 +19,6 @@ export default async (
   parsedInfo
 ) => {
   const { conceptId } = source
-
   const { edlUsername, headers } = context
 
   // Parse the request info to find the requested types in the query
@@ -57,6 +56,14 @@ export default async (
     includedLabels.push('relatedUrl')
   }
 
+  if (Object.keys(relationshipsFields).includes('GraphDbCitation')) {
+    includedLabels.push('citation')
+  }
+
+  if (Object.keys(relationshipsFields).includes('GraphDbScienceKeyword')) {
+    includedLabels.push('scienceKeyword')
+  }
+
   const relationshipTypeRequested = Object.keys(relationshipFields).includes('relationshipType')
 
   if (
@@ -88,7 +95,7 @@ export default async (
       filters = `
       .or(
         ${relatedUrlFilters.join()},
-        hasLabel('project','platformInstrument')
+        hasLabel('project','platformInstrument','citation','scienceKeyword')
       )
       `
     } else if (otherLabels.length > 0) {
@@ -103,7 +110,7 @@ export default async (
     }
   } else if (includedLabels.length === 0 || relationshipTypeRequested) {
     // If no relationship labels are included or if relationshipType was requested, filter by all relationships
-    filters = ".hasLabel('project','platformInstrument','relatedUrl')"
+    filters = ".hasLabel('project','platformInstrument','relatedUrl','citation','scienceKeyword')"
   } else {
     // Default to returning all values for those relationship labels that were requested
     filters = `
@@ -121,10 +128,10 @@ export default async (
     .has('collection', 'id', '${conceptId}')
     .has('permittedGroups', within(${userGroups}))
     .bothE()
-    .inV()
+    .otherV()
     ${filters}
     .bothE()
-    .outV()
+    .otherV()
     .hasLabel('collection')
     .has('permittedGroups', within(${userGroups}))
     .has('id', neq('${conceptId}'))
@@ -218,10 +225,10 @@ export default async (
 
         const { '@value': objectValueList } = objects
 
-        // The following describes the indices inside objectValueList:
+        // The following describes the indices inside objectValueList (all relationship types follow this pattern):
         // objectValueList[0] is starting collection vertex
         // objectValueList[1] is the edge going out of the starting collection vertex
-        // objectValueList[2] is relationship vertex (project, documenation, platformInstrument)
+        // objectValueList[2] is relationship vertex (project, platformInstrument, scienceKeyword, relatedUrl, citation)
         // objectValueList[3] is the edge going out of the relationship vertex
         // objectValueList[4] is related collection vertex
 

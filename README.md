@@ -63,7 +63,7 @@ CMR-GraphQL uses a few environment variables for configuring runtime options:
 |CMR_ROOT_URL||URL to ping when retrieving metadata from CMR e.g. https://cmr.earthdata.nasa.gov|
 |MMT_ROOT_URL||URL to ping when retrieving metadata from MMT e.g. https://mmt.earthdata.nasa.gov|
 |DRAFT_MMT_ROOT_URL||URL to ping when retrieving draft metadata from Draft MMT e.g. https://draftmmt.earthdata.nasa.gov|
-|EDL_KEY_ID, EDL_JWK, EDL_CLIENT_ID, EDL_PASSWORD||For facilitating EDL connection -- obtain these from a dev|
+|EDL_KEY_ID, EDL_JWK, EDL_CLIENT_ID, EDL_UID, EDL_PASSWORD||For facilitating EDL connection -- obtain these from a dev|
 
 ### Running in developement
 

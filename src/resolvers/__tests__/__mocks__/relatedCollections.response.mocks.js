@@ -5,483 +5,92 @@ export default {
         {
           conceptId: 'C100000-EDSC',
           relatedCollections: {
-            count: 21,
+            count: 7,
             items: [
               {
-                id: 'C1200400824-GHRC',
-                title: 'Infrared Global Geostationary Composite Demo 9',
-                doi: '10.5067/GHRC/AMSU-A/DATA303',
+                id: 'C1200000017-PROV3',
+                title: 'Entry Title 5 1748885319',
+                doi: '10.5067/TestSHORT_NAME_5_1748885319_1748885319',
                 relationships: [
                   {
-                    relationshipType: 'platformInstrument',
-                    platform: 'MTSAT-1R',
-                    instrument: 'VISSR'
+                    relationshipType: 'relatedUrl'
                   },
                   {
-                    relationshipType: 'platformInstrument',
-                    platform: 'GOES-8',
-                    instrument: 'VISSR'
-                  },
-                  {
-                    relationshipType: 'platformInstrument',
-                    platform: 'METEOSAT-7',
-                    instrument: 'VISSR'
-                  },
-                  {
-                    relationshipType: 'relatedUrl',
-                    url: 'https://doi.org/10.5067/9LNYIYOBNBR5',
-                    description: 'Another Related URL for Demo',
-                    type: 'VIEW RELATED INFORMATION',
-                    subtype: 'DATA RECIPE'
-                  },
-                  {
-                    relationshipType: 'relatedUrl',
-                    url: 'http://ghrc.nsstc.nasa.gov/uso/ds_docs/globalir/globalir_dataset.html',
-                    description: null,
-                    type: 'VIEW RELATED INFORMATION',
-                    subtype: "USER'S GUIDE"
+                    relationshipType: 'citation',
+                    title: 'Earth Science Dataset 3 - Research Publication 3',
+                    id: 'CIT1200000025-PROV1'
                   }
                 ]
               },
               {
-                id: 'C1200400803-GHRC',
-                title: 'Infrared Global Geostationary Composite Demo 7',
-                doi: '10.5067/GHRC/AMSU-A/DATA303',
+                id: 'C1200000019-PROV3',
+                title: 'Entry Title 7 1748885320',
+                doi: '10.5067/TestSHORT_NAME_7_1748885320_1748885320',
                 relationships: [
                   {
-                    relationshipType: 'platformInstrument',
-                    platform: 'MTSAT-1R',
-                    instrument: 'VISSR'
+                    relationshipType: 'relatedUrl'
                   },
                   {
-                    relationshipType: 'platformInstrument',
-                    platform: 'GOES-8',
-                    instrument: 'VISSR'
-                  },
-                  {
-                    relationshipType: 'platformInstrument',
-                    platform: 'METEOSAT-7',
-                    instrument: 'VISSR'
-                  },
-                  {
-                    relationshipType: 'relatedUrl',
-                    url: 'https://doi.org/10.5067/9LNYIYOBNBR5',
-                    description: 'Another Related URL for Demo',
-                    type: 'VIEW RELATED INFORMATION',
-                    subtype: 'DATA RECIPE'
-                  },
-                  {
-                    relationshipType: 'relatedUrl',
-                    url: 'http://ghrc.nsstc.nasa.gov/uso/ds_docs/globalir/globalir_dataset.html',
-                    description: null,
-                    type: 'VIEW RELATED INFORMATION',
-                    subtype: "USER'S GUIDE"
+                    relationshipType: 'platformInstrument'
                   }
                 ]
               },
               {
-                id: 'C1200400820-GHRC',
-                title: 'Infrared Global Geostationary Composite Demo 8',
-                doi: '10.5067/GHRC/AMSU-A/DATA303',
+                id: 'C1200000016-PROV1',
+                title: 'Entry Title 4 1748885318',
+                doi: '10.5067/TestSHORT_NAME_4_1748885318_1748885318',
                 relationships: [
                   {
-                    relationshipType: 'platformInstrument',
-                    platform: 'MTSAT-1R',
-                    instrument: 'VISSR'
+                    relationshipType: 'relatedUrl'
                   },
                   {
-                    relationshipType: 'platformInstrument',
-                    platform: 'GOES-8',
-                    instrument: 'VISSR'
-                  },
-                  {
-                    relationshipType: 'platformInstrument',
-                    platform: 'METEOSAT-7',
-                    instrument: 'VISSR'
-                  },
-                  {
-                    relationshipType: 'relatedUrl',
-                    url: 'https://doi.org/10.5067/9LNYIYOBNBR5',
-                    description: 'Another Related URL for Demo',
-                    type: 'VIEW RELATED INFORMATION',
-                    subtype: 'DATA RECIPE'
-                  },
-                  {
-                    relationshipType: 'relatedUrl',
-                    url: 'http://ghrc.nsstc.nasa.gov/uso/ds_docs/globalir/globalir_dataset.html',
-                    description: null,
-                    type: 'VIEW RELATED INFORMATION',
-                    subtype: "USER'S GUIDE"
+                    relationshipType: 'platformInstrument'
                   }
                 ]
               },
               {
-                id: 'C1200400933-GHRC',
-                title: 'Infrared Global Geostationary Composite Demo 010',
-                doi: '10.5067/GHRC/AMSU-A/DATA303',
+                id: 'C1200000013-PROV2',
+                title: 'Entry Title 1 1748885314',
+                doi: '10.5067/TestSHORT_NAME_1_1748885314_1748885314',
                 relationships: [
                   {
-                    relationshipType: 'platformInstrument',
-                    platform: 'METEOSAT-7',
-                    instrument: 'VISSR'
+                    relationshipType: 'relatedUrl'
                   },
                   {
-                    relationshipType: 'relatedUrl',
-                    url: 'https://doi.org/10.5067/9LNYIYOBNBR5',
-                    description: 'Another Related URL for Demo',
-                    type: 'VIEW RELATED INFORMATION',
-                    subtype: 'DATA RECIPE'
-                  },
-                  {
-                    relationshipType: 'relatedUrl',
-                    url: 'http://ghrc.nsstc.nasa.gov/uso/ds_docs/globalir/globalir_dataset.html',
-                    description: null,
-                    type: 'VIEW RELATED INFORMATION',
-                    subtype: "USER'S GUIDE"
-                  },
-                  {
-                    relationshipType: 'project',
-                    name: 'Project2'
-                  },
-                  {
-                    relationshipType: 'project',
-                    name: 'Project1'
+                    relationshipType: 'scienceKeyword',
+                    level: 'term',
+                    value: 'INSECTS',
+                    variableLevel1: null
                   }
                 ]
               },
               {
-                id: 'C1200400794-GHRC',
-                title: 'Infrared Global Geostationary Composite Demo 5',
-                doi: '10.5067/GHRC/AMSU-A/DATA303',
+                id: 'C1200000021-PROV3',
+                title: 'Entry Title 9 1748885321',
+                doi: '10.5067/TestSHORT_NAME_9_1748885321_1748885321',
                 relationships: [
                   {
-                    relationshipType: 'platformInstrument',
-                    platform: 'MTSAT-1R',
-                    instrument: 'VISSR'
-                  },
-                  {
-                    relationshipType: 'platformInstrument',
-                    platform: 'GOES-8',
-                    instrument: 'VISSR'
-                  },
-                  {
-                    relationshipType: 'platformInstrument',
-                    platform: 'METEOSAT-7',
-                    instrument: 'VISSR'
-                  },
-                  {
-                    relationshipType: 'relatedUrl',
-                    url: 'https://doi.org/10.5067/9LNYIYOBNBR5',
-                    description: 'Another Related URL for Demo',
-                    type: 'VIEW RELATED INFORMATION',
-                    subtype: 'DATA RECIPE'
-                  },
-                  {
-                    relationshipType: 'relatedUrl',
-                    url: 'http://ghrc.nsstc.nasa.gov/uso/ds_docs/globalir/globalir_dataset.html',
-                    description: null,
-                    type: 'VIEW RELATED INFORMATION',
-                    subtype: "USER'S GUIDE"
+                    relationshipType: 'relatedUrl'
                   }
                 ]
               },
               {
-                id: 'C1200400792-GHRC',
-                title: 'Infrared Global Geostationary Composite Demo 4',
-                doi: '10.5067/GHRC/AMSU-A/DATA303',
+                id: 'C1200000020-PROV1',
+                title: 'Entry Title 8 1748885321',
+                doi: '10.5067/TestSHORT_NAME_8_1748885321_1748885321',
                 relationships: [
                   {
-                    relationshipType: 'platformInstrument',
-                    platform: 'MTSAT-1R',
-                    instrument: 'VISSR'
-                  },
-                  {
-                    relationshipType: 'platformInstrument',
-                    platform: 'GOES-8',
-                    instrument: 'VISSR'
-                  },
-                  {
-                    relationshipType: 'platformInstrument',
-                    platform: 'METEOSAT-7',
-                    instrument: 'VISSR'
-                  },
-                  {
-                    relationshipType: 'relatedUrl',
-                    url: 'http://ghrc.nsstc.nasa.gov/uso/ds_docs/globalir/globalir_dataset.html',
-                    description: null,
-                    type: 'VIEW RELATED INFORMATION',
-                    subtype: "USER'S GUIDE"
+                    relationshipType: 'relatedUrl'
                   }
                 ]
               },
               {
-                id: 'C1200400791-GHRC',
-                title: 'Infrared Global Geostationary Composite Demo 3',
-                doi: '10.5067/GHRC/AMSU-A/DATA303',
+                id: 'C1200000015-PROV3',
+                title: 'Entry Title 3 1748885316',
+                doi: '10.5067/TestSHORT_NAME_3_1748885316_1748885316',
                 relationships: [
                   {
-                    relationshipType: 'platformInstrument',
-                    platform: 'MTSAT-1R',
-                    instrument: 'VISSR'
-                  },
-                  {
-                    relationshipType: 'platformInstrument',
-                    platform: 'GOES-8',
-                    instrument: 'VISSR'
-                  },
-                  {
-                    relationshipType: 'platformInstrument',
-                    platform: 'METEOSAT-7',
-                    instrument: 'VISSR'
-                  },
-                  {
-                    relationshipType: 'relatedUrl',
-                    url: 'http://ghrc.nsstc.nasa.gov/uso/ds_docs/globalir/globalir_dataset.html',
-                    description: null,
-                    type: 'VIEW RELATED INFORMATION',
-                    subtype: "USER'S GUIDE"
-                  }
-                ]
-              },
-              {
-                id: 'C1200400819-GHRC',
-                title: 'Infrared Global Geostationary Composite Demo 71',
-                doi: '10.5067/GHRC/AMSU-A/DATA303',
-                relationships: [
-                  {
-                    relationshipType: 'platformInstrument',
-                    platform: 'MTSAT-1R',
-                    instrument: 'VISSR'
-                  },
-                  {
-                    relationshipType: 'platformInstrument',
-                    platform: 'METEOSAT-7',
-                    instrument: 'VISSR'
-                  },
-                  {
-                    relationshipType: 'relatedUrl',
-                    url: 'https://doi.org/10.5067/9LNYIYOBNBR5',
-                    description: 'Another Related URL for Demo',
-                    type: 'VIEW RELATED INFORMATION',
-                    subtype: 'DATA RECIPE'
-                  },
-                  {
-                    relationshipType: 'relatedUrl',
-                    url: 'http://ghrc.nsstc.nasa.gov/uso/ds_docs/globalir/globalir_dataset.html',
-                    description: null,
-                    type: 'VIEW RELATED INFORMATION',
-                    subtype: "USER'S GUIDE"
-                  }
-                ]
-              },
-              {
-                id: 'C1200400802-GHRC',
-                title: 'Infrared Global Geostationary Composite Demo 6',
-                doi: '10.5067/GHRC/AMSU-A/DATA303',
-                relationships: [
-                  {
-                    relationshipType: 'platformInstrument',
-                    platform: 'MTSAT-1R',
-                    instrument: 'VISSR'
-                  },
-                  {
-                    relationshipType: 'platformInstrument',
-                    platform: 'METEOSAT-7',
-                    instrument: 'VISSR'
-                  },
-                  {
-                    relationshipType: 'relatedUrl',
-                    url: 'https://doi.org/10.5067/9LNYIYOBNBR5',
-                    description: 'Another Related URL for Demo',
-                    type: 'VIEW RELATED INFORMATION',
-                    subtype: 'DATA RECIPE'
-                  },
-                  {
-                    relationshipType: 'relatedUrl',
-                    url: 'http://ghrc.nsstc.nasa.gov/uso/ds_docs/globalir/globalir_dataset.html',
-                    description: null,
-                    type: 'VIEW RELATED INFORMATION',
-                    subtype: "USER'S GUIDE"
-                  }
-                ]
-              },
-              {
-                id: 'C1182-GHRC',
-                title: 'INFRARED GLOBAL GEOSTATIONARY COMPOSITE V1',
-                doi: null,
-                relationships: [
-                  {
-                    relationshipType: 'platformInstrument',
-                    platform: 'MTSAT-1R',
-                    instrument: 'VISSR'
-                  },
-                  {
-                    relationshipType: 'platformInstrument',
-                    platform: 'METEOSAT-7',
-                    instrument: 'VISSR'
-                  },
-                  {
-                    relationshipType: 'relatedUrl',
-                    url: 'http://ghrc.nsstc.nasa.gov/uso/ds_docs/globalir/globalir_dataset.html',
-                    description: null,
-                    type: 'VIEW RELATED INFORMATION',
-                    subtype: "USER'S GUIDE"
-                  }
-                ]
-              },
-              {
-                id: 'C1200400790-GHRC',
-                title: 'Infrared Global Geostationary Composite Demo',
-                doi: '10.5067/GHRC/AMSU-A/DATA303',
-                relationships: [
-                  {
-                    relationshipType: 'platformInstrument',
-                    platform: 'MTSAT-1R',
-                    instrument: 'VISSR'
-                  },
-                  {
-                    relationshipType: 'platformInstrument',
-                    platform: 'METEOSAT-7',
-                    instrument: 'VISSR'
-                  },
-                  {
-                    relationshipType: 'relatedUrl',
-                    url: 'http://ghrc.nsstc.nasa.gov/uso/ds_docs/globalir/globalir_dataset.html',
-                    description: null,
-                    type: 'VIEW RELATED INFORMATION',
-                    subtype: "USER'S GUIDE"
-                  }
-                ]
-              },
-              {
-                id: 'C1200400763-GHRC',
-                title: 'Infrared Global Geostationary Composite',
-                doi: '10.5067/GHRC/AMSU-A/DATA303',
-                relationships: [
-                  {
-                    relationshipType: 'platformInstrument',
-                    platform: 'MTSAT-1R',
-                    instrument: 'VISSR'
-                  },
-                  {
-                    relationshipType: 'platformInstrument',
-                    platform: 'METEOSAT-7',
-                    instrument: 'VISSR'
-                  },
-                  {
-                    relationshipType: 'relatedUrl',
-                    url: 'http://ghrc.nsstc.nasa.gov/uso/ds_docs/globalir/globalir_dataset.html',
-                    description: null,
-                    type: 'VIEW RELATED INFORMATION',
-                    subtype: "USER'S GUIDE"
-                  }
-                ]
-              },
-              {
-                id: 'C1200346689-CMR_ONLY',
-                title: 'CollectionTitle0 v1.5',
-                doi: null,
-                relationships: [
-                  {
-                    relationshipType: 'project',
-                    name: 'Project2'
-                  },
-                  {
-                    relationshipType: 'project',
-                    name: 'Project1'
-                  }
-                ]
-              },
-              {
-                id: 'C1200370847-CMR_ONLY',
-                title: 'CollectionTitle0 v1.6',
-                doi: null,
-                relationships: [
-                  {
-                    relationshipType: 'project',
-                    name: 'Project2'
-                  },
-                  {
-                    relationshipType: 'project',
-                    name: 'Project1'
-                  }
-                ]
-              },
-              {
-                id: 'C1200375328-EDF_TS2',
-                title: 'SMAP L4 Global 3-hourly 9 km EASE-Grid Surface and Root Zone Soil Moisture Geophysical Data V005',
-                doi: '10.5067/9LNYIYOBNBR5',
-                relationships: [
-                  {
-                    relationshipType: 'relatedUrl',
-                    url: 'https://doi.org/10.5067/9LNYIYOBNBR5',
-                    description: 'Another Related URL for Demo',
-                    type: 'VIEW RELATED INFORMATION',
-                    subtype: 'DATA RECIPE'
-                  }
-                ]
-              },
-              {
-                id: 'C1200195819-SCIOPS',
-                title: 'Meteorological Graphics from the 1995 Southern Oxidants Study (SOS) Nashville/Middle Tennessee Ozone Study Data Base',
-                doi: null,
-                relationships: [
-                  {
-                    relationshipType: 'platformInstrument',
-                    platform: 'GOES-8',
-                    instrument: 'VISSR'
-                  }
-                ]
-              },
-              {
-                id: 'C1200198749-SCIOPS',
-                title: 'GOES 8 Visible and Infrared Images from the 1995 Southern Oxidants Study (SOS) Nashville/Middle Tennessee Ozone Study Data Base',
-                doi: null,
-                relationships: [
-                  {
-                    relationshipType: 'platformInstrument',
-                    platform: 'GOES-8',
-                    instrument: 'VISSR'
-                  }
-                ]
-              },
-              {
-                id: 'C1200206551-SCIOPS',
-                title: 'Hawaii Ocean Time Series and Satellite Images from the School of Ocean and Earth Science and Technology (SOEST) University of Hawaii via WWW',
-                doi: null,
-                relationships: [
-                  {
-                    relationshipType: 'platformInstrument',
-                    platform: 'GOES-8',
-                    instrument: 'VISSR'
-                  }
-                ]
-              },
-              {
-                id: 'C1200376723-EDF_DEV06',
-                title: 'SMAP L4 Global 3-hourly 9 km EASE-Grid Surface and Root Zone Soil Moisture Geophysical Data V005',
-                doi: '10.5067/9LNYIYOBNBR5',
-                relationships: [
-                  {
-                    relationshipType: 'relatedUrl',
-                    url: 'https://doi.org/10.5067/9LNYIYOBNBR5',
-                    description: 'Another Related URL for Demo',
-                    type: 'VIEW RELATED INFORMATION',
-                    subtype: 'DATA RECIPE'
-                  }
-                ]
-              },
-              {
-                id: 'C1200376791-EDF_DEV01',
-                title: 'SMAP L4 Global 3-hourly 9 km EASE-Grid Surface and Root Zone Soil Moisture Geophysical Data V005',
-                doi: '10.5067/9LNYIYOBNBR5',
-                relationships: [
-                  {
-                    relationshipType: 'relatedUrl',
-                    url: 'https://doi.org/10.5067/9LNYIYOBNBR5',
-                    description: 'Another Related URL for Demo',
-                    type: 'VIEW RELATED INFORMATION',
-                    subtype: 'DATA RECIPE'
+                    relationshipType: 'platformInstrument'
                   }
                 ]
               }
