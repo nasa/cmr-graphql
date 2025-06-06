@@ -3075,6 +3075,47 @@ describe('Collection', () => {
     })
 
     describe('associatedCitations', () => {
+      test('returns exception when depth is invalid', async () => {
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .get(/collections\.json/)
+          .reply(200, {
+            feed: {
+              entry: [{
+                id: 'C100000-EDSC'
+              }]
+            }
+          })
+
+        const response = await server.executeOperation({
+          variables: {},
+          query: `{
+            collections (
+              conceptId: "C100000-EDSC"
+            ) {
+              items {
+                conceptId
+                associatedCitations(params: { depth: 4 }) {
+                  count
+                  items {
+                    conceptId
+                  }
+                }
+              }
+            }
+          }`
+        }, {
+          contextValue // Make sure this is properly defined and includes all datasources
+        })
+
+        expect(response.body.kind).toBe('single')
+        expect(response.body.singleResult.errors).toBeDefined()
+        expect(response.body.singleResult.errors[0].message).toBe('Depth must be between 1 and 3')
+      })
+
       test('queries CMR GraphDB for associated citations', async () => {
         nock(/example-cmr/)
           .defaultReplyHeaders({

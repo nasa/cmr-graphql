@@ -159,8 +159,8 @@ export default async (
   // If CMR data is needed, fetch full citation data
   if (needsCmrData && processedCitations.length > 0) {
     const conceptIds = processedCitations.map((citation) => citation.conceptId)
-
     const cmrCitations = await fetchCitations({
+      pageSize: limit,
       conceptId: conceptIds
     }, context, parsedInfo)
 
@@ -171,6 +171,8 @@ export default async (
       )
 
       // Merge CMR data with GraphDB metadata, keeping association info
+      // Association level is added to the citation object even though it will not be returned in the CMR response
+      // This can be useful for debugging or future use
       return {
         ...cmrCitation,
         associationLevel: graphDbCitation.associationLevel
