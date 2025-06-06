@@ -452,22 +452,22 @@ associatedCitations(
     params: AssociatedCitationsInput
 
     "Cursor for pagination"
-    cursor: String @deprecated(reason: "Use params.cursor")
+    cursor: String
 
     "Number of citations to return"
-    limit: Int @deprecated(reason: "Use params.limit")
+    limit: Int
 
     "Offset for pagination"
-    offset: Int @deprecated(reason: "Use params.offset")
+    offset: Int
 
     "Depth of citation association traversal (1-3)"
-    depth: Int @deprecated(reason: "Use params.depth")
+    depth: Int
 
     "Filter by identifier type"
-    identifierType: [String] @deprecated(reason: "Use params.identifierType")
+    identifierType: [String]
 
     "Filter by provider ID"
-    providerId: [String] @deprecated(reason: "Use params.providerId")
+    providerId: [String]
   ): CitationList
 }
 
