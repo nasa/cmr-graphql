@@ -18,6 +18,7 @@ import collectionDraftSource from '../../../datasources/collectionDraft'
 import collectionVariableDraftsSource from '../../../datasources/collectionVariableDrafts'
 import dataQualitySummarySource from '../../../datasources/dataQualitySummary'
 import granuleSource from '../../../datasources/granule'
+import graphDbAssociatedCitations from '../../../datasources/graphDbAssociatedCitations'
 import graphDbDuplicateCollectionsSource from '../../../datasources/graphDbDuplicateCollections'
 import graphDbSource from '../../../datasources/graphDb'
 import gridSource from '../../../datasources/grid'
@@ -119,6 +120,7 @@ export const buildContextValue = (extraContext) => ({
     draftSourceIngest,
     draftSourcePublish,
     granuleSource,
+    graphDbAssociatedCitations,
     graphDbDuplicateCollectionsSource,
     graphDbSource,
     gridSource,
