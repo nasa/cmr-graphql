@@ -225,7 +225,10 @@ describe('graphDbAssociatedCitations', () => {
       )
 
       expect(fetchCitationsSpy).toHaveBeenCalledWith(
-        { conceptId: ['CIT1200000110-PROV3'] },
+        {
+          pageSize: 1,
+          conceptId: ['CIT1200000110-PROV3']
+        },
         expect.any(Object),
         parsedInfo
       )
@@ -594,7 +597,7 @@ describe('graphDbAssociatedCitations', () => {
       const response = await graphDbAssociatedCitations(
         { conceptId: 'C1200000022-PROV3' },
         {
-          limit: 5,
+          limit: 15,
           depth: 2
         },
         {
