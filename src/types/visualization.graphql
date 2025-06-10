@@ -53,6 +53,9 @@ type Visualization {
   "Raw UMM Metadata of the Visualization Record."
   ummMetadata: JSON
 
+  "Id of the user who modified/published record"
+  userId: String
+
   "The type of visualization, `tiles` or `maps`."
   visualizationType: String
 
