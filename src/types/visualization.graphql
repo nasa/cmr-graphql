@@ -120,8 +120,6 @@ input VisualizationsInput {
 input VisualizationInput {
   "The concept id of the visualization."
   conceptId: String!
-
-  revisionId: String
 }
 
 type Query {

@@ -235,7 +235,8 @@ describe('Visualization', () => {
             meta: {
               'concept-id': 'VIS100000-EDSC',
               'native-id': 'test-guid',
-              'revision-id': '2'
+              'revision-id': '2',
+              'user-id': 'test user'
             },
             umm: {
               Name: 'Cras mattis consectetur purus sit amet fermentum.'
@@ -244,7 +245,8 @@ describe('Visualization', () => {
             meta: {
               'concept-id': 'VIS100000-EDSC',
               'native-id': 'test-guid',
-              'revision-id': '1'
+              'revision-id': '1',
+              'user-id': 'test user'
             },
             umm: {
               Name: 'Cras mattis consectetur purus sit amet fermentum.'
@@ -272,6 +274,7 @@ describe('Visualization', () => {
                 count
                 items {
                   revisionId
+                  userId
                 }
               }
               scienceKeywords
@@ -325,7 +328,13 @@ describe('Visualization', () => {
             revisionId: '3',
             revisions: {
               count: 2,
-              items: [{ revisionId: '2' }, { revisionId: '1' }]
+              items: [{
+                revisionId: '2',
+                userId: 'test user'
+              }, {
+                revisionId: '1',
+                userId: 'test user'
+              }]
             },
             scienceKeywords: [
               {
