@@ -168,6 +168,26 @@ export default {
         ...handlePagingParams(args, dataQualitySummaryConceptIds.length)
       }, context, parseResolveInfo(info))
     },
+    associatedCitations: async (source, args, context) => {
+      const { dataSources } = context
+      const { conceptId } = source
+      const { params = {} } = args
+      const { depth = 1 } = params
+
+      // If the concept being returned is a draft, there will be no associations,
+      // return null to avoid an extra call to CMR
+      if (isDraftConceptId(conceptId, 'collection')) return null
+
+      if (depth < 1 || depth > 3) {
+        throw new Error('Depth must be between 1 and 3')
+      }
+
+      return dataSources.graphDbAssociatedCitations(
+        source,
+        args,
+        context
+      )
+    },
     duplicateCollections: async (source, args, context) => {
       const { dataSources } = context
 
