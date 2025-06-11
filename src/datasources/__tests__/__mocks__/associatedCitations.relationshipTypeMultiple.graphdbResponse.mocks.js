@@ -23,7 +23,7 @@ export default {
                         },
                         {
                           '@type': 'g:Int64',
-                          '@value': 1672
+                          '@value': 1545
                         },
                         {
                           '@type': 'g:T',
@@ -34,85 +34,7 @@ export default {
                         {
                           '@type': 'g:List',
                           '@value': [
-                            '978-0-33-17490-6'
-                          ]
-                        },
-                        'providerId',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            'PROV3'
-                          ]
-                        },
-                        'name',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            'Earth Science Book 33'
-                          ]
-                        },
-                        'id',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            'CIT1200000095-PROV3'
-                          ]
-                        },
-                        'identifierType',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            'ISBN'
-                          ]
-                        },
-                        'abstract',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            'This is a randomly generated citation for demonstration purposes. Created at 2025-06-04T18:57:04.382Z.'
-                          ]
-                        },
-                        'title',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            'Earth Science Book 33 - Research Publication 33'
-                          ]
-                        }
-                      ]
-                    },
-                    'associationLevel',
-                    {
-                      '@type': 'g:Int32',
-                      '@value': 1
-                    }
-                  ]
-                },
-                {
-                  '@type': 'g:Map',
-                  '@value': [
-                    'citationData',
-                    {
-                      '@type': 'g:Map',
-                      '@value': [
-                        {
-                          '@type': 'g:T',
-                          '@value': 'id'
-                        },
-                        {
-                          '@type': 'g:Int64',
-                          '@value': 1852
-                        },
-                        {
-                          '@type': 'g:T',
-                          '@value': 'label'
-                        },
-                        'citation',
-                        'identifier',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            '10.5067/SAMPLE/DATA.22.1749063421'
+                            'ark:/13030/tf46p17495'
                           ]
                         },
                         'providerId',
@@ -126,44 +48,46 @@ export default {
                         {
                           '@type': 'g:List',
                           '@value': [
-                            'Earth Science Dataset 22'
+                            'Archival Earth Science Resource 46'
                           ]
                         },
                         'id',
                         {
                           '@type': 'g:List',
                           '@value': [
-                            'CIT1200000084-PROV2'
+                            'CIT1200000108-PROV2'
                           ]
                         },
                         'identifierType',
                         {
                           '@type': 'g:List',
                           '@value': [
-                            'DOI'
+                            'ARK'
                           ]
                         },
                         'abstract',
                         {
                           '@type': 'g:List',
                           '@value': [
-                            'This is a randomly generated citation for demonstration purposes. Created at 2025-06-04T18:57:01.793Z.'
+                            'This is a randomly generated citation for demonstration purposes. Created at 2025-06-10T18:25:51.025Z.'
                           ]
                         },
                         'title',
                         {
                           '@type': 'g:List',
                           '@value': [
-                            'Earth Science Dataset 22 - Research Publication 22'
+                            'Archival Earth Science Resource 46 - Research Publication 46'
                           ]
                         }
                       ]
                     },
                     'associationLevel',
                     {
-                      '@type': 'g:Int32',
+                      '@type': 'g:Double',
                       '@value': 1
-                    }
+                    },
+                    'relationshipType',
+                    'IsIdenticalTo'
                   ]
                 }
               ]
@@ -171,7 +95,7 @@ export default {
             'totalCount',
             {
               '@type': 'g:Int64',
-              '@value': 2
+              '@value': 4
             }
           ]
         }

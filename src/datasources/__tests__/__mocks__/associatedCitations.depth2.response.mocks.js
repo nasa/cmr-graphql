@@ -1,140 +1,115 @@
 export default {
-  count: 15,
+  count: 29,
   items: [
     {
-      conceptId: 'CIT1200000089-PROV2',
-      identifier: 'ark:/13030/tf27p17490',
+      id: 'CIT1200000073-PROV1',
+      identifier: 'ark:/13030/tf11p17495',
       identifierType: 'ARK',
-      name: 'Archival Earth Science Resource 27',
-      abstract: 'This is a randomly generated citation for demonstration purposes. Created at 2025-06-04T18:57:02.953Z.',
-      providerId: 'PROV2',
-      associationLevel: 2
+      name: 'Archival Earth Science Resource 11',
+      title: 'Archival Earth Science Resource 11 - Research Publication 11',
+      abstract: 'This is a randomly generated citation for demonstration purposes. Created at 2025-06-10T18:25:43.198Z.',
+      providerId: 'PROV1',
+      associationLevel: 2,
+      relationshipType: 'IsIdenticalTo'
     },
     {
-      conceptId: 'CIT1200000098-PROV2',
-      identifier: 'ark:/13030/tf36p17490',
+      id: 'CIT1200000074-PROV2',
+      identifier: 'ark:/13030/tf12p17495',
       identifierType: 'ARK',
-      name: 'Archival Earth Science Resource 36',
-      abstract: 'This is a randomly generated citation for demonstration purposes. Created at 2025-06-04T18:57:05.088Z.',
+      name: 'Archival Earth Science Resource 12',
+      title: 'Archival Earth Science Resource 12 - Research Publication 12',
+      abstract: 'This is a randomly generated citation for demonstration purposes. Created at 2025-06-10T18:25:43.425Z.',
       providerId: 'PROV2',
-      associationLevel: 2
+      associationLevel: 2,
+      relationshipType: 'IsIdenticalTo'
     },
     {
-      conceptId: 'CIT1200000108-PROV2',
-      identifier: 'ark:/13030/tf46p17490',
+      id: 'CIT1200000078-PROV1',
+      identifier: 'ark:/13030/tf16p17495',
+      identifierType: 'ARK',
+      name: 'Archival Earth Science Resource 16',
+      title: 'Archival Earth Science Resource 16 - Research Publication 16',
+      abstract: 'This is a randomly generated citation for demonstration purposes. Created at 2025-06-10T18:25:44.322Z.',
+      providerId: 'PROV1',
+      associationLevel: 2,
+      relationshipType: 'IsIdenticalTo'
+    },
+    {
+      id: 'CIT1200000064-PROV2',
+      identifier: 'ark:/13030/tf2p17495',
+      identifierType: 'ARK',
+      name: 'Archival Earth Science Resource 2',
+      title: 'Archival Earth Science Resource 2 - Research Publication 2',
+      abstract: 'This is a randomly generated citation for demonstration purposes. Created at 2025-06-10T18:25:41.191Z.',
+      providerId: 'PROV2',
+      associationLevel: 2,
+      relationshipType: 'Describes'
+    },
+    {
+      id: 'CIT1200000083-PROV1',
+      identifier: 'ark:/13030/tf21p17495',
+      identifierType: 'ARK',
+      name: 'Archival Earth Science Resource 21',
+      title: 'Archival Earth Science Resource 21 - Research Publication 21',
+      abstract: 'This is a randomly generated citation for demonstration purposes. Created at 2025-06-10T18:25:45.442Z.',
+      providerId: 'PROV1',
+      associationLevel: 2,
+      relationshipType: 'IsIdenticalTo'
+    },
+    {
+      id: 'CIT1200000065-PROV2',
+      identifier: 'ark:/13030/tf3p17495',
+      identifierType: 'ARK',
+      name: 'Archival Earth Science Resource 3',
+      title: 'Archival Earth Science Resource 3 - Research Publication 3',
+      abstract: 'This is a randomly generated citation for demonstration purposes. Created at 2025-06-10T18:25:41.416Z.',
+      providerId: 'PROV2',
+      associationLevel: 2,
+      relationshipType: 'Refers'
+    },
+    {
+      id: 'CIT1200000108-PROV2',
+      identifier: 'ark:/13030/tf46p17495',
       identifierType: 'ARK',
       name: 'Archival Earth Science Resource 46',
-      abstract: 'This is a randomly generated citation for demonstration purposes. Created at 2025-06-04T18:57:07.368Z.',
+      title: 'Archival Earth Science Resource 46 - Research Publication 46',
+      abstract: 'This is a randomly generated citation for demonstration purposes. Created at 2025-06-10T18:25:51.025Z.',
       providerId: 'PROV2',
-      associationLevel: 2
+      associationLevel: 1,
+      relationshipType: 'IsIdenticalTo'
     },
     {
-      conceptId: 'CIT1200000072-PROV3',
-      identifier: '978-0-10-17490-6',
-      identifierType: 'ISBN',
-      name: 'Earth Science Book 10',
-      abstract: 'This is a randomly generated citation for demonstration purposes. Created at 2025-06-04T18:56:59.004Z.',
-      providerId: 'PROV3',
-      associationLevel: 2
-    },
-    {
-      conceptId: 'CIT1200000073-PROV3',
-      identifier: '978-0-11-17490-6',
-      identifierType: 'ISBN',
-      name: 'Earth Science Book 11',
-      abstract: 'This is a randomly generated citation for demonstration purposes. Created at 2025-06-04T18:56:59.242Z.',
-      providerId: 'PROV3',
-      associationLevel: 2
-    },
-    {
-      conceptId: 'CIT1200000064-PROV2',
-      identifier: '978-0-2-17490-6',
-      identifierType: 'ISBN',
-      name: 'Earth Science Book 2',
-      abstract: 'This is a randomly generated citation for demonstration purposes. Created at 2025-06-04T18:56:56.848Z.',
+      id: 'CIT1200000071-PROV2',
+      identifier: 'ark:/13030/tf9p17495',
+      identifierType: 'ARK',
+      name: 'Archival Earth Science Resource 9',
+      title: 'Archival Earth Science Resource 9 - Research Publication 9',
+      abstract: 'This is a randomly generated citation for demonstration purposes. Created at 2025-06-10T18:25:42.754Z.',
       providerId: 'PROV2',
-      associationLevel: 2
+      associationLevel: 2,
+      relationshipType: 'Cites'
     },
     {
-      conceptId: 'CIT1200000066-PROV1',
-      identifier: '978-0-4-17490-6',
+      id: 'CIT1200000063-PROV2',
+      identifier: '978-0-1-17495-7',
       identifierType: 'ISBN',
-      name: 'Earth Science Book 4',
-      abstract: 'This is a randomly generated citation for demonstration purposes. Created at 2025-06-04T18:56:57.604Z.',
-      providerId: 'PROV1',
-      associationLevel: 2
+      name: 'Earth Science Book 1',
+      title: 'Earth Science Book 1 - Research Publication 1',
+      abstract: 'This is a randomly generated citation for demonstration purposes. Created at 2025-06-10T18:25:40.965Z.',
+      providerId: 'PROV2',
+      associationLevel: 2,
+      relationshipType: 'IsIdenticalTo'
     },
     {
-      conceptId: 'CIT1200000107-PROV3',
-      identifier: '978-0-45-17490-6',
+      id: 'CIT1200000076-PROV3',
+      identifier: '978-0-14-17495-7',
       identifierType: 'ISBN',
-      name: 'Earth Science Book 45',
-      abstract: 'This is a randomly generated citation for demonstration purposes. Created at 2025-06-04T18:57:07.144Z.',
+      name: 'Earth Science Book 14',
+      title: 'Earth Science Book 14 - Research Publication 14',
+      abstract: 'This is a randomly generated citation for demonstration purposes. Created at 2025-06-10T18:25:43.869Z.',
       providerId: 'PROV3',
-      associationLevel: 2
-    },
-    {
-      conceptId: 'CIT1200000071-PROV1',
-      identifier: '978-0-9-17490-6',
-      identifierType: 'ISBN',
-      name: 'Earth Science Book 9',
-      abstract: 'This is a randomly generated citation for demonstration purposes. Created at 2025-06-04T18:56:58.773Z.',
-      providerId: 'PROV1',
-      associationLevel: 2
-    },
-    {
-      conceptId: 'CIT1200000063-PROV3',
-      identifier: '10.5067/SAMPLE/DATA.1.1749063416',
-      identifierType: 'DOI',
-      name: 'Earth Science Dataset 1',
-      abstract: 'This is a randomly generated citation for demonstration purposes. Created at 2025-06-04T18:56:56.498Z.',
-      providerId: 'PROV3',
-      associationLevel: 2
-    },
-    {
-      conceptId: 'CIT1200000086-PROV2',
-      identifier: '10.5067/SAMPLE/DATA.24.1749063422',
-      identifierType: 'DOI',
-      name: 'Earth Science Dataset 24',
-      abstract: 'This is a randomly generated citation for demonstration purposes. Created at 2025-06-04T18:57:02.261Z.',
-      providerId: 'PROV2',
-      associationLevel: 2
-    },
-    {
-      conceptId: 'CIT1200000087-PROV2',
-      identifier: '10.5067/SAMPLE/DATA.25.1749063422',
-      identifierType: 'DOI',
-      name: 'Earth Science Dataset 25',
-      abstract: 'This is a randomly generated citation for demonstration purposes. Created at 2025-06-04T18:57:02.488Z.',
-      providerId: 'PROV2',
-      associationLevel: 2
-    },
-    {
-      conceptId: 'CIT1200000092-PROV3',
-      identifier: '10.5067/SAMPLE/DATA.30.1749063423',
-      identifierType: 'DOI',
-      name: 'Earth Science Dataset 30',
-      abstract: 'This is a randomly generated citation for demonstration purposes. Created at 2025-06-04T18:57:03.657Z.',
-      providerId: 'PROV3',
-      associationLevel: 2
-    },
-    {
-      conceptId: 'CIT1200000096-PROV2',
-      identifier: '10.5067/SAMPLE/DATA.34.1749063424',
-      identifierType: 'DOI',
-      name: 'Earth Science Dataset 34',
-      abstract: 'This is a randomly generated citation for demonstration purposes. Created at 2025-06-04T18:57:04.617Z.',
-      providerId: 'PROV2',
-      associationLevel: 2
-    },
-    {
-      conceptId: 'CIT1200000069-PROV1',
-      identifier: '10.5067/SAMPLE/DATA.7.1749063418',
-      identifierType: 'DOI',
-      name: 'Earth Science Dataset 7',
-      abstract: 'This is a randomly generated citation for demonstration purposes. Created at 2025-06-04T18:56:58.301Z.',
-      providerId: 'PROV1',
-      associationLevel: 2
+      associationLevel: 1,
+      relationshipType: 'Refers'
     }
   ]
 }

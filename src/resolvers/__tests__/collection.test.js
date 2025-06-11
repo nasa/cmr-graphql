@@ -3101,14 +3101,14 @@ describe('Collection', () => {
                 associatedCitations(params: { depth: 4 }) {
                   count
                   items {
-                    conceptId
+                    id
                   }
                 }
               }
             }
           }`
         }, {
-          contextValue // Make sure this is properly defined and includes all datasources
+          contextValue
         })
 
         expect(response.body.kind).toBe('single')
@@ -3146,10 +3146,11 @@ describe('Collection', () => {
                 associatedCitations {
                   count
                   items {
-                    conceptId
+                    id
                     identifier
                     identifierType
                     name
+                    title
                     abstract
                   }
                 }
@@ -3194,18 +3195,18 @@ describe('Collection', () => {
             }
           },
           query: `query Drafts($params: DraftsInput) {
-        drafts(params: $params) {
-          items {
-            previewMetadata {
-              ... on Collection {
-                associatedCitations {
-                  count
+            drafts(params: $params) {
+              items {
+                previewMetadata {
+                  ... on Collection {
+                    associatedCitations {
+                      count
+                    }
+                  }
                 }
               }
             }
-          }
-        }
-      }`
+          }`
         }, {
           contextValue
         })

@@ -2,13 +2,9 @@ import nock from 'nock'
 
 import graphDbAssociatedCitations from '../graphDbAssociatedCitations'
 import * as getUserPermittedGroups from '../../utils/getUserPermittedGroups'
-import * as fetchCitations from '../citation'
 
-import associatedCitationsGraphDbOnlyFieldsGraphdbResponseMocks from './__mocks__/associatedCitations.graphDbOnlyFields.graphdbResponse.mocks'
-import associatedCitationsGraphDbOnlyFieldsResponseMocks from './__mocks__/associatedCitations.graphDbOnlyFields.response.mocks'
-import associatedCitationsWithCmrFieldsGraphdbResponseMocks from './__mocks__/associatedCitations.withCmrFields.graphdbResponse.mocks'
-import associatedCitationsWithCmrFieldsResponseMocks from './__mocks__/associatedCitations.withCmrFields.response.mocks'
-import associatedCitationsCmrFetchResponseMocks from './__mocks__/associatedCitations.cmrFetch.response.mocks'
+import associatedCitationsGraphdbResponseMocks from './__mocks__/associatedCitations.graphDbOnlyFields.graphdbResponse.mocks'
+import associatedCitationsResponseMocks from './__mocks__/associatedCitations.graphDbOnlyFields.response.mocks'
 import associatedCitationsRelationshipTypeSingleGraphdbResponseMocks from './__mocks__/associatedCitations.relationshipTypeSingle.graphdbResponse.mocks'
 import associatedCitationsRelationshipTypeSingleResponseMocks from './__mocks__/associatedCitations.relationshipTypeSingle.response.mocks'
 import associatedCitationsRelationshipTypeMultipleGraphdbResponseMocks from './__mocks__/associatedCitations.relationshipTypeMultiple.graphdbResponse.mocks'
@@ -47,7 +43,7 @@ describe('graphDbAssociatedCitations', () => {
     process.env = OLD_ENV
   })
 
-  describe('when only GraphDB fields are requested', () => {
+  describe('when associated citations are requested', () => {
     beforeEach(() => {
       parsedInfo = {
         fieldsByTypeName: {
@@ -55,6 +51,18 @@ describe('graphDbAssociatedCitations', () => {
             items: {
               fieldsByTypeName: {
                 Citation: {
+                  associationLevel: {
+                    name: 'associationLevel',
+                    alias: 'associationLevel',
+                    args: {},
+                    fieldsByTypeName: {}
+                  },
+                  relationshipType: {
+                    name: 'relationshipType',
+                    alias: 'relationshipType',
+                    args: {},
+                    fieldsByTypeName: {}
+                  },
                   conceptId: {
                     name: 'conceptId',
                     alias: 'conceptId',
@@ -76,6 +84,12 @@ describe('graphDbAssociatedCitations', () => {
                   name: {
                     name: 'name',
                     alias: 'name',
+                    args: {},
+                    fieldsByTypeName: {}
+                  },
+                  title: {
+                    name: 'title',
+                    alias: 'title',
                     args: {},
                     fieldsByTypeName: {}
                   },
@@ -99,16 +113,24 @@ describe('graphDbAssociatedCitations', () => {
       }
     })
 
-    test('returns citations without CMR only fields', async () => {
+    test('returns citations', async () => {
       const getUserGroups = vi.spyOn(getUserPermittedGroups, 'getUserPermittedGroups')
       getUserGroups.mockImplementationOnce(() => '"guest","registered"')
 
       nock(/example-graphdb/)
-        .post(() => true, /bothE\(\)\.otherV\(\)\.hasLabel\('citation'\)/)
-        .reply(200, associatedCitationsGraphDbOnlyFieldsGraphdbResponseMocks)
+        .post('/', (body) => {
+          const { gremlin } = body
+
+          return gremlin
+           && gremlin.includes("hasLabel('citation')")
+           && gremlin.includes("has('collection', 'id', 'C1200000035-PROV2')")
+           && gremlin.includes('.project(\'citationData\', \'associationLevel\', \'relationshipType\')')
+           && gremlin.includes('.range(0, 1)')
+        })
+        .reply(200, associatedCitationsGraphdbResponseMocks)
 
       const response = await graphDbAssociatedCitations(
-        { conceptId: 'C1200000022-PROV3' },
+        { conceptId: 'C1200000035-PROV2' },
         { limit: 1 },
         {
           headers: {
@@ -120,120 +142,7 @@ describe('graphDbAssociatedCitations', () => {
         parsedInfo
       )
 
-      expect(response).toEqual(associatedCitationsGraphDbOnlyFieldsResponseMocks)
-    })
-  })
-
-  describe('when CMR fields are requested', () => {
-    beforeEach(() => {
-      parsedInfo = {
-        fieldsByTypeName: {
-          CitationList: {
-            items: {
-              fieldsByTypeName: {
-                Citation: {
-                  conceptId: {
-                    name: 'conceptId',
-                    alias: 'conceptId',
-                    args: {},
-                    fieldsByTypeName: {}
-                  },
-                  identifier: {
-                    name: 'identifier',
-                    alias: 'identifier',
-                    args: {},
-                    fieldsByTypeName: {}
-                  },
-                  identifierType: {
-                    name: 'identifierType',
-                    alias: 'identifierType',
-                    args: {},
-                    fieldsByTypeName: {}
-                  },
-                  name: {
-                    name: 'name',
-                    alias: 'name',
-                    args: {},
-                    fieldsByTypeName: {}
-                  },
-                  abstract: {
-                    name: 'abstract',
-                    alias: 'abstract',
-                    args: {},
-                    fieldsByTypeName: {}
-                  },
-                  resolutionAuthority: {
-                    name: 'resolutionAuthority',
-                    alias: 'resolutionAuthority',
-                    args: {},
-                    fieldsByTypeName: {}
-                  },
-                  relatedIdentifiers: {
-                    name: 'relatedIdentifiers',
-                    alias: 'relatedIdentifiers',
-                    args: {},
-                    fieldsByTypeName: {}
-                  },
-                  citationMetadata: {
-                    name: 'citationMetadata',
-                    alias: 'citationMetadata',
-                    args: {},
-                    fieldsByTypeName: {}
-                  },
-                  scienceKeywords: {
-                    name: 'scienceKeywords',
-                    alias: 'scienceKeywords',
-                    args: {},
-                    fieldsByTypeName: {}
-                  },
-                  nativeId: {
-                    name: 'nativeId',
-                    alias: 'nativeId',
-                    args: {},
-                    fieldsByTypeName: {}
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    })
-
-    test('returns merged citations from GraphDB and CMR', async () => {
-      const getUserGroups = vi.spyOn(getUserPermittedGroups, 'getUserPermittedGroups')
-      getUserGroups.mockImplementationOnce(() => '"guest","registered"')
-
-      const fetchCitationsSpy = vi.spyOn(fetchCitations, 'fetchCitations')
-      fetchCitationsSpy.mockResolvedValueOnce(associatedCitationsCmrFetchResponseMocks)
-
-      nock(/example-graphdb/)
-        .post(() => true, /bothE\(\)\.otherV\(\)\.hasLabel\('citation'\)/)
-        .reply(200, associatedCitationsWithCmrFieldsGraphdbResponseMocks)
-
-      const response = await graphDbAssociatedCitations(
-        { conceptId: 'C1200000022-PROV3' },
-        { limit: 1 },
-        {
-          headers: {
-            'Client-Id': 'eed-test-graphql',
-            'CMR-Request-Id': 'abcd-1234-efgh-5678'
-          },
-          edlUsername: 'testUser'
-        },
-        parsedInfo
-      )
-
-      expect(fetchCitationsSpy).toHaveBeenCalledWith(
-        {
-          pageSize: 1,
-          conceptId: ['CIT1200000110-PROV3']
-        },
-        expect.any(Object),
-        parsedInfo
-      )
-
-      expect(response).toEqual(associatedCitationsWithCmrFieldsResponseMocks)
+      expect(response).toEqual(associatedCitationsResponseMocks)
     })
   })
 
@@ -245,6 +154,18 @@ describe('graphDbAssociatedCitations', () => {
             items: {
               fieldsByTypeName: {
                 Citation: {
+                  associationLevel: {
+                    name: 'associationLevel',
+                    alias: 'associationLevel',
+                    args: {},
+                    fieldsByTypeName: {}
+                  },
+                  relationshipType: {
+                    name: 'relationshipType',
+                    alias: 'relationshipType',
+                    args: {},
+                    fieldsByTypeName: {}
+                  },
                   conceptId: {
                     name: 'conceptId',
                     alias: 'conceptId',
@@ -266,6 +187,12 @@ describe('graphDbAssociatedCitations', () => {
                   name: {
                     name: 'name',
                     alias: 'name',
+                    args: {},
+                    fieldsByTypeName: {}
+                  },
+                  title: {
+                    name: 'title',
+                    alias: 'title',
                     args: {},
                     fieldsByTypeName: {}
                   },
@@ -288,14 +215,23 @@ describe('graphDbAssociatedCitations', () => {
       getUserGroups.mockImplementationOnce(() => '"guest","registered"')
 
       nock(/example-graphdb/)
-        .post(() => true, /\.bothE\('Cites'\)\.otherV\(\)\.hasLabel\('citation'\)/)
+        .post('/', (body) => {
+          const { gremlin } = body
+
+          return gremlin
+           && gremlin.includes("hasLabel('citation')")
+           && gremlin.includes("has('collection', 'id', 'C1200000035-PROV2')")
+           && gremlin.includes('.project(\'citationData\', \'associationLevel\', \'relationshipType\')')
+           && gremlin.includes('bothE(\'IsIdenticalTo\')')
+           && gremlin.includes('.range(0, 1)')
+        })
         .reply(200, associatedCitationsRelationshipTypeSingleGraphdbResponseMocks)
 
       const response = await graphDbAssociatedCitations(
-        { conceptId: 'C1200000022-PROV3' },
+        { conceptId: 'C1200000035-PROV2' },
         {
           limit: 1,
-          relationshipType: ['Cites']
+          relationshipType: ['IsIdenticalTo']
         },
         {
           headers: {
@@ -315,14 +251,23 @@ describe('graphDbAssociatedCitations', () => {
       getUserGroups.mockImplementationOnce(() => '"guest","registered"')
 
       nock(/example-graphdb/)
-        .post(() => true, /\.bothE\('Cites','IsIdenticalTo'\)\.otherV\(\)\.hasLabel\('citation'\)/)
+        .post('/', (body) => {
+          const { gremlin } = body
+
+          return gremlin
+           && gremlin.includes("hasLabel('citation')")
+           && gremlin.includes("has('collection', 'id', 'C1200000035-PROV2')")
+           && gremlin.includes('.project(\'citationData\', \'associationLevel\', \'relationshipType\')')
+           && gremlin.includes('bothE(\'IsIdenticalTo\',\'Refers\')')
+           && gremlin.includes('.range(0, 1)')
+        })
         .reply(200, associatedCitationsRelationshipTypeMultipleGraphdbResponseMocks)
 
       const response = await graphDbAssociatedCitations(
-        { conceptId: 'C1200000022-PROV3' },
+        { conceptId: 'C1200000035-PROV2' },
         {
           limit: 1,
-          relationshipType: ['Cites', 'IsIdenticalTo']
+          relationshipType: ['IsIdenticalTo', 'Refers']
         },
         {
           headers: {
@@ -346,6 +291,18 @@ describe('graphDbAssociatedCitations', () => {
             items: {
               fieldsByTypeName: {
                 Citation: {
+                  associationLevel: {
+                    name: 'associationLevel',
+                    alias: 'associationLevel',
+                    args: {},
+                    fieldsByTypeName: {}
+                  },
+                  relationshipType: {
+                    name: 'relationshipType',
+                    alias: 'relationshipType',
+                    args: {},
+                    fieldsByTypeName: {}
+                  },
                   conceptId: {
                     name: 'conceptId',
                     alias: 'conceptId',
@@ -370,6 +327,12 @@ describe('graphDbAssociatedCitations', () => {
                     args: {},
                     fieldsByTypeName: {}
                   },
+                  title: {
+                    name: 'title',
+                    alias: 'title',
+                    args: {},
+                    fieldsByTypeName: {}
+                  },
                   abstract: {
                     name: 'abstract',
                     alias: 'abstract',
@@ -389,14 +352,24 @@ describe('graphDbAssociatedCitations', () => {
       getUserGroups.mockImplementationOnce(() => '"guest","registered"')
 
       nock(/example-graphdb/)
-        .post(() => true, /\.has\('identifierType', 'DOI'\)/)
+        .post('/', (body) => {
+          const { gremlin } = body
+
+          return gremlin
+           && gremlin.includes("hasLabel('citation')")
+           && gremlin.includes("has('collection', 'id', 'C1200000035-PROV2')")
+           && gremlin.includes('.project(\'citationData\', \'associationLevel\', \'relationshipType\')')
+           && gremlin.includes('has(\'identifierType\', \'ISBN\')')
+           && gremlin.includes('.range(0, 1)')
+        })
+
         .reply(200, associatedCitationsIdentifierTypeSingleGraphdbResponseMocks)
 
       const response = await graphDbAssociatedCitations(
-        { conceptId: 'C1200000022-PROV3' },
+        { conceptId: 'C1200000035-PROV2' },
         {
           limit: 1,
-          identifierType: 'DOI'
+          identifierType: 'ISBN'
         },
         {
           headers: {
@@ -416,14 +389,23 @@ describe('graphDbAssociatedCitations', () => {
       getUserGroups.mockImplementationOnce(() => '"guest","registered"')
 
       nock(/example-graphdb/)
-        .post(() => true, /\.has\('identifierType', within\('DOI','ISBN'\)\)/)
+        .post('/', (body) => {
+          const { gremlin } = body
+
+          return gremlin
+           && gremlin.includes("hasLabel('citation')")
+           && gremlin.includes("has('collection', 'id', 'C1200000035-PROV2')")
+           && gremlin.includes('.project(\'citationData\', \'associationLevel\', \'relationshipType\')')
+           && gremlin.includes('.has(\'identifierType\', within(\'ARK\',\'ISBN\'))')
+           && gremlin.includes('.range(0, 1)')
+        })
         .reply(200, associatedCitationsIdentifierTypeMultipleGraphdbResponseMocks)
 
       const response = await graphDbAssociatedCitations(
-        { conceptId: 'C1200000022-PROV3' },
+        { conceptId: 'C1200000035-PROV2' },
         {
-          limit: 2,
-          identifierType: ['DOI', 'ISBN']
+          limit: 1,
+          identifierType: ['ARK', 'ISBN']
         },
         {
           headers: {
@@ -447,6 +429,18 @@ describe('graphDbAssociatedCitations', () => {
             items: {
               fieldsByTypeName: {
                 Citation: {
+                  associationLevel: {
+                    name: 'associationLevel',
+                    alias: 'associationLevel',
+                    args: {},
+                    fieldsByTypeName: {}
+                  },
+                  relationshipType: {
+                    name: 'relationshipType',
+                    alias: 'relationshipType',
+                    args: {},
+                    fieldsByTypeName: {}
+                  },
                   conceptId: {
                     name: 'conceptId',
                     alias: 'conceptId',
@@ -471,6 +465,12 @@ describe('graphDbAssociatedCitations', () => {
                     args: {},
                     fieldsByTypeName: {}
                   },
+                  title: {
+                    name: 'title',
+                    alias: 'title',
+                    args: {},
+                    fieldsByTypeName: {}
+                  },
                   abstract: {
                     name: 'abstract',
                     alias: 'abstract',
@@ -490,11 +490,20 @@ describe('graphDbAssociatedCitations', () => {
       getUserGroups.mockImplementationOnce(() => '"guest","registered"')
 
       nock(/example-graphdb/)
-        .post(() => true, /\.has\('providerId', 'PROV2'\)/)
+        .post('/', (body) => {
+          const { gremlin } = body
+
+          return gremlin
+           && gremlin.includes("hasLabel('citation')")
+           && gremlin.includes("has('collection', 'id', 'C1200000035-PROV2')")
+           && gremlin.includes('.project(\'citationData\', \'associationLevel\', \'relationshipType\')')
+           && gremlin.includes('.has(\'providerId\', \'PROV2\')')
+           && gremlin.includes('.range(0, 1)')
+        })
         .reply(200, associatedCitationsProviderIdSingleGraphdbResponseMocks)
 
       const response = await graphDbAssociatedCitations(
-        { conceptId: 'C1200000022-PROV3' },
+        { conceptId: 'C1200000035-PROV2' },
         {
           limit: 1,
           providerId: 'PROV2'
@@ -517,11 +526,20 @@ describe('graphDbAssociatedCitations', () => {
       getUserGroups.mockImplementationOnce(() => '"guest","registered"')
 
       nock(/example-graphdb/)
-        .post(() => true, /\.has\('providerId', within\('PROV2','PROV3'\)\)/)
+        .post('/', (body) => {
+          const { gremlin } = body
+
+          return gremlin
+           && gremlin.includes("hasLabel('citation')")
+           && gremlin.includes("has('collection', 'id', 'C1200000035-PROV2')")
+           && gremlin.includes('.project(\'citationData\', \'associationLevel\', \'relationshipType\')')
+           && gremlin.includes('.has(\'providerId\', within(\'PROV2\',\'PROV3\'))')
+           && gremlin.includes('.range(0, 2)')
+        })
         .reply(200, associatedCitationsProviderIdMultipleGraphdbResponseMocks)
 
       const response = await graphDbAssociatedCitations(
-        { conceptId: 'C1200000022-PROV3' },
+        { conceptId: 'C1200000035-PROV2' },
         {
           limit: 2,
           providerId: ['PROV2', 'PROV3']
@@ -548,6 +566,18 @@ describe('graphDbAssociatedCitations', () => {
             items: {
               fieldsByTypeName: {
                 Citation: {
+                  associationLevel: {
+                    name: 'associationLevel',
+                    alias: 'associationLevel',
+                    args: {},
+                    fieldsByTypeName: {}
+                  },
+                  relationshipType: {
+                    name: 'relationshipType',
+                    alias: 'relationshipType',
+                    args: {},
+                    fieldsByTypeName: {}
+                  },
                   conceptId: {
                     name: 'conceptId',
                     alias: 'conceptId',
@@ -572,6 +602,12 @@ describe('graphDbAssociatedCitations', () => {
                     args: {},
                     fieldsByTypeName: {}
                   },
+                  title: {
+                    name: 'title',
+                    alias: 'title',
+                    args: {},
+                    fieldsByTypeName: {}
+                  },
                   abstract: {
                     name: 'abstract',
                     alias: 'abstract',
@@ -591,13 +627,22 @@ describe('graphDbAssociatedCitations', () => {
       getUserGroups.mockImplementationOnce(() => '"guest","registered"')
 
       nock(/example-graphdb/)
-        .post(() => true, /\.bothE\(\)\.otherV\(\)\.hasLabel\('citation'\)\.bothE\(\)\.otherV\(\)\.hasLabel\('citation'\)/)
+        .post('/', (body) => {
+          const { gremlin } = body
+
+          return gremlin
+           && gremlin.includes("hasLabel('citation')")
+           && gremlin.includes("has('collection', 'id', 'C1200000035-PROV2')")
+           && gremlin.includes('.project(\'citationData\', \'associationLevel\', \'relationshipType\')')
+           && gremlin.includes('.times(2)')
+           && gremlin.includes('.range(0, 10)')
+        })
         .reply(200, associatedCitationsDepth2GraphdbResponseMocks)
 
       const response = await graphDbAssociatedCitations(
-        { conceptId: 'C1200000022-PROV3' },
+        { conceptId: 'C1200000035-PROV2' },
         {
-          limit: 15,
+          limit: 10,
           depth: 2
         },
         {
@@ -622,6 +667,18 @@ describe('graphDbAssociatedCitations', () => {
             items: {
               fieldsByTypeName: {
                 Citation: {
+                  associationLevel: {
+                    name: 'associationLevel',
+                    alias: 'associationLevel',
+                    args: {},
+                    fieldsByTypeName: {}
+                  },
+                  relationshipType: {
+                    name: 'relationshipType',
+                    alias: 'relationshipType',
+                    args: {},
+                    fieldsByTypeName: {}
+                  },
                   conceptId: {
                     name: 'conceptId',
                     alias: 'conceptId',
@@ -646,6 +703,12 @@ describe('graphDbAssociatedCitations', () => {
                     args: {},
                     fieldsByTypeName: {}
                   },
+                  title: {
+                    name: 'title',
+                    alias: 'title',
+                    args: {},
+                    fieldsByTypeName: {}
+                  },
                   abstract: {
                     name: 'abstract',
                     alias: 'abstract',
@@ -665,11 +728,19 @@ describe('graphDbAssociatedCitations', () => {
       getUserGroups.mockImplementationOnce(() => '"guest","registered"')
 
       nock(/example-graphdb/)
-        .post(() => true, /\.range\(2, 4\)/)
+        .post('/', (body) => {
+          const { gremlin } = body
+
+          return gremlin
+           && gremlin.includes("hasLabel('citation')")
+           && gremlin.includes("has('collection', 'id', 'C1200000035-PROV2')")
+           && gremlin.includes('.project(\'citationData\', \'associationLevel\', \'relationshipType\')')
+           && gremlin.includes('.range(2, 4)')
+        })
         .reply(200, associatedCitationsPaginationGraphdbResponseMocks)
 
       const response = await graphDbAssociatedCitations(
-        { conceptId: 'C1200000022-PROV3' },
+        { conceptId: 'C1200000035-PROV2' },
         {
           limit: 2,
           offset: 2
@@ -696,6 +767,18 @@ describe('graphDbAssociatedCitations', () => {
             items: {
               fieldsByTypeName: {
                 Citation: {
+                  associationLevel: {
+                    name: 'associationLevel',
+                    alias: 'associationLevel',
+                    args: {},
+                    fieldsByTypeName: {}
+                  },
+                  relationshipType: {
+                    name: 'relationshipType',
+                    alias: 'relationshipType',
+                    args: {},
+                    fieldsByTypeName: {}
+                  },
                   conceptId: {
                     name: 'conceptId',
                     alias: 'conceptId',
@@ -717,6 +800,12 @@ describe('graphDbAssociatedCitations', () => {
                   name: {
                     name: 'name',
                     alias: 'name',
+                    args: {},
+                    fieldsByTypeName: {}
+                  },
+                  title: {
+                    name: 'title',
+                    alias: 'title',
                     args: {},
                     fieldsByTypeName: {}
                   },
@@ -742,7 +831,7 @@ describe('graphDbAssociatedCitations', () => {
 
           return correctGremlin
         })
-        .reply(200, associatedCitationsGraphDbOnlyFieldsGraphdbResponseMocks)
+        .reply(200, associatedCitationsGraphdbResponseMocks)
 
       nock(/example-urs/)
         .get(/groups_for_user/)
@@ -782,7 +871,7 @@ describe('graphDbAssociatedCitations', () => {
         parsedInfo
       )
 
-      expect(response).toEqual(associatedCitationsGraphDbOnlyFieldsResponseMocks)
+      expect(response).toEqual(associatedCitationsResponseMocks)
     })
 
     test('handles user with no custom groups', async () => {
@@ -793,7 +882,7 @@ describe('graphDbAssociatedCitations', () => {
 
           return correctGremlin
         })
-        .reply(200, associatedCitationsGraphDbOnlyFieldsGraphdbResponseMocks)
+        .reply(200, associatedCitationsGraphdbResponseMocks)
 
       nock(/example-urs/)
         .get(/groups_for_user/)
@@ -812,7 +901,7 @@ describe('graphDbAssociatedCitations', () => {
         parsedInfo
       )
 
-      expect(response).toEqual(associatedCitationsGraphDbOnlyFieldsResponseMocks)
+      expect(response).toEqual(associatedCitationsResponseMocks)
     })
   })
 })

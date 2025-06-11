@@ -1,14 +1,16 @@
 export default {
-  count: 1,
+  count: 3,
   items: [
     {
-      conceptId: 'CIT1200000084-PROV2',
-      identifier: '10.5067/SAMPLE/DATA.22.1749063421',
-      identifierType: 'DOI',
-      name: 'Earth Science Dataset 22',
-      abstract: 'This is a randomly generated citation for demonstration purposes. Created at 2025-06-04T18:57:01.793Z.',
-      providerId: 'PROV2',
-      associationLevel: 1
+      id: 'CIT1200000076-PROV3',
+      identifier: '978-0-14-17495-7',
+      identifierType: 'ISBN',
+      name: 'Earth Science Book 14',
+      title: 'Earth Science Book 14 - Research Publication 14',
+      abstract: 'This is a randomly generated citation for demonstration purposes. Created at 2025-06-10T18:25:43.869Z.',
+      providerId: 'PROV3',
+      associationLevel: 1,
+      relationshipType: 'Refers'
     }
   ]
 }

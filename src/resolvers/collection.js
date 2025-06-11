@@ -168,7 +168,7 @@ export default {
         ...handlePagingParams(args, dataQualitySummaryConceptIds.length)
       }, context, parseResolveInfo(info))
     },
-    associatedCitations: async (source, args, context, info) => {
+    associatedCitations: async (source, args, context) => {
       const { dataSources } = context
       const { conceptId } = source
       const { params = {} } = args
@@ -185,8 +185,7 @@ export default {
       return dataSources.graphDbAssociatedCitations(
         source,
         args,
-        context,
-        parseResolveInfo(info)
+        context
       )
     },
     duplicateCollections: async (source, args, context) => {

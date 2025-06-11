@@ -23,7 +23,7 @@ export default {
                         },
                         {
                           '@type': 'g:Int64',
-                          '@value': 1519
+                          '@value': 1545
                         },
                         {
                           '@type': 'g:T',
@@ -34,28 +34,28 @@ export default {
                         {
                           '@type': 'g:List',
                           '@value': [
-                            'ark:/13030/tf48p17490'
+                            'ark:/13030/tf46p17495'
                           ]
                         },
                         'providerId',
                         {
                           '@type': 'g:List',
                           '@value': [
-                            'PROV3'
+                            'PROV2'
                           ]
                         },
                         'name',
                         {
                           '@type': 'g:List',
                           '@value': [
-                            'Archival Earth Science Resource 48'
+                            'Archival Earth Science Resource 46'
                           ]
                         },
                         'id',
                         {
                           '@type': 'g:List',
                           '@value': [
-                            'CIT1200000110-PROV3'
+                            'CIT1200000108-PROV2'
                           ]
                         },
                         'identifierType',
@@ -69,23 +69,25 @@ export default {
                         {
                           '@type': 'g:List',
                           '@value': [
-                            'This is a randomly generated citation for demonstration purposes. Created at 2025-06-04T18:57:07.827Z.'
+                            'This is a randomly generated citation for demonstration purposes. Created at 2025-06-10T18:25:51.025Z.'
                           ]
                         },
                         'title',
                         {
                           '@type': 'g:List',
                           '@value': [
-                            'Archival Earth Science Resource 48 - Research Publication 48'
+                            'Archival Earth Science Resource 46 - Research Publication 46'
                           ]
                         }
                       ]
                     },
                     'associationLevel',
                     {
-                      '@type': 'g:Int32',
+                      '@type': 'g:Double',
                       '@value': 1
-                    }
+                    },
+                    'relationshipType',
+                    'IsIdenticalTo'
                   ]
                 }
               ]
@@ -93,7 +95,7 @@ export default {
             'totalCount',
             {
               '@type': 'g:Int64',
-              '@value': 4
+              '@value': 5
             }
           ]
         }
