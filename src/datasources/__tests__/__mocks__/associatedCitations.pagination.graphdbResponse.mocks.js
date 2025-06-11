@@ -23,7 +23,7 @@ export default {
                         },
                         {
                           '@type': 'g:Int64',
-                          '@value': 1672
+                          '@value': 1610
                         },
                         {
                           '@type': 'g:T',
@@ -34,7 +34,7 @@ export default {
                         {
                           '@type': 'g:List',
                           '@value': [
-                            '978-0-33-17490-6'
+                            '978-0-15-17495-7'
                           ]
                         },
                         'providerId',
@@ -48,14 +48,14 @@ export default {
                         {
                           '@type': 'g:List',
                           '@value': [
-                            'Earth Science Book 33'
+                            'Earth Science Book 15'
                           ]
                         },
                         'id',
                         {
                           '@type': 'g:List',
                           '@value': [
-                            'CIT1200000095-PROV3'
+                            'CIT1200000077-PROV3'
                           ]
                         },
                         'identifierType',
@@ -69,23 +69,25 @@ export default {
                         {
                           '@type': 'g:List',
                           '@value': [
-                            'This is a randomly generated citation for demonstration purposes. Created at 2025-06-04T18:57:04.382Z.'
+                            'This is a randomly generated citation for demonstration purposes. Created at 2025-06-10T18:25:44.095Z.'
                           ]
                         },
                         'title',
                         {
                           '@type': 'g:List',
                           '@value': [
-                            'Earth Science Book 33 - Research Publication 33'
+                            'Earth Science Book 15 - Research Publication 15'
                           ]
                         }
                       ]
                     },
                     'associationLevel',
                     {
-                      '@type': 'g:Int32',
+                      '@type': 'g:Double',
                       '@value': 1
-                    }
+                    },
+                    'relationshipType',
+                    'IsIdenticalTo'
                   ]
                 },
                 {
@@ -101,7 +103,7 @@ export default {
                         },
                         {
                           '@type': 'g:Int64',
-                          '@value': 1852
+                          '@value': 1709
                         },
                         {
                           '@type': 'g:T',
@@ -112,7 +114,7 @@ export default {
                         {
                           '@type': 'g:List',
                           '@value': [
-                            '10.5067/SAMPLE/DATA.22.1749063421'
+                            '978-0-4-17495-7'
                           ]
                         },
                         'providerId',
@@ -126,44 +128,46 @@ export default {
                         {
                           '@type': 'g:List',
                           '@value': [
-                            'Earth Science Dataset 22'
+                            'Earth Science Book 4'
                           ]
                         },
                         'id',
                         {
                           '@type': 'g:List',
                           '@value': [
-                            'CIT1200000084-PROV2'
+                            'CIT1200000066-PROV2'
                           ]
                         },
                         'identifierType',
                         {
                           '@type': 'g:List',
                           '@value': [
-                            'DOI'
+                            'ISBN'
                           ]
                         },
                         'abstract',
                         {
                           '@type': 'g:List',
                           '@value': [
-                            'This is a randomly generated citation for demonstration purposes. Created at 2025-06-04T18:57:01.793Z.'
+                            'This is a randomly generated citation for demonstration purposes. Created at 2025-06-10T18:25:41.635Z.'
                           ]
                         },
                         'title',
                         {
                           '@type': 'g:List',
                           '@value': [
-                            'Earth Science Dataset 22 - Research Publication 22'
+                            'Earth Science Book 4 - Research Publication 4'
                           ]
                         }
                       ]
                     },
                     'associationLevel',
                     {
-                      '@type': 'g:Int32',
+                      '@type': 'g:Double',
                       '@value': 1
-                    }
+                    },
+                    'relationshipType',
+                    'IsIdenticalTo'
                   ]
                 }
               ]
@@ -171,7 +175,7 @@ export default {
             'totalCount',
             {
               '@type': 'g:Int64',
-              '@value': 4
+              '@value': 5
             }
           ]
         }

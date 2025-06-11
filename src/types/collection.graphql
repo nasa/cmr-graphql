@@ -447,10 +447,10 @@ type Collection {
   ): DataQualitySummaryList
 
   "Returns the list of associated citations."
-associatedCitations(
+  associatedCitations(
     "Associated citations query parameters"
     params: AssociatedCitationsInput
-  ): CitationList
+  ): AssociatedCitationsList
 }
 
 input AssociatedCitationsInput {
@@ -496,6 +496,43 @@ type DuplicateCollectionList {
 
   "The list of duplicate collections."
   items: [DuplicateCollection]
+}
+
+type AssociatedCitation {
+  "The unique concept id assigned to the citation."
+  id: String
+
+  "The identifier of the citation."
+  identifier: String
+
+  "The identifier type of the citation."
+  identifierType: String
+
+  "The title of the citation."
+  title: String
+
+  "The abstract of the citation."
+  abstract: String
+
+  "The name of the citation."
+  name: String
+
+  "The provider of the citation."
+  providerId: String
+
+  "The type of relationship between the citation and the collection."
+  relationshipType: String
+
+  "The level of association for the citation."
+  associationLevel: String
+}
+
+type AssociatedCitationsList {
+  "The number of associated citations available."
+  count: Int
+
+  "The list of associated citations."
+  items: [AssociatedCitation]
 }
 
 input RelatedCollectionsInput {

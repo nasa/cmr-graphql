@@ -23,7 +23,7 @@ export default {
                         },
                         {
                           '@type': 'g:Int64',
-                          '@value': 1421
+                          '@value': 1386
                         },
                         {
                           '@type': 'g:T',
@@ -34,28 +34,28 @@ export default {
                         {
                           '@type': 'g:List',
                           '@value': [
-                            'ark:/13030/tf27p17490'
+                            'ark:/13030/tf11p17495'
                           ]
                         },
                         'providerId',
                         {
                           '@type': 'g:List',
                           '@value': [
-                            'PROV2'
+                            'PROV1'
                           ]
                         },
                         'name',
                         {
                           '@type': 'g:List',
                           '@value': [
-                            'Archival Earth Science Resource 27'
+                            'Archival Earth Science Resource 11'
                           ]
                         },
                         'id',
                         {
                           '@type': 'g:List',
                           '@value': [
-                            'CIT1200000089-PROV2'
+                            'CIT1200000073-PROV1'
                           ]
                         },
                         'identifierType',
@@ -69,23 +69,25 @@ export default {
                         {
                           '@type': 'g:List',
                           '@value': [
-                            'This is a randomly generated citation for demonstration purposes. Created at 2025-06-04T18:57:02.953Z.'
+                            'This is a randomly generated citation for demonstration purposes. Created at 2025-06-10T18:25:43.198Z.'
                           ]
                         },
                         'title',
                         {
                           '@type': 'g:List',
                           '@value': [
-                            'Archival Earth Science Resource 27 - Research Publication 27'
+                            'Archival Earth Science Resource 11 - Research Publication 11'
                           ]
                         }
                       ]
                     },
                     'associationLevel',
                     {
-                      '@type': 'g:Int32',
+                      '@type': 'g:Double',
                       '@value': 2
-                    }
+                    },
+                    'relationshipType',
+                    'IsIdenticalTo'
                   ]
                 },
                 {
@@ -101,7 +103,7 @@ export default {
                         },
                         {
                           '@type': 'g:Int64',
-                          '@value': 1458
+                          '@value': 1395
                         },
                         {
                           '@type': 'g:T',
@@ -112,7 +114,7 @@ export default {
                         {
                           '@type': 'g:List',
                           '@value': [
-                            'ark:/13030/tf36p17490'
+                            'ark:/13030/tf12p17495'
                           ]
                         },
                         'providerId',
@@ -126,14 +128,14 @@ export default {
                         {
                           '@type': 'g:List',
                           '@value': [
-                            'Archival Earth Science Resource 36'
+                            'Archival Earth Science Resource 12'
                           ]
                         },
                         'id',
                         {
                           '@type': 'g:List',
                           '@value': [
-                            'CIT1200000098-PROV2'
+                            'CIT1200000074-PROV2'
                           ]
                         },
                         'identifierType',
@@ -147,23 +149,25 @@ export default {
                         {
                           '@type': 'g:List',
                           '@value': [
-                            'This is a randomly generated citation for demonstration purposes. Created at 2025-06-04T18:57:05.088Z.'
+                            'This is a randomly generated citation for demonstration purposes. Created at 2025-06-10T18:25:43.425Z.'
                           ]
                         },
                         'title',
                         {
                           '@type': 'g:List',
                           '@value': [
-                            'Archival Earth Science Resource 36 - Research Publication 36'
+                            'Archival Earth Science Resource 12 - Research Publication 12'
                           ]
                         }
                       ]
                     },
                     'associationLevel',
                     {
-                      '@type': 'g:Int32',
+                      '@type': 'g:Double',
                       '@value': 2
-                    }
+                    },
+                    'relationshipType',
+                    'IsIdenticalTo'
                   ]
                 },
                 {
@@ -179,7 +183,7 @@ export default {
                         },
                         {
                           '@type': 'g:Int64',
-                          '@value': 1507
+                          '@value': 1404
                         },
                         {
                           '@type': 'g:T',
@@ -190,7 +194,327 @@ export default {
                         {
                           '@type': 'g:List',
                           '@value': [
-                            'ark:/13030/tf46p17490'
+                            'ark:/13030/tf16p17495'
+                          ]
+                        },
+                        'providerId',
+                        {
+                          '@type': 'g:List',
+                          '@value': [
+                            'PROV1'
+                          ]
+                        },
+                        'name',
+                        {
+                          '@type': 'g:List',
+                          '@value': [
+                            'Archival Earth Science Resource 16'
+                          ]
+                        },
+                        'id',
+                        {
+                          '@type': 'g:List',
+                          '@value': [
+                            'CIT1200000078-PROV1'
+                          ]
+                        },
+                        'identifierType',
+                        {
+                          '@type': 'g:List',
+                          '@value': [
+                            'ARK'
+                          ]
+                        },
+                        'abstract',
+                        {
+                          '@type': 'g:List',
+                          '@value': [
+                            'This is a randomly generated citation for demonstration purposes. Created at 2025-06-10T18:25:44.322Z.'
+                          ]
+                        },
+                        'title',
+                        {
+                          '@type': 'g:List',
+                          '@value': [
+                            'Archival Earth Science Resource 16 - Research Publication 16'
+                          ]
+                        }
+                      ]
+                    },
+                    'associationLevel',
+                    {
+                      '@type': 'g:Double',
+                      '@value': 2
+                    },
+                    'relationshipType',
+                    'IsIdenticalTo'
+                  ]
+                },
+                {
+                  '@type': 'g:Map',
+                  '@value': [
+                    'citationData',
+                    {
+                      '@type': 'g:Map',
+                      '@value': [
+                        {
+                          '@type': 'g:T',
+                          '@value': 'id'
+                        },
+                        {
+                          '@type': 'g:Int64',
+                          '@value': 1417
+                        },
+                        {
+                          '@type': 'g:T',
+                          '@value': 'label'
+                        },
+                        'citation',
+                        'identifier',
+                        {
+                          '@type': 'g:List',
+                          '@value': [
+                            'ark:/13030/tf2p17495'
+                          ]
+                        },
+                        'providerId',
+                        {
+                          '@type': 'g:List',
+                          '@value': [
+                            'PROV2'
+                          ]
+                        },
+                        'name',
+                        {
+                          '@type': 'g:List',
+                          '@value': [
+                            'Archival Earth Science Resource 2'
+                          ]
+                        },
+                        'id',
+                        {
+                          '@type': 'g:List',
+                          '@value': [
+                            'CIT1200000064-PROV2'
+                          ]
+                        },
+                        'identifierType',
+                        {
+                          '@type': 'g:List',
+                          '@value': [
+                            'ARK'
+                          ]
+                        },
+                        'abstract',
+                        {
+                          '@type': 'g:List',
+                          '@value': [
+                            'This is a randomly generated citation for demonstration purposes. Created at 2025-06-10T18:25:41.191Z.'
+                          ]
+                        },
+                        'title',
+                        {
+                          '@type': 'g:List',
+                          '@value': [
+                            'Archival Earth Science Resource 2 - Research Publication 2'
+                          ]
+                        }
+                      ]
+                    },
+                    'associationLevel',
+                    {
+                      '@type': 'g:Double',
+                      '@value': 2
+                    },
+                    'relationshipType',
+                    'Describes'
+                  ]
+                },
+                {
+                  '@type': 'g:Map',
+                  '@value': [
+                    'citationData',
+                    {
+                      '@type': 'g:Map',
+                      '@value': [
+                        {
+                          '@type': 'g:T',
+                          '@value': 'id'
+                        },
+                        {
+                          '@type': 'g:Int64',
+                          '@value': 1428
+                        },
+                        {
+                          '@type': 'g:T',
+                          '@value': 'label'
+                        },
+                        'citation',
+                        'identifier',
+                        {
+                          '@type': 'g:List',
+                          '@value': [
+                            'ark:/13030/tf21p17495'
+                          ]
+                        },
+                        'providerId',
+                        {
+                          '@type': 'g:List',
+                          '@value': [
+                            'PROV1'
+                          ]
+                        },
+                        'name',
+                        {
+                          '@type': 'g:List',
+                          '@value': [
+                            'Archival Earth Science Resource 21'
+                          ]
+                        },
+                        'id',
+                        {
+                          '@type': 'g:List',
+                          '@value': [
+                            'CIT1200000083-PROV1'
+                          ]
+                        },
+                        'identifierType',
+                        {
+                          '@type': 'g:List',
+                          '@value': [
+                            'ARK'
+                          ]
+                        },
+                        'abstract',
+                        {
+                          '@type': 'g:List',
+                          '@value': [
+                            'This is a randomly generated citation for demonstration purposes. Created at 2025-06-10T18:25:45.442Z.'
+                          ]
+                        },
+                        'title',
+                        {
+                          '@type': 'g:List',
+                          '@value': [
+                            'Archival Earth Science Resource 21 - Research Publication 21'
+                          ]
+                        }
+                      ]
+                    },
+                    'associationLevel',
+                    {
+                      '@type': 'g:Double',
+                      '@value': 2
+                    },
+                    'relationshipType',
+                    'IsIdenticalTo'
+                  ]
+                },
+                {
+                  '@type': 'g:Map',
+                  '@value': [
+                    'citationData',
+                    {
+                      '@type': 'g:Map',
+                      '@value': [
+                        {
+                          '@type': 'g:T',
+                          '@value': 'id'
+                        },
+                        {
+                          '@type': 'g:Int64',
+                          '@value': 1462
+                        },
+                        {
+                          '@type': 'g:T',
+                          '@value': 'label'
+                        },
+                        'citation',
+                        'identifier',
+                        {
+                          '@type': 'g:List',
+                          '@value': [
+                            'ark:/13030/tf3p17495'
+                          ]
+                        },
+                        'providerId',
+                        {
+                          '@type': 'g:List',
+                          '@value': [
+                            'PROV2'
+                          ]
+                        },
+                        'name',
+                        {
+                          '@type': 'g:List',
+                          '@value': [
+                            'Archival Earth Science Resource 3'
+                          ]
+                        },
+                        'id',
+                        {
+                          '@type': 'g:List',
+                          '@value': [
+                            'CIT1200000065-PROV2'
+                          ]
+                        },
+                        'identifierType',
+                        {
+                          '@type': 'g:List',
+                          '@value': [
+                            'ARK'
+                          ]
+                        },
+                        'abstract',
+                        {
+                          '@type': 'g:List',
+                          '@value': [
+                            'This is a randomly generated citation for demonstration purposes. Created at 2025-06-10T18:25:41.416Z.'
+                          ]
+                        },
+                        'title',
+                        {
+                          '@type': 'g:List',
+                          '@value': [
+                            'Archival Earth Science Resource 3 - Research Publication 3'
+                          ]
+                        }
+                      ]
+                    },
+                    'associationLevel',
+                    {
+                      '@type': 'g:Double',
+                      '@value': 2
+                    },
+                    'relationshipType',
+                    'Refers'
+                  ]
+                },
+                {
+                  '@type': 'g:Map',
+                  '@value': [
+                    'citationData',
+                    {
+                      '@type': 'g:Map',
+                      '@value': [
+                        {
+                          '@type': 'g:T',
+                          '@value': 'id'
+                        },
+                        {
+                          '@type': 'g:Int64',
+                          '@value': 1545
+                        },
+                        {
+                          '@type': 'g:T',
+                          '@value': 'label'
+                        },
+                        'citation',
+                        'identifier',
+                        {
+                          '@type': 'g:List',
+                          '@value': [
+                            'ark:/13030/tf46p17495'
                           ]
                         },
                         'providerId',
@@ -225,7 +549,7 @@ export default {
                         {
                           '@type': 'g:List',
                           '@value': [
-                            'This is a randomly generated citation for demonstration purposes. Created at 2025-06-04T18:57:07.368Z.'
+                            'This is a randomly generated citation for demonstration purposes. Created at 2025-06-10T18:25:51.025Z.'
                           ]
                         },
                         'title',
@@ -239,87 +563,11 @@ export default {
                     },
                     'associationLevel',
                     {
-                      '@type': 'g:Int32',
-                      '@value': 2
-                    }
-                  ]
-                },
-                {
-                  '@type': 'g:Map',
-                  '@value': [
-                    'citationData',
-                    {
-                      '@type': 'g:Map',
-                      '@value': [
-                        {
-                          '@type': 'g:T',
-                          '@value': 'id'
-                        },
-                        {
-                          '@type': 'g:Int64',
-                          '@value': 1533
-                        },
-                        {
-                          '@type': 'g:T',
-                          '@value': 'label'
-                        },
-                        'citation',
-                        'identifier',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            '978-0-10-17490-6'
-                          ]
-                        },
-                        'providerId',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            'PROV3'
-                          ]
-                        },
-                        'name',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            'Earth Science Book 10'
-                          ]
-                        },
-                        'id',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            'CIT1200000072-PROV3'
-                          ]
-                        },
-                        'identifierType',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            'ISBN'
-                          ]
-                        },
-                        'abstract',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            'This is a randomly generated citation for demonstration purposes. Created at 2025-06-04T18:56:59.004Z.'
-                          ]
-                        },
-                        'title',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            'Earth Science Book 10 - Research Publication 10'
-                          ]
-                        }
-                      ]
+                      '@type': 'g:Double',
+                      '@value': 1
                     },
-                    'associationLevel',
-                    {
-                      '@type': 'g:Int32',
-                      '@value': 2
-                    }
+                    'relationshipType',
+                    'IsIdenticalTo'
                   ]
                 },
                 {
@@ -335,7 +583,7 @@ export default {
                         },
                         {
                           '@type': 'g:Int64',
-                          '@value': 1559
+                          '@value': 1571
                         },
                         {
                           '@type': 'g:T',
@@ -346,85 +594,7 @@ export default {
                         {
                           '@type': 'g:List',
                           '@value': [
-                            '978-0-11-17490-6'
-                          ]
-                        },
-                        'providerId',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            'PROV3'
-                          ]
-                        },
-                        'name',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            'Earth Science Book 11'
-                          ]
-                        },
-                        'id',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            'CIT1200000073-PROV3'
-                          ]
-                        },
-                        'identifierType',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            'ISBN'
-                          ]
-                        },
-                        'abstract',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            'This is a randomly generated citation for demonstration purposes. Created at 2025-06-04T18:56:59.242Z.'
-                          ]
-                        },
-                        'title',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            'Earth Science Book 11 - Research Publication 11'
-                          ]
-                        }
-                      ]
-                    },
-                    'associationLevel',
-                    {
-                      '@type': 'g:Int32',
-                      '@value': 2
-                    }
-                  ]
-                },
-                {
-                  '@type': 'g:Map',
-                  '@value': [
-                    'citationData',
-                    {
-                      '@type': 'g:Map',
-                      '@value': [
-                        {
-                          '@type': 'g:T',
-                          '@value': 'id'
-                        },
-                        {
-                          '@type': 'g:Int64',
-                          '@value': 1612
-                        },
-                        {
-                          '@type': 'g:T',
-                          '@value': 'label'
-                        },
-                        'citation',
-                        'identifier',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            '978-0-2-17490-6'
+                            'ark:/13030/tf9p17495'
                           ]
                         },
                         'providerId',
@@ -438,44 +608,46 @@ export default {
                         {
                           '@type': 'g:List',
                           '@value': [
-                            'Earth Science Book 2'
+                            'Archival Earth Science Resource 9'
                           ]
                         },
                         'id',
                         {
                           '@type': 'g:List',
                           '@value': [
-                            'CIT1200000064-PROV2'
+                            'CIT1200000071-PROV2'
                           ]
                         },
                         'identifierType',
                         {
                           '@type': 'g:List',
                           '@value': [
-                            'ISBN'
+                            'ARK'
                           ]
                         },
                         'abstract',
                         {
                           '@type': 'g:List',
                           '@value': [
-                            'This is a randomly generated citation for demonstration purposes. Created at 2025-06-04T18:56:56.848Z.'
+                            'This is a randomly generated citation for demonstration purposes. Created at 2025-06-10T18:25:42.754Z.'
                           ]
                         },
                         'title',
                         {
                           '@type': 'g:List',
                           '@value': [
-                            'Earth Science Book 2 - Research Publication 2'
+                            'Archival Earth Science Resource 9 - Research Publication 9'
                           ]
                         }
                       ]
                     },
                     'associationLevel',
                     {
-                      '@type': 'g:Int32',
+                      '@type': 'g:Double',
                       '@value': 2
-                    }
+                    },
+                    'relationshipType',
+                    'Cites'
                   ]
                 },
                 {
@@ -491,7 +663,7 @@ export default {
                         },
                         {
                           '@type': 'g:Int64',
-                          '@value': 1700
+                          '@value': 1586
                         },
                         {
                           '@type': 'g:T',
@@ -502,319 +674,7 @@ export default {
                         {
                           '@type': 'g:List',
                           '@value': [
-                            '978-0-4-17490-6'
-                          ]
-                        },
-                        'providerId',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            'PROV1'
-                          ]
-                        },
-                        'name',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            'Earth Science Book 4'
-                          ]
-                        },
-                        'id',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            'CIT1200000066-PROV1'
-                          ]
-                        },
-                        'identifierType',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            'ISBN'
-                          ]
-                        },
-                        'abstract',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            'This is a randomly generated citation for demonstration purposes. Created at 2025-06-04T18:56:57.604Z.'
-                          ]
-                        },
-                        'title',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            'Earth Science Book 4 - Research Publication 4'
-                          ]
-                        }
-                      ]
-                    },
-                    'associationLevel',
-                    {
-                      '@type': 'g:Int32',
-                      '@value': 2
-                    }
-                  ]
-                },
-                {
-                  '@type': 'g:Map',
-                  '@value': [
-                    'citationData',
-                    {
-                      '@type': 'g:Map',
-                      '@value': [
-                        {
-                          '@type': 'g:T',
-                          '@value': 'id'
-                        },
-                        {
-                          '@type': 'g:Int64',
-                          '@value': 1734
-                        },
-                        {
-                          '@type': 'g:T',
-                          '@value': 'label'
-                        },
-                        'citation',
-                        'identifier',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            '978-0-45-17490-6'
-                          ]
-                        },
-                        'providerId',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            'PROV3'
-                          ]
-                        },
-                        'name',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            'Earth Science Book 45'
-                          ]
-                        },
-                        'id',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            'CIT1200000107-PROV3'
-                          ]
-                        },
-                        'identifierType',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            'ISBN'
-                          ]
-                        },
-                        'abstract',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            'This is a randomly generated citation for demonstration purposes. Created at 2025-06-04T18:57:07.144Z.'
-                          ]
-                        },
-                        'title',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            'Earth Science Book 45 - Research Publication 45'
-                          ]
-                        }
-                      ]
-                    },
-                    'associationLevel',
-                    {
-                      '@type': 'g:Int32',
-                      '@value': 2
-                    }
-                  ]
-                },
-                {
-                  '@type': 'g:Map',
-                  '@value': [
-                    'citationData',
-                    {
-                      '@type': 'g:Map',
-                      '@value': [
-                        {
-                          '@type': 'g:T',
-                          '@value': 'id'
-                        },
-                        {
-                          '@type': 'g:Int64',
-                          '@value': 1786
-                        },
-                        {
-                          '@type': 'g:T',
-                          '@value': 'label'
-                        },
-                        'citation',
-                        'identifier',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            '978-0-9-17490-6'
-                          ]
-                        },
-                        'providerId',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            'PROV1'
-                          ]
-                        },
-                        'name',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            'Earth Science Book 9'
-                          ]
-                        },
-                        'id',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            'CIT1200000071-PROV1'
-                          ]
-                        },
-                        'identifierType',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            'ISBN'
-                          ]
-                        },
-                        'abstract',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            'This is a randomly generated citation for demonstration purposes. Created at 2025-06-04T18:56:58.773Z.'
-                          ]
-                        },
-                        'title',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            'Earth Science Book 9 - Research Publication 9'
-                          ]
-                        }
-                      ]
-                    },
-                    'associationLevel',
-                    {
-                      '@type': 'g:Int32',
-                      '@value': 2
-                    }
-                  ]
-                },
-                {
-                  '@type': 'g:Map',
-                  '@value': [
-                    'citationData',
-                    {
-                      '@type': 'g:Map',
-                      '@value': [
-                        {
-                          '@type': 'g:T',
-                          '@value': 'id'
-                        },
-                        {
-                          '@type': 'g:Int64',
-                          '@value': 1802
-                        },
-                        {
-                          '@type': 'g:T',
-                          '@value': 'label'
-                        },
-                        'citation',
-                        'identifier',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            '10.5067/SAMPLE/DATA.1.1749063416'
-                          ]
-                        },
-                        'providerId',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            'PROV3'
-                          ]
-                        },
-                        'name',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            'Earth Science Dataset 1'
-                          ]
-                        },
-                        'id',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            'CIT1200000063-PROV3'
-                          ]
-                        },
-                        'identifierType',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            'DOI'
-                          ]
-                        },
-                        'abstract',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            'This is a randomly generated citation for demonstration purposes. Created at 2025-06-04T18:56:56.498Z.'
-                          ]
-                        },
-                        'title',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            'Earth Science Dataset 1 - Research Publication 1'
-                          ]
-                        }
-                      ]
-                    },
-                    'associationLevel',
-                    {
-                      '@type': 'g:Int32',
-                      '@value': 2
-                    }
-                  ]
-                },
-                {
-                  '@type': 'g:Map',
-                  '@value': [
-                    'citationData',
-                    {
-                      '@type': 'g:Map',
-                      '@value': [
-                        {
-                          '@type': 'g:T',
-                          '@value': 'id'
-                        },
-                        {
-                          '@type': 'g:Int64',
-                          '@value': 1868
-                        },
-                        {
-                          '@type': 'g:T',
-                          '@value': 'label'
-                        },
-                        'citation',
-                        'identifier',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            '10.5067/SAMPLE/DATA.24.1749063422'
+                            '978-0-1-17495-7'
                           ]
                         },
                         'providerId',
@@ -828,44 +688,46 @@ export default {
                         {
                           '@type': 'g:List',
                           '@value': [
-                            'Earth Science Dataset 24'
+                            'Earth Science Book 1'
                           ]
                         },
                         'id',
                         {
                           '@type': 'g:List',
                           '@value': [
-                            'CIT1200000086-PROV2'
+                            'CIT1200000063-PROV2'
                           ]
                         },
                         'identifierType',
                         {
                           '@type': 'g:List',
                           '@value': [
-                            'DOI'
+                            'ISBN'
                           ]
                         },
                         'abstract',
                         {
                           '@type': 'g:List',
                           '@value': [
-                            'This is a randomly generated citation for demonstration purposes. Created at 2025-06-04T18:57:02.261Z.'
+                            'This is a randomly generated citation for demonstration purposes. Created at 2025-06-10T18:25:40.965Z.'
                           ]
                         },
                         'title',
                         {
                           '@type': 'g:List',
                           '@value': [
-                            'Earth Science Dataset 24 - Research Publication 24'
+                            'Earth Science Book 1 - Research Publication 1'
                           ]
                         }
                       ]
                     },
                     'associationLevel',
                     {
-                      '@type': 'g:Int32',
+                      '@type': 'g:Double',
                       '@value': 2
-                    }
+                    },
+                    'relationshipType',
+                    'IsIdenticalTo'
                   ]
                 },
                 {
@@ -881,7 +743,7 @@ export default {
                         },
                         {
                           '@type': 'g:Int64',
-                          '@value': 1883
+                          '@value': 1597
                         },
                         {
                           '@type': 'g:T',
@@ -892,85 +754,7 @@ export default {
                         {
                           '@type': 'g:List',
                           '@value': [
-                            '10.5067/SAMPLE/DATA.25.1749063422'
-                          ]
-                        },
-                        'providerId',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            'PROV2'
-                          ]
-                        },
-                        'name',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            'Earth Science Dataset 25'
-                          ]
-                        },
-                        'id',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            'CIT1200000087-PROV2'
-                          ]
-                        },
-                        'identifierType',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            'DOI'
-                          ]
-                        },
-                        'abstract',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            'This is a randomly generated citation for demonstration purposes. Created at 2025-06-04T18:57:02.488Z.'
-                          ]
-                        },
-                        'title',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            'Earth Science Dataset 25 - Research Publication 25'
-                          ]
-                        }
-                      ]
-                    },
-                    'associationLevel',
-                    {
-                      '@type': 'g:Int32',
-                      '@value': 2
-                    }
-                  ]
-                },
-                {
-                  '@type': 'g:Map',
-                  '@value': [
-                    'citationData',
-                    {
-                      '@type': 'g:Map',
-                      '@value': [
-                        {
-                          '@type': 'g:T',
-                          '@value': 'id'
-                        },
-                        {
-                          '@type': 'g:Int64',
-                          '@value': 1899
-                        },
-                        {
-                          '@type': 'g:T',
-                          '@value': 'label'
-                        },
-                        'citation',
-                        'identifier',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            '10.5067/SAMPLE/DATA.30.1749063423'
+                            '978-0-14-17495-7'
                           ]
                         },
                         'providerId',
@@ -984,200 +768,46 @@ export default {
                         {
                           '@type': 'g:List',
                           '@value': [
-                            'Earth Science Dataset 30'
+                            'Earth Science Book 14'
                           ]
                         },
                         'id',
                         {
                           '@type': 'g:List',
                           '@value': [
-                            'CIT1200000092-PROV3'
+                            'CIT1200000076-PROV3'
                           ]
                         },
                         'identifierType',
                         {
                           '@type': 'g:List',
                           '@value': [
-                            'DOI'
+                            'ISBN'
                           ]
                         },
                         'abstract',
                         {
                           '@type': 'g:List',
                           '@value': [
-                            'This is a randomly generated citation for demonstration purposes. Created at 2025-06-04T18:57:03.657Z.'
+                            'This is a randomly generated citation for demonstration purposes. Created at 2025-06-10T18:25:43.869Z.'
                           ]
                         },
                         'title',
                         {
                           '@type': 'g:List',
                           '@value': [
-                            'Earth Science Dataset 30 - Research Publication 30'
+                            'Earth Science Book 14 - Research Publication 14'
                           ]
                         }
                       ]
                     },
                     'associationLevel',
                     {
-                      '@type': 'g:Int32',
-                      '@value': 2
-                    }
-                  ]
-                },
-                {
-                  '@type': 'g:Map',
-                  '@value': [
-                    'citationData',
-                    {
-                      '@type': 'g:Map',
-                      '@value': [
-                        {
-                          '@type': 'g:T',
-                          '@value': 'id'
-                        },
-                        {
-                          '@type': 'g:Int64',
-                          '@value': 1910
-                        },
-                        {
-                          '@type': 'g:T',
-                          '@value': 'label'
-                        },
-                        'citation',
-                        'identifier',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            '10.5067/SAMPLE/DATA.34.1749063424'
-                          ]
-                        },
-                        'providerId',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            'PROV2'
-                          ]
-                        },
-                        'name',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            'Earth Science Dataset 34'
-                          ]
-                        },
-                        'id',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            'CIT1200000096-PROV2'
-                          ]
-                        },
-                        'identifierType',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            'DOI'
-                          ]
-                        },
-                        'abstract',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            'This is a randomly generated citation for demonstration purposes. Created at 2025-06-04T18:57:04.617Z.'
-                          ]
-                        },
-                        'title',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            'Earth Science Dataset 34 - Research Publication 34'
-                          ]
-                        }
-                      ]
+                      '@type': 'g:Double',
+                      '@value': 1
                     },
-                    'associationLevel',
-                    {
-                      '@type': 'g:Int32',
-                      '@value': 2
-                    }
-                  ]
-                },
-                {
-                  '@type': 'g:Map',
-                  '@value': [
-                    'citationData',
-                    {
-                      '@type': 'g:Map',
-                      '@value': [
-                        {
-                          '@type': 'g:T',
-                          '@value': 'id'
-                        },
-                        {
-                          '@type': 'g:Int64',
-                          '@value': 2010
-                        },
-                        {
-                          '@type': 'g:T',
-                          '@value': 'label'
-                        },
-                        'citation',
-                        'identifier',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            '10.5067/SAMPLE/DATA.7.1749063418'
-                          ]
-                        },
-                        'providerId',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            'PROV1'
-                          ]
-                        },
-                        'name',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            'Earth Science Dataset 7'
-                          ]
-                        },
-                        'id',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            'CIT1200000069-PROV1'
-                          ]
-                        },
-                        'identifierType',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            'DOI'
-                          ]
-                        },
-                        'abstract',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            'This is a randomly generated citation for demonstration purposes. Created at 2025-06-04T18:56:58.301Z.'
-                          ]
-                        },
-                        'title',
-                        {
-                          '@type': 'g:List',
-                          '@value': [
-                            'Earth Science Dataset 7 - Research Publication 7'
-                          ]
-                        }
-                      ]
-                    },
-                    'associationLevel',
-                    {
-                      '@type': 'g:Int32',
-                      '@value': 2
-                    }
+                    'relationshipType',
+                    'Refers'
                   ]
                 }
               ]
@@ -1185,7 +815,7 @@ export default {
             'totalCount',
             {
               '@type': 'g:Int64',
-              '@value': 15
+              '@value': 29
             }
           ]
         }

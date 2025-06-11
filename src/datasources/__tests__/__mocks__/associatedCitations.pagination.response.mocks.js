@@ -1,23 +1,27 @@
 export default {
-  count: 4,
+  count: 5,
   items: [
     {
-      conceptId: 'CIT1200000095-PROV3',
-      identifier: '978-0-33-17490-6',
+      id: 'CIT1200000077-PROV3',
+      identifier: '978-0-15-17495-7',
       identifierType: 'ISBN',
-      name: 'Earth Science Book 33',
-      abstract: 'This is a randomly generated citation for demonstration purposes. Created at 2025-06-04T18:57:04.382Z.',
+      name: 'Earth Science Book 15',
+      title: 'Earth Science Book 15 - Research Publication 15',
+      abstract: 'This is a randomly generated citation for demonstration purposes. Created at 2025-06-10T18:25:44.095Z.',
       providerId: 'PROV3',
-      associationLevel: 1
+      associationLevel: 1,
+      relationshipType: 'IsIdenticalTo'
     },
     {
-      conceptId: 'CIT1200000084-PROV2',
-      identifier: '10.5067/SAMPLE/DATA.22.1749063421',
-      identifierType: 'DOI',
-      name: 'Earth Science Dataset 22',
-      abstract: 'This is a randomly generated citation for demonstration purposes. Created at 2025-06-04T18:57:01.793Z.',
+      id: 'CIT1200000066-PROV2',
+      identifier: '978-0-4-17495-7',
+      identifierType: 'ISBN',
+      name: 'Earth Science Book 4',
+      title: 'Earth Science Book 4 - Research Publication 4',
+      abstract: 'This is a randomly generated citation for demonstration purposes. Created at 2025-06-10T18:25:41.635Z.',
       providerId: 'PROV2',
-      associationLevel: 1
+      associationLevel: 1,
+      relationshipType: 'IsIdenticalTo'
     }
   ]
 }

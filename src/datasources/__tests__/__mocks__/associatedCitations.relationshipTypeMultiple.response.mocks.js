@@ -1,23 +1,16 @@
 export default {
-  count: 2,
+  count: 4,
   items: [
     {
-      conceptId: 'CIT1200000095-PROV3',
-      identifier: '978-0-33-17490-6',
-      identifierType: 'ISBN',
-      name: 'Earth Science Book 33',
-      abstract: 'This is a randomly generated citation for demonstration purposes. Created at 2025-06-04T18:57:04.382Z.',
-      providerId: 'PROV3',
-      associationLevel: 1
-    },
-    {
-      conceptId: 'CIT1200000084-PROV2',
-      identifier: '10.5067/SAMPLE/DATA.22.1749063421',
-      identifierType: 'DOI',
-      name: 'Earth Science Dataset 22',
-      abstract: 'This is a randomly generated citation for demonstration purposes. Created at 2025-06-04T18:57:01.793Z.',
+      id: 'CIT1200000108-PROV2',
+      identifier: 'ark:/13030/tf46p17495',
+      identifierType: 'ARK',
+      name: 'Archival Earth Science Resource 46',
+      title: 'Archival Earth Science Resource 46 - Research Publication 46',
+      abstract: 'This is a randomly generated citation for demonstration purposes. Created at 2025-06-10T18:25:51.025Z.',
       providerId: 'PROV2',
-      associationLevel: 1
+      associationLevel: 1,
+      relationshipType: 'IsIdenticalTo'
     }
   ]
 }
