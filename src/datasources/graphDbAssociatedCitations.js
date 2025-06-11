@@ -130,34 +130,21 @@ export default async (
     const citationPairs = chunk(citationProperties, 2)
 
     citationPairs.forEach(([keyObj, valueObj]) => {
-      let key
-      if (typeof keyObj === 'string') {
-        key = keyObj
-      } else if (keyObj && typeof keyObj === 'object' && '@value' in keyObj) {
-        key = keyObj['@value']
-      } else {
-        return
-      }
-
-      let value
-      if (valueObj && typeof valueObj === 'object' && '@value' in valueObj) {
-        const rawValue = valueObj['@value']
-        value = Array.isArray(rawValue) ? rawValue[0] : rawValue
-      } else {
-        value = valueObj
-      }
+      const key = typeof keyObj === 'string' ? keyObj : keyObj['@value']
+      const rawValue = valueObj['@value']
+      const value = Array.isArray(rawValue) ? rawValue[0] : rawValue
 
       parsedCitation[key] = value
     })
 
     const formattedCitation = {
-      id: parsedCitation.id || '',
-      identifier: parsedCitation.identifier || '',
-      identifierType: parsedCitation.identifierType || '',
-      name: parsedCitation.name || '',
-      title: parsedCitation.title || '',
-      abstract: parsedCitation.abstract || '',
-      providerId: parsedCitation.providerId || '',
+      id: parsedCitation.id,
+      identifier: parsedCitation.identifier,
+      identifierType: parsedCitation.identifierType,
+      name: parsedCitation.name,
+      title: parsedCitation.title,
+      abstract: parsedCitation.abstract,
+      providerId: parsedCitation.providerId,
       associationLevel: associationLevel['@value'],
       relationshipType: foundRelationshipType
     }
