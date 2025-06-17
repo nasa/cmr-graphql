@@ -21,6 +21,8 @@ import associatedCitationsDepth2GraphdbResponseMocks from './__mocks__/associate
 import associatedCitationsDepth2ResponseMocks from './__mocks__/associatedCitations.depth2.response.mocks'
 import associatedCitationsPaginationGraphdbResponseMocks from './__mocks__/associatedCitations.pagination.graphdbResponse.mocks'
 import associatedCitationsPaginationResponseMocks from './__mocks__/associatedCitations.pagination.response.mocks'
+import associatedCitationsDepth2MultiFilterGraphdbResponseMocks from './__mocks__/associatedCitations.depth2MultiFilter.graphdbResponse.mocks'
+import associatedCitationsDepth2MultiFilterResponseMocks from './__mocks__/associatedCitations.depth2MultiFilter.response.mocks'
 
 let parsedInfo
 
@@ -756,6 +758,118 @@ describe('graphDbAssociatedCitations', () => {
       )
 
       expect(response).toEqual(associatedCitationsPaginationResponseMocks)
+    })
+  })
+
+  describe('when multi-depth traversal with multiple filters is used', () => {
+    beforeEach(() => {
+      parsedInfo = {
+        fieldsByTypeName: {
+          CitationList: {
+            items: {
+              fieldsByTypeName: {
+                Citation: {
+                  associationLevel: {
+                    name: 'associationLevel',
+                    alias: 'associationLevel',
+                    args: {},
+                    fieldsByTypeName: {}
+                  },
+                  relationshipType: {
+                    name: 'relationshipType',
+                    alias: 'relationshipType',
+                    args: {},
+                    fieldsByTypeName: {}
+                  },
+                  conceptId: {
+                    name: 'conceptId',
+                    alias: 'conceptId',
+                    args: {},
+                    fieldsByTypeName: {}
+                  },
+                  identifier: {
+                    name: 'identifier',
+                    alias: 'identifier',
+                    args: {},
+                    fieldsByTypeName: {}
+                  },
+                  identifierType: {
+                    name: 'identifierType',
+                    alias: 'identifierType',
+                    args: {},
+                    fieldsByTypeName: {}
+                  },
+                  name: {
+                    name: 'name',
+                    alias: 'name',
+                    args: {},
+                    fieldsByTypeName: {}
+                  },
+                  title: {
+                    name: 'title',
+                    alias: 'title',
+                    args: {},
+                    fieldsByTypeName: {}
+                  },
+                  abstract: {
+                    name: 'abstract',
+                    alias: 'abstract',
+                    args: {},
+                    fieldsByTypeName: {}
+                  },
+                  providerId: {
+                    name: 'providerId',
+                    alias: 'providerId',
+                    args: {},
+                    fieldsByTypeName: {}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    })
+
+    test('returns citations with depth 2 traversal filtered by identifierType and providerId', async () => {
+      const getUserGroups = vi.spyOn(getUserPermittedGroups, 'getUserPermittedGroups')
+      getUserGroups.mockImplementationOnce(() => '"guest","registered"')
+
+      nock(/example-graphdb/)
+        .post('/', (body) => {
+          const { gremlin } = body
+
+          return gremlin
+           && gremlin.includes("hasLabel('citation')")
+           && gremlin.includes("has('collection', 'id', 'C1200000013-PROV1')")
+           && gremlin.includes('.times(2)')
+           && gremlin.includes('.emit()')
+           && gremlin.includes('.has(\'identifierType\', within(\'ARK\',\'DOI\'))')
+           && gremlin.includes('.has(\'providerId\', \'PROV2\')')
+           && gremlin.includes('.project(\'citationData\', \'associationLevel\', \'relationshipType\')')
+           && gremlin.includes('.range(0, 10)')
+        })
+        .reply(200, associatedCitationsDepth2MultiFilterGraphdbResponseMocks)
+
+      const response = await graphDbAssociatedCitations(
+        { conceptId: 'C1200000013-PROV1' },
+        {
+          limit: 10,
+          depth: 2,
+          identifierType: ['ARK', 'DOI'],
+          providerId: 'PROV2'
+        },
+        {
+          headers: {
+            'Client-Id': 'eed-test-graphql',
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          },
+          edlUsername: 'testUser'
+        },
+        parsedInfo
+      )
+
+      expect(response).toEqual(associatedCitationsDepth2MultiFilterResponseMocks)
     })
   })
 

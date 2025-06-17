@@ -70,10 +70,10 @@ export default async (
         .as('lastEdge')
         .otherV()
         .hasLabel('citation')
-        ${citationFilters.length > 0 ? `.${citationFilters.join('.')}` : ''}
       )
       .times(${Math.min(depth, 3)})
       .emit()
+      ${citationFilters.length > 0 ? `.${citationFilters.join('.')}` : ''}
       .dedup()
       .as('allCitations')
       .aggregate('totalCount')
@@ -88,7 +88,7 @@ export default async (
       .project('citations', 'totalCount')
       .by()
       .by(cap('totalCount').count(local))
-    `
+  `
   })
 
   const { data } = await cmrGraphDb({
