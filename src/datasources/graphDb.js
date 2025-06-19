@@ -19,9 +19,6 @@ export default async (
   parsedInfo
 ) => {
   const { conceptId } = source
-  const {
-    runGraphdb: shouldRunGraphDbEnv
-  } = process.env
   const { edlUsername, headers } = context
 
   // Parse the request info to find the requested types in the query
@@ -173,20 +170,11 @@ export default async (
     `
   })
 
-  // If the environment variable is set to false, return an empty list
-  if (shouldRunGraphDbEnv === 'false') {
-    return {
-      count: 0,
-      items: []
-    }
-  }
-
-  const response = await cmrGraphDb({
+  const { data } = await cmrGraphDb({
     conceptId,
     headers,
     query
   })
-  const { data } = response
   const { result } = data
 
   // Useful for debugging!

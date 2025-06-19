@@ -17,6 +17,22 @@ export const cmrGraphDb = ({
 }) => {
   // Default headers
   const defaultHeaders = {}
+  const {
+    runGraphdb
+  } = process.env
+
+  // If running graphdb is false return an empty graphdb response
+  if (runGraphdb === 'false') {
+    return {
+      data: {
+        result: {
+          data: {
+            '@value': []
+          }
+        }
+      }
+    }
+  }
 
   // Merge default headers into the provided headers and then pick out only permitted values
   const permittedHeaders = pickIgnoringCase({
