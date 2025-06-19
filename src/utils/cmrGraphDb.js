@@ -33,12 +33,11 @@ export const cmrGraphDb = ({
     'cmr-request-id': requestId
   } = downcaseKeys(permittedHeaders)
 
-  const graphdbDestination = `${process.env.graphdbHost}:${process.env.graphdbPort}${process.env.graphdbPath.trim().length > 0 ? `/${process.env.graphdbPath}` : ''}`
   const requestConfiguration = {
     data: query,
     headers: permittedHeaders,
     method: 'POST',
-    url: graphdbDestination
+    url: `${process.env.graphdbHost}:${process.env.graphdbPort}${process.env.graphdbPath.trim().length > 0 ? `/${process.env.graphdbPath}` : ''}`
   }
 
   // Interceptors require an instance of axios

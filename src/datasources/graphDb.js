@@ -298,7 +298,6 @@ export default async (
   const returnObject = {
     count: totalRelatedCollectionsCount,
     items: collectionsList
-
   }
   // Useful for debugging!
   // console.log('graphDb.js response', JSON.stringify(returnObject, null, 2))
