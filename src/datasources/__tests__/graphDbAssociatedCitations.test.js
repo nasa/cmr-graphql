@@ -4,7 +4,7 @@ import graphDbAssociatedCitations from '../graphDbAssociatedCitations'
 import * as getUserPermittedGroups from '../../utils/getUserPermittedGroups'
 
 import associatedCitationsGraphdbResponseMocks from './__mocks__/associatedCitations.graphDbOnlyFields.graphdbResponse.mocks'
-import associatedCitationsGraphdbEmptyResponseMock from './__mocks__/associatedCitations.graphDbOnlyFields.EmptygraphdbResponse.mocks'
+import associatedCitationsGraphdbEmptyResponseMock from './__mocks__/associatedCitations.graphDbOnlyFields.emptygraphdbResponse.mocks'
 import associatedCitationsResponseMocks from './__mocks__/associatedCitations.graphDbOnlyFields.response.mocks'
 import associatedCitationsRelationshipTypeSingleGraphdbResponseMocks from './__mocks__/associatedCitations.relationshipTypeSingle.graphdbResponse.mocks'
 import associatedCitationsRelationshipTypeSingleResponseMocks from './__mocks__/associatedCitations.relationshipTypeSingle.response.mocks'
