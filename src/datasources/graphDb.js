@@ -19,6 +19,12 @@ export default async (
   parsedInfo
 ) => {
   const { conceptId } = source
+  console.log('🚀 ~ file: graphDb.js:22 ~ conceptId:', conceptId)
+  const {
+    runGraphdb: shouldRunGraphDbEnv
+  } = process.env
+  console.log('🚀 ~ file: graphDb.js:26 ~ shouldRunGraphDbEnv:', shouldRunGraphDbEnv)
+
   const { edlUsername, headers } = context
 
   // Parse the request info to find the requested types in the query
@@ -170,12 +176,22 @@ export default async (
     `
   })
 
-  const { data } = await cmrGraphDb({
+  // If the environment variable is set to false, return an empty list
+  if (shouldRunGraphDbEnv === 'false') {
+    return {
+      count: 0,
+      items: []
+    }
+  }
+
+  const response = await cmrGraphDb({
     conceptId,
     headers,
     query
   })
+  console.log('🚀 ~ file: graphDb.js:171 ~ response:', response)
 
+  const { data } = response
   const { result } = data
 
   // Useful for debugging!
@@ -183,10 +199,10 @@ export default async (
   // console.log('GraphDB Response result: ', JSON.stringify(result, null, 2))
 
   const { data: resultData } = result
-  const { '@value': dataValues } = resultData
+  const { '@value': dataValues = [] } = resultData
 
   const collectionsList = []
-  let totalRelatedCollectionsCount
+  let totalRelatedCollectionsCount = 0
 
   dataValues.forEach((dataValue) => {
     const { '@value': dataValueMap } = dataValue
@@ -287,8 +303,8 @@ export default async (
   const returnObject = {
     count: totalRelatedCollectionsCount,
     items: collectionsList
-  }
 
+  }
   // Useful for debugging!
   // console.log('graphDb.js response', JSON.stringify(returnObject, null, 2))
 
