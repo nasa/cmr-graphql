@@ -22,7 +22,7 @@ export default async (
 
   const { doi: doiDescription } = doi || {}
 
-  // If doi or shorName don't exist, return 0 duplicateCollections
+  // If doi or shortName don't exist, return 0 duplicateCollections
   if (!doiDescription || !shortName) {
     return {
       count: 0,

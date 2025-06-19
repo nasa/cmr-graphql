@@ -32,6 +32,7 @@ const environment = {
   edlJwk: process.env.EDL_JWK!,
   edlKeyId: process.env.EDL_KEY_ID!,
   graphdbHost: process.env.GRAPHDB_HOST || 'http://localhost',
+  runGraphdb: process.env.RUN_GRAPHDB || 'true',
   graphdbPath: process.env.GRAPHDB_PATH!,
   graphdbPort: process.env.GRAPHDB_PORT || '8182',
   maxRetries: process.env.MAX_RETRIES || '1',

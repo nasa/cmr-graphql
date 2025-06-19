@@ -175,7 +175,6 @@ export default async (
     headers,
     query
   })
-
   const { result } = data
 
   // Useful for debugging!
@@ -183,10 +182,10 @@ export default async (
   // console.log('GraphDB Response result: ', JSON.stringify(result, null, 2))
 
   const { data: resultData } = result
-  const { '@value': dataValues } = resultData
+  const { '@value': dataValues = [] } = resultData
 
   const collectionsList = []
-  let totalRelatedCollectionsCount
+  let totalRelatedCollectionsCount = 0
 
   dataValues.forEach((dataValue) => {
     const { '@value': dataValueMap } = dataValue
@@ -288,7 +287,6 @@ export default async (
     count: totalRelatedCollectionsCount,
     items: collectionsList
   }
-
   // Useful for debugging!
   // console.log('graphDb.js response', JSON.stringify(returnObject, null, 2))
 
