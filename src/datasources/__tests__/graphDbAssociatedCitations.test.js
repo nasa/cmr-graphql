@@ -147,41 +147,41 @@ describe('graphDbAssociatedCitations', () => {
 
       expect(response).toEqual(associatedCitationsResponseMocks)
     })
-  })
 
-  describe('when the response from graphdb is empty', () => {
-    test('returns an empty citations array with count 0', async () => {
-      const getUserGroups = vi.spyOn(getUserPermittedGroups, 'getUserPermittedGroups')
-      getUserGroups.mockImplementationOnce(() => '"guest","registered"')
+    describe('when the response from graphdb is empty', () => {
+      test('returns an empty citations array with count 0', async () => {
+        const getUserGroups = vi.spyOn(getUserPermittedGroups, 'getUserPermittedGroups')
+        getUserGroups.mockImplementationOnce(() => '"guest","registered"')
 
-      nock(/example-graphdb/)
-        .post('/', (body) => {
-          const { gremlin } = body
+        nock(/example-graphdb/)
+          .post('/', (body) => {
+            const { gremlin } = body
 
-          return gremlin
-           && gremlin.includes("hasLabel('citation')")
-           && gremlin.includes("has('collection', 'id', 'C1200000035-PROV2')")
-           && gremlin.includes('.project(\'citationData\', \'associationLevel\', \'relationshipType\')')
-           && gremlin.includes('.range(0, 1)')
-        })
-        .reply(200, associatedCitationsGraphdbEmptyResponseMock)
+            return gremlin
+             && gremlin.includes("hasLabel('citation')")
+             && gremlin.includes("has('collection', 'id', 'C1200000035-PROV2')")
+             && gremlin.includes('.project(\'citationData\', \'associationLevel\', \'relationshipType\')')
+             && gremlin.includes('.range(0, 1)')
+          })
+          .reply(200, associatedCitationsGraphdbEmptyResponseMock)
 
-      const response = await graphDbAssociatedCitations(
-        { conceptId: 'C1200000035-PROV2' },
-        { limit: 1 },
-        {
-          headers: {
-            'Client-Id': 'eed-test-graphql',
-            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        const response = await graphDbAssociatedCitations(
+          { conceptId: 'C1200000035-PROV2' },
+          { limit: 1 },
+          {
+            headers: {
+              'Client-Id': 'eed-test-graphql',
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            },
+            edlUsername: 'testUser'
           },
-          edlUsername: 'testUser'
-        },
-        parsedInfo
-      )
+          parsedInfo
+        )
 
-      expect(response).toEqual({
-        count: 0,
-        items: []
+        expect(response).toEqual({
+          count: 0,
+          items: []
+        })
       })
     })
   })
@@ -256,23 +256,10 @@ describe('graphDbAssociatedCitations', () => {
       }
     })
 
-    // TODO fix while its running with other tests
-    test.skip('returns an empty set of citations', async () => {
+    test('returns an empty set of citations and does not make a request to graphdb', async () => {
       process.env.runGraphdb = 'false'
       const getUserGroups = vi.spyOn(getUserPermittedGroups, 'getUserPermittedGroups')
       getUserGroups.mockImplementationOnce(() => '"guest","registered"')
-
-      nock(/example-graphdb/)
-        .post('/', (body) => {
-          const { gremlin } = body
-
-          return gremlin
-           && gremlin.includes("hasLabel('citation')")
-           && gremlin.includes("has('collection', 'id', 'C1200000035-PROV2')")
-           && gremlin.includes('.project(\'citationData\', \'associationLevel\', \'relationshipType\')')
-           && gremlin.includes('.range(0, 1)')
-        })
-        .reply(200, associatedCitationsGraphdbResponseMocks)
 
       const response = await graphDbAssociatedCitations(
         { conceptId: 'C1200000035-PROV2' },
