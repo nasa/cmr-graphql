@@ -416,7 +416,6 @@ export default class Concept {
       'provider_id',
       'sort_key',
       'tag_key',
-      'providers',
       'target'
     ]
   }

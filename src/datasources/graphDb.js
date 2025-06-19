@@ -19,12 +19,9 @@ export default async (
   parsedInfo
 ) => {
   const { conceptId } = source
-  console.log('🚀 ~ file: graphDb.js:22 ~ conceptId:', conceptId)
   const {
     runGraphdb: shouldRunGraphDbEnv
   } = process.env
-  console.log('🚀 ~ file: graphDb.js:26 ~ shouldRunGraphDbEnv:', shouldRunGraphDbEnv)
-
   const { edlUsername, headers } = context
 
   // Parse the request info to find the requested types in the query
@@ -189,8 +186,6 @@ export default async (
     headers,
     query
   })
-  console.log('🚀 ~ file: graphDb.js:171 ~ response:', response)
-
   const { data } = response
   const { result } = data
 

@@ -1500,7 +1500,7 @@ describe('graphDb', () => {
     })
   })
 
-  describe('Testing permitted groups on related collections', () => {
+  describe('When the related collections are behind permitted groups', () => {
     test('Testing that permitted groups is in the post request', async () => {
       nock(/example-graphdb/)
         .post('/', (body) => {
@@ -1584,6 +1584,69 @@ describe('graphDb', () => {
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           },
           edlUsername: 'someEdlUsername'
+        },
+        parsedInfo
+      )
+      expect(response).toEqual({
+        count: 0,
+        items: []
+      })
+    })
+  })
+
+  describe('When runGraphdb is false', () => {
+    beforeEach(() => {
+      parsedInfo = {
+        name: 'relatedCollections',
+        alias: 'relatedCollections',
+        args: {
+          limit: 1
+        },
+        fieldsByTypeName: {
+          RelatedCollectionsList: {
+            count: {
+              name: 'count',
+              alias: 'count',
+              args: {},
+              fieldsByTypeName: {}
+            },
+            items: {
+              name: 'items',
+              alias: 'items',
+              args: {},
+              fieldsByTypeName: {
+                RelatedCollection: {
+                  id: {
+                    name: 'id',
+                    alias: 'id',
+                    args: {},
+                    fieldsByTypeName: {}
+                  },
+                  title: {
+                    name: 'title',
+                    alias: 'title',
+                    args: {},
+                    fieldsByTypeName: {}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    })
+
+    test('returns an empty result and does not call the network when runGraphdb is false', async () => {
+      process.env.runGraphdb = 'false'
+      const response = await graphDbDatasource(
+        { conceptId: 'C100000-EDSC' },
+        { limit: 1 },
+        {
+          headers: {
+            'Client-Id': 'eed-test-graphql',
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          },
+          edlUsername: 'edlUsername'
         },
         parsedInfo
       )

@@ -16,11 +16,6 @@ export const cmrGraphDb = ({
   query
 }) => {
   // Default headers
-  const {
-    runGraphdb: shouldRunGraphDbEnv
-  } = process.env
-  console.log('🚀 ~ file: cmrGraphDb.js:22 ~ shouldRunGraphDbEnv:', shouldRunGraphDbEnv)
-
   const defaultHeaders = {}
 
   // Merge default headers into the provided headers and then pick out only permitted values
@@ -39,7 +34,6 @@ export const cmrGraphDb = ({
   } = downcaseKeys(permittedHeaders)
 
   const graphdbDestination = `${process.env.graphdbHost}:${process.env.graphdbPort}${process.env.graphdbPath.trim().length > 0 ? `/${process.env.graphdbPath}` : ''}`
-  console.log('🚀 ~ file: cmrGraphDb.js:38 ~ graphdbDestination:', graphdbDestination)
   const requestConfiguration = {
     data: query,
     headers: permittedHeaders,
@@ -65,7 +59,6 @@ export const cmrGraphDb = ({
 
   responseInterceptor.use((response) => {
     // Determine total time to complete this request
-    console.log('🚀 ~ file: cmrGraphDb.js:71 ~ response:', response)
     const start = response.config.headers['request-startTime']
     const end = process.hrtime(start)
     const milliseconds = Math.round((end[0] * 1000) + (end[1] / 1000000))
