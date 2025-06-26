@@ -18,11 +18,13 @@ export const cmrGraphDb = ({
   // Default headers
   const defaultHeaders = {}
   const {
-    runGraphdb
+    graphdbEnabled
   } = process.env
 
   // If running graphdb is false return an empty graphdb response
-  if (runGraphdb === 'false') {
+  if (graphdbEnabled === 'false') {
+    console.debug('GraphDB is disabled, returning empty response')
+
     return {
       data: {
         result: {
