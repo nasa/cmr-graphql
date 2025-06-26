@@ -1,6 +1,6 @@
 import nock from 'nock'
 
-import graphDbDatasource from '../graphDb'
+import graphDbDatasource from '../graphDbRelatedCollections'
 
 import relatedCollectionsGraphDbPlatformInstrumentGraphdbResponseMocks from './__mocks__/relatedCollections.graphDbPlatformInstrument.graphdbResponse.mocks'
 import relatedCollectionsGraphDbPlatformInstrumentResponseMocks from './__mocks__/relatedCollections.graphDbPlatformInstrument.response.mocks'

@@ -129,7 +129,12 @@ export default {
       // return null to avoid an extra call to CMR
       if (isDraftConceptId(conceptId, 'collection')) return null
 
-      return dataSources.graphDbSource(source, args, context, parseResolveInfo(info))
+      return dataSources.graphDbRelatedCollectionsSource(
+        source,
+        args,
+        context,
+        parseResolveInfo(info)
+      )
     },
     generateVariableDrafts: async (source, args, context) => {
       const { conceptId } = source
