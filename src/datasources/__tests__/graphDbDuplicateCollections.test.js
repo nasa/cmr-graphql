@@ -210,9 +210,9 @@ describe('graphDb', () => {
       expect(response).toEqual(duplicateCollectionsRelatedUrlTypeResponseMocks)
     })
 
-    describe('When runGraphdb is false', () => {
+    describe('When graphdbEnabled is false', () => {
       test('returns the parsed graphDb response', async () => {
-        process.env.runGraphdb = 'false'
+        process.env.graphdbEnabled = 'false'
 
         nock(/example-graphdb/)
           .post(() => true)

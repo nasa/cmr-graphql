@@ -186,7 +186,7 @@ describe('graphDbAssociatedCitations', () => {
     })
   })
 
-  describe('When runGraphdb is false', () => {
+  describe('When graphdbEnabled is false', () => {
     beforeEach(() => {
       parsedInfo = {
         fieldsByTypeName: {
@@ -257,7 +257,7 @@ describe('graphDbAssociatedCitations', () => {
     })
 
     test('returns an empty set of citations and does not make a request to graphdb', async () => {
-      process.env.runGraphdb = 'false'
+      process.env.graphdbEnabled = 'false'
       const getUserGroups = vi.spyOn(getUserPermittedGroups, 'getUserPermittedGroups')
       getUserGroups.mockImplementationOnce(() => '"guest","registered"')
 
