@@ -43,6 +43,7 @@ dockerRun() {
     -e "GRAPHDB_HOST=$bamboo_GRAPHDB_HOST" \
     -e "GRAPHDB_PATH=$bamboo_GRAPHDB_PATH" \
     -e "GRAPHDB_PORT=$bamboo_GRAPHDB_PORT" \
+    -e "GRAPHDB_ENABLED=$bamboo_GRAPHDB_ENABLED" \
     -e "GTM_ID=$bamboo_GTM_ID" \
     -e "LAMBDA_TIMEOUT=$bamboo_LAMBDA_TIMEOUT" \
     -e "LOG_DESTINATION_ARN=$bamboo_LOG_DESTINATION_ARN" \

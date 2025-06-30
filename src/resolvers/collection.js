@@ -121,6 +121,17 @@ export default {
       return dataSources.granuleSource(requestedParams, context, parseResolveInfo(info))
     },
     relatedCollections: async (source, args, context, info) => {
+      const {
+        graphdbEnabled
+      } = process.env
+
+      if (graphdbEnabled === 'false') {
+        return {
+          count: 0,
+          items: []
+        }
+      }
+
       const { dataSources } = context
 
       const { conceptId } = source
@@ -129,7 +140,12 @@ export default {
       // return null to avoid an extra call to CMR
       if (isDraftConceptId(conceptId, 'collection')) return null
 
-      return dataSources.graphDbSource(source, args, context, parseResolveInfo(info))
+      return dataSources.graphDbRelatedCollectionsSource(
+        source,
+        args,
+        context,
+        parseResolveInfo(info)
+      )
     },
     generateVariableDrafts: async (source, args, context) => {
       const { conceptId } = source
@@ -169,6 +185,17 @@ export default {
       }, context, parseResolveInfo(info))
     },
     associatedCitations: async (source, args, context) => {
+      const {
+        graphdbEnabled
+      } = process.env
+
+      if (graphdbEnabled === 'false') {
+        return {
+          count: 0,
+          items: []
+        }
+      }
+
       const { dataSources } = context
       const { conceptId } = source
       const { params = {} } = args
@@ -189,6 +216,17 @@ export default {
       )
     },
     duplicateCollections: async (source, args, context) => {
+      const {
+        graphdbEnabled
+      } = process.env
+
+      if (graphdbEnabled === 'false') {
+        return {
+          count: 0,
+          items: []
+        }
+      }
+
       const { dataSources } = context
 
       const { conceptId } = source

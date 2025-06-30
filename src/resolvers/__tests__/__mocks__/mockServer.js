@@ -20,7 +20,7 @@ import dataQualitySummarySource from '../../../datasources/dataQualitySummary'
 import granuleSource from '../../../datasources/granule'
 import graphDbAssociatedCitations from '../../../datasources/graphDbAssociatedCitations'
 import graphDbDuplicateCollectionsSource from '../../../datasources/graphDbDuplicateCollections'
-import graphDbSource from '../../../datasources/graphDb'
+import graphDbRelatedCollectionsSource from '../../../datasources/graphDbRelatedCollections'
 import gridSource from '../../../datasources/grid'
 import maxItemsPerOrderSource from '../../../datasources/maxItemsPerOrder'
 import permissionSource from '../../../datasources/permission'
@@ -122,7 +122,7 @@ export const buildContextValue = (extraContext) => ({
     granuleSource,
     graphDbAssociatedCitations,
     graphDbDuplicateCollectionsSource,
-    graphDbSource,
+    graphDbRelatedCollectionsSource,
     gridSource,
     groupSourceCreate,
     groupSourceDelete,

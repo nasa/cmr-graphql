@@ -31,6 +31,7 @@ describe('Collection', () => {
     process.env.graphdbHost = 'http://example-graphdb.com'
     process.env.graphdbPort = '8182'
     process.env.graphdbPath = ''
+    process.env.graphdbEnabled = 'true'
     process.env.ursRootUrl = 'http://example-urs.com'
   })
 
@@ -2920,6 +2921,78 @@ describe('Collection', () => {
         expect(data).toEqual(relatedCollectionsResponseMocks.data)
       })
 
+      describe('when graphdb is not enabled', () => {
+        test('returns an empty no related collections response', async () => {
+          process.env.graphdbEnabled = 'false'
+
+          // No nock to graphdb since we are disabling it
+          nock(/example-cmr/)
+            .defaultReplyHeaders({
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .get(/collections\.json/)
+            .reply(200, {
+              feed: {
+                entry: [{
+                  id: 'C100000-EDSC'
+                }]
+              }
+            })
+
+          const response = await server.executeOperation({
+            variables: {},
+            query: `{
+              collections (
+                conceptId: "C100000-EDSC"
+              ) {
+                items {
+                  conceptId
+                  relatedCollections {
+                    count
+                    items {
+                      id
+                      title
+                      doi
+                      relationships {
+                        relationshipType
+                        ... on GraphDbScienceKeyword {
+                          level
+                          value
+                          variableLevel1
+                        }
+                        ... on GraphDbCitation {
+                          title
+                          id
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }`
+          }, {
+            contextValue
+          })
+
+          const { data } = response.body.singleResult
+
+          expect(data).toEqual({
+            collections: {
+              items: [
+                {
+                  conceptId: 'C100000-EDSC',
+                  relatedCollections: {
+                    count: 0,
+                    items: []
+                  }
+                }
+              ]
+            }
+          })
+        })
+      })
+
       test('returns null when querying a draft', async () => {
         nock(/example-cmr/)
           .defaultReplyHeaders({
@@ -3166,6 +3239,70 @@ describe('Collection', () => {
         expect(data).toEqual(associatedCitationsCollectionResolverResponseMocks.data)
       })
 
+      describe('when graphdb is not enabled', () => {
+        test('returns an empty no associated citations response ', async () => {
+          process.env.graphdbEnabled = 'false'
+
+          nock(/example-cmr/)
+            .defaultReplyHeaders({
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .get(/collections\.json/)
+            .reply(200, {
+              feed: {
+                entry: [{
+                  id: 'C100000-EDSC'
+                }]
+              }
+            })
+
+          // No nock to graphdb since we are disabling it
+
+          const response = await server.executeOperation({
+            variables: {},
+            query: `{
+              collections (
+                conceptId: "C100000-EDSC"
+              ) {
+                items {
+                  conceptId
+                  associatedCitations {
+                    count
+                    items {
+                      id
+                      identifier
+                      identifierType
+                      name
+                      title
+                      abstract
+                    }
+                  }
+                }
+              }
+            }`
+          }, {
+            contextValue
+          })
+
+          const { data } = response.body.singleResult
+
+          expect(data).toEqual({
+            collections: {
+              items: [
+                {
+                  conceptId: 'C100000-EDSC',
+                  associatedCitations: {
+                    count: 0,
+                    items: []
+                  }
+                }
+              ]
+            }
+          })
+        })
+      })
+
       test('returns null when querying a draft', async () => {
         nock(/example-cmr/)
           .defaultReplyHeaders({
@@ -3283,6 +3420,75 @@ describe('Collection', () => {
         const { data } = response.body.singleResult
 
         expect(data).toEqual(duplicateCollectionsResponseMocks.data)
+      })
+
+      describe('when graphdb is not enabled', () => {
+        test('returns an empty no duplicate collections response', async () => {
+          process.env.graphdbEnabled = 'false'
+
+          nock(/example-cmr/)
+            .defaultReplyHeaders({
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .get(/collections\.umm_json/)
+            .reply(200, {
+              hits: 1,
+              items: [{
+                meta: {
+                  'concept-id': 'C1200383041-CMR_ONLY'
+                },
+                umm: {
+                  ShortName: '7333',
+                  DOI: {
+                    DOI: '10.5067/MEASURES/DMSP-F16/SSMIS/DATA301'
+                  }
+                }
+              }]
+            })
+
+          // No nock to graphdb since we are disabling it
+
+          const response = await server.executeOperation({
+            variables: {},
+            query: `{
+              collections (
+                conceptId: "C1200383041-CMR_ONLY"
+              ) {
+                items {
+                  conceptId
+                  duplicateCollections {
+                    count
+                    items {
+                      id
+                      title
+                      shortName
+                      doi
+                    }
+                  }
+                }
+              }
+            }`
+          }, {
+            contextValue
+          })
+
+          const { data } = response.body.singleResult
+
+          expect(data).toEqual({
+            collections: {
+              items: [
+                {
+                  conceptId: 'C1200383041-CMR_ONLY',
+                  duplicateCollections: {
+                    count: 0,
+                    items: []
+                  }
+                }
+              ]
+            }
+          })
+        })
       })
 
       test('returns null when querying a draft', async () => {

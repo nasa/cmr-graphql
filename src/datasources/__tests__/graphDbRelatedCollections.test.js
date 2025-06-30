@@ -1,6 +1,6 @@
 import nock from 'nock'
 
-import graphDbDatasource from '../graphDb'
+import graphDbRelatedCollectionsDatasource from '../graphDbRelatedCollections'
 
 import relatedCollectionsGraphDbPlatformInstrumentGraphdbResponseMocks from './__mocks__/relatedCollections.graphDbPlatformInstrument.graphdbResponse.mocks'
 import relatedCollectionsGraphDbPlatformInstrumentResponseMocks from './__mocks__/relatedCollections.graphDbPlatformInstrument.response.mocks'
@@ -168,7 +168,7 @@ describe('graphDb', () => {
           })
           .reply(200, relatedCollectionsRelatedUrlTypeGraphdbResponseMocks)
 
-        const response = await graphDbDatasource(
+        const response = await graphDbRelatedCollectionsDatasource(
           { conceptId: 'C100000-EDSC' },
           {
             limit: 1,
@@ -207,7 +207,7 @@ describe('graphDb', () => {
           })
           .reply(200, relatedCollectionsRelatedUrlSubtypeGraphdbResponseMocks)
 
-        const response = await graphDbDatasource(
+        const response = await graphDbRelatedCollectionsDatasource(
           { conceptId: 'C100000-EDSC' },
           {
             limit: 1,
@@ -251,7 +251,7 @@ describe('graphDb', () => {
           })
           .reply(200, relatedCollectionsRelatedUrlTypeAndSubtypeGraphdbResponseMocks)
 
-        const response = await graphDbDatasource(
+        const response = await graphDbRelatedCollectionsDatasource(
           { conceptId: 'C100000-EDSC' },
           {
             limit: 1,
@@ -354,7 +354,7 @@ describe('graphDb', () => {
           })
           .reply(200, relatedCollectionsGraphDbProjectGraphdbResponseMocks)
 
-        const response = await graphDbDatasource(
+        const response = await graphDbRelatedCollectionsDatasource(
           { conceptId: 'C100000-EDSC' },
           {
             limit: 1
@@ -459,7 +459,7 @@ describe('graphDb', () => {
           })
           .reply(200, relatedCollectionsGraphDbPlatformInstrumentGraphdbResponseMocks)
 
-        const response = await graphDbDatasource(
+        const response = await graphDbRelatedCollectionsDatasource(
           { conceptId: 'C100000-EDSC' },
           {
             limit: 1
@@ -576,7 +576,7 @@ describe('graphDb', () => {
           })
           .reply(200, relatedCollectionsGraphDbRelatedUrlGraphdbResponseMocks)
 
-        const response = await graphDbDatasource(
+        const response = await graphDbRelatedCollectionsDatasource(
           { conceptId: 'C100000-EDSC' },
           {
             limit: 1
@@ -696,7 +696,7 @@ describe('graphDb', () => {
           })
           .reply(200, relatedCollectionsGraphDbRelatedUrlGraphdbResponseMocks)
 
-        const response = await graphDbDatasource(
+        const response = await graphDbRelatedCollectionsDatasource(
           { conceptId: 'C100000-EDSC' },
           {
             limit: 1,
@@ -827,7 +827,7 @@ describe('graphDb', () => {
           })
           .reply(200, relatedCollectionsGraphDbRelatedUrlProjectGraphdbResponseMocks)
 
-        const response = await graphDbDatasource(
+        const response = await graphDbRelatedCollectionsDatasource(
           { conceptId: 'C100000-EDSC' },
           {
             limit: 1,
@@ -957,7 +957,7 @@ describe('graphDb', () => {
           })
           .reply(200, relatedCollectionsGraphDbRelatedUrlRelationshipTypeGraphdbResponseMocks)
 
-        const response = await graphDbDatasource(
+        const response = await graphDbRelatedCollectionsDatasource(
           { conceptId: 'C100000-EDSC' },
           {
             limit: 1,
@@ -1063,7 +1063,7 @@ describe('graphDb', () => {
           })
           .reply(200, relatedCollectionsGraphDbCitationGraphdbResponseMocks)
 
-        const response = await graphDbDatasource(
+        const response = await graphDbRelatedCollectionsDatasource(
           { conceptId: 'C100000-EDSC' },
           {
             limit: 1
@@ -1174,7 +1174,7 @@ describe('graphDb', () => {
           })
           .reply(200, relatedCollectionsGraphDbScienceKeywordGraphdbResponseMocks)
 
-        const response = await graphDbDatasource(
+        const response = await graphDbRelatedCollectionsDatasource(
           { conceptId: 'C100000-EDSC' },
           {
             limit: 1
@@ -1305,7 +1305,7 @@ describe('graphDb', () => {
           })
           .reply(200, relatedCollectionsGraphDbRelatedUrlCitationGraphdbResponseMocks)
 
-        const response = await graphDbDatasource(
+        const response = await graphDbRelatedCollectionsDatasource(
           { conceptId: 'C100000-EDSC' },
           {
             limit: 1
@@ -1403,7 +1403,7 @@ describe('graphDb', () => {
           })
           .reply(200, relatedCollectionsRelationshipTypeGraphdbResponseMocks)
 
-        const response = await graphDbDatasource(
+        const response = await graphDbRelatedCollectionsDatasource(
           { conceptId: 'C100000-EDSC' },
           {
             limit: 1
@@ -1480,7 +1480,7 @@ describe('graphDb', () => {
           })
           .reply(200, relatedCollectionsNoRelationshipsGraphDbResponseMock)
 
-        const response = await graphDbDatasource(
+        const response = await graphDbRelatedCollectionsDatasource(
           { conceptId: 'C100000-EDSC' },
           {
             limit: 1
@@ -1500,8 +1500,8 @@ describe('graphDb', () => {
     })
   })
 
-  describe('Testing permitted groups on related collections', () => {
-    test('Testing that permitted groups is in the post request', async () => {
+  describe('When the related collections are behind permitted groups', () => {
+    test('Testing that permitted groups are in the gremlin request', async () => {
       nock(/example-graphdb/)
         .post('/', (body) => {
           const parsedBody = typeof body === 'string' ? JSON.parse(body) : body
@@ -1539,7 +1539,7 @@ describe('graphDb', () => {
           ]
         })
 
-      const response = await graphDbDatasource(
+      const response = await graphDbRelatedCollectionsDatasource(
         { conceptId: 'C100000-EDSC' },
         {
           limit: 1
@@ -1556,40 +1556,42 @@ describe('graphDb', () => {
       expect(response).toEqual(relatedCollectionsRelationshipTypeResponseMocks)
     })
 
-    test('Mocking the response for a client not being in any groups, and retrieving no related collections', async () => {
-      nock(/example-graphdb/)
-        .post('/', (body) => {
-          const parsedBody = typeof body === 'string' ? JSON.parse(body) : body
-          const gremlinQuery = parsedBody?.gremlin || ''
+    describe('when the user is in no groups', () => {
+      test('the response contains no related collections', async () => {
+        nock(/example-graphdb/)
+          .post('/', (body) => {
+            const parsedBody = typeof body === 'string' ? JSON.parse(body) : body
+            const gremlinQuery = parsedBody?.gremlin || ''
 
-          const hasCorrectPermittedGroups = gremlinQuery.includes('within(\'registered\',\'guest\')')
-          const hasOtherV = gremlinQuery.includes('.otherV()')
+            const hasCorrectPermittedGroups = gremlinQuery.includes('within(\'registered\',\'guest\')')
+            const hasOtherV = gremlinQuery.includes('.otherV()')
 
-          return hasCorrectPermittedGroups && hasOtherV
-        })
-        .reply(200, relatedCollectionsResponseEmptyMocks)
+            return hasCorrectPermittedGroups && hasOtherV
+          })
+          .reply(200, relatedCollectionsResponseEmptyMocks)
 
-      nock(/example-urs/)
-        .get(/groups_for_user/)
-        .reply(200, {})
+        nock(/example-urs/)
+          .get(/groups_for_user/)
+          .reply(200, {})
 
-      const response = await graphDbDatasource(
-        { conceptId: 'C100000-EDSC' },
-        {
-          limit: 1
-        },
-        {
-          headers: {
-            'Client-Id': 'eed-test-graphql',
-            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        const response = await graphDbRelatedCollectionsDatasource(
+          { conceptId: 'C100000-EDSC' },
+          {
+            limit: 1
           },
-          edlUsername: 'someEdlUsername'
-        },
-        parsedInfo
-      )
-      expect(response).toEqual({
-        count: 0,
-        items: []
+          {
+            headers: {
+              'Client-Id': 'eed-test-graphql',
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            },
+            edlUsername: 'someEdlUsername'
+          },
+          parsedInfo
+        )
+        expect(response).toEqual({
+          count: 0,
+          items: []
+        })
       })
     })
   })
