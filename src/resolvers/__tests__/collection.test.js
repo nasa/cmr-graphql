@@ -31,6 +31,7 @@ describe('Collection', () => {
     process.env.graphdbHost = 'http://example-graphdb.com'
     process.env.graphdbPort = '8182'
     process.env.graphdbPath = ''
+    process.env.graphdbEnabled = 'true'
     process.env.ursRootUrl = 'http://example-urs.com'
   })
 
@@ -2918,6 +2919,78 @@ describe('Collection', () => {
         const { data } = response.body.singleResult
 
         expect(data).toEqual(relatedCollectionsResponseMocks.data)
+      })
+
+      describe('when graphdb is not enabled', () => {
+        test('when graphdb is not enabled', async () => {
+          process.env.graphdbEnabled = 'false'
+
+          // No nock to graphdb since we are disabling it
+          nock(/example-cmr/)
+            .defaultReplyHeaders({
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .get(/collections\.json/)
+            .reply(200, {
+              feed: {
+                entry: [{
+                  id: 'C100000-EDSC'
+                }]
+              }
+            })
+
+          const response = await server.executeOperation({
+            variables: {},
+            query: `{
+              collections (
+                conceptId: "C100000-EDSC"
+              ) {
+                items {
+                  conceptId
+                  relatedCollections {
+                    count
+                    items {
+                      id
+                      title
+                      doi
+                      relationships {
+                        relationshipType
+                        ... on GraphDbScienceKeyword {
+                          level
+                          value
+                          variableLevel1
+                        }
+                        ... on GraphDbCitation {
+                          title
+                          id
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }`
+          }, {
+            contextValue
+          })
+
+          const { data } = response.body.singleResult
+
+          expect(data).toEqual({
+            collections: {
+              items: [
+                {
+                  conceptId: 'C100000-EDSC',
+                  relatedCollections: {
+                    count: 0,
+                    items: []
+                  }
+                }
+              ]
+            }
+          })
+        })
       })
 
       test('returns null when querying a draft', async () => {
