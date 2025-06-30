@@ -104,21 +104,13 @@ export default async (
   // console.log('GraphDB Citations Response result: ', JSON.stringify(result, null, 2))
 
   const { data: resultData } = result
-  const { '@value': dataValues = [] } = resultData
+  const { '@value': dataValues } = resultData
   const [responseMap] = dataValues
-
-  if (!responseMap) {
-    return {
-      count: 0,
-      items: []
-    }
-  }
-
   const { '@value': responseMapValue } = responseMap
   const responseData = fromPairs(chunk(responseMapValue, 2))
   const { citations: citationsResult, totalCount: totalCountResult } = responseData
-  const { '@value': totalCitationsCount = 0 } = totalCountResult
-  const { '@value': citationsArray = [] } = citationsResult
+  const { '@value': totalCitationsCount } = totalCountResult
+  const { '@value': citationsArray } = citationsResult
 
   const processedCitations = []
 
