@@ -121,6 +121,17 @@ export default {
       return dataSources.granuleSource(requestedParams, context, parseResolveInfo(info))
     },
     relatedCollections: async (source, args, context, info) => {
+      const {
+        graphdbEnabled
+      } = process.env
+
+      if (graphdbEnabled === 'false') {
+        return {
+          count: 0,
+          items: []
+        }
+      }
+
       const { dataSources } = context
 
       const { conceptId } = source
@@ -174,6 +185,17 @@ export default {
       }, context, parseResolveInfo(info))
     },
     associatedCitations: async (source, args, context) => {
+      const {
+        graphdbEnabled
+      } = process.env
+
+      if (graphdbEnabled === 'false') {
+        return {
+          count: 0,
+          items: []
+        }
+      }
+
       const { dataSources } = context
       const { conceptId } = source
       const { params = {} } = args
@@ -194,6 +216,17 @@ export default {
       )
     },
     duplicateCollections: async (source, args, context) => {
+      const {
+        graphdbEnabled
+      } = process.env
+
+      if (graphdbEnabled === 'false') {
+        return {
+          count: 0,
+          items: []
+        }
+      }
+
       const { dataSources } = context
 
       const { conceptId } = source

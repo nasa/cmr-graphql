@@ -78,7 +78,7 @@ This application will be available at [http://127.0.0.1:3013/api](http://127.0.0
 #### Local graph database
 
 We use a graph database to query against related collections and duplicate collections. To send queries to a locally running graph database, we can use a docker gremlin-server that exposes an HTTP endpoint. This is launched by running
-You can optionally not require a graphdb server to be running locally by setting the `RUN_GRAPHDB` to false in the `.env` for the env you are running against. If it is set to false this will return empty responses from graphdb.
+You can optionally not require a graphdb server to be running locally by setting the `GRAPHDB_ENABLED` to false in the `.env` for the env you are running against. If it is set to false this will return empty responses from graphdb.
 
 `docker run -it -p 8182:8182 tinkerpop/gremlin-server conf gremlin-server-rest-modern.yaml`
 
