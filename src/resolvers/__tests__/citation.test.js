@@ -36,7 +36,7 @@ describe('Citation', () => {
               provider_id: 'EDSC',
               native_id: 'test',
               name: 'mock-citation',
-              title: 'mock-title'
+              id: 'mock-id'
             }
           ]
         })
@@ -139,7 +139,9 @@ describe('Citation', () => {
             meta: {
               'concept-id': 'CIT100000-EDSC',
               'native-id': 'test-guid',
-              'revision-id': '2'
+              'revision-id': '2',
+              'user-id': 'test user',
+              'revision-date': '2025-05-28T18:12:19.927Z'
             },
             umm: {
               Name: 'Cras mattis consectetur purus sit amet fermentum.'
@@ -148,7 +150,9 @@ describe('Citation', () => {
             meta: {
               'concept-id': 'CIT100000-EDSC',
               'native-id': 'test-guid',
-              'revision-id': '1'
+              'revision-id': '1',
+              'user-id': 'test user',
+              'revision-date': '2025-05-28T18:12:19.927Z'
             },
             umm: {
               Name: 'Cras mattis consectetur purus sit amet fermentum.'
@@ -162,16 +166,29 @@ describe('Citation', () => {
           citations {
             count
             items {
-              name
+              abstract
+              citationMetadata
+              conceptId
               identifier
               identifierType
+              name
+              nativeId
+              providerId
               resolutionAuthority
               relatedIdentifiers
-              citationMetadata
-              abstract
+              revisionDate
+              revisionId
+              revisions {
+                count
+                items {
+                  conceptId
+                  revisionDate
+                  revisionId
+                  userId
+                }
+              }
               scienceKeywords
-              conceptId
-              nativeId
+              userId
             }
           }
         }`
@@ -188,24 +205,7 @@ describe('Citation', () => {
           count: 1,
           items: [
             {
-              name: 'Citation-Name',
-              identifier: '10.1029/2021JD034797',
-              identifierType: 'DOI',
-              resolutionAuthority: 'https://doi.org',
-              relatedIdentifiers: [
-                {
-                  relationshipType: 'Cites',
-                  relatedIdentifierType: 'DOI',
-                  relatedIdentifier: '10.5067/MODIS/MOD08_M3.061',
-                  relatedResolutionAuthority: 'https://doi.org'
-                },
-                {
-                  relationshipType: 'Refers',
-                  relatedIdentifierType: 'DOI',
-                  relatedIdentifier: '10.5067/MEASURES/AEROSOLS/DATA203',
-                  relatedResolutionAuthority: 'https://doi.org'
-                }
-              ],
+              abstract: 'The global pandemic caused by the coronavirus disease 2019 (COVID-19) led to never-before-seen reductions in urban and industrial activities, along with associated emissions to the environment. This has created an unprecedented opportunity to study atmospheric composition in the absence of its usual drivers. We have combined surface-level nitrogen dioxide (NO2) observations from air quality monitoring stations across the globe with satellite measurements and machine learning techniques to analyze NO2 variations from the initial strict lockdowns through the restrictions that continued into fall 2020. Our analysis shows that the restrictions led to significant decreases in NO2 concentrations globally through 2020.',
               citationMetadata: {
                 type: 'journal-article',
                 volume: '126',
@@ -230,7 +230,46 @@ describe('Citation', () => {
                 ],
                 pages: 'e2021JD034797'
               },
-              abstract: 'The global pandemic caused by the coronavirus disease 2019 (COVID-19) led to never-before-seen reductions in urban and industrial activities, along with associated emissions to the environment. This has created an unprecedented opportunity to study atmospheric composition in the absence of its usual drivers. We have combined surface-level nitrogen dioxide (NO2) observations from air quality monitoring stations across the globe with satellite measurements and machine learning techniques to analyze NO2 variations from the initial strict lockdowns through the restrictions that continued into fall 2020. Our analysis shows that the restrictions led to significant decreases in NO2 concentrations globally through 2020.',
+              conceptId: 'CIT100000-EDSC',
+              identifier: '10.1029/2021JD034797',
+              identifierType: 'DOI',
+              name: 'Citation-Name',
+              nativeId: 'test',
+              providerId: 'EDSC',
+              resolutionAuthority: 'https://doi.org',
+              relatedIdentifiers: [
+                {
+                  relationshipType: 'Cites',
+                  relatedIdentifierType: 'DOI',
+                  relatedIdentifier: '10.5067/MODIS/MOD08_M3.061',
+                  relatedResolutionAuthority: 'https://doi.org'
+                },
+                {
+                  relationshipType: 'Refers',
+                  relatedIdentifierType: 'DOI',
+                  relatedIdentifier: '10.5067/MEASURES/AEROSOLS/DATA203',
+                  relatedResolutionAuthority: 'https://doi.org'
+                }
+              ],
+              revisionDate: '2025-05-07T15:32:54.675Z',
+              revisionId: '3',
+              revisions: {
+                count: 2,
+                items: [
+                  {
+                    conceptId: 'CIT100000-EDSC',
+                    revisionDate: '2025-05-28T18:12:19.927Z',
+                    revisionId: '2',
+                    userId: 'test user'
+                  },
+                  {
+                    conceptId: 'CIT100000-EDSC',
+                    revisionDate: '2025-05-28T18:12:19.927Z',
+                    revisionId: '1',
+                    userId: 'test user'
+                  }
+                ]
+              },
               scienceKeywords: [
                 {
                   category: 'EARTH SCIENCE',
@@ -245,8 +284,7 @@ describe('Citation', () => {
                   variableLevel1: 'ENVIRONMENTAL IMPACTS'
                 }
               ],
-              conceptId: 'CIT100000-EDSC',
-              nativeId: 'test'
+              userId: 'EDSC'
             }
           ]
         }
