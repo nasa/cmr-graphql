@@ -12,6 +12,9 @@
     "nativeId": "meta.native-id",
     "relatedIdentifiers": "umm.RelatedIdentifiers",
     "resolutionAuthority": "umm.ResolutionAuthority",
-    "scienceKeywords": "umm.ScienceKeywords"
+    "revisionDate": "meta.revision-date",
+    "revisionId": "meta.revision-id",
+    "scienceKeywords": "umm.ScienceKeywords",
+    "userId": "meta.user-id"
   }
 }

@@ -36,5 +36,22 @@ export default {
         parseResolveInfo(info)
       )
     }
+  },
+
+  Citation: {
+    revisions: async (source, args, context, info) => {
+      const { dataSources } = context
+
+      const { conceptId } = source
+
+      return dataSources.citationSourceFetch(
+        {
+          conceptId,
+          allRevisions: true
+        },
+        context,
+        parseResolveInfo(info)
+      )
+    }
   }
 }

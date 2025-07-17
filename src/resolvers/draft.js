@@ -64,6 +64,7 @@ export default {
 
       // PreviewMetadata is a union, __resolveType is necessary to tell GraphQL which type is being returned
       // Check the source conceptId in order to determine which union type is correct.
+      if (isDraftConceptId(conceptId, 'citation')) return 'Citation'
       if (isDraftConceptId(conceptId, 'collection')) return 'Collection'
       if (isDraftConceptId(conceptId, 'service')) return 'Service'
       if (isDraftConceptId(conceptId, 'tool')) return 'Tool'

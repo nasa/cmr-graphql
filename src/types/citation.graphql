@@ -1,6 +1,12 @@
 type Citation {
-  "The name of the cited resource"
-  name: String
+  "Citation abstract"
+  abstract: String
+
+  "Citation metadata for the resource"
+  citationMetadata: JSON
+
+  "The unique concept id assigned to the citation."
+  conceptId: String!
 
   "The identifier for the resource, e.g., DOI, ISBN, ARK"
   identifier: String
@@ -8,26 +14,43 @@ type Citation {
   "The type of identifier used"
   identifierType: String
 
+  "The name of the cited resource"
+  name: String
+
+  "The native id of a to citation."
+  nativeId: String
+
+  "The provider of the citation."
+  providerId: String
+
   "URI used to resolve the identifier"
   resolutionAuthority: String
 
   "List of identifiers that this resource cites, refers to, or is identical to"
   relatedIdentifiers: JSON
 
-  "Citation metadata for the resource"
-  citationMetadata: JSON
+  "Date which the Citation was last updated."
+  revisionDate: String
 
-  "Citation abstract"
-  abstract: String
+  "The revision id of the Citation."
+  revisionId: String
+
+  "All revisions of this Citation."
+  revisions: CitationRevisionList
 
   "GCMD science keywords"
   scienceKeywords: JSON
 
-  "The unique concept id assigned to the citation."
-  conceptId: String!
+  "Id of the user who modified/published record"
+  userId: String
+}
 
-  "The native id of a to citation."
-  nativeId: String
+type CitationRevisionList {
+  "The number of hits for a given search."
+  count: Int
+
+  "The list of citation search results."
+  items: [Citation]
 }
 
 type CitationList {
@@ -86,6 +109,9 @@ input CitationsInput {
 
   "The nature of the relationship between the cited resource and the collection"
   relationshipType: String
+
+  "One or more sort keys can be specified to impact searching. Fields can be prepended with a '-' to sort in descending order. Ascending order is the default but + can be used to explicitly request ascending."
+  sortKey: [String]
 
   "Citation Title"
   title: String
