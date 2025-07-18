@@ -15,6 +15,7 @@
     "revisionDate": "meta.revision-date",
     "revisionId": "meta.revision-id",
     "scienceKeywords": "umm.ScienceKeywords",
+    "ummMetadata": "umm",
     "userId": "meta.user-id"
   }
 }

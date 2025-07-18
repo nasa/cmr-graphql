@@ -188,6 +188,7 @@ describe('Citation', () => {
                 }
               }
               scienceKeywords
+              ummMetadata
               userId
             }
           }
@@ -284,6 +285,70 @@ describe('Citation', () => {
                   variableLevel1: 'ENVIRONMENTAL IMPACTS'
                 }
               ],
+              ummMetadata: {
+                Abstract: 'The global pandemic caused by the coronavirus disease 2019 (COVID-19) led to never-before-seen reductions in urban and industrial activities, along with associated emissions to the environment. This has created an unprecedented opportunity to study atmospheric composition in the absence of its usual drivers. We have combined surface-level nitrogen dioxide (NO2) observations from air quality monitoring stations across the globe with satellite measurements and machine learning techniques to analyze NO2 variations from the initial strict lockdowns through the restrictions that continued into fall 2020. Our analysis shows that the restrictions led to significant decreases in NO2 concentrations globally through 2020.',
+                CitationMetadata: {
+                  Author: [
+                    {
+                      Family: 'Keller',
+                      Given: 'Christoph A.',
+                      ORCID: '0000-0003-2541-6634',
+                      Sequence: 'first'
+                    },
+                    {
+                      Family: 'Knowland',
+                      Given: 'K. Emma',
+                      ORCID: '0000-0002-6194-7454',
+                      Sequence: 'additional'
+                    }
+                  ],
+                  Container: 'Journal of Geophysical Research: Atmospheres',
+                  Number: '20',
+                  Pages: 'e2021JD034797',
+                  Publisher: 'American Geophysical Union',
+                  Title: 'Global Impact of COVID-19 Restrictions on the Atmospheric Concentrations of Nitrogen Dioxide and Ozone',
+                  Type: 'journal-article',
+                  Volume: '126',
+                  Year: 2021
+                },
+                Identifier: '10.1029/2021JD034797',
+                IdentifierType: 'DOI',
+                MetadataSpecification: {
+                  Name: 'Citation',
+                  URL: 'https://cdn.earthdata.nasa.gov/generics/citation/v1.0.0',
+                  Version: '1.0.0'
+                },
+                Name: 'Citation-Name',
+                RelatedIdentifiers: [
+                  {
+                    RelatedIdentifier: '10.5067/MODIS/MOD08_M3.061',
+                    RelatedIdentifierType: 'DOI',
+                    RelatedResolutionAuthority: 'https://doi.org',
+                    RelationshipType: 'Cites'
+                  },
+                  {
+                    RelatedIdentifier: '10.5067/MEASURES/AEROSOLS/DATA203',
+                    RelatedIdentifierType: 'DOI',
+                    RelatedResolutionAuthority: 'https://doi.org',
+                    RelationshipType: 'Refers'
+                  }
+                ],
+                ResolutionAuthority: 'https://doi.org',
+                ScienceKeywords: [
+                  {
+                    Category: 'EARTH SCIENCE',
+                    Term: 'AIR QUALITY',
+                    Topic: 'ATMOSPHERE',
+                    VariableLevel1: 'NITROGEN DIOXIDE'
+                  },
+                  {
+                    Category: 'EARTH SCIENCE',
+                    Term: 'PUBLIC HEALTH',
+                    Topic: 'HUMAN DIMENSIONS',
+                    VariableLevel1: 'ENVIRONMENTAL IMPACTS'
+                  }
+                ]
+              },
               userId: 'EDSC'
             }
           ]

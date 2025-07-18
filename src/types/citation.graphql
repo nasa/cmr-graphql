@@ -41,6 +41,9 @@ type Citation {
   "GCMD science keywords"
   scienceKeywords: JSON
 
+  "Raw UMM Metadata of the Citation Record."
+  ummMetadata: JSON
+
   "Id of the user who modified/published record"
   userId: String
 }
