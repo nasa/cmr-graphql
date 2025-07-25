@@ -7,7 +7,7 @@ vi.mock('graphql-parse-resolve-info')
 vi.mock('../../../utils/parseRequestedFields')
 
 describe('canReadGroup', () => {
-  describe('when the groups is a CMR group', () => {
+  describe('when the group is a CMR group', () => {
     test('returns true if the user has permission', async () => {
       const hasPermissionMock = vi.spyOn(hasPermission, 'hasPermission').mockResolvedValue(true)
 
@@ -76,7 +76,7 @@ describe('canReadGroup', () => {
     })
   })
 
-  describe('when the groups is a provider group', () => {
+  describe('when the group is a provider group', () => {
     test('returns true if the user has permission', async () => {
       const hasPermissionMock = vi.spyOn(hasPermission, 'hasPermission').mockResolvedValue(true)
 

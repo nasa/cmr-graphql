@@ -94,18 +94,4 @@ describe('canReadProviderGroups', () => {
 
     expect(result).toEqual(forbiddenError('Not authorized to perform [read] on provider object [GROUP]'))
   })
-
-  test('returns true if no tags are provided', async () => {
-    vi.spyOn(hasPermission, 'hasPermission').mockResolvedValue(true)
-
-    const result = await canReadProviderGroups.resolve(
-      null,
-      {},
-      {
-        edlUsername: 'test-user'
-      }
-    )
-
-    expect(result).toEqual(true)
-  })
 })

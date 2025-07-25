@@ -40,6 +40,7 @@ export const canReadProviderGroups = rule()(async (parent, params, context) => {
     return false
   }))
 
+  // If the uers doesn't have permission for everything, don't let them do the request
   if (results.some((result) => !result)) {
     return forbiddenError(ERROR)
   }
