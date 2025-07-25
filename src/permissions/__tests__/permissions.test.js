@@ -6,6 +6,8 @@ import permissions from '../index'
 
 import { canCreateProviderGroups } from '../acls/canCreateProviderGroups'
 import { canCreateSystemGroups } from '../acls/canCreateSystemGroups'
+import { canReadGroup } from '../acls/canReadGroup'
+import { canReadProviderGroups } from '../acls/canReadProviderGroups'
 import { canReadSystemGroups } from '../acls/canReadSystemGroups'
 
 import { isLocalMMT } from '../rules/isLocalMMT'
@@ -26,11 +28,12 @@ describe('permissions', () => {
       Query: {
         group: race(
           isLocalMMT,
-          canReadSystemGroups
+          canReadGroup
         ),
         groups: race(
           isLocalMMT,
-          canReadSystemGroups
+          canReadSystemGroups,
+          canReadProviderGroups
         )
       },
       Mutation: {
