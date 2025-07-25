@@ -7,7 +7,6 @@ import { loadVariables } from './magidoc.config.js'
 
 const variables = loadVariables()
 const base = templates.SITE_ROOT.getOrDefault(variables, '')
-console.log('🚀 ~ svelte.config.js:10 ~ base:', base)
 
 /**
  * @type {import('@sveltejs/kit').Config}
