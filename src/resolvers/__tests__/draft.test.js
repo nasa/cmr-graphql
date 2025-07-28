@@ -2212,6 +2212,14 @@ describe('Draft', () => {
 
   describe('PreviewMetadata', () => {
     describe('__resolveType', () => {
+      test('returns Citation when the conceptId starts with CITD', () => {
+        const { PreviewMetadata: previewMetadata } = resolvers
+        const { __resolveType: resolveType } = previewMetadata
+
+        const result = resolveType({ conceptId: 'CITD' })
+        expect(result).toEqual('Citation')
+      })
+
       test('returns Collection when the conceptId starts with CD', () => {
         const { PreviewMetadata: previewMetadata } = resolvers
         const { __resolveType: resolveType } = previewMetadata
