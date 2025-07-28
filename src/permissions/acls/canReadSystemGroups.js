@@ -3,6 +3,8 @@ import { rule } from 'graphql-shield'
 import { hasPermission } from '../../utils/hasPermission'
 import { forbiddenError } from '../../utils/forbiddenError'
 
+const ERROR = 'Not authorized to perform [read] on system object [GROUP]'
+
 /**
  * Check to see if the user can read system groups using
  * the cmr permissions api. In order to read system groups, the user must have the `read`
@@ -12,6 +14,9 @@ import { forbiddenError } from '../../utils/forbiddenError'
  */
 export const canReadSystemGroups = rule()(async (parent, params, context) => {
   const { edlUsername } = context
+  if (!edlUsername) {
+    return forbiddenError(ERROR)
+  }
 
   const { params: requestedParams = {} } = params
 
@@ -33,9 +38,7 @@ export const canReadSystemGroups = rule()(async (parent, params, context) => {
         }
       )
     ) return true
-
-    return forbiddenError('Not authorized to perform [read] on system object [GROUP]')
   }
 
-  return true
+  return forbiddenError(ERROR)
 })

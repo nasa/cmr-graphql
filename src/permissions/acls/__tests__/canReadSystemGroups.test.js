@@ -40,9 +40,25 @@ describe('canReadSystemGroups', () => {
     expect(result).toEqual(forbiddenError('Not authorized to perform [read] on system object [GROUP]'))
   })
 
-  test('returns true if no tags are provided', async () => {
-    vi.spyOn(hasPermission, 'hasPermission').mockResolvedValue(true)
+  test('throws a ForbiddenError if the user does not exist', async () => {
+    vi.spyOn(hasPermission, 'hasPermission').mockResolvedValue(false)
 
+    const result = await canReadSystemGroups.resolve(
+      null,
+      {
+        params: {
+          tags: ['CMR']
+        }
+      },
+      {
+        edlUsername: null
+      }
+    )
+
+    expect(result).toEqual(forbiddenError('Not authorized to perform [read] on system object [GROUP]'))
+  })
+
+  test('throws a ForbiddenError if no tags are provided', async () => {
     const result = await canReadSystemGroups.resolve(
       null,
       {},
@@ -51,6 +67,6 @@ describe('canReadSystemGroups', () => {
       }
     )
 
-    expect(result).toEqual(true)
+    expect(result).toEqual(forbiddenError('Not authorized to perform [read] on system object [GROUP]'))
   })
 })
