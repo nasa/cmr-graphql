@@ -47,8 +47,8 @@ const setupServer = () => (
 )
 const contextValue = {
   dataSources: {},
-  requestId: 'mock-request-id',
-  user: { ursId: 'testUser' }
+  edlUsername: 'testUser',
+  requestId: 'mock-request-id'
 }
 
 describe('fallbackError', () => {
@@ -118,7 +118,9 @@ describe('fallbackError', () => {
       `
 
       const variables = {
-        params: {}
+        params: {
+          tags: ['CMR']
+        }
       }
 
       const result = await server.executeOperation({

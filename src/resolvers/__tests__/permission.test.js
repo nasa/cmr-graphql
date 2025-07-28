@@ -43,7 +43,7 @@ describe('Acl', () => {
                 permissions(params: $params) {
                   items {
                     conceptId
-                    permissions          
+                    permissions
                   }
                 }
               }`
@@ -90,7 +90,7 @@ describe('Acl', () => {
                 permissions(params: $params) {
                   items {
                     conceptId
-                    permissions          
+                    permissions
                   }
                 }
               }`
@@ -139,7 +139,7 @@ describe('Acl', () => {
                 permissions(params: $params) {
                   items {
                     systemObject
-                    permissions          
+                    permissions
                   }
                 }
               }`
@@ -186,7 +186,7 @@ describe('Acl', () => {
                 permissions(params: $params) {
                   items {
                     target
-                    permissions          
+                    permissions
                   }
                 }
               }`
@@ -233,7 +233,7 @@ describe('Acl', () => {
                     permissions(params: $params) {
                       items {
                         target
-                        permissions          
+                        permissions
                       }
                     }
                   }`

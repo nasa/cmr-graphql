@@ -4,11 +4,13 @@ import {
   shield
 } from 'graphql-shield'
 
-import { canReadSystemGroups } from './acls/canReadSystemGroups'
+import { canCreateProviderGroups } from './acls/canCreateProviderGroups'
 import { canCreateSystemGroups } from './acls/canCreateSystemGroups'
+import { canReadGroup } from './acls/canReadGroup'
+import { canReadProviderGroups } from './acls/canReadProviderGroups'
+import { canReadSystemGroups } from './acls/canReadSystemGroups'
 
 import { isLocalMMT } from './rules/isLocalMMT'
-import { canCreateProviderGroups } from './acls/canCreateProviderGroups'
 
 const permissions = shield(
   {
@@ -17,11 +19,12 @@ const permissions = shield(
       // So if the `isLocalMMT` rule passes, don't bother checking the permissions of the user
       group: race(
         isLocalMMT,
-        canReadSystemGroups
+        canReadGroup
       ),
       groups: race(
         isLocalMMT,
-        canReadSystemGroups
+        canReadSystemGroups,
+        canReadProviderGroups
       )
     },
     Mutation: {

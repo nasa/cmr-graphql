@@ -47,7 +47,6 @@ let innerWidth = -1
 let mobile = false
 
 const favicon = get(templates.APP_FAVICON)
-console.log('🚀 ~ +layout.svelte:50 ~ favicon:', favicon)
 
 const unsubscribe = page.subscribe(() => {
   // Mobile
