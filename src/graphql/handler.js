@@ -55,7 +55,8 @@ import {
 
 import {
   deleteCitation as citationSourceDelete,
-  fetchCitations as citationSourceFetch
+  fetchCitations as citationSourceFetch,
+  restoreCitationRevision as citationSourceRestoreRevision
 } from '../datasources/citation'
 
 import {
@@ -235,6 +236,7 @@ export default startServerAndCreateLambdaHandler(
           associationSourceDelete,
           citationSourceDelete,
           citationSourceFetch,
+          citationSourceRestoreRevision,
           collectionDraftProposalSource,
           collectionDraftSource,
           collectionSourceDelete,

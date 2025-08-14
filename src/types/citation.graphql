@@ -152,6 +152,14 @@ type Query {
 }
 
 type Mutation {
+  restoreCitationRevision (
+    "The unique concept id assigned to the citation."
+    conceptId: String!
+
+    "The revision of the citation."
+    revisionId: String!
+  ): CitationMutationResponse
+
   deleteCitation (
     "Provider ID of the citation."
     providerId: String!

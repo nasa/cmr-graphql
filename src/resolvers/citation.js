@@ -27,6 +27,16 @@ export default {
   },
 
   Mutation: {
+    restoreCitationRevision: async (source, args, context, info) => {
+      const { dataSources } = context
+
+      return dataSources.citationSourceRestoreRevision(
+        handlePagingParams(args),
+        context,
+        parseResolveInfo(info)
+      )
+    },
+
     deleteCitation: async (source, args, context, info) => {
       const { dataSources } = context
 
