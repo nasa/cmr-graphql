@@ -397,7 +397,7 @@ describe('Citation', () => {
   })
 
   describe('Mutation', () => {
-    describe('restoreVisualizationRevision', () => {
+    describe('restoreCitationRevision', () => {
       test('restores an old version of a citation', async () => {
         nock(/example-cmr/)
           .defaultReplyHeaders({
