@@ -38,7 +38,8 @@ import {
 
 import {
   deleteCitation as citationSourceDelete,
-  fetchCitations as citationSourceFetch
+  fetchCitations as citationSourceFetch,
+  restoreCitationRevision as citationSourceRestoreRevision
 } from '../../../datasources/citation'
 
 import {
@@ -108,6 +109,7 @@ export const buildContextValue = (extraContext) => ({
     associationSourceDelete,
     citationSourceDelete,
     citationSourceFetch,
+    citationSourceRestoreRevision,
     collectionDraftProposalSource,
     collectionDraftSource,
     collectionSourceDelete,

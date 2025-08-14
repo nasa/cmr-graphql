@@ -397,6 +397,77 @@ describe('Citation', () => {
   })
 
   describe('Mutation', () => {
+    describe('restoreVisualizationRevision', () => {
+      test('restores an old version of a citation', async () => {
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .get('/search/citations.umm_json?concept_id=CIT100000-EDSC&all_revisions=true')
+          .reply(200, {
+            items: [{
+              meta: {
+                'concept-id': 'CIT100000-EDSC',
+                'native-id': '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed',
+                'revision-id': 1
+              },
+              umm: {
+                EntryTitle: 'Tortor Elit Fusce Quam Risus'
+              }
+            }, {
+              meta: {
+                'concept-id': 'CIT100000-EDSC',
+                'native-id': '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed',
+                'revision-id': 2
+              },
+              umm: {
+                EntryTitle: 'Adipiscing Cras Etiam Venenatis'
+              }
+            }]
+          })
+
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .put('/ingest/providers/EDSC/citations/1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed')
+          .reply(200, {
+            'concept-id': 'CIT100000-EDSC',
+            'revision-id': '3'
+          })
+
+        const response = await server.executeOperation({
+          variables: {
+            revisionId: '1',
+            conceptId: 'CIT100000-EDSC'
+          },
+          query: `mutation RestoreCitationRevision (
+                  $conceptId: String!
+                  $revisionId: String!
+                ) {
+                  restoreCitationRevision (
+                    conceptId: $conceptId
+                    revisionId: $revisionId
+                  ) {
+                      conceptId
+                      revisionId
+                    }
+                  }`
+        }, {
+          contextValue
+        })
+
+        const { data } = response.body.singleResult
+
+        expect(data).toEqual({
+          restoreCitationRevision: {
+            conceptId: 'CIT100000-EDSC',
+            revisionId: '3'
+          }
+        })
+      })
+    })
+
     test('deleteCitation', async () => {
       nock(/example-cmr/)
         .defaultReplyHeaders({
