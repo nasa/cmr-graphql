@@ -46,6 +46,12 @@ type Citation {
 
   "Id of the user who modified/published record"
   userId: String
+
+  "Returns a list of associated collections."
+  collections (
+    "Collections query parameters"
+    params: CollectionsInput
+  ): CollectionList
 }
 
 type CitationRevisionList {

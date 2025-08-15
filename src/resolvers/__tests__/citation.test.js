@@ -190,6 +190,9 @@ describe('Citation', () => {
               scienceKeywords
               ummMetadata
               userId
+              collections {
+                count
+              }
             }
           }
         }`
@@ -349,7 +352,10 @@ describe('Citation', () => {
                   }
                 ]
               },
-              userId: 'EDSC'
+              userId: 'EDSC',
+              collections: {
+                count: 0
+              }
             }
           ]
         }
@@ -508,6 +514,180 @@ describe('Citation', () => {
           conceptId: 'CIT100000-EDSC',
           revisionId: '2'
         }
+      })
+    })
+  })
+
+  describe('Citation', () => {
+    describe('collections', () => {
+      test('returns collections when querying a published record', async () => {
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .get(/citations\.json/)
+          .reply(200, {
+            items: [{
+              concept_id: 'CIT100000-EDSC',
+              association_details: {
+                collections: [
+                  {
+                    data: {
+                      association_type: 'citation'
+                    },
+                    concept_id: 'C100000-EDSC'
+                  }
+                ]
+              }
+            }, {
+              concept_id: 'CIT100001-EDSC',
+              association_details: {
+                collections: [
+                  {
+                    data: {
+                      association_type: 'citation'
+                    },
+                    concept_id: 'C100001-EDSC'
+                  }
+                ]
+              }
+            }]
+          })
+
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .get('/search/collections.json?concept_id[]=C100000-EDSC&page_size=20')
+          .reply(200, {
+            feed: {
+              entry: [{
+                id: 'C100000-EDSC'
+              }]
+            }
+          })
+
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .get('/search/collections.json?concept_id[]=C100001-EDSC&page_size=20')
+          .reply(200, {
+            feed: {
+              entry: [{
+                id: 'C100001-EDSC'
+              }]
+            }
+          })
+
+        const response = await server.executeOperation({
+          variables: {},
+          query: `{
+              citations {
+                items {
+                  conceptId
+                  collections {
+                    items {
+                      conceptId
+                    }
+                  }
+                }
+              }
+            }`
+        }, {
+          contextValue
+        })
+
+        const { data, errors } = response.body.singleResult
+
+        expect(errors).toBeUndefined()
+
+        expect(data).toEqual({
+          citations: {
+            items: [{
+              conceptId: 'CIT100000-EDSC',
+              collections: {
+                items: [{
+                  conceptId: 'C100000-EDSC'
+                }]
+              }
+            }, {
+              conceptId: 'CIT100001-EDSC',
+              collections: {
+                items: [{
+                  conceptId: 'C100001-EDSC'
+                }]
+              }
+            }]
+          }
+        })
+      })
+
+      test('returns null when querying a draft', async () => {
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Hits': 2,
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .get(/citation-drafts\.umm_json/)
+          .reply(200, {
+            items: [{
+              meta: {
+                'concept-id': 'CITD100000-EDSC'
+              },
+              umm: {}
+            }, {
+              meta: {
+                'concept-id': 'CITD100001-EDSC'
+              },
+              umm: {}
+            }]
+          })
+
+        const response = await server.executeOperation({
+          variables: {
+            params: {
+              conceptType: 'Citation'
+            }
+          },
+          query: `query Drafts($params: DraftsInput) {
+              drafts(params: $params) {
+                items {
+                  previewMetadata {
+                    ... on Citation {
+                      collections {
+                        count
+                      }
+                    }
+                  }
+                }
+              }
+            }`
+        }, {
+          contextValue
+        })
+
+        const { data, errors } = response.body.singleResult
+
+        expect(errors).toBeUndefined()
+
+        expect(data).toEqual({
+          drafts: {
+            items: [{
+              previewMetadata: {
+                collections: null
+              }
+            }, {
+              previewMetadata: {
+                collections: null
+              }
+            }]
+          }
+        })
       })
     })
   })
