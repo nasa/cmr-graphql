@@ -372,7 +372,7 @@ describe('restoreCitationRevision', () => {
             'revision-id': 1
           },
           umm: {
-            LongName: 'Tortor Elit Fusce Quam Risus'
+            Name: 'Tortor Elit Fusce Quam Risus'
           }
         }, {
           meta: {
@@ -381,7 +381,7 @@ describe('restoreCitationRevision', () => {
             'revision-id': 2
           },
           umm: {
-            LongName: 'Adipiscing Cras Etiam Venenatis'
+            Name: 'Adipiscing Cras Etiam Venenatis'
           }
         }]
       })

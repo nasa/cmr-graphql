@@ -418,7 +418,7 @@ describe('Citation', () => {
                 'revision-id': 1
               },
               umm: {
-                EntryTitle: 'Tortor Elit Fusce Quam Risus'
+                Name: 'Tortor Elit Fusce Quam Risus'
               }
             }, {
               meta: {
@@ -427,7 +427,7 @@ describe('Citation', () => {
                 'revision-id': 2
               },
               umm: {
-                EntryTitle: 'Adipiscing Cras Etiam Venenatis'
+                Name: 'Adipiscing Cras Etiam Venenatis'
               }
             }]
           })
