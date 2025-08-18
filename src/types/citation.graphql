@@ -46,6 +46,12 @@ type Citation {
 
   "Id of the user who modified/published record"
   userId: String
+
+  "Returns a list of associated collections."
+  collections (
+    "Collections query parameters"
+    params: CollectionsInput
+  ): CollectionList
 }
 
 type CitationRevisionList {
@@ -152,6 +158,14 @@ type Query {
 }
 
 type Mutation {
+  restoreCitationRevision (
+    "The unique concept id assigned to the citation."
+    conceptId: String!
+
+    "The revision of the citation."
+    revisionId: String!
+  ): CitationMutationResponse
+
   deleteCitation (
     "Provider ID of the citation."
     providerId: String!
