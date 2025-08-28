@@ -92,6 +92,9 @@ input VisualizationsInput {
   "Cursor that points to a specific position in a list of requested records."
   cursor: String
 
+  "Keyword search value."
+  keyword: String
+
   "The number of visualizations requested by the user."
   limit: Int
 
