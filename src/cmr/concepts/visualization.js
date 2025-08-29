@@ -19,7 +19,8 @@ export default class Visualization extends Concept {
       ...super.getPermittedJsonSearchParams(),
       'name',
       'provider',
-      'title'
+      'title',
+      'keyword'
     ]
   }
 
@@ -31,7 +32,8 @@ export default class Visualization extends Concept {
       ...super.getPermittedUmmSearchParams(),
       'name',
       'provider',
-      'title'
+      'title',
+      'keyword'
     ]
   }
 
