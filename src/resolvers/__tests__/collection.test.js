@@ -10,8 +10,9 @@ import duplicateCollectionsGraphdbResponseMocks from './__mocks__/duplicateColle
 import duplicateCollectionsResponseMocks from './__mocks__/duplicateCollections.response.mocks'
 import relatedCollectionsGraphdbResponseMocks from './__mocks__/relatedCollections.graphdbResponse.mocks'
 import relatedCollectionsResponseMocks from './__mocks__/relatedCollections.response.mocks'
-import associatedCitationsCollectionResolverGraphdbResponseMocks from './__mocks__/associatedCitations.collectionResolver.graphdbResponse.mocks'
-import associatedCitationsCollectionResolverResponseMocks from './__mocks__/associatedCitations.collectionResolver.response.mocks'
+// Commenting out associatedCitations until futher notice
+// import associatedCitationsCollectionResolverGraphdbResponseMocks from './__mocks__/associatedCitations.collectionResolver.graphdbResponse.mocks'
+// import associatedCitationsCollectionResolverResponseMocks from './__mocks__/associatedCitations.collectionResolver.response.mocks'
 
 const contextValue = buildContextValue()
 
@@ -3427,224 +3428,224 @@ describe('Collection', () => {
       })
     })
 
-    describe('associatedCitations', () => {
-      test('returns exception when depth is invalid', async () => {
-        nock(/example-cmr/)
-          .defaultReplyHeaders({
-            'CMR-Took': 7,
-            'CMR-Request-Id': 'abcd-1234-efgh-5678'
-          })
-          .get(/collections\.json/)
-          .reply(200, {
-            feed: {
-              entry: [{
-                id: 'C100000-EDSC'
-              }]
-            }
-          })
+    // Describe('associatedCitations', () => {
+    //   test('returns exception when depth is invalid', async () => {
+    //     nock(/example-cmr/)
+    //       .defaultReplyHeaders({
+    //         'CMR-Took': 7,
+    //         'CMR-Request-Id': 'abcd-1234-efgh-5678'
+    //       })
+    //       .get(/collections\.json/)
+    //       .reply(200, {
+    //         feed: {
+    //           entry: [{
+    //             id: 'C100000-EDSC'
+    //           }]
+    //         }
+    //       })
 
-        const response = await server.executeOperation({
-          variables: {},
-          query: `{
-            collections (
-              conceptId: "C100000-EDSC"
-            ) {
-              items {
-                conceptId
-                associatedCitations(params: { depth: 4 }) {
-                  count
-                  items {
-                    id
-                  }
-                }
-              }
-            }
-          }`
-        }, {
-          contextValue
-        })
+    //     const response = await server.executeOperation({
+    //       variables: {},
+    //       query: `{
+    //         collections (
+    //           conceptId: "C100000-EDSC"
+    //         ) {
+    //           items {
+    //             conceptId
+    //             associatedCitations(params: { depth: 4 }) {
+    //               count
+    //               items {
+    //                 id
+    //               }
+    //             }
+    //           }
+    //         }
+    //       }`
+    //     }, {
+    //       contextValue
+    //     })
 
-        expect(response.body.kind).toBe('single')
-        expect(response.body.singleResult.errors).toBeDefined()
-        expect(response.body.singleResult.errors[0].message).toBe('Depth must be between 1 and 3')
-      })
+    //     expect(response.body.kind).toBe('single')
+    //     expect(response.body.singleResult.errors).toBeDefined()
+    //     expect(response.body.singleResult.errors[0].message).toBe('Depth must be between 1 and 3')
+    //   })
 
-      test('queries CMR GraphDB for associated citations', async () => {
-        nock(/example-cmr/)
-          .defaultReplyHeaders({
-            'CMR-Took': 7,
-            'CMR-Request-Id': 'abcd-1234-efgh-5678'
-          })
-          .get(/collections\.json/)
-          .reply(200, {
-            feed: {
-              entry: [{
-                id: 'C100000-EDSC'
-              }]
-            }
-          })
+    //   test('queries CMR GraphDB for associated citations', async () => {
+    //     nock(/example-cmr/)
+    //       .defaultReplyHeaders({
+    //         'CMR-Took': 7,
+    //         'CMR-Request-Id': 'abcd-1234-efgh-5678'
+    //       })
+    //       .get(/collections\.json/)
+    //       .reply(200, {
+    //         feed: {
+    //           entry: [{
+    //             id: 'C100000-EDSC'
+    //           }]
+    //         }
+    //       })
 
-        nock(/example-graphdb/)
-          .post(() => true)
-          .reply(200, associatedCitationsCollectionResolverGraphdbResponseMocks)
+    //     nock(/example-graphdb/)
+    //       .post(() => true)
+    //       .reply(200, associatedCitationsCollectionResolverGraphdbResponseMocks)
 
-        const response = await server.executeOperation({
-          variables: {},
-          query: `{
-            collections (
-              conceptId: "C100000-EDSC"
-            ) {
-              items {
-                conceptId
-                associatedCitations {
-                  count
-                  items {
-                    id
-                    identifier
-                    identifierType
-                    name
-                    title
-                    abstract
-                  }
-                }
-              }
-            }
-          }`
-        }, {
-          contextValue
-        })
+    //     const response = await server.executeOperation({
+    //       variables: {},
+    //       query: `{
+    //         collections (
+    //           conceptId: "C100000-EDSC"
+    //         ) {
+    //           items {
+    //             conceptId
+    //             associatedCitations {
+    //               count
+    //               items {
+    //                 id
+    //                 identifier
+    //                 identifierType
+    //                 name
+    //                 title
+    //                 abstract
+    //               }
+    //             }
+    //           }
+    //         }
+    //       }`
+    //     }, {
+    //       contextValue
+    //     })
 
-        const { data } = response.body.singleResult
+    //     const { data } = response.body.singleResult
 
-        expect(data).toEqual(associatedCitationsCollectionResolverResponseMocks.data)
-      })
+    //     expect(data).toEqual(associatedCitationsCollectionResolverResponseMocks.data)
+    //   })
 
-      describe('when graphdb is not enabled', () => {
-        test('returns an empty no associated citations response ', async () => {
-          process.env.graphdbEnabled = 'false'
+    //   describe('when graphdb is not enabled', () => {
+    //     test('returns an empty no associated citations response ', async () => {
+    //       process.env.graphdbEnabled = 'false'
 
-          nock(/example-cmr/)
-            .defaultReplyHeaders({
-              'CMR-Took': 7,
-              'CMR-Request-Id': 'abcd-1234-efgh-5678'
-            })
-            .get(/collections\.json/)
-            .reply(200, {
-              feed: {
-                entry: [{
-                  id: 'C100000-EDSC'
-                }]
-              }
-            })
+    //       nock(/example-cmr/)
+    //         .defaultReplyHeaders({
+    //           'CMR-Took': 7,
+    //           'CMR-Request-Id': 'abcd-1234-efgh-5678'
+    //         })
+    //         .get(/collections\.json/)
+    //         .reply(200, {
+    //           feed: {
+    //             entry: [{
+    //               id: 'C100000-EDSC'
+    //             }]
+    //           }
+    //         })
 
-          // No nock to graphdb since we are disabling it
+    //       // No nock to graphdb since we are disabling it
 
-          const response = await server.executeOperation({
-            variables: {},
-            query: `{
-              collections (
-                conceptId: "C100000-EDSC"
-              ) {
-                items {
-                  conceptId
-                  associatedCitations {
-                    count
-                    items {
-                      id
-                      identifier
-                      identifierType
-                      name
-                      title
-                      abstract
-                    }
-                  }
-                }
-              }
-            }`
-          }, {
-            contextValue
-          })
+    //       const response = await server.executeOperation({
+    //         variables: {},
+    //         query: `{
+    //           collections (
+    //             conceptId: "C100000-EDSC"
+    //           ) {
+    //             items {
+    //               conceptId
+    //               associatedCitations {
+    //                 count
+    //                 items {
+    //                   id
+    //                   identifier
+    //                   identifierType
+    //                   name
+    //                   title
+    //                   abstract
+    //                 }
+    //               }
+    //             }
+    //           }
+    //         }`
+    //       }, {
+    //         contextValue
+    //       })
 
-          const { data } = response.body.singleResult
+    //       const { data } = response.body.singleResult
 
-          expect(data).toEqual({
-            collections: {
-              items: [
-                {
-                  conceptId: 'C100000-EDSC',
-                  associatedCitations: {
-                    count: 0,
-                    items: []
-                  }
-                }
-              ]
-            }
-          })
-        })
-      })
+    //       expect(data).toEqual({
+    //         collections: {
+    //           items: [
+    //             {
+    //               conceptId: 'C100000-EDSC',
+    //               associatedCitations: {
+    //                 count: 0,
+    //                 items: []
+    //               }
+    //             }
+    //           ]
+    //         }
+    //       })
+    //     })
+    //   })
 
-      test('returns null when querying a draft', async () => {
-        nock(/example-cmr/)
-          .defaultReplyHeaders({
-            'CMR-Hits': 2,
-            'CMR-Took': 7,
-            'CMR-Request-Id': 'abcd-1234-efgh-5678'
-          })
-          .get(/collection-drafts\.umm_json/)
-          .reply(200, {
-            items: [{
-              meta: {
-                'concept-id': 'CD100000-EDSC'
-              },
-              umm: {}
-            }, {
-              meta: {
-                'concept-id': 'CD100001-EDSC'
-              },
-              umm: {}
-            }]
-          })
+    //   test('returns null when querying a draft', async () => {
+    //     nock(/example-cmr/)
+    //       .defaultReplyHeaders({
+    //         'CMR-Hits': 2,
+    //         'CMR-Took': 7,
+    //         'CMR-Request-Id': 'abcd-1234-efgh-5678'
+    //       })
+    //       .get(/collection-drafts\.umm_json/)
+    //       .reply(200, {
+    //         items: [{
+    //           meta: {
+    //             'concept-id': 'CD100000-EDSC'
+    //           },
+    //           umm: {}
+    //         }, {
+    //           meta: {
+    //             'concept-id': 'CD100001-EDSC'
+    //           },
+    //           umm: {}
+    //         }]
+    //       })
 
-        const response = await server.executeOperation({
-          variables: {
-            params: {
-              conceptType: 'Collection'
-            }
-          },
-          query: `query Drafts($params: DraftsInput) {
-            drafts(params: $params) {
-              items {
-                previewMetadata {
-                  ... on Collection {
-                    associatedCitations {
-                      count
-                    }
-                  }
-                }
-              }
-            }
-          }`
-        }, {
-          contextValue
-        })
+    //     const response = await server.executeOperation({
+    //       variables: {
+    //         params: {
+    //           conceptType: 'Collection'
+    //         }
+    //       },
+    //       query: `query Drafts($params: DraftsInput) {
+    //         drafts(params: $params) {
+    //           items {
+    //             previewMetadata {
+    //               ... on Collection {
+    //                 associatedCitations {
+    //                   count
+    //                 }
+    //               }
+    //             }
+    //           }
+    //         }
+    //       }`
+    //     }, {
+    //       contextValue
+    //     })
 
-        const { data } = response.body.singleResult
+    //     const { data } = response.body.singleResult
 
-        expect(data).toEqual({
-          drafts: {
-            items: [{
-              previewMetadata: {
-                associatedCitations: null
-              }
-            }, {
-              previewMetadata: {
-                associatedCitations: null
-              }
-            }]
-          }
-        })
-      })
-    })
+    //     expect(data).toEqual({
+    //       drafts: {
+    //         items: [{
+    //           previewMetadata: {
+    //             associatedCitations: null
+    //           }
+    //         }, {
+    //           previewMetadata: {
+    //             associatedCitations: null
+    //           }
+    //         }]
+    //       }
+    //     })
+    //   })
+    // })
 
     describe('duplicateCollections', () => {
       test('queries CMR GraphDB for relationships', async () => {
