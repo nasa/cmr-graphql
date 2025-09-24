@@ -62,7 +62,6 @@ export default {
         parseResolveInfo(info)
       )
     },
-
     granules: async (source, args, context, info) => {
       const { dataSources } = context
 
@@ -184,7 +183,7 @@ export default {
         ...handlePagingParams(args, dataQualitySummaryConceptIds.length)
       }, context, parseResolveInfo(info))
     },
-    // Commenting out until further notice
+    // Commenting out until advanced Citation associations are worked out
     // associatedCitations: async (source, args, context) => {
     //   const {
     //     graphdbEnabled
@@ -393,7 +392,6 @@ export default {
         ...handlePagingParams(args)
       }, context, parseResolveInfo(info))
     },
-
     citations: async (source, args, context, info) => {
       const {
         associationDetails = {},

@@ -452,6 +452,7 @@ type Collection {
     params: DataQualitySummariesInput
   ): DataQualitySummaryList
 
+# Commenting out until advanced Citation associations are worked out
   # "Returns the list of associated citations from graphDB."
   # associatedCitations(
   #   "Associated citations query parameters"

@@ -10,7 +10,7 @@ import duplicateCollectionsGraphdbResponseMocks from './__mocks__/duplicateColle
 import duplicateCollectionsResponseMocks from './__mocks__/duplicateCollections.response.mocks'
 import relatedCollectionsGraphdbResponseMocks from './__mocks__/relatedCollections.graphdbResponse.mocks'
 import relatedCollectionsResponseMocks from './__mocks__/relatedCollections.response.mocks'
-// Commenting out associatedCitations until futher notice
+// Commenting out until advanced Citation associations are worked out
 // import associatedCitationsCollectionResolverGraphdbResponseMocks from './__mocks__/associatedCitations.collectionResolver.graphdbResponse.mocks'
 // import associatedCitationsCollectionResolverResponseMocks from './__mocks__/associatedCitations.collectionResolver.response.mocks'
 
@@ -3428,6 +3428,7 @@ describe('Collection', () => {
       })
     })
 
+    // Commenting out until advanced Citation associations are worked out
     // Describe('associatedCitations', () => {
     //   test('returns exception when depth is invalid', async () => {
     //     nock(/example-cmr/)

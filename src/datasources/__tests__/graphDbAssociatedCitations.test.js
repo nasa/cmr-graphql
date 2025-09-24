@@ -1018,4 +1018,75 @@ describe('graphDbAssociatedCitations', () => {
       expect(response).toEqual(associatedCitationsResponseMocks)
     })
   })
+
+  describe('when no limit is specified', () => {
+    beforeEach(() => {
+      parsedInfo = {
+        fieldsByTypeName: {
+          CitationList: {
+            items: {
+              fieldsByTypeName: {
+                Citation: {
+                  conceptId: {
+                    name: 'conceptId',
+                    alias: 'conceptId',
+                    args: {},
+                    fieldsByTypeName: {}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    })
+
+    test('uses default limit of 20', async () => {
+      const getUserGroups = vi.spyOn(getUserPermittedGroups, 'getUserPermittedGroups')
+      getUserGroups.mockImplementationOnce(() => '"guest","registered"')
+
+      nock(/example-graphdb/)
+        .post('/', (body) => {
+          const { gremlin } = body
+
+          return gremlin
+            && gremlin.includes("hasLabel('citation')")
+            && gremlin.includes("has('collection', 'id', 'C1200000035-PROV2')")
+            && gremlin.includes('.range(0, 20)') // Check for default limit
+        })
+        .reply(200, {
+          result: {
+            data: {
+              '@value': [
+                {
+                  '@type': 'g:Map',
+                  '@value': ['citations', {
+                    '@type': 'g:List',
+                    '@value': []
+                  }, 'totalCount', {
+                    '@type': 'g:Int64',
+                    '@value': 0
+                  }]
+                }
+              ]
+            }
+          }
+        })
+
+      await graphDbAssociatedCitations(
+        { conceptId: 'C1200000035-PROV2' },
+        {}, // Empty params object
+        {
+          headers: {
+            'Client-Id': 'eed-test-graphql',
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          },
+          edlUsername: 'testUser'
+        },
+        parsedInfo
+      )
+
+      expect(nock.isDone()).toBe(true)
+    })
+  })
 })
