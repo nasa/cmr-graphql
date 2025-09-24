@@ -391,6 +391,37 @@ export default {
         conceptId: visualizationConceptIds,
         ...handlePagingParams(args)
       }, context, parseResolveInfo(info))
+    },
+
+    citations: async (source, args, context, info) => {
+      const {
+        associationDetails = {},
+        conceptId
+      } = source
+
+      // If the concept being returned is a draft, there will be no associations,
+      // return null to avoid an extra call to CMR
+      if (isDraftConceptId(conceptId, 'collection')) return null
+
+      const { dataSources } = context
+
+      const { citations = [] } = associationDetails
+
+      const citationConceptIds = citations.map(
+        ({ conceptId: citationId }) => citationId
+      )
+
+      if (!citations.length) {
+        return {
+          count: 0,
+          items: []
+        }
+      }
+
+      return dataSources.citationSourceFetch({
+        conceptId: citationConceptIds,
+        ...handlePagingParams(args)
+      }, context, parseResolveInfo(info))
     }
   },
   Relationship: {

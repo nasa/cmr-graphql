@@ -437,6 +437,12 @@ type Collection {
     params: VisualizationsInput
   ): VisualizationList
 
+  "Returns a list of associated citations from CMR."
+  citations (
+    "Citations query parameters"
+    params: CitationsInput
+  ): CitationList
+
   "Generates variable drafts on the collection using earthdata-varinfo"
   generateVariableDrafts: VariableDraftList
 
@@ -446,7 +452,7 @@ type Collection {
     params: DataQualitySummariesInput
   ): DataQualitySummaryList
 
-  "Returns the list of associated citations."
+  "Returns the list of associated citations from graphDB."
   associatedCitations(
     "Associated citations query parameters"
     params: AssociatedCitationsInput
