@@ -2711,7 +2711,7 @@ describe('Collection', () => {
       })
 
       describe('when citation associations are present in the metadata', () => {
-        test.only('queries for and returns citations', async () => {
+        test('queries for and returns citations', async () => {
           nock(/example-cmr/)
             .defaultReplyHeaders({
               'CMR-Took': 7,
