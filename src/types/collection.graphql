@@ -437,6 +437,12 @@ type Collection {
     params: VisualizationsInput
   ): VisualizationList
 
+  "Returns a list of associated citations from CMR."
+  citations (
+    "Citations query parameters"
+    params: CitationsInput
+  ): CitationList
+
   "Generates variable drafts on the collection using earthdata-varinfo"
   generateVariableDrafts: VariableDraftList
 
@@ -446,35 +452,36 @@ type Collection {
     params: DataQualitySummariesInput
   ): DataQualitySummaryList
 
-  "Returns the list of associated citations."
-  associatedCitations(
-    "Associated citations query parameters"
-    params: AssociatedCitationsInput
-  ): AssociatedCitationsList
+# Commenting out until advanced Citation associations are worked out
+  # "Returns the list of associated citations from graphDB."
+  # associatedCitations(
+  #   "Associated citations query parameters"
+  #   params: AssociatedCitationsInput
+  # ): AssociatedCitationsList
 }
 
-input AssociatedCitationsInput {
-  "Cursor for pagination"
-  cursor: String
+# input AssociatedCitationsInput {
+#   "Cursor for pagination"
+#   cursor: String
   
-  "Number of citations to return"
-  limit: Int
+#   "Number of citations to return"
+#   limit: Int
   
-  "Offset for pagination" 
-  offset: Int
+#   "Offset for pagination" 
+#   offset: Int
   
-  "Depth of citation association traversal (1-3)"
-  depth: Int 
+#   "Depth of citation association traversal (1-3)"
+#   depth: Int 
   
-  "Filter by identifier type"
-  identifierType: [String]
+#   "Filter by identifier type"
+#   identifierType: [String]
 
-  "Filter by relationship type"
-  relationshipType: [String]
+#   "Filter by relationship type"
+#   relationshipType: [String]
   
-  "Filter by provider ID"
-  providerId: [String]
-}
+#   "Filter by provider ID"
+#   providerId: [String]
+# }
 
 type DuplicateCollection {
   "The unique concept id assigned to the collection."
@@ -498,42 +505,43 @@ type DuplicateCollectionList {
   items: [DuplicateCollection]
 }
 
-type AssociatedCitation {
-  "The unique concept id assigned to the citation."
-  id: String
+# These types are connected to graphDB which is not the source of truth for associations
+# type AssociatedCitation {
+#   "The unique concept id assigned to the citation."
+#   id: String
 
-  "The identifier of the citation."
-  identifier: String
+#   "The identifier of the citation."
+#   identifier: String
 
-  "The identifier type of the citation."
-  identifierType: String
+#   "The identifier type of the citation."
+#   identifierType: String
 
-  "The title of the citation."
-  title: String
+#   "The title of the citation."
+#   title: String
 
-  "The abstract of the citation."
-  abstract: String
+#   "The abstract of the citation."
+#   abstract: String
 
-  "The name of the citation."
-  name: String
+#   "The name of the citation."
+#   name: String
 
-  "The provider of the citation."
-  providerId: String
+#   "The provider of the citation."
+#   providerId: String
 
-  "The type of relationship between the citation and the collection."
-  relationshipType: String
+#   "The type of relationship between the citation and the collection."
+#   relationshipType: String
 
-  "The level of association for the citation."
-  associationLevel: String
-}
+#   "The level of association for the citation."
+#   associationLevel: String
+# }
 
-type AssociatedCitationsList {
-  "The number of associated citations available."
-  count: Int
+# type AssociatedCitationsList {
+#   "The number of associated citations available."
+#   count: Int
 
-  "The list of associated citations."
-  items: [AssociatedCitation]
-}
+#   "The list of associated citations."
+#   items: [AssociatedCitation]
+# }
 
 input RelatedCollectionsInput {
   "The size of the range GraphDB searches on. Defaults to 5"
