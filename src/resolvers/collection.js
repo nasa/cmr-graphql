@@ -51,7 +51,14 @@ export default {
     revisions: async (source, args, context, info) => {
       const { dataSources } = context
 
-      const { conceptId } = source
+      const { conceptId, revisionId } = source
+
+      if (revisionId) {
+        throw new Error(
+          'The "revisions" field cannot be requested when querying a specific revision. '
+      + 'Remove the "revisionId" parameter from the collection query to fetch all revisions.'
+        )
+      }
 
       return dataSources.collectionSourceFetch(
         {
@@ -120,6 +127,16 @@ export default {
       return dataSources.granuleSource(requestedParams, context, parseResolveInfo(info))
     },
     relatedCollections: async (source, args, context, info) => {
+      // Check if revisionId was provided in the original query (stored in source)
+      const { revisionId } = source
+
+      if (revisionId) {
+        throw new Error(
+          'The "relatedCollections" field cannot be requested when querying a specific revision. '
+      + 'Remove the "revisionId" parameter from the collection query to fetch related collections.'
+        )
+      }
+
       const {
         graphdbEnabled
       } = process.env
@@ -216,6 +233,16 @@ export default {
     //   )
     // },
     duplicateCollections: async (source, args, context) => {
+      // Check if revisionId was provided in the original query (stored in source)
+      const { revisionId } = source
+
+      if (revisionId) {
+        throw new Error(
+          'The "duplicateCollections" field cannot be requested when querying a specific revision. '
+      + 'Remove the "revisionId" parameter from the collection query to fetch duplicate collections.'
+        )
+      }
+
       const {
         graphdbEnabled
       } = process.env

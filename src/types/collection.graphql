@@ -876,6 +876,9 @@ input CollectionInput {
   "The unique concept id assigned to the collection."
   conceptId: String!
 
+  "The revision id of the collection to fetch."
+  revisionId: String
+
   "If this parameter is set to 'true' this will include a flag indicating true or false if the collection has any granules at all."
   includeHasGranules: Boolean
 

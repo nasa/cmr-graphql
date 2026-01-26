@@ -57,6 +57,34 @@ export default class Concept {
   }
 
   /**
+   * Returns list of fields that only exist in meta (from search endpoint)
+   */
+  getMetaOnlyFields() {
+    return [
+      'associationDetails',
+      'hasFormats',
+      'hasSpatialSubsetting',
+      'hasTemporalSubsetting',
+      'hasTransforms',
+      'hasVariables',
+      'nativeId',
+      'providerId',
+      'revisionDate',
+      'userId'
+    ]
+  }
+
+  /**
+   * Check if any of the requested UMM keys are meta-only fields
+   * @param {Array} ummKeys Array of requested UMM keys
+   */
+  hasMetaOnlyFields(ummKeys) {
+    const metaFields = this.getMetaOnlyFields()
+
+    return ummKeys.some((key) => metaFields.includes(key))
+  }
+
+  /**
    * If a plural key is provided it will take the value but 'convert' the key
    * to singular but keep the array of values. This is done so that we can offer
    * two different keys (singular and plural) within the schema.
@@ -654,11 +682,151 @@ export default class Concept {
   }
 
   /**
+   * Query the CMR concepts API endpoint to retrieve a specific revision in UMM format
+   * @param {String} conceptId The concept ID
+   * @param {String} revisionId The revision ID
+   * @param {Array} requestedKeys Keys requested by the query
+   * @param {Object} providedHeaders Headers requested by the query
+   */
+  fetchRevisionUmm(conceptId, revisionId, requestedKeys, providedHeaders) {
+    this.logKeyRequest(requestedKeys, 'umm_revision')
+
+    return cmrQuery({
+      conceptType: this.getConceptType(),
+      params: {},
+      nonIndexedKeys: [],
+      headers: providedHeaders,
+      options: {
+        format: 'umm_json',
+        path: `search/concepts/${conceptId}/${revisionId}.umm_json`
+      }
+    })
+  }
+
+  /**
+   * Parse the response body from a single concept revision request (UMM format)
+   * @param {Object} ummResponse HTTP response from the CMR endpoint
+   */
+  parseRevisionUmmBody(ummResponse) {
+    const { data } = ummResponse
+
+    const wrappedData = {
+      meta: {
+        'concept-id': this.fetchedConceptId,
+        'revision-id': parseInt(this.fetchedRevisionId, 10)
+      },
+      umm: data
+    }
+
+    // Wrap in array for consistency with search endpoint
+    return [wrappedData]
+  }
+
+  /**
+   * Parse all revisions response and merge meta fields for the specific revision
+   * @param {Object} allRevisionsResponse HTTP response with all revisions
+   * @param {String} revisionId The specific revision ID to extract
+   * @param {Array} ummKeys Keys that were requested
+   */
+  async parseAndMergeMetaFields(allRevisionsResponse, revisionId, ummKeys) {
+    const { ummKeyMappings } = this.requestInfo
+
+    // Parse all revisions
+    const allItems = this.parseUmmBody(allRevisionsResponse)
+
+    // Find the matching revision
+    const matchingRevision = allItems.find((item) => {
+      const { meta } = item
+      const itemRevisionId = meta['revision-id']
+
+      return String(itemRevisionId) === String(revisionId)
+    })
+
+    if (!matchingRevision) {
+      throw new Error(`Revision ${revisionId} not found in all revisions response`)
+    }
+
+    // Get the existing item key (should be only one item from concepts endpoint)
+    const existingItemKeys = Object.keys(this.items)
+    if (existingItemKeys.length === 0) {
+      throw new Error('No existing item found to merge meta fields into')
+    }
+
+    const itemKey = existingItemKeys[0]
+
+    // Extract and merge only the meta fields
+    const metaOnlyFields = this.getMetaOnlyFields()
+
+    ummKeys.forEach((ummKey) => {
+      // Only process meta fields
+      if (!metaOnlyFields.includes(ummKey)) return
+
+      const keyValue = get(matchingRevision, ummKeyMappings[ummKey])
+
+      if (keyValue != null) {
+        const camelCasedObject = camelcaseKeys({ [ummKey]: keyValue }, { deep: true })
+        const { [ummKey]: camelCasedValue } = camelCasedObject
+
+        this.setItemValue(itemKey, ummKey, camelCasedValue)
+      }
+    })
+  }
+
+  /**
    * Query the CMR API
    * @param {Object} searchParams Parameters provided by the query
    */
   fetch(searchParams) {
     const params = mergeParams(searchParams)
+
+    // Check if a revisionId is provided
+    const { revisionId, conceptId } = params
+
+    // If revisionId is provided, use the concepts endpoint
+    if (revisionId && conceptId) {
+      // Store for use in parsing
+      this.fetchedRevisionId = revisionId
+      this.fetchedConceptId = conceptId
+
+      const { metaKeys } = this.requestInfo
+      const { ummKeys = [] } = this.requestInfo
+
+      const promises = []
+
+      this.logKeyRequest(metaKeys, 'meta')
+
+      // Concepts endpoint doesn't support .json format, only .umm_json
+      // Always push null for JSON promise
+      promises.push(
+        // eslint-disable-next-line no-promise-executor-return
+        new Promise((resolve) => resolve(null))
+      )
+
+      if (ummKeys.length > 0) {
+        promises.push(
+          this.fetchRevisionUmm(conceptId, revisionId, ummKeys, this.headers)
+        )
+      }
+
+      // Second: If meta-only fields are needed, fetch all revisions from search endpoint
+      const needsMetaFields = this.hasMetaOnlyFields(ummKeys)
+
+      if (needsMetaFields) {
+        // Fetch all revisions to get meta fields
+        const metaParams = {
+          conceptId,
+          allRevisions: true
+        }
+
+        promises.push(
+          this.fetchUmm(metaParams, ummKeys, this.headers)
+        )
+      }
+
+      this.response = Promise.all(promises)
+
+      return
+    }
 
     // Default an array to hold the promises we need to make depending on the requested fields
     const promises = []
@@ -695,10 +863,10 @@ export default class Concept {
         this.fetchJson(this.arrayifyParams(params), jsonKeys, jsonHeaders)
       )
     } else {
-      // Push a null promise to the array so that the umm promise always exists as
-      // the second element of the promise array
+    // Push a null promise to the array so that the umm promise always exists as
+    // the second element of the promise array
       promises.push(
-        // eslint-disable-next-line no-promise-executor-return
+      // eslint-disable-next-line no-promise-executor-return
         new Promise((resolve) => resolve(null))
       )
     }
@@ -717,7 +885,7 @@ export default class Concept {
       )
     } else {
       promises.push(
-        // eslint-disable-next-line no-promise-executor-return
+      // eslint-disable-next-line no-promise-executor-return
         new Promise((resolve) => resolve(null))
       )
     }
@@ -793,6 +961,10 @@ export default class Concept {
    */
   parseUmmBody(ummResponse) {
     const { data } = ummResponse
+
+    if (!data.items) {
+      return this.parseRevisionUmmBody(ummResponse)
+    }
 
     const { items } = data
 
@@ -950,7 +1122,10 @@ export default class Concept {
       'cmr-search-after': ummSearchAfterIdentifier
     } = downcaseKeys(headers)
 
-    this.setUmmItemCount(cmrHits)
+    // For revision requests, cmr-hits won't be present
+    if (cmrHits) {
+      this.setUmmItemCount(cmrHits)
+    }
 
     this.setUmmSearchAfter(ummSearchAfterIdentifier)
 
@@ -965,7 +1140,7 @@ export default class Concept {
 
       this.setEssentialUmmValues(itemKey, normalizedItem)
 
-      this.setUmmItems(item, itemKey, ummKeys, ummKeyMappings,)
+      this.setUmmItems(item, itemKey, ummKeys, ummKeyMappings)
     })
   }
 
@@ -1018,7 +1193,7 @@ export default class Concept {
 
       const response = await this.getResponse()
 
-      const [jsonResponse, ummResponse] = response
+      const [jsonResponse, ummResponse, allRevisionsResponse] = response
 
       if (jsonResponse) {
         await this.parseJson(jsonResponse, jsonKeys)
@@ -1026,6 +1201,23 @@ export default class Concept {
 
       if (ummResponse) {
         await this.parseUmm(ummResponse, ummKeys)
+      }
+
+      // If we fetched all revisions for meta fields, extract and merge the specific revision
+      if (allRevisionsResponse && this.fetchedRevisionId) {
+        await this.parseAndMergeMetaFields(
+          allRevisionsResponse,
+          this.fetchedRevisionId,
+          ummKeys
+        )
+      }
+
+      // If this is a revision request, add revisionId to the result so field resolvers can access it
+      if (this.fetchedRevisionId && this.fetchedConceptId) {
+        const itemKeys = Object.keys(this.items)
+        itemKeys.forEach((itemKey) => {
+          this.setItemValue(itemKey, 'revisionId', this.fetchedRevisionId)
+        })
       }
     } catch (e) {
       parseError(e, { reThrowError: true })

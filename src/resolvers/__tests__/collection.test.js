@@ -926,6 +926,377 @@ describe('Collection', () => {
   })
 
   describe('Collection', () => {
+    describe('fetch', () => {
+      test('fetches a specific revision of a collection', async () => {
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .get('/search/concepts/C100000-EDSC/2.umm_json')
+          .reply(200, {
+            EntryTitle: 'Test Collection'
+          })
+
+        const response = await server.executeOperation({
+          variables: {
+            params: {
+              conceptId: 'C100000-EDSC',
+              revisionId: '2'
+            }
+          },
+          query: `
+          query Collection($params: CollectionInput!) {
+            collection(params: $params) {
+              conceptId
+              revisionId
+              entryTitle
+            }
+          }
+        `
+        }, {
+          contextValue
+        })
+
+        const { data } = response.body.singleResult
+
+        expect(data).toEqual({
+          collection: {
+            conceptId: 'C100000-EDSC',
+            revisionId: '2',
+            entryTitle: 'Test Collection'
+          }
+        })
+      })
+
+      test('fetches all revisions when meta-only fields are needed', async () => {
+        // Mock the first API call
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Hits': 1,
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .get('/search/concepts/C100000-EDSC/2.umm_json')
+          .reply(200, {
+          })
+
+        // Mock the second API call
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Hits': 1,
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .get('/search/collections.umm_json?concept_id=C100000-EDSC&all_revisions=true')
+          .reply(200, {
+            items: [
+              {
+                meta: {
+                  'concept-id': 'C100000-EDSC',
+                  'revision-id': '2',
+                  'revision-date': '2023-01-01T00:00:00Z'
+                },
+                umm: {}
+              },
+              {
+                meta: {
+                  'concept-id': 'C100000-EDSC',
+                  'revision-id': '1',
+                  'revision-date': '2022-12-31T00:00:00Z'
+                },
+                umm: {}
+              }
+            ]
+          })
+
+        const response = await server.executeOperation({
+          variables: {
+            params: {
+              conceptId: 'C100000-EDSC',
+              revisionId: '2'
+            }
+          },
+          query: `
+          query Collection($params: CollectionInput!) {
+            collection(params: $params) {
+              conceptId
+              revisionId
+              revisionDate
+            }
+          }
+        `
+        }, {
+          contextValue
+        })
+
+        const { data } = response.body.singleResult
+
+        console.log('########### data', data)
+
+        expect(data).toEqual({
+          collection: {
+            conceptId: 'C100000-EDSC',
+            revisionId: '2',
+            revisionDate: '2023-01-01T00:00:00Z'
+          }
+        })
+      })
+
+      test('throws an error when the requested revision is not found', async () => {
+        // Mock the first API call
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Hits': 1,
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .get('/search/concepts/C100000-EDSC/3.umm_json')
+          .reply(200, {
+          })
+
+        // Mock the second API call with revisions that don't include the requested revision
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Hits': 1,
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .get('/search/collections.umm_json?concept_id=C100000-EDSC&all_revisions=true')
+          .reply(200, {
+            items: [
+              {
+                meta: {
+                  'concept-id': 'C100000-EDSC',
+                  'revision-id': '1',
+                  'revision-date': '2022-12-31T00:00:00Z'
+                },
+                umm: {}
+              },
+              {
+                meta: {
+                  'concept-id': 'C100000-EDSC',
+                  'revision-id': '2',
+                  'revision-date': '2023-01-01T00:00:00Z'
+                },
+                umm: {}
+              }
+            ]
+          })
+
+        const response = await server.executeOperation({
+          variables: {
+            params: {
+              conceptId: 'C100000-EDSC',
+              revisionId: '3'
+            }
+          },
+          query: `
+            query Collection($params: CollectionInput!) {
+              collection(params: $params) {
+                conceptId
+                revisionId
+                revisionDate
+              }
+            }
+          `
+        }, {
+          contextValue
+        })
+
+        const { errors } = response.body.singleResult
+
+        expect(errors).toBeDefined()
+        expect(errors[0].message).toBe('Error: Revision 3 not found in all revisions response')
+      })
+
+      test('throws an error when there is no existing item to merge meta fields into', async () => {
+        // Mock the first API call to return an empty response
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Hits': 1,
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .get('/search/concepts/C100000-EDSC/2.umm_json')
+          .reply(200, {
+            items: []
+          })
+
+        // Mock the second API call to return revisions
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Hits': 1,
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .get('/search/collections.umm_json?concept_id=C100000-EDSC&all_revisions=true')
+          .reply(200, {
+            items: [
+              {
+                meta: {
+                  'concept-id': 'C100000-EDSC',
+                  'revision-id': '2',
+                  'revision-date': '2023-01-01T00:00:00Z'
+                },
+                umm: {}
+              }
+            ]
+          })
+
+        const response = await server.executeOperation({
+          variables: {
+            params: {
+              conceptId: 'C100000-EDSC',
+              revisionId: '2'
+            }
+          },
+          query: `
+    query Collection($params: CollectionInput!) {
+      collection(params: $params) {
+        conceptId
+        revisionId
+        revisionDate
+      }
+    }
+  `
+        }, {
+          contextValue
+        })
+
+        const { errors } = response.body.singleResult
+
+        expect(errors).toBeDefined()
+        expect(errors[0].message).toBe('Error: No existing item found to merge meta fields into')
+      })
+    })
+
+    describe('revisions', () => {
+      test('throws an error when revisionId is provided', async () => {
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .get('/search/concepts/C100000-EDSC/2.umm_json')
+          .reply(200, {})
+
+        const response = await server.executeOperation({
+          variables: {
+            params: {
+              conceptId: 'C100000-EDSC',
+              revisionId: '2'
+            }
+          },
+          query: `
+            query Collection($params: CollectionInput!) {
+              collection(params: $params) {
+                conceptId
+                revisionId
+                revisions {
+                  count
+                }
+              }
+            }
+          `
+        }, {
+          contextValue
+        })
+
+        const { errors } = response.body.singleResult
+
+        expect(errors).toBeDefined()
+        expect(errors[0].message).toBe(
+          'The "revisions" field cannot be requested when querying a specific revision. '
+        + 'Remove the "revisionId" parameter from the collection query to fetch all revisions.'
+        )
+      })
+    })
+
+    describe('relatedCollections', () => {
+      test('throws an error when revisionId is provided', async () => {
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .get('/search/concepts/C100000-EDSC/2.umm_json')
+          .reply(200, {})
+
+        const response = await server.executeOperation({
+          variables: {
+            params: {
+              conceptId: 'C100000-EDSC',
+              revisionId: '2'
+            }
+          },
+          query: `
+            query Collection($params: CollectionInput!) {
+              collection(params: $params) {
+                conceptId
+                revisionId
+                relatedCollections {
+                  count
+                }
+              }
+            }
+          `
+        }, {
+          contextValue
+        })
+
+        const { errors } = response.body.singleResult
+
+        expect(errors).toBeDefined()
+        expect(errors[0].message).toBe(
+          'The "relatedCollections" field cannot be requested when querying a specific revision. '
+        + 'Remove the "revisionId" parameter from the collection query to fetch related collections.'
+        )
+      })
+    })
+
+    describe('duplicateCollections', () => {
+      test('throws an error when revisionId is provided', async () => {
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .get('/search/concepts/C100000-EDSC/2.umm_json')
+          .reply(200, {})
+
+        const response = await server.executeOperation({
+          variables: {
+            params: {
+              conceptId: 'C100000-EDSC',
+              revisionId: '2'
+            }
+          },
+          query: `
+            query Collection($params: CollectionInput!) {
+              collection(params: $params) {
+                conceptId
+                revisionId
+                duplicateCollections {
+                  count
+                }
+              }
+            }
+          `
+        }, {
+          contextValue
+        })
+
+        const { errors } = response.body.singleResult
+
+        expect(errors).toBeDefined()
+        expect(errors[0].message).toBe(
+          'The "duplicateCollections" field cannot be requested when querying a specific revision. '
+        + 'Remove the "revisionId" parameter from the collection query to fetch duplicate collections.'
+        )
+      })
+    })
+
     describe('granules', () => {
       test('granules', async () => {
         nock(/example-cmr/)
