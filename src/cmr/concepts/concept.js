@@ -1212,11 +1212,11 @@ export default class Concept {
         )
       }
 
-      // If this is a revision request, add revisionId to the result so field resolvers can access it
+      // If this is a single revision request, add a flag so that the resolver can process it
       if (this.fetchedRevisionId && this.fetchedConceptId) {
         const itemKeys = Object.keys(this.items)
         itemKeys.forEach((itemKey) => {
-          this.setItemValue(itemKey, 'revisionId', this.fetchedRevisionId)
+          this.setItemValue(itemKey, 'singleRevisionRequest', true)
         })
       }
     } catch (e) {
