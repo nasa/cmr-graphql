@@ -1211,14 +1211,6 @@ export default class Concept {
           ummKeys
         )
       }
-
-      // If this is a single revision request, add a flag so that the resolver can process it
-      if (this.fetchedRevisionId && this.fetchedConceptId) {
-        const itemKeys = Object.keys(this.items)
-        itemKeys.forEach((itemKey) => {
-          this.setItemValue(itemKey, 'singleRevisionRequest', true)
-        })
-      }
     } catch (e) {
       parseError(e, { reThrowError: true })
     }
