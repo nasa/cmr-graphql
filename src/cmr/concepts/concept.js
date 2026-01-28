@@ -802,11 +802,9 @@ export default class Concept {
         new Promise((resolve) => resolve(null))
       )
 
-      if (ummKeys.length > 0) {
-        promises.push(
-          this.fetchRevisionUmm(conceptId, revisionId, ummKeys, this.headers)
-        )
-      }
+      promises.push(
+        this.fetchRevisionUmm(conceptId, revisionId, ummKeys, this.headers)
+      )
 
       // Second: If meta-only fields are needed, fetch all revisions from search endpoint
       const needsMetaFields = this.hasMetaOnlyFields(ummKeys)
@@ -1140,7 +1138,12 @@ export default class Concept {
 
       this.setEssentialUmmValues(itemKey, normalizedItem)
 
-      this.setUmmItems(item, itemKey, ummKeys, ummKeyMappings)
+      // If ummKeys is empty, at least set the conceptId
+      if (ummKeys.length === 0) {
+        this.setItemValue(itemKey, 'conceptId', normalizedItem.meta['concept-id'])
+      } else {
+        this.setUmmItems(item, itemKey, ummKeys, ummKeyMappings)
+      }
     })
   }
 
