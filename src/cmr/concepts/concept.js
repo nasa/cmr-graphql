@@ -718,6 +718,14 @@ export default class Concept {
       umm: data
     }
 
+    // Set the conceptId if ummKeys is empty
+    const { ummKeys = [] } = this.requestInfo
+    if (ummKeys.length === 0) {
+    // Create a unique item key
+      const itemKey = `${this.fetchedConceptId}-0`
+      this.setItemValue(itemKey, 'conceptId', this.fetchedConceptId)
+    }
+
     // Wrap in array for consistency with search endpoint
     return [wrappedData]
   }
@@ -1138,12 +1146,7 @@ export default class Concept {
 
       this.setEssentialUmmValues(itemKey, normalizedItem)
 
-      // If ummKeys is empty, at least set the conceptId
-      if (ummKeys.length === 0) {
-        this.setItemValue(itemKey, 'conceptId', normalizedItem.meta['concept-id'])
-      } else {
-        this.setUmmItems(item, itemKey, ummKeys, ummKeyMappings)
-      }
+      this.setUmmItems(item, itemKey, ummKeys, ummKeyMappings)
     })
   }
 
