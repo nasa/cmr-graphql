@@ -21,10 +21,12 @@ export default {
 
       const [firstResult] = result
 
-      return {
-        ...firstResult,
-        singleRevisionRequest: !!args.params?.revisionId
-      }
+      return firstResult
+        ? {
+          ...firstResult,
+          singleRevisionRequest: !!args.params?.revisionId
+        }
+        : undefined
     }
   },
 
