@@ -1032,8 +1032,6 @@ describe('Collection', () => {
 
         const { data } = response.body.singleResult
 
-        console.log('########### data', data)
-
         expect(data).toEqual({
           collection: {
             conceptId: 'C100000-EDSC',
