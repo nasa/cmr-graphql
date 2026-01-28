@@ -969,6 +969,44 @@ describe('Collection', () => {
         })
       })
 
+      test('sets conceptId when ummKeys is empty', async () => {
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .get('/search/concepts/C100000-EDSC/2.umm_json')
+          .reply(200, {
+            // Minimal response, since we're not testing UMM data here
+          })
+
+        const response = await server.executeOperation({
+          variables: {
+            params: {
+              conceptId: 'C100000-EDSC',
+              revisionId: '2'
+            }
+          },
+          query: `
+      query Collection($params: CollectionInput!) {
+        collection(params: $params) {
+          conceptId
+        }
+      }
+    `
+        }, {
+          contextValue
+        })
+
+        const { data } = response.body.singleResult
+
+        expect(data).toEqual({
+          collection: {
+            conceptId: 'C100000-EDSC'
+          }
+        })
+      })
+
       test('fetches all revisions when meta-only fields are needed', async () => {
         // Mock the first API call
         nock(/example-cmr/)
