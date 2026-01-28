@@ -863,10 +863,10 @@ export default class Concept {
         this.fetchJson(this.arrayifyParams(params), jsonKeys, jsonHeaders)
       )
     } else {
-    // Push a null promise to the array so that the umm promise always exists as
-    // the second element of the promise array
+      // Push a null promise to the array so that the umm promise always exists as
+      // the second element of the promise array
       promises.push(
-      // eslint-disable-next-line no-promise-executor-return
+        // eslint-disable-next-line no-promise-executor-return
         new Promise((resolve) => resolve(null))
       )
     }
@@ -885,7 +885,7 @@ export default class Concept {
       )
     } else {
       promises.push(
-      // eslint-disable-next-line no-promise-executor-return
+        // eslint-disable-next-line no-promise-executor-return
         new Promise((resolve) => resolve(null))
       )
     }
