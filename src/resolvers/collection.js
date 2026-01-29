@@ -16,13 +16,18 @@ export default {
     },
     collection: async (source, args, context, info) => {
       // Store in the context the flag if a single revision is requested
-      context.singleRevisionRequest = !!args.params?.revisionId
+      context.singleRevisionRequest = !!args.params.revisionId
 
       const { dataSources } = context
 
       const result = await dataSources.collectionSourceFetch(args, context, parseResolveInfo(info))
 
       const [firstResult] = result
+
+      // Ensure conceptId is always present in the result
+      if (firstResult && !firstResult.conceptId) {
+        firstResult.conceptId = args.params.conceptId
+      }
 
       return firstResult
     }
@@ -131,15 +136,6 @@ export default {
       return dataSources.granuleSource(requestedParams, context, parseResolveInfo(info))
     },
     relatedCollections: async (source, args, context, info) => {
-      const { singleRevisionRequest } = context
-
-      if (singleRevisionRequest) {
-        throw new Error(
-          'The "relatedCollections" field cannot be requested when querying a specific revision. '
-      + 'Remove the "revisionId" parameter from the collection query to fetch related collections.'
-        )
-      }
-
       const {
         graphdbEnabled
       } = process.env
@@ -236,16 +232,6 @@ export default {
     //   )
     // },
     duplicateCollections: async (source, args, context) => {
-      // Check if revisionId was provided in the original query (stored in source)
-      const { singleRevisionRequest } = context
-
-      if (singleRevisionRequest) {
-        throw new Error(
-          'The "duplicateCollections" field cannot be requested when querying a specific revision. '
-      + 'Remove the "revisionId" parameter from the collection query to fetch duplicate collections.'
-        )
-      }
-
       const {
         graphdbEnabled
       } = process.env
