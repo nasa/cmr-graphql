@@ -57,34 +57,6 @@ export default class Concept {
   }
 
   /**
-   * Returns list of fields that only exist in meta (from search endpoint)
-   */
-  getMetaOnlyFields() {
-    return [
-      'associationDetails',
-      'hasFormats',
-      'hasSpatialSubsetting',
-      'hasTemporalSubsetting',
-      'hasTransforms',
-      'hasVariables',
-      'nativeId',
-      'providerId',
-      'revisionDate',
-      'userId'
-    ]
-  }
-
-  /**
-   * Check if any of the requested UMM keys are meta-only fields
-   * @param {Array} ummKeys Array of requested UMM keys
-   */
-  hasMetaOnlyFields(ummKeys) {
-    const metaFields = this.getMetaOnlyFields()
-
-    return ummKeys.some((key) => metaFields.includes(key))
-  }
-
-  /**
    * If a plural key is provided it will take the value but 'convert' the key
    * to singular but keep the array of values. This is done so that we can offer
    * two different keys (singular and plural) within the schema.
@@ -763,7 +735,7 @@ export default class Concept {
     const itemKey = existingItemKeys[0]
 
     // Extract and merge only the meta fields
-    const metaOnlyFields = this.getMetaOnlyFields()
+    const metaOnlyFields = Object.keys(this.requestInfo.ummKeyMappings).filter((key) => this.requestInfo.ummKeyMappings[key].startsWith('meta.'))
 
     ummKeys.forEach((ummKey) => {
       // Only process meta fields
@@ -815,7 +787,8 @@ export default class Concept {
       )
 
       // Second: If meta-only fields are needed, fetch all revisions from search endpoint
-      const needsMetaFields = this.hasMetaOnlyFields(ummKeys)
+      const needsMetaFields = ummKeys.some((key) => this.requestInfo.ummKeyMappings[key]?.startsWith('meta.')
+                                                 && !['conceptId', 'revisionId'].includes(key))
 
       if (needsMetaFields) {
         // Fetch all revisions to get meta fields

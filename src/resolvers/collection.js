@@ -15,6 +15,9 @@ export default {
       )
     },
     collection: async (source, args, context, info) => {
+      // Store in the context the flag if a single revision is requested
+      context.singleRevisionRequest = !!args.params?.revisionId
+
       const { dataSources } = context
 
       const result = await dataSources.collectionSourceFetch(args, context, parseResolveInfo(info))
@@ -22,11 +25,6 @@ export default {
       const [firstResult] = result
 
       return firstResult
-        ? {
-          ...firstResult,
-          singleRevisionRequest: !!args.params?.revisionId
-        }
-        : undefined
     }
   },
 
@@ -54,9 +52,7 @@ export default {
 
   Collection: {
     revisions: async (source, args, context, info) => {
-      const { dataSources } = context
-
-      const { conceptId, singleRevisionRequest } = source
+      const { singleRevisionRequest } = context
 
       if (singleRevisionRequest) {
         throw new Error(
@@ -64,6 +60,9 @@ export default {
       + 'Remove the "revisionId" parameter from the collection query to fetch all revisions.'
         )
       }
+
+      const { dataSources } = context
+      const { conceptId } = source
 
       return dataSources.collectionSourceFetch(
         {
@@ -132,8 +131,7 @@ export default {
       return dataSources.granuleSource(requestedParams, context, parseResolveInfo(info))
     },
     relatedCollections: async (source, args, context, info) => {
-      // Check if revisionId was provided in the original query (stored in source)
-      const { singleRevisionRequest } = source
+      const { singleRevisionRequest } = context
 
       if (singleRevisionRequest) {
         throw new Error(
@@ -239,7 +237,7 @@ export default {
     // },
     duplicateCollections: async (source, args, context) => {
       // Check if revisionId was provided in the original query (stored in source)
-      const { singleRevisionRequest } = source
+      const { singleRevisionRequest } = context
 
       if (singleRevisionRequest) {
         throw new Error(
