@@ -16,18 +16,16 @@ export default {
     },
     collection: async (source, args, context, info) => {
       // Store in the context the flag if a single revision is requested
-      context.singleRevisionRequest = !!args.params.revisionId
+      context.singleRevisionRequest = !!args.params?.revisionId
+
+      // Add the conceptId to the context
+      context.conceptId = args.params?.conceptId
 
       const { dataSources } = context
 
       const result = await dataSources.collectionSourceFetch(args, context, parseResolveInfo(info))
 
       const [firstResult] = result
-
-      // Ensure conceptId is always present in the result
-      if (firstResult && !firstResult.conceptId) {
-        firstResult.conceptId = args.params.conceptId
-      }
 
       return firstResult
     }
@@ -81,10 +79,8 @@ export default {
     granules: async (source, args, context, info) => {
       const { dataSources } = context
 
-      // Pull out parent collection id to provide to the granules endpoint because cmr requires it
-      const {
-        conceptId: collectionId
-      } = source
+      // Use the conceptId from source if available, otherwise use the one from context
+      const collectionId = source.conceptId || context.conceptId
 
       // If the concept being returned is a draft, there will be no associations,
       // return null to avoid an extra call to CMR
@@ -149,7 +145,8 @@ export default {
 
       const { dataSources } = context
 
-      const { conceptId } = source
+      // Use the conceptId from source if available, otherwise use the one from context
+      const conceptId = source.conceptId || context.conceptId
 
       // If the concept being returned is a draft, there will be no associations,
       // return null to avoid an extra call to CMR
@@ -163,17 +160,18 @@ export default {
       )
     },
     generateVariableDrafts: async (source, args, context) => {
-      const { conceptId } = source
+      // Use the conceptId from source if available, otherwise use the one from context
+      const conceptId = source.conceptId || context.conceptId
 
       const { dataSources } = context
 
       return dataSources.collectionVariableDraftsSource({ conceptId }, context, parseResolveInfo)
     },
     dataQualitySummaries: async (source, args, context, info) => {
-      const {
-        associationDetails = {},
-        conceptId
-      } = source
+      const { associationDetails = {} } = source
+
+      // Use the conceptId from source if available, otherwise use the one from context
+      const conceptId = source.conceptId || context.conceptId
 
       // If the concept being returned is a draft, there will be no associations,
       // return null to avoid an extra call to CMR
@@ -245,7 +243,8 @@ export default {
 
       const { dataSources } = context
 
-      const { conceptId } = source
+      // Use the conceptId from source if available, otherwise use the one from context
+      const conceptId = source.conceptId || context.conceptId
 
       // If the concept being returned is a draft, there will be no associations,
       // return null to avoid an extra call to CMR
@@ -254,10 +253,10 @@ export default {
       return dataSources.graphDbDuplicateCollectionsSource(source, context)
     },
     services: async (source, args, context, info) => {
-      const {
-        associationDetails = {},
-        conceptId: collectionConceptId
-      } = source
+      const { associationDetails = {} } = source
+
+      // Use the conceptId from source if available, otherwise use the one from context
+      const collectionConceptId = source.conceptId || context.conceptId
 
       // If the concept being returned is a draft, there will be no associations,
       // return null to avoid an extra call to CMR
@@ -288,10 +287,8 @@ export default {
       )
     },
     subscriptions: async (source, args, context, info) => {
-      // Pull out parent collection id
-      const {
-        conceptId: collectionId
-      } = source
+      // Use the conceptId from source if available, otherwise use the one from context
+      const collectionId = source.conceptId || context.conceptId
 
       // If the concept being returned is a draft, there will be no associations,
       // return null to avoid an extra call to CMR
@@ -323,10 +320,10 @@ export default {
       )
     },
     tools: async (source, args, context, info) => {
-      const {
-        associationDetails = {},
-        conceptId
-      } = source
+      const { associationDetails = {} } = source
+
+      // Use the conceptId from source if available, otherwise use the one from context
+      const conceptId = source.conceptId || context.conceptId
 
       // If the concept being returned is a draft, there will be no associations,
       // return null to avoid an extra call to CMR
@@ -351,10 +348,10 @@ export default {
       }, context, parseResolveInfo(info))
     },
     variables: async (source, args, context, info) => {
-      const {
-        associationDetails = {},
-        conceptId
-      } = source
+      const { associationDetails = {} } = source
+
+      // Use the conceptId from source if available, otherwise use the one from context
+      const conceptId = source.conceptId || context.conceptId
 
       // If the concept being returned is a draft, there will be no associations,
       // return null to avoid an extra call to CMR
@@ -379,10 +376,10 @@ export default {
       }, context, parseResolveInfo(info))
     },
     visualizations: async (source, args, context, info) => {
-      const {
-        associationDetails = {},
-        conceptId
-      } = source
+      const { associationDetails = {} } = source
+
+      // Use the conceptId from source if available, otherwise use the one from context
+      const conceptId = source.conceptId || context.conceptId
 
       // If the concept being returned is a draft, there will be no associations,
       // return null to avoid an extra call to CMR
@@ -409,10 +406,10 @@ export default {
       }, context, parseResolveInfo(info))
     },
     citations: async (source, args, context, info) => {
-      const {
-        associationDetails = {},
-        conceptId
-      } = source
+      const { associationDetails = {} } = source
+
+      // Use the conceptId from source if available, otherwise use the one from context
+      const conceptId = source.conceptId || context.conceptId
 
       // If the concept being returned is a draft, there will be no associations,
       // return null to avoid an extra call to CMR
