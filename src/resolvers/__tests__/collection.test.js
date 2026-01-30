@@ -969,44 +969,6 @@ describe('Collection', () => {
         })
       })
 
-      test('sets conceptId when ummKeys is empty', async () => {
-        nock(/example-cmr/)
-          .defaultReplyHeaders({
-            'CMR-Took': 7,
-            'CMR-Request-Id': 'abcd-1234-efgh-5678'
-          })
-          .get('/search/concepts/C100000-EDSC/2.umm_json')
-          .reply(200, {
-            // Minimal response, since we're not testing UMM data here
-          })
-
-        const response = await server.executeOperation({
-          variables: {
-            params: {
-              conceptId: 'C100000-EDSC',
-              revisionId: '2'
-            }
-          },
-          query: `
-      query Collection($params: CollectionInput!) {
-        collection(params: $params) {
-          conceptId
-        }
-      }
-    `
-        }, {
-          contextValue
-        })
-
-        const { data } = response.body.singleResult
-
-        expect(data).toEqual({
-          collection: {
-            conceptId: 'C100000-EDSC'
-          }
-        })
-      })
-
       test('fetches all revisions when meta-only fields are needed', async () => {
         // Mock the first API call
         nock(/example-cmr/)
@@ -1144,66 +1106,6 @@ describe('Collection', () => {
 
         expect(errors).toBeDefined()
         expect(errors[0].message).toBe('Error: Revision 3 not found in all revisions response')
-      })
-
-      test('throws an error when there is no existing item to merge meta fields into', async () => {
-        // Mock the first API call to return an empty response
-        nock(/example-cmr/)
-          .defaultReplyHeaders({
-            'CMR-Hits': 1,
-            'CMR-Took': 7,
-            'CMR-Request-Id': 'abcd-1234-efgh-5678'
-          })
-          .get('/search/concepts/C100000-EDSC/2.umm_json')
-          .reply(200, {
-            items: []
-          })
-
-        // Mock the second API call to return revisions
-        nock(/example-cmr/)
-          .defaultReplyHeaders({
-            'CMR-Hits': 1,
-            'CMR-Took': 7,
-            'CMR-Request-Id': 'abcd-1234-efgh-5678'
-          })
-          .get('/search/collections.umm_json?concept_id=C100000-EDSC&all_revisions=true')
-          .reply(200, {
-            items: [
-              {
-                meta: {
-                  'concept-id': 'C100000-EDSC',
-                  'revision-id': '2',
-                  'revision-date': '2023-01-01T00:00:00Z'
-                },
-                umm: {}
-              }
-            ]
-          })
-
-        const response = await server.executeOperation({
-          variables: {
-            params: {
-              conceptId: 'C100000-EDSC',
-              revisionId: '2'
-            }
-          },
-          query: `
-    query Collection($params: CollectionInput!) {
-      collection(params: $params) {
-        conceptId
-        revisionId
-        revisionDate
-      }
-    }
-  `
-        }, {
-          contextValue
-        })
-
-        const { errors } = response.body.singleResult
-
-        expect(errors).toBeDefined()
-        expect(errors[0].message).toBe('Error: No existing item found to merge meta fields into')
       })
     })
 

@@ -690,14 +690,6 @@ export default class Concept {
       umm: data
     }
 
-    // Set the conceptId if ummKeys is empty
-    const { ummKeys = [] } = this.requestInfo
-    if (ummKeys.length === 0) {
-    // Create a unique item key
-      const itemKey = `${this.fetchedConceptId}-0`
-      this.setItemValue(itemKey, 'conceptId', this.fetchedConceptId)
-    }
-
     // Wrap in array for consistency with search endpoint
     return [wrappedData]
   }
@@ -728,10 +720,6 @@ export default class Concept {
 
     // Get the existing item key (should be only one item from concepts endpoint)
     const existingItemKeys = Object.keys(this.items)
-    if (existingItemKeys.length === 0) {
-      throw new Error('No existing item found to merge meta fields into')
-    }
-
     const itemKey = existingItemKeys[0]
 
     // Extract and merge only the meta fields
