@@ -758,55 +758,8 @@ export default class Concept {
    */
   fetch(searchParams) {
     const params = mergeParams(searchParams)
-
     // Check if a revisionId is provided
     const { revisionId, conceptId } = params
-
-    // If revisionId is provided, use the concepts endpoint
-    if (revisionId && conceptId) {
-      // Store for use in parsing
-      this.fetchedRevisionId = revisionId
-      this.fetchedConceptId = conceptId
-
-      const { metaKeys } = this.requestInfo
-      const { ummKeys = [] } = this.requestInfo
-
-      const promises = []
-
-      this.logKeyRequest(metaKeys, 'meta')
-
-      // Concepts endpoint doesn't support .json format, only .umm_json
-      // Always push null for JSON promise
-      promises.push(
-        // eslint-disable-next-line no-promise-executor-return
-        new Promise((resolve) => resolve(null))
-      )
-
-      promises.push(
-        this.fetchRevisionUmm(conceptId, revisionId, ummKeys, this.headers)
-      )
-
-      // Second: If meta-only fields are needed, fetch all revisions from search endpoint
-      const needsMetaFields = ummKeys.some((key) => this.requestInfo.ummKeyMappings[key]?.startsWith('meta.')
-                                                 && !['conceptId', 'revisionId'].includes(key))
-
-      if (needsMetaFields) {
-        // Fetch all revisions to get meta fields
-        const metaParams = {
-          conceptId,
-          allRevisions: true
-        }
-
-        promises.push(
-          this.fetchUmm(metaParams, ummKeys, this.headers)
-        )
-      }
-
-      this.response = Promise.all(promises)
-
-      return
-    }
-
     // Default an array to hold the promises we need to make depending on the requested fields
     const promises = []
 
@@ -858,10 +811,34 @@ export default class Concept {
         ummHeaders['CMR-Search-After'] = ummSearchAfterIdentifier
       }
 
-      // Construct the promise that will request data from the umm endpoint
-      promises.push(
-        this.fetchUmm(this.arrayifyParams(params), ummKeys, ummHeaders)
-      )
+      if (revisionId && conceptId) {
+        // Store for use in parsing
+        this.fetchedRevisionId = revisionId
+        this.fetchedConceptId = conceptId
+        promises.push(
+          this.fetchRevisionUmm(conceptId, revisionId, ummKeys, ummHeaders)
+        )
+
+        // Second: If meta-only fields are needed, fetch all revisions from search endpoint
+        const needsMetaFields = ummKeys.some((key) => this.requestInfo.ummKeyMappings[key]?.startsWith('meta.')
+                                                 && !['conceptId', 'revisionId'].includes(key))
+        if (needsMetaFields) {
+        // Fetch all revisions to get meta fields
+          const metaParams = {
+            conceptId,
+            allRevisions: true
+          }
+
+          promises.push(
+            this.fetchUmm(metaParams, ummKeys, this.headers)
+          )
+        }
+      } else {
+        // Construct the promise that will request data from the umm endpoint
+        promises.push(
+          this.fetchUmm(this.arrayifyParams(params), ummKeys, ummHeaders)
+        )
+      }
     } else {
       promises.push(
         // eslint-disable-next-line no-promise-executor-return
