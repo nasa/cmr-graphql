@@ -275,12 +275,22 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
     ummKeys = ummKeys.filter((e) => e !== 'conceptId')
   }
 
+  // List of keys in ummKeyMappings, which have values starting with 'meta.'
+  const ummMetaKeys = Object.keys(ummKeyMappings).filter((key) => ummKeyMappings[key].startsWith('meta.'))
+
+  // If ummKeys contains any key that is in metaDotKeys, we need to fetch
+  // all revisions in case a particular revision is requested to get the requested meta field, since
+  // the response of the 'concepts' endpoint in CMR doesn't have meta fields.
+  const fetchUmmRevisions = ummKeys.some((key) => ummMetaKeys.includes(key) && !['conceptId', 'revisionId'].includes(key))
+
   // Sort the keys to prevent fragility in testing
   return {
     jsonKeys: jsonKeys.sort(),
     metaKeys,
     ummKeys: ummKeys.sort(),
     ummKeyMappings,
-    isList
+    ummMetaKeys,
+    isList,
+    fetchUmmRevisions
   }
 }

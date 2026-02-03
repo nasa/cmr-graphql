@@ -701,7 +701,7 @@ export default class Concept {
    * @param {Array} ummKeys Keys that were requested
    */
   async parseAndMergeMetaFields(allRevisionsResponse, revisionId, ummKeys) {
-    const { ummKeyMappings } = this.requestInfo
+    const { ummKeyMappings, ummMetaKeys } = this.requestInfo
 
     // Parse all revisions
     const allItems = this.parseUmmBody(allRevisionsResponse)
@@ -722,12 +722,9 @@ export default class Concept {
     const existingItemKeys = Object.keys(this.items)
     const itemKey = existingItemKeys[0]
 
-    // Extract and merge only the meta fields
-    const metaOnlyFields = Object.keys(this.requestInfo.ummKeyMappings).filter((key) => this.requestInfo.ummKeyMappings[key].startsWith('meta.'))
-
     ummKeys.forEach((ummKey) => {
       // Only process meta fields
-      if (!metaOnlyFields.includes(ummKey)) return
+      if (!ummMetaKeys.includes(ummKey)) return
 
       const keyValue = get(matchingRevision, ummKeyMappings[ummKey])
 
@@ -754,7 +751,8 @@ export default class Concept {
     const {
       jsonKeys,
       metaKeys,
-      ummKeys
+      ummKeys,
+      fetchUmmRevisions
     } = this.requestInfo
 
     const {
@@ -807,18 +805,15 @@ export default class Concept {
           this.fetchRevisionUmm(conceptId, revisionId, ummKeys, ummHeaders)
         )
 
-        // Second: If meta-only fields are needed, fetch all revisions from search endpoint
-        const needsMetaFields = ummKeys.some((key) => this.requestInfo.ummKeyMappings[key]?.startsWith('meta.')
-                                                 && !['conceptId', 'revisionId'].includes(key))
-        if (needsMetaFields) {
-        // Fetch all revisions to get meta fields
+        if (fetchUmmRevisions) {
+          // Fetch all revisions to get meta fields
           const metaParams = {
             conceptId,
             allRevisions: true
           }
 
           promises.push(
-            this.fetchUmm(metaParams, ummKeys, this.headers)
+            this.fetchUmm(metaParams, ummKeys, ummHeaders)
           )
         }
       } else {
