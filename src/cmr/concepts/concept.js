@@ -719,7 +719,7 @@ export default class Concept {
     }
 
     // Get the existing item key (should be only one item from concepts endpoint)
-    const existingItemKeys = Object.keys(this.items)
+    const existingItemKeys = Object.keys(this.getItems())
     const itemKey = existingItemKeys[0]
 
     ummKeys.forEach((ummKey) => {
