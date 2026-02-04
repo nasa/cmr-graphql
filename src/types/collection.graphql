@@ -248,8 +248,13 @@ type Collection {
   "The Version of the collection."
   version: String
 
-  "All revisions of this Collection."
-  revisions: CollectionRevisionList @error(message: "The 'revisions' field cannot be requested when querying a specific revision. Remove the 'revisionId' parameter from the collection query to fetch all revisions.")
+  """
+  All revisions of this Collection.
+  
+  Error: The 'revisions' field cannot be requested when querying a specific revision. 
+  Remove the 'revisionId' parameter from the collection query to fetch all revisions.
+  """
+  revisions: CollectionRevisionList
 
   "Returns the list of collections related to this collection."
   relatedCollections (
