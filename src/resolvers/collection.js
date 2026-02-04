@@ -49,7 +49,7 @@ export default {
 
   Collection: {
     revisions: async (source, args, context, info) => {
-      const { revisionId } = source
+      const { revisionId } = info.variableValues?.params ?? {}
       if (revisionId) {
         throw new Error(
           'The "revisions" field cannot be requested when querying a specific revision. '
