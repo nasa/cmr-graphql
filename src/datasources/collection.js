@@ -40,16 +40,30 @@ export const restoreCollectionRevision = async (args, context, parsedInfo) => {
     revisionId
   } = args
 
-  const previousRevisions = await cmrQuery({
-    conceptType: 'collections',
-    options: {
-      format: 'umm_json'
-    },
-    params: {
-      conceptId,
-      allRevisions: true
-    }
-  })
+  const authToken = headers.Authorization
+
+  let previousRevisions
+
+  if (!authToken) {
+    throw new Error('User authorization token is missing')
+  }
+
+  try {
+    previousRevisions = await cmrQuery({
+      authToken,
+      conceptType: 'collections',
+      options: {
+        format: 'umm_json'
+      },
+      params: {
+        conceptId,
+        allRevisions: true
+      }
+    })
+  } catch (error) {
+    console.error('Error fetching previous revisions:', error)
+    throw error
+  }
 
   const { data: responseData } = previousRevisions
 

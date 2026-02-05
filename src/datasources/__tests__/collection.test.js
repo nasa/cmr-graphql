@@ -654,6 +654,8 @@ describe('restoreCollectionRevision', () => {
 
     vi.restoreAllMocks()
 
+    nock.cleanAll()
+
     process.env = { ...OLD_ENV }
 
     process.env.cmrRootUrl = 'http://example-cmr.com'
@@ -733,7 +735,8 @@ describe('restoreCollectionRevision', () => {
     }, {
       headers: {
         'Client-Id': 'eed-test-graphql',
-        'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        'CMR-Request-Id': 'abcd-1234-efgh-5678',
+        Authorization: 'mock-token'
       }
     }, requestInfo)
 
@@ -741,6 +744,92 @@ describe('restoreCollectionRevision', () => {
       conceptId: 'C100000-EDSC',
       revisionId: '3'
     })
+  })
+
+  test('throws error if no Authorization header is present', async () => {
+    nock(/example-cmr/)
+      .defaultReplyHeaders({
+        'CMR-Request-Id': 'abcd-1234-efgh-5678'
+      })
+      .get('/search/collections.umm_json?concept_id=C100000-EDSC&all_revisions=true')
+      .reply(200, {
+        items: [{
+          meta: {
+            'concept-id': 'C100000-EDSC',
+            'native-id': '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed',
+            'revision-id': 1
+          },
+          umm: {
+            EntryTitle: 'Tortor Elit Fusce Quam Risus'
+          }
+        }, {
+          meta: {
+            'concept-id': 'C100000-EDSC',
+            'native-id': '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed',
+            'revision-id': 2
+          },
+          umm: {
+            EntryTitle: 'Adipiscing Cras Etiam Venenatis'
+          }
+        }]
+      })
+
+    nock(/example-cmr/)
+      .defaultReplyHeaders({
+        'CMR-Request-Id': 'abcd-1234-efgh-5678'
+      })
+      .put('/ingest/providers/EDSC/collections/1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed')
+      .reply(200, {
+        'concept-id': 'C100000-EDSC',
+        'revision-id': '3'
+      })
+
+    await expect(collectionSourceRestoreRevision({
+      revisionId: '1',
+      conceptId: 'C100000-EDSC'
+    }, {
+      headers: {
+        'Client-Id': 'eed-test-graphql',
+        'CMR-Request-Id': 'abcd-1234-efgh-5678'
+      }
+    }, requestInfo)).rejects.toThrow('User authorization token is missing')
+  })
+
+  test('catches error if cmrQuery fails to fetch previousRevisions', async () => {
+    nock(/example-cmr/)
+      .defaultReplyHeaders({
+        'CMR-Request-Id': 'abcd-1234-efgh-5678'
+      })
+      .get('/search/collections.umm_json')
+      .query({
+        concept_id: 'C100000-EDSC',
+        all_revisions: 'true'
+      })
+      .reply(500, {
+        errors: ['Internal server error']
+      })
+
+    const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation()
+
+    await expect(collectionSourceRestoreRevision({
+      revisionId: '1',
+      conceptId: 'C100000-EDSC'
+    }, {
+      headers: {
+        'Client-Id': 'eed-test-graphql',
+        'CMR-Request-Id': 'abcd-1234-efgh-5678',
+        Authorization: 'mock-token'
+      }
+    }, requestInfo)).rejects.toThrow('Request failed with status code 500')
+
+    expect(consoleErrorSpy).toHaveBeenCalledWith(
+      'Error fetching previous revisions:',
+      expect.objectContaining({
+        message: expect.stringContaining('Request failed with status code 500')
+      })
+    )
+
+    consoleErrorSpy.mockRestore()
   })
 })
 
