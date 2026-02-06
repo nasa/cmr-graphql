@@ -57,7 +57,7 @@ export const restoreCollectionRevision = async (args, context, parsedInfo) => {
       }
     })
 
-    if (previousRevisions.data.hits === 0 && authToken) {
+    if (previousRevisions.data.hits === 0) {
       // Second attempt: with Authorization
       previousRevisions = await cmrQuery({
         headers: {

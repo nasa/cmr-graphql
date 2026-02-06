@@ -735,7 +735,7 @@ describe('restoreCollectionRevision', () => {
     }, {
       headers: {
         'Client-Id': 'eed-test-graphql',
-        'CMR-Request-Id': 'abcd-1234-efgh-5678',
+        'CMR-Request-Id': 'abcd-1234-efgh-5678'
       }
     }, requestInfo)
 
@@ -746,12 +746,34 @@ describe('restoreCollectionRevision', () => {
   })
 
   test('returns the CMR results for private record', async () => {
+    // First attempt: without Authorization, returns no hits
     nock(/example-cmr/)
       .defaultReplyHeaders({
         'CMR-Request-Id': 'abcd-1234-efgh-5678'
       })
-      .get('/search/collections.umm_json?concept_id=C100000-EDSC&all_revisions=true')
+      .get('/search/collections.umm_json')
+      .query({
+        concept_id: 'C100000-EDSC',
+        all_revisions: 'true'
+      })
       .reply(200, {
+        hits: 0,
+        items: []
+      })
+
+    // Second attempt: with Authorization, returns hits
+    nock(/example-cmr/)
+      .defaultReplyHeaders({
+        'CMR-Request-Id': 'abcd-1234-efgh-5678'
+      })
+      .get('/search/collections.umm_json')
+      .query({
+        concept_id: 'C100000-EDSC',
+        all_revisions: 'true'
+      })
+      .matchHeader('Authorization', 'mock-token')
+      .reply(200, {
+        hits: 2,
         items: [{
           meta: {
             'concept-id': 'C100000-EDSC',
@@ -799,6 +821,50 @@ describe('restoreCollectionRevision', () => {
       conceptId: 'C100000-EDSC',
       revisionId: '3'
     })
+  })
+
+  test('throws and error if the first and second attempts by cmrQuery returns hits: 0', async () => {
+    // First attempt: without Authorization, returns no hits
+    nock(/example-cmr/)
+      .defaultReplyHeaders({
+        'CMR-Request-Id': 'abcd-1234-efgh-5678'
+      })
+      .get('/search/collections.umm_json')
+      .query({
+        concept_id: 'C100000-EDSC',
+        all_revisions: 'true'
+      })
+      .reply(200, {
+        hits: 0,
+        items: []
+      })
+
+    // Second attempt: with Authorization, returns no hits
+    nock(/example-cmr/)
+      .defaultReplyHeaders({
+        'CMR-Request-Id': 'abcd-1234-efgh-5678'
+      })
+      .get('/search/collections.umm_json')
+      .query({
+        concept_id: 'C100000-EDSC',
+        all_revisions: 'true'
+      })
+      .matchHeader('Authorization', 'mock-token')
+      .reply(200, {
+        hits: 0,
+        items: []
+      })
+
+    await expect(collectionSourceRestoreRevision({
+      revisionId: '1',
+      conceptId: 'C100000-EDSC'
+    }, {
+      headers: {
+        'Client-Id': 'eed-test-graphql',
+        'CMR-Request-Id': 'abcd-1234-efgh-5678',
+        Authorization: 'mock-token'
+      }
+    }, requestInfo)).rejects.toThrow('No previous revisions for this conceptId found')
   })
 
   test('catches error if cmrQuery fails to fetch previousRevisions', async () => {
