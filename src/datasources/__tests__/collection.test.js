@@ -691,7 +691,7 @@ describe('restoreCollectionRevision', () => {
     process.env = OLD_ENV
   })
 
-  test('returns the CMR results', async () => {
+  test('returns the CMR results for public record', async () => {
     nock(/example-cmr/)
       .defaultReplyHeaders({
         'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -736,7 +736,6 @@ describe('restoreCollectionRevision', () => {
       headers: {
         'Client-Id': 'eed-test-graphql',
         'CMR-Request-Id': 'abcd-1234-efgh-5678',
-        Authorization: 'mock-token'
       }
     }, requestInfo)
 
@@ -746,7 +745,7 @@ describe('restoreCollectionRevision', () => {
     })
   })
 
-  test('throws error if no Authorization header is present', async () => {
+  test('returns the CMR results for private record', async () => {
     nock(/example-cmr/)
       .defaultReplyHeaders({
         'CMR-Request-Id': 'abcd-1234-efgh-5678'
@@ -784,15 +783,22 @@ describe('restoreCollectionRevision', () => {
         'revision-id': '3'
       })
 
-    await expect(collectionSourceRestoreRevision({
+    const response = await collectionSourceRestoreRevision({
       revisionId: '1',
       conceptId: 'C100000-EDSC'
     }, {
       headers: {
         'Client-Id': 'eed-test-graphql',
-        'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        'CMR-Request-Id': 'abcd-1234-efgh-5678',
+        // Private records require passing an Authorization header
+        Authorization: 'mock-token'
       }
-    }, requestInfo)).rejects.toThrow('User authorization token is missing')
+    }, requestInfo)
+
+    expect(response).toEqual({
+      conceptId: 'C100000-EDSC',
+      revisionId: '3'
+    })
   })
 
   test('catches error if cmrQuery fails to fetch previousRevisions', async () => {
@@ -817,8 +823,7 @@ describe('restoreCollectionRevision', () => {
     }, {
       headers: {
         'Client-Id': 'eed-test-graphql',
-        'CMR-Request-Id': 'abcd-1234-efgh-5678',
-        Authorization: 'mock-token'
+        'CMR-Request-Id': 'abcd-1234-efgh-5678'
       }
     }, requestInfo)).rejects.toThrow('Request failed with status code 500')
 

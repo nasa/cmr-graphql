@@ -44,13 +44,9 @@ export const restoreCollectionRevision = async (args, context, parsedInfo) => {
 
   let previousRevisions
 
-  if (!authToken) {
-    throw new Error('User authorization token is missing')
-  }
-
+  // First attempt: without Authorization
   try {
     previousRevisions = await cmrQuery({
-      authToken,
       conceptType: 'collections',
       options: {
         format: 'umm_json'
@@ -60,6 +56,27 @@ export const restoreCollectionRevision = async (args, context, parsedInfo) => {
         allRevisions: true
       }
     })
+
+    if (previousRevisions.data.hits === 0 && authToken) {
+      // Second attempt: with Authorization
+      previousRevisions = await cmrQuery({
+        headers: {
+          Authorization: authToken
+        },
+        conceptType: 'collections',
+        options: {
+          format: 'umm_json'
+        },
+        params: {
+          conceptId,
+          allRevisions: true
+        }
+      })
+    }
+
+    if (previousRevisions.data.hits === 0) {
+      throw new Error('No previous revisions for this conceptId found')
+    }
   } catch (error) {
     console.error('Error fetching previous revisions:', error)
     throw error

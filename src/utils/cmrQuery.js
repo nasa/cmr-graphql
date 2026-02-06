@@ -15,7 +15,6 @@ import { prepKeysForCmr } from './prepKeysForCmr'
  * @param {String} params.conceptType Concept type to search
  */
 export const cmrQuery = ({
-  authToken,
   conceptType,
   headers = {},
   nonIndexedKeys = [],
@@ -30,8 +29,7 @@ export const cmrQuery = ({
   // Default headers
   const defaultHeaders = {
     Accept: 'application/json',
-    'Content-Type': 'application/json',
-    Authorization: `Bearer ${authToken}`
+    'Content-Type': 'application/json'
   }
 
   // Merge default headers into the provided headers and then pick out only permitted values

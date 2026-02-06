@@ -16,11 +16,6 @@ import relatedCollectionsResponseMocks from './__mocks__/relatedCollections.resp
 
 const contextValue = buildContextValue()
 
-contextValue.headers = {
-  ...contextValue.headers,
-  Authorization: 'mock-token'
-}
-
 const lambdaClientMock = mockClient(LambdaClient)
 
 beforeEach(() => {
