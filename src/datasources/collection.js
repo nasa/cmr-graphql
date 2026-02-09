@@ -44,9 +44,13 @@ export const restoreCollectionRevision = async (args, context, parsedInfo) => {
 
   let previousRevisions
 
-  // First attempt: without Authorization
   try {
     previousRevisions = await cmrQuery({
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: authToken
+      },
       conceptType: 'collections',
       options: {
         format: 'umm_json'
@@ -56,23 +60,6 @@ export const restoreCollectionRevision = async (args, context, parsedInfo) => {
         allRevisions: true
       }
     })
-
-    if (previousRevisions.data.hits === 0) {
-      // Second attempt: with Authorization
-      previousRevisions = await cmrQuery({
-        headers: {
-          Authorization: authToken
-        },
-        conceptType: 'collections',
-        options: {
-          format: 'umm_json'
-        },
-        params: {
-          conceptId,
-          allRevisions: true
-        }
-      })
-    }
 
     if (previousRevisions.data.hits === 0) {
       throw new Error('No previous revisions for this conceptId found')
