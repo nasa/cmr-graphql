@@ -790,7 +790,8 @@ export default class Concept {
     }
 
     // If any requested keys are umm keys, we need to make an additional request to cmr
-    if (ummKeys.length > 0) {
+    // OR if revisionId is provided, we must use the UMM concepts endpoint
+    if (ummKeys.length > 0 || (revisionId && conceptId)) {
       const ummHeaders = this.headers
 
       if (ummSearchAfterIdentifier) {
@@ -801,8 +802,11 @@ export default class Concept {
         // Store for use in parsing
         this.fetchedRevisionId = revisionId
         this.fetchedConceptId = conceptId
+
+        // Fetch the specific revision - pass both jsonKeys and ummKeys for logging
+        const keysToRequest = [...jsonKeys, ...ummKeys]
         promises.push(
-          this.fetchRevisionUmm(conceptId, revisionId, ummKeys, ummHeaders)
+          this.fetchRevisionUmm(conceptId, revisionId, keysToRequest, ummHeaders)
         )
 
         if (fetchUmmRevisions) {
@@ -1139,7 +1143,15 @@ export default class Concept {
       }
 
       if (ummResponse) {
-        await this.parseUmm(ummResponse, ummKeys)
+        // If we fetched a specific revision and only have JSON keys,
+        // we need to parse the UMM response to extract JSON-equivalent fields
+        if (this.fetchedRevisionId && jsonKeys.length > 0 && ummKeys.length === 0) {
+          // Parse UMM response but extract JSON keys from it
+          await this.parseUmm(ummResponse, jsonKeys)
+        } else {
+          // Normal UMM parsing
+          await this.parseUmm(ummResponse, ummKeys)
+        }
       }
 
       // If we fetched all revisions for meta fields, extract and merge the specific revision
