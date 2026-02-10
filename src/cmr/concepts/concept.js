@@ -1143,15 +1143,7 @@ export default class Concept {
       }
 
       if (ummResponse) {
-        // If we fetched a specific revision and only have JSON keys,
-        // we need to parse the UMM response to extract JSON-equivalent fields
-        if (this.fetchedRevisionId && jsonKeys.length > 0 && ummKeys.length === 0) {
-          // Parse UMM response but extract JSON keys from it
-          await this.parseUmm(ummResponse, jsonKeys)
-        } else {
-          // Normal UMM parsing
-          await this.parseUmm(ummResponse, ummKeys)
-        }
+        await this.parseUmm(ummResponse, ummKeys)
       }
 
       // If we fetched all revisions for meta fields, extract and merge the specific revision
