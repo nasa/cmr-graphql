@@ -13,7 +13,8 @@ export const findPreviousRevision = (ummResponse, revisionId) => {
 
   // Determine if revisionId requested still exists
   // CMR only stores the ten most recent revisions
-  const mostRecentRevisionId = parseInt(responseItems[0].meta['revision-id'], 10)
+  const [{ meta: { 'revision-id': newestRevisionId } }] = responseItems
+  const mostRecentRevisionId = parseInt(newestRevisionId, 10)
   const oldestAvailableRevision = Math.max(1, mostRecentRevisionId - 9)
   const requestedRevisionId = parseInt(revisionId, 10)
 
