@@ -40,16 +40,34 @@ export const restoreCollectionRevision = async (args, context, parsedInfo) => {
     revisionId
   } = args
 
-  const previousRevisions = await cmrQuery({
-    conceptType: 'collections',
-    options: {
-      format: 'umm_json'
-    },
-    params: {
-      conceptId,
-      allRevisions: true
+  const authToken = headers.Authorization
+
+  let previousRevisions
+
+  try {
+    previousRevisions = await cmrQuery({
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: authToken
+      },
+      conceptType: 'collections',
+      options: {
+        format: 'umm_json'
+      },
+      params: {
+        conceptId,
+        allRevisions: true
+      }
+    })
+
+    if (previousRevisions.data.hits === 0) {
+      throw new Error('No previous revisions for this conceptId found')
     }
-  })
+  } catch (error) {
+    console.error('Error fetching previous revisions:', error)
+    throw error
+  }
 
   const { data: responseData } = previousRevisions
 

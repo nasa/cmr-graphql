@@ -654,6 +654,8 @@ describe('restoreCollectionRevision', () => {
 
     vi.restoreAllMocks()
 
+    nock.cleanAll()
+
     process.env = { ...OLD_ENV }
 
     process.env.cmrRootUrl = 'http://example-cmr.com'
@@ -689,13 +691,18 @@ describe('restoreCollectionRevision', () => {
     process.env = OLD_ENV
   })
 
-  test('returns the CMR results', async () => {
+  test('returns the CMR results for a collection', async () => {
     nock(/example-cmr/)
       .defaultReplyHeaders({
         'CMR-Request-Id': 'abcd-1234-efgh-5678'
       })
-      .get('/search/collections.umm_json?concept_id=C100000-EDSC&all_revisions=true')
+      .get('/search/collections.umm_json')
+      .query({
+        concept_id: 'C100000-EDSC',
+        all_revisions: 'true'
+      })
       .reply(200, {
+        hits: 2,
         items: [{
           meta: {
             'concept-id': 'C100000-EDSC',
@@ -732,8 +739,9 @@ describe('restoreCollectionRevision', () => {
       conceptId: 'C100000-EDSC'
     }, {
       headers: {
-        'Client-Id': 'eed-test-graphql',
-        'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: 'mock-token'
       }
     }, requestInfo)
 
@@ -741,6 +749,70 @@ describe('restoreCollectionRevision', () => {
       conceptId: 'C100000-EDSC',
       revisionId: '3'
     })
+  })
+
+  test('throws and error if cmrQuery returns hits: 0', async () => {
+    nock(/example-cmr/)
+      .defaultReplyHeaders({
+        'CMR-Request-Id': 'abcd-1234-efgh-5678'
+      })
+      .get('/search/collections.umm_json')
+      .query({
+        concept_id: 'C100000-EDSC',
+        all_revisions: 'true'
+      })
+      .reply(200, {
+        hits: 0,
+        items: []
+      })
+
+    await expect(collectionSourceRestoreRevision({
+      revisionId: '1',
+      conceptId: 'C100000-EDSC'
+    }, {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: 'mock-token'
+      }
+    }, requestInfo)).rejects.toThrow('No previous revisions for this conceptId found')
+  })
+
+  test('catches error if cmrQuery fails to fetch previousRevisions', async () => {
+    nock(/example-cmr/)
+      .defaultReplyHeaders({
+        'CMR-Request-Id': 'abcd-1234-efgh-5678'
+      })
+      .get('/search/collections.umm_json')
+      .query({
+        concept_id: 'C100000-EDSC',
+        all_revisions: 'true'
+      })
+      .reply(500, {
+        errors: ['Internal server error']
+      })
+
+    const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation()
+
+    await expect(collectionSourceRestoreRevision({
+      revisionId: '1',
+      conceptId: 'C100000-EDSC'
+    }, {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: 'mock-token'
+      }
+    }, requestInfo)).rejects.toThrow('Request failed with status code 500')
+
+    expect(consoleErrorSpy).toHaveBeenCalledWith(
+      'Error fetching previous revisions:',
+      expect.objectContaining({
+        message: expect.stringContaining('Request failed with status code 500')
+      })
+    )
+
+    consoleErrorSpy.mockRestore()
   })
 })
 
