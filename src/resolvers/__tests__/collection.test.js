@@ -1152,8 +1152,7 @@ describe('Collection', () => {
 
         expect(errors).toBeDefined()
         expect(errors[0].message).toBe(
-          'The "revisions" field cannot be requested when querying a specific revision. '
-        + 'Remove the "revisionId" parameter from the collection query to fetch all revisions.'
+          'Note: This field is not supported if you are performing a `collection` query and have provided the `revisionId` parameter. `null` will be returned with an error.'
         )
       })
     })
