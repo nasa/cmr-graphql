@@ -654,19 +654,110 @@ export default class Concept {
   }
 
   /**
+   * Query the CMR concepts API endpoint to retrieve a specific revision in UMM format
+   * @param {String} conceptId The concept ID
+   * @param {String} revisionId The revision ID
+   * @param {Array} requestedKeys Keys requested by the query
+   * @param {Object} providedHeaders Headers requested by the query
+   */
+  fetchConceptEndpoint(conceptId, revisionId, requestedKeys, providedHeaders) {
+    this.logKeyRequest(requestedKeys, 'umm_revision')
+
+    // Build the path based on whether revisionId is provided
+    const path = revisionId
+      ? `search/concepts/${conceptId}/${revisionId}.umm_json`
+      : `search/concepts/${conceptId}.umm_json`
+
+    return cmrQuery({
+      conceptType: this.getConceptType(),
+      params: {},
+      nonIndexedKeys: [],
+      headers: providedHeaders,
+      options: {
+        format: 'umm_json',
+        path
+      }
+    })
+  }
+
+  /**
+   * Parse the response body from a single concept revision request (UMM format)
+   * @param {Object} ummResponse HTTP response from the CMR endpoint
+   */
+  parseRevisionUmmBody(ummResponse) {
+    const { data } = ummResponse
+
+    const wrappedData = {
+      meta: {
+        'concept-id': this.fetchedConceptId,
+        'revision-id': parseInt(this.fetchedRevisionId, 10)
+      },
+      umm: data
+    }
+
+    // Wrap in array for consistency with search endpoint
+    return [wrappedData]
+  }
+
+  /**
+   * Parse all revisions response and merge meta fields for the specific revision
+   * @param {Object} allRevisionsResponse HTTP response with all revisions
+   * @param {String} revisionId The specific revision ID to extract
+   * @param {Array} ummKeys Keys that were requested
+   */
+  async parseAndMergeMetaFields(allRevisionsResponse, revisionId, ummKeys) {
+    const { ummKeyMappings, ummMetaKeys } = this.requestInfo
+
+    // Parse all revisions
+    const allItems = this.parseUmmBody(allRevisionsResponse)
+
+    // Find the matching revision
+    const matchingRevision = allItems.find((item) => {
+      const { meta } = item
+      const itemRevisionId = meta['revision-id']
+
+      return String(itemRevisionId) === String(revisionId)
+    })
+
+    if (!matchingRevision) {
+      throw new Error(`Revision ${revisionId} not found in all revisions response`)
+    }
+
+    // Get the existing item key (should be only one item from concepts endpoint)
+    const existingItemKeys = Object.keys(this.getItems())
+    const itemKey = existingItemKeys[0]
+
+    ummKeys.forEach((ummKey) => {
+      // Only process meta fields
+      if (!ummMetaKeys.includes(ummKey)) return
+
+      const keyValue = get(matchingRevision, ummKeyMappings[ummKey])
+
+      if (keyValue != null) {
+        const camelCasedObject = camelcaseKeys({ [ummKey]: keyValue }, { deep: true })
+        const { [ummKey]: camelCasedValue } = camelCasedObject
+
+        this.setItemValue(itemKey, ummKey, camelCasedValue)
+      }
+    })
+  }
+
+  /**
    * Query the CMR API
    * @param {Object} searchParams Parameters provided by the query
    */
   fetch(searchParams) {
     const params = mergeParams(searchParams)
-
+    // Check if a revisionId is provided
+    const { revisionId, conceptId } = params
     // Default an array to hold the promises we need to make depending on the requested fields
     const promises = []
 
     const {
       jsonKeys,
       metaKeys,
-      ummKeys
+      ummKeys,
+      fetchUmmRevisions
     } = this.requestInfo
 
     const {
@@ -704,17 +795,42 @@ export default class Concept {
     }
 
     // If any requested keys are umm keys, we need to make an additional request to cmr
-    if (ummKeys.length > 0) {
+    // OR if revisionId is provided, we must use the UMM concepts endpoint
+    if (ummKeys.length > 0 || (revisionId && conceptId)) {
       const ummHeaders = this.headers
 
       if (ummSearchAfterIdentifier) {
         ummHeaders['CMR-Search-After'] = ummSearchAfterIdentifier
       }
 
-      // Construct the promise that will request data from the umm endpoint
-      promises.push(
-        this.fetchUmm(this.arrayifyParams(params), ummKeys, ummHeaders)
-      )
+      if (revisionId && conceptId) {
+        // Store for use in parsing
+        this.fetchedRevisionId = revisionId
+        this.fetchedConceptId = conceptId
+
+        // Fetch the specific revision - pass both jsonKeys and ummKeys for logging
+        const keysToRequest = [...jsonKeys, ...ummKeys]
+        promises.push(
+          this.fetchConceptEndpoint(conceptId, revisionId, keysToRequest, ummHeaders)
+        )
+
+        if (fetchUmmRevisions) {
+          // Fetch all revisions to get meta fields
+          const metaParams = {
+            conceptId,
+            allRevisions: true
+          }
+
+          promises.push(
+            this.fetchUmm(metaParams, ummKeys, ummHeaders)
+          )
+        }
+      } else {
+        // Construct the promise that will request data from the umm endpoint
+        promises.push(
+          this.fetchUmm(this.arrayifyParams(params), ummKeys, ummHeaders)
+        )
+      }
     } else {
       promises.push(
         // eslint-disable-next-line no-promise-executor-return
@@ -793,6 +909,10 @@ export default class Concept {
    */
   parseUmmBody(ummResponse) {
     const { data } = ummResponse
+
+    if (!data.items) {
+      return this.parseRevisionUmmBody(ummResponse)
+    }
 
     const { items } = data
 
@@ -950,7 +1070,10 @@ export default class Concept {
       'cmr-search-after': ummSearchAfterIdentifier
     } = downcaseKeys(headers)
 
-    this.setUmmItemCount(cmrHits)
+    // For revision requests, cmr-hits won't be present
+    if (cmrHits) {
+      this.setUmmItemCount(cmrHits)
+    }
 
     this.setUmmSearchAfter(ummSearchAfterIdentifier)
 
@@ -965,7 +1088,7 @@ export default class Concept {
 
       this.setEssentialUmmValues(itemKey, normalizedItem)
 
-      this.setUmmItems(item, itemKey, ummKeys, ummKeyMappings,)
+      this.setUmmItems(item, itemKey, ummKeys, ummKeyMappings)
     })
   }
 
@@ -1018,7 +1141,7 @@ export default class Concept {
 
       const response = await this.getResponse()
 
-      const [jsonResponse, ummResponse] = response
+      const [jsonResponse, ummResponse, allRevisionsResponse] = response
 
       if (jsonResponse) {
         await this.parseJson(jsonResponse, jsonKeys)
@@ -1026,6 +1149,15 @@ export default class Concept {
 
       if (ummResponse) {
         await this.parseUmm(ummResponse, ummKeys)
+      }
+
+      // If we fetched all revisions for meta fields, extract and merge the specific revision
+      if (allRevisionsResponse && this.fetchedRevisionId) {
+        await this.parseAndMergeMetaFields(
+          allRevisionsResponse,
+          this.fetchedRevisionId,
+          ummKeys
+        )
       }
     } catch (e) {
       parseError(e, { reThrowError: true })

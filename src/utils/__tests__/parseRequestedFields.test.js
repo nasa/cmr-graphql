@@ -142,7 +142,9 @@ describe('parseRequestedFields', () => {
         metaKeys: [],
         ummKeys: ['conceptId', 'keyTwo'],
         ummKeyMappings,
-        isList: true
+        isList: true,
+        ummMetaKeys: ['conceptId'],
+        fetchUmmRevisions: false
       })
     })
 
@@ -192,7 +194,9 @@ describe('parseRequestedFields', () => {
           metaKeys: ['collectionFacets'],
           ummKeys: ['keyTwo'],
           ummKeyMappings,
-          isList: true
+          isList: true,
+          ummMetaKeys: ['conceptId'],
+          fetchUmmRevisions: false
         })
       })
     })
@@ -250,7 +254,9 @@ describe('parseRequestedFields', () => {
         metaKeys: [],
         ummKeys: ['keyTwo'],
         ummKeyMappings,
-        isList: true
+        isList: true,
+        ummMetaKeys: ['conceptId'],
+        fetchUmmRevisions: false
       })
     })
   })
