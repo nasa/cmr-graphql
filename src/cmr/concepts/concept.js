@@ -660,8 +660,13 @@ export default class Concept {
    * @param {Array} requestedKeys Keys requested by the query
    * @param {Object} providedHeaders Headers requested by the query
    */
-  fetchRevisionUmm(conceptId, revisionId, requestedKeys, providedHeaders) {
+  fetchConceptEndpoint(conceptId, revisionId, requestedKeys, providedHeaders) {
     this.logKeyRequest(requestedKeys, 'umm_revision')
+
+    // Build the path based on whether revisionId is provided
+    const path = revisionId
+      ? `search/concepts/${conceptId}/${revisionId}.umm_json`
+      : `search/concepts/${conceptId}.umm_json`
 
     return cmrQuery({
       conceptType: this.getConceptType(),
@@ -670,7 +675,7 @@ export default class Concept {
       headers: providedHeaders,
       options: {
         format: 'umm_json',
-        path: `search/concepts/${conceptId}/${revisionId}.umm_json`
+        path
       }
     })
   }
@@ -806,7 +811,7 @@ export default class Concept {
         // Fetch the specific revision - pass both jsonKeys and ummKeys for logging
         const keysToRequest = [...jsonKeys, ...ummKeys]
         promises.push(
-          this.fetchRevisionUmm(conceptId, revisionId, keysToRequest, ummHeaders)
+          this.fetchConceptEndpoint(conceptId, revisionId, keysToRequest, ummHeaders)
         )
 
         if (fetchUmmRevisions) {
