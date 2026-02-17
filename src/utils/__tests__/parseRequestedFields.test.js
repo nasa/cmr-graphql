@@ -143,9 +143,9 @@ describe('parseRequestedFields', () => {
         jsonKeys: [],
         metaKeys: [],
         ummKeys: ['conceptId', 'keyTwo'],
+        conceptEndpointKeys: [],
         ummKeyMappings,
-        isList: true,
-        conceptEndpointKeys: []
+        isList: true
       })
     })
 
@@ -194,9 +194,9 @@ describe('parseRequestedFields', () => {
           jsonKeys: ['conceptId'],
           metaKeys: ['collectionFacets'],
           ummKeys: ['keyTwo'],
+          conceptEndpointKeys: [],
           ummKeyMappings,
-          isList: true,
-          conceptEndpointKeys: []
+          isList: true
         })
       })
     })
@@ -253,9 +253,9 @@ describe('parseRequestedFields', () => {
         jsonKeys: ['conceptId', 'keyOne', 'keyThree'],
         metaKeys: [],
         ummKeys: ['keyTwo'],
+        conceptEndpointKeys: [],
         ummKeyMappings,
-        isList: true,
-        conceptEndpointKeys: []
+        isList: true
       })
     })
   })
@@ -284,9 +284,9 @@ describe('parseRequestedFields', () => {
         jsonKeys: ['conceptId'],
         metaKeys: ['collectionCount'],
         ummKeys: [],
+        conceptEndpointKeys: [],
         ummKeyMappings,
-        isList: true,
-        conceptEndpointKeys: []
+        isList: true
       })
     })
   })
@@ -339,9 +339,9 @@ describe('parseRequestedFields', () => {
         jsonKeys: ['conceptId', 'granules'],
         metaKeys: ['collectionCount'],
         ummKeys: [],
+        conceptEndpointKeys: [],
         ummKeyMappings,
-        isList: true,
-        conceptEndpointKeys: []
+        isList: true
       })
     })
   })
@@ -370,9 +370,9 @@ describe('parseRequestedFields', () => {
         jsonKeys: ['conceptId'],
         metaKeys: ['collectionCursor'],
         ummKeys: [],
+        conceptEndpointKeys: [],
         ummKeyMappings,
-        isList: true,
-        conceptEndpointKeys: []
+        isList: true
       })
     })
   })
@@ -401,9 +401,9 @@ describe('parseRequestedFields', () => {
         jsonKeys: ['conceptId'],
         metaKeys: ['collectionFacets'],
         ummKeys: [],
+        conceptEndpointKeys: [],
         ummKeyMappings,
-        isList: true,
-        conceptEndpointKeys: []
+        isList: true
       })
     })
   })
@@ -456,9 +456,9 @@ describe('parseRequestedFields', () => {
         jsonKeys: ['title', 'granules', 'conceptId'],
         metaKeys: [],
         ummKeys: [],
+        conceptEndpointKeys: [],
         ummKeyMappings,
-        isList: true,
-        conceptEndpointKeys: []
+        isList: true
       })
     })
   })
@@ -500,9 +500,9 @@ describe('parseRequestedFields', () => {
         jsonKeys: ['collection', 'collectionConceptId'],
         metaKeys: [],
         ummKeys: [],
+        conceptEndpointKeys: [],
         ummKeyMappings,
-        isList: false,
-        conceptEndpointKeys: []
+        isList: false
       })
     })
   })
@@ -540,9 +540,9 @@ describe('parseRequestedFields', () => {
         jsonKeys: ['maxItemsPerOrder', 'providerId', 'type'],
         metaKeys: [],
         ummKeys: [],
+        conceptEndpointKeys: [],
         ummKeyMappings,
-        isList: true,
-        conceptEndpointKeys: []
+        isList: true
       })
     })
   })
@@ -595,9 +595,9 @@ describe('parseRequestedFields', () => {
         jsonKeys: ['type', 'collections', 'conceptId'],
         metaKeys: [],
         ummKeys: [],
+        conceptEndpointKeys: [],
         ummKeyMappings,
-        isList: true,
-        conceptEndpointKeys: []
+        isList: true
       })
     })
   })
@@ -650,9 +650,9 @@ describe('parseRequestedFields', () => {
         jsonKeys: ['type', 'collections', 'conceptId'],
         metaKeys: [],
         ummKeys: [],
+        conceptEndpointKeys: [],
         ummKeyMappings,
-        isList: true,
-        conceptEndpointKeys: []
+        isList: true
       })
     })
   })
@@ -705,9 +705,9 @@ describe('parseRequestedFields', () => {
         jsonKeys: ['type', 'collections', 'conceptId'],
         metaKeys: [],
         ummKeys: [],
+        conceptEndpointKeys: [],
         ummKeyMappings,
-        isList: true,
-        conceptEndpointKeys: []
+        isList: true
       })
     })
   })
