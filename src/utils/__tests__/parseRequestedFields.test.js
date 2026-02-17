@@ -53,6 +53,7 @@ describe('parseRequestedFields', () => {
         jsonKeys: ['conceptId', 'keyThree'],
         metaKeys: [],
         ummKeys: [],
+        conceptEndpointKeys: [],
         ummKeyMappings,
         isList: true
       })
@@ -96,6 +97,7 @@ describe('parseRequestedFields', () => {
         jsonKeys: ['conceptId', 'title'],
         metaKeys: [],
         ummKeys: [],
+        conceptEndpointKeys: [],
         ummKeyMappings,
         isList: true
       })
@@ -143,8 +145,7 @@ describe('parseRequestedFields', () => {
         ummKeys: ['conceptId', 'keyTwo'],
         ummKeyMappings,
         isList: true,
-        ummMetaKeys: ['conceptId'],
-        fetchUmmRevisions: false
+        conceptEndpointKeys: []
       })
     })
 
@@ -195,8 +196,7 @@ describe('parseRequestedFields', () => {
           ummKeys: ['keyTwo'],
           ummKeyMappings,
           isList: true,
-          ummMetaKeys: ['conceptId'],
-          fetchUmmRevisions: false
+          conceptEndpointKeys: []
         })
       })
     })
@@ -255,8 +255,7 @@ describe('parseRequestedFields', () => {
         ummKeys: ['keyTwo'],
         ummKeyMappings,
         isList: true,
-        ummMetaKeys: ['conceptId'],
-        fetchUmmRevisions: false
+        conceptEndpointKeys: []
       })
     })
   })
@@ -286,7 +285,8 @@ describe('parseRequestedFields', () => {
         metaKeys: ['collectionCount'],
         ummKeys: [],
         ummKeyMappings,
-        isList: true
+        isList: true,
+        conceptEndpointKeys: []
       })
     })
   })
@@ -340,7 +340,8 @@ describe('parseRequestedFields', () => {
         metaKeys: ['collectionCount'],
         ummKeys: [],
         ummKeyMappings,
-        isList: true
+        isList: true,
+        conceptEndpointKeys: []
       })
     })
   })
@@ -370,7 +371,8 @@ describe('parseRequestedFields', () => {
         metaKeys: ['collectionCursor'],
         ummKeys: [],
         ummKeyMappings,
-        isList: true
+        isList: true,
+        conceptEndpointKeys: []
       })
     })
   })
@@ -400,7 +402,8 @@ describe('parseRequestedFields', () => {
         metaKeys: ['collectionFacets'],
         ummKeys: [],
         ummKeyMappings,
-        isList: true
+        isList: true,
+        conceptEndpointKeys: []
       })
     })
   })
@@ -454,7 +457,8 @@ describe('parseRequestedFields', () => {
         metaKeys: [],
         ummKeys: [],
         ummKeyMappings,
-        isList: true
+        isList: true,
+        conceptEndpointKeys: []
       })
     })
   })
@@ -497,7 +501,8 @@ describe('parseRequestedFields', () => {
         metaKeys: [],
         ummKeys: [],
         ummKeyMappings,
-        isList: false
+        isList: false,
+        conceptEndpointKeys: []
       })
     })
   })
@@ -536,7 +541,8 @@ describe('parseRequestedFields', () => {
         metaKeys: [],
         ummKeys: [],
         ummKeyMappings,
-        isList: true
+        isList: true,
+        conceptEndpointKeys: []
       })
     })
   })
@@ -590,7 +596,8 @@ describe('parseRequestedFields', () => {
         metaKeys: [],
         ummKeys: [],
         ummKeyMappings,
-        isList: true
+        isList: true,
+        conceptEndpointKeys: []
       })
     })
   })
@@ -644,7 +651,8 @@ describe('parseRequestedFields', () => {
         metaKeys: [],
         ummKeys: [],
         ummKeyMappings,
-        isList: true
+        isList: true,
+        conceptEndpointKeys: []
       })
     })
   })
@@ -698,7 +706,8 @@ describe('parseRequestedFields', () => {
         metaKeys: [],
         ummKeys: [],
         ummKeyMappings,
-        isList: true
+        isList: true,
+        conceptEndpointKeys: []
       })
     })
   })

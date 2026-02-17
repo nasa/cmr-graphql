@@ -688,6 +688,8 @@ export default class Concept {
     const params = mergeParams(searchParams)
     // Check if a revisionId is provided
     const { revisionId, conceptId } = params
+    this.fetchedRevisionId = revisionId
+    this.fetchedConceptId = conceptId
     // Default an array to hold the promises we need to make depending on the requested fields
     const promises = []
 
@@ -751,9 +753,6 @@ export default class Concept {
 
     if (conceptEndpointKeys.length > 0) {
       const ummHeaders = this.headers
-      // Store for use in parsing
-      this.fetchedRevisionId = revisionId
-      this.fetchedConceptId = conceptId
 
       if (ummSearchAfterIdentifier) {
         ummHeaders['CMR-Search-After'] = ummSearchAfterIdentifier
