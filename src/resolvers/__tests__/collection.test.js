@@ -650,7 +650,10 @@ describe('Collection', () => {
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
           .get(/collections\.json/)
-          .query((actualQueryObject) => actualQueryObject.collection_progress === 'COMPLETE')
+          .query({
+            collection_progress: 'COMPLETE',
+            page_size: 20
+          })
           .reply(200, {
             feed: {
               entry: [{
@@ -660,6 +663,30 @@ describe('Collection', () => {
             }
           })
 
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Hits': 1,
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .get(/collections\.umm_json/)
+          .query({
+            collection_progress: 'COMPLETE',
+            page_size: 20
+          })
+          .reply(200, {
+            hits: 1,
+            items: [{
+              meta: {
+                'concept-id': 'C100000-EDSC'
+              },
+              umm: {
+                ShortName: 'TEST_COLLECTION',
+                CollectionProgress: 'COMPLETE'
+              }
+            }]
+          })
+
         const response = await server.executeOperation({
           variables: {},
           query: `{
@@ -667,6 +694,7 @@ describe('Collection', () => {
               items {
                 conceptId
                 shortName
+                collectionProgress
               }
             }
           }`
@@ -680,7 +708,8 @@ describe('Collection', () => {
           collections: {
             items: [{
               conceptId: 'C100000-EDSC',
-              shortName: 'TEST_COLLECTION'
+              shortName: 'TEST_COLLECTION',
+              collectionProgress: 'COMPLETE'
             }]
           }
         })
@@ -711,6 +740,39 @@ describe('Collection', () => {
             }
           })
 
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Hits': 2,
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .get(/collections\.umm_json/)
+          .query((actualQueryObject) => {
+            const progresses = actualQueryObject['collection_progress[]']
+
+            return Array.isArray(progresses) && progresses.includes('COMPLETE') && progresses.includes('ACTIVE')
+          })
+          .reply(200, {
+            hits: 2,
+            items: [{
+              meta: {
+                'concept-id': 'C100000-EDSC'
+              },
+              umm: {
+                ShortName: 'TEST_COLLECTION_1',
+                CollectionProgress: 'COMPLETE'
+              }
+            }, {
+              meta: {
+                'concept-id': 'C100001-EDSC'
+              },
+              umm: {
+                ShortName: 'TEST_COLLECTION_2',
+                CollectionProgress: 'ACTIVE'
+              }
+            }]
+          })
+
         const response = await server.executeOperation({
           variables: {},
           query: `{
@@ -718,6 +780,7 @@ describe('Collection', () => {
               items {
                 conceptId
                 shortName
+                collectionProgress
               }
             }
           }`
@@ -731,10 +794,12 @@ describe('Collection', () => {
           collections: {
             items: [{
               conceptId: 'C100000-EDSC',
-              shortName: 'TEST_COLLECTION_1'
+              shortName: 'TEST_COLLECTION_1',
+              collectionProgress: 'COMPLETE'
             }, {
               conceptId: 'C100001-EDSC',
-              shortName: 'TEST_COLLECTION_2'
+              shortName: 'TEST_COLLECTION_2',
+              collectionProgress: 'ACTIVE'
             }]
           }
         })

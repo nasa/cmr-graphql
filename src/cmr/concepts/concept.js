@@ -51,6 +51,7 @@ export default class Concept {
       collectionProgresses: 'collectionProgress',
       conceptIds: 'conceptId',
       dataCenters: 'dataCenter',
+      providers: 'provider',
       providerIds: 'providerId',
       permittedGroups: 'permittedGroup',
       shortNames: 'shortName'
