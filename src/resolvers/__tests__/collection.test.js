@@ -723,10 +723,9 @@ describe('Collection', () => {
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
           .get(/collections\.json/)
-          .query((actualQueryObject) => {
-            const progresses = actualQueryObject['collection_progress[]']
-
-            return Array.isArray(progresses) && progresses.includes('COMPLETE') && progresses.includes('ACTIVE')
+          .query({
+            'collection_progress[]': ['COMPLETE', 'ACTIVE'],
+            page_size: 20
           })
           .reply(200, {
             feed: {
@@ -747,10 +746,9 @@ describe('Collection', () => {
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
           .get(/collections\.umm_json/)
-          .query((actualQueryObject) => {
-            const progresses = actualQueryObject['collection_progress[]']
-
-            return Array.isArray(progresses) && progresses.includes('COMPLETE') && progresses.includes('ACTIVE')
+          .query({
+            'collection_progress[]': ['COMPLETE', 'ACTIVE'],
+            page_size: 20
           })
           .reply(200, {
             hits: 2,
