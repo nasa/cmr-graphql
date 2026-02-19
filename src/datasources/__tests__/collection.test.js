@@ -360,6 +360,49 @@ describe('collection', () => {
     })
   })
 
+  describe('with collectionProgresses param', () => {
+    test('returns the parsed collection results', async () => {
+      nock(/example-cmr/)
+        .defaultReplyHeaders({
+          'CMR-Hits': 2,
+          'CMR-Took': 7,
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        })
+        .get(/collections\.json/)
+        .query({ 'collection_progress[]': ['COMPLETE', 'ACTIVE'] })
+        .reply(200, {
+          feed: {
+            entry: [{
+              id: 'C100000-EDSC'
+            }, {
+              id: 'C100001-EDSC'
+            }]
+          }
+        })
+
+      const response = await collectionSourceFetch({
+        params: {
+          collectionProgresses: ['COMPLETE', 'ACTIVE']
+        }
+      }, {
+        headers: {
+          'Client-Id': 'eed-test-graphql',
+          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+        }
+      }, requestInfo)
+
+      expect(response).toEqual({
+        count: 2,
+        cursor: null,
+        items: [{
+          conceptId: 'C100000-EDSC'
+        }, {
+          conceptId: 'C100001-EDSC'
+        }]
+      })
+    })
+  })
+
   describe('with json and umm keys', () => {
     beforeEach(() => {
       // Overwrite default requestInfo

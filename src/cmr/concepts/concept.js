@@ -48,6 +48,7 @@ export default class Concept {
 
     this.arrayifiableKeys = {
       collectionConceptIds: 'collectionConceptId',
+      collectionProgresses: 'collectionProgress',
       conceptIds: 'conceptId',
       dataCenters: 'dataCenter',
       providerIds: 'providerId',

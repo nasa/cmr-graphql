@@ -718,6 +718,9 @@ input CollectionsInput {
   "This element describes the production status of the data set."
   collectionProgress: String
 
+  "This element describes the production statuses of the data set."
+  collectionProgresses: [String]
+
   "The Entry Title of collection"
   entryTitle: String
 

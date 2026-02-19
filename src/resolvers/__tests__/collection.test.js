@@ -685,6 +685,60 @@ describe('Collection', () => {
           }
         })
       })
+
+      test('search by collectionProgresses parameter', async () => {
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Hits': 2,
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .get(/collections\.json/)
+          .query((actualQueryObject) => {
+            const progresses = actualQueryObject['collection_progress[]']
+
+            return Array.isArray(progresses) && progresses.includes('COMPLETE') && progresses.includes('ACTIVE')
+          })
+          .reply(200, {
+            feed: {
+              entry: [{
+                id: 'C100000-EDSC',
+                short_name: 'TEST_COLLECTION_1'
+              }, {
+                id: 'C100001-EDSC',
+                short_name: 'TEST_COLLECTION_2'
+              }]
+            }
+          })
+
+        const response = await server.executeOperation({
+          variables: {},
+          query: `{
+            collections(params: { collectionProgresses: ["COMPLETE", "ACTIVE"] }) {
+              items {
+                conceptId
+                shortName
+              }
+            }
+          }`
+        }, {
+          contextValue
+        })
+
+        const { data } = response.body.singleResult
+
+        expect(data).toEqual({
+          collections: {
+            items: [{
+              conceptId: 'C100000-EDSC',
+              shortName: 'TEST_COLLECTION_1'
+            }, {
+              conceptId: 'C100001-EDSC',
+              shortName: 'TEST_COLLECTION_2'
+            }]
+          }
+        })
+      })
     })
 
     describe('collection', () => {
