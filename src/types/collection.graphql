@@ -715,6 +715,12 @@ input CollectionsInput {
   "Type of the collection."
   collectionDataType: [String]
 
+  "The production status of the data set (collection)."
+  collectionProgress: String
+
+  "The production statuses of the data sets (collections)."
+  collectionProgresses: [String]
+
   "The Entry Title of collection"
   entryTitle: String
 
