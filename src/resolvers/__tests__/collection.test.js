@@ -1083,10 +1083,194 @@ describe('Collection', () => {
           })
         })
       })
+
+      describe('when retrieving a specific revision of a collection', () => {
+        test('returns the requested revision of a collection', async () => {
+          nock(/example-cmr/)
+            .defaultReplyHeaders({
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .get('/search/concepts/C100000-EDSC/2.umm_json')
+            .reply(200, {
+              EntryTitle: 'Test Collection'
+            })
+
+          nock(/example-cmr/)
+            .defaultReplyHeaders({
+              'CMR-Hits': 2,
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .get('/search/collections.umm_json?all_revisions=true&concept_id=C100000-EDSC')
+            .reply(200, {
+              items: [
+                {
+                  meta: {
+                    'concept-id': 'C100000-EDSC',
+                    'revision-id': '2'
+                  },
+                  umm: {
+                    EntryTitle: 'Test Collection'
+                  }
+                },
+                {
+                  meta: {
+                    'concept-id': 'C100000-EDSC',
+                    'revision-id': '1'
+                  },
+                  umm: {
+                    EntryTitle: 'Test Collection Old'
+                  }
+                }
+              ]
+            })
+
+          const response = await server.executeOperation({
+            variables: {
+              params: {
+                conceptId: 'C100000-EDSC',
+                revisionId: '2'
+              }
+            },
+            query: `
+                query Collection($params: CollectionInput!) {
+                  collection(params: $params) {
+                    conceptId
+                    revisionId
+                    entryTitle
+                  }
+                }
+              `
+          }, {
+            contextValue
+          })
+
+          const { data } = response.body.singleResult
+
+          expect(data).toEqual({
+            collection: {
+              conceptId: 'C100000-EDSC',
+              revisionId: '2',
+              entryTitle: 'Test Collection'
+            }
+          })
+        })
+      })
+
+      describe('when retrieving a non-existing revision of a collection', () => {
+        test('throws an error', async () => {
+          // Mock the all_revisions API call with revisions that don't include the requested revision
+          nock(/example-cmr/)
+            .defaultReplyHeaders({
+              'CMR-Hits': 2,
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .get('/search/collections.umm_json?all_revisions=true&concept_id=C100000-EDSC')
+            .reply(200, {
+              items: [
+                {
+                  meta: {
+                    'concept-id': 'C100000-EDSC',
+                    'revision-id': '1',
+                    'revision-date': '2022-12-31T00:00:00Z'
+                  },
+                  umm: {}
+                },
+                {
+                  meta: {
+                    'concept-id': 'C100000-EDSC',
+                    'revision-id': '2',
+                    'revision-date': '2023-01-01T00:00:00Z'
+                  },
+                  umm: {}
+                }
+              ]
+            })
+
+          const response = await server.executeOperation({
+            variables: {
+              params: {
+                conceptId: 'C100000-EDSC',
+                revisionId: '3'
+              }
+            },
+            query: `
+            query Collection($params: CollectionInput!) {
+              collection(params: $params) {
+                conceptId
+                revisionId
+                revisionDate
+              }
+            }
+          `
+          }, {
+            contextValue
+          })
+
+          const { errors } = response.body.singleResult
+
+          expect(errors).toBeDefined()
+          expect(errors[0].message).toBe('Error: Revision 3 not found in response')
+        })
+      })
     })
   })
 
   describe('Collection', () => {
+    describe('revisions', () => {
+      test('throws an error when revisionId is provided', async () => {
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Hits': 1,
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .get('/search/collections.umm_json?all_revisions=true&concept_id=C100000-EDSC')
+          .reply(200, {
+            items: [
+              {
+                meta: {
+                  'concept-id': 'C100000-EDSC',
+                  'revision-id': '2'
+                },
+                umm: {}
+              }
+            ]
+          })
+
+        const response = await server.executeOperation({
+          variables: {
+            params: {
+              conceptId: 'C100000-EDSC',
+              revisionId: '2'
+            }
+          },
+          query: `
+            query Collection($params: CollectionInput!) {
+              collection(params: $params) {
+                conceptId
+                revisionId
+                revisions {
+                  count
+                }
+              }
+            }
+          `
+        }, {
+          contextValue
+        })
+
+        const { errors } = response.body.singleResult
+
+        expect(errors).toBeDefined()
+        expect(errors[0].message).toBe(
+          'Note: This field is not supported if you are performing a `collection` query and have provided the `revisionId` parameter. `null` will be returned with an error.'
+        )
+      })
+    })
+
     describe('granules', () => {
       test('granules', async () => {
         nock(/example-cmr/)

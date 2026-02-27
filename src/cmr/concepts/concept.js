@@ -656,19 +656,50 @@ export default class Concept {
   }
 
   /**
+   * Query the CMR concepts API endpoint to retrieve a specific revision in UMM format
+   * @param {String} conceptId The concept ID
+   * @param {String} revisionId The revision ID
+   * @param {Array} requestedKeys Keys requested by the query
+   * @param {Object} providedHeaders Headers requested by the query
+   */
+  fetchConceptEndpoint(conceptId, revisionId, requestedKeys, providedHeaders) {
+    this.logKeyRequest(requestedKeys, 'umm_revision')
+
+    // Build the path based on whether revisionId is provided
+    const path = revisionId
+      ? `search/concepts/${conceptId}/${revisionId}.umm_json`
+      : `search/concepts/${conceptId}.umm_json`
+
+    return cmrQuery({
+      conceptType: this.getConceptType(),
+      params: {},
+      nonIndexedKeys: [],
+      headers: providedHeaders,
+      options: {
+        format: 'umm_json',
+        path
+      }
+    })
+  }
+
+  /**
    * Query the CMR API
    * @param {Object} searchParams Parameters provided by the query
    */
   fetch(searchParams) {
     const params = mergeParams(searchParams)
-
+    // Check if a revisionId is provided
+    const { revisionId, conceptId } = params
+    this.fetchedRevisionId = revisionId
+    this.fetchedConceptId = conceptId
     // Default an array to hold the promises we need to make depending on the requested fields
     const promises = []
 
     const {
       jsonKeys,
       metaKeys,
-      ummKeys
+      ummKeys,
+      conceptEndpointKeys
     } = this.requestInfo
 
     const {
@@ -697,15 +728,11 @@ export default class Concept {
         this.fetchJson(this.arrayifyParams(params), jsonKeys, jsonHeaders)
       )
     } else {
-      // Push a null promise to the array so that the umm promise always exists as
-      // the second element of the promise array
       promises.push(
-        // eslint-disable-next-line no-promise-executor-return
-        new Promise((resolve) => resolve(null))
+        new Promise((resolve) => { resolve(null) })
       )
     }
 
-    // If any requested keys are umm keys, we need to make an additional request to cmr
     if (ummKeys.length > 0) {
       const ummHeaders = this.headers
 
@@ -713,14 +740,32 @@ export default class Concept {
         ummHeaders['CMR-Search-After'] = ummSearchAfterIdentifier
       }
 
-      // Construct the promise that will request data from the umm endpoint
+      if (revisionId) {
+        params.allRevisions = true
+      }
+
       promises.push(
         this.fetchUmm(this.arrayifyParams(params), ummKeys, ummHeaders)
       )
     } else {
       promises.push(
-        // eslint-disable-next-line no-promise-executor-return
-        new Promise((resolve) => resolve(null))
+        new Promise((resolve) => { resolve(null) })
+      )
+    }
+
+    if (conceptEndpointKeys.length > 0) {
+      const ummHeaders = this.headers
+
+      if (ummSearchAfterIdentifier) {
+        ummHeaders['CMR-Search-After'] = ummSearchAfterIdentifier
+      }
+
+      promises.push(
+        this.fetchConceptEndpoint(conceptId, revisionId, conceptEndpointKeys, ummHeaders)
+      )
+    } else {
+      promises.push(
+        new Promise((resolve) => { resolve(null) })
       )
     }
 
@@ -799,6 +844,27 @@ export default class Concept {
     const { items } = data
 
     return items
+  }
+
+  /**
+   * Parse and return the array of data from the concept endpoint response body
+   * @param {Object} conceptResponse HTTP response from the CMR concept endpoint
+   */
+  parseConceptBody(conceptResponse) {
+    const { data } = conceptResponse
+
+    // The concept endpoint returns the UMM data directly without wrapper objects
+    // Wrap it in the expected format with meta fields
+    const wrappedData = {
+      meta: {
+        'concept-id': this.fetchedConceptId,
+        'revision-id': parseInt(this.fetchedRevisionId, 10)
+      },
+      umm: data
+    }
+
+    // Return as array for consistency with other parse methods
+    return [wrappedData]
   }
 
   /**
@@ -952,11 +1018,31 @@ export default class Concept {
       'cmr-search-after': ummSearchAfterIdentifier
     } = downcaseKeys(headers)
 
-    this.setUmmItemCount(cmrHits)
+    // For revision requests, cmr-hits won't be present
+    if (cmrHits) {
+      this.setUmmItemCount(cmrHits)
+    }
 
     this.setUmmSearchAfter(ummSearchAfterIdentifier)
 
-    const items = this.parseUmmBody(ummResponse)
+    let items = this.parseUmmBody(ummResponse)
+
+    // If we're fetching a specific revision from all_revisions, filter to that revision
+    if (this.fetchedRevisionId && items.length > 0) {
+      const matchingItem = items.find((item) => {
+        const { meta } = item
+        const itemRevisionId = meta['revision-id']
+
+        return String(itemRevisionId) === String(this.fetchedRevisionId)
+      })
+
+      if (!matchingItem) {
+        throw new Error(`Revision ${this.fetchedRevisionId} not found in response`)
+      }
+
+      // Replace items array with only the matching revision
+      items = [matchingItem]
+    }
 
     items.forEach((item, itemIndex) => {
       const normalizedItem = this.normalizeUmmItem(item)
@@ -967,7 +1053,38 @@ export default class Concept {
 
       this.setEssentialUmmValues(itemKey, normalizedItem)
 
-      this.setUmmItems(item, itemKey, ummKeys, ummKeyMappings,)
+      this.setUmmItems(item, itemKey, ummKeys, ummKeyMappings)
+    })
+  }
+
+  /**
+   * Parses the response from the concept endpoint
+   * @param {Object} conceptResponse HTTP response from the CMR concept endpoint
+   * @param {Array} conceptEndpointKeys Array of the keys requested in the query
+   */
+  async parseConcept(conceptResponse, conceptEndpointKeys) {
+    // Pull out the key mappings so we can retrieve the values below
+    const { ummKeyMappings } = this.requestInfo
+
+    const { headers } = conceptResponse
+    const {
+      'cmr-search-after': ummSearchAfterIdentifier
+    } = downcaseKeys(headers)
+
+    this.setUmmSearchAfter(ummSearchAfterIdentifier)
+
+    const items = this.parseConceptBody(conceptResponse)
+
+    items.forEach((item, itemIndex) => {
+      const normalizedItem = this.normalizeUmmItem(item)
+
+      // Creates unique item keys regardless of whether or not
+      // a user calls for data with similar conceptIds (as is the case with revisions)
+      const itemKey = this.generateUmmItemKey(itemIndex, normalizedItem)
+
+      this.setEssentialUmmValues(itemKey, normalizedItem)
+
+      this.setUmmItems(item, itemKey, conceptEndpointKeys, ummKeyMappings)
     })
   }
 
@@ -1015,12 +1132,13 @@ export default class Concept {
     try {
       const {
         jsonKeys,
-        ummKeys
+        ummKeys,
+        conceptEndpointKeys
       } = requestInfo
 
       const response = await this.getResponse()
 
-      const [jsonResponse, ummResponse] = response
+      const [jsonResponse, ummResponse, conceptResponse] = response
 
       if (jsonResponse) {
         await this.parseJson(jsonResponse, jsonKeys)
@@ -1028,6 +1146,10 @@ export default class Concept {
 
       if (ummResponse) {
         await this.parseUmm(ummResponse, ummKeys)
+      }
+
+      if (conceptResponse) {
+        await this.parseConcept(conceptResponse, conceptEndpointKeys)
       }
     } catch (e) {
       parseError(e, { reThrowError: true })

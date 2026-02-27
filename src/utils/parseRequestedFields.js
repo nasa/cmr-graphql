@@ -14,7 +14,9 @@ import { CONCEPT_TYPES, PSEUDO_FIELDS } from '../constants'
 export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
   let { fieldsByTypeName } = parsedInfo
 
-  const { name } = parsedInfo
+  const { args, name } = parsedInfo
+  const { params = {} } = args
+  const { revisionId } = params
 
   let isList = false
 
@@ -241,6 +243,7 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
       jsonKeys: requestedFields,
       metaKeys,
       ummKeys: [],
+      conceptEndpointKeys: [],
       ummKeyMappings,
       isList
     }
@@ -275,11 +278,22 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
     ummKeys = ummKeys.filter((e) => e !== 'conceptId')
   }
 
+  // List of keys in ummKeyMappings, which have values starting with 'meta.'
+  const ummMetaKeys = Object.keys(ummKeyMappings).filter((key) => ummKeyMappings[key].startsWith('meta.'))
+
+  let conceptEndpointKeys = []
+
+  if (revisionId) {
+    conceptEndpointKeys = ummKeys.filter((key) => !ummMetaKeys.includes(key))
+    ummKeys = ummKeys.filter((key) => ummMetaKeys.includes(key))
+  }
+
   // Sort the keys to prevent fragility in testing
   return {
     jsonKeys: jsonKeys.sort(),
     metaKeys,
     ummKeys: ummKeys.sort(),
+    conceptEndpointKeys: conceptEndpointKeys.sort(),
     ummKeyMappings,
     isList
   }

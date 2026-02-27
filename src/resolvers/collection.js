@@ -17,6 +17,14 @@ export default {
     collection: async (source, args, context, info) => {
       const { dataSources } = context
 
+      // Store revisionId in context for child resolvers to access
+      const { params = {} } = args
+      const { revisionId } = params
+
+      if (revisionId) {
+        context.collectionRevisionId = revisionId
+      }
+
       const result = await dataSources.collectionSourceFetch(args, context, parseResolveInfo(info))
 
       const [firstResult] = result
@@ -49,6 +57,15 @@ export default {
 
   Collection: {
     revisions: async (source, args, context, info) => {
+      // Check if a revisionId was specified in the parent collection query
+      const { collectionRevisionId } = context
+
+      if (collectionRevisionId) {
+        throw new Error(
+          'Note: This field is not supported if you are performing a `collection` query and have provided the `revisionId` parameter. `null` will be returned with an error.'
+        )
+      }
+
       const { dataSources } = context
 
       const { conceptId } = source
