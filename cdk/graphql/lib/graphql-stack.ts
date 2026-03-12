@@ -44,7 +44,7 @@ const environment = {
   ummCollectionVersion: '1.18.4',
   ummGranuleVersion: '1.6.5',
   ummOrderOptionVersion: '1.0.0',
-  ummServiceVersion: '1.5.3',
+  ummServiceVersion: '1.5.4',
   ummSubscriptionVersion: '1.1.1',
   ummToolVersion: '1.2.0',
   ummVariableVersion: '1.9.0',
