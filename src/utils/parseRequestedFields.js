@@ -10,8 +10,9 @@ import { CONCEPT_TYPES, PSEUDO_FIELDS } from '../constants'
  * @param {Array} requestedFields Fields requested
  * @param {Object} keyMap Mappings of UMM fields to requestable fields
  * @param {String} conceptName Name of the concept () to lookup requested fields in the query
+ * @param {Object} params Query parameters that may affect key routing
  */
-export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
+export const parseRequestedFields = (parsedInfo, keyMap, conceptName, params = {}) => {
   let { fieldsByTypeName } = parsedInfo
 
   const { name } = parsedInfo
@@ -236,7 +237,10 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
   ))
 
   // If all requested keys are available in json, use json because its all indexed in CMR
-  if (difference(ummKeys, sharedKeys).length === 0) {
+  // UNLESS allRevisions=true, in which case JSON endpoint doesn't support it
+  const { allRevisions } = params
+
+  if (difference(ummKeys, sharedKeys).length === 0 && !allRevisions) {
     return {
       jsonKeys: requestedFields,
       metaKeys,
@@ -254,7 +258,8 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
   ))
 
   // If we already have to go to the json endpoint get as much info from there as possible
-  if (jsonKeys.length > 0) {
+  // UNLESS allRevisions=true, in which case keep everything in UMM
+  if (jsonKeys.length > 0 && !allRevisions) {
     // Move any requested key that is shared over to the jsonKeys
     ummKeys.forEach((ummKey) => {
       const keyLocation = sharedKeys.indexOf(ummKey)
