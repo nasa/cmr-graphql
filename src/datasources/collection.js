@@ -48,10 +48,6 @@ export const fetchCollections = async (params, context, parsedInfo) => {
     ))
 
     if (!specificRevision) {
-      // Debug logging
-      console.log(`Requested revisionId: ${requestedRevisionIdStr}`)
-      console.log(`Available revisions: ${allItems.map((item) => item.revisionId).join(', ')}`)
-
       // Check if the revision exists but is too old (CMR only keeps last 10)
       const latestRevisionId = allItems.length > 0 ? parseInt(allItems[0].revisionId, 10) : 0
       const oldestAvailableRevision = Math.max(1, latestRevisionId - 9)
