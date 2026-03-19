@@ -25,19 +25,25 @@ export default {
 
       // Fields that are only available from JSON endpoint and cannot be retrieved for old revisions
       const jsonOnlyFields = [
-        'browseFlag',
-        'onlineAccessFlag',
-        'hasGranules',
-        'consortiums',
-        'tags',
-        'cloudHosted',
-        'boxes',
-        'points',
-        'lines',
-        'polygons',
-        'organizations',
         'archiveCenter',
-        'revisions'
+        'boxes',
+        'browseFlag',
+        'cloudHosted',
+        'consortiums',
+        'coordinateSystem',
+        'datasetId',
+        'hasGranules',
+        'lines',
+        'onlineAccessFlag',
+        'organizations',
+        'points',
+        'polygons',
+        'provider',
+        'revisions',
+        'tagDefinitions',
+        'tags',
+        'timeEnd',
+        'timeStart'
       ]
 
       // If querying a specific revision, check if any JSON-only fields are requested
