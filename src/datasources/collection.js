@@ -10,7 +10,7 @@ import { findPreviousRevision } from '../utils/findPreviousRevision'
 export const fetchCollections = async (params, context, parsedInfo) => {
   const { headers } = context
 
-  const { revisionId, conceptId } = params
+  const { revisionId } = params
 
   // If a specific revisionId is requested, fetch all revisions and filter
   if (revisionId) {
@@ -39,26 +39,10 @@ export const fetchCollections = async (params, context, parsedInfo) => {
     // Get all items and filter for the specific revision
     const allItems = collection.getFormattedResponse()
 
-    // Convert revisionId to string for comparison since CMR returns it as a string
-    const requestedRevisionIdStr = String(revisionId)
-
     // For a single collection query with revisionId, return just that revision
     const specificRevision = allItems.find((item) => (
-      String(item.revisionId) === requestedRevisionIdStr
+      String(item.revisionId) === revisionId
     ))
-
-    if (!specificRevision) {
-      // Check if the revision exists but is too old (CMR only keeps last 10)
-      const latestRevisionId = allItems.length > 0 ? parseInt(allItems[0].revisionId, 10) : 0
-      const oldestAvailableRevision = Math.max(1, latestRevisionId - 9)
-      const requestedRevisionId = parseInt(revisionId, 10)
-
-      if (requestedRevisionId < oldestAvailableRevision) {
-        throw new Error(`Revision ${revisionId} is no longer stored. Please select an available revision from ${oldestAvailableRevision} to ${latestRevisionId}.`)
-      }
-
-      throw new Error(`Revision ${revisionId} not found for collection ${conceptId}. Available revisions: ${allItems.map((item) => item.revisionId).join(', ')}`)
-    }
 
     return [specificRevision]
   }
