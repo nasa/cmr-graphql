@@ -8,6 +8,7 @@
     "hasTransforms",
     "hasVariables",
     "processingLevelId",
+    "provider",
     "shortName",
     "title",
     "versionId"
@@ -52,6 +53,7 @@
     "processingLevel": "umm.ProcessingLevel",
     "processingLevelId": "umm.ProcessingLevel.Id",
     "projects": "umm.Projects",
+    "provider": "meta.provider-id",
     "providerId": "meta.provider-id",
     "publicationReferences": "umm.PublicationReferences",
     "purpose": "umm.Purpose",

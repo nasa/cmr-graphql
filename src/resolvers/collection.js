@@ -38,7 +38,6 @@ export default {
         'organizations',
         'points',
         'polygons',
-        'provider',
         'revisions',
         'tagDefinitions',
         'tags',
