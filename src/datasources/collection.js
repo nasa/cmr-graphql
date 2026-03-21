@@ -10,45 +10,7 @@ import { findPreviousRevision } from '../utils/findPreviousRevision'
 export const fetchCollections = async (params, context, parsedInfo) => {
   const { headers } = context
 
-  const { revisionId } = params
-
-  // If a specific revisionId is requested, fetch all revisions and filter
-  if (revisionId) {
-    const allRevisionsParams = {
-      ...params,
-      allRevisions: true
-    }
-
-    // Parse requested fields - this determines which fields to fetch
-    const requestInfo = parseRequestedFields(parsedInfo, collectionKeyMap, 'collection', allRevisionsParams)
-
-    // Ensure revisionId is included in the requested fields so we can filter by it
-    const { ummKeys } = requestInfo
-    if (!ummKeys.includes('revisionId')) {
-      ummKeys.push('revisionId')
-    }
-
-    const collection = new Collection(headers, requestInfo, allRevisionsParams)
-
-    // Query CMR for all revisions
-    collection.fetch(allRevisionsParams)
-
-    // Parse the response from CMR
-    await collection.parse(requestInfo)
-
-    // Get all items and filter for the specific revision
-    const allItems = collection.getFormattedResponse()
-
-    // For a single collection query with revisionId, return just that revision
-    const specificRevision = allItems.find((item) => (
-      String(item.revisionId) === revisionId
-    ))
-
-    return [specificRevision]
-  }
-
-  // Normal case: no revisionId specified, return latest revision
-  const requestInfo = parseRequestedFields(parsedInfo, collectionKeyMap, 'collection', params)
+  const requestInfo = parseRequestedFields(parsedInfo, collectionKeyMap, 'collection')
 
   const collection = new Collection(headers, requestInfo, params)
 

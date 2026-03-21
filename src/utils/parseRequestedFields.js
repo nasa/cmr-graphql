@@ -12,7 +12,7 @@ import { CONCEPT_TYPES, PSEUDO_FIELDS } from '../constants'
  * @param {String} conceptName Name of the concept () to lookup requested fields in the query
  * @param {Object} params Query parameters that may affect key routing
  */
-export const parseRequestedFields = (parsedInfo, keyMap, conceptName, params = {}) => {
+export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
   let { fieldsByTypeName } = parsedInfo
 
   const { name } = parsedInfo
@@ -237,10 +237,10 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName, params = {
   ))
 
   // If all requested keys are available in json, use json because its all indexed in CMR
-  // UNLESS allRevisions=true, in which case JSON endpoint doesn't support it
-  const { allRevisions } = params
+  // UNLESS revisionId, in which case JSON endpoint doesn't support it
+  const { revisionId } = parsedInfo.args.params || {}
 
-  if (difference(ummKeys, sharedKeys).length === 0 && !allRevisions) {
+  if (difference(ummKeys, sharedKeys).length === 0 && !revisionId) {
     return {
       jsonKeys: requestedFields,
       metaKeys,
@@ -257,14 +257,14 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName, params = {
     && !PSEUDO_FIELDS.includes(field)
   ))
 
-  // When allRevisions=true, ALL data must come from UMM endpoint (JSON endpoint doesn't support it)
+  // When revisionId, ALL data must come from UMM endpoint (JSON endpoint doesn't support it)
   // Check if any JSON-only fields were requested and throw an error
-  if (allRevisions && jsonKeys.length > 0) {
+  if (revisionId && jsonKeys.length > 0) {
     const jsonOnlyFields = jsonKeys.filter((field) => !sharedKeys.includes(field))
 
     if (jsonOnlyFields.length > 0) {
       throw new Error(
-        `The following fields are not available when querying with allRevisions: ${jsonOnlyFields.join(', ')}. `
+        `The following fields are not available when querying with revisionId: ${jsonOnlyFields.join(', ')}. `
         + 'These fields are only available from the JSON endpoint which does not support historical revisions.'
       )
     }
@@ -289,11 +289,11 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName, params = {
 
   // If facets were requested, we need to ensure we have at least 1 json key
   // because facets are not available from the umm endpoint
-  // However, if allRevisions=true, we cannot use the JSON endpoint at all
+  // However, if revisionId, we cannot use the JSON endpoint at all
   if (metaKeys.includes('collectionFacets') && jsonKeys.length === 0) {
-    if (allRevisions) {
+    if (revisionId) {
       throw new Error(
-        'Facets are not available when querying with allRevisions. '
+        'Facets are not available when querying with revisionId. '
         + 'Facets are only available from the JSON endpoint which does not support historical revisions.'
       )
     }
