@@ -10,6 +10,7 @@ import { CONCEPT_TYPES, PSEUDO_FIELDS } from '../constants'
  * @param {Array} requestedFields Fields requested
  * @param {Object} keyMap Mappings of UMM fields to requestable fields
  * @param {String} conceptName Name of the concept () to lookup requested fields in the query
+ * @param {Object} params Query parameters that may affect key routing
  */
 export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
   let { fieldsByTypeName } = parsedInfo
@@ -236,7 +237,10 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
   ))
 
   // If all requested keys are available in json, use json because its all indexed in CMR
-  if (difference(ummKeys, sharedKeys).length === 0) {
+  // UNLESS revisionId, in which case JSON endpoint doesn't support it
+  const { revisionId } = parsedInfo.args.params || {}
+
+  if (difference(ummKeys, sharedKeys).length === 0 && !revisionId) {
     return {
       jsonKeys: requestedFields,
       metaKeys,
@@ -247,11 +251,28 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
   }
 
   // Requested keys that are not UMM and not CONCEPT_TYPES keys must be json
-  const jsonKeys = requestedFields.filter((field) => (
+  let jsonKeys = requestedFields.filter((field) => (
     !ummKeys.includes(field)
     && !CONCEPT_TYPES.includes(field)
     && !PSEUDO_FIELDS.includes(field)
   ))
+
+  // When revisionId, ALL data must come from UMM endpoint (JSON endpoint doesn't support it)
+  // Check if any JSON-only fields were requested and throw an error
+  if (revisionId && jsonKeys.length > 0) {
+    const jsonOnlyFields = jsonKeys.filter((field) => !sharedKeys.includes(field))
+
+    if (jsonOnlyFields.length > 0) {
+      throw new Error(
+        `The following fields are not available when querying with revisionId: ${jsonOnlyFields.join(', ')}. `
+        + 'These fields are only available from the JSON endpoint which does not support historical revisions.'
+      )
+    }
+
+    // If only shared keys are in jsonKeys, move them to ummKeys for allRevisions queries
+    ummKeys = [...ummKeys, ...jsonKeys]
+    jsonKeys = []
+  }
 
   // If we already have to go to the json endpoint get as much info from there as possible
   if (jsonKeys.length > 0) {
@@ -267,8 +288,16 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
   }
 
   // If facets were requested, we need to ensure we have at least 1 json key
-  // some do because facets are not available from the umm endpoint
+  // because facets are not available from the umm endpoint
+  // However, if revisionId, we cannot use the JSON endpoint at all
   if (metaKeys.includes('collectionFacets') && jsonKeys.length === 0) {
+    if (revisionId) {
+      throw new Error(
+        'Facets are not available when querying with revisionId. '
+        + 'Facets are only available from the JSON endpoint which does not support historical revisions.'
+      )
+    }
+
     jsonKeys.push('conceptId')
 
     // Remove the concept id from the ummKeys (if it exists) because we just moved it to the jsonKeys

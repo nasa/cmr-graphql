@@ -55,8 +55,16 @@ export const cmrQuery = ({
     url: `${process.env.cmrRootUrl}/${path}`
   }
 
+  // Create a new object with the original params and add all_revisions if needed
+  const updatedParams = options.allRevisions
+    ? {
+      ...params,
+      all_revisions: true
+    }
+    : params
+
   // Append any query arguments based on provided params
-  const cmrParameters = prepKeysForCmr(snakecaseKeys(params), nonIndexedKeys)
+  const cmrParameters = prepKeysForCmr(snakecaseKeys(updatedParams), nonIndexedKeys)
 
   const { env } = process
   const { maximumQueryPathLength } = env
