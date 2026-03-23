@@ -946,7 +946,7 @@ export default class Concept {
    * @param {Array} ummKeys Array of the keys requested in the query
    */
   async parseUmm(ummResponse, ummKeys) {
-    const { revisionId } = this.params
+    const { revisionId } = this.params.params || {}
     // Pull out the key mappings so we can retrieve the values below
     const { ummKeyMappings } = this.requestInfo
 

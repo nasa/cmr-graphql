@@ -17,58 +17,7 @@ export default {
     collection: async (source, args, context, info) => {
       const { dataSources } = context
 
-      // Support both old deprecated syntax (conceptId directly) and new syntax (params object)
-      // Old: collection(conceptId: "C123")
-      // New: collection(params: { conceptId: "C123" })
-      const params = args.params || args
-      const { revisionId } = params
-
-      // Fields that are only available from JSON endpoint and cannot be retrieved for old revisions
-      const jsonOnlyFields = [
-        'archiveCenter',
-        'boxes',
-        'browseFlag',
-        'cloudHosted',
-        'consortiums',
-        'coordinateSystem',
-        'datasetId',
-        'hasGranules',
-        'lines',
-        'onlineAccessFlag',
-        'organizations',
-        'points',
-        'polygons',
-        'revisions',
-        'tagDefinitions',
-        'tags',
-        'timeEnd',
-        'timeStart'
-      ]
-
-      // If querying a specific revision, check if any JSON-only fields are requested
-      if (revisionId) {
-        const parsedInfo = parseResolveInfo(info)
-        const { fieldsByTypeName } = parsedInfo
-        const { Collection: collectionFields = {} } = fieldsByTypeName
-
-        const requestedFields = Object.keys(collectionFields)
-        const requestedJsonOnlyFields = requestedFields.filter(
-          (field) => jsonOnlyFields.includes(field)
-        )
-
-        if (requestedJsonOnlyFields.length > 0) {
-          throw new Error(
-            `The following fields are not available when querying a specific revision: ${requestedJsonOnlyFields.join(', ')}. `
-            + 'These fields are only available from the JSON endpoint which does not support historical revisions.'
-          )
-        }
-      }
-
-      const result = await dataSources.collectionSourceFetch(
-        params,
-        context,
-        parseResolveInfo(info)
-      )
+      const result = await dataSources.collectionSourceFetch(args, context, parseResolveInfo(info))
 
       const [firstResult] = result
 
