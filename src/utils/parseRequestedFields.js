@@ -257,19 +257,8 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
     && !PSEUDO_FIELDS.includes(field)
   ))
 
-  // When revisionId, ALL data must come from UMM endpoint (JSON endpoint doesn't support it)
-  // Check if any JSON-only fields were requested and throw an error
+  // When revisionId, all data must come from UMM endpoint (JSON endpoint doesn't support it)
   if (revisionId && jsonKeys.length > 0) {
-    const jsonOnlyFields = jsonKeys.filter((field) => !sharedKeys.includes(field))
-
-    if (jsonOnlyFields.length > 0) {
-      throw new Error(
-        `The following fields are not available when querying with revisionId: ${jsonOnlyFields.join(', ')}. `
-        + 'These fields are only available from the JSON endpoint which does not support historical revisions.'
-      )
-    }
-
-    // If only shared keys are in jsonKeys, move them to ummKeys for allRevisions queries
     ummKeys = [...ummKeys, ...jsonKeys]
     jsonKeys = []
   }
@@ -288,16 +277,8 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
   }
 
   // If facets were requested, we need to ensure we have at least 1 json key
-  // because facets are not available from the umm endpoint
-  // However, if revisionId, we cannot use the JSON endpoint at all
-  if (metaKeys.includes('collectionFacets') && jsonKeys.length === 0) {
-    if (revisionId) {
-      throw new Error(
-        'Facets are not available when querying with revisionId. '
-        + 'Facets are only available from the JSON endpoint which does not support historical revisions.'
-      )
-    }
-
+  // some do because facets are not available from the umm endpoint
+  if (metaKeys.includes('collectionFacets') && jsonKeys.length === 0 && !revisionId) {
     jsonKeys.push('conceptId')
 
     // Remove the concept id from the ummKeys (if it exists) because we just moved it to the jsonKeys
