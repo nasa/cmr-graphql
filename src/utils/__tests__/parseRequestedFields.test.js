@@ -696,4 +696,50 @@ describe('parseRequestedFields', () => {
       })
     })
   })
+
+  describe('when revisionId is provided', () => {
+    test('moves all keys to ummKeys when revisionId is present', () => {
+      const requestInfo = {
+        name: 'collection',
+        alias: 'collection',
+        args: {
+          params: {
+            revisionId: '1'
+          }
+        },
+        fieldsByTypeName: {
+          Collection: {
+            conceptId: {
+              name: 'conceptId',
+              alias: 'conceptId',
+              args: {},
+              fieldsByTypeName: {}
+            },
+            title: {
+              name: 'title',
+              alias: 'title',
+              args: {},
+              fieldsByTypeName: {}
+            },
+            keyTwo: {
+              name: 'keyTwo',
+              alias: 'keyTwo',
+              args: {},
+              fieldsByTypeName: {}
+            }
+          }
+        }
+      }
+
+      const requestedFields = parseRequestedFields(requestInfo, keyMap, 'collection')
+
+      expect(requestedFields).toEqual({
+        jsonKeys: [],
+        metaKeys: [],
+        ummKeys: ['conceptId', 'keyTwo', 'title'],
+        ummKeyMappings,
+        isList: false
+      })
+    })
+  })
 })

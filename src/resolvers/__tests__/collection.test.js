@@ -1144,7 +1144,13 @@ describe('Collection', () => {
             })
             .get('/search/collections.umm_json?all_revisions=true&concept_id=C100000-EDSC')
             .reply(200, {
-              items: []
+              items: [{
+                meta: {
+                  'concept-id': 'C100000-EDSC',
+                  'revision-id': 4
+                },
+                umm: {}
+              }]
             })
 
           const response = await server.executeOperation({
