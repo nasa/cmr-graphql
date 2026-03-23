@@ -965,6 +965,8 @@ export default class Concept {
     items.forEach((item, itemIndex) => {
       const normalizedItem = this.normalizeUmmItem(item)
 
+      // Filter out items that don't match the requested revisionId
+      // This is necessary because the umm endpoint returns multiple revisions
       if (revisionId && normalizedItem.meta['revision-id'].toString() !== revisionId.toString()) {
         return
       }
