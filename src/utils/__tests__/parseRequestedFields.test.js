@@ -697,14 +697,15 @@ describe('parseRequestedFields', () => {
     })
   })
 
-  describe('when revisionId is provided', () => {
-    test('moves all keys to ummKeys when revisionId is present', () => {
+  describe('when revisionId is present', () => {
+    test('jsonKeys should be empty', () => {
       const requestInfo = {
         name: 'collection',
         alias: 'collection',
         args: {
           params: {
-            revisionId: '1'
+            conceptId: 'C1234-PROV1',
+            revisionId: '2'
           }
         },
         fieldsByTypeName: {
@@ -721,9 +722,9 @@ describe('parseRequestedFields', () => {
               args: {},
               fieldsByTypeName: {}
             },
-            keyTwo: {
-              name: 'keyTwo',
-              alias: 'keyTwo',
+            doi: {
+              name: 'doi',
+              alias: 'doi',
               args: {},
               fieldsByTypeName: {}
             }
@@ -736,9 +737,10 @@ describe('parseRequestedFields', () => {
       expect(requestedFields).toEqual({
         jsonKeys: [],
         metaKeys: [],
-        ummKeys: ['conceptId', 'keyTwo', 'title'],
+        ummKeys: ['conceptId'],
         ummKeyMappings,
-        isList: false
+        isList: false,
+        revisionId: '2'
       })
     })
   })

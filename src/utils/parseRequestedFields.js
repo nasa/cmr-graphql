@@ -257,9 +257,8 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
     && !PSEUDO_FIELDS.includes(field)
   ))
 
-  // When revisionId, all data must come from UMM endpoint (JSON endpoint doesn't support it)
+  // When revisionId, JSON endpoint can't be used
   if (revisionId && jsonKeys.length > 0) {
-    ummKeys = [...ummKeys, ...jsonKeys]
     jsonKeys = []
   }
 
@@ -291,6 +290,7 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
     metaKeys,
     ummKeys: ummKeys.sort(),
     ummKeyMappings,
-    isList
+    isList,
+    revisionId
   }
 }

@@ -643,7 +643,7 @@ export default class Concept {
   fetchUmm(searchParams, requestedKeys, providedHeaders) {
     this.logKeyRequest(requestedKeys, 'umm')
 
-    const { revisionId } = searchParams
+    const { revisionId } = this.requestInfo
 
     // Construct the promise that will request data from the umm endpoint
     return cmrQuery({
@@ -946,7 +946,7 @@ export default class Concept {
    * @param {Array} ummKeys Array of the keys requested in the query
    */
   async parseUmm(ummResponse, ummKeys) {
-    const { revisionId } = this.params.params || {}
+    const { revisionId } = this.requestInfo
     // Pull out the key mappings so we can retrieve the values below
     const { ummKeyMappings } = this.requestInfo
 
