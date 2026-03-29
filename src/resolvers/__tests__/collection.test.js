@@ -1110,23 +1110,18 @@ describe('Collection', () => {
               }
             },
             query: `
-            query GetCollection($params: CollectionInput!) {
-              collection(params: $params) {
-                conceptId
-                revisionId
+              query GetCollection($params: CollectionInput!) {
+                collection(params: $params) {
+                  conceptId
+                  revisionId
+                }
               }
-            }
-          `
+            `
           }, {
             contextValue
           })
 
-          const { data, errors } = response.body.singleResult
-
-          if (errors) {
-            console.error('GraphQL errors:', errors)
-            throw new Error('GraphQL query resulted in errors')
-          }
+          const { data } = response.body.singleResult
 
           expect(data).toEqual({
             collection: {
@@ -1175,6 +1170,55 @@ describe('Collection', () => {
           expect(errors).toBeUndefined()
           expect(data).toEqual({
             collection: null
+          })
+        })
+
+        test('returns the specific revision with JSON-only field as null when requested', async () => {
+          nock(/example-cmr/)
+            .defaultReplyHeaders({
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .get('/search/collections.umm_json?all_revisions=true&concept_id=C100000-EDSC')
+            .reply(200, {
+              items: [{
+                meta: {
+                  'concept-id': 'C100000-EDSC',
+                  'revision-id': 2
+                },
+                umm: {
+                  EntryTitle: 'Test Collection'
+                }
+              }]
+            })
+
+          const response = await server.executeOperation({
+            query: `query GetCollection($params: CollectionInput!) {
+              collection(params: $params) {
+                conceptId
+                revisionId
+                boxes
+              }
+            }`,
+            variables: {
+              params: {
+                conceptId: 'C100000-EDSC',
+                revisionId: '2'
+              }
+            }
+          }, {
+            contextValue
+          })
+
+          const { data, errors } = response.body.singleResult
+
+          expect(errors).toBeUndefined()
+          expect(data).toEqual({
+            collection: {
+              conceptId: 'C100000-EDSC',
+              revisionId: '2',
+              boxes: null
+            }
           })
         })
       })
