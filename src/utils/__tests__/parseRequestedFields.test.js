@@ -696,4 +696,60 @@ describe('parseRequestedFields', () => {
       })
     })
   })
+
+  describe('when revisionId is present', () => {
+    test('jsonKeys should be empty and ummKeys should contain fields from ummKeyMappings', () => {
+      const requestInfo = {
+        name: 'collection',
+        alias: 'collection',
+        args: {
+          params: {
+            conceptId: 'C1234-PROV1',
+            revisionId: '2'
+          }
+        },
+        fieldsByTypeName: {
+          Collection: {
+            conceptId: {
+              name: 'conceptId',
+              alias: 'conceptId',
+              args: {},
+              fieldsByTypeName: {}
+            },
+            shortName: {
+              name: 'shortName',
+              alias: 'shortName',
+              args: {},
+              fieldsByTypeName: {}
+            },
+            boxes: {
+              name: 'boxes',
+              alias: 'boxes',
+              args: {},
+              fieldsByTypeName: {}
+            }
+          }
+        }
+      }
+
+      const mockKeyMap = {
+        sharedKeys: ['conceptId', 'shortName'],
+        ummKeyMappings: {
+          conceptId: 'meta.concept-id',
+          shortName: 'umm.ShortName'
+        }
+      }
+
+      const requestedFields = parseRequestedFields(requestInfo, mockKeyMap, 'collection')
+
+      expect(requestedFields).toEqual({
+        jsonKeys: [],
+        metaKeys: [],
+        ummKeys: ['conceptId', 'shortName'],
+        ummKeyMappings: mockKeyMap.ummKeyMappings,
+        isList: false,
+        revisionId: '2'
+      })
+    })
+  })
 })

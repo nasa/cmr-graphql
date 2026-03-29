@@ -1083,6 +1083,145 @@ describe('Collection', () => {
           })
         })
       })
+
+      describe('when retrieving by revisionId', () => {
+        test('returns the specific revision when revisionId is provided', async () => {
+          nock(/example-cmr/)
+            .defaultReplyHeaders({
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .get('/search/collections.umm_json?all_revisions=true&concept_id=C100000-EDSC')
+            .reply(200, {
+              items: [{
+                meta: {
+                  'concept-id': 'C100000-EDSC',
+                  'revision-id': 2
+                },
+                umm: {}
+              }]
+            })
+
+          const response = await server.executeOperation({
+            variables: {
+              params: {
+                conceptId: 'C100000-EDSC',
+                revisionId: '2'
+              }
+            },
+            query: `
+              query GetCollection($params: CollectionInput!) {
+                collection(params: $params) {
+                  conceptId
+                  revisionId
+                }
+              }
+            `
+          }, {
+            contextValue
+          })
+
+          const { data } = response.body.singleResult
+
+          expect(data).toEqual({
+            collection: {
+              conceptId: 'C100000-EDSC',
+              revisionId: '2'
+            }
+          })
+        })
+
+        test('returns null when the specified revision does not exist', async () => {
+          nock(/example-cmr/)
+            .defaultReplyHeaders({
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .get('/search/collections.umm_json?all_revisions=true&concept_id=C100000-EDSC')
+            .reply(200, {
+              items: [{
+                meta: {
+                  'concept-id': 'C100000-EDSC',
+                  'revision-id': 4
+                },
+                umm: {}
+              }]
+            })
+
+          const response = await server.executeOperation({
+            query: `query GetCollection($params: CollectionInput!) {
+              collection(params: $params) {
+                conceptId
+                revisionId
+              }
+            }`,
+            variables: {
+              params: {
+                conceptId: 'C100000-EDSC',
+                revisionId: '2'
+              }
+            }
+          }, {
+            contextValue
+          })
+
+          const { data, errors } = response.body.singleResult
+
+          expect(errors).toBeUndefined()
+          expect(data).toEqual({
+            collection: null
+          })
+        })
+
+        test('returns the specific revision with JSON-only field as null when requested', async () => {
+          nock(/example-cmr/)
+            .defaultReplyHeaders({
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .get('/search/collections.umm_json?all_revisions=true&concept_id=C100000-EDSC')
+            .reply(200, {
+              items: [{
+                meta: {
+                  'concept-id': 'C100000-EDSC',
+                  'revision-id': 2
+                },
+                umm: {
+                  EntryTitle: 'Test Collection'
+                }
+              }]
+            })
+
+          const response = await server.executeOperation({
+            query: `query GetCollection($params: CollectionInput!) {
+              collection(params: $params) {
+                conceptId
+                revisionId
+                boxes
+              }
+            }`,
+            variables: {
+              params: {
+                conceptId: 'C100000-EDSC',
+                revisionId: '2'
+              }
+            }
+          }, {
+            contextValue
+          })
+
+          const { data, errors } = response.body.singleResult
+
+          expect(errors).toBeUndefined()
+          expect(data).toEqual({
+            collection: {
+              conceptId: 'C100000-EDSC',
+              revisionId: '2',
+              boxes: null
+            }
+          })
+        })
+      })
     })
   })
 
