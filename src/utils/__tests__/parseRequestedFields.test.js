@@ -698,7 +698,7 @@ describe('parseRequestedFields', () => {
   })
 
   describe('when revisionId is present', () => {
-    test('jsonKeys should be empty', () => {
+    test('jsonKeys should be empty and ummKeys should contain fields from ummKeyMappings', () => {
       const requestInfo = {
         name: 'collection',
         alias: 'collection',
@@ -716,15 +716,15 @@ describe('parseRequestedFields', () => {
               args: {},
               fieldsByTypeName: {}
             },
-            title: {
-              name: 'title',
-              alias: 'title',
+            shortName: {
+              name: 'shortName',
+              alias: 'shortName',
               args: {},
               fieldsByTypeName: {}
             },
-            doi: {
-              name: 'doi',
-              alias: 'doi',
+            boxes: {
+              name: 'boxes',
+              alias: 'boxes',
               args: {},
               fieldsByTypeName: {}
             }
@@ -732,13 +732,21 @@ describe('parseRequestedFields', () => {
         }
       }
 
-      const requestedFields = parseRequestedFields(requestInfo, keyMap, 'collection')
+      const mockKeyMap = {
+        sharedKeys: ['conceptId', 'shortName'],
+        ummKeyMappings: {
+          conceptId: 'meta.concept-id',
+          shortName: 'umm.ShortName'
+        }
+      }
+
+      const requestedFields = parseRequestedFields(requestInfo, mockKeyMap, 'collection')
 
       expect(requestedFields).toEqual({
         jsonKeys: [],
         metaKeys: [],
-        ummKeys: ['conceptId'],
-        ummKeyMappings,
+        ummKeys: ['conceptId', 'shortName'],
+        ummKeyMappings: mockKeyMap.ummKeyMappings,
         isList: false,
         revisionId: '2'
       })
