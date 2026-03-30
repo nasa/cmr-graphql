@@ -645,15 +645,21 @@ export default class Concept {
 
     const { revisionId } = this.requestInfo
 
+    const params = pick(snakeCaseKeys(searchParams), this.getPermittedUmmSearchParams())
+
+    // Add all_revisions to params if revisionId is present and all_revisions is not set
+    if (revisionId && !params.all_revisions) {
+      params.all_revisions = true
+    }
+
     // Construct the promise that will request data from the umm endpoint
     return cmrQuery({
       conceptType: this.getConceptType(),
-      params: pick(snakeCaseKeys(searchParams), this.getPermittedUmmSearchParams()),
+      params,
       nonIndexedKeys: this.getNonIndexedKeys(),
       headers: providedHeaders,
       options: {
-        format: 'umm_json',
-        allRevisions: revisionId ? true : undefined
+        format: 'umm_json'
       }
     })
   }
