@@ -14,7 +14,11 @@ type Collection {
   "This element stores DOIs that are associated with the collection such as from campaigns and other related sources."
   associatedDois: JSON
 
-  "Find collections matching 'archive_center' param value."
+  """
+  Find collections matching 'archive_center' param value.
+
+  Note: This field is not supported if you are performing a `collection` query and have provided the `revisionId` parameter. `null` will be returned.
+  """
   archiveCenter: String
 
   "Allows authors to provide words or phrases outside of the controlled Science Keyword vocabulary, to further describe the collection."
@@ -22,20 +26,36 @@ type Collection {
 
   "Allows a data provider to provide archive and distribution information up front to an end user, to help them decide if they can use the product."
   archiveAndDistributionInformation: JSON
+  
+  """
+  Spatial coverage of the collection.
 
-  "Spatial coverage of the collection."
+  Note: This field is not supported if you are performing a `collection` query and have provided the `revisionId` parameter. `null` will be returned.
+  """
   boxes: [String]
 
-  "True if the metadata contains browse imagery."
+  """
+  True if the metadata contains browse imagery.
+
+  Note: This field is not supported if you are performing a `collection` query and have provided the `revisionId` parameter. `null` will be returned.
+  """
   browseFlag: Boolean
 
-  "Data hosted in the cloud."
+  """
+  Data hosted in the cloud.
+
+  Note: This field is not supported if you are performing a `collection` query and have provided the `revisionId` parameter. `null` will be returned.
+  """
   cloudHosted: Boolean
 
   "The unique concept id assigned to the collection."
   conceptId: String!
 
-  "Consortiums the collection is associated to."
+  """
+  Consortiums the collection is associated to.
+
+  Note: This field is not supported if you are performing a `collection` query and have provided the `revisionId` parameter. `null` will be returned.
+  """
   consortiums: [String]
 
   "Information required to properly cite the collection in professional scientific literature."
@@ -53,7 +73,11 @@ type Collection {
   "Information about the personnel responsible for this collection and its metadata."
   contactPersons: JSON
 
-  "Coordinate system of the metadata."
+  """
+  Coordinate system of the metadata.
+
+  Note: This field is not supported if you are performing a `collection` query and have provided the `revisionId` parameter. `null` will be returned.
+  """
   coordinateSystem: String
 
   "Provider associated with the metadata."
@@ -80,13 +104,21 @@ type Collection {
   "This element stores the DOI (Digital Object Identifier) that identifies the collection. note: The values should start with the directory indicator which in ESDIS' case is 10.  If the DOI was registered through ESDIS, the beginning of the string should be 10.5067. The DOI URL is not stored here; it should be stored as a RelatedURL. The DOI organization that is responsible for creating the DOI is described in the Authority element. For ESDIS records the value of https://doi.org/ should be used. While this element is not required, NASA metadata providers are strongly encouraged to include DOI and DOI Authority for their collections."
   doi: JSON
 
-  "The title of the collection described by the metadata."
+  """
+  The title of the collection described by the metadata.
+
+  Note: This field is not supported if you are performing a `collection` query and have provided the `revisionId` parameter. `null` will be returned.
+  """
   datasetId: String
 
   "Entry Title"
   entryTitle: String @deprecated(reason: "Use `title`.")
 
-  "Entry Id is the concatenation of short name, an underscore, and version of the corresponding collection"
+  """
+  Entry Id is the concatenation of short name, an underscore, and version of the corresponding collection
+
+  Note: This field is not supported if you are performing a `collection` query and have provided the `revisionId` parameter. `null` will be returned.
+  """
   entryId: String
 
   "The File Naming Convention refers to the naming convention of the data set's (Collection's) data files along with a description of the granule file construction."
@@ -98,7 +130,11 @@ type Collection {
   "True if there are multiple supported formats for any services associated with the collection."
   hasFormats: Boolean
 
-  "True if there are granules associated with the collection."
+  """
+  True if there are granules associated with the collection.
+
+  Note: This field is not supported if you are performing a `collection` query and have provided the `revisionId` parameter. `null` will be returned.
+  """
   hasGranules: Boolean
 
   "True if any of its associated services support spatial subsetting."
@@ -125,19 +161,35 @@ type Collection {
   "The language used in the metadata record."
   metadataLanguage: String
 
-  "The format of original collection metadata (Known in CMR as original format)."
+  """
+  The format of original collection metadata (Known in CMR as original format).
+
+  Note: This field is not supported if you are performing a `collection` query and have provided the `revisionId` parameter. `null` will be returned.
+  """
   metadataFormat: String
 
-  "True if the data is available online."
+  """
+  True if the data is available online.
+
+  Note: This field is not supported if you are performing a `collection` query and have provided the `revisionId` parameter. `null` will be returned.
+  """
   onlineAccessFlag: Boolean
 
-  "Organizations associated with the metadata, including data centers."
+  """
+  Organizations associated with the metadata, including data centers.
+
+  Note: This field is not supported if you are performing a `collection` query and have provided the `revisionId` parameter. `null` will be returned.
+  """
   organizations: [String]
 
   "Original metadata format."
   originalFormat: String @deprecated(reason: "Use `metadataFormat`.")
 
-  "Spatial coverage of the collection."
+  """
+  Spatial coverage of the collection.
+
+  Note: This field is not supported if you are performing a `collection` query and have provided the `revisionId` parameter. `null` will be returned.
+  """
   lines: [String]
 
   "Provides additional or provider defined identifiers of the collection."
@@ -152,10 +204,18 @@ type Collection {
   "Information about the relevant platform(s) used to acquire the data in the collection. The controlled vocabulary for platform types is maintained in the Keyword Management System (KMS), and includes Spacecraft, Aircraft, Vessel, Buoy, Platform, Station, Network, Human, etc."
   platforms: JSON
 
-  "Spatial coverage of the collection."
+  """
+  Spatial coverage of the collection.
+
+  Note: This field is not supported if you are performing a `collection` query and have provided the `revisionId` parameter. `null` will be returned.
+  """
   points: [String]
 
-  "Spatial coverage of the collection."
+  """
+  Spatial coverage of the collection.
+
+  Note: This field is not supported if you are performing a `collection` query and have provided the `revisionId` parameter. `null` will be returned.
+  """
   polygons: [[String]]
 
   "The name of the scientific program, field campaign, or project from which the data were collected."
@@ -209,7 +269,11 @@ type Collection {
   "The summary of intentions with which this collection was developed."
   summary: String @deprecated(reason: "Use `abstract`")
 
-  "Tags associated with the collection. It includes sub-elements of tagKey and optional data which is in embedded JSON."
+  """
+  Tags associated with the collection. It includes sub-elements of tagKey and optional data which is in embedded JSON.
+
+  Note: This field is not supported if you are performing a `collection` query and have provided the `revisionId` parameter. `null` will be returned.
+  """
   tags: JSON
 
   "This class contains attributes which describe the temporal range of a specific collection. Temporal Extent includes a specification of the Temporal Range Type of the collection, which is one of Range Date Time, Single Date Time, or Periodic Date Time."
@@ -221,10 +285,18 @@ type Collection {
   "Name of the two-dimensional tiling system for the collection."
   tilingIdentificationSystems: JSON
 
-  "Start time of the metadata."
+  """
+  Start time of the metadata.
+
+  Note: This field is not supported if you are performing a `collection` query and have provided the `revisionId` parameter. `null` will be returned.
+  """
   timeStart: String
 
-  "End time of the metadata."
+  """
+  End time of the metadata.
+
+  Note: This field is not supported if you are performing a `collection` query and have provided the `revisionId` parameter. `null` will be returned.
+  """
   timeEnd: String
 
   "The title of the collection described by the metadata."
