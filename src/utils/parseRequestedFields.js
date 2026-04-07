@@ -257,7 +257,7 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
     && !PSEUDO_FIELDS.includes(field)
   ))
 
-  // When revisionId, JSON endpoint can't be used
+  // When revisionId is specified, the JSON endpoint can't be used since it only returns the most current revision
   if (revisionId && jsonKeys.length > 0) {
     jsonKeys = []
   }
