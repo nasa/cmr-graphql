@@ -54,7 +54,6 @@
     "processingLevelId": "umm.ProcessingLevel.Id",
     "projects": "umm.Projects",
     "provider": "meta.provider-id",
-    "providerId": "meta.provider-id",
     "publicationReferences": "umm.PublicationReferences",
     "purpose": "umm.Purpose",
     "quality": "umm.Quality",
