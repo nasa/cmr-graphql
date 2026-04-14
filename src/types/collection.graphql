@@ -839,6 +839,13 @@ input CollectionsInput {
   includeHasGranules: Boolean
 
   """
+  Controls whether non-operational collections are included in the search results.
+  If set to true, non-operational collections will be included.
+  If set to false, non-operational collections will be explicitly excluded, even when searching by identifier.
+  """
+  includeNonOperational: Boolean
+
+  """
   If this parameter is set (e.g. includeTags=gov.nasa.earthdata.search.*,gov.nasa.echo.*), the collection results will contain an additional field 'tags' within each collection. The value of the tags field is a list of tag_keys that are associated with the collection. Only the tags with tag_key matching the values of include_tags parameter (with wildcard support) are included.
   **NOTE**: This only requests the tags be returned by CMR, you will need to include `tags` in your query to have the results returned in the query.
   """

@@ -62,7 +62,7 @@
     "vitest": "^1.4.0"
   },
   "dependencies": {
-    "@apollo/server": "^4.10.2",
+    "@apollo/server": "^5.5.0",
     "@as-integrations/aws-lambda": "^3.1.0",
     "@aws-sdk/client-lambda": "^3.540.0",
     "@aws-sdk/client-s3": "^3.540.0",
