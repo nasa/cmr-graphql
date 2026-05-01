@@ -137,14 +137,18 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
     // collection concept id we need to request it
     if (
       (
-        requestedFields.includes('granules')
+        requestedFields.includes('citations')
         || requestedFields.includes('duplicateCollections')
         || requestedFields.includes('generateVariableDrafts')
+        || requestedFields.includes('granules')
         || requestedFields.includes('relatedCollections')
         || requestedFields.includes('revisions')
+        || requestedFields.includes('services')
         || requestedFields.includes('subscriptions')
+        || requestedFields.includes('tagDefinitions')
+        || requestedFields.includes('tools')
+        || requestedFields.includes('variables')
         || requestedFields.includes('visualizations')
-        || requestedFields.includes('citations')
       )
        && !requestedFields.includes('conceptId')) {
       requestedFields.push('conceptId')
