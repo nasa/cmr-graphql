@@ -145,7 +145,6 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
         || requestedFields.includes('revisions')
         || requestedFields.includes('services')
         || requestedFields.includes('subscriptions')
-        || requestedFields.includes('tagDefinitions')
         || requestedFields.includes('tools')
         || requestedFields.includes('variables')
         || requestedFields.includes('visualizations')
