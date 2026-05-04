@@ -923,6 +923,9 @@ input CollectionsInput {
   "UMM Service type."
   serviceType: [String]
 
+  "UMM Tool concept id."
+  toolConceptId: String
+
   "The short name associated with the collection."
   shortName: String
 
