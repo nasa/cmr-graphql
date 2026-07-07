@@ -237,7 +237,12 @@ describe('Collection', () => {
               Projects: [],
               PublicationReferences: [],
               Purpose: 'Mock Purpose',
-              Quality: 'Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.',
+              Quality: {
+                Summary: 'Example of the summary',
+                qualityContentDetails: {
+                  strengths: 'Global Coverage: The product provides consistent vegetation cover estimates for the entire land surface of earth'
+                }
+              },
               RelatedUrls: [],
               ScienceKeywords: [],
               SpatialExtent: {
@@ -550,7 +555,12 @@ describe('Collection', () => {
             provider: 'PORTA',
             publicationReferences: [],
             purpose: 'Mock Purpose',
-            quality: 'Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.',
+            quality: {
+              summary: 'Example of the summary',
+              qualityContentDetails: {
+                strengths: 'Global Coverage: The product provides consistent vegetation cover estimates for the entire land surface of earth'
+              }
+            },
             relatedUrls: [],
             revisions: {
               count: 2,

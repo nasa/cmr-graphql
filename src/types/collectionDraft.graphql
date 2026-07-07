@@ -83,8 +83,8 @@ type CollectionDraft {
   "Suggested usage or purpose for the collection data or service."
   purpose: String
 
-  "Free text description of the quality of the collection data."
-  quality: String
+  "Information about quality of the collection data, including a summary, known issues, strengths, limitations, and other quality-related information."
+  quality: JSON
 
   "Describes any data/service related URLs that include project home pages, services, related data archives/servers, metadata extensions, direct links to online software packages, web mapping services, links to images, or other data."
   relatedUrls: JSON
