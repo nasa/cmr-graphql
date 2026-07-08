@@ -237,6 +237,17 @@ export default {
 
       return dataSources.graphDbDuplicateCollectionsSource(source, context)
     },
+    quality: async (source) => {
+      const { quality } = source
+      const { summary } = quality
+
+      return summary
+    },
+    qualityDetails: async (source) => {
+      const { quality } = source
+
+      return quality
+    },
     services: async (source, args, context, info) => {
       const {
         associationDetails = {},
