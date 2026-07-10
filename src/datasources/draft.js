@@ -48,14 +48,14 @@ export const fetchDrafts = async (args, context, parsedInfo) => {
         Object.keys(targetKeyMap.ummKeyMappings).forEach((graphQlKey) => {
           const jsonPath = targetKeyMap.ummKeyMappings[graphQlKey]
 
-          // Split the path by dots [ 'umm', 'Quality', 'Summary' ]
+          // Split the path by dots [ 'umm', 'ProcessingLevel', 'Id' ]
           const pathParts = jsonPath.split('.')
 
           // Remove the 'umm' or 'meta' root prefix since Concept.js merged them
           pathParts.shift()
 
           // Convert the remaining path to match Concept.js's camelCased output
-          // (['Quality', 'Summary'] -> "quality.summary")
+          // (['ProcessingLevel', 'Id'] -> "quality.summary")
           const camelCasedPath = pathParts.map((part) => camelCase(part)).join('.')
 
           // Fetch the value using lodash.get against the raw camelCased previewMetadata
