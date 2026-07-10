@@ -56,7 +56,7 @@
     "provider": "meta.provider-id",
     "publicationReferences": "umm.PublicationReferences",
     "purpose": "umm.Purpose",
-    "quality": "umm.Quality.Summary",
+    "quality": "umm.Quality",
     "qualityDetails": "umm.Quality",
     "relatedUrls": "umm.RelatedUrls",
     "revisionDate": "meta.revision-date",
