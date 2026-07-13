@@ -227,11 +227,8 @@ type Collection {
   "Describes key bibliographic citations pertaining to the collection."
   publicationReferences: JSON
 
-  "Free text description of the quality of the collection data. Deprecated in favor of the structured qualityDetails field."
-  quality: String @deprecated(reason: "Use `qualityDetails`.")
-
   "Information about quality of the collection data, including a summary, known issues, strengths, limitations, and other quality-related information."
-  qualityDetails: JSON
+  quality: JSON
 
   "The native id to set on the collection."
   nativeId: String!

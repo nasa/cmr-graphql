@@ -57,7 +57,6 @@
     "publicationReferences": "umm.PublicationReferences",
     "purpose": "umm.Purpose",
     "quality": "umm.Quality",
-    "qualityDetails": "umm.Quality",
     "relatedUrls": "umm.RelatedUrls",
     "revisionDate": "meta.revision-date",
     "revisionId": "meta.revision-id",

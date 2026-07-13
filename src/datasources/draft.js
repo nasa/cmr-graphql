@@ -1,15 +1,8 @@
-import { camelCase, get } from 'lodash'
 import { parseRequestedFields } from '../utils/parseRequestedFields'
 
 import draftKeyMap from '../utils/umm/draftKeyMap.json'
 
 import Draft from '../cmr/concepts/draft'
-
-import collectionKeyMap from '../utils/umm/collectionKeyMap.json'
-
-const keyMapsByConceptType = {
-  Collection: collectionKeyMap
-}
 
 export const fetchDrafts = async (args, context, parsedInfo) => {
   const { headers } = context
@@ -29,61 +22,8 @@ export const fetchDrafts = async (args, context, parsedInfo) => {
   // Parse the response from CMR
   await draft.parse(requestInfo)
 
-  // Assign the formatted JSON response
-  const response = draft.getFormattedResponse()
-
-  // Dynamically apply keyMaps to previewMetadata which has been flattened into raw, camelcasedKeys in concept.js
-  if (requestInfo.ummKeys.includes('previewMetadata')) {
-    const targetKeyMap = keyMapsByConceptType[conceptType]
-
-    if (targetKeyMap && targetKeyMap.ummKeyMappings) {
-      const mapPreviewMetadata = (items) => items.map((item) => {
-        if (!item.previewMetadata) return item
-        console.log(item.previewMetadata)
-
-        // Ensures previewMetadata always has conceptId for the resolver
-        const mappedPreviewData = { conceptId: item.conceptId }
-
-        // Iterate over the actual mappings inside the map file
-        Object.keys(targetKeyMap.ummKeyMappings).forEach((graphQlKey) => {
-          const jsonPath = targetKeyMap.ummKeyMappings[graphQlKey]
-
-          // Split the path by dots [ 'umm', 'ProcessingLevel', 'Id' ]
-          const pathParts = jsonPath.split('.')
-
-          // Remove the 'umm' or 'meta' root prefix since Concept.js merged them
-          pathParts.shift()
-
-          // Convert the remaining path to match Concept.js's camelCased output
-          // (['ProcessingLevel', 'Id'] -> "quality.summary")
-          const camelCasedPath = pathParts.map((part) => camelCase(part)).join('.')
-
-          // Fetch the value using lodash.get against the raw camelCased previewMetadata
-          const value = get(item.previewMetadata, camelCasedPath)
-
-          if (value !== undefined) {
-            mappedPreviewData[graphQlKey] = value
-          }
-        })
-
-        return {
-          ...item,
-          previewMetadata: mappedPreviewData
-        }
-      })
-
-      if (requestInfo.isList) {
-        return {
-          ...response,
-          items: mapPreviewMetadata(response.items || [])
-        }
-      }
-
-      return mapPreviewMetadata(response || [])
-    }
-  }
-
-  return response
+  // Return a formatted JSON response
+  return draft.getFormattedResponse()
 }
 
 export const ingestDraft = async (args, context, parsedInfo) => {

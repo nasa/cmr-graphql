@@ -368,7 +368,6 @@ describe('Collection', () => {
               publicationReferences
               purpose
               quality
-              qualityDetails
               relatedUrls
               revisions {
                 count
@@ -556,8 +555,7 @@ describe('Collection', () => {
             provider: 'PORTA',
             publicationReferences: [],
             purpose: 'Mock Purpose',
-            quality: 'Example of the summary',
-            qualityDetails: {
+            quality: {
               summary: 'Example of the summary',
               qualityContentDetails: {
                 strengths: 'Global Coverage: The product provides consistent vegetation cover estimates for the entire land surface of earth'

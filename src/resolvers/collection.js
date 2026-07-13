@@ -48,94 +48,19 @@ export default {
   },
 
   Collection: {
-    citations: async (source, args, context, info) => {
-      const {
-        associationDetails = {},
-        conceptId
-      } = source
-
-      // If the concept being returned is a draft, there will be no associations,
-      // return null to avoid an extra call to CMR
-      if (isDraftConceptId(conceptId, 'collection')) return null
-
-      const { dataSources } = context
-
-      const { citations = [] } = associationDetails
-
-      const citationConceptIds = citations.map(
-        ({ conceptId: citationId }) => citationId
-      )
-
-      if (!citations.length) {
-        return {
-          count: 0,
-          items: []
-        }
-      }
-
-      return dataSources.citationSourceFetch({
-        conceptId: citationConceptIds,
-        ...handlePagingParams(args)
-      }, context, parseResolveInfo(info))
-    },
-    dataQualitySummaries: async (source, args, context, info) => {
-      const {
-        associationDetails = {},
-        conceptId
-      } = source
-
-      // If the concept being returned is a draft, there will be no associations,
-      // return null to avoid an extra call to CMR
-      if (isDraftConceptId(conceptId, 'collection')) return null
-
-      const { dataSources } = context
-
-      const { dataQualitySummaries = [] } = associationDetails
-
-      const dataQualitySummaryConceptIds = dataQualitySummaries.map(
-        ({ conceptId: dqsId }) => dqsId
-      )
-
-      if (!dataQualitySummaryConceptIds.length) {
-        return {
-          count: 0,
-          items: []
-        }
-      }
-
-      return dataSources.dataQualitySummarySource({
-        conceptId: dataQualitySummaryConceptIds,
-        ...handlePagingParams(args, dataQualitySummaryConceptIds.length)
-      }, context, parseResolveInfo(info))
-    },
-    duplicateCollections: async (source, args, context) => {
-      const {
-        graphdbEnabled
-      } = process.env
-
-      if (graphdbEnabled === 'false') {
-        return {
-          count: 0,
-          items: []
-        }
-      }
-
+    revisions: async (source, args, context, info) => {
       const { dataSources } = context
 
       const { conceptId } = source
 
-      // If the concept being returned is a draft, there will be no associations,
-      // return null to avoid an extra call to CMR
-      if (isDraftConceptId(conceptId, 'collection')) return null
-
-      return dataSources.graphDbDuplicateCollectionsSource(source, context)
-    },
-    generateVariableDrafts: async (source, args, context) => {
-      const { conceptId } = source
-
-      const { dataSources } = context
-
-      return dataSources.collectionVariableDraftsSource({ conceptId }, context, parseResolveInfo)
+      return dataSources.collectionSourceFetch(
+        {
+          conceptId,
+          allRevisions: true
+        },
+        context,
+        parseResolveInfo(info)
+      )
     },
     granules: async (source, args, context, info) => {
       const { dataSources } = context
@@ -194,17 +119,6 @@ export default {
 
       return dataSources.granuleSource(requestedParams, context, parseResolveInfo(info))
     },
-    quality: async (source) => {
-      const { quality } = source
-
-      if (!quality) return null
-
-      // If quality is already a string, as is the case with older records
-      if (typeof quality === 'string') return quality
-
-      // If quality is an object, return the summary (or null if it doesn't exist)
-      return quality.summary || null
-    },
     relatedCollections: async (source, args, context, info) => {
       const {
         graphdbEnabled
@@ -232,19 +146,96 @@ export default {
         parseResolveInfo(info)
       )
     },
-    revisions: async (source, args, context, info) => {
+    generateVariableDrafts: async (source, args, context) => {
+      const { conceptId } = source
+
+      const { dataSources } = context
+
+      return dataSources.collectionVariableDraftsSource({ conceptId }, context, parseResolveInfo)
+    },
+    dataQualitySummaries: async (source, args, context, info) => {
+      const {
+        associationDetails = {},
+        conceptId
+      } = source
+
+      // If the concept being returned is a draft, there will be no associations,
+      // return null to avoid an extra call to CMR
+      if (isDraftConceptId(conceptId, 'collection')) return null
+
+      const { dataSources } = context
+
+      const { dataQualitySummaries = [] } = associationDetails
+
+      const dataQualitySummaryConceptIds = dataQualitySummaries.map(
+        ({ conceptId: dqsId }) => dqsId
+      )
+
+      if (!dataQualitySummaryConceptIds.length) {
+        return {
+          count: 0,
+          items: []
+        }
+      }
+
+      return dataSources.dataQualitySummarySource({
+        conceptId: dataQualitySummaryConceptIds,
+        ...handlePagingParams(args, dataQualitySummaryConceptIds.length)
+      }, context, parseResolveInfo(info))
+    },
+    // Commenting out until advanced Citation associations are worked out
+    // associatedCitations: async (source, args, context) => {
+    //   const {
+    //     graphdbEnabled
+    //   } = process.env
+
+    //   if (graphdbEnabled === 'false') {
+    //     return {
+    //       count: 0,
+    //       items: []
+    //     }
+    //   }
+
+    //   const { dataSources } = context
+    //   const { conceptId } = source
+    //   const { params = {} } = args
+    //   const { depth = 1 } = params
+
+    //   // If the concept being returned is a draft, there will be no associations,
+    //   // return null to avoid an extra call to CMR
+    //   if (isDraftConceptId(conceptId, 'collection')) return null
+
+    //   if (depth < 1 || depth > 3) {
+    //     throw new Error('Depth must be between 1 and 3')
+    //   }
+
+    //   return dataSources.graphDbAssociatedCitations(
+    //     source,
+    //     args,
+    //     context
+    //   )
+    // },
+    duplicateCollections: async (source, args, context) => {
+      const {
+        graphdbEnabled
+      } = process.env
+
+      if (graphdbEnabled === 'false') {
+        return {
+          count: 0,
+          items: []
+        }
+      }
+
       const { dataSources } = context
 
       const { conceptId } = source
 
-      return dataSources.collectionSourceFetch(
-        {
-          conceptId,
-          allRevisions: true
-        },
-        context,
-        parseResolveInfo(info)
-      )
+      // If the concept being returned is a draft, there will be no associations,
+      // return null to avoid an extra call to CMR
+      if (isDraftConceptId(conceptId, 'collection')) return null
+
+      return dataSources.graphDbDuplicateCollectionsSource(source, context)
     },
     services: async (source, args, context, info) => {
       const {
@@ -398,6 +389,36 @@ export default {
 
       return dataSources.visualizationSourceFetch({
         conceptId: visualizationConceptIds,
+        ...handlePagingParams(args)
+      }, context, parseResolveInfo(info))
+    },
+    citations: async (source, args, context, info) => {
+      const {
+        associationDetails = {},
+        conceptId
+      } = source
+
+      // If the concept being returned is a draft, there will be no associations,
+      // return null to avoid an extra call to CMR
+      if (isDraftConceptId(conceptId, 'collection')) return null
+
+      const { dataSources } = context
+
+      const { citations = [] } = associationDetails
+
+      const citationConceptIds = citations.map(
+        ({ conceptId: citationId }) => citationId
+      )
+
+      if (!citations.length) {
+        return {
+          count: 0,
+          items: []
+        }
+      }
+
+      return dataSources.citationSourceFetch({
+        conceptId: citationConceptIds,
         ...handlePagingParams(args)
       }, context, parseResolveInfo(info))
     }
