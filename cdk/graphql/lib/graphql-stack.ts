@@ -37,8 +37,6 @@ const environment = {
   graphdbPort: process.env.GRAPHDB_PORT || '8182',
   maxRetries: process.env.MAX_RETRIES || '1',
   retryDelay: process.env.RETRY_DELAY || '1000',
-  stellateAppName: process.env.STELLATE_APP_NAME!,
-  stellateKey: process.env.STELLATE_KEY!,
   lambdaTimeout: process.env.LAMBDA_TIMEOUT || '30',
   ummCitationVersion: '1.0.0',
   ummCollectionVersion: '1.18.6',

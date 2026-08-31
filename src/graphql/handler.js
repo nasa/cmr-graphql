@@ -2,7 +2,6 @@ import { ApolloServer } from '@apollo/server'
 import {
   ApolloServerPluginLandingPageLocalDefault
 } from '@apollo/server/plugin/landingPage/default'
-import { createStellateLoggerPlugin } from 'stellate/apollo-server'
 import { handlers, startServerAndCreateLambdaHandler } from '@as-integrations/aws-lambda'
 import { v4 as uuidv4 } from 'uuid'
 import DataLoader from 'dataloader'
@@ -111,8 +110,6 @@ import permissions from '../permissions'
 import fetchEdlClientToken from '../utils/fetchEdlClientToken'
 import fetchLaunchpadEdlUid from '../utils/fetchLaunchpadEdlUid'
 
-const { env } = process
-
 // Initialize the plugins with those we always want enabled
 const apolloPlugins = [
   ApolloServerPluginLandingPageLocalDefault({
@@ -120,24 +117,6 @@ const apolloPlugins = [
     footer: false
   })
 ]
-
-const { AWS_SAM_LOCAL: awsSamLocal } = env
-
-// Only utilize stellate in deployed environments
-if (awsSamLocal !== 'true') {
-  const {
-    stellateAppName,
-    stellateKey
-  } = env
-
-  apolloPlugins.push(
-    createStellateLoggerPlugin({
-      serviceName: stellateAppName,
-      token: stellateKey,
-      fetch
-    })
-  )
-}
 
 const schema = applyMiddleware(
   makeExecutableSchema({
