@@ -36,6 +36,7 @@ const environment = {
   graphdbPath: process.env.GRAPHDB_PATH!,
   graphdbPort: process.env.GRAPHDB_PORT || '8182',
   maxRetries: process.env.MAX_RETRIES || '1',
+  maxQueryDepth: process.env.MAX_QUERY_DEPTH || '8',
   retryDelay: process.env.RETRY_DELAY || '1000',
   lambdaTimeout: process.env.LAMBDA_TIMEOUT || '30',
   ummCitationVersion: '1.0.0',

@@ -71,6 +71,7 @@
     "@aws-sdk/client-lambda": "^3.540.0",
     "@aws-sdk/client-s3": "^3.540.0",
     "@dotenvx/dotenvx": "^1.31.0",
+    "@escape.tech/graphql-armor-max-depth": "^2.4.2",
     "@graphql-tools/merge": "^9.0.3",
     "@graphql-tools/schema": "^10.0.3",
     "array-foreach-async": "^1.0.1",

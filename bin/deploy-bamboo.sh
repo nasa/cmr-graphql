@@ -48,6 +48,7 @@ dockerRun() {
     -e "LAMBDA_TIMEOUT=$bamboo_LAMBDA_TIMEOUT" \
     -e "LOG_DESTINATION_ARN=$bamboo_LOG_DESTINATION_ARN" \
     -e "MMT_ROOT_URL=$bamboo_MMT_ROOT_URL" \
+    -e "MAX_QUERY_DEPTH=$bamboo_MAX_QUERY_DEPTH" \
     -e "NODE_ENV=production" \
     -e "DOCS_BUCKET=$bamboo_DOCS_BUCKET" \
     -e "LANDING_PAGE_BUCKET=$bamboo_LANDING_PAGE_BUCKET" \
