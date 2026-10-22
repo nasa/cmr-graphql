@@ -112,6 +112,7 @@ export class GraphqlStack extends cdk.Stack {
         methods: ['GET', 'POST'],
       },
       bundling,
+      depsLockFilePath: '../../package-lock.json',
       entry: '../../src/graphql/handler.js',
       environment,
       functionName: 'graphql',
