@@ -10,12 +10,26 @@ import { findPreviousRevision } from '../utils/findPreviousRevision'
 export const fetchCollections = async (params, context, parsedInfo) => {
   const { headers } = context
 
+  console.log('🚀 ~ file: collection.js:14 ~ parsedInfo:', parsedInfo)
   const requestInfo = parseRequestedFields(parsedInfo, collectionKeyMap, 'collection')
 
-  const collection = new Collection(headers, requestInfo, params)
+  const { includeGranuleCounts } = requestInfo
+  console.log('🚀 ~ file: collection.js:16 ~ includeGranuleCounts:', includeGranuleCounts)
+
+  const fetchParams = includeGranuleCounts ? {
+    ...params,
+    includeGranuleCounts
+  } : params
+  // Const fetchParams = {
+  //   ...params,
+  //   includeGranuleCounts: true
+  // }
+  console.log('🚀 ~ file: collection.js:23 ~ fetchParams:', fetchParams)
+
+  const collection = new Collection(headers, requestInfo, fetchParams)
 
   // Query CMR
-  collection.fetch(params)
+  collection.fetch(fetchParams)
 
   // Parse the response from CMR
   await collection.parse(requestInfo)

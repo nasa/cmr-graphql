@@ -2,6 +2,7 @@ import { parseResolveInfo } from 'graphql-parse-resolve-info'
 
 import { handlePagingParams } from '../utils/handlePagingParams'
 import { isDraftConceptId } from '../utils/isDraftConceptId'
+import { isGranuleCountOnlySelection } from '../utils/isGranuleCountOnlySelection'
 
 export default {
   Query: {
@@ -67,12 +68,24 @@ export default {
 
       // Pull out parent collection id to provide to the granules endpoint because cmr requires it
       const {
-        conceptId: collectionId
+        conceptId: collectionId,
+        granuleCount
       } = source
+      console.log('🚀 ~ file: collection.js:74 ~ granuleCount:', granuleCount)
 
       // If the concept being returned is a draft, there will be no associations,
       // return null to avoid an extra call to CMR
       if (isDraftConceptId(collectionId, 'collection')) return null
+
+      const parsedInfo = parseResolveInfo(info)
+
+      // When the parent collection search already fetched the granule count via
+      // include_granule_counts, skip the separate granule request entirely
+      if (granuleCount != null && isGranuleCountOnlySelection(parsedInfo)) {
+        console.log('🚀 ~ file: collection.js:85 ~ granuleCount:', granuleCount)
+
+        return { count: granuleCount }
+      }
 
       // Empty object that will contain the search parameters sent to CMR
       const granuleParams = {}
@@ -117,7 +130,7 @@ export default {
         ...args
       })
 
-      return dataSources.granuleSource(requestedParams, context, parseResolveInfo(info))
+      return dataSources.granuleSource(requestedParams, context, parsedInfo)
     },
     relatedCollections: async (source, args, context, info) => {
       const {

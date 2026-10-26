@@ -5,6 +5,10 @@ import { downcaseKeys } from './downcaseKeys'
 import { pickIgnoringCase } from './pickIgnoringCase'
 import { prepKeysForCmr } from './prepKeysForCmr'
 
+// TEMPORARY DEBUG: per-operation tally of outgoing CMR requests by concept type
+let currentBatchId = null
+let counts = {}
+
 /**
  * Make a request to CMR and return the promise
  * @param {Object} params
@@ -82,6 +86,20 @@ export const cmrQuery = ({
     // eslint-disable-next-line no-param-reassign
     config.headers['request-startTime'] = process.hrtime()
 
+    // TEMPORARY DEBUG: reset the tally when a new operation starts
+    if (requestId !== currentBatchId) {
+      currentBatchId = requestId
+      counts = {}
+    }
+
+    counts[conceptType] = (counts[conceptType] ?? 0) + 1
+
+    console.log(`📊 CMR #${counts[conceptType]} for ${conceptType} (request ${requestId}, ${config.method.toUpperCase()}, ${format})`)
+
+    if (conceptType === 'collections') {
+      console.log('📊 collections params:', cmrParameters.slice(0, 300))
+    }
+
     return config
   })
 
@@ -95,7 +113,7 @@ export const cmrQuery = ({
     const { 'cmr-took': cmrTook } = downcaseKeys(response.headers)
     response.headers['request-duration'] = milliseconds
 
-    console.log(`Request ${requestId} from ${clientId} to [concept: ${conceptType}, format: ${format}] completed external request in [reported: ${cmrTook} ms, observed: ${milliseconds} ms]`)
+    console.log(`🚀 Request ${requestId} from ${clientId} to [concept: ${conceptType}, format: ${format}] completed external request in [reported: ${cmrTook} ms, observed: ${milliseconds} ms]`)
 
     return response
   })

@@ -4,6 +4,7 @@ import map from 'lodash/map'
 import upperFirst from 'lodash/upperFirst'
 
 import { CONCEPT_TYPES, PSEUDO_FIELDS } from '../constants'
+import { isGranuleCountOnlySelection } from './isGranuleCountOnlySelection'
 
 /**
  * Construct an object defining UMM key information
@@ -22,6 +23,8 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
   const metaKeys = []
 
   let requestedFields = []
+
+  let includeGranuleCounts
 
   // CMR concepts which are multiple words i.e. order-option, data-quality-summary etc
   const camelCasedConcepts = [
@@ -76,6 +79,8 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
 
   // If a plural query is being performed, and the user has not requested any
   // fields (e.g. only count) then fieldsByTypeName will be undefined and we can ignore it
+  let conceptKeysRequested = {}
+
   if (fieldsByTypeName) {
     // Subscriptions are special because they are a reserved word in GraphQL
     // and cannot be used as a type name. So when `subscription` is used as a type name
@@ -87,10 +92,11 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
     }
 
     const {
-      [upperFirst(normalizedConceptName)]: conceptKeysRequested
+      [upperFirst(normalizedConceptName)]: resolvedConceptKeys
     } = fieldsByTypeName
 
-    if (conceptKeysRequested) {
+    if (resolvedConceptKeys) {
+      conceptKeysRequested = resolvedConceptKeys
       // Match by name field to allow field-level aliases
       requestedFields = map(conceptKeysRequested, 'name')
     }
@@ -232,6 +238,20 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
     }
   }
 
+  // If every granules selection on a collection query requests only count (no items, cursor, or args),
+  // include granule_count in the collection search instead of making separate granule requests
+  if (
+    (name === 'collection' || name === 'collections')
+    && requestedFields.includes('granules')
+    && Object.values(conceptKeysRequested).some(isGranuleCountOnlySelection)
+  ) {
+    // RequestedFields.push('includeGranuleCounts')
+    // TODO I can't push a request field this is an include field
+    includeGranuleCounts = true
+    console.log('includeGranuleCounts is true')
+    if (!requestedFields.includes('granuleCount')) requestedFields.push('granuleCount')
+  }
+
   const { sharedKeys = [], ummKeyMappings = {} } = keyMap
 
   // Gather keys that the user requested that only exist in umm
@@ -249,7 +269,8 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
       metaKeys,
       ummKeys: [],
       ummKeyMappings,
-      isList
+      isList,
+      includeGranuleCounts
     }
   }
 
@@ -287,6 +308,8 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
     ummKeys = ummKeys.filter((e) => e !== 'conceptId')
   }
 
+  console.log('🚀 ~ file: parseRequestedFields.js:323 ~ requestedFields:', requestedFields)
+
   // Sort the keys to prevent fragility in testing
   return {
     jsonKeys: jsonKeys.sort(),
@@ -294,6 +317,7 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
     ummKeys: ummKeys.sort(),
     ummKeyMappings,
     isList,
-    revisionId
+    revisionId,
+    includeGranuleCounts
   }
 }

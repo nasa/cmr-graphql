@@ -1489,6 +1489,178 @@ describe('Collection', () => {
           }
         })
       })
+
+      test('uses granule_count from the collection when only count is requested', async () => {
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678',
+            'CMR-Hits': 2
+          })
+          .get(/collections\.json/)
+          .query((q) => q.include_granule_counts === 'true')
+          .reply(200, {
+            feed: {
+              entry: [{
+                id: 'C100000-EDSC',
+                granule_count: 42
+              }, {
+                id: 'C100001-EDSC',
+                granule_count: 7
+              }]
+            }
+          })
+
+        const response = await server.executeOperation({
+          variables: {},
+          query: `{
+            collections {
+              items {
+                conceptId
+                granules {
+                  count
+                }
+              }
+            }
+          }`
+        }, {
+          contextValue
+        })
+
+        const { data } = response.body.singleResult
+
+        expect(data).toEqual({
+          collections: {
+            items: [{
+              conceptId: 'C100000-EDSC',
+              granules: { count: 42 }
+            }, {
+              conceptId: 'C100001-EDSC',
+              granules: { count: 7 }
+            }]
+          }
+        })
+      })
+
+      test('falls back to granule search when count and items are both requested', async () => {
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .get(/collections\.json/)
+          .reply(200, {
+            feed: {
+              entry: [{
+                id: 'C100000-EDSC'
+              }]
+            }
+          })
+
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Hits': 5,
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .get('/search/granules.json?page_size=20&collection_concept_id=C100000-EDSC')
+          .reply(200, {
+            feed: {
+              entry: [{
+                id: 'G100000-EDSC'
+              }]
+            }
+          })
+
+        const response = await server.executeOperation({
+          variables: {},
+          query: `{
+            collections {
+              items {
+                conceptId
+                granules {
+                  count
+                  items {
+                    conceptId
+                  }
+                }
+              }
+            }
+          }`
+        }, {
+          contextValue
+        })
+
+        const { data } = response.body.singleResult
+
+        expect(data).toEqual({
+          collections: {
+            items: [{
+              conceptId: 'C100000-EDSC',
+              granules: {
+                count: 5,
+                items: [{ conceptId: 'G100000-EDSC' }]
+              }
+            }]
+          }
+        })
+      })
+
+      test('falls back to granule search when granule args are present', async () => {
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .get(/collections\.json/)
+          .reply(200, {
+            feed: {
+              entry: [{
+                id: 'C100000-EDSC'
+              }]
+            }
+          })
+
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Hits': 3,
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .get('/search/granules.json?page_size=20&online_only=true&collection_concept_id=C100000-EDSC')
+          .reply(200, {
+            feed: {
+              entry: []
+            }
+          })
+
+        const response = await server.executeOperation({
+          variables: {},
+          query: `{
+            collections {
+              items {
+                conceptId
+                granules(params: { onlineOnly: true }) {
+                  count
+                }
+              }
+            }
+          }`
+        }, {
+          contextValue
+        })
+
+        const { data } = response.body.singleResult
+
+        expect(data).toEqual({
+          collections: {
+            items: [{
+              conceptId: 'C100000-EDSC',
+              granules: { count: 3 }
+            }]
+          }
+        })
+      })
     })
 
     describe('services', () => {

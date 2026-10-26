@@ -330,11 +330,76 @@ describe('parseRequestedFields', () => {
       const requestedFields = parseRequestedFields(requestInfo, keyMap, 'collection')
 
       expect(requestedFields).toEqual({
-        jsonKeys: ['conceptId', 'granules'],
+        jsonKeys: ['conceptId', 'granules', 'granuleCount'],
         metaKeys: ['collectionCount'],
         ummKeys: [],
         ummKeyMappings,
-        isList: true
+        isList: true,
+        includeGranuleCounts: true
+      })
+    })
+  })
+
+  describe('nested with count and items', () => {
+    test('does not set includeGranuleCounts when items are also requested', () => {
+      const requestInfo = {
+        name: 'collections',
+        alias: 'collections',
+        args: {},
+        fieldsByTypeName: {
+          CollectionList: {
+            items: {
+              name: 'items',
+              alias: 'items',
+              args: {},
+              fieldsByTypeName: {
+                Collection: {
+                  granules: {
+                    name: 'granules',
+                    alias: 'granules',
+                    args: {},
+                    fieldsByTypeName: {
+                      GranuleList: {
+                        count: {
+                          name: 'count',
+                          alias: 'count',
+                          args: {},
+                          fieldsByTypeName: {}
+                        },
+                        items: {
+                          name: 'items',
+                          alias: 'items',
+                          args: {},
+                          fieldsByTypeName: {
+                            Granule: {
+                              conceptId: {
+                                name: 'conceptId',
+                                alias: 'conceptId',
+                                args: {},
+                                fieldsByTypeName: {}
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      const requestedFields = parseRequestedFields(requestInfo, keyMap, 'collection')
+
+      expect(requestedFields).toEqual({
+        jsonKeys: ['conceptId', 'granules'],
+        metaKeys: [],
+        ummKeys: [],
+        ummKeyMappings,
+        isList: true,
+        includeGranuleCounts: undefined
       })
     })
   })
@@ -444,11 +509,12 @@ describe('parseRequestedFields', () => {
       const requestedFields = parseRequestedFields(requestInfo, keyMap, 'collection')
 
       expect(requestedFields).toEqual({
-        jsonKeys: ['title', 'granules', 'conceptId'],
+        jsonKeys: ['title', 'granules', 'conceptId', 'granuleCount'],
         metaKeys: [],
         ummKeys: [],
         ummKeyMappings,
-        isList: true
+        isList: true,
+        includeGranuleCounts: true
       })
     })
   })
