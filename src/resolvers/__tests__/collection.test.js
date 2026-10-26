@@ -1549,6 +1549,8 @@ describe('Collection', () => {
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
           .get(/collections\.json/)
+          // Ensure granule counts are not requested from the collection search
+          .query((q) => q.include_granule_counts === undefined)
           .reply(200, {
             feed: {
               entry: [{
@@ -1613,6 +1615,8 @@ describe('Collection', () => {
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
           .get(/collections\.json/)
+          // Ensure granule counts are not requested from the collection search
+          .query((q) => q.include_granule_counts === undefined)
           .reply(200, {
             feed: {
               entry: [{

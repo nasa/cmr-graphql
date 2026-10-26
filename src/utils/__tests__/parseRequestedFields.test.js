@@ -50,6 +50,7 @@ describe('parseRequestedFields', () => {
 
       const requestedFields = parseRequestedFields(requestInfo, keyMap, 'collection')
       expect(requestedFields).toEqual({
+        additionalVariableParameters: {},
         jsonKeys: ['conceptId', 'keyThree'],
         metaKeys: [],
         ummKeys: [],
@@ -93,6 +94,7 @@ describe('parseRequestedFields', () => {
       const requestedFields = parseRequestedFields(requestInfo, keyMap, 'collection')
 
       expect(requestedFields).toEqual({
+        additionalVariableParameters: {},
         jsonKeys: ['conceptId', 'title'],
         metaKeys: [],
         ummKeys: [],
@@ -138,6 +140,7 @@ describe('parseRequestedFields', () => {
       const requestedFields = parseRequestedFields(requestInfo, keyMap, 'collection')
 
       expect(requestedFields).toEqual({
+        additionalVariableParameters: {},
         jsonKeys: [],
         metaKeys: [],
         ummKeys: ['conceptId', 'keyTwo'],
@@ -188,6 +191,7 @@ describe('parseRequestedFields', () => {
         const requestedFields = parseRequestedFields(requestInfo, keyMap, 'collection')
 
         expect(requestedFields).toEqual({
+          additionalVariableParameters: {},
           jsonKeys: ['conceptId'],
           metaKeys: ['collectionFacets'],
           ummKeys: ['keyTwo'],
@@ -246,6 +250,7 @@ describe('parseRequestedFields', () => {
       const requestedFields = parseRequestedFields(requestInfo, keyMap, 'collection')
 
       expect(requestedFields).toEqual({
+        additionalVariableParameters: {},
         jsonKeys: ['conceptId', 'keyOne', 'keyThree'],
         metaKeys: [],
         ummKeys: ['keyTwo'],
@@ -276,6 +281,7 @@ describe('parseRequestedFields', () => {
       const requestedFields = parseRequestedFields(requestInfo, keyMap, 'collection')
 
       expect(requestedFields).toEqual({
+        additionalVariableParameters: {},
         jsonKeys: ['conceptId'],
         metaKeys: ['collectionCount'],
         ummKeys: [],
@@ -330,18 +336,18 @@ describe('parseRequestedFields', () => {
       const requestedFields = parseRequestedFields(requestInfo, keyMap, 'collection')
 
       expect(requestedFields).toEqual({
+        additionalVariableParameters: { includeGranuleCounts: true },
         jsonKeys: ['conceptId', 'granules', 'granuleCount'],
         metaKeys: ['collectionCount'],
         ummKeys: [],
         ummKeyMappings,
-        isList: true,
-        includeGranuleCounts: true
+        isList: true
       })
     })
   })
 
   describe('nested with count and items', () => {
-    test('does not set includeGranuleCounts when items are also requested', () => {
+    test('does not set includeGranuleCounts in additionalVariableParameters when items are also requested', () => {
       const requestInfo = {
         name: 'collections',
         alias: 'collections',
@@ -394,12 +400,12 @@ describe('parseRequestedFields', () => {
       const requestedFields = parseRequestedFields(requestInfo, keyMap, 'collection')
 
       expect(requestedFields).toEqual({
+        additionalVariableParameters: {},
         jsonKeys: ['conceptId', 'granules'],
         metaKeys: [],
         ummKeys: [],
         ummKeyMappings,
-        isList: true,
-        includeGranuleCounts: undefined
+        isList: true
       })
     })
   })
@@ -425,6 +431,7 @@ describe('parseRequestedFields', () => {
       const requestedFields = parseRequestedFields(requestInfo, keyMap, 'collection')
 
       expect(requestedFields).toEqual({
+        additionalVariableParameters: {},
         jsonKeys: ['conceptId'],
         metaKeys: ['collectionCursor'],
         ummKeys: [],
@@ -455,6 +462,7 @@ describe('parseRequestedFields', () => {
       const requestedFields = parseRequestedFields(requestInfo, keyMap, 'collection')
 
       expect(requestedFields).toEqual({
+        additionalVariableParameters: {},
         jsonKeys: ['conceptId'],
         metaKeys: ['collectionFacets'],
         ummKeys: [],
@@ -509,12 +517,12 @@ describe('parseRequestedFields', () => {
       const requestedFields = parseRequestedFields(requestInfo, keyMap, 'collection')
 
       expect(requestedFields).toEqual({
+        additionalVariableParameters: { includeGranuleCounts: true },
         jsonKeys: ['title', 'granules', 'conceptId', 'granuleCount'],
         metaKeys: [],
         ummKeys: [],
         ummKeyMappings,
-        isList: true,
-        includeGranuleCounts: true
+        isList: true
       })
     })
   })
@@ -553,6 +561,7 @@ describe('parseRequestedFields', () => {
       const requestedFields = parseRequestedFields(requestInfo, keyMap, 'granule')
 
       expect(requestedFields).toEqual({
+        additionalVariableParameters: {},
         jsonKeys: ['collection', 'collectionConceptId'],
         metaKeys: [],
         ummKeys: [],
@@ -592,6 +601,7 @@ describe('parseRequestedFields', () => {
       const requestedFields = parseRequestedFields(requestInfo, keyMap, 'service')
 
       expect(requestedFields).toEqual({
+        additionalVariableParameters: {},
         jsonKeys: ['maxItemsPerOrder', 'providerId', 'type'],
         metaKeys: [],
         ummKeys: [],
@@ -646,6 +656,7 @@ describe('parseRequestedFields', () => {
       const requestedFields = parseRequestedFields(requestInfo, keyMap, 'service')
 
       expect(requestedFields).toEqual({
+        additionalVariableParameters: {},
         jsonKeys: ['type', 'collections', 'conceptId'],
         metaKeys: [],
         ummKeys: [],
@@ -700,6 +711,7 @@ describe('parseRequestedFields', () => {
       const requestedFields = parseRequestedFields(requestInfo, keyMap, 'variable')
 
       expect(requestedFields).toEqual({
+        additionalVariableParameters: {},
         jsonKeys: ['type', 'collections', 'conceptId'],
         metaKeys: [],
         ummKeys: [],
@@ -754,6 +766,7 @@ describe('parseRequestedFields', () => {
       const requestedFields = parseRequestedFields(requestInfo, keyMap, 'tool')
 
       expect(requestedFields).toEqual({
+        additionalVariableParameters: {},
         jsonKeys: ['type', 'collections', 'conceptId'],
         metaKeys: [],
         ummKeys: [],
@@ -809,6 +822,7 @@ describe('parseRequestedFields', () => {
       const requestedFields = parseRequestedFields(requestInfo, mockKeyMap, 'collection')
 
       expect(requestedFields).toEqual({
+        additionalVariableParameters: {},
         jsonKeys: [],
         metaKeys: [],
         ummKeys: ['conceptId', 'shortName'],

@@ -1,6 +1,7 @@
 import difference from 'lodash/difference'
 import isEmpty from 'lodash/isEmpty'
 import map from 'lodash/map'
+import some from 'lodash/some'
 import upperFirst from 'lodash/upperFirst'
 
 import { CONCEPT_TYPES, PSEUDO_FIELDS } from '../constants'
@@ -24,7 +25,8 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
 
   let requestedFields = []
 
-  let includeGranuleCounts
+  // Extra parameters to send along with the CMR search request
+  const additionalVariableParameters = {}
 
   // CMR concepts which are multiple words i.e. order-option, data-quality-summary etc
   const camelCasedConcepts = [
@@ -79,37 +81,27 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
 
   // If a plural query is being performed, and the user has not requested any
   // fields (e.g. only count) then fieldsByTypeName will be undefined and we can ignore it
-  let conceptKeysRequested = {}
 
-  if (fieldsByTypeName) {
-    // Subscriptions are special because they are a reserved word in GraphQL
-    // and cannot be used as a type name. So when `subscription` is used as a type name
-    // we need to use `SearchSubscription` instead.
-    let normalizedConceptName = conceptName
+  // Subscriptions are special because they are a reserved word in GraphQL
+  // and cannot be used as a type name. So when `subscription` is used as a type name
+  // we need to use `SearchSubscription` instead.
+  const normalizedConceptName = conceptName === 'subscription' ? 'SearchSubscription' : conceptName
 
-    if (conceptName === 'subscription') {
-      normalizedConceptName = 'SearchSubscription'
-    }
+  // If a plural query is being performed, and the user has not requested any
+  // fields (e.g. only count) then fieldsByTypeName will be undefined
+  const conceptKeysRequested = fieldsByTypeName?.[upperFirst(normalizedConceptName)]
 
-    const {
-      [upperFirst(normalizedConceptName)]: resolvedConceptKeys
-    } = fieldsByTypeName
+  if (conceptKeysRequested) {
+    // Match by name field to allow field-level aliases
+    requestedFields = map(conceptKeysRequested, 'name')
+  }
 
-    if (resolvedConceptKeys) {
-      conceptKeysRequested = resolvedConceptKeys
-      // Match by name field to allow field-level aliases
-      requestedFields = map(conceptKeysRequested, 'name')
-    }
+  const ingestKeysRequested = fieldsByTypeName?.[`${upperFirst(formattedConceptName)}MutationResponse`]
 
-    const {
-      [`${upperFirst(formattedConceptName)}MutationResponse`]: ingestKeysRequested
-    } = fieldsByTypeName
-
-    if (ingestKeysRequested) {
-      // If the type is a mutation response we only need to return the ingest keys
-      return {
-        ingestKeys: Object.keys(ingestKeysRequested)
-      }
+  if (ingestKeysRequested) {
+    // If the type is a mutation response we only need to return the ingest keys
+    return {
+      ingestKeys: Object.keys(ingestKeysRequested)
     }
   }
 
@@ -243,12 +235,10 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
   if (
     (name === 'collection' || name === 'collections')
     && requestedFields.includes('granules')
-    && Object.values(conceptKeysRequested).some(isGranuleCountOnlySelection)
+    && some(conceptKeysRequested, isGranuleCountOnlySelection)
   ) {
-    // RequestedFields.push('includeGranuleCounts')
-    // TODO I can't push a request field this is an include field
-    includeGranuleCounts = true
-    console.log('includeGranuleCounts is true')
+    additionalVariableParameters.includeGranuleCounts = true
+
     if (!requestedFields.includes('granuleCount')) requestedFields.push('granuleCount')
   }
 
@@ -265,12 +255,12 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
 
   if (difference(ummKeys, sharedKeys).length === 0 && !revisionId) {
     return {
+      additionalVariableParameters,
       jsonKeys: requestedFields,
       metaKeys,
       ummKeys: [],
       ummKeyMappings,
-      isList,
-      includeGranuleCounts
+      isList
     }
   }
 
@@ -308,8 +298,6 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
     ummKeys = ummKeys.filter((e) => e !== 'conceptId')
   }
 
-  console.log('🚀 ~ file: parseRequestedFields.js:323 ~ requestedFields:', requestedFields)
-
   // Sort the keys to prevent fragility in testing
   return {
     jsonKeys: jsonKeys.sort(),
@@ -318,6 +306,6 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
     ummKeyMappings,
     isList,
     revisionId,
-    includeGranuleCounts
+    additionalVariableParameters
   }
 }

@@ -71,8 +71,6 @@ export default {
         conceptId: collectionId,
         granuleCount
       } = source
-      console.log('🚀 ~ file: collection.js:74 ~ granuleCount:', granuleCount)
-
       // If the concept being returned is a draft, there will be no associations,
       // return null to avoid an extra call to CMR
       if (isDraftConceptId(collectionId, 'collection')) return null
@@ -82,8 +80,6 @@ export default {
       // When the parent collection search already fetched the granule count via
       // include_granule_counts, skip the separate granule request entirely
       if (granuleCount != null && isGranuleCountOnlySelection(parsedInfo)) {
-        console.log('🚀 ~ file: collection.js:85 ~ granuleCount:', granuleCount)
-
         return { count: granuleCount }
       }
 
