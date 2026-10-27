@@ -167,9 +167,6 @@ export const createBulkUpdateTask = async (args, context) => {
     updateValue
   } = args
 
-  // Keys are kept in CMR's kebab-case here (rather than snakecase-keys) so that the
-  // UMM-JSON keys nested within findValue/updateValue (e.g. `ShortName`, `VariableLevel1`)
-  // are sent to CMR untouched.
   const data = {
     'concept-ids': conceptIds,
     'update-field': updateField,
