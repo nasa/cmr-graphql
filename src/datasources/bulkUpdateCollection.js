@@ -1,0 +1,187 @@
+import { cmrIngest } from '../utils/cmrIngest'
+import { mergeParams } from '../utils/mergeParams'
+import { parseError } from '../utils/parseError'
+
+const CONCEPT_TYPE = 'bulk-update/collections'
+
+/**
+ * CMR returns `request-json-body` as a JSON-encoded string rather than a nested
+ * object, so it needs to be parsed to be useful behind the `JSON` scalar
+ * @param {String} requestJsonBody The raw `request-json-body` value returned by CMR
+ */
+const parseRequestJsonBody = (requestJsonBody) => {
+  if (typeof requestJsonBody !== 'string') return requestJsonBody
+
+  try {
+    return JSON.parse(requestJsonBody)
+  } catch {
+    return requestJsonBody
+  }
+}
+
+/**
+ * Formats a task summary returned from the bulk update status endpoint
+ * @param {Object} task A task as returned by CMR
+ */
+const formatTask = (task) => {
+  const {
+    'created-at': createdAt,
+    name,
+    'request-json-body': requestJsonBody,
+    status,
+    'status-message': statusMessage,
+    'task-id': taskId
+  } = task
+
+  return {
+    createdAt,
+    name,
+    requestJsonBody: parseRequestJsonBody(requestJsonBody),
+    status,
+    statusMessage,
+    taskId: taskId == null ? taskId : `${taskId}`
+  }
+}
+
+/**
+ * Formats an individual collection's status as part of a bulk update task
+ * @param {Object} collectionStatus A collection status as returned by CMR
+ */
+const formatCollectionStatus = (collectionStatus) => {
+  const {
+    'concept-id': conceptId,
+    status,
+    'status-message': statusMessage
+  } = collectionStatus
+
+  return {
+    conceptId,
+    status,
+    statusMessage
+  }
+}
+
+/**
+ * Retrieve the status of every collection bulk update task for a provider
+ * @param {Object} args GraphQL query parameters
+ * @param {Object} context GraphQL context object
+ */
+export const fetchBulkUpdateTasks = async (args, context) => {
+  const { headers } = context
+
+  const { providerId } = mergeParams(args)
+
+  try {
+    const { data } = await cmrIngest({
+      conceptType: CONCEPT_TYPE,
+      headers,
+      options: {
+        method: 'GET',
+        path: `ingest/providers/${providerId}/bulk-update/collections/status`
+      }
+    })
+
+    const { tasks = [] } = data
+
+    return {
+      items: tasks.map(formatTask)
+    }
+  } catch (error) {
+    return parseError(error, { reThrowError: true })
+  }
+}
+
+/**
+ * Retrieve the detailed status of a single collection bulk update task
+ * @param {Object} args GraphQL query parameters
+ * @param {Object} context GraphQL context object
+ */
+export const fetchBulkUpdateTask = async (args, context) => {
+  const { headers } = context
+
+  const { providerId, taskId } = mergeParams(args)
+
+  try {
+    const { data } = await cmrIngest({
+      conceptType: CONCEPT_TYPE,
+      headers,
+      options: {
+        method: 'GET',
+        path: `ingest/providers/${providerId}/bulk-update/collections/status/${encodeURIComponent(taskId)}`
+      }
+    })
+
+    const {
+      'collection-statuses': collectionStatuses = [],
+      'created-at': createdAt,
+      name,
+      'request-json-body': requestJsonBody,
+      'status-message': statusMessage,
+      'task-status': status
+    } = data
+
+    return {
+      collectionStatuses: collectionStatuses.map(formatCollectionStatus),
+      createdAt,
+      name,
+      requestJsonBody: parseRequestJsonBody(requestJsonBody),
+      status,
+      statusMessage,
+      taskId
+    }
+  } catch (error) {
+    return parseError(error, { reThrowError: true })
+  }
+}
+
+/**
+ * Initiate a bulk update of multiple collections belonging to a provider
+ * @param {Object} args GraphQL mutation parameters
+ * @param {Object} context GraphQL context object
+ */
+export const createBulkUpdateTask = async (args, context) => {
+  const { headers } = context
+
+  const {
+    conceptIds,
+    findValue,
+    name,
+    providerId,
+    updateField,
+    updateType,
+    updateValue
+  } = args
+
+  // Keys are kept in CMR's kebab-case here (rather than snakecase-keys) so that the
+  // UMM-JSON keys nested within findValue/updateValue (e.g. `ShortName`, `VariableLevel1`)
+  // are sent to CMR untouched.
+  const data = {
+    'concept-ids': conceptIds,
+    'update-field': updateField,
+    'update-type': updateType
+  }
+
+  if (name) data.name = name
+  if (findValue) data['find-value'] = findValue
+  if (updateValue) data['update-value'] = updateValue
+
+  try {
+    const { data: responseData } = await cmrIngest({
+      conceptType: CONCEPT_TYPE,
+      data,
+      headers,
+      options: {
+        method: 'POST',
+        path: `ingest/providers/${providerId}/bulk-update/collections`
+      }
+    })
+
+    const { 'task-id': taskId } = responseData
+
+    return {
+      taskId: taskId == null ? taskId : `${taskId}`
+    }
+  } catch (error) {
+    return parseError(error, { reThrowError: true })
+  }
+}

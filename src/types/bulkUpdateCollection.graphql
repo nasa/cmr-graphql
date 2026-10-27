@@ -1,0 +1,153 @@
+"The overall status of a collection bulk update task."
+enum BulkUpdateTaskStatus {
+  IN_PROGRESS
+  COMPLETE
+}
+
+"The status of an individual collection within a bulk update task."
+enum BulkUpdateCollectionStatus {
+  PENDING
+  UPDATED
+  SKIPPED
+  FAILED
+}
+
+"The type of update to apply during a collection bulk update."
+enum BulkUpdateCollectionUpdateType {
+  ADD_TO_EXISTING
+  CLEAR_ALL_AND_REPLACE
+  FIND_AND_REPLACE
+  FIND_AND_REMOVE
+  FIND_AND_UPDATE
+  FIND_AND_UPDATE_HOME_PAGE_URL
+}
+
+"The collection field being updated during a collection bulk update."
+enum BulkUpdateCollectionUpdateField {
+  SCIENCE_KEYWORDS
+  LOCATION_KEYWORDS
+  DATA_CENTERS
+  PLATFORMS
+  INSTRUMENTS
+}
+
+"The status of a single collection as part of a bulk update task."
+type BulkUpdateCollectionStatusDetail {
+  "The concept id of the collection."
+  conceptId: String
+
+  "The status of this collection's update."
+  status: BulkUpdateCollectionStatus
+
+  "A message describing the status of this collection's update, such as a validation error or the reason it was skipped."
+  statusMessage: String
+}
+
+"Summary of a bulk update task, as returned when listing all bulk update tasks for a provider."
+type BulkUpdateTask {
+  "The unique id of the bulk update task."
+  taskId: String
+
+  "The name given to the task when it was created."
+  name: String
+
+  "The date and time the task was created."
+  createdAt: String
+
+  "The overall status of the task."
+  status: BulkUpdateTaskStatus
+
+  "A message describing the overall status of the task."
+  statusMessage: String
+
+  "The original JSON request body used to initiate the task."
+  requestJsonBody: JSON
+}
+
+type BulkUpdateTaskList {
+  "The list of bulk update tasks for the provider."
+  items: [BulkUpdateTask]
+}
+
+"Detailed status of a single bulk update task, including the status of every collection it updated."
+type BulkUpdateTaskDetail {
+  "The unique id of the bulk update task."
+  taskId: String
+
+  "The name given to the task when it was created."
+  name: String
+
+  "The date and time the task was created."
+  createdAt: String
+
+  "The overall status of the task."
+  status: BulkUpdateTaskStatus
+
+  "A message describing the overall status of the task."
+  statusMessage: String
+
+  "The original JSON request body used to initiate the task."
+  requestJsonBody: JSON
+
+  "The status of each collection included in the task."
+  collectionStatuses: [BulkUpdateCollectionStatusDetail]
+}
+
+"The response returned after initiating a new collection bulk update task."
+type BulkUpdateTaskMutationResponse {
+  "The unique id of the new bulk update task, used to query its status."
+  taskId: String
+}
+
+input BulkUpdateTasksInput {
+  "The provider to list collection bulk update tasks for."
+  providerId: String!
+}
+
+input BulkUpdateTaskInput {
+  "The provider the bulk update task was created under."
+  providerId: String!
+
+  "The unique id of the bulk update task."
+  taskId: String!
+}
+
+type Query {
+  "Query for the status of every collection bulk update task belonging to a provider."
+  bulkUpdateTasks (
+    "Bulk update tasks query parameters."
+    params: BulkUpdateTasksInput!
+  ): BulkUpdateTaskList
+
+  "Query for the detailed status of a single collection bulk update task, including the status of each collection it updated."
+  bulkUpdateTask (
+    "Bulk update task query parameters."
+    params: BulkUpdateTaskInput!
+  ): BulkUpdateTaskDetail
+}
+
+type Mutation {
+  "Initiate a bulk update of multiple collections belonging to a provider."
+  createBulkUpdateTask (
+    "The provider the collections being updated belong to."
+    providerId: String!
+
+    "The concept ids of the collections to update. Pass [\"ALL\"] (case insensitive) to update every collection belonging to the provider."
+    conceptIds: [String!]!
+
+    "An optional name used to identify the task. Must be unique within a provider."
+    name: String
+
+    "The type of update to perform."
+    updateType: BulkUpdateCollectionUpdateType!
+
+    "The collection field being updated."
+    updateField: BulkUpdateCollectionUpdateField!
+
+    "UMM-JSON representation of the data to find. Required for FIND_AND_REPLACE, FIND_AND_UPDATE, FIND_AND_UPDATE_HOME_PAGE_URL, and FIND_AND_REMOVE update types."
+    findValue: JSON
+
+    "UMM-JSON representation of the update to make. Required for all update types except FIND_AND_REMOVE."
+    updateValue: JSON
+  ): BulkUpdateTaskMutationResponse
+}
