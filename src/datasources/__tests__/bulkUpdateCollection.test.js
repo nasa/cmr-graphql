@@ -166,6 +166,38 @@ describe('bulkUpdateCollection', () => {
       })
     })
 
+    describe('when providerId needs URL encoding', () => {
+      test('encodes providerId in the request path', async () => {
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .get('/ingest/providers/MMT%202/bulk-update/collections/status')
+          .reply(200, { tasks: [] })
+
+        const response = await fetchBulkUpdateTasks({
+          params: {
+            providerId: 'MMT 2'
+          }
+        }, context)
+
+        expect(response).toEqual({ items: [] })
+      })
+    })
+
+    describe('when providerId is exactly "."', () => {
+      test('rejects before making a request', async () => {
+        await expect(
+          fetchBulkUpdateTasks({
+            params: {
+              providerId: '.'
+            }
+          }, context)
+        ).rejects.toThrow('Invalid providerId: .')
+      })
+    })
+
     describe('when request-json-body is not valid JSON', () => {
       test('returns the raw string unchanged', async () => {
         nock(/example-cmr/)
@@ -296,6 +328,19 @@ describe('bulkUpdateCollection', () => {
             }
           }, context)
         ).rejects.toThrow(Error)
+      })
+    })
+
+    describe('when providerId is exactly ".."', () => {
+      test('rejects before making a request', async () => {
+        await expect(
+          fetchBulkUpdateTask({
+            params: {
+              providerId: '..',
+              taskId: '1641'
+            }
+          }, context)
+        ).rejects.toThrow('Invalid providerId: ..')
       })
     })
 
@@ -436,6 +481,20 @@ describe('bulkUpdateCollection', () => {
 
       expect(response).toEqual({
         taskId: undefined
+      })
+    })
+
+    describe('when providerId is exactly "."', () => {
+      test('rejects before making a request', async () => {
+        await expect(
+          createBulkUpdateTask({
+            providerId: '.',
+            conceptIds: ['C1200483944-MMT_2'],
+            updateType: 'FIND_AND_REMOVE',
+            updateField: 'SCIENCE_KEYWORDS',
+            findValue: { Category: 'EARTH SCIENCE' }
+          }, context)
+        ).rejects.toThrow('Invalid providerId: .')
       })
     })
 

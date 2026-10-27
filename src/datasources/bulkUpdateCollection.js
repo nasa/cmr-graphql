@@ -5,6 +5,17 @@ import { parseError } from '../utils/parseError'
 const CONCEPT_TYPE = 'bulk-update/collections'
 
 /**
+ * Reject providerId values that are exactly `.` or `..`, which could otherwise
+ * be interpreted as relative path segments when building the CMR ingest request path
+ * @param {String} providerId The provider id supplied by the caller
+ */
+const assertValidProviderId = (providerId) => {
+  if (providerId === '.' || providerId === '..') {
+    throw new Error(`Invalid providerId: ${providerId}`)
+  }
+}
+
+/**
  * CMR returns `request-json-body` as a JSON-encoded string rather than a nested
  * object, so it needs to be parsed to be useful behind the `JSON` scalar
  * @param {String} requestJsonBody The raw `request-json-body` value returned by CMR
@@ -71,13 +82,15 @@ export const fetchBulkUpdateTasks = async (args, context) => {
 
   const { providerId } = mergeParams(args)
 
+  assertValidProviderId(providerId)
+
   try {
     const { data } = await cmrIngest({
       conceptType: CONCEPT_TYPE,
       headers,
       options: {
         method: 'GET',
-        path: `ingest/providers/${providerId}/bulk-update/collections/status`
+        path: `ingest/providers/${encodeURIComponent(providerId)}/bulk-update/collections/status`
       }
     })
 
@@ -101,13 +114,15 @@ export const fetchBulkUpdateTask = async (args, context) => {
 
   const { providerId, taskId } = mergeParams(args)
 
+  assertValidProviderId(providerId)
+
   try {
     const { data } = await cmrIngest({
       conceptType: CONCEPT_TYPE,
       headers,
       options: {
         method: 'GET',
-        path: `ingest/providers/${providerId}/bulk-update/collections/status/${encodeURIComponent(taskId)}`
+        path: `ingest/providers/${encodeURIComponent(providerId)}/bulk-update/collections/status/${encodeURIComponent(taskId)}`
       }
     })
 
@@ -165,6 +180,8 @@ export const createBulkUpdateTask = async (args, context) => {
   if (findValue) data['find-value'] = findValue
   if (updateValue) data['update-value'] = updateValue
 
+  assertValidProviderId(providerId)
+
   try {
     const { data: responseData } = await cmrIngest({
       conceptType: CONCEPT_TYPE,
@@ -172,7 +189,7 @@ export const createBulkUpdateTask = async (args, context) => {
       headers,
       options: {
         method: 'POST',
-        path: `ingest/providers/${providerId}/bulk-update/collections`
+        path: `ingest/providers/${encodeURIComponent(providerId)}/bulk-update/collections`
       }
     })
 
