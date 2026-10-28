@@ -28,7 +28,7 @@ const assertValidTaskId = (taskId) => {
 
 /**
  * CMR returns `request-json-body` as a JSON-encoded string rather than a nested
- * object, so it needs to be parsed to be useful behind the `JSON` scalar
+ * object
  * @param {String} requestJsonBody The raw `request-json-body` value returned by CMR
  */
 const parseRequestJsonBody = (requestJsonBody) => {
