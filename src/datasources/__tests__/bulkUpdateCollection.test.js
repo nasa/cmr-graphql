@@ -344,6 +344,32 @@ describe('bulkUpdateCollection', () => {
       })
     })
 
+    describe('when taskId is exactly "."', () => {
+      test('rejects before making a request', async () => {
+        await expect(
+          fetchBulkUpdateTask({
+            params: {
+              providerId: 'MMT_2',
+              taskId: '.'
+            }
+          }, context)
+        ).rejects.toThrow('Invalid taskId: .')
+      })
+    })
+
+    describe('when taskId is exactly ".."', () => {
+      test('rejects before making a request', async () => {
+        await expect(
+          fetchBulkUpdateTask({
+            params: {
+              providerId: 'MMT_2',
+              taskId: '..'
+            }
+          }, context)
+        ).rejects.toThrow('Invalid taskId: ..')
+      })
+    })
+
     describe('when collection-statuses is not included in the response', () => {
       test('defaults collectionStatuses to an empty array', async () => {
         nock(/example-cmr/)

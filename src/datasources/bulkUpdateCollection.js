@@ -16,6 +16,17 @@ const assertValidProviderId = (providerId) => {
 }
 
 /**
+ * Reject taskId values that are exactly `.` or `..`, which could otherwise
+ * be interpreted as relative path segments when building the CMR ingest request path
+ * @param {String} taskId The task id supplied by the caller
+ */
+const assertValidTaskId = (taskId) => {
+  if (taskId === '.' || taskId === '..') {
+    throw new Error(`Invalid taskId: ${taskId}`)
+  }
+}
+
+/**
  * CMR returns `request-json-body` as a JSON-encoded string rather than a nested
  * object, so it needs to be parsed to be useful behind the `JSON` scalar
  * @param {String} requestJsonBody The raw `request-json-body` value returned by CMR
@@ -115,6 +126,7 @@ export const fetchBulkUpdateTask = async (args, context) => {
   const { providerId, taskId } = mergeParams(args)
 
   assertValidProviderId(providerId)
+  assertValidTaskId(taskId)
 
   try {
     const { data } = await cmrIngest({
