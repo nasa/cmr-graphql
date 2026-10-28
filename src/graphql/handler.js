@@ -132,6 +132,10 @@ const {
   maxQueryDepth
 } = process.env
 
+// Fall back to the default depth if the env var is missing or not a valid number
+const parsedDepth = parseInt(maxQueryDepth, 10)
+const n = Number.isNaN(parsedDepth) ? 8 : parsedDepth
+
 const server = new ApolloServer({
   schema,
   introspection: true,
@@ -140,7 +144,7 @@ const server = new ApolloServer({
     // Limits nesting inside introspection queries (introspection is enabled on this server)
     MaxIntrospectionDepthRule,
     maxDepthRule({
-      n: parseInt(maxQueryDepth || '8', 10),
+      n,
       // Report instead of throw; a thrown error escapes validate() and Apollo returns a 500
       propagateOnRejection: false,
       onReject: [
