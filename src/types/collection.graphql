@@ -137,7 +137,10 @@ type Collection {
   """
   hasGranules: Boolean
 
-  "The total number of granules associated with the collection. Populated when `includeGranuleCounts` is set to `true`."
+  """
+  The total number of granules associated with the collection. Populated when `includeGranuleCounts` is set to `true`.
+  **NOTE**: This field is not supported if you are performing a `collection` query and have provided the `revisionId` parameter. `null` will be returned.
+  """
   granuleCount: Int
 
   "True if any of its associated services support spatial subsetting."
@@ -841,7 +844,10 @@ input CollectionsInput {
   "If this parameter is set to 'true' this will include a flag indicating true or false if the collection has any granules at all."
   includeHasGranules: Boolean
 
-  "If this parameter is set to 'true' this will include an integer indicating the total number of granules associated with the collection."
+  """
+  If this parameter is set to 'true' this will include an integer indicating the total number of granules associated with the collection.
+  **NOTE**: This only requests the granule counts be returned by CMR, you will need to include `granuleCount` in your query to have the results returned in the query.
+  """
   includeGranuleCounts: Boolean
 
   """
@@ -973,7 +979,10 @@ input CollectionInput {
   "If this parameter is set to 'true' this will include a flag indicating true or false if the collection has any granules at all."
   includeHasGranules: Boolean
 
-  "If this parameter is set to 'true' this will include the granule count for each collection."
+  """
+  If this parameter is set to 'true' this will include the granule count for each collection.
+  **NOTE**: This only requests the tags be returned by CMR, you will need to include `granuleCount` in your query to have the results returned in the query.
+  """
   includeGranuleCounts: Boolean
 
   "If this parameter is set (e.g. include_tags=gov.nasa.earthdata.search.*,gov.nasa.echo.*), the collection results will contain an additional field 'tags' within each collection. The value of the tags field is a list of tag_keys that are associated with the collection. Only the tags with tag_key matching the values of include_tags parameter (with wildcard support) are included in the results."
