@@ -492,7 +492,7 @@ describe('bulkUpdateCollection', () => {
       })
 
       describe('when adding multiple science keywords', () => {
-        test('sends all science keyword update values as an array using two keyword objects', async () => {
+        test('sends the update value as an array of science keywords', async () => {
           nock(/example-cmr/)
             .defaultReplyHeaders({
               'CMR-Took': 7,
