@@ -26,7 +26,7 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
   let requestedFields = []
 
   // Extra parameters to send along with the CMR search request
-  const additionalVariableParameters = {}
+  const additionalSearchParams = {}
 
   // CMR concepts which are multiple words i.e. order-option, data-quality-summary etc
   const camelCasedConcepts = [
@@ -237,7 +237,7 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
     && requestedFields.includes('granules')
     && some(conceptKeysRequested, isGranuleCountOnlySelection)
   ) {
-    additionalVariableParameters.includeGranuleCounts = true
+    additionalSearchParams.includeGranuleCounts = true
 
     if (!requestedFields.includes('granuleCount')) requestedFields.push('granuleCount')
   }
@@ -255,7 +255,7 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
 
   if (difference(ummKeys, sharedKeys).length === 0 && !revisionId) {
     return {
-      additionalVariableParameters,
+      additionalSearchParams,
       jsonKeys: requestedFields,
       metaKeys,
       ummKeys: [],
@@ -306,6 +306,6 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
     ummKeyMappings,
     isList,
     revisionId,
-    additionalVariableParameters
+    additionalSearchParams
   }
 }

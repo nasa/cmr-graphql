@@ -11,13 +11,13 @@ export const fetchCollections = async (params, context, parsedInfo) => {
   const { headers } = context
   const requestInfo = parseRequestedFields(parsedInfo, collectionKeyMap, 'collection')
 
-  const { additionalVariableParameters = {} } = requestInfo
+  const { additionalSearchParams = {} } = requestInfo
 
   // Merge any extra parameters determined while parsing the requested fields
   // (e.g. includeGranuleCounts) into the CMR search params
   const fetchParams = {
     ...params,
-    ...additionalVariableParameters
+    ...additionalSearchParams
   }
   const collection = new Collection(headers, requestInfo, fetchParams)
 
