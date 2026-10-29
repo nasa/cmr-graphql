@@ -490,6 +490,112 @@ describe('bulkUpdateCollection', () => {
           })
         })
       })
+
+      describe('when adding multiple science keywords', () => {
+        test('sends all science keyword update values as an array using two keyword objects', async () => {
+          nock(/example-cmr/)
+            .defaultReplyHeaders({
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .post('/ingest/providers/MMT_2/bulk-update/collections', {
+              'concept-ids': ['C1200483944-MMT_2'],
+              'update-type': 'ADD_TO_EXISTING',
+              'update-field': 'SCIENCE_KEYWORDS',
+              'update-value': [
+                {
+                  Category: 'EARTH SCIENCE',
+                  Topic: 'AGRICULTURE',
+                  Term: 'AGRICULTURAL AQUATIC SCIENCES',
+                  VariableLevel1: 'AQUACULTURE'
+                },
+                {
+                  Category: 'EARTH SCIENCE',
+                  Topic: 'ATMOSPHERE',
+                  Term: 'ATMOSPHERIC TEMPERATURE'
+                }
+              ]
+            })
+            .reply(200, {
+              'task-id': 1644
+            })
+
+          const response = await createBulkUpdateTask({
+            providerId: 'MMT_2',
+            conceptIds: ['C1200483944-MMT_2'],
+            updateType: 'ADD_TO_EXISTING',
+            updateField: 'SCIENCE_KEYWORDS',
+            updateValue: [
+              {
+                Category: 'EARTH SCIENCE',
+                Topic: 'AGRICULTURE',
+                Term: 'AGRICULTURAL AQUATIC SCIENCES',
+                VariableLevel1: 'AQUACULTURE'
+              },
+              {
+                Category: 'EARTH SCIENCE',
+                Topic: 'ATMOSPHERE',
+                Term: 'ATMOSPHERIC TEMPERATURE'
+              }
+            ]
+          }, context)
+
+          expect(response).toEqual({
+            taskId: '1644'
+          })
+        })
+      })
+
+      describe('when updating a platform with nested instruments', () => {
+        test('preserves nested UMM field names in the CMR request', async () => {
+          nock(/example-cmr/)
+            .defaultReplyHeaders({
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .post('/ingest/providers/MMT_2/bulk-update/collections', {
+              'concept-ids': ['C1200483944-MMT_2'],
+              'update-type': 'FIND_AND_UPDATE',
+              'update-field': 'PLATFORMS',
+              'find-value': {
+                ShortName: 'TestPlatform'
+              },
+              'update-value': {
+                ShortName: 'TestPlatform',
+                Instruments: [
+                  {
+                    ShortName: 'TestInstrument'
+                  }
+                ]
+              }
+            })
+            .reply(200, {
+              'task-id': 1643
+            })
+
+          const response = await createBulkUpdateTask({
+            providerId: 'MMT_2',
+            conceptIds: ['C1200483944-MMT_2'],
+            updateType: 'FIND_AND_UPDATE',
+            updateField: 'PLATFORMS',
+            findValue: {
+              ShortName: 'TestPlatform'
+            },
+            updateValue: {
+              ShortName: 'TestPlatform',
+              Instruments: [
+                {
+                  ShortName: 'TestInstrument'
+                }
+              ]
+            }
+          }, context)
+
+          expect(response).toEqual({
+            taskId: '1643'
+          })
+        })
+      })
     })
 
     describe('when the response has no task-id', () => {
