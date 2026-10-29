@@ -3,8 +3,10 @@ import {
   ApolloServerPluginLandingPageLocalDefault
 } from '@apollo/server/plugin/landingPage/default'
 import { handlers, startServerAndCreateLambdaHandler } from '@as-integrations/aws-lambda'
+import { maxDepthRule } from '@escape.tech/graphql-armor-max-depth'
 import { v4 as uuidv4 } from 'uuid'
 import DataLoader from 'dataloader'
+import { GraphQLError, MaxIntrospectionDepthRule } from 'graphql'
 import { applyMiddleware } from 'graphql-middleware'
 import { makeExecutableSchema } from '@graphql-tools/schema'
 
@@ -126,10 +128,32 @@ const schema = applyMiddleware(
   permissions
 )
 
+const {
+  maxQueryDepth
+} = process.env
+
+// Fall back to the default depth if the env var is missing or not a valid number
+const parsedDepth = parseInt(maxQueryDepth, 10)
+const n = Number.isNaN(parsedDepth) ? 8 : parsedDepth
+
 const server = new ApolloServer({
   schema,
   introspection: true,
-  plugins: apolloPlugins
+  plugins: apolloPlugins,
+  validationRules: [
+    // Limits nesting inside introspection queries (introspection is enabled on this server)
+    MaxIntrospectionDepthRule,
+    maxDepthRule({
+      n,
+      // Report instead of throw; a thrown error escapes validate() and Apollo returns a 500
+      propagateOnRejection: false,
+      onReject: [
+        (context, error) => context.reportError(
+          new GraphQLError(error.message.replace(/^Syntax Error: /, ''))
+        )
+      ]
+    })
+  ]
 })
 
 let edlClientToken
