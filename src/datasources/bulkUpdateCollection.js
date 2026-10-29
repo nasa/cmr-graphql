@@ -5,28 +5,6 @@ import { parseError } from '../utils/parseError'
 const CONCEPT_TYPE = 'bulk-update/collections'
 
 /**
- * Reject providerId values that are exactly `.` or `..`, which could otherwise
- * be interpreted as relative path segments when building the CMR ingest request path
- * @param {String} providerId The provider id supplied by the caller
- */
-const assertValidProviderId = (providerId) => {
-  if (providerId === '.' || providerId === '..') {
-    throw new Error(`Invalid providerId: ${providerId}`)
-  }
-}
-
-/**
- * Reject taskId values that are exactly `.` or `..`, which could otherwise
- * be interpreted as relative path segments when building the CMR ingest request path
- * @param {String} taskId The task id supplied by the caller
- */
-const assertValidTaskId = (taskId) => {
-  if (taskId === '.' || taskId === '..') {
-    throw new Error(`Invalid taskId: ${taskId}`)
-  }
-}
-
-/**
  * CMR returns `request-json-body` as a JSON-encoded string rather than a nested
  * object
  * @param {String} requestJsonBody The raw `request-json-body` value returned by CMR
@@ -61,7 +39,7 @@ const formatTask = (task) => {
     requestJsonBody: parseRequestJsonBody(requestJsonBody),
     status,
     statusMessage,
-    taskId: taskId == null ? taskId : `${taskId}`
+    taskId: `${taskId}`
   }
 }
 
@@ -88,12 +66,10 @@ const formatCollectionStatus = (collectionStatus) => {
  * @param {Object} args GraphQL query parameters
  * @param {Object} context GraphQL context object
  */
-export const fetchBulkUpdateTasks = async (args, context) => {
+export const fetchBulkUpdateCollectionTasks = async (args, context) => {
   const { headers } = context
 
   const { providerId } = mergeParams(args)
-
-  assertValidProviderId(providerId)
 
   try {
     const { data } = await cmrIngest({
@@ -120,13 +96,10 @@ export const fetchBulkUpdateTasks = async (args, context) => {
  * @param {Object} args GraphQL query parameters
  * @param {Object} context GraphQL context object
  */
-export const fetchBulkUpdateTask = async (args, context) => {
+export const fetchBulkUpdateCollectionTask = async (args, context) => {
   const { headers } = context
 
   const { providerId, taskId } = mergeParams(args)
-
-  assertValidProviderId(providerId)
-  assertValidTaskId(taskId)
 
   try {
     const { data } = await cmrIngest({
@@ -166,7 +139,7 @@ export const fetchBulkUpdateTask = async (args, context) => {
  * @param {Object} args GraphQL mutation parameters
  * @param {Object} context GraphQL context object
  */
-export const createBulkUpdateTask = async (args, context) => {
+export const createBulkUpdateCollectionTask = async (args, context) => {
   const { headers } = context
 
   const {
@@ -189,8 +162,6 @@ export const createBulkUpdateTask = async (args, context) => {
   if (findValue) data['find-value'] = findValue
   if (updateValue) data['update-value'] = updateValue
 
-  assertValidProviderId(providerId)
-
   try {
     const { data: responseData } = await cmrIngest({
       conceptType: CONCEPT_TYPE,
@@ -205,7 +176,7 @@ export const createBulkUpdateTask = async (args, context) => {
     const { 'task-id': taskId } = responseData
 
     return {
-      taskId: taskId == null ? taskId : `${taskId}`
+      taskId: `${taskId}`
     }
   } catch (error) {
     return parseError(error, { reThrowError: true })

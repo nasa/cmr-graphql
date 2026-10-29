@@ -1,5 +1,5 @@
 "The overall status of a collection bulk update task."
-enum BulkUpdateTaskStatus {
+enum BulkUpdateCollectionTaskStatus {
   IN_PROGRESS
   COMPLETE
 }
@@ -44,7 +44,7 @@ type BulkUpdateCollectionStatusDetail {
 }
 
 "Summary of a bulk update task, as returned when listing all bulk update tasks for a provider."
-type BulkUpdateTask {
+type BulkUpdateCollectionTask {
   "The unique id of the bulk update task."
   taskId: String
 
@@ -55,7 +55,7 @@ type BulkUpdateTask {
   createdAt: String
 
   "The overall status of the task."
-  status: BulkUpdateTaskStatus
+  status: BulkUpdateCollectionTaskStatus
 
   "A message describing the overall status of the task."
   statusMessage: String
@@ -64,13 +64,14 @@ type BulkUpdateTask {
   requestJsonBody: JSON
 }
 
-type BulkUpdateTaskList {
+"The list of bulk update tasks for a provider, as returned when querying bulk update task status."
+type BulkUpdateCollectionTaskList {
   "The list of bulk update tasks for the provider."
-  items: [BulkUpdateTask]
+  items: [BulkUpdateCollectionTask]
 }
 
 "Detailed status of a single bulk update task, including the status of every collection it updated."
-type BulkUpdateTaskDetail {
+type BulkUpdateCollectionTaskDetail {
   "The unique id of the bulk update task."
   taskId: String
 
@@ -81,7 +82,7 @@ type BulkUpdateTaskDetail {
   createdAt: String
 
   "The overall status of the task."
-  status: BulkUpdateTaskStatus
+  status: BulkUpdateCollectionTaskStatus
 
   "A message describing the overall status of the task."
   statusMessage: String
@@ -94,17 +95,17 @@ type BulkUpdateTaskDetail {
 }
 
 "The response returned after initiating a new collection bulk update task."
-type BulkUpdateTaskMutationResponse {
+type BulkUpdateCollectionTaskMutationResponse {
   "The unique id of the new bulk update task, used to query its status."
   taskId: String
 }
 
-input BulkUpdateTasksInput {
+input BulkUpdateCollectionTasksInput {
   "The provider to list collection bulk update tasks for."
   providerId: String!
 }
 
-input BulkUpdateTaskInput {
+input BulkUpdateCollectionTaskInput {
   "The provider the bulk update task was created under."
   providerId: String!
 
@@ -114,21 +115,21 @@ input BulkUpdateTaskInput {
 
 type Query {
   "Query for the status of every collection bulk update task belonging to a provider."
-  bulkUpdateTasks (
+  bulkUpdateCollectionTasks (
     "Bulk update tasks query parameters."
-    params: BulkUpdateTasksInput!
-  ): BulkUpdateTaskList
+    params: BulkUpdateCollectionTasksInput!
+  ): BulkUpdateCollectionTaskList
 
   "Query for the detailed status of a single collection bulk update task, including the status of each collection it updated."
-  bulkUpdateTask (
+  bulkUpdateCollectionTask (
     "Bulk update task query parameters."
-    params: BulkUpdateTaskInput!
-  ): BulkUpdateTaskDetail
+    params: BulkUpdateCollectionTaskInput!
+  ): BulkUpdateCollectionTaskDetail
 }
 
 type Mutation {
   "Initiate a bulk update of multiple collections belonging to a provider."
-  createBulkUpdateTask (
+  createBulkUpdateCollectionTask (
     "The provider the collections being updated belong to."
     providerId: String!
 
@@ -149,5 +150,5 @@ type Mutation {
 
     "UMM-JSON representation of the update to make. Required for all update types except FIND_AND_REMOVE."
     updateValue: JSON
-  ): BulkUpdateTaskMutationResponse
+  ): BulkUpdateCollectionTaskMutationResponse
 }

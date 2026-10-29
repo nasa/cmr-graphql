@@ -1,23 +1,23 @@
 export default {
   Query: {
-    bulkUpdateTasks: async (source, args, context) => {
+    bulkUpdateCollectionTasks: async (source, args, context) => {
       const { dataSources } = context
 
-      return dataSources.bulkUpdateTasksSourceFetch(args, context)
+      return dataSources.bulkUpdateCollectionTasksSourceFetch(args, context)
     },
 
-    bulkUpdateTask: async (source, args, context) => {
+    bulkUpdateCollectionTask: async (source, args, context) => {
       const { dataSources } = context
 
-      return dataSources.bulkUpdateTaskSourceFetch(args, context)
+      return dataSources.bulkUpdateCollectionTaskSourceFetch(args, context)
     }
   },
 
   Mutation: {
-    createBulkUpdateTask: async (source, args, context) => {
+    createBulkUpdateCollectionTask: async (source, args, context) => {
       const { dataSources } = context
 
-      return dataSources.bulkUpdateTaskSourceCreate(args, context)
+      return dataSources.bulkUpdateCollectionTaskSourceCreate(args, context)
     }
   }
 }

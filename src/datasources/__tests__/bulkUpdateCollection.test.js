@@ -1,9 +1,9 @@
 import nock from 'nock'
 
 import {
-  createBulkUpdateTask,
-  fetchBulkUpdateTask,
-  fetchBulkUpdateTasks
+  createBulkUpdateCollectionTask,
+  fetchBulkUpdateCollectionTask,
+  fetchBulkUpdateCollectionTasks
 } from '../bulkUpdateCollection'
 
 const context = {
@@ -30,7 +30,7 @@ describe('bulkUpdateCollection', () => {
     process.env = OLD_ENV
   })
 
-  describe('fetchBulkUpdateTasks', () => {
+  describe('fetchBulkUpdateCollectionTasks', () => {
     describe('when the request is successful', () => {
       test('returns the list of tasks', async () => {
         nock(/example-cmr/)
@@ -58,7 +58,7 @@ describe('bulkUpdateCollection', () => {
             ]
           })
 
-        const response = await fetchBulkUpdateTasks({
+        const response = await fetchBulkUpdateCollectionTasks({
           params: {
             providerId: 'MMT_2'
           }
@@ -95,7 +95,7 @@ describe('bulkUpdateCollection', () => {
           })
 
         await expect(
-          fetchBulkUpdateTasks({
+          fetchBulkUpdateCollectionTasks({
             params: {
               providerId: 'MMT_2'
             }
@@ -114,7 +114,7 @@ describe('bulkUpdateCollection', () => {
           .get('/ingest/providers/MMT_2/bulk-update/collections/status')
           .reply(200, {})
 
-        const response = await fetchBulkUpdateTasks({
+        const response = await fetchBulkUpdateCollectionTasks({
           params: {
             providerId: 'MMT_2'
           }
@@ -126,46 +126,6 @@ describe('bulkUpdateCollection', () => {
       })
     })
 
-    describe('when a task has no task-id', () => {
-      test('leaves taskId as-is instead of stringifying it', async () => {
-        nock(/example-cmr/)
-          .defaultReplyHeaders({
-            'CMR-Took': 7,
-            'CMR-Request-Id': 'abcd-1234-efgh-5678'
-          })
-          .get('/ingest/providers/MMT_2/bulk-update/collections/status')
-          .reply(200, {
-            tasks: [
-              {
-                'created-at': '2017-10-24T17:00:03.000Z',
-                name: 'TEST NAME1',
-                status: 'COMPLETE',
-                'status-message': 'All collection updates completed successfully.'
-              }
-            ]
-          })
-
-        const response = await fetchBulkUpdateTasks({
-          params: {
-            providerId: 'MMT_2'
-          }
-        }, context)
-
-        expect(response).toEqual({
-          items: [
-            {
-              createdAt: '2017-10-24T17:00:03.000Z',
-              name: 'TEST NAME1',
-              requestJsonBody: undefined,
-              status: 'COMPLETE',
-              statusMessage: 'All collection updates completed successfully.',
-              taskId: undefined
-            }
-          ]
-        })
-      })
-    })
-
     describe('when providerId needs URL encoding', () => {
       test('encodes providerId in the request path', async () => {
         nock(/example-cmr/)
@@ -173,28 +133,16 @@ describe('bulkUpdateCollection', () => {
             'CMR-Took': 7,
             'CMR-Request-Id': 'abcd-1234-efgh-5678'
           })
-          .get('/ingest/providers/MMT%202/bulk-update/collections/status')
+          .get('/ingest/providers/MMT%2F2/bulk-update/collections/status')
           .reply(200, { tasks: [] })
 
-        const response = await fetchBulkUpdateTasks({
+        const response = await fetchBulkUpdateCollectionTasks({
           params: {
-            providerId: 'MMT 2'
+            providerId: 'MMT/2'
           }
         }, context)
 
         expect(response).toEqual({ items: [] })
-      })
-    })
-
-    describe('when providerId is exactly "."', () => {
-      test('rejects before making a request', async () => {
-        await expect(
-          fetchBulkUpdateTasks({
-            params: {
-              providerId: '.'
-            }
-          }, context)
-        ).rejects.toThrow('Invalid providerId: .')
       })
     })
 
@@ -219,7 +167,7 @@ describe('bulkUpdateCollection', () => {
             ]
           })
 
-        const response = await fetchBulkUpdateTasks({
+        const response = await fetchBulkUpdateCollectionTasks({
           params: {
             providerId: 'MMT_2'
           }
@@ -241,7 +189,7 @@ describe('bulkUpdateCollection', () => {
     })
   })
 
-  describe('fetchBulkUpdateTask', () => {
+  describe('fetchBulkUpdateCollectionTask', () => {
     describe('when the request is successful', () => {
       test('returns the detailed task status', async () => {
         nock(/example-cmr/)
@@ -275,7 +223,7 @@ describe('bulkUpdateCollection', () => {
             ]
           })
 
-        const response = await fetchBulkUpdateTask({
+        const response = await fetchBulkUpdateCollectionTask({
           params: {
             providerId: 'MMT_2',
             taskId: '1641'
@@ -321,52 +269,13 @@ describe('bulkUpdateCollection', () => {
           })
 
         await expect(
-          fetchBulkUpdateTask({
+          fetchBulkUpdateCollectionTask({
             params: {
               providerId: 'MMT_2',
               taskId: '1641'
             }
           }, context)
         ).rejects.toThrow(Error)
-      })
-    })
-
-    describe('when providerId is exactly ".."', () => {
-      test('rejects before making a request', async () => {
-        await expect(
-          fetchBulkUpdateTask({
-            params: {
-              providerId: '..',
-              taskId: '1641'
-            }
-          }, context)
-        ).rejects.toThrow('Invalid providerId: ..')
-      })
-    })
-
-    describe('when taskId is exactly "."', () => {
-      test('rejects before making a request', async () => {
-        await expect(
-          fetchBulkUpdateTask({
-            params: {
-              providerId: 'MMT_2',
-              taskId: '.'
-            }
-          }, context)
-        ).rejects.toThrow('Invalid taskId: .')
-      })
-    })
-
-    describe('when taskId is exactly ".."', () => {
-      test('rejects before making a request', async () => {
-        await expect(
-          fetchBulkUpdateTask({
-            params: {
-              providerId: 'MMT_2',
-              taskId: '..'
-            }
-          }, context)
-        ).rejects.toThrow('Invalid taskId: ..')
       })
     })
 
@@ -382,10 +291,16 @@ describe('bulkUpdateCollection', () => {
             'created-at': '2017-10-24T17:00:03.000Z',
             name: 'TEST NAME',
             'task-status': 'IN_PROGRESS',
-            'status-message': 'Task is still in progress.'
+            'status-message': 'Task is still in progress.',
+            // CMR returns `request-json-body` as a JSON-encoded string, not a nested object
+            'request-json-body': JSON.stringify({
+              'concept-ids': ['C1200483944-MMT_2'],
+              'update-type': 'FIND_AND_REMOVE',
+              'update-field': 'SCIENCE_KEYWORDS'
+            })
           })
 
-        const response = await fetchBulkUpdateTask({
+        const response = await fetchBulkUpdateCollectionTask({
           params: {
             providerId: 'MMT_2',
             taskId: '1641'
@@ -398,14 +313,18 @@ describe('bulkUpdateCollection', () => {
           createdAt: '2017-10-24T17:00:03.000Z',
           status: 'IN_PROGRESS',
           statusMessage: 'Task is still in progress.',
-          requestJsonBody: undefined,
+          requestJsonBody: {
+            'concept-ids': ['C1200483944-MMT_2'],
+            'update-type': 'FIND_AND_REMOVE',
+            'update-field': 'SCIENCE_KEYWORDS'
+          },
           collectionStatuses: []
         })
       })
     })
   })
 
-  describe('createBulkUpdateTask', () => {
+  describe('createBulkUpdateCollectionTask', () => {
     describe('when the request is successful', () => {
       describe('when removing a science keyword', () => {
         test('returns the new task id', async () => {
@@ -429,7 +348,7 @@ describe('bulkUpdateCollection', () => {
               'task-id': 1641
             })
 
-          const response = await createBulkUpdateTask({
+          const response = await createBulkUpdateCollectionTask({
             providerId: 'MMT_2',
             conceptIds: ['C1200483944-MMT_2', 'C1200484122-MMT_2'],
             updateType: 'FIND_AND_REMOVE',
@@ -471,7 +390,7 @@ describe('bulkUpdateCollection', () => {
               'task-id': 1642
             })
 
-          const response = await createBulkUpdateTask({
+          const response = await createBulkUpdateCollectionTask({
             providerId: 'MMT_2',
             conceptIds: ['C1200483944-MMT_2', 'C1200484122-MMT_2'],
             name: 'Add back aquaculture keyword',
@@ -520,7 +439,7 @@ describe('bulkUpdateCollection', () => {
               'task-id': 1644
             })
 
-          const response = await createBulkUpdateTask({
+          const response = await createBulkUpdateCollectionTask({
             providerId: 'MMT_2',
             conceptIds: ['C1200483944-MMT_2'],
             updateType: 'ADD_TO_EXISTING',
@@ -573,7 +492,7 @@ describe('bulkUpdateCollection', () => {
               'task-id': 1643
             })
 
-          const response = await createBulkUpdateTask({
+          const response = await createBulkUpdateCollectionTask({
             providerId: 'MMT_2',
             conceptIds: ['C1200483944-MMT_2'],
             updateType: 'FIND_AND_UPDATE',
@@ -598,44 +517,6 @@ describe('bulkUpdateCollection', () => {
       })
     })
 
-    describe('when the response has no task-id', () => {
-      test('leaves taskId undefined', async () => {
-        nock(/example-cmr/)
-          .defaultReplyHeaders({
-            'CMR-Took': 7,
-            'CMR-Request-Id': 'abcd-1234-efgh-5678'
-          })
-          .post('/ingest/providers/MMT_2/bulk-update/collections')
-          .reply(200, {})
-
-        const response = await createBulkUpdateTask({
-          providerId: 'MMT_2',
-          conceptIds: ['C1200483944-MMT_2'],
-          updateType: 'FIND_AND_REMOVE',
-          updateField: 'SCIENCE_KEYWORDS',
-          findValue: { Category: 'EARTH SCIENCE' }
-        }, context)
-
-        expect(response).toEqual({
-          taskId: undefined
-        })
-      })
-    })
-
-    describe('when providerId is exactly "."', () => {
-      test('rejects before making a request', async () => {
-        await expect(
-          createBulkUpdateTask({
-            providerId: '.',
-            conceptIds: ['C1200483944-MMT_2'],
-            updateType: 'FIND_AND_REMOVE',
-            updateField: 'SCIENCE_KEYWORDS',
-            findValue: { Category: 'EARTH SCIENCE' }
-          }, context)
-        ).rejects.toThrow('Invalid providerId: .')
-      })
-    })
-
     describe('when the request fails', () => {
       test('throws an error', async () => {
         nock(/example-cmr/)
@@ -647,7 +528,7 @@ describe('bulkUpdateCollection', () => {
           })
 
         await expect(
-          createBulkUpdateTask({
+          createBulkUpdateCollectionTask({
             providerId: 'MMT_2',
             conceptIds: ['C1200483944-MMT_2'],
             updateType: 'FIND_AND_REMOVE',

@@ -18,7 +18,7 @@ describe('BulkUpdateCollection', () => {
   })
 
   describe('Query', () => {
-    describe('when requesting bulkUpdateTasks', () => {
+    describe('when requesting bulkUpdateCollectionTasks', () => {
       test('returns the provider\'s bulk update tasks', async () => {
         nock(/example-cmr/)
           .defaultReplyHeaders({
@@ -47,7 +47,7 @@ describe('BulkUpdateCollection', () => {
         const response = await server.executeOperation({
           variables: {},
           query: `{
-            bulkUpdateTasks(params: { providerId: "MMT_2" }) {
+            bulkUpdateCollectionTasks(params: { providerId: "MMT_2" }) {
               items {
                 taskId
                 name
@@ -65,7 +65,7 @@ describe('BulkUpdateCollection', () => {
         const { data } = response.body.singleResult
 
         expect(data).toEqual({
-          bulkUpdateTasks: {
+          bulkUpdateCollectionTasks: {
             items: [
               {
                 taskId: '3',
@@ -85,7 +85,7 @@ describe('BulkUpdateCollection', () => {
       })
     })
 
-    describe('when requesting bulkUpdateTask', () => {
+    describe('when requesting bulkUpdateCollectionTask', () => {
       test('returns the detailed task status', async () => {
         nock(/example-cmr/)
           .defaultReplyHeaders({
@@ -115,7 +115,7 @@ describe('BulkUpdateCollection', () => {
         const response = await server.executeOperation({
           variables: {},
           query: `{
-            bulkUpdateTask(params: { providerId: "MMT_2", taskId: "1641" }) {
+            bulkUpdateCollectionTask(params: { providerId: "MMT_2", taskId: "1641" }) {
               taskId
               name
               createdAt
@@ -135,7 +135,7 @@ describe('BulkUpdateCollection', () => {
         const { data } = response.body.singleResult
 
         expect(data).toEqual({
-          bulkUpdateTask: {
+          bulkUpdateCollectionTask: {
             taskId: '1641',
             name: 'TEST NAME',
             createdAt: '2017-10-24T17:00:03.000Z',
@@ -175,7 +175,7 @@ describe('BulkUpdateCollection', () => {
         const response = await server.executeOperation({
           variables: {},
           query: `mutation {
-            createBulkUpdateTask(
+            createBulkUpdateCollectionTask(
               providerId: "MMT_2",
               conceptIds: ["C1200483944-MMT_2"],
               updateType: FIND_AND_REMOVE,
@@ -192,7 +192,7 @@ describe('BulkUpdateCollection', () => {
         const { data } = response.body.singleResult
 
         expect(data).toEqual({
-          createBulkUpdateTask: {
+          createBulkUpdateCollectionTask: {
             taskId: '1641'
           }
         })

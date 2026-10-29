@@ -30,9 +30,9 @@ import {
   deleteAssociation as associationSourceDelete
 } from '../datasources/association'
 import {
-  createBulkUpdateTask as bulkUpdateTaskSourceCreate,
-  fetchBulkUpdateTask as bulkUpdateTaskSourceFetch,
-  fetchBulkUpdateTasks as bulkUpdateTasksSourceFetch
+  createBulkUpdateCollectionTask as bulkUpdateCollectionTaskSourceCreate,
+  fetchBulkUpdateCollectionTask as bulkUpdateCollectionTaskSourceFetch,
+  fetchBulkUpdateCollectionTasks as bulkUpdateCollectionTasksSourceFetch
 } from '../datasources/bulkUpdateCollection'
 import collectionDraftProposalSource from '../datasources/collectionDraftProposal'
 import collectionDraftSource from '../datasources/collectionDraft'
@@ -218,9 +218,9 @@ export default startServerAndCreateLambdaHandler(
           aclSourceUpdate,
           associationSourceCreate,
           associationSourceDelete,
-          bulkUpdateTaskSourceCreate,
-          bulkUpdateTaskSourceFetch,
-          bulkUpdateTasksSourceFetch,
+          bulkUpdateCollectionTaskSourceCreate,
+          bulkUpdateCollectionTaskSourceFetch,
+          bulkUpdateCollectionTasksSourceFetch,
           citationSourceDelete,
           citationSourceFetch,
           citationSourceRestoreRevision,
