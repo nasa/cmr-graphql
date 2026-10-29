@@ -407,106 +407,112 @@ describe('bulkUpdateCollection', () => {
 
   describe('createBulkUpdateTask', () => {
     describe('when the request is successful', () => {
-      test('removing a science keyword returns the new task id', async () => {
-        nock(/example-cmr/)
-          .defaultReplyHeaders({
-            'CMR-Took': 7,
-            'CMR-Request-Id': 'abcd-1234-efgh-5678'
-          })
-          .post('/ingest/providers/MMT_2/bulk-update/collections', {
-            'concept-ids': ['C1200483944-MMT_2', 'C1200484122-MMT_2'],
-            'update-type': 'FIND_AND_REMOVE',
-            'update-field': 'SCIENCE_KEYWORDS',
-            'find-value': {
+      describe('when removing a science keyword', () => {
+        test('returns the new task id', async () => {
+          nock(/example-cmr/)
+            .defaultReplyHeaders({
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .post('/ingest/providers/MMT_2/bulk-update/collections', {
+              'concept-ids': ['C1200483944-MMT_2', 'C1200484122-MMT_2'],
+              'update-type': 'FIND_AND_REMOVE',
+              'update-field': 'SCIENCE_KEYWORDS',
+              'find-value': {
+                Category: 'EARTH SCIENCE',
+                Topic: 'AGRICULTURE',
+                Term: 'AGRICULTURAL AQUATIC SCIENCES',
+                VariableLevel1: 'AQUACULTURE'
+              }
+            })
+            .reply(200, {
+              'task-id': 1641
+            })
+
+          const response = await createBulkUpdateTask({
+            providerId: 'MMT_2',
+            conceptIds: ['C1200483944-MMT_2', 'C1200484122-MMT_2'],
+            updateType: 'FIND_AND_REMOVE',
+            updateField: 'SCIENCE_KEYWORDS',
+            findValue: {
               Category: 'EARTH SCIENCE',
               Topic: 'AGRICULTURE',
               Term: 'AGRICULTURAL AQUATIC SCIENCES',
               VariableLevel1: 'AQUACULTURE'
             }
-          })
-          .reply(200, {
-            'task-id': 1641
-          })
+          }, context)
 
-        const response = await createBulkUpdateTask({
-          providerId: 'MMT_2',
-          conceptIds: ['C1200483944-MMT_2', 'C1200484122-MMT_2'],
-          updateType: 'FIND_AND_REMOVE',
-          updateField: 'SCIENCE_KEYWORDS',
-          findValue: {
-            Category: 'EARTH SCIENCE',
-            Topic: 'AGRICULTURE',
-            Term: 'AGRICULTURAL AQUATIC SCIENCES',
-            VariableLevel1: 'AQUACULTURE'
-          }
-        }, context)
-
-        expect(response).toEqual({
-          taskId: '1641'
+          expect(response).toEqual({
+            taskId: '1641'
+          })
         })
       })
 
-      test('adding a science keyword back with a name returns the new task id', async () => {
-        nock(/example-cmr/)
-          .defaultReplyHeaders({
-            'CMR-Took': 7,
-            'CMR-Request-Id': 'abcd-1234-efgh-5678'
-          })
-          .post('/ingest/providers/MMT_2/bulk-update/collections', {
-            'concept-ids': ['C1200483944-MMT_2', 'C1200484122-MMT_2'],
+      describe('when adding a science keyword with a task name', () => {
+        test('returns the new task id', async () => {
+          nock(/example-cmr/)
+            .defaultReplyHeaders({
+              'CMR-Took': 7,
+              'CMR-Request-Id': 'abcd-1234-efgh-5678'
+            })
+            .post('/ingest/providers/MMT_2/bulk-update/collections', {
+              'concept-ids': ['C1200483944-MMT_2', 'C1200484122-MMT_2'],
+              name: 'Add back aquaculture keyword',
+              'update-type': 'ADD_TO_EXISTING',
+              'update-field': 'SCIENCE_KEYWORDS',
+              'update-value': {
+                Category: 'EARTH SCIENCE',
+                Topic: 'AGRICULTURE',
+                Term: 'AGRICULTURAL AQUATIC SCIENCES',
+                VariableLevel1: 'AQUACULTURE'
+              }
+            })
+            .reply(200, {
+              'task-id': 1642
+            })
+
+          const response = await createBulkUpdateTask({
+            providerId: 'MMT_2',
+            conceptIds: ['C1200483944-MMT_2', 'C1200484122-MMT_2'],
             name: 'Add back aquaculture keyword',
-            'update-type': 'ADD_TO_EXISTING',
-            'update-field': 'SCIENCE_KEYWORDS',
-            'update-value': {
+            updateType: 'ADD_TO_EXISTING',
+            updateField: 'SCIENCE_KEYWORDS',
+            updateValue: {
               Category: 'EARTH SCIENCE',
               Topic: 'AGRICULTURE',
               Term: 'AGRICULTURAL AQUATIC SCIENCES',
               VariableLevel1: 'AQUACULTURE'
             }
-          })
-          .reply(200, {
-            'task-id': 1642
-          })
+          }, context)
 
-        const response = await createBulkUpdateTask({
-          providerId: 'MMT_2',
-          conceptIds: ['C1200483944-MMT_2', 'C1200484122-MMT_2'],
-          name: 'Add back aquaculture keyword',
-          updateType: 'ADD_TO_EXISTING',
-          updateField: 'SCIENCE_KEYWORDS',
-          updateValue: {
-            Category: 'EARTH SCIENCE',
-            Topic: 'AGRICULTURE',
-            Term: 'AGRICULTURAL AQUATIC SCIENCES',
-            VariableLevel1: 'AQUACULTURE'
-          }
-        }, context)
-
-        expect(response).toEqual({
-          taskId: '1642'
+          expect(response).toEqual({
+            taskId: '1642'
+          })
         })
       })
     })
 
-    test('when the response has no task-id, leaves taskId as-is instead of stringifying it', async () => {
-      nock(/example-cmr/)
-        .defaultReplyHeaders({
-          'CMR-Took': 7,
-          'CMR-Request-Id': 'abcd-1234-efgh-5678'
+    describe('when the response has no task-id', () => {
+      test('leaves taskId undefined', async () => {
+        nock(/example-cmr/)
+          .defaultReplyHeaders({
+            'CMR-Took': 7,
+            'CMR-Request-Id': 'abcd-1234-efgh-5678'
+          })
+          .post('/ingest/providers/MMT_2/bulk-update/collections')
+          .reply(200, {})
+
+        const response = await createBulkUpdateTask({
+          providerId: 'MMT_2',
+          conceptIds: ['C1200483944-MMT_2'],
+          updateType: 'FIND_AND_REMOVE',
+          updateField: 'SCIENCE_KEYWORDS',
+          findValue: { Category: 'EARTH SCIENCE' }
+        }, context)
+
+        expect(response).toEqual({
+          taskId: undefined
         })
-        .post('/ingest/providers/MMT_2/bulk-update/collections')
-        .reply(200, {})
-
-      const response = await createBulkUpdateTask({
-        providerId: 'MMT_2',
-        conceptIds: ['C1200483944-MMT_2'],
-        updateType: 'FIND_AND_REMOVE',
-        updateField: 'SCIENCE_KEYWORDS',
-        findValue: { Category: 'EARTH SCIENCE' }
-      }, context)
-
-      expect(response).toEqual({
-        taskId: undefined
       })
     })
 
