@@ -1,5 +1,5 @@
 import { parseResolveInfo } from 'graphql-parse-resolve-info'
-import { rule } from 'graphql-shield'
+import { rule } from '../shield'
 
 import { hasPermission } from '../../utils/hasPermission'
 import { forbiddenError } from '../../utils/forbiddenError'
