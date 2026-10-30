@@ -2,6 +2,7 @@ import { mergeTypeDefs } from '@graphql-tools/merge'
 
 import acl from './acl.graphql'
 import association from './association.graphql'
+import bulkUpdateCollection from './bulkUpdateCollection.graphql'
 import collection from './collection.graphql'
 import collectionDraft from './collectionDraft.graphql'
 import collectionDraftProposal from './collectionDraftProposal.graphql'
@@ -30,6 +31,7 @@ export default mergeTypeDefs(
   [
     acl,
     association,
+    bulkUpdateCollection,
     collection,
     collectionDraft,
     collectionDraftProposal,

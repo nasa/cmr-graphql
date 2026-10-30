@@ -2,6 +2,7 @@ import { mergeResolvers } from '@graphql-tools/merge'
 
 import aclResolver from './acl'
 import associationResolver from './association'
+import bulkUpdateCollectionResolver from './bulkUpdateCollection'
 import collectionDraftProposalResolver from './collectionDraftProposal'
 import collectionDraftResolver from './collectionDraft'
 import collectionResolver from './collection'
@@ -27,6 +28,7 @@ import visualizationResolver from './visualization'
 const resolvers = [
   aclResolver,
   associationResolver,
+  bulkUpdateCollectionResolver,
   collectionDraftProposalResolver,
   collectionDraftResolver,
   collectionResolver,

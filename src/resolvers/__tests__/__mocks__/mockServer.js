@@ -13,6 +13,11 @@ import {
   createAssociation as associationSourceCreate,
   deleteAssociation as associationSourceDelete
 } from '../../../datasources/association'
+import {
+  createBulkUpdateCollectionTask as bulkUpdateCollectionTaskSourceCreate,
+  fetchBulkUpdateCollectionTask as bulkUpdateCollectionTaskSourceFetch,
+  fetchBulkUpdateCollectionTasks as bulkUpdateCollectionTasksSourceFetch
+} from '../../../datasources/bulkUpdateCollection'
 import collectionDraftProposalSource from '../../../datasources/collectionDraftProposal'
 import collectionDraftSource from '../../../datasources/collectionDraft'
 import collectionVariableDraftsSource from '../../../datasources/collectionVariableDrafts'
@@ -107,6 +112,9 @@ export const buildContextValue = (extraContext) => ({
     aclSourceUpdate,
     associationSourceCreate,
     associationSourceDelete,
+    bulkUpdateCollectionTaskSourceCreate,
+    bulkUpdateCollectionTaskSourceFetch,
+    bulkUpdateCollectionTasksSourceFetch,
     citationSourceDelete,
     citationSourceFetch,
     citationSourceRestoreRevision,
