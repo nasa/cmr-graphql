@@ -1,9 +1,11 @@
 import difference from 'lodash/difference'
 import isEmpty from 'lodash/isEmpty'
 import map from 'lodash/map'
+import some from 'lodash/some'
 import upperFirst from 'lodash/upperFirst'
 
 import { CONCEPT_TYPES, PSEUDO_FIELDS } from '../constants'
+import { isGranuleCountOnlySelection } from './isGranuleCountOnlySelection'
 
 /**
  * Construct an object defining UMM key information
@@ -22,6 +24,9 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
   const metaKeys = []
 
   let requestedFields = []
+
+  // Extra parameters to send along with the CMR search request
+  const additionalSearchParams = {}
 
   // CMR concepts which are multiple words i.e. order-option, data-quality-summary etc
   const camelCasedConcepts = [
@@ -76,34 +81,27 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
 
   // If a plural query is being performed, and the user has not requested any
   // fields (e.g. only count) then fieldsByTypeName will be undefined and we can ignore it
-  if (fieldsByTypeName) {
-    // Subscriptions are special because they are a reserved word in GraphQL
-    // and cannot be used as a type name. So when `subscription` is used as a type name
-    // we need to use `SearchSubscription` instead.
-    let normalizedConceptName = conceptName
 
-    if (conceptName === 'subscription') {
-      normalizedConceptName = 'SearchSubscription'
-    }
+  // Subscriptions are special because they are a reserved word in GraphQL
+  // and cannot be used as a type name. So when `subscription` is used as a type name
+  // we need to use `SearchSubscription` instead.
+  const normalizedConceptName = conceptName === 'subscription' ? 'SearchSubscription' : conceptName
 
-    const {
-      [upperFirst(normalizedConceptName)]: conceptKeysRequested
-    } = fieldsByTypeName
+  // If a plural query is being performed, and the user has not requested any
+  // fields (e.g. only count) then fieldsByTypeName will be undefined
+  const conceptKeysRequested = fieldsByTypeName?.[upperFirst(normalizedConceptName)]
 
-    if (conceptKeysRequested) {
-      // Match by name field to allow field-level aliases
-      requestedFields = map(conceptKeysRequested, 'name')
-    }
+  if (conceptKeysRequested) {
+    // Match by name field to allow field-level aliases
+    requestedFields = map(conceptKeysRequested, 'name')
+  }
 
-    const {
-      [`${upperFirst(formattedConceptName)}MutationResponse`]: ingestKeysRequested
-    } = fieldsByTypeName
+  const ingestKeysRequested = fieldsByTypeName?.[`${upperFirst(formattedConceptName)}MutationResponse`]
 
-    if (ingestKeysRequested) {
-      // If the type is a mutation response we only need to return the ingest keys
-      return {
-        ingestKeys: Object.keys(ingestKeysRequested)
-      }
+  if (ingestKeysRequested) {
+    // If the type is a mutation response we only need to return the ingest keys
+    return {
+      ingestKeys: Object.keys(ingestKeysRequested)
     }
   }
 
@@ -232,6 +230,18 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
     }
   }
 
+  // If every granules selection on a collection query requests only count (no items, cursor, or args),
+  // include granule_count in the collection search instead of making separate granule requests
+  if (
+    (name === 'collection' || name === 'collections')
+    && requestedFields.includes('granules')
+    && some(conceptKeysRequested, isGranuleCountOnlySelection)
+  ) {
+    additionalSearchParams.includeGranuleCounts = true
+
+    if (!requestedFields.includes('granuleCount')) requestedFields.push('granuleCount')
+  }
+
   const { sharedKeys = [], ummKeyMappings = {} } = keyMap
 
   // Gather keys that the user requested that only exist in umm
@@ -245,6 +255,7 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
 
   if (difference(ummKeys, sharedKeys).length === 0 && !revisionId) {
     return {
+      additionalSearchParams,
       jsonKeys: requestedFields,
       metaKeys,
       ummKeys: [],
@@ -294,6 +305,7 @@ export const parseRequestedFields = (parsedInfo, keyMap, conceptName) => {
     ummKeys: ummKeys.sort(),
     ummKeyMappings,
     isList,
-    revisionId
+    revisionId,
+    additionalSearchParams
   }
 }
