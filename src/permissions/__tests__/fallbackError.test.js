@@ -1,13 +1,12 @@
 import { makeExecutableSchema } from '@graphql-tools/schema'
 import { ApolloServer } from '@apollo/server'
-import { applyMiddleware } from 'graphql-middleware'
 import gql from 'graphql-tag'
 
 import typeDefs from '../../types'
 import permissions from '..'
 import * as hasPermission from '../../utils/hasPermission'
 
-const schemaWithCMRError = applyMiddleware(
+const schemaWithCMRError = permissions(
   makeExecutableSchema({
     typeDefs,
     resolvers: {
@@ -19,11 +18,10 @@ const schemaWithCMRError = applyMiddleware(
         })
       }
     }
-  }),
-  permissions
+  })
 )
 
-const schema = applyMiddleware(
+const schema = permissions(
   makeExecutableSchema({
     typeDefs,
     resolvers: {
@@ -31,8 +29,7 @@ const schema = applyMiddleware(
         groups: vi.fn().mockImplementation(() => { throw new Error('mock error') })
       }
     }
-  }),
-  permissions
+  })
 )
 
 const setupServerWithCMRError = () => (
