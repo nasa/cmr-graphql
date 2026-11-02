@@ -1,6 +1,6 @@
-import { race, shield } from 'graphql-shield'
+import { race, shield } from '../shield'
 
-// We don't have to call this file, simply importing it will call the graphql-shield shield function
+// We don't have to call this file, simply importing it will call the shield function
 // eslint-disable-next-line no-unused-vars
 import permissions from '../index'
 
@@ -12,8 +12,8 @@ import { canReadSystemGroups } from '../acls/canReadSystemGroups'
 
 import { isLocalMMT } from '../rules/isLocalMMT'
 
-vi.mock('graphql-shield', async () => {
-  const original = await vi.importActual('graphql-shield')
+vi.mock('../shield', async () => {
+  const original = await vi.importActual('../shield')
 
   return {
     ...original,

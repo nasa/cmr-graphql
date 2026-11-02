@@ -2,7 +2,7 @@ import {
   allow,
   race,
   shield
-} from 'graphql-shield'
+} from './shield'
 
 import { canCreateProviderGroups } from './acls/canCreateProviderGroups'
 import { canCreateSystemGroups } from './acls/canCreateSystemGroups'

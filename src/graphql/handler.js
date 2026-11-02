@@ -7,7 +7,6 @@ import { maxDepthRule } from '@escape.tech/graphql-armor-max-depth'
 import { v4 as uuidv4 } from 'uuid'
 import DataLoader from 'dataloader'
 import { GraphQLError, MaxIntrospectionDepthRule } from 'graphql'
-import { applyMiddleware } from 'graphql-middleware'
 import { makeExecutableSchema } from '@graphql-tools/schema'
 
 import resolvers from '../resolvers'
@@ -125,16 +124,14 @@ const apolloPlugins = [
   })
 ]
 
-const schema = applyMiddleware(
-  makeExecutableSchema({
-    typeDefs,
-    resolvers
-  }),
-  permissions
-)
+const schema = permissions(makeExecutableSchema({
+  typeDefs,
+  resolvers
+}))
 
 const {
-  maxQueryDepth
+  maxQueryDepth,
+  stage: graphqlStage
 } = process.env
 
 // Fall back to the default depth if the env var is missing or not a valid number
@@ -195,8 +192,9 @@ export default startServerAndCreateLambdaHandler(
         'X-Request-Id': newRequestId
       }
 
+      const isDev = graphqlStage === 'dev'
       // If this lambda instance does not have a edlClient token, fetch one
-      if (!edlClientToken) {
+      if (!edlClientToken && !isDev) {
         edlClientToken = await fetchEdlClientToken()
       }
 
@@ -228,7 +226,7 @@ export default startServerAndCreateLambdaHandler(
       // Concatenate this applications client id with the user provided value, if one was provided
       requestHeaders['Client-Id'] = [
         clientId,
-        `eed-${process.env.stage}-graphql`
+        `eed-${graphqlStage}-graphql`
       ].filter(Boolean).join('-')
 
       requestHeaders.User = context.edlUsername
@@ -297,6 +295,7 @@ export default startServerAndCreateLambdaHandler(
           visualizationSourceRestoreRevision
         },
         edlClientToken,
+        // Cache key is conceptId only; assumes one selection set per operation.
         collectionLoader: new DataLoader(getCollectionsById, {
           cacheKeyFn: (obj) => obj.conceptId
         }),
