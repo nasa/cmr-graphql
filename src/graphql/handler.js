@@ -192,9 +192,8 @@ export default startServerAndCreateLambdaHandler(
         'X-Request-Id': newRequestId
       }
 
-      const isDev = graphqlStage === 'dev'
       // If this lambda instance does not have a edlClient token, fetch one
-      if (!edlClientToken && !isDev) {
+      if (!edlClientToken) {
         edlClientToken = await fetchEdlClientToken()
       }
 

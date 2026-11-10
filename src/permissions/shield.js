@@ -21,8 +21,8 @@ class Rule {
   async resolve(parent, args, ctx, info) {
     try {
       return normalize(await this.permissionFunction(parent, args, ctx, info))
-    } catch {
-      return false
+    } catch (err) {
+      return err instanceof Error ? err : new Error(err)
     }
   }
 }
