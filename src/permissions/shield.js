@@ -22,7 +22,7 @@ class Rule {
     try {
       return normalize(await this.permissionFunction(parent, args, ctx, info))
     } catch (err) {
-      return err instanceof Error ? err : new Error(err)
+      return false
     }
   }
 }
