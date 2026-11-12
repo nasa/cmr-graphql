@@ -47,7 +47,7 @@ const environment = {
   ummSubscriptionVersion: '1.1.1',
   ummToolVersion: '1.2.0',
   ummVariableVersion: '1.9.0',
-  ummVisualizationVersion: '1.1.0',
+  ummVisualizationVersion: '1.2.0',
   maximumQueryPathLength: '1500',
   stage: STAGE_NAME
 }
