@@ -1,4 +1,4 @@
-import { rule } from 'graphql-shield'
+import { rule } from '../shield'
 
 import { downcaseKeys } from '../../utils/downcaseKeys'
 import { isOfflineMMT } from '../../utils/isOfflineMMT'
